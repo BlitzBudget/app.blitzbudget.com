@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.blitzbudget</groupId>
+	<artifactId>blitz-budget-web-app</artifactId>
+	<version>0.4.480-SNAPSHOT</version>
+	<name>blitz-budget-web-app</name>
+	<description>Core Web App for Blitz Budget</description>
+	<packaging>pom</packaging>
+	
+	<properties>
+		<minify-maven-plugin.version>1.7.6</minify-maven-plugin.version>
+	</properties>
+
+	<build>
+		<resources>
+			<resource>
+	             <directory>/resources/static/img</directory>
+	             <includes>
+	                 <include>**/*.*</include>
+	             </includes>
+	         </resource>
+	    </resources>
+		<plugins>
+			<!-- Copy Static Files and convert them to Min.css with css.map -->
+          	<plugin>
+		        <groupId>com.samaxes.maven</groupId>
+		        <artifactId>minify-maven-plugin</artifactId>
+		        <version>${minify-maven-plugin.version}</version>
+		        <executions>
+		            <execution>
+		                  <id>default-minify</id>
+		                  <goals>
+		                       <goal>minify</goal>
+		                  </goals>
+		                  <configuration>
+		                       <webappSourceDir>${project.basedir}/resources</webappSourceDir>
+		                       <webappTargetDir>${project.build.directory}</webappTargetDir>
+		                       <cssTargetDir>static/css/</cssTargetDir> 
+		                      	<jsTargetDir>static/js/</jsTargetDir> 
+		          		             <charset>utf-8</charset>
+<!-- 		                         <closureCompilationLevel>ADVANCED_OPTIMIZATIONS</closureCompilationLevel> -->
+<!-- 		                       	<closureSortDependencies>true</closureSortDependencies> -->
+                    			<jsEngine>CLOSURE</jsEngine>
+                    			<skipMerge>true</skipMerge>
+                    			<cssSourceDir>static/css</cssSourceDir>
+                    			<cssSourceIncludes>
+                        			<cssSourceInclude>**</cssSourceInclude>
+                    			</cssSourceIncludes>
+                    			<cssSourceExcludes>
+          	 						<cssSourceExclude>**/*.min.css</cssSourceExclude>
+          	 						<cssSourceExclude>**/*.css.map</cssSourceExclude>
+         						</cssSourceExcludes>
+                    			<jsSourceDir>static/js</jsSourceDir>
+                    			<jsSourceIncludes>
+                        			<jsSourceInclude>**</jsSourceInclude>
+                    			</jsSourceIncludes>
+                    			<jsSourceExcludes>
+            						<jsSourceExclude>**/*.min.js</jsSourceExclude>
+            						<jsSourceExclude>**/*.js.map</jsSourceExclude>
+        						</jsSourceExcludes>
+                		</configuration>
+            	 </execution>
+             </executions>
+         </plugin>
+         <!-- Bundle the Css into core, core-website css and js -->
+         <plugin>
+            	<groupId>com.samaxes.maven</groupId>
+		        <artifactId>minify-maven-plugin</artifactId>
+		        <version>${minify-maven-plugin.version}</version>
+            	<executions>
+            		<execution>
+			             <id>bundle-configuration-minify</id>
+			               <configuration>
+			                	<webappSourceDir>${project.basedir}/resources</webappSourceDir>
+			                   	<webappTargetDir>${project.build.directory}</webappTargetDir>
+			                   	<charset>utf-8</charset>
+			                   	<cssEngine>YUI</cssEngine>
+			                   	<jsEngine>CLOSURE</jsEngine>
+			                   	<cssSourceDir>static/css</cssSourceDir>
+			                   	<cssSourceExcludes>
+			          	 			<cssSourceExclude>**/*.min.css</cssSourceExclude>
+			          	 			<cssSourceExclude>**/*.css.map</cssSourceExclude>
+			         			</cssSourceExcludes>
+			                   	<jsSourceDir>static/js</jsSourceDir>
+			                   	<jsSourceExcludes>
+			            			<jsSourceExclude>**/*.min.js</jsSourceExclude>
+			            			<cssSourceExclude>**/*.js.map</cssSourceExclude>
+			        			</jsSourceExcludes>
+			                   	<bundleConfiguration>${project.basedir}/resources/minify-maven-bundles.json</bundleConfiguration>
+			                   	<!-- ALWAYS FALSE for obfuscation -->
+			                    <closureCreateSourceMap>false</closureCreateSourceMap>
+			                </configuration>
+			                <goals>
+			                    <goal>minify</goal>
+							</goals>
+			        </execution>
+             	</executions>
+           </plugin>
+           <!-- Copy the HTML -->
+           <plugin>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <version>3.0.1</version>
+			    <executions>
+			         <execution>
+			            <id>copy-resources</id>
+			            <!-- here the phase you need -->
+			            <phase>validate</phase>
+			            <goals>
+			               <goal>copy-resources</goal>
+			            </goals>
+			            <configuration>
+			               <outputDirectory>${project.build.directory}</outputDirectory>
+			               <encoding>UTF-8</encoding>
+			               <resources>          
+			                    <resource>
+			                        <directory>${project.basedir}/resources/templates/dashboard</directory>
+			                        <filtering>true</filtering>
+			                    </resource>
+			               </resources>              
+			            </configuration>            
+			        </execution>
+			     </executions>
+			</plugin>
+			 <!-- Copy the Images -->
+			<plugin>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <version>3.0.1</version>
+			    <executions>
+			         <execution>
+			            <id>copy-images-for-css</id>
+			            <!-- here the phase you need -->
+			            <phase>validate</phase>
+			            <goals>
+			               <goal>copy-resources</goal>
+			            </goals>
+			            <configuration>
+			               <outputDirectory>${project.build.directory}/static/img</outputDirectory>
+			               <encoding>UTF-8</encoding>
+			               <resources>          
+			                    <resource>
+			                        <directory>${project.basedir}/resources/static/img</directory>
+			                        <filtering>true</filtering>
+			                    </resource>
+			               </resources>              
+			            </configuration>            
+			        </execution>
+			     </executions>
+			</plugin>
+      </plugins>
+	</build>
+</project>

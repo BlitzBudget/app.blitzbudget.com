@@ -1,0 +1,679 @@
+@charset "UTF-8";
+/** Custom Changes to Date Time Picker **/
+.datepicker-years .picker-switch {
+    cursor: default !important;
+    background: inherit !important;
+}
+
+.background-snow:hover .tableRowSelectCategory, .background-snow:hover  .descriptionDivCentering, .background-snow:hover .amountDivCentering, .hideableRow:hover .check, .check, .tableRowTransactionHighlight .tableRowSelectCategory, .tableRowTransactionHighlight  .descriptionDivCentering {
+	background-color: #fff;
+}
+
+.background-snow, .background-snow .tableRowSelectCategory, .hideableRow:hover, .tableRowTransactionHighlight {
+	background-color: snow;
+}
+
+.hideableRow:hover .d-lg-table-cell, .background-snow .d-lg-table-cell, .tableRowTransactionHighlight .d-lg-table-cell, .categoryTableRow .d-lg-table-cell{
+	border-bottom: 1px solid #fff1f1;
+	border-top: 1px solid #fff1f1;
+}
+
+.hideableRow {
+	-webkit-transition: all 1s linear;
+  	transition: all 1s linear;
+}
+.hideableRow .d-lg-table-cell {
+	border-bottom: 1px solid #f6f6f6;
+	padding: .18rem 0;
+}
+
+.table-fixed {
+	table-layout: fixed;
+}
+
+.descriptionDivCentering, .amountDivCentering, .categoryTableRow {
+	overflow: hidden;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    -moz-binding: url(<q>assets/xml/ellipsis.xml#ellipsis</q>);
+    color: gray;
+}
+
+.dropdown-toggle-right::after {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: 0.255em;
+	vertical-align: middle;
+	content: "";
+	border-top: 0.3em solid transparent;
+	border-right: 0.3em solid transparent;
+	border-bottom: 0.3em solid transparent;
+	border-left: 0.3em solid;
+}
+
+.toggle {
+	-webkit-transition: all .3s linear 0s;
+  	transition: all .3s linear 0s;	
+  	-webkit-transition-duration: 0.5s;
+  	 cursor: pointer;
+  	 color: #495257;
+}
+
+.toggle .d-lg-table-cell {
+	padding: 0.24rem 0;
+}
+
+/** Display select as plain text **/
+.tableRowSelectCategory {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none; 
+    border: none;
+    height: calc(2.1rem);
+    /* needed for Firefox: */
+    overflow:hidden;
+    width: 100%;
+    color: #000;
+    box-shadow: none;
+    text-transform: none;
+    font-size: 0.875rem;
+    font-weight: 300;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.tableRowSelectCategory::after, .dropup .tableRowSelectCategory::after {
+	border:none;
+}
+
+.bootstrap-select.tableRowForSelectCategory .optgroup-1  .dropdown-item.active,  .bootstrap-select.tableRowForSelectCategory .optgroup-1 .dropdown-item:hover, .bootstrap-select.tableRowForSelectCategory .optgroup-1 .dropdown-item:focus {
+    background-color: #ff0e00b3;
+	border-color: #ff0e00b3;
+	box-shadow: 0 14px 26px -12px rgba(244, 67, 54, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);
+    color: #fff;
+}
+
+.bootstrap-select.tableRowForSelectCategory .optgroup-2  .dropdown-item.active,  .bootstrap-select.tableRowForSelectCategory .optgroup-2 .dropdown-item:hover, .bootstrap-select.tableRowForSelectCategory .optgroup-2 .dropdown-item:focus {
+    background-color: #47a44b;
+	border-color: #39843c;
+	box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2);
+    color: #fff;
+}
+
+.tableRowSelectCategory:focus, .tableRowSelectCategory:active, .tableRowSelectCategory:hover, .show > .btn.tableRowSelectCategory, .show > .btn.tableRowSelectCategory:hover, .show > .btn.tableRowSelectCategory:focus, .show > .btn.tableRowSelectCategory:active {
+	color: #000;
+	background-color:#fff;
+	border-color:#d2d2d2;
+}
+
+.hideableRow:hover .tableRowSelectCategory, .tableRowTransactionHighlight .tableRowSelectCategory {
+	display: inline-block;
+	width: 100%;
+	padding: .2rem 1rem .15rem .7rem;
+	line-height: 1.5;
+	color: #495057;
+	vertical-align: middle;
+	border: 1px solid #d2d2d2;
+	border-radius: 0.25rem;
+	height: 28px;
+	appearance: none;
+	max-width: calc(100% - 30px);
+}
+
+.hideableRow:hover .tableRowSelectCategory::after  {
+	border-top: 0.3em solid;
+	border-right: 0.3em solid transparent;
+	border-bottom: 0;
+	border-left: 0.3em solid transparent;
+}
+
+
+.hideableRow:hover .descriptionDivCentering, .descriptionDivCentering:active, .descriptionDivCentering:focus, .tableRowTransactionHighlight .descriptionDivCentering {
+	display: block;
+	width: 100%;
+	padding: 0.055rem 1rem .055rem .7rem;
+	line-height: 1.5;
+	color: #495057;
+	border: 1px solid #d2d2d2;
+	border-radius: .25rem;
+	appearance: none;
+	height: 28px;
+	background-color: #fff;
+	max-width: calc(100% - 30px);
+	
+}
+
+.hideableRow:hover .amountDivCentering, .hideableRow:focus .amountDivCentering, .hideableRow:active .amountDivCentering, .amountDivCentering:active, .amountDivCentering:focus, .tableRowTransactionHighlight .amountDivCentering  {
+	display: block;
+	text-align: right;
+	padding: 0.055rem .7rem 0.055rem .7rem;
+	line-height: 1.5;
+	color: #495057;
+	border: 1px solid #d2d2d2;
+	border-radius: 0.25rem;
+	appearance: none;
+	height: 28px;
+	background-color: #fff;
+	max-width: calc(100% - 30px);
+	margin: 0 auto 0 auto;
+}
+
+.bootstrap-select .dropdown-toggle.tableRowSelectCategory .filter-option-inner-inner {
+    overflow: visible;
+}
+
+/** Pie Chart Customization **/
+.card.card-chart .card-footer i {
+    width: 18px;
+    text-align: center;
+}
+
+.ct-chart .ct-series-a .ct-slice-donut-solid {
+	fill: #4caf50;
+	stroke: #4caf50;
+}
+
+.ct-chart .ct-series-a .ct-slice-donut {
+	stroke: #4caf50;
+}
+
+.material-icons.text-success, .material-icons.text-danger, .material-icons.text-info {
+	margin-right: 0.2rem;
+}
+
+#chartFinancialPosition {
+	margin-bottom: 3rem;
+	margin-top: 1.5rem;
+}
+
+#chartFinancialPosition .material-spinner {
+	margin: 0 auto;
+}
+
+.fadeInAnimation {
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+	animation-duration: 0.5s;
+}
+
+.fadeOutAnimation {
+	animation-name: fadeOutOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: linear;
+	animation-duration: 1s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOutOpacity {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.btn.btn-bank:active, .btn.btn-bank:focus, .btn.btn-bank:hover {
+    box-shadow: 0 14px 26px -12px rgba(85,172,238,.42),0 4px 23px 0 rgba(0,0,0,.12),0 8px 10px -5px rgba(85,172,238,.2);
+}
+.btn.btn-bank.focus, .btn.btn-bank:focus, .btn.btn-bank:hover {
+    color: #fff;
+    background-color: #47a5ed;
+    border-color: #1d91e8;
+}
+
+.btn.btn-sync:active, .btn.btn-sync:focus, .btn.btn-sync:hover {
+    box-shadow: 0 14px 26px -12px rgba(234,76,137,.42),0 4px 23px 0 rgba(0,0,0,.12),0 8px 10px -5px rgba(234,76,137,.2);
+}
+.btn.btn-sync.focus, .btn.btn-sync:focus, .btn.btn-sync:hover {
+    color: #fff;
+    background-color: #e83e80;
+    border-color: #df1a66;
+}
+
+.btn.btn-import:active, .btn.btn-import:focus, .btn.btn-import:hover {
+    box-shadow: 0 14px 26px -12px rgba(59,89,152,.42),0 4px 23px 0 rgba(0,0,0,.12),0 8px 10px -5px rgba(59,89,152,.2);
+}
+
+.btn.btn-import.focus, .btn.btn-import:focus, .btn.btn-import:hover {
+    color: #fff;
+    background-color: #37538d;
+    border-color: #2a3f6c;
+}
+
+.btn.btn-bank {
+    color: #fff;
+    background-color: #55acee;
+    border-color: #55acee;
+    box-shadow: 0 2px 2px 0 rgba(85,172,238,.14),0 3px 1px -2px rgba(85,172,238,.2),0 1px 5px 0 rgba(85,172,238,.12);
+}
+
+.btn.btn-sync {
+    color: #fff;
+    background-color: #ea4c89;
+    border-color: #ea4c89;
+    box-shadow: 0 2px 2px 0 rgba(234,76,137,.14),0 3px 1px -2px rgba(234,76,137,.2),0 1px 5px 0 rgba(234,76,137,.12);
+}
+
+.btn.btn-import {
+    color: #fff;
+    background-color: #3b5998;
+    border-color: #3b5998;
+    box-shadow: 0 2px 2px 0 rgba(59,89,152,.14),0 3px 1px -2px rgba(59,89,152,.2),0 1px 5px 0 rgba(59,89,152,.12);
+}
+
+#legendPieChart {
+	color: #999;
+	font-size: 12px;
+	line-height: 22px;
+}
+
+/** Display Icons besides transactions **/
+.displayCategoryAddIcon {
+	padding-left: .51rem;
+	color: #6b5e5d;
+	font-weight : 400;
+	font-size: 0.95rem;
+	display: none;
+}
+
+div[class^="categoryTableRow-"]:hover .displayCategoryAddIcon , div[class*=" categoryTableRow-"]:hover .displayCategoryAddIcon {
+	display: inline;
+}
+
+.drag-handle {
+	display: none;
+}
+
+.hideableRow:hover .drag-handle {
+	display: block;
+}
+
+.draggable-handle-wrapper {
+	cursor: move;
+}
+
+.tableHeadingDiv {
+	display: table-header-group;
+	text-transform: capitalize;
+	color: #8e999e;
+}
+
+.tableHeadingDiv .form-check .form-check-sign .check {
+	border: 1px solid #8e999e;
+}
+
+.tableBodyDiv {
+	display: table-row-group;
+}
+
+.transactions-chart {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 4rem;
+}
+
+.hideableRow:hover .draggable-handle-wrapper {
+	height: 100%;
+	vertical-align: middle;
+	align-items: center;
+}
+
+.hideableRow:hover .draggable-handle-wrapper .drag-handle {
+	margin: auto;
+	display: block;
+	vertical-align: middle;
+}
+
+.transactionsTableDescription {
+	vertical-align: middle;
+}
+
+.category-text-danger, .expenseCategory:hover .d-lg-table-cell .d-lg-inline .displayCategoryAddIcon, .expenseCategory:hover .d-lg-table-cell .d-lg-inline, .mild-text-danger {
+	color: #fc695f;
+}
+
+.category-text-success, .incomeCategory:hover .d-lg-table-cell .d-lg-inline .displayCategoryAddIcon, .incomeCategory:hover .d-lg-table-cell .d-lg-inline, .mild-text-success {
+	color: #58c65c;
+}
+
+.transactions-chart .card-body span {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 13rem;
+	color: #69757a;
+}
+
+#totalIncomeTransactions, #totalExpensesTransactions {
+	color: #534e4e;
+}
+
+#totalAvailableTransactions {
+	color: #000;
+}
+
+#mutableDashboard .card-title {
+	color: #929292;
+}
+
+.transitionTextTo120 {
+	font-size: 120%;
+	transition: font-size 0.5s  ease-out;
+}
+
+.transitionTextToNormal {
+	font-size: inherit;
+	transition: font-size 0.5s  ease-out;
+}
+
+.information-modal {
+	padding-left: 0;
+}
+
+/**
+* 
+* Category Modal Designs
+*
+**/
+
+.category-modal {
+	padding: 0.5rem;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 4rem;
+}
+
+#categoryHeaderClose > i, .category-modal .card-footer .text-left {
+	color: #999;
+}
+
+.category-modal .card-footer, .category-modal .card-header .card-title {
+	white-space: nowrap;	
+}
+
+.category-modal .card-footer .text-left {
+	padding-left: 0;
+}
+
+#categoryLabelInModal {
+	display: block;
+	margin-bottom: .8rem;
+	line-height: 1;
+	color: #495257;
+	font-weight: 600;
+	text-align: left;
+}
+
+.headingDiv {
+	text-transform: capitalize;
+	color: #8e999e;
+}
+
+.category-modal progress  {
+	display: block;
+	margin-bottom: .8rem;
+	border: 0;
+	width: 100%;
+	height: 8px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	color: #58c65c;
+}
+
+/* Firefox */
+progress::-moz-progress-value { 
+    background: #58c65c;
+    background-color: #58c65c;  
+}
+
+/* Chrome */
+progress::-webkit-progress-value {
+    background: #58c65c;
+    background-color: #58c65c;
+}
+
+#remainingAmount {
+	font-weight: 600;
+}
+
+#plannedAmountCategoryModal {
+	font-size: 1.2rem;
+	padding-top: 0.25rem;
+	font-weight: 400;
+	padding-bottom: 0.5rem;
+	color: #686969;
+	display: block;
+    transition: border-color .3s ease;
+    margin-right: -.8rem;
+    width: calc(100% + 1.6rem);
+    resize: none;
+    line-height: 1;
+}
+
+#addNewGoals {
+	border-color: transparent;
+	background-color: transparent;
+	transition: color .3s;
+	margin: 0;
+	padding: 0;
+	font-weight: 700;
+}
+
+.budgetAmountDiv span:hover  {
+	border: 1px solid #d5d9db;
+	border-radius: .25rem;
+}
+
+ .budgetAmountDiv span:active, .budgetAmountDiv span:focus, .budgetAmountDiv span:focus-within {
+ 	border: 1px solid #d5d9db;
+ 	box-shadow: 0 3px 4px -2px rgba(0,0,0,.15);
+ 	border-radius: .25rem;
+	color: #333a3d;
+ }
+
+.budgetAmountDiv #plannedAmountCategoryModal {
+	padding-top: 0.5rem;
+}
+
+.budgetAmountDiv .col-lg-3,  .recurrenceDiv .col-lg-3 {
+	padding-top: 0;
+}
+
+#percentageAvailable {
+	color: #333a3d;
+	font-weight: 400;
+	font-size: 1.1rem;
+}
+
+progress::-moz-progress-bar { 
+	background: #0063a6; 
+}
+
+.progress {
+	height: 10px;
+}
+
+.material-spinner-small {
+	margin-left: 0.5rem;
+}
+
+.choose {
+	padding:0;
+	border:0;
+}
+.choose label {
+	float:left;
+	text-align:center;
+	position:relative;
+  	cursor:pointer;
+}
+.choose label span {
+	color: #686969;
+	line-height: 32px;
+	height: 32px;
+	padding: 0 16px;
+	display: block;
+	transition: all .2s ease;
+	border: 1px solid rgba(0,0,0,0.1);
+	font-size: 0.7rem;
+}
+.choose label:first-of-type span {
+	border-top-left-radius:6px;
+	border-bottom-left-radius:6px;
+	border-right:0;
+}
+.choose label:last-of-type span {
+	border-top-right-radius:6px;
+	border-bottom-right-radius:6px;
+	border-left:0;
+}
+.choose label input {
+	display:none
+}
+.choose label input:checked + span {
+	box-shadow:inset 0 0 0 32px rgba(0,0,0,0.1);
+}
+
+.debtBadge {
+	padding-left: 0.5rem;
+	margin-left: 0.5rem;
+}
+
+.recurrenceDiv #recurrenceCategoryModal {
+	padding-top: 0.25rem;
+	padding-bottom: 0.25rem;
+}
+
+fildset > label {
+    display:inline-block;
+}
+
+.debtBadge img {
+	padding-left:1rem;
+	padding-top:0.5rem;
+}
+
+#transactionsTable .form-check .form-check-input:checked+.form-check-sign .check {
+ background:#39843c
+}
+
+.transactions-empty-svg {
+	 fill:#D9D9D9;
+}
+
+.coloredTransactionLine {
+	fill: #4caf50;
+}
+
+/** Date time picker **/
+.monthPickerMonthSelected {
+    border-color: #4caf50;
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.monthPickerMonth:hover, .monthPickerNext:hover, .monthPickerPrev:hover {
+	border-color: #4caf50;	
+	color: #4caf50;
+}
+
+.monthPickerMonthSelected:hover {
+	color: #fff;
+}
+
+/** Account Picker **/
+.selectedBA .bAIcon path, .bARow:hover .bAIcon path, .tableHeadingDiv svg, .tickPath1, .account-info-color, .knowMoreAccount:hover {
+	fill: #4caf50;
+	color: #4caf50;
+}
+
+.account-box {
+	background: #efffef;
+}
+
+.account-box:hover {
+	background: #4caf50;
+	color: #fff;
+	fill: #fff;
+}
+
+.xWithRed {
+	fill: #e45c5c;
+}
+
+.btn.btn-dynamic-color {
+	color: #fff;
+    background-color: #4caf50;
+    border-color: #4caf50;
+    box-shadow: 0 2px 2px 0 rgba(76,175,80,0.14), 0 3px 1px -2px rgba(76,175,80,0.2), 0 1px 5px 0 rgba(76,175,80,0.12);
+}
+
+.btn.btn-dynamic-color:focus, .btn.btn-dynamic-color.focus, .btn.btn-dynamic-color:hover {
+    color: #fff;
+    background-color: #47a44b;
+    border-color: #39843c;
+    box-shadow: 0 14px 26px -12px rgba(76,175,80,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(76,175,80,0.2);
+}
+
+.btn-dynamic-color:hover, .show>.btn.btn-dynamic-color.dropdown-toggle:hover, .show>.btn.btn-dynamic-color.dropdown-toggle:focus {
+    color: #fff;
+    background-color: #409444;
+    border-color: #3d8b40;
+}
+.btn-dynamic-color {
+     color: #fff;
+    background-color: #4caf50;
+    border-color: #4caf50;
+    box-shadow: none;
+}
+
+a.manageBA.text-dynamic-color {
+    color: #4caf50;
+}
+
+a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
+	color: #3d8b40;
+    font-weight: 700;
+}
+
+#loginModal .form-control,#loginModal .is-focused .form-control {
+    background-image: linear-gradient(to top,#4caf50 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
+}
+
+/** Change the size of the text if the width and height pf the screen are more **/
+@media (min-width:60em) and (min-height:43.75em) {
+	
+ #plannedAmountCategoryModal {
+  font-size: 1.5rem;
+ }
+ 
+ .choose label span {
+ 	font-size: 0.92rem;
+ }
+ 
+}
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (min-width:1301px) {
+}
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (max-width:60em) and (max-height:43.75em) {
+	.card {
+		font-size: .7rem;
+	}
+}

@@ -1,0 +1,646 @@
+@charset "UTF-8";
+
+/**
+*
+* Recent Transactions CSS
+*
+*/
+.tableBodyDiv {
+	display: table-row-group;
+}
+
+.recentTransactionDescription, .overviewHeading {
+	color: #2e4369;
+	letter-spacing: 0;
+	clear: both;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.categoryNameRT {
+	margin-bottom: 0;
+	color: #5d7079;
+}
+
+.descriptionCellRT {
+	border-top: 1px solid #f6f6f6;
+	padding-top: 0.25rem;
+}
+
+.transactionAmountRT {
+	border-top: 1px solid #f6f6f6;
+	padding-top: 0.25rem;
+	padding-right: 1rem;
+}
+
+.overviewEntryRow {
+	cursor: pointer;
+	border-top: 1px solid #f6f6f6;
+}
+
+.recentTransactionTitle, .optimizationTitle, .overviewHeadingTab {
+	color: #829ca9;
+	margin-top: 0;
+	margin-bottom: 0;
+	line-height: 30px;
+}
+
+.expenseCategory {
+	color: #fc695f;
+}
+
+.incomeCategory {
+	color: #58c65c;
+}
+
+.recentTransactionsBody, .optimizationsBody {
+	overflow-y: auto;
+}
+
+.recentTransactionCard, .optimizationBudgetAndGoal {
+	height: 35rem;
+}
+
+.w-15 {
+	width: 15%;	
+}
+
+.imageWrapperCell, .checkListBO, .categoryNameBO, .budgetAmountBO {
+	border-top: 1px solid #f6f6f6;
+	padding: 0.25rem;
+}
+
+.circleWrapperImageRT {
+	background-color: #f2f5f7;
+	font-size: 16px;
+	width: 48px;
+	height: 48px;
+	line-height: 48px;
+}
+
+.recentTransactionEntry:hover {
+	background-color: #f2f5f7;
+} 
+
+.recentTransactionEntry:hover .circleWrapperImageRT{
+	background-color: #fff;
+}
+ 
+.imagesTransactionEmpty {
+	padding-top: 6rem;
+}
+
+.tripleNineColor {
+	color:#999;
+}
+
+.rtSpinner {
+	position:absolute;
+	left: 45%;
+	top: 40%;
+}
+
+.creditCardPath, .plusRawPath {
+	line-height:normal;
+	text-indent:0;
+	text-align:start;
+	text-decoration-line:none;
+	text-decoration-style:solid;
+	text-decoration-color:#000;
+	text-transform:none;
+	block-progression:tb;
+	isolation:auto;
+	mix-blend-mode:normal
+}
+
+.tableHeadingDiv {
+	display: table-header-group;
+}
+
+.budgetOptimizationTitle {
+	text-transform: capitalize;
+	color: #8e999e;
+}
+
+.categoryNameBO {
+	color: #2e4369;
+}
+
+/* Choose module */
+.choose {
+	padding:0;
+	border:0;
+}
+
+.choose label {
+	text-align:center;
+	position:relative;
+  	cursor:pointer;
+  	margin-bottom: 0;
+}
+.choose label span {
+	color: #686969;
+	line-height: 32px;
+	height: 32px;
+	padding: 0 16px;
+	display: block;
+	transition: all .2s ease;
+	border: 1px solid rgba(0,0,0,0.1);
+	font-size: 0.7rem;
+}
+.choose label:first-of-type span {
+	border-top-left-radius:6px;
+	border-bottom-left-radius:6px;
+	border-right:0;
+}
+.choose label:last-of-type span {
+	border-top-right-radius:6px;
+	border-bottom-right-radius:6px;
+	border-left:0;
+}
+.choose label input {
+	display:none
+}
+.choose label input:checked + span {
+	box-shadow:inset 0 0 0 32px rgba(0,0,0,0.1);
+}
+
+#budgetOrGoals {
+	padding-top: 1rem;
+}
+
+#optimizationFooter {
+	border-top: 1px solid #f6f6f6;
+	padding-top: 0.5rem;	
+}
+
+.overviewEntryRow:hover, .highlightOverviewSelected {
+	background-color: #fafafa;
+}
+
+.overviewEntryRow:hover .overviewHeading, .highlightOverviewSelected  .overviewHeading {
+	color: #00bcd4;
+}
+
+.overviewEntryRow:hover .overviewChartDisplay,.highlightOverviewSelected .overviewChartDisplay {
+	color: #6a6a6a;
+}
+
+.overview-dashboard .form-check .form-check-input:checked+.form-check-sign .check {
+  background: #00bcd4;
+}
+
+.overviewChartDisplay {
+	color: #8e999e;
+}
+
+.optimization-empty-svg {
+	height: 80px;
+	max-width: 90px;
+	padding: 10px;
+}
+
+.optimization-empty-path-0 {
+	fill: #D9D9D9;
+}
+
+.optimization-empty-path-1 {
+	fill: #FFF;
+}
+
+.optimization-meter.all-optimized, .coloredTransactionLine {
+	fill: #00bcd4;
+}
+
+.optimization-empty-path-2 {
+	fill: #EEE;
+}
+
+.optimizationHeadingColor {
+	color: #2e4369;
+}
+
+.transactions-empty-svg {
+	 fill:#D9D9D9;
+	 margin-top: 8rem;
+}
+
+.incomeImage .image-center {
+	background-image: url("../../../img/dashboard/overview/icons8-rupee-64.png");
+	content: url("../../../img/dashboard/overview/icons8-rupee-64.png");
+	height: 64px;
+	width: 64px;
+}
+
+.expenseImage .image-center {
+	background-image: url("../../../img/dashboard/overview/icons8-card-in-use-64.png");
+	content: url("../../../img/dashboard/overview/icons8-card-in-use-64.png");
+	height: 64px;
+	width: 64px;
+}
+
+.assetsImage .image-center {
+	background-image: url("../../../img/dashboard/overview/icons8-bank-64.png");
+	content: url("../../../img/dashboard/overview/icons8-bank-64.png");
+	height: 64px;
+	width: 64px;
+}
+
+.debtImage .image-center {
+	background-image: url("../../../img/dashboard/overview/icons8-debt-64.png");
+	content: url("../../../img/dashboard/overview/icons8-debt-64.png");
+	height: 64px;
+	width: 64px;
+}
+
+.networthImage .image-center {
+	background-image: url("../../../img/dashboard/overview/icons8-money-bag-franc-64.png");
+	content: url("../../../img/dashboard/overview/icons8-money-bag-franc-64.png");
+	height: 64px;
+	width: 64px;
+}
+
+.descriptionAverages {
+	color: #5d7079;
+	-webkit-transition: .2s;
+	transition: .2s;
+	line-height:1.5
+}
+
+#colouredRoundedLineChart .ct-series.ct-series-a .ct-label {
+	display:none;
+	-webkit-transition: .2s;
+	transition: .2s;
+}
+
+#colouredRoundedLineChart .ct-series.ct-series-a:hover .ct-label {
+	display:flex;
+	display: -webkit-flex;
+	-webkit-transition: .2s;
+	transition: .2s;
+}
+
+.noDataChartIcon {
+	margin-top: 6.5rem;
+	font-size: 5rem;
+	color: #00bcd4;
+}
+
+.chartDisplayCard {
+		height: 30rem;
+}
+
+/** Date time picker **/
+.monthPickerMonthSelected {
+    border-color: #00bcd4;
+    background-color: #00bcd4;
+    color: #fff;
+}
+
+.monthPickerMonth:hover, .monthPickerNext:hover, .monthPickerPrev:hover {
+	border-color: #00bcd4;
+	color: #00bcd4;
+}
+
+.monthPickerMonthSelected:hover {
+	color: #fff;
+}
+
+.dropdown-menu .dropdown-item.chartOverviewExpense:hover,
+.dropdown-menu .dropdown-item.chartBreakdownExpense:hover,
+.dropdown-menu .dropdown-item.chartOverviewIncome:hover,
+.dropdown-menu .dropdown-item.chartBreakdownIncome:hover {
+	box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
+	background-color: #00bcd4;
+	color: #fff;
+}
+
+#chooseCategoryDD {
+	cursor: pointer;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-point {
+	-webkit-transition: stroke-width 0.3s ease-in;
+	transition: stroke-width 0.3s ease-in;
+	stroke-width: 15px;
+	cursor: pointer;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-point:hover {
+	stroke-width: 25px;
+	transition: stroke-width 0.3s ease-out;
+	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-slice-donut-solid {
+	-webkit-transition: stroke-width 0.3s ease-in;
+	transition: stroke-width 0.3s ease-in;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-slice-donut-solid:hover {
+	stroke: white;
+    stroke-width: 2px;
+    transition: stroke-width 0.3s ease-out;
+	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-slice-donut {
+	-webkit-transition: stroke-width 0.3s ease-in;
+	transition: stroke-width 0.3s ease-in;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-slice-donut:hover {
+    stroke-width: 2px;
+    transition: stroke-width 0.3s ease-out;
+	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
+.budgetOptimization {
+	cursor: pointer;
+}
+
+#overviewChartMonth, .dateMonthArrow, .twoBThreeOneColor {
+	color: #2b3133;	
+}
+
+.dateMonthArrow {
+	margin-left: .3rem;
+    width: .8rem;
+    height: .8rem;
+}
+
+#chartDisplayTitle {
+	color: #999;
+}
+
+#overviewYearPicker {
+	top: 3.5rem;
+	left: 7.5rem;
+}
+
+.overviewNavigationYear {
+	position: absolute;
+    top: 5.3rem;
+    right: -1.2rem;
+    left: 1.2rem;
+    min-width: 3rem;
+    height: 14rem;
+    min-height: 8rem;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(0,0,0,.3);
+    border: 1px solid #d9dcdd;
+    border-radius: 5px;
+    background: #fff;
+    z-index: 10;
+}
+
+.overviewNavigationYear:after {
+	content: "";
+    transform: rotate(45deg) translateZ(0);
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    box-shadow: -1px -1px 0 #d9dcdd;
+    background: #fff;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: -.75rem;
+    top: -.75rem;	
+}
+
+#overviewChartMonth, #dateMonthArrow {
+	cursor: pointer;
+}
+
+.yearPickerWrapper {
+	position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .5s ease-in;
+    -webkit-transition: all .5s ease-in;
+    width: 100%;
+    height: 14rem;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+    line-height: 1.9rem;
+}
+
+.monthPickerDown,
+.monthPickerUp {
+	width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 50%;
+    z-index: 9;
+    font-size: 2rem;
+    color: #6a6a6a;
+    cursor: pointer;
+    left: 45%;
+}
+
+.monthPickerDown {
+	transform: translateY(240%);
+}
+
+.monthPickerUp {
+	transform: translateY(-340%);
+}
+
+.yearPicker {
+	transform: translateZ(0);
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -ms-flex: 1 auto;
+    flex: 1 auto;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 5rem;
+    color: #999;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.yearPickerDisplay:hover, .monthPickerUp:hover, .monthPickerDown:hover {
+	font-weight: 700;
+	color: #2b3133;
+}
+
+/** Account Picker **/
+.selectedBA .bAIcon path, .bARow:hover .bAIcon path, .tableHeadingDiv svg, .tickPath1, .account-info-color, .knowMoreAccount:hover, .bAAllRow:hover .bAAllIcon path  {
+	fill: #00bcd4;
+	color: #009cc2;
+}
+
+.account-box {
+	background: rgba(0,156,194,.1);
+}
+
+.account-box:hover {
+	background: #009cc2;
+	color: #fff;
+	fill: #fff;
+}
+
+.xWithRed {
+	fill: #e45c5c;
+}
+
+.btn.btn-dynamic-color {
+	color: #fff;
+    background-color: #00bcd4;
+    border-color: #00bcd4;
+    box-shadow: 0 2px 2px 0 rgba(0,188,212,0.14), 0 3px 1px -2px rgba(0,188,212,0.2), 0 1px 5px 0 rgba(0,188,212,0.12);
+}
+
+
+.btn.btn-dynamic-color:focus, .btn.btn-dynamic-color.focus, .btn.btn-dynamic-color:hover {
+    color: #fff;
+    background-color: #00aec5;
+    border-color: #008697;
+    box-shadow: 0 14px 26px -12px rgba(0,188,212,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,188,212,0.2);
+}
+
+.btn-dynamic-color:hover, .show>.btn.btn-dynamic-color.dropdown-toggle:hover, .show>.btn.btn-dynamic-color.dropdown-toggle:focus {
+    color: #fff;
+    background-color: #009aae;
+    border-color: #008fa1;
+}
+.btn-dynamic-color {
+    color: #fff;
+    background-color: #00bcd4;
+    border-color: #00bcd4;
+    box-shadow: none;
+}
+
+a.manageBA.text-dynamic-color {
+    color: #00bcd4;
+}
+
+a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
+	color: #008fa1;
+    font-weight: 700;
+}
+
+#loginModal .form-control,#loginModal .is-focused .form-control {
+    background-image: linear-gradient(to top,#00bcd4 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
+}
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (min-width:1301px) {
+	.choose label span {
+		font-size: 0.875rem;	
+	}
+	
+	.checkListBO, .checkBoxHeading {
+		width: 7.2rem;
+	}
+	
+}
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (max-width:1300px) {
+	.recentTransactionDescription {
+	    font-size: 0.7rem;
+	}
+	
+	.categoryNameRT {
+		font-size: 0.6rem;
+	}
+	
+	.transactionAmountRT, .budgetAmountBO, .categoryNameBO {
+		font-size: 0.8rem;
+	}
+	
+	.plusRawSvg, .creditCardSvg {
+		width: 50%;
+		height: 50%;
+	}
+	
+	.circleWrapperImageRT {
+		width: 40px;
+		height: 40px;
+		line-height: 40px;
+	}
+	
+	.budgetOptimizationTitle {
+		font-size: 95%;
+	}
+	
+	#selectedOptimizations {
+		font-size:90%
+	}
+	
+	.incomeImage .image-center {
+		background-image: url("../../../img/dashboard/overview/icons8-rupee-35.png");
+		content: url("../../../img/dashboard/overview/icons8-rupee-35.png");
+		height: 35px;
+		width: 35px;
+	}
+	
+	.expenseImage .image-center {
+		background-image: url("../../../img/dashboard/overview/icons8-card-in-use-35.png");
+		content: url("../../../img/dashboard/overview/icons8-card-in-use-35.png");
+		height: 35px;
+		width: 35px;
+	}
+	
+	.assetsImage .image-center {
+		background-image: url("../../../img/dashboard/overview/icons8-bank-35.png");
+		content: url("../../../img/dashboard/overview/icons8-bank-35.png");
+		height: 35px;
+		width: 35px;
+	}
+	
+	.debtImage .image-center {
+		background-image: url("../../../img/dashboard/overview/icons8-debt-35.png");
+		content: url("../../../img/dashboard/overview/icons8-debt-35.png");
+		height: 35px;
+		width: 35px;
+	}
+	
+	.networthImage .image-center {
+		background-image: url("../../../img/dashboard/overview/icons8-money-bag-franc-35.png");
+		content: url("../../../img/dashboard/overview/icons8-money-bag-franc-35.png");
+		height: 35px;
+		width: 35px;
+	}
+	
+	.descriptionAverages {
+		font-size: 0.7rem;
+	}
+	
+	.overviewChartDisplay {
+		padding:0;
+		font-size: 1.2rem;
+	}
+	
+	.overviewEntryRow .icon-center, .overviewEntryRow .namdAndDescription  {
+		padding:0;
+	}
+	
+	.overviewHeading {
+		font-size: 0.9rem;
+	}
+	
+	.overviewHeadingWrapper {
+		padding-bottom: 0;
+		padding-top: 0.25rem;
+	}
+	
+	.checkListBO, .checkBoxHeading {
+		width: 3.9rem;
+	}
+	
+	.chartDisplayCard {
+		height: 30rem;
+	}
+	
+}
