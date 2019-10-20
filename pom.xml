@@ -14,14 +14,6 @@
 	</properties>
 
 	<build>
-		<resources>
-			<resource>
-	             <directory>/resources/static/img</directory>
-	             <includes>
-	                 <include>**/*.*</include>
-	             </includes>
-	         </resource>
-	    </resources>
 		<plugins>
 			<!-- Copy Static Files and convert them to Min.css with css.map -->
           	<plugin>
@@ -37,8 +29,8 @@
 		                  <configuration>
 		                       <webappSourceDir>${project.basedir}/resources</webappSourceDir>
 		                       <webappTargetDir>${project.build.directory}</webappTargetDir>
-		                       <cssTargetDir>static/css/</cssTargetDir> 
-		                      	<jsTargetDir>static/js/</jsTargetDir> 
+		                       <cssTargetDir>css/</cssTargetDir> 
+		                      	<jsTargetDir>js/</jsTargetDir> 
 		          		             <charset>utf-8</charset>
 <!-- 		                         <closureCompilationLevel>ADVANCED_OPTIMIZATIONS</closureCompilationLevel> -->
 <!-- 		                       	<closureSortDependencies>true</closureSortDependencies> -->
@@ -75,6 +67,8 @@
 			               <configuration>
 			                	<webappSourceDir>${project.basedir}/resources</webappSourceDir>
 			                   	<webappTargetDir>${project.build.directory}</webappTargetDir>
+			                   	<cssTargetDir>css/</cssTargetDir> 
+		                      	<jsTargetDir>js/</jsTargetDir> 
 			                   	<charset>utf-8</charset>
 			                   	<cssEngine>YUI</cssEngine>
 			                   	<jsEngine>CLOSURE</jsEngine>
@@ -136,7 +130,7 @@
 			               <goal>copy-resources</goal>
 			            </goals>
 			            <configuration>
-			               <outputDirectory>${project.build.directory}/static/img</outputDirectory>
+			               <outputDirectory>${project.build.directory}/img</outputDirectory>
 			               <encoding>UTF-8</encoding>
 			               <resources>          
 			                    <resource>
