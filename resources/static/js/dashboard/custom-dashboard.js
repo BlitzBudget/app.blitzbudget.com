@@ -200,32 +200,32 @@ window.onload = function () {
 			switch(id) {
 			
 			case 'transactionsPage':
-				url = '/dashboard/transactions';
+				url = '/transactions';
 				color = 'green';
 				// Updates the budget before navigating away
 				er.updateBudget(true);
 			    break;
 			case 'budgetPage':
-				url = '/dashboard/budget';
+				url = '/budget';
 				color = 'rose';
 			    break;
 			case 'goalsPage':
-				url = '/dashboard/goals';
+				url = '/goals';
 				color = 'orange';
 				imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
 			    break;
 			case 'overviewPage':
-				url = '/dashboard/overview';
+				url = '/overview';
 				color = 'azure';
 				imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
 			    break;
 			case 'investmentsPage':
-				url = '/dashboard/investment';
+				url = '/investment';
 				color = 'purple';
 				imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 			    break;
 			case 'settings-dashboard-sidebar':
-				url = '/dashboard/settings';
+				url = '/settings';
 				color = 'danger';
 			    break;
 			default:
