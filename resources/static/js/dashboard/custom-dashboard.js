@@ -252,25 +252,28 @@ window.onload = function () {
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
 			
-        	// Call the actual page which was requested to be loaded
-        	$.ajax({
-		        type: "GET",
-		        url: url,
-		        dataType: 'html',
-		        success: function(data){
-		        	// Load the new HTML
-		            $('#mutableDashboard').html(data);
-		        },
-		        error: function(){
-		        	swal({
-		                title: "Redirecting Not Possible",
-		                text: 'Please try again later',
-		                type: 'warning',
-		                timer: 1000,
-		                showConfirmButton: false
-		            }).catch(swal.noop);
-		        }
-		    });
+        	// Check if user is logged in
+        	if(uh.checkIfUserLoggedIn()) {
+        		// Call the actual page which was requested to be loaded
+        		$.ajax({
+    		        type: "GET",
+    		        url: url,
+    		        dataType: 'html',
+    		        success: function(data){
+    		        	// Load the new HTML
+    		            $('#mutableDashboard').html(data);
+    		        },
+    		        error: function(){
+    		        	swal({
+    		                title: "Redirecting Not Possible",
+    		                text: 'Please try again later',
+    		                type: 'warning',
+    		                timer: 1000,
+    		                showConfirmButton: false
+    		            }).catch(swal.noop);
+    		        }
+    		    });
+        	}
 		}
 		
 		function closeCategoryModalIfOpen() {

@@ -28,6 +28,17 @@
                 "/plugins/chartist.min.js",
                 "/dashboard/module/account.js"
             ]
+        },
+        {
+            "type": "js",
+            "name": "cognito.js",
+            "files": [
+            	"/cognito/vendor/aws-cognito-sdk.min.js",
+        		"/cognito/vendor/amazon-cognito-identity.js",
+                "/cognito/config.js",
+                "/cognito/cognito-auth.js",
+                "/cognito/cognito-helper.js"
+            ]
         }
     ]
 }
