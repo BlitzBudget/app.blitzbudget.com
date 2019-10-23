@@ -156,12 +156,7 @@ $(document).ready(function(){
 			        	  showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
 			          },
 			          error: function(thrownError) {
-			        	  var responseError = JSON.parse(thrownError.responseText);
-			        	  if(responseError.error.includes("Unauthorized")){
-			        		  er.sessionExpiredSwal(thrownError);
-			        	  } else{
 			        		  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
-			        	  }
 			          }
 		    	});
 	    	}
@@ -546,12 +541,7 @@ $(document).ready(function(){
 	        	  accountPickerModal.appendChild(bAParentFrag);
 	          },
 	          error: function(thrownError) {
-	        	  var responseError = JSON.parse(thrownError.responseText);
-	        	  if(responseError.error.includes("Unauthorized")){
-	        		  er.sessionExpiredSwal(thrownError);
-	        	  } else{
-	        		  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-	        	  }
+	        	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 	          }
 		});
 	});
@@ -662,12 +652,7 @@ er_a = {
 		        	  er_a.populateBankInfo(bankAccountList);
 		          },
 		          error: function(thrownError) {
-		        	  var responseError = JSON.parse(thrownError.responseText);
-		        	  if(responseError.error.includes("Unauthorized")){
-		        		  er.sessionExpiredSwal(thrownError);
-		        	  } else{
-		        		  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-		        	  }
+		        	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 		          }
 			});
 		},

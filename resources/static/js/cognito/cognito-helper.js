@@ -32,25 +32,24 @@ uh = {
 
 		// Show a login popup if not logged in
 		checkIfUserLoggedIn() {
-			
 			// Fetch user from local storage
 			let userPool = uh.fetchUserFromLocalStorage();
-		    
 		    let cognitoUser = userPool.getCurrentUser();
-		    
+		    let sessionValid = false;
 		    if (cognitoUser != null) {
 		        cognitoUser.getSession(function(err, session) {
 		            if (err) {
 		            	er.sessionExpiredSwal(true);
+		            	return;
 		            }
 		            // Session is valid
-		            return true;
+		            sessionValid = true;
 		        });
 		    } else {
 		    	er.sessionExpiredSwal(true);
 		    }
-		    
-		    return false;
+		    console.log('returning ' + sessionValid);
+		    return sessionValid;
 		},
 
 		// Signout the user and redirect to home page

@@ -261,8 +261,6 @@ window.onload = function () {
     		        success: function(data){
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
-    		            // retrieve attribute
-    		            retrieveAttributes();
     		        },
     		        error: function(){
     		        	swal({
