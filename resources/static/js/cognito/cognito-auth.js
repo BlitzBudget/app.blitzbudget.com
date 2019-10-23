@@ -54,13 +54,20 @@ var AWSCogUser = window.AWSCogUser || {};
      */
 
     function register(email, password, onSuccess, onFailure) {
-        var dataEmail = {
-            Name: 'email',
-            Value: email
-        };
-        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+    	// Set Email
+        var attributeEmail = createAttribute('email', email);
+        
+        // Set Financial Portfolio Id
+        let today = new Date();
+        let randomValue = today.getUTCDate().toString() + today.getUTCMonth().toString() + today.getUTCFullYear().toString() + today.getUTCHours().toString() + today.getUTCMinutes().toString() + today.getUTCSeconds().toString() + today.getUTCMilliseconds().toString(); 
+        let attributeFPI = createAttribute('custom:financialPortfolioId', randomValue);
+        
+        // Append Attributes to list
+        var attributeList = [];
+        attributeList.push(attributeEmail);
+        attributeList.push(attributeFPI);
 
-        userPool.signUp(email, password, [attributeEmail], null,
+        userPool.signUp(email, password, attributeList, null,
             function signUpCallback(err, result) {
                 if (!err) {
                     onSuccess(result);
@@ -69,6 +76,18 @@ var AWSCogUser = window.AWSCogUser || {};
                 }
             }
         );
+    }
+    
+    /* 
+     * Create Attribute for user
+     */
+    function createAttribute(nameAttr, valAttr) {
+    	var dataAttribute = {
+                Name: nameAttr,
+                Value: valAttr
+        };
+    	
+        return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
     }
 
     function signin(email, password, onSuccess, onFailure) {

@@ -1,7 +1,7 @@
 "use strict";
+// Current User
+let currentUser = {};
 // Custom Javascript for dashboard
-//Stores the Loggedin User
-let currentUser = '';
 const CUSTOM_DASHBOARD_CONSTANTS = {};
 
 // SECURITY: Defining Immutable properties as constants
@@ -12,7 +12,6 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 	'budgetDashboardId': { value: 'budget-dashboard-sidebar', writable: false, configurable: false },
 	'investmentDashboardId': { value: 'investment-dashboard-sidebar', writable: false, configurable: false },
 	'settingsDashboardId': { value: 'settings-dashboard-sidebar', writable: false, configurable: false },
-	'fetchCurrentLoggedInUserUrl': { value: '/user/', writable: false, configurable: false },
 	'fetchCategoriesUrl': { value: '/api/category/', writable: false, configurable: false },
 	'transactionAPIUrl': { value: '/api/transactions/', writable: false, configurable: false },
 	'transactionFetchCategoryTotal': { value: 'categoryTotal/', writable: false, configurable: false },
@@ -262,6 +261,8 @@ window.onload = function () {
     		        success: function(data){
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
+    		            // retrieve attribute
+    		            retrieveAttributes();
     		        },
     		        error: function(){
     		        	swal({
@@ -553,17 +554,8 @@ window.onload = function () {
 er = {
 		//Loads the currenct logged in user from API (Call synchronously to set global variable)
 		fetchJSONForLoggedInUser(){
-			$.ajax({
-		          type: "GET",
-		          url: CUSTOM_DASHBOARD_CONSTANTS.fetchCurrentLoggedInUserUrl,
-		          dataType: "json",
-		          success : function(data) {
-		        	  currentUser = data;
-		        	  // Freeze the object so that it cannot be changed. 
-		        	  Object.freeze(currentUser);
-		        	  
-		           }
-		        });
+			// Retrieve attributes 
+			uh.retrieveAttributes();
 		},
 
 		// Load all categories from API (Call synchronously to set global variable)
@@ -775,8 +767,6 @@ er = {
 		
 }
 
-//Loads the current Logged in User
-er.fetchJSONForLoggedInUser();
 // Fetch Category 
 er.fetchJSONForCategories();
 
@@ -930,7 +920,7 @@ function changeImageOfSidebar(img) {
 //Format numbers in Indian Currency
 function formatNumber(num, locale) {
 	if(isEmpty(locale)){
-		locale = "en-IN";
+		locale = "en-US";
 	}
 	
 	return num.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });

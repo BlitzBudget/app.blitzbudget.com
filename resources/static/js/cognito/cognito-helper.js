@@ -3,15 +3,14 @@
 uh = {
 		// Fetch User From Storage
 		fetchUserFromLocalStorage() {
-			var homepageUrl = 'https://www.blitzbudget.com';
 			
 			// Configure the pool data from the config.js
-			var poolData = {
+			let poolData = {
 		        UserPoolId: _config.cognito.userPoolId,
 		        ClientId: _config.cognito.userPoolClientId
 		    };
 
-		    var userPool;
+		    let userPool;
 
 		    // If the config for the cognito is missing
 		    if (!(_config.cognito.userPoolId &&
@@ -35,9 +34,9 @@ uh = {
 		checkIfUserLoggedIn() {
 			
 			// Fetch user from local storage
-			var userPool = uh.fetchUserFromLocalStorage();
+			let userPool = uh.fetchUserFromLocalStorage();
 		    
-		    var cognitoUser = userPool.getCurrentUser();
+		    let cognitoUser = userPool.getCurrentUser();
 		    
 		    if (cognitoUser != null) {
 		        cognitoUser.getSession(function(err, session) {
@@ -58,8 +57,9 @@ uh = {
 		signoutUser(globally) {
 			
 			// Fetch user from local storage
-			var userPool = uh.fetchUserFromLocalStorage();
-			var cognitoUser = userPool.getCurrentUser();
+			let userPool = uh.fetchUserFromLocalStorage();
+			let cognitoUser = userPool.getCurrentUser();
+			let homepageUrl = 'https://www.blitzbudget.com';
 			
 			if(cognitoUser != null) {
 				// Signout user from cognito
@@ -73,13 +73,18 @@ uh = {
 			// redirect user to home page
 			window.location.href = homepageUrl;
 		},
+		
+		// Signout the user and redirect to home page
+		signoutGlobally() {
+			uh.signoutUser(true);
+		},
 
 		// Delete a User
 		deleteUser() {
 			
 			// Fetch user from local storage
-			var userPool = uh.fetchUserFromLocalStorage();
-			var cognitoUser = userPool.getCurrentUser();
+			let userPool = uh.fetchUserFromLocalStorage();
+			let cognitoUser = userPool.getCurrentUser();
 			
 			cognitoUser.deleteUser(function(err, result) {
 		        if (err) {
@@ -94,8 +99,8 @@ uh = {
 		forgotPassword() {
 			
 			// Fetch user from local storage
-			var userPool = uh.fetchUserFromLocalStorage();
-			var cognitoUser = userPool.getCurrentUser();
+			let userPool = uh.fetchUserFromLocalStorage();
+			let cognitoUser = userPool.getCurrentUser();
 			
 			// TODO Adopt Code
 			cognitoUser.forgotPassword({
@@ -140,12 +145,12 @@ uh = {
 		// Update User Attributes
 		updateUserAttributes() {
 			// TODO Adopt Code
-			var attributeList = [];
-		    var attribute = {
+			let attributeList = [];
+			let attribute = {
 		        Name : 'nickname',
 		        Value : 'joe'
 		    };
-		    var attribute = new AmazonCognitoIdentity.CognitoUserAttribute(attribute);
+			attribute = new AmazonCognitoIdentity.CognitoUserAttribute(attribute);
 		    attributeList.push(attribute);
 
 		    cognitoUser.updateAttributes(attributeList, function(err, result) {
@@ -168,7 +173,7 @@ uh = {
 		            alert(err);
 		        },
 		        inputVerificationCode: function() {
-		            var verificationCode = prompt('Please input verification code: ' ,'');
+		        	let verificationCode = prompt('Please input verification code: ' ,'');
 		            cognitoUser.verifyAttribute('email', verificationCode, this);
 		        }
 			 });
@@ -176,17 +181,30 @@ uh = {
 
 		// Retrieve Attributes
 		retrieveAttributes() {
-			// TODO Adopt Code
-			cognitoUser.getUserAttributes(function(err, result) {
-		        if (err) {
-		            alert(err);
-		            return;
-		        }
-		        for (i = 0; i < result.length; i++) {
-		            console.log('attribute ' + result[i].getName() + ' has value ' + result[i].getValue());
-		        }
-		    });
+			// Fetch user from local storage
+			let userPool = uh.fetchUserFromLocalStorage();
+			let cognitoUser = userPool.getCurrentUser();
+			
+			cognitoUser.getSession(function (err, session) {
+				cognitoUser.getUserAttributes(function(err, result) {
+			        if (err) {
+			        	showNotification('The Following Error has been encournter: ' + err);
+			            return;
+			        }
+			        for (i = 0; i < result.length; i++) {
+			        	let name = result[i].getName();
+			        	if(name.includes('custom:')) {
+			        		// if custom values then remove custom: 
+			        		let elemName = lastElement(splitElement(name,':'));
+			        		currentUser[elemName] = result[i].getValue();
+			        	} else {
+			        		currentUser[name] = result[i].getValue();
+			        	}
+			        }
+			    });
+			});
 		}
 }
 
-
+//Loads the current Logged in User
+uh.retrieveAttributes();

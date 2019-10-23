@@ -86,7 +86,7 @@
 	            <a href="#" id="dashboard-util-fullscreen" data-toggle="tooltip" data-placement="top" title="FullScreen">
 	            	<i class="material-icons">open_with</i>
 	            </a>
-	            <a id="dashboard-util" href="/logout" data-toggle="tooltip" data-placement="top" title="Logout">
+	            <a id="dashboard-util" href="#" data-toggle="tooltip" data-placement="top" title="Logout" onclick='uh.signoutUser(false)'>
 	                <i class="material-icons">power_settings_new</i>
             	</a>
           </li>
@@ -216,7 +216,7 @@
                  <a class="dropdown-item" href="./profile">Profile</a>
                  <a class="dropdown-item" href="./settings">Settings</a>
                  <div class="dropdown-divider"></div>
-                 <a class="dropdown-item" href="/logout">Log out</a>
+                 <a class="dropdown-item" href="#" onclick="uh.signoutUser(false)">Log out</a>
                </div>
              </li>
            </ul>
