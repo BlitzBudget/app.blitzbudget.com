@@ -48,7 +48,6 @@ uh = {
 		    } else {
 		    	er.sessionExpiredSwal(true);
 		    }
-		    console.log('returning ' + sessionValid);
 		    return sessionValid;
 		},
 
