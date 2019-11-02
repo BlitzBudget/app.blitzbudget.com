@@ -2,7 +2,6 @@
 // SECURITY: Defining Immutable properties as constants
 const BANK_ACCOUNT_CONSTANTS = {};
 Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
-	'bankAccountUrl': { value: '/api/bankaccount', writable: false, configurable: false },
 	'backslash': { value: '/', writable: false, configurable: false },
 	'bankAccountAddUrl' : { value: '/add', writable: false, configurable: false },
 	'bankAccountPreviewUrl' : { value: '/preview', writable: false, configurable: false },
