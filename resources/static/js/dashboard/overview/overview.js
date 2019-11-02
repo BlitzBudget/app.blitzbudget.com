@@ -35,7 +35,8 @@ $(document).ready(function(){
 		'expenseAverageParam': { value:'?type=EXPENSE&average=true', writable: false, configurable: false },
 		'incomeTotalParam': { value:'?type=INCOME&average=false', writable: false, configurable: false },
 		'expenseTotalParam': { value:'?type=EXPENSE&average=false', writable: false, configurable: false },
-		'yearlyOverview': { value : 'One Year Overview', writable: false, configurable: false}
+		'yearlyOverview': { value : 'One Year Overview', writable: false, configurable: false},
+		'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false}
 	});
 
 	// Populate Recent transactions
@@ -44,7 +45,7 @@ $(document).ready(function(){
 	// Populate Recent Transactions
 	function populateRecentTransactions() {
 		jQuery.ajax({
-			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	        type: 'GET',
 	        success: function(userTransactionsList) {
 	        	let recentTransactionsDiv = document.getElementById('recentTransactions');
@@ -744,7 +745,7 @@ $(document).ready(function(){
 	// Populate Income Average
 	function populateIncomeAverage() {
 		jQuery.ajax({
-			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam,
+			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	        type: 'GET',
 	        success: function(averageIncome) {
 	        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + formatNumber(averageIncome, currentUser.locale);
@@ -768,7 +769,7 @@ $(document).ready(function(){
 	// Populate Expense Average
 	function  populateExpenseAverage() {
 		jQuery.ajax({
-			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam,
+			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	        type: 'GET',
 	        success: function(averageIncome) {
 	        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + formatNumber(averageIncome, currentUser.locale);
@@ -796,7 +797,7 @@ $(document).ready(function(){
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
 		jQuery.ajax({
-			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter,
+			url: OVERVIEW_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	        type: 'GET',
 	        success: function(dateAndAmountAsList) {
 	        	

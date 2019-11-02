@@ -1,0 +1,188 @@
+/*global AWSCogUser _config AmazonCognitoIdentity AWSCognito*/
+
+var AWSCogUser = window.AWSCogUser || {};
+
+(function scopeWrapper($) {
+    var signinUrl = 'login';
+    var successfulSigninUrl = 'https://app.blitzbudget.com/home';
+
+    var poolData = {
+        UserPoolId: _config.cognito.userPoolId,
+        ClientId: _config.cognito.userPoolClientId
+    };
+
+    var userPool;
+
+    if (!(_config.cognito.userPoolId &&
+          _config.cognito.userPoolClientId &&
+          _config.cognito.region)) {
+    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+        return;
+    }
+
+    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    if (typeof AWSCognito !== 'undefined') {
+        AWSCognito.config.region = _config.cognito.region;
+    }
+
+    AWSCogUser.signOut = function signOut() {
+        userPool.getCurrentUser().signOut();
+    };
+
+    AWSCogUser.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser) {
+            cognitoUser.getSession(function sessionCallback(err, session) {
+                if (err) {
+                    reject(err);
+                } else if (!session.isValid()) {
+                    resolve(null);
+                } else {
+                    resolve(session.getIdToken().getJwtToken());
+                }
+            });
+        } else {
+            resolve(null);
+        }
+    });
+
+
+    /*
+     * Cognito User Pool functions
+     */
+
+    function register(email, password, onSuccess, onFailure) {
+    	// Set Email
+        var attributeEmail = createAttribute('email', email);
+        
+        // Set Financial Portfolio Id
+        let today = new Date();
+        let randomValue = today.getUTCDate().toString() + today.getUTCMonth().toString() + today.getUTCFullYear().toString() + today.getUTCHours().toString() + today.getUTCMinutes().toString() + today.getUTCSeconds().toString() + today.getUTCMilliseconds().toString(); 
+        let attributeFPI = createAttribute('custom:financialPortfolioId', randomValue);
+        
+        // Append Attributes to list
+        var attributeList = [];
+        attributeList.push(attributeEmail);
+        attributeList.push(attributeFPI);
+
+        userPool.signUp(email, password, attributeList, null,
+            function signUpCallback(err, result) {
+                if (!err) {
+                    onSuccess(result);
+                } else {
+                    onFailure(err);
+                }
+            }
+        );
+    }
+    
+    /* 
+     * Create Attribute for user
+     */
+    function createAttribute(nameAttr, valAttr) {
+    	var dataAttribute = {
+                Name: nameAttr,
+                Value: valAttr
+        };
+    	
+        return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
+    }
+
+    function signin(email, password, onSuccess, onFailure) {
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username: email,
+            Password: password
+        });
+
+        var cognitoUser = createCognitoUser(email);
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: onSuccess,
+            onFailure: onFailure
+        });
+    }
+
+    function verify(email, code, onSuccess, onFailure) {
+        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
+            if (!err) {
+                onSuccess(result);
+            } else {
+                onFailure(err);
+            }
+        });
+    }
+
+    function createCognitoUser(email) {
+        return new AmazonCognitoIdentity.CognitoUser({
+            Username: email,
+            Pool: userPool
+        });
+    }
+
+    /*
+     *  Event Handlers
+     */
+
+    $(function onDocReady() {
+        $('#signinForm').submit(handleSignin);
+        $('#registrationForm').submit(handleRegister);
+        $('#verifyForm').submit(handleVerify);
+    });
+
+    function handleSignin(event) {
+        var email = $('#emailInputSignin').val();
+        var password = $('#passwordInputSignin').val();
+        event.preventDefault();
+        signin(email, password,
+            function signinSuccess() {
+                window.location.href = successfulSigninUrl;
+            },
+            function signinError(err) {
+            	showNotification('The following error occured : ' + err);
+            }
+        );
+    }
+
+    function handleRegister(event) {
+        var email = $('#emailInputRegister').val();
+        var password = $('#passwordInputRegister').val();
+        var password2 = $('#password2InputRegister').val();
+
+        var onSuccess = function registerSuccess(result) {
+            var cognitoUser = result.user;
+            console.log('user name is ' + cognitoUser.getUsername());
+            var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
+            if (confirmation) {
+                window.location.href = 'verify.html';
+            }
+        };
+        var onFailure = function registerFailure(err) {
+        	showNotification('The following error occured : ' + err);
+        };
+        event.preventDefault();
+
+        if (password === password2) {
+            register(email, password, onSuccess, onFailure);
+        } else {
+        	showNotification('Passwords do not match');
+        }
+    }
+
+    function handleVerify(event) {
+        var email = $('#emailInputVerify').val();
+        var code = $('#codeInputVerify').val();
+        event.preventDefault();
+        verify(email, code,
+            function verifySuccess(result) {
+                console.log('call result: ' + result);
+                console.log('Successfully verified');
+                alert('Verification successful. You will now be redirected to the login page.');
+                window.location.href = signinUrl;
+            },
+            function verifyError(err) {
+            	showNotification('The following error occured : ' + err);
+            }
+        );
+    }
+}(jQuery));

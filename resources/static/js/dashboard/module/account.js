@@ -8,6 +8,7 @@ Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
 	'bankAccountPreviewUrl' : { value: '/preview', writable: false, configurable: false },
 	'bankAccountSelectUrl' : { value: '/select', writable: false, configurable: false },
 	'bankAccountCategorizeUrl' : { value: '/categorize', writable: false, configurable: false },
+	'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false}
 });
 let unsyncSVG = unsyncSVGFc();
 let syncSVG = syncSVGFc();
@@ -138,6 +139,7 @@ $(document).ready(function(){
 				values['bankAccountName'] = document.getElementById('accountName').value;
 				values['accountBalance'] = document.getElementById('accountBal').value;
 				values['accountType'] = document.getElementsByClassName('accountChosen')[0].innerText;
+				values['financialPortfolioId'] = currentUser.financialPortfolioId;
 				
 				// Check if the account type is valid (Upper Case)
 				if(!includesStr(accountTypeUCConst,values['accountType'])) {
@@ -156,12 +158,7 @@ $(document).ready(function(){
 			        	  showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
 			          },
 			          error: function(thrownError) {
-			        	  var responseError = JSON.parse(thrownError.responseText);
-			        	  if(responseError.error.includes("Unauthorized")){
-			        		  er.sessionExpiredSwal(thrownError);
-			        	  } else{
 			        		  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
-			        	  }
 			          }
 		    	});
 	    	}
@@ -183,6 +180,7 @@ $(document).ready(function(){
     	var values = {};
 		values['id'] = bankAccountPreview[Number(position)-1].id;
 		values['selectedAccount'] = 'true';
+		values['financialPortfolioId'] = currentUser.financialPortfolioId;
 		
 		// AJAX call for adding a new unlinked Account
     	$.ajax({
@@ -516,7 +514,7 @@ $(document).ready(function(){
 	$('#accountPickerWrapper').on('click', ".manageBA", function() {
 		$.ajax({
 	          type: "GET",
-	          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl,
+	          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	          dataType: "json",
 	          success: function(categorizeBankAccount){
 	        	  let bAParentFrag = document.createDocumentFragment();
@@ -546,12 +544,7 @@ $(document).ready(function(){
 	        	  accountPickerModal.appendChild(bAParentFrag);
 	          },
 	          error: function(thrownError) {
-	        	  var responseError = JSON.parse(thrownError.responseText);
-	        	  if(responseError.error.includes("Unauthorized")){
-	        		  er.sessionExpiredSwal(thrownError);
-	        	  } else{
-	        		  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-	        	  }
+	        	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 	          }
 		});
 	});
@@ -653,7 +646,7 @@ er_a = {
 		fetchBankAccountInfo() {
 			$.ajax({
 		          type: "GET",
-		          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl,
+		          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 		          dataType: "json",
 		          success : function(bankAccountList) {
 		        	  // Assign value to constant
@@ -662,12 +655,7 @@ er_a = {
 		        	  er_a.populateBankInfo(bankAccountList);
 		          },
 		          error: function(thrownError) {
-		        	  var responseError = JSON.parse(thrownError.responseText);
-		        	  if(responseError.error.includes("Unauthorized")){
-		        		  er.sessionExpiredSwal(thrownError);
-		        	  } else{
-		        		  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-		        	  }
+		        	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 		          }
 			});
 		},
