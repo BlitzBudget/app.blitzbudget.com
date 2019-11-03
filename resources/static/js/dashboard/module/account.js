@@ -149,7 +149,7 @@ $(document).ready(function(){
 				// AJAX call for adding a new unlinked Account
 		    	$.ajax({
 			          type: "POST",
-			          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl,
+			          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl,
 			          dataType: "json",
 			          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			          data : values,
@@ -184,7 +184,7 @@ $(document).ready(function(){
 		// AJAX call for adding a new unlinked Account
     	$.ajax({
 	          type: "POST",
-	          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl,
+	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl,
 	          dataType: "json",
 	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	          data : values,
@@ -513,7 +513,7 @@ $(document).ready(function(){
 	$('#accountPickerWrapper').on('click', ".manageBA", function() {
 		$.ajax({
 	          type: "GET",
-	          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	          dataType: "json",
 	          success: function(categorizeBankAccount){
 	        	  let bAParentFrag = document.createDocumentFragment();
@@ -645,7 +645,7 @@ er_a = {
 		fetchBankAccountInfo() {
 			$.ajax({
 		          type: "GET",
-		          url: BANK_ACCOUNT_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+		          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 		          dataType: "json",
 		          success : function(bankAccountList) {
 		        	  // Assign value to constant
