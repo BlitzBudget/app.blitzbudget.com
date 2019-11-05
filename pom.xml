@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blitzbudget</groupId>
-	<artifactId>blitz-budget-web-app</artifactId>
+	<artifactId>bb-app</artifactId>
 	<version>0.4.480-SNAPSHOT</version>
-	<name>blitz-budget-web-app</name>
+	<name>bb-app</name>
 	<description>Core Web App for Blitz Budget</description>
 	<packaging>pom</packaging>
 	
