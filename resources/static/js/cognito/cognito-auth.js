@@ -61,11 +61,17 @@ var AWSCogUser = window.AWSCogUser || {};
         let today = new Date();
         let randomValue = today.getUTCDate().toString() + today.getUTCMonth().toString() + today.getUTCFullYear().toString() + today.getUTCHours().toString() + today.getUTCMinutes().toString() + today.getUTCSeconds().toString() + today.getUTCMilliseconds().toString(); 
         let attributeFPI = createAttribute('custom:financialPortfolioId', randomValue);
+        // Set Default Locale
+        let attributeLocale = createAttribute('locale', 'en-US');
+        // Set Default Currency
+        let attributeCurrency = createAttribute('custom:currency', '$');
         
         // Append Attributes to list
         var attributeList = [];
         attributeList.push(attributeEmail);
         attributeList.push(attributeFPI);
+        attributeList.push(attributeLocale);
+        attributeList.push(attributeCurrency);
 
         userPool.signUp(email, password, attributeList, null,
             function signUpCallback(err, result) {
