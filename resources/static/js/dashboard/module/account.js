@@ -7,7 +7,6 @@ Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
 	'bankAccountPreviewUrl' : { value: '/preview', writable: false, configurable: false },
 	'bankAccountSelectUrl' : { value: '/select', writable: false, configurable: false },
 	'bankAccountCategorizeUrl' : { value: '/categorize', writable: false, configurable: false },
-	'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false},
 	'firstfinancialPortfolioId': { value : '?financialPortfolioId=', writable: false, configurable: false},
 });
 let unsyncSVG = unsyncSVGFc();
@@ -514,7 +513,7 @@ $(document).ready(function(){
 	$('#accountPickerWrapper').on('click', ".manageBA", function() {
 		$.ajax({
 	          type: "GET",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + CUSTOM_DASHBOARD_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	          dataType: "json",
 	          success: function(categorizeBankAccount){
 	        	  let bAParentFrag = document.createDocumentFragment();

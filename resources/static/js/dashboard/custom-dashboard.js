@@ -37,6 +37,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 	'incomeTotalParam': { value:'?type=INCOME&average=false', writable: false, configurable: false },
 	'expenseTotalParam': { value:'?type=EXPENSE&average=false', writable: false, configurable: false },
 	'lifetimeUrl': { value:'lifetime/', writable: false, configurable: false },
+	'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false},
 });
 
 //Currency Preference
@@ -497,7 +498,7 @@ window.onload = function () {
 		// Fetch income total or expense total
 		function fetchIncomeTotalOrExpeseTotal(incomeTotalParameter) {
 			jQuery.ajax({
-				url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.lifetimeUrl + incomeTotalParameter,
+				url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.lifetimeUrl + incomeTotalParameter + CUSTOM_DASHBOARD_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 		        type: 'GET',
 		        success: function(dateAndAmountAsList) {
 		        	updateMonthExistsWithTransactionData(dateAndAmountAsList);
