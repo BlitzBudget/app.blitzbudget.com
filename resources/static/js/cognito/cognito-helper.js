@@ -185,10 +185,43 @@ uh = {
 			
 			cognitoUser.getSession(function (err, session) {
 				cognitoUser.getUserAttributes(function(err, result) {
+					// ERROR scenarios
 			        if (err) {
-			        	showNotification('The Following Error has been encournter: ' + err);
+			        	let homepageUrl = 'https://www.blitzbudget.com';
+			        	
+			        	/*
+			        	 * User Does not Exist
+			        	 */
+			        	if(includesStr(err,"UserNotFoundException") {
+			        		 let timerInterval;
+			        		  swal({
+			        		    title: 'User does not exist!',
+			        		    icon: 'error',
+			        		    html: 'You will be redirected to registration page in <strong></strong> seconds.',
+			        		    timer: 5000,
+			        		    onOpen: () => {
+			        		      swal.showLoading()
+			        		      timerInterval = setInterval(() => {
+			        		        swal.getContent().querySelector('strong')
+			        		          .textContent = Math.ceil(swal.getTimerLeft() / 1000)
+			        		      }, 100)
+			        		    },
+			        		    onClose: () => {
+			        		      clearInterval(timerInterval);
+			        		      window.location = homepageUrl + "/register";
+			        		    }
+			        		  }).then((result) => {
+			        		    if (
+			        		      // Read more about handling dismissals
+			        		      result.dismiss === swal.DismissReason.timer
+			        		    ) {
+			        		      console.log('I was closed by the timer');
+			        		    }
+			        		  })
+			        	}
 			            return;
 			        }
+			        // SUCCESS Scenarios
 			        for (i = 0; i < result.length; i++) {
 			        	let name = result[i].getName();
 			        	if(name.includes('custom:')) {
