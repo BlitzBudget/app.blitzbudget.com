@@ -41,7 +41,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 });
 
 //Currency Preference
-const currentCurrencyPreference = document.getElementById('currentCurrencySymbol').innerText;
+const currentCurrencyPreference = '';
 
 let currentActiveSideBar = '';
 //Load Expense category and income category
@@ -255,6 +255,11 @@ window.onload = function () {
 			
         	// Check if user is logged in
         	if(uh.checkIfUserLoggedIn()) {
+        		// Set Currency If empty 
+        		if(isBlank(currentCurrencyPreference)) {
+        			currentCurrencyPreference = currentUser.currency;
+        		}
+
         		// Call the actual page which was requested to be loaded
         		$.ajax({
     		        type: "GET",
