@@ -38,7 +38,9 @@ $(document).ready(function(){
 		'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false}
 	});
 
-	// Populate Recent transactions
+	/*
+	 * Populate Recent transactions
+	 */ 
 	populateRecentTransactions();
 	
 	// Populate Recent Transactions

@@ -41,7 +41,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 });
 
 //Currency Preference
-const currentCurrencyPreference = '';
+let currentCurrencyPreference = '';
 
 let currentActiveSideBar = '';
 //Load Expense category and income category
@@ -256,8 +256,10 @@ window.onload = function () {
         	// Check if user is logged in
         	if(uh.checkIfUserLoggedIn()) {
         		// Set Currency If empty 
-        		if(isBlank(currentCurrencyPreference)) {
+        		if(isEmpty(currentCurrencyPreference)) {
         			currentCurrencyPreference = currentUser.currency;
+        			Object.freeze(currentCurrencyPreference);
+        			Object.seal(currentCurrencyPreference);
         		}
 
         		// Call the actual page which was requested to be loaded

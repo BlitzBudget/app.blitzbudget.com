@@ -35,10 +35,6 @@ function  isNotBlank(obj) {
 	return isNotEmpty(obj) && obj !== '';
 }
 
-function isBlank(obj) {
-	return isNotEmpty(obj) && obj === '';
-}
-
 function trimElement(str) {
 	return $.trim(str);
 }

@@ -224,7 +224,21 @@ uh = {
 			        	 * User Not Confirmed
 			        	 */
 			        	if(includesStr(err,"UserNotConfirmedException")) {
-			        		// TODO
+			        		// Show Sweet Alert
+			        		Swal.fire({
+			        	        title: 'Warning',
+			        	        html: verifyAccount(),
+			        	        inputAttributes: {
+			        	            autocapitalize: 'on'
+			        	        },
+			        	        confirmButtonClass: 'createAccount btn btn-dynamic-color',
+			        	        confirmButtonText: 'Verify',
+			        	        showCloseButton: true,
+			        	        buttonsStyling: false
+			        	    }).then(function(result) {
+			        	    	// TODO Process request and perform action
+			        	    	
+			        	    });
 			        	}
 			        	
 			        	/*
@@ -251,5 +265,12 @@ uh = {
 		}
 }
 
-//Loads the current Logged in User
+// Loads the current Logged in User
 uh.retrieveAttributes();
+
+// Display COnfirm Account Verification Code
+function verifyAccount() {
+	let verifyDocumentFragment = document.createDocumentFragment();
+	
+	// TODO
+}
