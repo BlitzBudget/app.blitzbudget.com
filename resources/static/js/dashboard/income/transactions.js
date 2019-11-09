@@ -1877,8 +1877,9 @@ $(document).ready(function(){
 		let chartFinPosition = document.getElementById('chartFinancialPosition');
 		chartFinPosition.innerHTML = '<div class="material-spinner"></div>';
 	}
+
+	// Replace currentCurrencySymbol with currency symbol
+	replaceWithCurrency();
 	
 });
-
-//# sourceURL=transaction.js
 

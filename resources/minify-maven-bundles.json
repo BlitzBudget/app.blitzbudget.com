@@ -14,7 +14,6 @@
             "type": "js",
             "name": "core.js",
             "files": [
-            	"/core/jquery.min.js",
                 "/core/popper.min.js",
                 "/core/bootstrap-material-design.min.js",
                 "/plugins/perfect-scrollbar.jquery.min.js",
@@ -33,6 +32,7 @@
             "type": "js",
             "name": "cognito.js",
             "files": [
+            	"/core/jquery.min.js",
             	"/cognito/vendor/aws-cognito-sdk.min.js",
         		"/cognito/vendor/amazon-cognito-identity.js",
                 "/cognito/config.js",
