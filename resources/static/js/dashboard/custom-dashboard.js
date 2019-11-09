@@ -257,7 +257,7 @@ window.onload = function () {
         	if(uh.checkIfUserLoggedIn()) {
         		// Set Currency If empty 
         		if(isEmpty(currentCurrencyPreference)) {
-        			currentCurrencyPreference = currentUser.currency;
+        		    currentCurrencyPreference = currentUser.currency;
         			Object.freeze(currentCurrencyPreference);
         			Object.seal(currentCurrencyPreference);
         		}
