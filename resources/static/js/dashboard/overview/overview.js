@@ -1652,5 +1652,7 @@ $(document).ready(function(){
 			}
 		}
 	}
-	
+
+	// Replace currentCurrencySymbol with currency symbol
+	replaceWithCurrency();	
 });

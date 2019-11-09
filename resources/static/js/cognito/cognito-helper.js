@@ -42,6 +42,7 @@ uh = {
 		            	er.sessionExpiredSwal(true);
 		            	return;
 		            }
+	
 		            // Session is valid
 		            sessionValid = true;
 		        });
@@ -183,70 +184,11 @@ uh = {
 			let userPool = uh.fetchUserFromLocalStorage();
 			let cognitoUser = userPool.getCurrentUser();
 			
-			cognitoUser.getSession(function (err, session) {
+			cognitoUser.getSession(function(err, session) {			
 				cognitoUser.getUserAttributes(function(err, result) {
 					// ERROR scenarios
 			        if (err) {
-			        	let homepageUrl = 'https://www.blitzbudget.com';
-			        	
-			        	/*
-			        	 * User Does not Exist
-			        	 */
-			        	if(includesStr(err,"UserNotFoundException")) {
-			        		 let timerInterval;
-			        		  swal({
-			        		    title: 'User does not exist!',
-			        		    icon: 'error',
-			        		    html: 'You will be redirected to registration page in <strong></strong> seconds.',
-			        		    timer: 5000,
-			        		    onOpen: () => {
-			        		      swal.showLoading()
-			        		      timerInterval = setInterval(() => {
-			        		        swal.getContent().querySelector('strong')
-			        		          .textContent = Math.ceil(swal.getTimerLeft() / 1000)
-			        		      }, 100)
-			        		    },
-			        		    onClose: () => {
-			        		      clearInterval(timerInterval);
-			        		      window.location = homepageUrl + "/register";
-			        		    }
-			        		  }).then((result) => {
-			        		    if (
-			        		      // Read more about handling dismissals
-			        		      result.dismiss === swal.DismissReason.timer
-			        		    ) {
-			        		      console.log('I was closed by the timer');
-			        		    }
-			        		  })
-			        	}
-			        	
-			        	/*
-			        	 * User Not Confirmed
-			        	 */
-			        	if(includesStr(err,"UserNotConfirmedException")) {
-			        		// Show Sweet Alert
-			        		Swal.fire({
-			        	        title: 'Warning',
-			        	        html: verifyAccount(),
-			        	        inputAttributes: {
-			        	            autocapitalize: 'on'
-			        	        },
-			        	        confirmButtonClass: 'createAccount btn btn-dynamic-color',
-			        	        confirmButtonText: 'Verify',
-			        	        showCloseButton: true,
-			        	        buttonsStyling: false
-			        	    }).then(function(result) {
-			        	    	// TODO Process request and perform action
-			        	    	
-			        	    });
-			        	}
-			        	
-			        	/*
-			        	 * PasswordResetRequiredException
-			        	 */
-			        	if(includesStr(err,"PasswordResetRequiredException")) {
-			        		// TODO
-			        	}
+			        	uh.handleSessionErrors(err);
 			            return;
 			        }
 			        // SUCCESS Scenarios
@@ -262,10 +204,74 @@ uh = {
 			        }
 			    });
 			});
+		},
+
+		handleSessionErrors(err) {
+
+        	let homepageUrl = 'https://www.blitzbudget.com';
+        	
+        	/*
+        	 * User Does not Exist
+        	 */
+        	if(includesStr(err,"UserNotFoundException")) {
+        		 let timerInterval;
+        		  swal({
+        		    title: 'User does not exist!',
+        		    icon: 'error',
+        		    html: 'You will be redirected to registration page in <strong></strong> seconds.',
+        		    timer: 5000,
+        		    onOpen: () => {
+        		      swal.showLoading()
+        		      timerInterval = setInterval(() => {
+        		        swal.getContent().querySelector('strong')
+        		          .textContent = Math.ceil(swal.getTimerLeft() / 1000)
+        		      }, 100)
+        		    },
+        		    onClose: () => {
+        		      clearInterval(timerInterval);
+        		      window.location = homepageUrl + "/register";
+        		    }
+        		  }).then((result) => {
+        		    if (
+        		      // Read more about handling dismissals
+        		      result.dismiss === swal.DismissReason.timer
+        		    ) {
+        		      console.log('I was closed by the timer');
+        		    }
+        		  })
+        	}
+        	
+        	/*
+        	 * User Not Confirmed
+        	 */
+        	if(includesStr(err,"UserNotConfirmedException")) {
+        		// Show Sweet Alert
+        		Swal.fire({
+        	        title: 'Warning',
+        	        html: verifyAccount(),
+        	        inputAttributes: {
+        	            autocapitalize: 'on'
+        	        },
+        	        confirmButtonClass: 'createAccount btn btn-dynamic-color',
+        	        confirmButtonText: 'Verify',
+        	        showCloseButton: true,
+        	        buttonsStyling: false
+        	    }).then(function(result) {
+        	    	// TODO Process request and perform action
+        	    	
+        	    });
+        	}
+        	
+        	/*
+        	 * PasswordResetRequiredException
+        	 */
+        	if(includesStr(err,"PasswordResetRequiredException")) {
+        		// TODO
+        	}
 		}
 }
 
-// Loads the current Logged in User
+// Loads the current Logged in User Attributes
 uh.retrieveAttributes();
 
 // Display COnfirm Account Verification Code
