@@ -131,13 +131,12 @@ uh = {
 
 		// Resend Confirmation Code
 		resendConfirmationCode() {
-			// TODO Adopt Code
 			cognitoUser.resendConfirmationCode(function(err, result) {
 		        if (err) {
-		            alert(err);
-		            return;
-		           }
-		           alert(result);
+	            	showNotification(' The following error has encountered: ' + err);
+	            	return;
+	            } 
+	            // TODO Loader replace
 		    });
 		},
 
@@ -188,7 +187,7 @@ uh = {
 				cognitoUser.getUserAttributes(function(err, result) {
 					// ERROR scenarios
 			        if (err) {
-			        	uh.handleSessionErrors(err);
+			        	uh.handleSessionErrors(err,"");
 			            return;
 			        }
 			        // SUCCESS Scenarios
@@ -206,14 +205,14 @@ uh = {
 			});
 		},
 
-		handleSessionErrors(err) {
+		handleSessionErrors(err,email) {
 
         	let homepageUrl = 'https://www.blitzbudget.com';
         	
         	/*
         	 * User Does not Exist
         	 */
-        	if(includesStr(err,"UserNotFoundException")) {
+        	if(stringIncludes(err.code,"UserNotFoundException")) {
         		 let timerInterval;
         		  swal({
         		    title: 'User does not exist!',
@@ -244,28 +243,15 @@ uh = {
         	/*
         	 * User Not Confirmed
         	 */
-        	if(includesStr(err,"UserNotConfirmedException")) {
-        		// Show Sweet Alert
-        		Swal.fire({
-        	        title: 'Warning',
-        	        html: verifyAccount(),
-        	        inputAttributes: {
-        	            autocapitalize: 'on'
-        	        },
-        	        confirmButtonClass: 'createAccount btn btn-dynamic-color',
-        	        confirmButtonText: 'Verify',
-        	        showCloseButton: true,
-        	        buttonsStyling: false
-        	    }).then(function(result) {
-        	    	// TODO Process request and perform action
-        	    	
-        	    });
+        	if(stringIncludes(err.code,"UserNotConfirmedException")) {
+        		// Verify Account
+        		toggleVerificationOrLogin(email);
         	}
         	
         	/*
         	 * PasswordResetRequiredException
         	 */
-        	if(includesStr(err,"PasswordResetRequiredException")) {
+        	if(stringIncludes(err.code,"PasswordResetRequiredException")) {
         		// TODO
         	}
 		}
@@ -275,8 +261,25 @@ uh = {
 uh.retrieveAttributes();
 
 // Display COnfirm Account Verification Code
-function verifyAccount() {
-	let verifyDocumentFragment = document.createDocumentFragment();
-	
-	// TODO
+function toggleVerificationOrLogin(email) {
+	let socialLine = document.getElementsByClassName('social-line');
+	socialLine[0].classList.toggle('d-none');
+
+	let loginModalTitle = document.getElementById('loginModalTitle');
+	loginModalTitle.innerText = 'Email Verification';
+
+	let signinForm = document.getElementById('signinForm');
+	signinForm.classList.toggle('d-none');
+
+	let verificationCodeDiv = document.getElementById('verifyForm');
+	verificationCodeDiv.classList.toggle('d-none');
+
+	let emailInputVerify = document.getElementById('emailInputVerify');
+	emailInputVerify.value = email;
+
+	let forgotPassLogin = document.getElementById('forgotPassLogin');
+	forgotPassLogin.classList.toggle('d-none');
+
+	let resendCodeLogin = document.getElementById('resendCodeLogin');
+	resendCodeLogin.classList.toggle('d-none');
 }

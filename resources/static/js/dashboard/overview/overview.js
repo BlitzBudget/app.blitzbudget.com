@@ -749,7 +749,11 @@ $(document).ready(function(){
 			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	        type: 'GET',
 	        success: function(averageIncome) {
-	        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + formatNumber(averageIncome, currentUser.locale);
+	        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
+	        	if(isEmpty(averageIncome)) {
+	        		avIncomeAm = 0.00;
+	        	} 
+	        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
 	        },
 	        error:  function (thrownError) {
            	 var responseError = JSON.parse(thrownError.responseText);
@@ -772,8 +776,12 @@ $(document).ready(function(){
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
 	        type: 'GET',
-	        success: function(averageIncome) {
-	        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + formatNumber(averageIncome, currentUser.locale);
+	        success: function(averageExpense) {
+	        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
+	        	if(isEmpty(avExpenseAm)) {
+	        		avExpenseAm = 0.00;
+	        	}
+	        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
 	        },
 	        error:  function (thrownError) {
            	 var responseError = JSON.parse(thrownError.responseText);

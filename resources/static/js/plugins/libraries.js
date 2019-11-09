@@ -96,6 +96,15 @@ function formatLargeCurrencies(value) {
 	return value;
 }
 
+// IE 7 Or Less support
+function stringIncludes(s,sub) {
+	if(isEmpty(s) || isEmpty(sub)) {
+		return false;
+	}
+	
+	return s.indexOf(sub) !== -1;
+}
+
 function calcPage() {
 	// Fetch the current active sidebar
 	let sideBarId = currentActiveSideBar.id;

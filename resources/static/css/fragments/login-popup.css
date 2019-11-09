@@ -68,3 +68,16 @@
 #googleLogin {
 	fill: #DD4B39;
 }
+
+/**
+*  Verification Module 
+**/
+
+.verifyCodeInput {
+	border: 2px solid #88979d;
+	font-size: 1em;
+	margin-bottom: .5em;
+	padding: .5em;
+	width: 100%;
+	border-radius: .3em;
+}

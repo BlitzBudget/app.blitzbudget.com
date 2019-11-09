@@ -145,7 +145,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 window.location.href = successfulSigninUrl;
             },
             function signinError(err) {
-            	showNotification('The following error occured : ' + err);
+            	uh.handleSessionErrors(err,email);
             }
         );
     }
