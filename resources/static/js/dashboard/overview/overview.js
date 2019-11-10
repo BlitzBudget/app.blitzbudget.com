@@ -1,5 +1,5 @@
 "use strict";
-$(document).ready(function(){
+(function scopeWrapper($) {
 	// User Budget Map Cache
 	let userBudgetCache = {};
 	// User transaction category ID and total
@@ -1663,4 +1663,4 @@ $(document).ready(function(){
 
 	// Replace currentCurrencySymbol with currency symbol
 	replaceWithCurrency();	
-});
+}(jQuery));

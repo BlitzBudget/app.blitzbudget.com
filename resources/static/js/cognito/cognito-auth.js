@@ -191,4 +191,78 @@ var AWSCogUser = window.AWSCogUser || {};
             }
         );
     }
+
+    // Resend Confirmation Code
+    document.getElementById('resendCodeLogin').addEventListener("click",function(e){
+        let email = document.getElementById('emailInputVerify').value;
+        // Fadeout for 60 seconds
+        this.classList.add('d-none');
+        // After one minutes show the resend code
+        setTimeout(function() {
+            this.classList.remove('d-none');
+        }, 60000);
+
+        createCognitoUser(email).resendConfirmationCode(function(err, result) {
+            if (err) {
+                showNotification(' The following error has encountered: ' + err);
+                return;
+            } 
+
+            document.getElementById('successVerifyCode').appendChild(successSvgMessage());
+        });
+    });
+
+    // Generate SVG Tick Element and success element
+    function successSvgMessage() {
+        let alignmentDiv = document.createElement('div');
+        alignmentDiv.className = 'row justify-content-center';
+        
+        // Parent Div Svg container
+        let divSvgContainer = document.createElement('div');
+        divSvgContainer.className = 'svg-container';
+        
+        
+        // SVG element
+        let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+        svgElement.setAttribute('class','ft-green-tick');
+        svgElement.setAttribute('height','20');
+        svgElement.setAttribute('width','20');
+        svgElement.setAttribute('viewBox','0 0 48 48');
+        svgElement.setAttribute('aria-hidden',true);
+        
+        let circleElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circleElement.setAttribute('class','circle');
+        circleElement.setAttribute('fill','#5bb543');
+        circleElement.setAttribute('cx','24');
+        circleElement.setAttribute('cy','24');
+        circleElement.setAttribute('r','22');
+        
+        let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+        pathElement.setAttribute('class','tick');
+        pathElement.setAttribute('fill','none');
+        pathElement.setAttribute('stroke','#FFF');
+        pathElement.setAttribute('stroke-width','6');
+        pathElement.setAttribute('stroke-linecap','round');
+        pathElement.setAttribute('stroke-linejoin','round');
+        pathElement.setAttribute('stroke-miterlimit','10');
+        pathElement.setAttribute('d','M14 27l5.917 4.917L34 17');
+        
+        svgElement.appendChild(circleElement);
+        svgElement.appendChild(pathElement);
+        divSvgContainer.appendChild(svgElement);
+        
+        let messageParagraphElement = document.createElement('p');
+        messageParagraphElement.className = 'green-icon margin-bottom-zero margin-left-five';
+        messageParagraphElement.innerHTML = 'Successfully sent the email with verification code.';
+        
+        var br = document.createElement('br');
+        
+        alignmentDiv.appendChild(divSvgContainer);
+        alignmentDiv.appendChild(messageParagraphElement);
+        alignmentDiv.appendChild(br);
+        
+        
+        return alignmentDiv;
+    }
+
 }(jQuery));
