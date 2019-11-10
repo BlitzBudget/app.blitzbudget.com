@@ -277,6 +277,9 @@ function toggleVerificationOrLogin(email) {
 	let emailInputVerify = document.getElementById('emailInputVerify');
 	emailInputVerify.value = email;
 
+	let emailDisplayVE = document.getElementById('emailDisplayVE');
+	emailDisplayVE.innerText = email;
+
 	let forgotPassLogin = document.getElementById('forgotPassLogin');
 	forgotPassLogin.classList.toggle('d-none');
 
