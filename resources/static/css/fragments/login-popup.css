@@ -101,3 +101,11 @@
 		opacity: 1;
 	}
 }
+
+#shyAnchor {
+	color:#aca8ac;
+}
+
+#shyAnchor:hover, #shyAnchor:focus, #shyAnchor:active {
+	color:#9124a3;
+}
