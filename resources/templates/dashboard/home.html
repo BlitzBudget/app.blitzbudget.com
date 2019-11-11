@@ -227,43 +227,82 @@
       <div class="content" id="mutableDashboard">
         <style type="text/css">
              .btn.btn-dynamic-color {
-                color: #ffffff;
-                background-color: #2196f3;
-                border-color: #2196f3;
-                box-shadow: none;
+                 color: #fff;
+                 background-color: #9c27b0;
+                 border-color: #9c27b0;
+                 box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
               }
 
               .btn.btn-dynamic-color:hover {
-                color: #ffffff;
-                background-color: #0c83e2;
-                border-color: #0c7cd5;
+                color: #fff;
+                background-color: #9124a3;
+                border-color: #701c7e;
               }
 
               .btn.btn-dynamic-color:focus,
-              .btn.btn-dynamic-color.focus {
-                box-shadow: none, 0 0 0 0.2rem rgba(33, 150, 243, 0.5);
+              .btn.btn-dynamic-color.focus,
+              .btn.btn-dynamic-color:hover {
+                color: #fff;
+                background-color: #9124a3;
+                border-color: #701c7e;
               }
 
-              .btn.btn-dynamic-color.disabled,
-              .btn.btn-dynamic-color:disabled {
-                color: #ffffff;
-                background-color: #2196f3;
-                border-color: #2196f3;
-              }
-
-              .btn.btn-dynamic-color:not(:disabled):not(.disabled):active,
-              .btn.btn-dynamic-color:not(:disabled):not(.disabled).active,
+              .btn.btn-dynamic-color:active,
+              .btn.btn-dynamic-color.active,
+              .open>.btn.btn-dynamic-color.dropdown-toggle,
               .show>.btn.btn-dynamic-color.dropdown-toggle {
-                color: #ffffff;
-                background-color: #0c7cd5;
-                border-color: #0b75c9;
+                color: #fff;
+                background-color: #9124a3;
+                border-color: #701c7e;
+                box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
               }
 
-              .btn.btn-dynamic-color:not(:disabled):not(.disabled):active:focus,
-              .btn.btn-dynamic-color:not(:disabled):not(.disabled).active:focus,
-              .show>.btn.btn-dynamic-color.dropdown-toggle:focus {
-                box-shadow: none, 0 0 0 0.2rem rgba(33, 150, 243, 0.5);
+              .btn.btn-dynamic-color:active:hover,
+              .btn.btn-dynamic-color:active:focus,
+              .btn.btn-dynamic-color:active.focus,
+              .btn.btn-dynamic-color.active:hover,
+              .btn.btn-dynamic-color.active:focus,
+              .btn.btn-dynamic-color.active.focus,
+              .open>.btn.btn-dynamic-color.dropdown-toggle:hover,
+              .open>.btn.btn-dynamic-color.dropdown-toggle:focus,
+              .open>.btn.btn-dynamic-color.dropdown-toggle.focus,
+              .show>.btn.btn-dynamic-color.dropdown-toggle:hover,
+              .show>.btn.btn-dynamic-color.dropdown-toggle:focus,
+              .show>.btn.btn-dynamic-color.dropdown-toggle.focus {
+                color: #fff;
+                background-color: #9124a3;
+                border-color: #3f1048;
               }
+
+              .open>.btn.btn-dynamic-color.dropdown-toggle.bmd-btn-icon {
+                color: inherit;
+                background-color: #9c27b0;
+              }
+
+              .open>.btn.btn-dynamic-color.dropdown-toggle.bmd-btn-icon:hover {
+                background-color: #9124a3;
+              }
+
+              .btn.btn-dynamic-color.disabled:focus,
+              .btn.btn-dynamic-color.disabled.focus,
+              .btn.btn-dynamic-color:disabled:focus,
+              .btn.btn-dynamic-color:disabled.focus {
+                background-color: #9c27b0;
+                border-color: #9c27b0;
+              }
+
+              .btn.btn-dynamic-color.disabled:hover,
+              .btn.btn-dynamic-color:disabled:hover {
+                background-color: #9c27b0;
+                border-color: #9c27b0;
+              }
+
+              .btn.btn-dynamic-color:focus,
+              .btn.btn-dynamic-color:active,
+              .btn.btn-dynamic-color:hover {
+                box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);
+              }
+
         </style>
        	<!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
@@ -346,9 +385,18 @@
 	                        </div>
 	                    </form>
                       <form class="form d-none" method="POST" id="verifyForm">
+                          <p class="description text-center">We've sent the verification email to </p>
                           <div class="card-body">
                               <input type="email" class="form-control d-none" id="emailInputVerify" name="emailInputVerify" placeholder="Required">
-                              <div >We've sent the verification email to <div id="emailDisplayVE" class="d-inline-block"></div> <a href="#" onclick="toggleVerificationOrLogin('')">not me</a></div>
+                              <div class="form-group bmd-form-group">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text"><i class="material-icons">email</i></div>
+                                    </div>
+                                    <div id="emailDisplayVE" class=""></div> 
+                                    <a href="#" class="pl-2" onclick="toggleLogin('')" id="shyAnchor"><u>not me</u></a>
+                                </div>
+                              </div>
                               <div class="form-group bmd-form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -362,11 +410,42 @@
                                </div>
                           </div>
                       </form>
+                      <form class="form d-none" method="POST" id="registrationForm">
+                      	  <div class="form-group bmd-form-group">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text"><i class="material-icons">email</i></div>
+                                </div>
+                                <input type="email" class="form-control" id="emailInputRegister" placeholder="Email" pattern=".*" required>
+                              </div>
+                          </div>
+                          <div class="form-group bmd-form-group">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text"><i class="material-icons">lock_outline</i></div>
+                                </div>
+                                <input type="password" class="form-control" id="passwordInputRegister" placeholder="Password" pattern=".*" required>
+                              </div>
+                          </div>
+                          <div class="form-group bmd-form-group">
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text"><i class="material-icons">lock_outline</i></div>
+                                </div>
+                                <input type="password" id="password2InputRegister" class="form-control" placeholder="Confirm Password" pattern=".*" required>
+                              </div>
+                          </div>
+			                    <div class="text-center">
+                            <button class="btn btn-dynamic-color btn-raised" name="Submit" value="Signup" type="Submit">Sign Up</button>
+                          </div>
+			          </form>
 	                </div>
 	                <div class="modal-footer justify-content-center">
 	                    <a id="forgotPassLogin" href="#" class="btn btn-primary btn-link btn-wd btn-lg">I Forgot My Password</a>
                       <a id="resendCodeLogin" href="#" class="btn btn-primary btn-link btn-wd btn-lg d-none">Resend Code</a>
-                      <div id="successVerifyCode" class="justify-content-center"></div>
+                      <a id="haveAnAccount" href="#" class="btn btn-primary btn-link btn-wd btn-lg d-none">Already have an account</a>
+                      <div id="successLoginPopup" class="justify-content-center"></div>
+                      <div id="errorLoginPopup" class="justify-content-center"></div>
 	                </div>
 	            </div>
 	        </div>

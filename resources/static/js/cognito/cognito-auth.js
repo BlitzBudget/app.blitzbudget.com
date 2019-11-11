@@ -65,6 +65,12 @@ var AWSCogUser = window.AWSCogUser || {};
         let attributeLocale = createAttribute('locale', 'en-US');
         // Set Default Currency
         let attributeCurrency = createAttribute('custom:currency', '$');
+        // Set Name
+        let fullName = fetchFirstElement(splitElement(email, '@'));
+        let nameObj = fetchFirstAndFamilyName(fullName);
+        let attributeName = createAttribute('name', nameObj.firstName);
+        // Set Family Name
+        let attributeFamilyName = createAttribute('family_name', nameObj.familyName);
         
         // Append Attributes to list
         var attributeList = [];
@@ -72,6 +78,8 @@ var AWSCogUser = window.AWSCogUser || {};
         attributeList.push(attributeFPI);
         attributeList.push(attributeLocale);
         attributeList.push(attributeCurrency);
+        attributeList.push(attributeName);
+        attributeList.push(attributeFamilyName);
 
         userPool.signUp(email, password, attributeList, null,
             function signUpCallback(err, result) {
@@ -82,6 +90,22 @@ var AWSCogUser = window.AWSCogUser || {};
                 }
             }
         );
+    }
+    
+    function fetchFirstAndFamilyName(fullName) {
+    	let possibleSym = /[!#$%&'*+-\/=?^_`{|}~]/;
+    	let name = {};
+    	
+    	if(possibleSym.test(fullName)) {
+    		let nameArr = splitElement(fullName, '_');
+    		name['firstName'] = nameArr[0];
+    		name['familyName'] = nameArr[nameArr.length - 1];
+    	} else {
+    		name['firstName'] = fullName;
+    		name['familyName'] = '';
+    	}
+    	
+    	return name;
     }
     
     /* 
@@ -145,7 +169,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 window.location.href = successfulSigninUrl;
             },
             function signinError(err) {
-            	uh.handleSessionErrors(err,email);
+            	uh.handleSessionErrors(err,email,password);
             }
         );
     }
@@ -156,22 +180,19 @@ var AWSCogUser = window.AWSCogUser || {};
         var password2 = $('#password2InputRegister').val();
 
         var onSuccess = function registerSuccess(result) {
-            var cognitoUser = result.user;
-            console.log('user name is ' + cognitoUser.getUsername());
-            var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
             if (confirmation) {
                 window.location.href = 'verify.html';
             }
         };
         var onFailure = function registerFailure(err) {
-        	showNotification('The following error occured : ' + err);
+        	document.getElementById('errorLoginPopup').innerText = err.message;
         };
         event.preventDefault();
 
         if (password === password2) {
             register(email, password, onSuccess, onFailure);
         } else {
-        	showNotification('Passwords do not match');
+        	document.getElementById('errorLoginPopup').innerText = 'Passwords do not match';
         }
     }
 
@@ -187,7 +208,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 window.location.href = signinUrl;
             },
             function verifyError(err) {
-            	showNotification('The following error occured : ' + err);
+            	document.getElementById('errorLoginPopup').innerText = err.message;
             }
         );
     }
@@ -195,20 +216,30 @@ var AWSCogUser = window.AWSCogUser || {};
     // Resend Confirmation Code
     document.getElementById('resendCodeLogin').addEventListener("click",function(e){
         let email = document.getElementById('emailInputVerify').value;
+        let currenElem = this;
+        let successLP = document.getElementById('successLoginPopup');
+        let errorLP = document.getElementById('errorLoginPopup');
         // Fadeout for 60 seconds
-        this.classList.add('d-none');
+        currenElem.classList.add('d-none');
         // After one minutes show the resend code
         setTimeout(function() {
-            this.classList.remove('d-none');
+            // Replace HTML with Empty
+            while (successLP.firstChild) {
+                successLP.removeChild(successLP.firstChild);
+            }
+            // Replace HTML with Empty
+            while (errorLP.firstChild) {
+                errorLP.removeChild(errorLP.firstChild);
+            }
+        	currenElem.classList.remove('d-none');
         }, 60000);
 
         createCognitoUser(email).resendConfirmationCode(function(err, result) {
             if (err) {
-                showNotification(' The following error has encountered: ' + err);
+                errorLP.appendChild(err.message);
                 return;
             } 
-
-            document.getElementById('successVerifyCode').appendChild(successSvgMessage());
+            successLP.appendChild(successSvgMessage());
         });
     });
 
@@ -251,18 +282,73 @@ var AWSCogUser = window.AWSCogUser || {};
         svgElement.appendChild(pathElement);
         divSvgContainer.appendChild(svgElement);
         
-        let messageParagraphElement = document.createElement('p');
-        messageParagraphElement.className = 'green-icon margin-bottom-zero margin-left-five';
-        messageParagraphElement.innerHTML = 'Successfully sent the email with verification code.';
-        
-        var br = document.createElement('br');
-        
         alignmentDiv.appendChild(divSvgContainer);
-        alignmentDiv.appendChild(messageParagraphElement);
-        alignmentDiv.appendChild(br);
-        
-        
+            
         return alignmentDiv;
+    }
+
+    document.getElementById('haveAnAccount').addEventListener("click",function(e){
+        let email = document.getElementById('emailInputRegister').value;
+        toggleLogin(email);
+    });
+
+    document.getElementById('forgotPassLogin').addEventListener("click",function(e){
+        forgotPassword();
+    });
+
+
+    function toggleLogin(email) {
+        document.getElementsByClassName('social-line')[0].classList.remove('d-none');
+
+        document.getElementById('loginModalTitle').innerText = 'Login';
+
+        document.getElementById('signinForm').classList.remove('d-none');
+
+        document.getElementById('verifyForm').classList.add('d-none');
+
+        if(isNotEmpty(email)) {
+            document.getElementById('emailInputVerify').value = email;
+        }
+
+        document.getElementById('emailDisplayVE').innerText = '';
+
+        document.getElementById('forgotPassLogin').classList.remove('d-none');
+
+        document.getElementById('resendCodeLogin').classList.add('d-none');
+        
+        // hide Signup
+        document.getElementById('registrationForm').classList.add('d-none');
+        
+        document.getElementById('emailInputRegister').value = '';
+        document.getElementById('passwordInputRegister').value = '';
+        
+        document.getElementById('successLoginPopup').innerText = '';
+        document.getElementById('errorLoginPopup').innerText = '';
+
+        document.getElementById('haveAnAccount').classList.add('d-none');
+    }
+
+    // Forgot Password Flow
+    function forgotPassword() {
+        
+        // Fetch user from local storage
+        let userPool = uh.fetchUserFromLocalStorage();
+        let cognitoUser = userPool.getCurrentUser();
+        
+        // TODO Adopt Code
+        cognitoUser.forgotPassword({
+            onSuccess: function (result) {
+                console.log('call result: ' + result);
+            },
+            onFailure: function(err) {
+                alert(err);
+            },
+            inputVerificationCode() {
+                var verificationCode = prompt('Please input verification code ' ,'');
+                var newPassword = prompt('Enter new password ' ,'');
+                cognitoUser.confirmPassword(verificationCode, newPassword, this);
+            }
+         });
     }
 
 }(jQuery));

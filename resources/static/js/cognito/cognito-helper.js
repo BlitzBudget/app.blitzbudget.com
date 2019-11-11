@@ -94,29 +94,6 @@ uh = {
         signoutUser(true);
     },
 
-	// Forgot Password Flow
-	forgotPassword() {
-		
-		// Fetch user from local storage
-		let userPool = uh.fetchUserFromLocalStorage();
-		let cognitoUser = userPool.getCurrentUser();
-		
-		// TODO Adopt Code
-		cognitoUser.forgotPassword({
-	        onSuccess: function (result) {
-	            console.log('call result: ' + result);
-	        },
-	        onFailure: function(err) {
-	            alert(err);
-	        },
-	        inputVerificationCode() {
-	            var verificationCode = prompt('Please input verification code ' ,'');
-	            var newPassword = prompt('Enter new password ' ,'');
-	            cognitoUser.confirmPassword(verificationCode, newPassword, this);
-	        }
-		 });
-	},
-
 	// Change Password Flow
 	changePassword(oldPassword, newPassword) {
 		// TODO Adopt Code
@@ -176,7 +153,7 @@ uh = {
 			cognitoUser.getUserAttributes(function(err, result) {
 				// ERROR scenarios
 		        if (err) {
-		        	uh.handleSessionErrors(err,"");
+		        	uh.handleSessionErrors(err,"","");
 		            return;
 		        }
 		        // SUCCESS Scenarios
@@ -194,7 +171,7 @@ uh = {
 		});
 	},
 
-	handleSessionErrors(err,email) {
+	handleSessionErrors(err,email,pass) {
 
     	let homepageUrl = 'https://www.blitzbudget.com';
     	
@@ -202,31 +179,7 @@ uh = {
     	 * User Does not Exist
     	 */
     	if(stringIncludes(err.code,"UserNotFoundException")) {
-    		 let timerInterval;
-    		  swal({
-    		    title: 'User does not exist!',
-    		    icon: 'error',
-    		    html: 'You will be redirected to registration page in <strong></strong> seconds.',
-    		    timer: 5000,
-    		    onOpen: () => {
-    		      swal.showLoading()
-    		      timerInterval = setInterval(() => {
-    		        swal.getContent().querySelector('strong')
-    		          .textContent = Math.ceil(swal.getTimerLeft() / 1000)
-    		      }, 100)
-    		    },
-    		    onClose: () => {
-    		      clearInterval(timerInterval);
-    		      window.location = homepageUrl + "/register";
-    		    }
-    		  }).then((result) => {
-    		    if (
-    		      // Read more about handling dismissals
-    		      result.dismiss === swal.DismissReason.timer
-    		    ) {
-    		      console.log('I was closed by the timer');
-    		    }
-    		  })
+    		toggleSignUp(email,pass);
     	}
     	
     	/*
@@ -251,27 +204,61 @@ uh.retrieveAttributes();
 
 // Display COnfirm Account Verification Code
 function toggleVerificationOrLogin(email) {
-	let socialLine = document.getElementsByClassName('social-line');
-	socialLine[0].classList.toggle('d-none');
+	document.getElementsByClassName('social-line')[0].classList.toggle('d-none');
 
-	let loginModalTitle = document.getElementById('loginModalTitle');
-	loginModalTitle.innerText = 'Email Verification';
+	document.getElementById('loginModalTitle').innerText = 'Email Verification';
 
-	let signinForm = document.getElementById('signinForm');
-	signinForm.classList.toggle('d-none');
+	document.getElementById('signinForm').classList.toggle('d-none');
 
-	let verificationCodeDiv = document.getElementById('verifyForm');
-	verificationCodeDiv.classList.toggle('d-none');
+	document.getElementById('verifyForm').classList.toggle('d-none');
 
-	let emailInputVerify = document.getElementById('emailInputVerify');
-	emailInputVerify.value = email;
+	document.getElementById('emailInputVerify').value = email;
 
-	let emailDisplayVE = document.getElementById('emailDisplayVE');
-	emailDisplayVE.innerText = email;
+	document.getElementById('emailDisplayVE').innerText = email;
 
-	let forgotPassLogin = document.getElementById('forgotPassLogin');
-	forgotPassLogin.classList.toggle('d-none');
+	document.getElementById('forgotPassLogin').classList.toggle('d-none');
 
-	let resendCodeLogin = document.getElementById('resendCodeLogin');
-	resendCodeLogin.classList.toggle('d-none');
+	document.getElementById('resendCodeLogin').classList.toggle('d-none');
+	
+	// hide Signup
+	document.getElementById('registrationForm').classList.add('d-none');
+	
+	document.getElementById('emailInputRegister').value = '';
+	document.getElementById('passwordInputRegister').value = '';
+	
+	document.getElementById('successLoginPopup').innerText = '';
+	document.getElementById('errorLoginPopup').innerText = '';
+
+	document.getElementById('haveAnAccount').classList.add('d-none');
+}
+
+// Toggle Signup
+function toggleSignUp(email,pass) {
+	// Hide Login and Verify
+	document.getElementsByClassName('social-line')[0].classList.remove('d-none');
+
+	document.getElementById('loginModalTitle').innerText = 'Sign Up';
+
+	document.getElementById('signinForm').classList.add('d-none');
+
+	document.getElementById('verifyForm').classList.add('d-none');
+
+	document.getElementById('emailInputVerify').value = '';
+
+	document.getElementById('emailDisplayVE').innerText = '';
+
+	document.getElementById('forgotPassLogin').classList.add('d-none');
+
+	document.getElementById('resendCodeLogin').classList.add('d-none');
+	document.getElementById('haveAnAccount').classList.remove('d-none');
+	
+	// Show Signup
+	document.getElementById('registrationForm').classList.remove('d-none');
+	
+	document.getElementById('emailInputRegister').value = email;
+	
+	document.getElementById('passwordInputRegister').value = pass;
+	
+	document.getElementById('successLoginPopup').innerText = '';
+	document.getElementById('errorLoginPopup').innerText = '';
 }
