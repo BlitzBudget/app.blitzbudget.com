@@ -255,11 +255,14 @@ window.onload = function () {
 			
         	// Check if user is logged in
         	if(uh.checkIfUserLoggedIn()) {
-        		// Set Currency If empty 
+        		// Set Currency If empty
         		if(isEmpty(currentCurrencyPreference)) {
         		    currentCurrencyPreference = currentUser.currency;
         			Object.freeze(currentCurrencyPreference);
         			Object.seal(currentCurrencyPreference);
+
+        			// Set the name of the user
+        			document.getElementById('userName').innerText = currentUser.name + ' ' + currentUser.family_name;
         		}
 
         		// Call the actual page which was requested to be loaded

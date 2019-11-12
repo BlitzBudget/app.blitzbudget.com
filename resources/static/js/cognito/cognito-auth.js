@@ -92,15 +92,33 @@ var AWSCogUser = window.AWSCogUser || {};
         );
     }
     
+    // Calculate First Name and Last Name
     function fetchFirstAndFamilyName(fullName) {
     	let possibleSym = /[!#$%&'*+-\/=?^_`{|}~]/;
     	let name = {};
+        let matchFound = fullName.match(possibleSym);
     	
-    	if(possibleSym.test(fullName)) {
-    		let nameArr = splitElement(fullName, '_');
-    		name['firstName'] = nameArr[0];
-    		name['familyName'] = nameArr[nameArr.length - 1];
+    	if(isNotEmpty(matchFound)) {
+    		let nameArr = splitElement(fullName, matchFound);
+            let firstName = nameArr[0];
+            let familyName = nameArr[1]
+
+            // If First Name is empty then assign family name to first name
+            if(isEmpty(firstName)) {
+                firstName = familyName;
+                familyName = nameArr.length > 2 ? nameArr[2] : '';
+            }
+
+            // First Letter Upper case
+            firstName = firstName.length > 1 ? firstName.charAt(0).toUpperCase() + firstName.slice(1) : firstName.charAt(0).toUpperCase();
+            familyName = isEmpty(familyName) ? '' : (familyName.length > 1 ? familyName.charAt(0).toUpperCase() + familyName.slice(1) : familyName.charAt(0).toUpperCase());
+
+            name['firstName'] = firstName;
+            name['familyName'] = familyName;
+     		
     	} else {
+            // First Letter Upper case
+            fullName = isEmpty(fullName) ? '' : (fullName.length > 1 ? fullName.charAt(0).toUpperCase() + fullName.slice(1) : fullName.charAt(0).toUpperCase());
     		name['firstName'] = fullName;
     		name['familyName'] = '';
     	}
@@ -180,9 +198,7 @@ var AWSCogUser = window.AWSCogUser || {};
         var password2 = $('#password2InputRegister').val();
 
         var onSuccess = function registerSuccess(result) {
-            if (confirmation) {
-                window.location.href = 'verify.html';
-            }
+            toggleVerification(email);
         };
         var onFailure = function registerFailure(err) {
         	document.getElementById('errorLoginPopup').innerText = err.message;
@@ -199,16 +215,32 @@ var AWSCogUser = window.AWSCogUser || {};
     function handleVerify(event) {
         var email = $('#emailInputVerify').val();
         var code = $('#codeInputVerify').val();
+        let password = document.getElementById('passwordInputSignin').value;
+        let verifyLoader = document.getElementById('verifyLoader');
+        let verifyButton = document.getElementById('verifyButton');
+        verifyLoader.classList.remove('d-none');
+        verifyButton.classList.add('d-none');
         event.preventDefault();
         verify(email, code,
             function verifySuccess(result) {
-                console.log('call result: ' + result);
-                console.log('Successfully verified');
-                alert('Verification successful. You will now be redirected to the login page.');
-                window.location.href = signinUrl;
+                verifyLoader.classList.add('d-none');
+                verifyButton.classList.remove('d-none');
+                signin(email, password,
+                    function signinSuccess() {
+                        // Read Cookies
+                        readCookie();
+                        // Hide Modal
+                        $('#loginModal').modal('hide');
+                    },
+                    function signinError(err) {
+                        uh.handleSessionErrors(err,email,password);
+                    }
+                );
             },
             function verifyError(err) {
             	document.getElementById('errorLoginPopup').innerText = err.message;
+                verifyLoader.classList.add('d-none');
+                verifyButton.classList.remove('d-none');
             }
         );
     }
@@ -219,8 +251,11 @@ var AWSCogUser = window.AWSCogUser || {};
         let currenElem = this;
         let successLP = document.getElementById('successLoginPopup');
         let errorLP = document.getElementById('errorLoginPopup');
+        let resendLoader = document.getElementById('resendLoader');
         // Fadeout for 60 seconds
         currenElem.classList.add('d-none');
+        // Append Loader
+        resendLoader.classList.remove('d-none');
         // After one minutes show the resend code
         setTimeout(function() {
             // Replace HTML with Empty
@@ -239,6 +274,8 @@ var AWSCogUser = window.AWSCogUser || {};
                 errorLP.appendChild(err.message);
                 return;
             } 
+            // Hide Loader
+            resendLoader.classList.add('d-none');
             successLP.appendChild(successSvgMessage());
         });
     });
@@ -287,18 +324,29 @@ var AWSCogUser = window.AWSCogUser || {};
         return alignmentDiv;
     }
 
+    // LOGIN POPUP Already have an accout
     document.getElementById('haveAnAccount').addEventListener("click",function(e){
         let email = document.getElementById('emailInputRegister').value;
         toggleLogin(email);
     });
 
+    // LOGIN POPUP Forgot Password Text
     document.getElementById('forgotPassLogin').addEventListener("click",function(e){
         forgotPassword();
     });
 
+    document.getElementById('shyAnchor').addEventListener("click",function(e){
+        let email = document.getElementById('emailInputRegister').value;
+        toggleLogin(email);
+    });
 
+    // Toggle login
     function toggleLogin(email) {
-        document.getElementsByClassName('social-line')[0].classList.remove('d-none');
+        document.getElementById('google').classList.remove('d-none');
+        document.getElementById('facebook').classList.remove('d-none');
+        document.getElementById('twitter').classList.remove('d-none');
+        document.getElementById('gmail').classList.add('d-none');
+        document.getElementById('outlook').classList.add('d-none');
 
         document.getElementById('loginModalTitle').innerText = 'Login';
 

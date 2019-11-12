@@ -180,6 +180,7 @@ uh = {
     	 */
     	if(stringIncludes(err.code,"UserNotFoundException")) {
     		toggleSignUp(email,pass);
+    		return;
     	}
     	
     	/*
@@ -187,7 +188,8 @@ uh = {
     	 */
     	if(stringIncludes(err.code,"UserNotConfirmedException")) {
     		// Verify Account
-    		toggleVerificationOrLogin(email);
+    		toggleVerification(email);
+    		return;
     	}
     	
     	/*
@@ -196,6 +198,11 @@ uh = {
     	if(stringIncludes(err.code,"PasswordResetRequiredException")) {
     		// TODO
     	}
+
+    	/**
+    	*	Other Errors
+    	**/
+    	document.getElementById('errorLoginPopup').innerText = err.message;
 	}
 }
 
@@ -203,22 +210,26 @@ uh = {
 uh.retrieveAttributes();
 
 // Display COnfirm Account Verification Code
-function toggleVerificationOrLogin(email) {
-	document.getElementsByClassName('social-line')[0].classList.toggle('d-none');
+function toggleVerification(email) {
+	document.getElementById('google').classList.add('d-none');
+	document.getElementById('facebook').classList.add('d-none');
+	document.getElementById('twitter').classList.add('d-none');
+	document.getElementById('gmail').classList.remove('d-none');
+	document.getElementById('outlook').classList.remove('d-none');
 
 	document.getElementById('loginModalTitle').innerText = 'Email Verification';
 
-	document.getElementById('signinForm').classList.toggle('d-none');
+	document.getElementById('signinForm').classList.add('d-none');
 
-	document.getElementById('verifyForm').classList.toggle('d-none');
+	document.getElementById('verifyForm').classList.remove('d-none');
 
 	document.getElementById('emailInputVerify').value = email;
 
 	document.getElementById('emailDisplayVE').innerText = email;
 
-	document.getElementById('forgotPassLogin').classList.toggle('d-none');
+	document.getElementById('forgotPassLogin').classList.add('d-none');
 
-	document.getElementById('resendCodeLogin').classList.toggle('d-none');
+	document.getElementById('resendCodeLogin').classList.remove('d-none');
 	
 	// hide Signup
 	document.getElementById('registrationForm').classList.add('d-none');
@@ -235,7 +246,11 @@ function toggleVerificationOrLogin(email) {
 // Toggle Signup
 function toggleSignUp(email,pass) {
 	// Hide Login and Verify
-	document.getElementsByClassName('social-line')[0].classList.remove('d-none');
+	document.getElementById('google').classList.remove('d-none');
+	document.getElementById('facebook').classList.remove('d-none');
+	document.getElementById('twitter').classList.remove('d-none');
+	document.getElementById('gmail').classList.add('d-none');
+	document.getElementById('outlook').classList.add('d-none');
 
 	document.getElementById('loginModalTitle').innerText = 'Sign Up';
 

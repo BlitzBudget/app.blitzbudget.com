@@ -109,3 +109,7 @@
 #shyAnchor:hover, #shyAnchor:focus, #shyAnchor:active {
 	color:#9124a3;
 }
+
+.errorCodePopup {
+	color: #d71c1c;
+}
