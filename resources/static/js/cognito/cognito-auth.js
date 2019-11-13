@@ -149,7 +149,6 @@ var AWSCogUser = window.AWSCogUser || {};
             onSuccess: onSuccess,
             onFailure: onFailure
         });
-        return successBoolean;
     }
 
     function verify(email, code, onSuccess, onFailure) {
@@ -188,7 +187,7 @@ var AWSCogUser = window.AWSCogUser || {};
         loginLoader.classList.remove('d-none');
         loginButton.classList.add('d-none');
         event.preventDefault();
-        let successBoolean = signin(email, password,
+        signin(email, password,
             function signinSuccess() {
                 // Loads the current Logged in User Attributes
                 uh.retrieveAttributes();
