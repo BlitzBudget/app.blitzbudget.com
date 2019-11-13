@@ -1019,7 +1019,6 @@ function unSyncedAccount() {
 	accountNameInput.setAttribute('autocapitalize','off');
 	accountNameInput.setAttribute('spellcheck','false');
 	accountNameInput.setAttribute('autocorrect','off');
-	accountNameInput.setAttribute('autocorrect','off');
 	accountNameWrapper.appendChild(accountNameInput);
 	unsyncedDocumentFragment.appendChild(accountNameWrapper);
 	
@@ -1037,7 +1036,6 @@ function unSyncedAccount() {
 	accountBalInput.setAttribute('type','text');
 	accountBalInput.setAttribute('autocapitalize','off');
 	accountBalInput.setAttribute('spellcheck','false');
-	accountBalInput.setAttribute('autocorrect','off');
 	accountBalInput.setAttribute('autocorrect','off');
 	accountBalWrapper.appendChild(accountBalInput);
 	unsyncedDocumentFragment.appendChild(accountBalWrapper);

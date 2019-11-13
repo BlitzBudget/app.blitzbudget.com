@@ -68,3 +68,48 @@
 #googleLogin {
 	fill: #DD4B39;
 }
+
+/**
+*  Verification Module 
+**/
+
+.verifyCodeInput {
+	border: 2px solid #88979d;
+	font-size: 1em;
+	margin-bottom: .5em;
+	padding: .5em;
+	width: 100%;
+	border-radius: .3em;
+}
+
+.messageFadeOutAndIn {
+    -webkit-animation: fadeOutInOpacity 60s ease forwards;
+    animation: fadeOutInOpacity 60s ease forwards;
+}
+
+@keyframes fadeOutInOpacity {
+	0% {
+		opacity: 1;
+	}
+	5% {
+		opacity: 0;
+	}
+	90% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+#shyAnchor {
+	color:#aca8ac;
+}
+
+#shyAnchor:hover, #shyAnchor:focus, #shyAnchor:active {
+	color:#9124a3;
+}
+
+.errorCodePopup {
+	color: #d71c1c;
+}

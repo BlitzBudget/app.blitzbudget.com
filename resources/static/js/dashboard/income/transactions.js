@@ -1,6 +1,6 @@
 "use strict";
-$(document).ready(function(){
-	
+(function scopeWrapper($) {
+
 	// Description Text
 	let descriptionTextEdited = '';
 	// Amount Text
@@ -1880,6 +1880,5 @@ $(document).ready(function(){
 
 	// Replace currentCurrencySymbol with currency symbol
 	replaceWithCurrency();
-	
-});
 
+}(jQuery));

@@ -1,5 +1,6 @@
 "use strict";
-$(document).ready(function(){
+
+(function scopeWrapper($) {
 	// User Budget Map Cache
 	let userBudgetCache = {};
 	// User transaction category ID and total
@@ -1582,5 +1583,4 @@ $(document).ready(function(){
 		let chartVisualization = document.getElementById('chartBudgetVisualization');
 		chartVisualization.innerHTML = '<div class="material-spinner"></div>';
 	}
-	
-});
+}(jQuery));	
