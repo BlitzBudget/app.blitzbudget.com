@@ -556,16 +556,24 @@ window.onload = function () {
 		
 		// Fetch Bank Account Information and populate
 		er_a.fetchBankAccountInfo();
+
+		// Once the login modal is hidden then (Reload ALL API CALLS)
+		$('#loginModal').on('hidden.bs.modal', function (e) {
+			// If the current user data is still not loaded from Cognito (Refresh)
+			 if(isEmpty(currentUser)) {
+			 	window.location.reload();
+			 } else {
+			 	// Read Cookies
+	        	readCookie();
+	  			// Fetch Bank Account Information and populate
+				er_a.fetchBankAccountInfo();
+			 }
+		});
 		
 	});
 }
 
 er = {
-	//Loads the currenct logged in user from API (Call synchronously to set global variable)
-	fetchJSONForLoggedInUser(){
-		// Retrieve attributes 
-		uh.retrieveAttributes();
-	},
 
 	// Load all categories from API (Call synchronously to set global variable)
 	fetchJSONForCategories() {

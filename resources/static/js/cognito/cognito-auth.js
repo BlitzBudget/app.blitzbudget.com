@@ -181,12 +181,26 @@ var AWSCogUser = window.AWSCogUser || {};
     function handleSignin(event) {
         var email = $('#emailInputSignin').val();
         var password = $('#passwordInputSignin').val();
+        let loginLoader = document.getElementById('loginLoader');
+        let loginButton = loginLoader.parentElement.firstElementChild;
+        let loginModal = $('#loginModal');
+        loginLoader.classList.remove('d-none');
+        loginButton.classList.add('d-none');
         event.preventDefault();
         signin(email, password,
             function signinSuccess() {
-                window.location.href = successfulSigninUrl;
+                // Loads the current Logged in User Attributes
+                uh.retrieveAttributes();
+
+                // Hide Modal
+                loginModal.modal('hide');
+                loginLoader.classList.add('d-none');
+                loginButton.classList.remove('d-none');
+                
             },
             function signinError(err) {
+                loginLoader.classList.add('d-none');
+                loginButton.classList.remove('d-none');
             	uh.handleSessionErrors(err,email,password);
             }
         );
@@ -196,11 +210,19 @@ var AWSCogUser = window.AWSCogUser || {};
         var email = $('#emailInputRegister').val();
         var password = $('#passwordInputRegister').val();
         var password2 = $('#password2InputRegister').val();
-
+        let signupLoader = document.getElementById('signupLoader');
+        let signupButton = signupLoader.parentElement.firstElementChild;
+        signupLoader.classList.remove('d-none');
+        signupButton.classList.add('d-none');
+       
         var onSuccess = function registerSuccess(result) {
+            signupLoader.classList.add('d-none');
+            signupButton.classList.remove('d-none');
             toggleVerification(email);
         };
         var onFailure = function registerFailure(err) {
+            signupLoader.classList.add('d-none');
+            signupButton.classList.remove('d-none');
         	document.getElementById('errorLoginPopup').innerText = err.message;
         };
         event.preventDefault();
@@ -217,9 +239,10 @@ var AWSCogUser = window.AWSCogUser || {};
         var code = $('#codeInputVerify').val();
         let password = document.getElementById('passwordInputSignin').value;
         let verifyLoader = document.getElementById('verifyLoader');
-        let verifyButton = document.getElementById('verifyButton');
+        let verifyButton = verifyLoader.parentElement.firstElementChild;
         verifyLoader.classList.remove('d-none');
         verifyButton.classList.add('d-none');
+        let loginModal = $('#loginModal');
         event.preventDefault();
         verify(email, code,
             function verifySuccess(result) {
@@ -227,10 +250,11 @@ var AWSCogUser = window.AWSCogUser || {};
                 verifyButton.classList.remove('d-none');
                 signin(email, password,
                     function signinSuccess() {
-                        // Read Cookies
-                        readCookie();
+                        // Loads the current Logged in User Attributes
+                         uh.retrieveAttributes();
+                
                         // Hide Modal
-                        $('#loginModal').modal('hide');
+                        loginModal.modal('hide');
                     },
                     function signinError(err) {
                         uh.handleSessionErrors(err,email,password);
