@@ -324,7 +324,7 @@ var AWSCogUser = window.AWSCogUser || {};
         
         let circleElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circleElement.setAttribute('class','circle');
-        circleElement.setAttribute('fill','#5bb543');
+        circleElement.setAttribute('fill','#9c27b0');
         circleElement.setAttribute('cx','24');
         circleElement.setAttribute('cy','24');
         circleElement.setAttribute('r','22');
