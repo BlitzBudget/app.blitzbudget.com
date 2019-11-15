@@ -637,12 +637,12 @@ er = {
 	
 	// Throw a session expired error and reload the page.
 	sessionExpiredSwal(data){
-    		// Show the login modal if the session has expired
-    		// Initialize the modal to not close will when pressing ESC or clicking outside
-			$('#loginModal').modal({
-			    backdrop: 'static',
-			    keyboard: false
-			});
+		// Show the login modal if the session has expired
+		// Initialize the modal to not close will when pressing ESC or clicking outside
+		$('#loginModal').modal({
+		    backdrop: 'static',
+		    keyboard: false
+		});
 	},
 	
 	// Delete the auto generated category Ids

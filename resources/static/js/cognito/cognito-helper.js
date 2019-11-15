@@ -149,7 +149,7 @@ uh = {
 		let userPool = uh.fetchUserFromLocalStorage();
 		let cognitoUser = userPool.getCurrentUser();
 		
-		cognitoUser.getSession(function(err, session) {			
+		cognitoUser.getSession(function(err, session) {	
 			cognitoUser.getUserAttributes(function(err, result) {
 				// ERROR scenarios
 		        if (err) {
@@ -159,6 +159,7 @@ uh = {
 		        // SUCCESS Scenarios
 		        for (i = 0; i < result.length; i++) {
 		        	let name = result[i].getName();
+
 		        	if(name.includes('custom:')) {
 		        		// if custom values then remove custom: 
 		        		let elemName = lastElement(splitElement(name,':'));
