@@ -179,14 +179,29 @@ var AWSCogUser = window.AWSCogUser || {};
     });
 
     function handleSignin(event) {
-        var email = $('#emailInputSignin').val();
-        var password = $('#passwordInputSignin').val();
+        var email = document.getElementById('emailInputSignin').value;
+        var password = document.getElementById('passwordInputSignin').value;
         let loginLoader = document.getElementById('loginLoader');
         let loginButton = loginLoader.parentElement.firstElementChild;
         let loginModal = $('#loginModal');
+        event.preventDefault();
+
+        if(isEmpty(email) && isEmpty(password)) {
+            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty';
+            return;
+        } else if(isEmpty(email)) {
+            document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            return;
+        } else if(isEmpty(password)) {
+            document.getElementById('errorLoginPopup').innerText = 'Password field cannot be empty';
+            return;
+        } else if (password.length < 8) {
+            document.getElementById('errorLoginPopup').innerText = 'Password should have a minimum length of 8 characters';
+            return;
+        }
+
         loginLoader.classList.remove('d-none');
         loginButton.classList.add('d-none');
-        event.preventDefault();
         signin(email, password,
             function signinSuccess() {
                 // Loads the current Logged in User Attributes
@@ -207,11 +222,30 @@ var AWSCogUser = window.AWSCogUser || {};
     }
 
     function handleRegister(event) {
-        var email = $('#emailInputRegister').val();
-        var password = $('#passwordInputRegister').val();
-        var password2 = $('#password2InputRegister').val();
+        var email = document.getElementById('emailInputRegister').value;
+        var password = document.getElementById('passwordInputRegister').value;
+        var password2 = document.getElementById('password2InputRegister').value;
         let signupLoader = document.getElementById('signupLoader');
         let signupButton = signupLoader.parentElement.firstElementChild;
+        event.preventDefault();
+
+        if(isEmpty(email) && isEmpty(password)) {
+            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty';
+            return;
+        } else if(isEmpty(email)) {
+            document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            return;
+        } else if(isEmpty(password)) {
+            document.getElementById('errorLoginPopup').innerText = 'Password field cannot be empty';
+            return;
+        } else if (password.length < 8) {
+            document.getElementById('errorLoginPopup').innerText = 'Password should have a minimum length of 8 characters';
+            return;
+        } else if (password !== password2) {
+            document.getElementById('errorLoginPopup').innerText = 'Passwords do not match';
+            return;
+        }
+
         signupLoader.classList.remove('d-none');
         signupButton.classList.add('d-none');
        
@@ -225,25 +259,31 @@ var AWSCogUser = window.AWSCogUser || {};
             signupButton.classList.remove('d-none');
         	document.getElementById('errorLoginPopup').innerText = err.message;
         };
-        event.preventDefault();
 
         if (password === password2) {
             register(email, password, onSuccess, onFailure);
-        } else {
-        	document.getElementById('errorLoginPopup').innerText = 'Passwords do not match';
-        }
+        } 
     }
 
     function handleVerify(event) {
-        var email = $('#emailInputVerify').val();
-        var code = $('#codeInputVerify').val();
+        var email = document.getElementById('emailInputVerify').value;
+        var code = document.getElementById('codeInputVerify').value;
         let password = document.getElementById('passwordInputSignin').value;
         let verifyLoader = document.getElementById('verifyLoader');
         let verifyButton = verifyLoader.parentElement.firstElementChild;
+        event.preventDefault();
+        
+        if(isEmpty(code)) {
+            document.getElementById('errorLoginPopup').innerText = 'Verification code cannot be empty';
+            return;
+        } else if (code.length !== 6) {
+            document.getElementById('errorLoginPopup').innerText = 'Verification code must be 6 characters long';
+            return;
+        }
+
         verifyLoader.classList.remove('d-none');
         verifyButton.classList.add('d-none');
         let loginModal = $('#loginModal');
-        event.preventDefault();
         verify(email, code,
             function verifySuccess(result) {
                 verifyLoader.classList.add('d-none');
@@ -276,6 +316,7 @@ var AWSCogUser = window.AWSCogUser || {};
         let successLP = document.getElementById('successLoginPopup');
         let errorLP = document.getElementById('errorLoginPopup');
         let resendLoader = document.getElementById('resendLoader');
+
         // Fadeout for 60 seconds
         currenElem.classList.add('d-none');
         // Append Loader
@@ -324,7 +365,7 @@ var AWSCogUser = window.AWSCogUser || {};
         
         let circleElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circleElement.setAttribute('class','circle');
-        circleElement.setAttribute('fill','#9c27b0');
+        circleElement.setAttribute('fill','#5bb543');
         circleElement.setAttribute('cx','24');
         circleElement.setAttribute('cy','24');
         circleElement.setAttribute('r','22');
@@ -356,7 +397,8 @@ var AWSCogUser = window.AWSCogUser || {};
 
     // LOGIN POPUP Forgot Password Text
     document.getElementById('forgotPassLogin').addEventListener("click",function(e){
-        forgotPassword();
+        let resendLoader = document.getElementById('resendLoader');
+        forgotPassword(this, resendLoader);
     });
 
     document.getElementById('shyAnchor').addEventListener("click",function(e){
@@ -364,60 +406,59 @@ var AWSCogUser = window.AWSCogUser || {};
         toggleLogin(email);
     });
 
-    // Toggle login
-    function toggleLogin(email) {
-        document.getElementById('google').classList.remove('d-none');
-        document.getElementById('facebook').classList.remove('d-none');
-        document.getElementById('twitter').classList.remove('d-none');
-        document.getElementById('gmail').classList.add('d-none');
-        document.getElementById('outlook').classList.add('d-none');
+    // Forgot Password Flow
+    function forgotPassword(forgotPass, resendloader) {
+        
+        let emailInputSignin = document.getElementById('emailInputSignin').value;
+        let cognitoUser = createCognitoUser(emailInputSignin);
+        let loginModal = $('#loginModal');
+        var newPassword = document.getElementById('passwordInputSignin').value;
 
-        document.getElementById('loginModalTitle').innerText = 'Login';
-
-        document.getElementById('signinForm').classList.remove('d-none');
-
-        document.getElementById('verifyForm').classList.add('d-none');
-
-        if(isNotEmpty(email)) {
-            document.getElementById('emailInputVerify').value = email;
+        if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
+            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty';
+            return;
+        } else if(isEmpty(emailInputSignin)) {
+            document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            return;
+        } else if(isEmpty(newPassword)) {
+            document.getElementById('errorLoginPopup').innerText = 'Password field cannot be empty';
+            return;
+        } else if (newPassword.length < 8) {
+            document.getElementById('errorLoginPopup').innerText = 'Password should have a minimum length of 8 characters';
+            return;
         }
 
-        document.getElementById('emailDisplayVE').innerText = '';
-
-        document.getElementById('forgotPassLogin').classList.remove('d-none');
-
-        document.getElementById('resendCodeLogin').classList.add('d-none');
+        // Turn on Loader
+        forgotPass.classList.add('d-none');
+        resendLoader.classList.remove('d-none');
         
-        // hide Signup
-        document.getElementById('registrationForm').classList.add('d-none');
-        
-        document.getElementById('emailInputRegister').value = '';
-        document.getElementById('passwordInputRegister').value = '';
-        
-        document.getElementById('successLoginPopup').innerText = '';
-        document.getElementById('errorLoginPopup').innerText = '';
-
-        document.getElementById('haveAnAccount').classList.add('d-none');
-    }
-
-    // Forgot Password Flow
-    function forgotPassword() {
-        
-        // Fetch user from local storage
-        let userPool = uh.fetchUserFromLocalStorage();
-        let cognitoUser = userPool.getCurrentUser();
-        
-        // TODO Adopt Code
         cognitoUser.forgotPassword({
             onSuccess: function (result) {
-                console.log('call result: ' + result);
+                signin(emailInputSignin, newPassword,
+                    function signinSuccess() {
+                        // Loads the current Logged in User Attributes
+                        uh.retrieveAttributes();
+
+                        // Hide Modal
+                        loginModal.modal('hide');
+                        resendloader.classList.add('d-none');
+                        forgotPass.classList.remove('d-none');
+                        
+                    },
+                    function signinError(err) {
+                        uh.handleSessionErrors(err,email,password);
+                        resendloader.classList.add('d-none');
+                        forgotPass.classList.remove('d-none');
+                    }
+                );
             },
             onFailure: function(err) {
-                alert(err);
+                document.getElementById('errorLoginPopup').innerText = err.message;
+                resendloader.classList.add('d-none');
+                forgotPass.classList.remove('d-none');
             },
             inputVerificationCode() {
                 var verificationCode = prompt('Please input verification code ' ,'');
-                var newPassword = prompt('Enter new password ' ,'');
                 cognitoUser.confirmPassword(verificationCode, newPassword, this);
             }
          });

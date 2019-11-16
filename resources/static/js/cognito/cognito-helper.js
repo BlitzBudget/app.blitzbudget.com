@@ -278,3 +278,39 @@ function toggleSignUp(email,pass) {
 	document.getElementById('successLoginPopup').innerText = '';
 	document.getElementById('errorLoginPopup').innerText = '';
 }
+
+// Toggle login
+function toggleLogin(email) {
+    document.getElementById('google').classList.remove('d-none');
+    document.getElementById('facebook').classList.remove('d-none');
+    document.getElementById('twitter').classList.remove('d-none');
+    document.getElementById('gmail').classList.add('d-none');
+    document.getElementById('outlook').classList.add('d-none');
+
+    document.getElementById('loginModalTitle').innerText = 'Login';
+
+    document.getElementById('signinForm').classList.remove('d-none');
+
+    document.getElementById('verifyForm').classList.add('d-none');
+
+    if(isNotEmpty(email)) {
+        document.getElementById('emailInputVerify').value = email;
+    }
+
+    document.getElementById('emailDisplayVE').innerText = '';
+
+    document.getElementById('forgotPassLogin').classList.remove('d-none');
+
+    document.getElementById('resendCodeLogin').classList.add('d-none');
+    
+    // hide Signup
+    document.getElementById('registrationForm').classList.add('d-none');
+    
+    document.getElementById('emailInputRegister').value = '';
+    document.getElementById('passwordInputRegister').value = '';
+    
+    document.getElementById('successLoginPopup').innerText = '';
+    document.getElementById('errorLoginPopup').innerText = '';
+
+    document.getElementById('haveAnAccount').classList.add('d-none');
+}

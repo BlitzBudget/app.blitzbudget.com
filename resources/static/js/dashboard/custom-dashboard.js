@@ -639,6 +639,7 @@ er = {
 	sessionExpiredSwal(data){
 		// Show the login modal if the session has expired
 		// Initialize the modal to not close will when pressing ESC or clicking outside
+		toggleLogin('');
 		$('#loginModal').modal({
 		    backdrop: 'static',
 		    keyboard: false
