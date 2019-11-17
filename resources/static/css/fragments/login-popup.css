@@ -129,8 +129,3 @@
   background: url(/img/login/outlook_icon.svg);
   background-size: 40px 24px;
 }
-
-.passwordText {
-	cursor: pointer;
-	color: #999;
-}
