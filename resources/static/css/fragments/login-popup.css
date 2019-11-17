@@ -113,3 +113,24 @@
 .errorCodePopup {
 	color: #d71c1c;
 }
+
+#gmail {
+  text-indent: -9999px;
+  width: 24px;
+  height: 24px;
+  background: url(/img/login/gmail_icon.svg);
+  background-size: 40px 24px;
+}
+
+#outlook {
+  text-indent: -9999px;
+  width: 24px;
+  height: 24px;
+  background: url(/img/login/outlook_icon.svg);
+  background-size: 40px 24px;
+}
+
+.passwordText {
+	cursor: pointer;
+	color: #999;
+}
