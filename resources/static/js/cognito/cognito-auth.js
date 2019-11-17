@@ -392,19 +392,36 @@ var AWSCogUser = window.AWSCogUser || {};
     // LOGIN POPUP Already have an accout
     document.getElementById('haveAnAccount').addEventListener("click",function(e){
         let email = document.getElementById('emailInputRegister').value;
+        resetErrorOrSuccessMessages();
         toggleLogin(email);
     });
 
     // LOGIN POPUP Forgot Password Text
     document.getElementById('forgotPassLogin').addEventListener("click",function(e){
         let resendLoader = document.getElementById('resendLoader');
+        resetErrorOrSuccessMessages();
         forgotPassword(this, resendLoader);
     });
 
     document.getElementById('shyAnchor').addEventListener("click",function(e){
         let email = document.getElementById('emailInputRegister').value;
+        resetErrorOrSuccessMessages();
         toggleLogin(email);
     });
+
+    // Reset Login Popup Error /  Success messages
+    function resetErrorOrSuccessMessages() {
+        let errorLP = document.getElementById('errorLoginPopup');
+        let successLP = document.getElementById('successLoginPopup');
+        // Replace HTML with Empty
+        while (errorLP.firstChild) {
+            errorLP.removeChild(errorLP.firstChild);
+        }
+        // Replace HTML with Empty
+        while (successLP.firstChild) {
+            successLP.removeChild(successLP.firstChild);
+        }
+    }
 
     // Forgot Password Flow
     function forgotPassword(forgotPass, resendloader) {
@@ -415,16 +432,16 @@ var AWSCogUser = window.AWSCogUser || {};
         var newPassword = document.getElementById('passwordInputSignin').value;
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty';
+            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty, Enter the new password in the password field';
             return;
         } else if(isEmpty(emailInputSignin)) {
             document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
             return;
         } else if(isEmpty(newPassword)) {
-            document.getElementById('errorLoginPopup').innerText = 'Password field cannot be empty';
+            document.getElementById('errorLoginPopup').innerText = 'Enter the new password in the password field';
             return;
         } else if (newPassword.length < 8) {
-            document.getElementById('errorLoginPopup').innerText = 'Password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').innerText = 'The new password should have a minimum length of 8 characters';
             return;
         }
 
@@ -458,7 +475,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 forgotPass.classList.remove('d-none');
             },
             inputVerificationCode() {
-                var verificationCode = prompt('Please input verification code ' ,'');
+                var verificationCode = prompt('Please input verification code sent to ' +  emailInputSignin,'');
                 cognitoUser.confirmPassword(verificationCode, newPassword, this);
             }
          });
