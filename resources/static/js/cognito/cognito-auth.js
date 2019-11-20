@@ -266,12 +266,16 @@ var AWSCogUser = window.AWSCogUser || {};
     }
 
     function handleVerify(event) {
+        event.preventDefault();
+        verificationCode();
+    }
+
+    function verificationCode() {
         var email = document.getElementById('emailInputVerify').value;
         var code = document.getElementById('codeInputVerify').value;
         let password = document.getElementById('passwordInputSignin').value;
         let verifyLoader = document.getElementById('verifyLoader');
         let verifyButton = verifyLoader.parentElement.firstElementChild;
-        event.preventDefault();
         
         if(isEmpty(code)) {
             document.getElementById('errorLoginPopup').innerText = 'Verification code cannot be empty';
@@ -302,7 +306,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 );
             },
             function verifyError(err) {
-            	document.getElementById('errorLoginPopup').innerText = err.message;
+                document.getElementById('errorLoginPopup').innerText = err.message;
                 verifyLoader.classList.add('d-none');
                 verifyButton.classList.remove('d-none');
             }
@@ -343,6 +347,14 @@ var AWSCogUser = window.AWSCogUser || {};
             resendLoader.classList.add('d-none');
             successLP.appendChild(successSvgMessage());
         });
+    });
+
+    // Auto submit verification code
+    document.getElementById('codeInputVerify').addEventListener("keyup", function(e){
+        let vc = this.value;
+        if(vc.length == 6) {
+            verificationCode();
+        }
     });
 
     // Generate SVG Tick Element and success element
