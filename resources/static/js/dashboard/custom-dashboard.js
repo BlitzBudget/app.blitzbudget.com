@@ -197,47 +197,47 @@ window.onload = function () {
 			
 			// Close the category modals if open
 			closeCategoryModalIfOpen();
+			// Updates the budget before navigating away
+			er.updateBudget(true);
 			
 			switch(id) {
 			
-			case 'transactionsPage':
-				url = '/transactions';
-				color = 'green';
-				// Updates the budget before navigating away
-				er.updateBudget(true);
-			    break;
-			case 'budgetPage':
-				url = '/budget';
-				color = 'rose';
-			    break;
-			case 'goalsPage':
-				url = '/goals';
-				color = 'orange';
-				imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
-			    break;
-			case 'overviewPage':
-				url = '/overview';
-				color = 'azure';
-				imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
-			    break;
-			case 'investmentsPage':
-				url = '/investment';
-				color = 'purple';
-				imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
-			    break;
-			case 'settings-dashboard-sidebar':
-				url = '/settings';
-				color = 'danger';
-			    break;
-			default:
-				swal({
-	                title: "Redirecting Not Possible",
-	                text: 'Please try again later',
-	                type: 'warning',
-	                timer: 1000,
-	                showConfirmButton: false
-	            }).catch(swal.noop);
-				return;
+				case 'transactionsPage':
+					url = '/transactions';
+					color = 'green';
+				    break;
+				case 'budgetPage':
+					url = '/budget';
+					color = 'rose';
+				    break;
+				case 'goalsPage':
+					url = '/goals';
+					color = 'orange';
+					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
+				    break;
+				case 'overviewPage':
+					url = '/overview';
+					color = 'azure';
+					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
+				    break;
+				case 'investmentsPage':
+					url = '/investment';
+					color = 'purple';
+					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
+				    break;
+				case 'settings-dashboard-sidebar':
+					url = '/settings';
+					color = 'danger';
+				    break;
+				default:
+					swal({
+		                title: "Redirecting Not Possible",
+		                text: 'Please try again later',
+		                type: 'warning',
+		                timer: 1000,
+		                showConfirmButton: false
+		            }).catch(swal.noop);
+					return;
 			}
 			
 			// Remove the active class from the current sidebar
