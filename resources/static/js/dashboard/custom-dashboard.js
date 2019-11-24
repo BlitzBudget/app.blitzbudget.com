@@ -113,9 +113,9 @@ window.onload = function () {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.settingsDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
-		
-		// Read Cookies
-		readCookie();
+
+		// Startup Application
+		startupApplication();
 		
 		// Adjust styles of login for dashboad
 		adjustStylesForLoginPopup();
@@ -554,9 +554,6 @@ window.onload = function () {
 			overviewHeading.innerText = months[currentDate.getMonth()];
 			overviewYearHeading.innerText = currentDate.getFullYear();
 		}
-		
-		// Fetch Bank Account Information and populate
-		er_a.fetchBankAccountInfo();
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
 		$('#loginModal').on('hidden.bs.modal', function (e) {
@@ -564,12 +561,16 @@ window.onload = function () {
 			 if(isEmpty(currentUser)) {
 			 	window.location.reload();
 			 } else {
-			 	// Read Cookies
-	        	readCookie();
-	  			// Fetch Bank Account Information and populate
-				er_a.fetchBankAccountInfo();
+			 	startupApplication();
 			 }
 		});
+
+		function startupApplication() {
+			// Read Cookies
+	        readCookie();
+			// Fetch Bank Account Information and populate
+			er_a.fetchBankAccountInfo();
+		}
 		
 	});
 }
