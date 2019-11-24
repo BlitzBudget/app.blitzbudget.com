@@ -1479,6 +1479,9 @@
             	// Get all the category id's
         		let categoryTotalKeys = Object.keys(categoryTotalMap);
             	let categoryDivs = document.querySelectorAll('*[id^="categoryTableRow"]');
+            	// Category Total
+            	let totalExpensesTransactions = 0;
+            	let totalIncomeTransactions = 0;
             	
             	// Find the categories that are visible to the user but are not present in the database
             	for(let count = 0, lengthArray = categoryDivs.length; count < lengthArray; count++){
@@ -1498,20 +1501,31 @@
             			});
             		} else {
                    	    let value = categoryTotalMap[categoryId];
+                   	    let categoryIt = categoryMap[categoryId];
                    	    let categoryAmountDiv = document.getElementById('amountCategory-'+categoryId);
                 	    categoryAmountDiv.innerHTML = currentCurrencyPreference + formatNumber(value, currentUser.locale);
+
+                	    // Total Expenses and Total Income
+		     			if(categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		     				totalExpensesTransactions += value;
+		     			} else if (categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+		     				totalIncomeTransactions += value;
+		     			}
                 	    
-                	   // Check if the modal is open
-                   	   if(categoryIdOpenInModal == categoryId) {
+                	    // Check if the modal is open
+                   	    if(categoryIdOpenInModal == categoryId) {
                      		// Handle category Modal
                          	let categoryRowElement = document.getElementById('categoryTableRow-' + categoryId);
                          	// Fetch all the categories child transactions
                          	let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
                          	// Edit Category Modal
                          	handleCategoryModalToggle(categoryId, categoryRowElement, hideableRowElement.length);
-                   	   }
+                   	    }
             		}
             	}
+
+            	// Build Category Modal
+    		  	updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
 
             }
 		});

@@ -513,7 +513,7 @@ $(document).ready(function(){
 	$('#accountPickerWrapper').on('click', ".manageBA", function() {
 		$.ajax({
 	          type: "GET",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + CUSTOM_DASHBOARD_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId,
 	          dataType: "json",
 	          success: function(categorizeBankAccount){
 	        	  let bAParentFrag = document.createDocumentFragment();

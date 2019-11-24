@@ -1,6 +1,7 @@
 "use strict";
-// Current User
-let currentUser = {};
+/* global currentUser */
+
+let currentUser = window.currentUser || {};
 // Custom Javascript for dashboard
 const CUSTOM_DASHBOARD_CONSTANTS = {};
 
@@ -112,9 +113,9 @@ window.onload = function () {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.settingsDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
-		
-		// Read Cookies
-		readCookie();
+
+		// Startup Application
+		startupApplication();
 		
 		// Adjust styles of login for dashboad
 		adjustStylesForLoginPopup();
@@ -197,47 +198,47 @@ window.onload = function () {
 			
 			// Close the category modals if open
 			closeCategoryModalIfOpen();
+			// Updates the budget before navigating away
+			er.updateBudget(true);
 			
 			switch(id) {
 			
-			case 'transactionsPage':
-				url = '/transactions';
-				color = 'green';
-				// Updates the budget before navigating away
-				er.updateBudget(true);
-			    break;
-			case 'budgetPage':
-				url = '/budget';
-				color = 'rose';
-			    break;
-			case 'goalsPage':
-				url = '/goals';
-				color = 'orange';
-				imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
-			    break;
-			case 'overviewPage':
-				url = '/overview';
-				color = 'azure';
-				imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
-			    break;
-			case 'investmentsPage':
-				url = '/investment';
-				color = 'purple';
-				imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
-			    break;
-			case 'settings-dashboard-sidebar':
-				url = '/settings';
-				color = 'danger';
-			    break;
-			default:
-				swal({
-	                title: "Redirecting Not Possible",
-	                text: 'Please try again later',
-	                type: 'warning',
-	                timer: 1000,
-	                showConfirmButton: false
-	            }).catch(swal.noop);
-				return;
+				case 'transactionsPage':
+					url = '/transactions';
+					color = 'green';
+				    break;
+				case 'budgetPage':
+					url = '/budget';
+					color = 'rose';
+				    break;
+				case 'goalsPage':
+					url = '/goals';
+					color = 'orange';
+					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
+				    break;
+				case 'overviewPage':
+					url = '/overview';
+					color = 'azure';
+					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
+				    break;
+				case 'investmentsPage':
+					url = '/investment';
+					color = 'purple';
+					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
+				    break;
+				case 'settings-dashboard-sidebar':
+					url = '/settings';
+					color = 'danger';
+				    break;
+				default:
+					swal({
+		                title: "Redirecting Not Possible",
+		                text: 'Please try again later',
+		                type: 'warning',
+		                timer: 1000,
+		                showConfirmButton: false
+		            }).catch(swal.noop);
+					return;
 			}
 			
 			// Remove the active class from the current sidebar
@@ -553,9 +554,6 @@ window.onload = function () {
 			overviewHeading.innerText = months[currentDate.getMonth()];
 			overviewYearHeading.innerText = currentDate.getFullYear();
 		}
-		
-		// Fetch Bank Account Information and populate
-		er_a.fetchBankAccountInfo();
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
 		$('#loginModal').on('hidden.bs.modal', function (e) {
@@ -563,12 +561,16 @@ window.onload = function () {
 			 if(isEmpty(currentUser)) {
 			 	window.location.reload();
 			 } else {
-			 	// Read Cookies
-	        	readCookie();
-	  			// Fetch Bank Account Information and populate
-				er_a.fetchBankAccountInfo();
+			 	startupApplication();
 			 }
 		});
+
+		function startupApplication() {
+			// Read Cookies
+	        readCookie();
+			// Fetch Bank Account Information and populate
+			er_a.fetchBankAccountInfo();
+		}
 		
 	});
 }
