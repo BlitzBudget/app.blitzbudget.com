@@ -1,3 +1,4 @@
+"use strict";
 /*global AWSCogUser _config*/
 
 uh = {
@@ -145,31 +146,48 @@ uh = {
 
 	// Retrieve Attributes
 	retrieveAttributes() {
-		// Fetch user from local storage
-		let userPool = uh.fetchUserFromLocalStorage();
-		let cognitoUser = userPool.getCurrentUser();
-		
-		cognitoUser.getSession(function(err, session) {	
-			cognitoUser.getUserAttributes(function(err, result) {
-				// ERROR scenarios
-		        if (err) {
-		        	uh.handleSessionErrors(err,"","");
-		            return;
-		        }
-		        // SUCCESS Scenarios
-		        for (i = 0; i < result.length; i++) {
-		        	let name = result[i].getName();
+		// We retrieve the object again, but in a string form.
+		let currentUserSI = sessionStorage.getItem("currentUserSI");
+		if(currentUserSI) {
+			// User Attribute retrieved from current user session storage
+			window.currentUser = JSON.parse(currentUserSI);
+		} else {
+			// Fetch user from local storage
+			let userPool = uh.fetchUserFromLocalStorage();
+			let cognitoUser = userPool.getCurrentUser();
 
-		        	if(name.includes('custom:')) {
-		        		// if custom values then remove custom: 
-		        		let elemName = lastElement(splitElement(name,':'));
-		        		currentUser[elemName] = result[i].getValue();
-		        	} else {
-		        		currentUser[name] = result[i].getValue();
-		        	}
-		        }
-		    });
-		});
+			// User Attribute retrieved from cognito
+			cognitoUser.getSession(function(err, session) {	
+				cognitoUser.getUserAttributes(function(err, result) {
+					let currentUserLocal = {};
+
+					// ERROR scenarios
+			        if (err) {
+			        	uh.handleSessionErrors(err,"","");
+			            return;
+			        }
+			        // SUCCESS Scenarios
+			        for (i = 0; i < result.length; i++) {
+			        	let name = result[i].getName();
+
+			        	if(name.includes('custom:')) {
+			        		// if custom values then remove custom: 
+			        		let elemName = lastElement(splitElement(name,':'));
+			        		currentUserLocal[elemName] = result[i].getValue();
+			        	} else {
+			        		currentUserLocal[name] = result[i].getValue();
+			        	}
+			        }
+
+			        // Current User to global variable
+			        window.currentUser = currentUserLocal;
+			        // We save the item in the sessionStorage.
+					sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+
+			    });
+			});
+		}		
+		
 	},
 
 	handleSessionErrors(err,email,pass) {

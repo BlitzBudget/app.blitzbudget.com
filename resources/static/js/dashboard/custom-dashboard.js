@@ -1,6 +1,7 @@
 "use strict";
-// Current User
-let currentUser = {};
+/* global currentUser */
+
+let currentUser = window.currentUser || {};
 // Custom Javascript for dashboard
 const CUSTOM_DASHBOARD_CONSTANTS = {};
 

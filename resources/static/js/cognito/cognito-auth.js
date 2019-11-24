@@ -1,5 +1,5 @@
 /*global AWSCogUser _config AmazonCognitoIdentity AWSCognito*/
-
+"use strict";
 var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
