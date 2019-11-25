@@ -131,7 +131,7 @@ var AWSCogUser = window.AWSCogUser || {};
      * Create Attribute for user
      */
     function createAttribute(nameAttr, valAttr) {
-    	var dataAttribute = {
+    	let dataAttribute = {
                 Name: nameAttr,
                 Value: valAttr
         };
@@ -140,12 +140,12 @@ var AWSCogUser = window.AWSCogUser || {};
     }
 
     function signin(email, password, onSuccess, onFailure) {
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+        let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username: email,
             Password: password
         });
 
-        var cognitoUser = createCognitoUser(email);
+        let cognitoUser = createCognitoUser(email);
         cognitoUser.authenticateUser(authenticationDetails, {
             onSuccess: onSuccess,
             onFailure: onFailure
@@ -180,8 +180,8 @@ var AWSCogUser = window.AWSCogUser || {};
     });
 
     function handleSignin(event) {
-        var email = document.getElementById('emailInputSignin').value;
-        var password = document.getElementById('passwordInputSignin').value;
+        let email = document.getElementById('emailInputSignin').value;
+        let password = document.getElementById('passwordInputSignin').value;
         let loginLoader = document.getElementById('loginLoader');
         let loginButton = loginLoader.parentElement.firstElementChild;
         let loginModal = $('#loginModal');
