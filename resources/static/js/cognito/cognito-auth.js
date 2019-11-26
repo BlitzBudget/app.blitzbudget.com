@@ -204,7 +204,7 @@ var AWSCogUser = window.AWSCogUser || {};
         loginLoader.classList.remove('d-none');
         loginButton.classList.add('d-none');
         signin(email, password,
-            function signinSuccess() {
+            function signinSuccess(result) {
                 // Loads the current Logged in User Attributes
                 uh.retrieveAttributes();
 
@@ -212,6 +212,9 @@ var AWSCogUser = window.AWSCogUser || {};
                 loginModal.modal('hide');
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
+
+                let idToken = JSON.stringify(result.idToken.jwtToken);
+                window.authHeader = sessionStorage.setItem('idToken' , idToken.substring(1, idToken.length -1)) ;
                 
             },
             function signinError(err) {
