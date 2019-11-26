@@ -47,6 +47,7 @@
 	function populateRecentTransactions() {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	        type: 'GET',
 	        success: function(userTransactionsList) {
 	        	let recentTransactionsDiv = document.getElementById('recentTransactions');
@@ -264,6 +265,7 @@
 	function fetchCategoryTotalForTransactions() {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetFalseParam,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: 'GET',
             success: function(categoryTotalMap) {
             	// Store the result in a cache
@@ -293,6 +295,7 @@
 	function populateOptimizationOfBudget() {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: 'GET',
             success: function(userBudgetList) {
             	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
@@ -626,6 +629,7 @@
 		$.ajax({
 	          type: "POST",
 	          url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: "json",
 	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	          data : values,
@@ -747,6 +751,7 @@
 	function populateIncomeAverage() {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	        type: 'GET',
 	        success: function(averageIncome) {
 	        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
@@ -775,6 +780,7 @@
 	function  populateExpenseAverage() {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	        type: 'GET',
 	        success: function(averageExpense) {
 	        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
@@ -807,6 +813,7 @@
 	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	        type: 'GET',
 	        success: function(dateAndAmountAsList) {
 	        	

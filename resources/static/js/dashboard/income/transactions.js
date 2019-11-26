@@ -98,6 +98,7 @@
 		$.ajax({
 	          type: "POST",
 	          url: CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.financialPortfolioId,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: "json",
 	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	          data : values,
@@ -155,6 +156,7 @@
 		// Load all user transaction from API
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: 'GET',
             success: function(result) {
     			let totalExpensesTransactions = 0.00;
@@ -226,6 +228,7 @@
 	function updateBudgetForIncome() {
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: 'GET',
             success: function(data) {
             	let dataKeySet = Object.keys(data)
@@ -605,6 +608,7 @@
 			                     
 			                     jQuery.ajax({
 			                         url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			                         beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			                         type: 'DELETE',
 			                         contentType: "application/json; charset=utf-8", 
 			                         success: function() {
@@ -740,6 +744,7 @@
 			$.ajax({
 		          type: "POST",
 		          url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'category',
+		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		          dataType: "json",
 		          contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
 		          data : values,
@@ -832,6 +837,7 @@
 		$.ajax({
 	          type: "POST",
 	          url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'description',
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: "json",
 	          contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
 	          data : values,
@@ -915,6 +921,7 @@
 			$.ajax({
 		          type: "POST",
 		          url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'transaction',
+		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		          dataType: "json",
 		          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		          data : values,
@@ -1074,6 +1081,7 @@
 		// Handle delete for individual row
 		jQuery.ajax({
             url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+            beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: 'DELETE',
             success: function(data) {
             	let previousCategoryId = '';
@@ -1395,6 +1403,7 @@
 		 $.ajax({
 	          type: "POST",
 	          url: CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.financialPortfolioId,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: "json",
 	          contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
 	          data : values,
@@ -1471,6 +1480,7 @@
 		// Load all user transaction from API
 		jQuery.ajax({
 			url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetTrueParam,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: 'GET',
             async: true,
             success: function(categoryTotalMap) {
@@ -1770,6 +1780,7 @@
 			$.ajax({
 		          type: "POST",
 		          url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId,
+		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		          dataType: "json",
 		          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 		          data : values,
