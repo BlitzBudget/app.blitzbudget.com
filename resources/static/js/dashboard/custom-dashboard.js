@@ -2,7 +2,7 @@
 /* global currentUser authHeader*/
 
 let currentUser = window.currentUser || {};
-let authHeader = sessionStorage.getItem('idToken');
+let authHeader = window.authHeader || sessionStorage.getItem('idToken');
 
 // Custom Javascript for dashboard
 const CUSTOM_DASHBOARD_CONSTANTS = {};
@@ -569,10 +569,15 @@ window.onload = function () {
 		});
 
 		function startupApplication() {
-			// Read Cookies
-	        readCookie();
-			// Fetch Bank Account Information and populate
-			er_a.fetchBankAccountInfo();
+			// Invoke only when the use is logged in
+			if(isNotEmpty(currentUser) && isNotEmpty(authHeader)) {
+				// Read Cookies
+		        readCookie();
+				// Fetch Bank Account Information and populate
+				er_a.fetchBankAccountInfo();
+				// Fetch Category 
+				er.fetchJSONForCategories();
+			} 
 		}
 		
 	});
@@ -793,9 +798,6 @@ er = {
 	}
 		
 }
-
-// Fetch Category 
-er.fetchJSONForCategories();
 
 /* When the toggleFullscreen() function is executed, open the video in fullscreen.
 Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */

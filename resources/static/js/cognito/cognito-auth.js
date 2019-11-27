@@ -213,8 +213,11 @@ var AWSCogUser = window.AWSCogUser || {};
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
 
+                // Set JWT Token For authentication
                 let idToken = JSON.stringify(result.idToken.jwtToken);
-                window.authHeader = sessionStorage.setItem('idToken' , idToken.substring(1, idToken.length -1)) ;
+                idToken = idToken.substring(1, idToken.length -1);
+                sessionStorage.setItem('idToken' , idToken) ;
+                window.authHeader = idToken;
                 
             },
             function signinError(err) {
