@@ -49,6 +49,115 @@ var AWSCogUser = window.AWSCogUser || {};
         }
     });
 
+    retrieveAttributes();
+
+    /**
+    * Retrieve Attributes
+    **/
+    function retrieveAttributes() {
+        // We retrieve the object again, but in a string form.
+        let currentUserSI = sessionStorage.getItem("currentUserSI");
+        if(currentUserSI) {
+            // User Attribute retrieved from current user session storage
+            window.currentUser = JSON.parse(currentUserSI);
+        } else {
+            // Fetch user from local storage
+            let userPool = fetchUserFromLocalStorage();
+            let cognitoUser = userPool.getCurrentUser();
+
+            // If User is null
+            if (!cognitoUser) {
+                // Show the login modal if the session has expired
+                // Initialize the modal to not close will when pressing ESC or clicking outside
+                toggleLogin('');
+                $('#loginModal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                return;
+            }
+
+            // User Attribute retrieved from cognito
+            cognitoUser.getSession(function(err, session) {
+                // Error Session
+                if (err) {
+                    // Show the login modal if the session has expired
+                    // Initialize the modal to not close will when pressing ESC or clicking outside
+                    toggleLogin('');
+                    $('#loginModal').modal({
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                    return;
+                }
+
+                cognitoUser.getUserAttributes(function(err, result) {
+                    let currentUserLocal = {};
+
+                    // ERROR scenarios
+                    if (err) {
+                        handleSessionErrors(err,"","");
+                        return;
+                    }
+                    // SUCCESS Scenarios
+                    for (i = 0; i < result.length; i++) {
+                        let name = result[i].getName();
+
+                        if(name.includes('custom:')) {
+                            // if custom values then remove custom: 
+                            let elemName = lastElement(splitElement(name,':'));
+                            currentUserLocal[elemName] = result[i].getValue();
+                        } else {
+                            currentUserLocal[name] = result[i].getValue();
+                        }
+                    }
+
+                    // Current User to global variable
+                    window.currentUser = currentUserLocal;
+                    // We save the item in the sessionStorage.
+                    sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+
+                });
+            });
+        }       
+        
+    }
+
+    // Handle Session Errors
+    function handleSessionErrors(err,email,pass) {
+
+        let homepageUrl = 'https://www.blitzbudget.com';
+        
+        /*
+         * User Does not Exist
+         */
+        if(stringIncludes(err.code,"UserNotFoundException")) {
+            toggleSignUp(email,pass);
+            return;
+        }
+        
+        /*
+         * User Not Confirmed
+         */
+        if(stringIncludes(err.code,"UserNotConfirmedException")) {
+            // Verify Account
+            toggleVerification(email);
+            return;
+        }
+        
+        /*
+         * PasswordResetRequiredException
+         */
+        if(stringIncludes(err.code,"PasswordResetRequiredException")) {
+            // TODO
+        }
+
+        /**
+        *   Other Errors
+        **/
+        document.getElementById('errorLoginPopup').innerText = err.message;
+    }
+
 
     /*
      * Cognito User Pool functions
@@ -206,7 +315,7 @@ var AWSCogUser = window.AWSCogUser || {};
         signin(email, password,
             function signinSuccess(result) {
                 // Loads the current Logged in User Attributes
-                uh.retrieveAttributes();
+                retrieveAttributes();
 
                 // Hide Modal
                 loginModal.modal('hide');
@@ -223,7 +332,7 @@ var AWSCogUser = window.AWSCogUser || {};
             function signinError(err) {
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
-            	uh.handleSessionErrors(err,email,password);
+            	handleSessionErrors(err,email,password);
             }
         );
     }
@@ -302,13 +411,13 @@ var AWSCogUser = window.AWSCogUser || {};
                 signin(email, password,
                     function signinSuccess() {
                         // Loads the current Logged in User Attributes
-                         uh.retrieveAttributes();
+                         retrieveAttributes();
                 
                         // Hide Modal
                         loginModal.modal('hide');
                     },
                     function signinError(err) {
-                        uh.handleSessionErrors(err,email,password);
+                        handleSessionErrors(err,email,password);
                     }
                 );
             },
@@ -473,7 +582,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 signin(emailInputSignin, newPassword,
                     function signinSuccess() {
                         // Loads the current Logged in User Attributes
-                        uh.retrieveAttributes();
+                        retrieveAttributes();
 
                         // Hide Modal
                         loginModal.modal('hide');
@@ -482,7 +591,7 @@ var AWSCogUser = window.AWSCogUser || {};
                         
                     },
                     function signinError(err) {
-                        uh.handleSessionErrors(err,email,password);
+                        handleSessionErrors(err,email,password);
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
                     }
@@ -499,5 +608,133 @@ var AWSCogUser = window.AWSCogUser || {};
             }
          });
     }
+
+
+    // Log out User
+    document.getElementById('dashboard-util-logout').addEventListener('click', function() {
+        signoutUser();
+    });
+
+    // Log Out User
+    document.getElementById('logoutUser').addEventListener('click', function() {
+        signoutUser();
+    });
+
+    // Signout the user and redirect to home page
+    function signoutUser() {
+            
+        // Fetch user from local storage
+        let userPool = fetchUserFromLocalStorage();
+        let cognitoUser = userPool.getCurrentUser();
+        let homepageUrl = 'https://www.blitzbudget.com';
+        
+        if(cognitoUser != null) {
+            // Signout user from cognito
+            cognitoUser.signOut();
+        }
+        
+        // redirect user to home page
+        window.location.href = homepageUrl;
+    }
+
+
+    // Display Confirm Account Verification Code
+    function toggleVerification(email) {
+        document.getElementById('google').classList.add('d-none');
+        document.getElementById('facebook').classList.add('d-none');
+        document.getElementById('twitter').classList.add('d-none');
+        document.getElementById('gmail').classList.remove('d-none');
+        document.getElementById('outlook').classList.remove('d-none');
+
+        document.getElementById('loginModalTitle').innerText = 'Email Verification';
+
+        document.getElementById('signinForm').classList.add('d-none');
+
+        document.getElementById('verifyForm').classList.remove('d-none');
+
+        document.getElementById('emailInputVerify').value = email;
+
+        document.getElementById('emailDisplayVE').innerText = email;
+
+        document.getElementById('forgotPassLogin').classList.add('d-none');
+
+        document.getElementById('resendCodeLogin').classList.remove('d-none');
+        
+        // hide Signup
+        document.getElementById('registrationForm').classList.add('d-none');
+        
+        document.getElementById('emailInputRegister').value = '';
+        document.getElementById('passwordInputRegister').value = '';
+        
+        document.getElementById('successLoginPopup').innerText = '';
+        document.getElementById('errorLoginPopup').innerText = '';
+
+        document.getElementById('haveAnAccount').classList.add('d-none');
+    }
+
+    // Toggle Signup
+    function toggleSignUp(email,pass) {
+        // Hide Login and Verify
+        document.getElementById('google').classList.remove('d-none');
+        document.getElementById('facebook').classList.remove('d-none');
+        document.getElementById('twitter').classList.remove('d-none');
+        document.getElementById('gmail').classList.add('d-none');
+        document.getElementById('outlook').classList.add('d-none');
+
+        document.getElementById('loginModalTitle').innerText = 'Sign Up';
+
+        document.getElementById('signinForm').classList.add('d-none');
+
+        document.getElementById('verifyForm').classList.add('d-none');
+
+        document.getElementById('emailInputVerify').value = '';
+
+        document.getElementById('emailDisplayVE').innerText = '';
+
+        document.getElementById('forgotPassLogin').classList.add('d-none');
+
+        document.getElementById('resendCodeLogin').classList.add('d-none');
+        document.getElementById('haveAnAccount').classList.remove('d-none');
+        
+        // Show Signup
+        document.getElementById('registrationForm').classList.remove('d-none');
+        
+        document.getElementById('emailInputRegister').value = email;
+        
+        document.getElementById('passwordInputRegister').value = pass;
+        
+        document.getElementById('successLoginPopup').innerText = '';
+        document.getElementById('errorLoginPopup').innerText = '';
+    }
+
+    // Fetch User From Local Storage 
+    function fetchUserFromLocalStorage() {
+        
+        // Configure the pool data from the config.js
+        let poolData = {
+            UserPoolId: _config.cognito.userPoolId,
+            ClientId: _config.cognito.userPoolClientId
+        };
+
+        let userPool;
+
+        // If the config for the cognito is missing
+        if (!(_config.cognito.userPoolId &&
+              _config.cognito.userPoolClientId &&
+              _config.cognito.region)) {
+            showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+            return;
+        }
+        
+        // Get the user pool from Cognito
+        userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        if (typeof AWSCognito !== 'undefined') {
+            AWSCognito.config.region = _config.cognito.region;
+        }
+        
+        return userPool;
+    }
+
 
 }(jQuery));
