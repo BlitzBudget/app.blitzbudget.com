@@ -150,6 +150,7 @@ $(document).ready(function(){
 		    	$.ajax({
 			          type: "POST",
 			          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl,
+			          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			          dataType: "json",
 			          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 			          data : values,
@@ -185,6 +186,7 @@ $(document).ready(function(){
     	$.ajax({
 	          type: "POST",
 	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: "json",
 	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 	          data : values,
@@ -514,6 +516,7 @@ $(document).ready(function(){
 		$.ajax({
 	          type: "GET",
 	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: "json",
 	          success: function(categorizeBankAccount){
 	        	  let bAParentFrag = document.createDocumentFragment();
@@ -646,6 +649,7 @@ er_a = {
 			$.ajax({
 		          type: "GET",
 		          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId,
+		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		          dataType: "json",
 		          success : function(bankAccountList) {
 		        	  // Assign value to constant

@@ -10,7 +10,7 @@
 	color: #a9afbb;
 }
 
-#dashboard-util { 
+#dashboard-util-logout { 
 	margin-right:1rem;
 	color: #a9afbb;
 }
@@ -837,7 +837,7 @@ progress {
   user-select: none;
 }
 
-#settings-dashboard-sidebar > i, #dashboard-util-fullscreen > i, #dashboard-util > i {
+#settings-dashboard-sidebar > i, #dashboard-util-fullscreen > i, #dashboard-util-logout > i {
 	float: none;
 	width: unset;
 	line-height: unset;
