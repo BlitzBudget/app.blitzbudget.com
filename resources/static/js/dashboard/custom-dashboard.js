@@ -516,6 +516,12 @@ window.onload = function () {
 		        type: 'GET',
 		        success: function(dateAndAmountAsList) {
 		        	updateMonthExistsWithTransactionData(dateAndAmountAsList);
+		        },
+		        error: function(data) {
+		  	    	var responseError = JSON.parse(data.responseText);
+		           	if(responseError.error.includes("Unauthorized")){
+		  		    	er.sessionExpiredSwal(data);
+		           	}
 		        }
 			});
 		}
@@ -609,7 +615,13 @@ window.onload = function () {
 	        	  	}
 	        	  // Sealing the object so new objects or properties cannot be added
 	        	  Object.seal(categoryMap);
-	        	}
+	        	},
+	        	error: function(data) {
+		  	    	var responseError = JSON.parse(data.responseText);
+		           	if(responseError.error.includes("Unauthorized")){
+		  		    	er.sessionExpiredSwal(data);
+		           	}
+		        }
 	     	});
 		}
 		
@@ -631,6 +643,12 @@ er = {
 		        success: function() {
 		        	// Prevents duplicate updation when clicking on sidebar tabs
 		        	updateBudgetMap = {}; 
+		        },
+		        error: function(data) {
+		  	    	var responseError = JSON.parse(data.responseText);
+		           	if(responseError.error.includes("Unauthorized")){
+		  		    	er.sessionExpiredSwal(data);
+		           	}
 		        },
 	            async: async
 			});
