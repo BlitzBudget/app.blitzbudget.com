@@ -624,7 +624,108 @@ window.onload = function () {
 		        }
 	     	});
 		}
-		
+
+		/* When the toggleFullscreen() function is executed, open the video in fullscreen.
+		Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
+		function toggleFullscreen() {
+			elem = document.documentElement;
+			  if (!document.fullscreenElement && !document.mozFullScreenElement &&
+			    !document.webkitFullscreenElement && !document.msFullscreenElement) {
+			    if (elem.requestFullscreen) {
+			      elem.requestFullscreen();
+			    } else if (elem.msRequestFullscreen) {
+			      elem.msRequestFullscreen();
+			    } else if (elem.mozRequestFullScreen) {
+			      elem.mozRequestFullScreen();
+			    } else if (elem.webkitRequestFullscreen) {
+			      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			    }
+			  } else {
+			    if (document.exitFullscreen) {
+			      document.exitFullscreen();
+			    } else if (document.msExitFullscreen) {
+			      document.msExitFullscreen();
+			    } else if (document.mozCancelFullScreen) {
+			      document.mozCancelFullScreen();
+			    } else if (document.webkitExitFullscreen) {
+			      document.webkitExitFullscreen();
+			    }
+			  }
+		}
+
+		/* Get the element you want displayed in fullscreen mode (a video in this example): */
+		document.getElementById('dashboard-util-fullscreen').addEventListener('click', function() {
+			  toggleFullscreen();
+		});
+
+		/* Minimize sidebar */
+		$('#minimizeSidebar').click(function () {
+		    minimizeSidebar();
+		    
+		    /* Create a cookie to store user preference */
+		    var expirationDate = new Date;
+		    expirationDate.setMonth(expirationDate.getMonth()+2);
+		    
+		    /* Create a cookie to store user preference */
+		    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
+		    
+		  });
+
+		/* Minimise sidebar*/
+		function minimizeSidebar(){
+			 1 == md.misc.sidebar_mini_active ? ($('body').removeClass('sidebar-mini'), md.misc.sidebar_mini_active = !1)  : ($('body').addClass('sidebar-mini'), md.misc.sidebar_mini_active = !0);
+		 	
+			 var e = setInterval(function () {
+		 	      window.dispatchEvent(new Event('resize'))
+		 	    }, 180);
+		 	    setTimeout(function () {
+		 	      clearInterval(e)
+		 	    }, 1000)
+		   
+		 	    // hide the active pro bottom pane
+		   if(1 == md.misc.sidebar_mini_active){
+		    	$('.active-pro').addClass('d-none').removeClass('d-block').animate({ height: '20px' }, 'easeOutQuad', function(){ 
+		        });
+		    } else {
+		    	$('.active-pro').removeClass('d-none').addClass('d-block').animate({ height: '20px' }, 'easeOutQuad', function(){});
+		    }
+		}
+
+		// Assign background image for sidebar
+		function changeImageOfSidebar(img) {
+			if ($sidebar.length != 0) {
+				 $sidebar.attr('data-image', img);
+				 
+				$sidebar_img_container = $sidebar.find('.sidebar-background');
+				if ($sidebar_img_container.length != 0) {
+					$sidebar_img_container.css('background-image', 'url("' + img + '")');
+				    $sidebar_img_container.fadeIn('fast');
+				}
+			}
+		}
+
+		// Assign color change for side bar
+		function changeColorOfSidebar(color){
+			if ($sidebar.length != 0) {
+				 $sidebar.attr('data-color', color);
+			 }
+		}
+
+		// Sidebar hover event if hidden
+		$(".sidebar").hover(function() {
+			let activeProClass = document.getElementsByClassName('active-pro')[0].classList;
+			if(1 == md.misc.sidebar_mini_active) {
+				activeProClass.toggle('d-none');
+				activeProClass.toggle('d-block');
+			}
+		}, function() {
+			let activeProClass = document.getElementsByClassName('active-pro')[0].classList;
+			if(1 == md.misc.sidebar_mini_active) {
+				activeProClass.toggle('d-none');
+				activeProClass.toggle('d-block');
+			}
+		});
+				
 	});
 }
 
@@ -773,87 +874,6 @@ er = {
 		
 }
 
-/* When the toggleFullscreen() function is executed, open the video in fullscreen.
-Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
-function toggleFullscreen() {
-	elem = document.documentElement;
-	  if (!document.fullscreenElement && !document.mozFullScreenElement &&
-	    !document.webkitFullscreenElement && !document.msFullscreenElement) {
-	    if (elem.requestFullscreen) {
-	      elem.requestFullscreen();
-	    } else if (elem.msRequestFullscreen) {
-	      elem.msRequestFullscreen();
-	    } else if (elem.mozRequestFullScreen) {
-	      elem.mozRequestFullScreen();
-	    } else if (elem.webkitRequestFullscreen) {
-	      elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-	    }
-	  } else {
-	    if (document.exitFullscreen) {
-	      document.exitFullscreen();
-	    } else if (document.msExitFullscreen) {
-	      document.msExitFullscreen();
-	    } else if (document.mozCancelFullScreen) {
-	      document.mozCancelFullScreen();
-	    } else if (document.webkitExitFullscreen) {
-	      document.webkitExitFullscreen();
-	    }
-	  }
-}
-
-/* Get the element you want displayed in fullscreen mode (a video in this example): */
-document.getElementById('dashboard-util-fullscreen').addEventListener('click', function() {
-	  toggleFullscreen();
-});
-
-/* Minimize sidebar */
-$('#minimizeSidebar').click(function () {
-    minimizeSidebar();
-    
-    /* Create a cookie to store user preference */
-    var expirationDate = new Date;
-    expirationDate.setMonth(expirationDate.getMonth()+2);
-    
-    /* Create a cookie to store user preference */
-    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
-    
-  });
-
-/* Minimise sidebar*/
-function minimizeSidebar(){
-	 1 == md.misc.sidebar_mini_active ? ($('body').removeClass('sidebar-mini'), md.misc.sidebar_mini_active = !1)  : ($('body').addClass('sidebar-mini'), md.misc.sidebar_mini_active = !0);
- 	
-	 var e = setInterval(function () {
- 	      window.dispatchEvent(new Event('resize'))
- 	    }, 180);
- 	    setTimeout(function () {
- 	      clearInterval(e)
- 	    }, 1000)
-   
- 	    // hide the active pro bottom pane
-   if(1 == md.misc.sidebar_mini_active){
-    	$('.active-pro').addClass('d-none').removeClass('d-block').animate({ height: '20px' }, 'easeOutQuad', function(){ 
-        });
-    } else {
-    	$('.active-pro').removeClass('d-none').addClass('d-block').animate({ height: '20px' }, 'easeOutQuad', function(){});
-    }
-}
-
-// Sidebar hover event if hidden
-$(".sidebar").hover(function() {
-	let activeProClass = document.getElementsByClassName('active-pro')[0].classList;
-	if(1 == md.misc.sidebar_mini_active) {
-		activeProClass.toggle('d-none');
-		activeProClass.toggle('d-block');
-	}
-}, function() {
-	let activeProClass = document.getElementsByClassName('active-pro')[0].classList;
-	if(1 == md.misc.sidebar_mini_active) {
-		activeProClass.toggle('d-none');
-		activeProClass.toggle('d-block');
-	}
-});
-
 // Minimize the decimals to a set variable
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
@@ -898,26 +918,6 @@ function cloneElementAndAppend(document, elementToClone){
 	document.appendChild(elementToClone);
 	return clonedElement;
 	
-}
-
-// Assign color change for side bar
-function changeColorOfSidebar(color){
-	if ($sidebar.length != 0) {
-		 $sidebar.attr('data-color', color);
-	 }
-}
-
-// Assign background image for sidebar
-function changeImageOfSidebar(img) {
-	if ($sidebar.length != 0) {
-		 $sidebar.attr('data-image', img);
-		 
-		$sidebar_img_container = $sidebar.find('.sidebar-background');
-		if ($sidebar_img_container.length != 0) {
-			$sidebar_img_container.css('background-image', 'url("' + img + '")');
-		    $sidebar_img_container.fadeIn('fast');
-		}
-	}
 }
 
 //Format numbers in Indian Currency

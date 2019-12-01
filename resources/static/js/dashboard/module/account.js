@@ -651,6 +651,19 @@ $(document).ready(function(){
 		
 		return wrapperDiv;
 	}
+
+	/* Mouse Over  */
+	document.getElementById("triggerShowPass").addEventListener("mouseover",function(e){
+		let passInpSignin = document.getElementById('passwordInputSignin');
+		passInpSignin.setAttribute('type','text');
+	});
+
+	/* Mouse Over  */
+	document.getElementById("triggerShowPass").addEventListener("mouseout",function(e){
+		let passInpSignin = document.getElementById('passwordInputSignin');
+		passInpSignin.setAttribute('type','password');
+	});
+
 });
 
 // Custom Functions to fetch all accounts
