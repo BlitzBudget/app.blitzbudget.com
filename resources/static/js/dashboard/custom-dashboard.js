@@ -232,6 +232,10 @@ window.onload = function () {
 					url = '/settings';
 					color = 'danger';
 				    break;
+				case 'profilePage':
+					url = '/profile';
+					color = 'green';
+				    break;
 				default:
 					swal({
 		                title: "Redirecting Not Possible",
@@ -244,7 +248,9 @@ window.onload = function () {
 			}
 			
 			// Remove the active class from the current sidebar
-			currentActiveSideBar.classList.remove('active');
+			if(currentActiveSideBar) {
+				currentActiveSideBar.classList.remove('active');
+			}
 			// Change the current sidebar
 			currentActiveSideBar = document.getElementById($('#' + id).closest('li').attr('id'));
 			// Add the active flag to the current one
@@ -575,15 +581,14 @@ window.onload = function () {
 		});
 
 		function startupApplication() {
-			// Invoke only when the use is logged in
-			if(isNotEmpty(currentUser) && isNotEmpty(authHeader)) {
-				// Read Cookies
-		        readCookie();
-				// Fetch Bank Account Information and populate
-				er_a.fetchBankAccountInfo();
-				// Fetch Category 
-				fetchJSONForCategories();
-			} 
+						
+			// Read Cookies
+	        readCookie();
+			// Fetch Bank Account Information and populate
+			er_a.fetchBankAccountInfo();
+			// Fetch Category 
+			fetchJSONForCategories();
+			 
 		}
 
 		// Load all categories from API (Call synchronously to set global variable)

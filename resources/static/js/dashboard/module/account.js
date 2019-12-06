@@ -17,7 +17,7 @@ let bankAccountPreview = '';
 let tickIconSVG = tickIcon();
 
 // Account Information display
-$(document).ready(function(){
+(function scopeWrapper($) {
 
 	const accountTypeConst = ['Savings Account','Current Account','Cash','Assets','Credit Card','Liability'];
 	Object.freeze(accountTypeConst);
@@ -664,7 +664,7 @@ $(document).ready(function(){
 		passInpSignin.setAttribute('type','password');
 	});
 
-});
+}(jQuery));
 
 // Custom Functions to fetch all accounts
 er_a = {
