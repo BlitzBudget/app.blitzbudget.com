@@ -69,18 +69,6 @@ uh = {
 	    });
 	},
 
-	// Change Password Flow
-	changePassword(oldPassword, newPassword) {
-		// TODO Adopt Code
-		cognitoUser.changePassword(oldPassword, newPassword, function(err, result) {
-	        if (err) {
-	            alert(err);
-	            return;
-	        }
-	        console.log('call result: ' + result);
-	    });
-	},
-
 	// Update User Attributes
 	updateUserAttributes() {
 		// TODO Adopt Code

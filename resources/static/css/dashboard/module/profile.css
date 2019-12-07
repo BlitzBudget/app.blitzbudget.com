@@ -28,7 +28,7 @@
 	display: none;
 }
 
-.editProfile:hover, .resetAccount:hover, .deleteAccount:hover, .helpProfile:hover {
+.profile-info .text-info.editProfile:hover,.resetOrDeleteUser .text-info.resetAccount:hover,.resetOrDeleteUser .text-info.deleteAccount:hover,.resetUlStyling .text-info.helpProfile:hover,.TFA  .text-info.tfa-info:hover{
 	text-decoration: underline;
 }
 
@@ -57,4 +57,29 @@
 
 .connectedUser p {
     font-size: 95%;
+}
+
+.oldPassWrapper label, .newPassInput label {
+    display: block;
+    font-weight: 700;
+    padding: .3em 0 .1em;
+    width: 100%;
+    color: #383e41;
+}
+
+#oldPasswordCP, #newPassCP, #oldPasswordRP {
+    border: 2px solid #88979d;
+    font-size: 1em;
+    margin-bottom: .5em;
+    padding: .5em;
+    width: 80%;
+}
+
+#oldPasswordCP:focus, #newPassCP:focus, #oldPasswordRP:focus {
+    border: 2px solid #00bcd4;
+}
+
+.changeDpt.btn.btn-info {
+    margin-bottom: 0.25rem;
+    border: 0.062rem solid #00bcd4;
 }

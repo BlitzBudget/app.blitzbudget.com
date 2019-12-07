@@ -4,15 +4,15 @@
 var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
-    var signinUrl = 'login';
-    var successfulSigninUrl = 'https://app.blitzbudget.com/home';
+    let signinUrl = 'login';
+    let successfulSigninUrl = 'https://app.blitzbudget.com/home';
 
-    var poolData = {
+    let poolData = {
         UserPoolId: _config.cognito.userPoolId,
         ClientId: _config.cognito.userPoolClientId
     };
 
-    var userPool;
+    let userPool;
 
     if (!(_config.cognito.userPoolId &&
           _config.cognito.userPoolClientId &&
@@ -32,7 +32,7 @@ var AWSCogUser = window.AWSCogUser || {};
     };
 
     AWSCogUser.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-        var cognitoUser = userPool.getCurrentUser();
+        let cognitoUser = userPool.getCurrentUser();
 
         if (cognitoUser) {
             cognitoUser.getSession(function sessionCallback(err, session) {

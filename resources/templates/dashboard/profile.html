@@ -14,8 +14,8 @@
         <div class="container-fluid">
         	<div class="row">
             <div class="col-8 ml-auto mr-auto">
-              <div class="mb-5 noImageDisp">
-                  <img src="../img/characters/beon/beon-happy.svg">
+              <div class="mb-4 noImageDisp">
+                  <img src="../img/characters/beon/profile/beon-happy.svg">
               </div>
               <div id="profileImage" class="photo mb-5 d-none">
                 <img src="../img/dummy/avatarProfile.jpg">
@@ -27,7 +27,7 @@
                     <h5 id="emailProfileDisplay" class="mb-0 mt-3 font-weight-bold">john_doe@blitzbudget.com</h5>
                     <a class="editProfile text-info">Edit</a>
                     <h5 class="mb-0 mt-3 font-weight-bold">**********</h5>
-                    <a class="editProfile text-info">Change Password</a>
+                    <a id="changePasswordProfile" class="editProfile text-info">Change Password</a>
                 </div>
                 <div class="pl-5 text-left col-6">
                     <h3 class="font-weight-bold mt-0">Free Account</h3>                    
@@ -63,7 +63,7 @@
                   <div class="row">
                       <div class="pr-5 text-right col-6">
                           <h3 class="mt-0">Connected Accounts</h3>
-                          <button class="btn btn-info btn-round" disabled>Connected with Google</button>
+                          <button class="btn btn-info btn-round btn-sm" disabled>Connected with Google</button>
                       </div>
                       <div class="pl-5 text-left col-6 my-auto">
                           <p class="mild-text mb-0">You can use Facebook and Google to login to Blitz Budget.</p>
@@ -82,12 +82,12 @@
                       <div class="pr-5 text-right col-6">
                           <h3 class="mt-0">Reset account</h3>
                           <p class="mild-text">Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.</p>
-                          <a class="resetAccount text-info">Reset my Blitz Budget user account</a>
+                          <a id="resetBBAccount" class="resetAccount text-info">Reset my Blitz Budget user account</a>
                       </div>
                       <div class="pl-5 text-left col-6">
                           <h3 class="mt-0">Delete account</h3>
                           <p class="mild-text">Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.</p>
-                          <a class="deleteAccount text-info">Delete my Blitz Budget user account</a>
+                          <a id="deleteBBAccount" class="deleteAccount text-info">Delete my Blitz Budget user account</a>
                       </div>
                   </div>
               </div>
@@ -101,7 +101,7 @@
               <div class="col-8 ml-auto mr-auto">
                 <div class="row">
                       <div class="pr-5 text-right col-6">
-                          <img class="gotQuesImg" src="../img/characters/beon/beon-question.svg">
+                          <img class="gotQuesImg" src="../img/characters/beon/profile/beon-question.svg">
                       </div>
                       <div class="pl-5 text-left col-6">
                           <h3 class="mb-4 mt-0">Got a question?</h3>
