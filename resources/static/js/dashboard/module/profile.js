@@ -252,8 +252,9 @@
 	            inputAttributes: {
 	                autocapitalize: 'on'
 	            },
-                type: 'warning',
+                type: 'info',
                 showCancelButton: true,
+                showCloseButton: true,
                 confirmButtonText: 'Yes, reset it!',
                 cancelButtonText: 'No, keep it',
                 confirmButtonClass: "btn btn-info",
@@ -276,8 +277,9 @@
 	            inputAttributes: {
 	                autocapitalize: 'on'
 	            },
-                type: 'warning',
+                type: 'info',
                 showCancelButton: true,
+                showCloseButton: true,
                 confirmButtonText: 'Yes, delete it!',
                 cancelButtonText: 'No, keep it',
                 confirmButtonClass: "btn btn-info",
@@ -298,9 +300,43 @@
 
 		// Warning Text
 		let warnDiv = document.createElement('div');
-		warnDiv.classList = 'noselect'
+		warnDiv.classList = 'noselect text-left mb-3'
 		warnDiv.innerHTML = 'Do you want to reset your user account <strong>' + currentUser.email + '</strong> and <strong>delete all entries</strong> from Blitz Budget?';
 		resetPassFrag.appendChild(warnDiv);
+
+		// UL tag
+		let ulWarn = document.createElement('ul');
+		ulWarn.classList = 'noselect text-left mb-3 mild-text';
+
+		let liOne = document.createElement('li');
+		liOne.innerText = 'all transactions will be deleted';
+		ulWarn.appendChild(liOne);
+
+		let liTwo = document.createElement('li');
+		liTwo.innerText = 'all the budgets will be deleted';
+		ulWarn.appendChild(liTwo);
+
+		let liThree = document.createElement('li');
+		liThree.innerText = 'all goals will be deleted';
+		ulWarn.appendChild(liThree);
+
+		let liFour = document.createElement('li');
+		liFour.innerText = 'all financial accounts will be deleted';
+		ulWarn.appendChild(liFour);
+
+		let liFive = document.createElement('li');
+		liFive.innerText = 'all wallets will be deleted';
+		ulWarn.appendChild(liFive);
+
+		let liSix = document.createElement('li');
+		liSix.innerText = 'all investments will be deleted';
+		ulWarn.appendChild(liSix);
+		resetPassFrag.appendChild(ulWarn);
+
+		// Subscription
+		let subsText = document.createElement('div');
+		subsText.innerText = 'Premium subscription will remain intact after the reset.';
+		resetPassFrag.appendChild(subsText);
 
 		// Old Password
 		let oldPassWrapper = document.createElement('div');
