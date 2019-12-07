@@ -3,141 +3,119 @@
 
 <head>
 	<title>
-	    Income
-	  </title>
+	    Profile
+	 </title>
+   <link href="css/dashboard/module/profile.min.css" rel="stylesheet preload" as="style">
+   <script defer nonce="2726d7e26r" src="js/dashboard/module/profile.min.js" type="text/javascript"></script>
 </head>
 
 <body class="profile-dashboard" >
-      <div class="content" id="mutableDashboard">
+      <div class="content noselect" id="mutableDashboard">
         <div class="container-fluid">
         	<div class="row">
-            <div class="col-md-8 ml-auto mr-auto">
-              <div class="page-categories">
-                <h3 class="title text-center">Page Subcategories</h3>
-                <br>
-                <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist">
-                      <i class="material-icons">info</i> Description
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link8" role="tablist">
-                      <i class="material-icons">location_on</i> Location
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link9" role="tablist">
-                      <i class="material-icons">gavel</i> Legal Info
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active show" data-toggle="tab" href="#link10" role="tablist">
-                      <i class="material-icons">help_outline</i> Help Center
-                    </a>
-                  </li>
-                </ul>
-                <div class="tab-content tab-space tab-subcategories">
-                  <div class="tab-pane" id="link7">
-                    <div class="card">
-                      <div class="card-header">
-                        <h4 class="card-title">Description about product</h4>
-                        <p class="card-category">
-                          More information here
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits.
-                        <br>
-                        <br> Dramatically visualize customer directed convergence without revolutionary ROI.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="link8">
-                    <div class="card">
-                      <div class="card-header">
-                        <h4 class="card-title">Location of the product</h4>
-                        <p class="card-category">
-                          More information here
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas.
-                        <br>
-                        <br> Dramatically maintain clicks-and-mortar solutions without functional solutions.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="link9">
-                    <div class="card">
-                      <div class="card-header">
-                        <h4 class="card-title">Legal info of the product</h4>
-                        <p class="card-category">
-                          More information here
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas.
-                        <br>
-                        <br>Dynamically innovate resource-leveling customer service for state of the art customer service.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane active show" id="link10">
-                    <div class="card">
-                      <div class="card-header">
-                        <h4 class="card-title">Help center</h4>
-                        <p class="card-category">
-                          More information here
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        From the seamless transition of glass and metal to the streamlined profile, every detail was carefully considered to enhance your experience. So while its display is larger, the phone feels just right.
-                        <br>
-                        <br> Another Text. The first thing you notice when you hold the phone is how great it feels in your hand. The cover glass curves down around the sides to meet the anodized aluminum enclosure in a remarkable, simplified design.
-                      </div>
-                    </div>
-                  </div>
+            <div class="col-8 ml-auto mr-auto">
+              <div class="mb-5 noImageDisp">
+                  <img src="../img/characters/beon/beon-happy.svg">
+              </div>
+              <div id="profileImage" class="photo mb-5 d-none">
+                <img src="../img/dummy/avatarProfile.jpg">
+              </div>
+              <div class="profile-info row">
+                <div class="pr-5 text-right col-6">
+                    <h5 id="userNameProfileDisplay" class="mb-0 font-weight-bold">John Doe</h5>
+                    <a class="editProfile text-info">Edit</a>
+                    <h5 id="emailProfileDisplay" class="mb-0 mt-3 font-weight-bold">john_doe@blitzbudget.com</h5>
+                    <a class="editProfile text-info">Edit</a>
+                    <h5 class="mb-0 mt-3 font-weight-bold">**********</h5>
+                    <a class="editProfile text-info">Change Password</a>
                 </div>
+                <div class="pl-5 text-left col-6">
+                    <h3 class="font-weight-bold mt-0">Free Account</h3>                    
+                    <p class="mild-text">Joined on December 2019</p>
+                    <button class="btn btn-info btn-round btn-lg">Upgrade To Premium</button>
+                </div>                
+              </div>
+              <div class="TFA row mt-4">
+                  <div class="pl-0 pr-5 text-right col-6">
+                      <h3>Two factor authentication</h3>
+                      <p class="mild-text mb-2">Harden your security for your user account. You will be asked for a second code, generated by an app from your phone.</p>
+                      <a class="tfa-info text-info">More info</a>
+                  </div>
+                  <div class="pr-5 text-center col-6 my-auto mx-auto">
+                      <div class="togglebutton">
+                        <label>
+                          <input type="checkbox">
+                          <span class="toggle"></span>
+                          TFA is <span id="tfaOnOff">off</span>
+                        </label>
+                      </div>
+                  </div>
               </div>
             </div>
           </div>
-        	<div class="card">
-        		<div class="card-body">
-        			<div class="row">
-			        	<div class="col-md-4 col-sm-4">
-		                   <h4 class="title">Avatar</h4>
-		                   <div class="fileinput fileinput-new text-center" data-provides="fileinput">
-		                     <div class="fileinput-new thumbnail img-circle">
-		                       <img src="../img/dummy/placeholder.jpg" alt="...">
-		                     </div>
-		                     <div class="fileinput-preview fileinput-exists thumbnail img-circle" style=""></div>
-		                     <div>
-		                       <span class="btn btn-round btn-rose btn-file">
-		                         <span class="fileinput-new">Add Photo</span>
-		                         <span class="fileinput-exists">Change</span>
-		                         <input type="hidden"><input type="file" name="...">
-		                       <span class="ripple-container"></span></span>
-		                       <br>
-		                       <a href="#pablo" class="btn btn-danger btn-round fileinput-exists" data-dismiss="fileinput"><i class="fa fa-times"></i> Remove</a>
-		                     </div>
-		                   </div>
-		                 </div>
-		                 <div class="col-md-4 col-sm-4">
-		                  Update Currency Locale default "en_IN"
-		                 </div>
-		                 <div class="col-md-4 col-sm-4">
-		                  Allow user to share their financial portfolio with others, share the financial portfolio with other users and combine them into one.
-		                 </div>
-		        	</div>
-        		</div>
-        		<div class="row">
-			        	Customize categories
-        		</div>
-        	</div>
+          <div class="row">
+              <div class="col-8 ml-auto mr-auto">
+                <hr class="my-5">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-8 connectedUser ml-auto mr-auto">
+                  <div class="row">
+                      <div class="pr-5 text-right col-6">
+                          <h3 class="mt-0">Connected Accounts</h3>
+                          <button class="btn btn-info btn-round" disabled>Connected with Google</button>
+                      </div>
+                      <div class="pl-5 text-left col-6 my-auto">
+                          <p class="mild-text mb-0">You can use Facebook and Google to login to Blitz Budget.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-8 ml-auto mr-auto">
+                <hr class="my-5">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-8 resetOrDeleteUser ml-auto mr-auto">
+                  <div class="row">
+                      <div class="pr-5 text-right col-6">
+                          <h3 class="mt-0">Reset account</h3>
+                          <p class="mild-text">Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.</p>
+                          <a class="resetAccount text-info">Reset my Blitz Budget user account</a>
+                      </div>
+                      <div class="pl-5 text-left col-6">
+                          <h3 class="mt-0">Delete account</h3>
+                          <p class="mild-text">Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.</p>
+                          <a class="deleteAccount text-info">Delete my Blitz Budget user account</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-8 ml-auto mr-auto">
+                <hr class="my-5">
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-8 ml-auto mr-auto">
+                <div class="row">
+                      <div class="pr-5 text-right col-6">
+                          <img class="gotQuesImg" src="../img/characters/beon/beon-question.svg">
+                      </div>
+                      <div class="pl-5 text-left col-6">
+                          <h3 class="mb-4 mt-0">Got a question?</h3>
+                          <ul class="resetUlStyling">
+                              <li class="mb-2"><a class="helpProfile text-info">Tutotials point</a></li>
+                              <li class="mb-2"><a class="helpProfile text-info">FAQ</a></li>
+                              <li><a class="helpProfile text-info">Ask us directly</a></li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+          </div>
         </div>
-      </div>
-      
+      </div>   
 </body>
 
 </html>

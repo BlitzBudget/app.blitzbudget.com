@@ -41,7 +41,7 @@
             <img src="../img/dummy/avatarProfile.jpg">
           </div>
           <div class="user-info">
-            <a href="./profile" class="username">
+            <a href="./profile" class="username pageDynamicLoadForDashboard" href="Javascript:void(0);" id="profilePage">
               <span>
                 <span id="userName">John Doe</span>
               </span>
@@ -110,12 +110,6 @@
            </div>
            <a class="navbar-brand noselect" href="./home">Dashboard</a>
          </div>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-           <span class="sr-only">Toggle navigation</span>
-           <span class="navbar-toggler-icon icon-bar"></span>
-           <span class="navbar-toggler-icon icon-bar"></span>
-           <span class="navbar-toggler-icon icon-bar"></span>
-         </button>
          <div class="overviewDateWrapper noselect">
          	<div id="monthPickerDisplay" class="px-4">
          		<span id="overviewMonthHeading" class="overviewMonthHeading">August</span>
@@ -182,7 +176,7 @@
            		</div>
            	</div>
            </div>
-            </div>
+         </div>
          <div class="collapse navbar-collapse justify-content-end">
            <ul class="navbar-nav">
              <li class="nav-item">
@@ -319,7 +313,7 @@
 	                            <div class="form-group bmd-form-group">
 	                                <div class="input-group">
 	                                  <div class="input-group-prepend">
-	                                    <div class="input-group-text"><i class="material-icons">lock_outline</i></div>
+	                                    <div class="input-group-text"><i id="triggerShowPass" class="material-icons">remove_red_eye</i></div>
 	                                  </div>
 	                                  <input type="password" id="passwordInputSignin" name="password" placeholder="Password..." class="form-control">
 	                                </div>

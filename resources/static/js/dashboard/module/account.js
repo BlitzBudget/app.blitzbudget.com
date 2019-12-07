@@ -17,7 +17,7 @@ let bankAccountPreview = '';
 let tickIconSVG = tickIcon();
 
 // Account Information display
-$(document).ready(function(){
+(function scopeWrapper($) {
 
 	const accountTypeConst = ['Savings Account','Current Account','Cash','Assets','Credit Card','Liability'];
 	Object.freeze(accountTypeConst);
@@ -158,7 +158,12 @@ $(document).ready(function(){
 			        	  showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
 			          },
 			          error: function(thrownError) {
-			        		  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
+				  	      var responseError = JSON.parse(thrownError.responseText);
+				          if(responseError.error.includes("Unauthorized")){
+				  		      er.sessionExpiredSwal(data);
+				          } else {
+				          	  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
+				          }
 			          }
 		    	});
 	    	}
@@ -546,7 +551,12 @@ $(document).ready(function(){
 	        	  accountPickerModal.appendChild(bAParentFrag);
 	          },
 	          error: function(thrownError) {
-	        	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
+	          	  var responseError = JSON.parse(thrownError.responseText);
+		          if(responseError.error.includes("Unauthorized")){
+		  		      er.sessionExpiredSwal(data);
+		          } else {
+		          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
+		          }
 	          }
 		});
 	});
@@ -641,7 +651,20 @@ $(document).ready(function(){
 		
 		return wrapperDiv;
 	}
-});
+
+	/* Mouse Over  */
+	document.getElementById("triggerShowPass").addEventListener("mouseover",function(e){
+		let passInpSignin = document.getElementById('passwordInputSignin');
+		passInpSignin.setAttribute('type','text');
+	});
+
+	/* Mouse Over  */
+	document.getElementById("triggerShowPass").addEventListener("mouseout",function(e){
+		let passInpSignin = document.getElementById('passwordInputSignin');
+		passInpSignin.setAttribute('type','password');
+	});
+
+}(jQuery));
 
 // Custom Functions to fetch all accounts
 er_a = {
@@ -658,7 +681,12 @@ er_a = {
 		        	  er_a.populateBankInfo(bankAccountList);
 		          },
 		          error: function(thrownError) {
-		        	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
+		          	  var responseError = JSON.parse(thrownError.responseText);
+			          if(responseError.error.includes("Unauthorized")){
+			  		      er.sessionExpiredSwal(data);
+			          } else {
+			          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
+			          }
 		          }
 			});
 		},

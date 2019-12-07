@@ -220,7 +220,13 @@
     		  // Update Budget from API
     		  updateBudgetForIncome();
     		
-            }
+            }, 
+            error: function(thrownError) {
+          	  var responseError = JSON.parse(thrownError.responseText);
+	          if(responseError.error.includes("Unauthorized")){
+	  		      er.sessionExpiredSwal(data);
+	          }
+	        }
 		});
 	}
 	
@@ -248,7 +254,13 @@
 	            	  
 	            	  categoryRowToUpdate.innerHTML = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
             	}
-            }
+            }, 
+            error: function(thrownError) {
+          	  var responseError = JSON.parse(thrownError.responseText);
+	          if(responseError.error.includes("Unauthorized")){
+	  		      er.sessionExpiredSwal(data);
+	          }
+	        }
 		});
 	}
 	
@@ -1581,7 +1593,13 @@
             	// Build Category Modal
     		  	updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
 
-            }
+            }, 
+            error: function(thrownError) {
+          	  var responseError = JSON.parse(thrownError.responseText);
+	          if(responseError.error.includes("Unauthorized")){
+	  		      er.sessionExpiredSwal(data);
+	          }
+	        }
 		});
 	}
 	
