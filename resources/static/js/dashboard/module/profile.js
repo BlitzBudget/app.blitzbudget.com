@@ -408,7 +408,7 @@
 	}
 
 	// New Password Key Up listener For Reset Password
-	$(document).on('keyup', "#oldPasswordRP", function() {
+	$(document).on('keyup', "#oldPasswordRP", function(e) {
 	
 		let resetAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
 		let errorDispRA = document.getElementById('cpErrorDispOldRA');
@@ -529,7 +529,7 @@
 	}
 
 	// Confirm Password Key Up listener For Delete User
-	$(document).on('keyup', "#oldPasswordDA", function() {
+	$(document).on('keyup', "#oldPasswordDA", function(e) {
 	
 		let deleteAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
 		let errorDispRA = document.getElementById('cpErrorDispOldDA');
