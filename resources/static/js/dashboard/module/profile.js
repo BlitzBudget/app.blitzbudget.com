@@ -242,6 +242,9 @@
         if(!changePassBtn.disabled) {
             changePassBtn.setAttribute('disabled','disabled');
         }
+
+        // Change focus to Old password
+        document.getElementById('oldPasswordCP').focus();
     });
 
 	// Change Input to Text
@@ -284,7 +287,10 @@
 	        let resetBBBtn = document.getElementsByClassName('swal2-confirm')[0];
 	        if(!resetBBBtn.disabled) {
 	            resetBBBtn.setAttribute('disabled','disabled');
-	        }            
+	        }
+
+	        // Change Focus to Confirm Password
+	        document.getElementById('oldPasswordRP').focus();            
 	});
 
 	// Delete button
@@ -315,7 +321,10 @@
 	        let deleteBBBtn = document.getElementsByClassName('swal2-confirm')[0];
 	        if(!deleteBBBtn.disabled) {
 	            deleteBBBtn.setAttribute('disabled','disabled');
-	        }   
+	        }
+
+	        // Change focus to old password
+	        document.getElementById('oldPasswordDA').focus();   
 	});
 	
 	// Reset BB Account
@@ -586,6 +595,9 @@
 		let userNameEditProf = document.getElementById('userNameEditProf');
 		userNameEditProf.classList.remove('d-none');
 		userNameEditProf.classList.add('d-block');
+
+		// Change Focus to element
+		document.getElementById('userNameModInp').focus();
 	});
 
 	// Click Enter to Change Name and Last Name
@@ -657,7 +669,10 @@
         let confBBBtn = document.getElementsByClassName('swal2-confirm')[0];
         if(!confBBBtn.disabled) {
             confBBBtn.setAttribute('disabled','disabled');
-        }  
+        }
+
+        // CHange Focus to Confirm Password
+        document.getElementById('confPasswordUA').focus();
 	}
 
 	function confirmPasswordFrag() {
