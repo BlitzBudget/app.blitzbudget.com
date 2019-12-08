@@ -772,7 +772,7 @@
 	});
 
 	// Email Edit Scenario
-	document.getElementById('editProfile').addEventListener("click",function(e){
+	document.getElementById('emailEdit').addEventListener("click",function(e){
 		// Hide the Element
 		this.classList.add('d-none');
 		// Name
