@@ -67,7 +67,7 @@
     color: #383e41;
 }
 
-#oldPasswordCP, #newPassCP, #oldPasswordRP {
+#oldPasswordCP, #newPassCP, #oldPasswordRP, #oldPasswordDA, #userNameModInp, #confPasswordUA {
     border: 2px solid #88979d;
     font-size: 1em;
     margin-bottom: .5em;
@@ -75,11 +75,28 @@
     width: 80%;
 }
 
-#oldPasswordCP:focus, #newPassCP:focus, #oldPasswordRP:focus {
+#oldPasswordCP:focus, #newPassCP:focus, #oldPasswordRP:focus, #oldPasswordDA:focus, #confPasswordUA:focus {
     border: 2px solid #00bcd4;
 }
 
 .changeDpt.btn.btn-info {
     margin-bottom: 0.25rem;
     border: 0.062rem solid #00bcd4;
+}
+
+.fs-90 {
+    font-size: 90%;
+}
+
+#userNameModInp {
+    width: 71.5%;
+    border: 0.1rem solid #88979d;
+}
+
+#userNameModInp:focus {
+    border: 0.1rem solid #00bcd4;
+}
+
+#userNameEdiBtn {
+    border: 0.047rem solid #00bcd4
 }

@@ -69,25 +69,6 @@ uh = {
 	    });
 	},
 
-	// Update User Attributes
-	updateUserAttributes() {
-		// TODO Adopt Code
-		let attributeList = [];
-		let attribute = {
-	        Name : 'nickname',
-	        Value : 'joe'
-	    };
-		attribute = new AmazonCognitoIdentity.CognitoUserAttribute(attribute);
-	    attributeList.push(attribute);
-
-	    cognitoUser.updateAttributes(attributeList, function(err, result) {
-	        if (err) {
-	            alert(err);
-	            return;
-	        }
-	        console.log('call result: ' + result);
-	    });
-	},
 
 	// Verify an Attribute
 	verifyAnAttirbute() {

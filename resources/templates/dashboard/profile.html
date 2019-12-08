@@ -18,13 +18,25 @@
                   <img src="../img/characters/beon/profile/beon-happy.svg">
               </div>
               <div id="profileImage" class="photo mb-5 d-none">
-                <img src="../img/dummy/avatarProfile.jpg">
+                  <img src="../img/dummy/avatarProfile.jpg">
               </div>
               <div class="profile-info row">
-                <div class="pr-5 text-right col-6">
+                <div class="pl-0 pr-5 text-right col-6">
                     <h5 id="userNameProfileDisplay" class="mb-0 font-weight-bold">John Doe</h5>
-                    <a class="editProfile text-info">Edit</a>
+                    <div id="userNameEditProf" class="btn-group d-none">
+                        <input id="userNameModInp" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left">
+                        <button id="userNameEdiBtn" class="btn btn-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">arrow_forward</i>
+                        </button>
+                    </div>
+                    <a id="userNameEdit" class="editProfile text-info">Edit</a>
                     <h5 id="emailProfileDisplay" class="mb-0 mt-3 font-weight-bold">john_doe@blitzbudget.com</h5>
+                    <div id="emailEditProf" class="btn-group d-none">
+                        <input id="emailModInp" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left">
+                        <button id="emailEdiBtn" class="btn btn-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">arrow_forward</i>
+                        </button>
+                    </div>
                     <a class="editProfile text-info">Edit</a>
                     <h5 class="mb-0 mt-3 font-weight-bold">**********</h5>
                     <a id="changePasswordProfile" class="editProfile text-info">Change Password</a>
