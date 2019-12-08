@@ -67,7 +67,7 @@
     color: #383e41;
 }
 
-#oldPasswordCP, #newPassCP, #oldPasswordRP, #oldPasswordDA, #userNameModInp, #confPasswordUA {
+#oldPasswordCP, #newPassCP, #oldPasswordRP, #oldPasswordDA, #userNameModInp, #confPasswordUA, #emailModInp {
     border: 2px solid #88979d;
     font-size: 1em;
     margin-bottom: .5em;

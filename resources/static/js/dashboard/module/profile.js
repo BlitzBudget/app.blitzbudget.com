@@ -60,7 +60,7 @@
 	});
 
 	// New Password Key Up listener
-	$(document).on('keyup', "#newPassCP", function() {
+	$(document).on('keyup', "#newPassCP", function(e) {
 	
 		let changePassBtn = document.getElementsByClassName('swal2-confirm')[0];
 		let newPassword = this.value;
@@ -80,6 +80,16 @@
 			errorCPOld.innerText = 'The current password field should have a minimum length of 8 characters.';
 			changePassBtn.setAttribute('disabled','disabled');
 			return;
+		}
+
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 13) { 
+			document.activeElement.blur();
+		    e.preventDefault();
+		    e.stopPropagation();
+		    // Click the confirm button to continue
+		    changePassBtn.click();
+		    return false;
 		}
 
 		changePassBtn.removeAttribute('disabled');
@@ -411,6 +421,17 @@
 
 		errorDispRA.innerText = '';
 		resetAccountBtn.removeAttribute('disabled');
+
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 13) { 
+			document.activeElement.blur();
+		    e.preventDefault();
+		    e.stopPropagation();
+		    // Click the confirm button of SWAL
+		    resetAccountBtn.click();
+		    return false;
+		}
+
 	});
 
 	// On focus out Listener for Reset password
@@ -521,6 +542,17 @@
 
 		errorDispRA.innerText = '';
 		deleteAccountBtn.removeAttribute('disabled');
+
+		// Delete Account
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 13) { 
+			document.activeElement.blur();
+		    e.preventDefault();
+		    e.stopPropagation();
+		    // Click the confirm button of SWAL
+		    deleteAccountBtn.click();
+		    return false;
+		}
 	});
 
 	// Confirm Password Focus Out listener For Delete User
@@ -637,7 +669,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Old Password';
+		oldPassLabel.innerText = 'Confirm Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -717,7 +749,11 @@
 			        // Update User Cache
 			        currentUser.name = firstName;
 			        currentUser.family_name = lastName;
-			        showNotification('Successfully changed the password!','top','center','success');
+			        // We save the item in the sessionStorage.
+                    sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+                    // Update User Name in App
+                    document.getElementById('userName').innerText = firstName + ' ' + lastName;
+			        showNotification('Successfully changed the name!','top','center','success');
 			    });
                 
             },
@@ -769,22 +805,6 @@
 
 		cpErrorDispUA.innerText = '';
 
-	});
-
-	// Email Edit Scenario
-	document.getElementById('emailEdit').addEventListener("click",function(e){
-		// Hide the Element
-		this.classList.add('d-none');
-		// Name
-		let emailProfileDisplay = document.getElementById('emailProfileDisplay').classList;
-		emailProfileDisplay.add('d-none');
-		// Change the User Name
-		let emailModInp = document.getElementById('emailModInp');
-		emailModInp.value = currentUser.email;
-		// Display Edit Form
-		let emailEditProf = document.getElementById('emailEditProf');
-		emailEditProf.classList.remove('d-none');
-		emailEditProf.classList.add('d-block');
 	});
 
 }(jQuery));	
