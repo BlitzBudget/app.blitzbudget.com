@@ -122,4 +122,7 @@ function toggleLogin(email) {
     document.getElementById('errorLoginPopup').innerText = '';
 
     document.getElementById('haveAnAccount').classList.add('d-none');
+
+    // Focus to email
+    document.getElementById('emailInputSignin').focus();
 }
