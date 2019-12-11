@@ -168,6 +168,9 @@ let tickIconSVG = tickIcon();
 		    	});
 	    	}
 	    });
+
+	    // Change focus to account Name
+	    document.getElementById('accountName').focus();
 		
 		// Disable confirmation button 
 		let accCfrmBtn = document.getElementsByClassName('swal2-confirm')[0];
