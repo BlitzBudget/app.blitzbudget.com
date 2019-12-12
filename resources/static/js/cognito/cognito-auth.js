@@ -338,9 +338,9 @@ var AWSCogUser = window.AWSCogUser || {};
     }
 
     function handleRegister(event) {
-        var email = document.getElementById('emailInputRegister').value;
-        var password = document.getElementById('passwordInputRegister').value;
-        var password2 = document.getElementById('password2InputRegister').value;
+        let email = document.getElementById('emailInputRegister').value;
+        let password = document.getElementById('passwordInputRegister').value;
+        let password2 = document.getElementById('password2InputRegister').value;
         let signupLoader = document.getElementById('signupLoader');
         let signupButton = signupLoader.parentElement.firstElementChild;
         event.preventDefault();
@@ -365,12 +365,12 @@ var AWSCogUser = window.AWSCogUser || {};
         signupLoader.classList.remove('d-none');
         signupButton.classList.add('d-none');
        
-        var onSuccess = function registerSuccess(result) {
+        let onSuccess = function registerSuccess(result) {
             signupLoader.classList.add('d-none');
             signupButton.classList.remove('d-none');
             toggleVerification(email);
         };
-        var onFailure = function registerFailure(err) {
+        let onFailure = function registerFailure(err) {
             signupLoader.classList.add('d-none');
             signupButton.classList.remove('d-none');
         	document.getElementById('errorLoginPopup').innerText = err.message;
@@ -626,7 +626,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 forgotPass.classList.remove('d-none');
             },
             inputVerificationCode() {
-                var verificationCode = prompt('Please input verification code sent to ' +  emailInputSignin,'');
+                let verificationCode = prompt('Please input verification code sent to ' +  emailInputSignin,'');
                 cognitoUser.confirmPassword(verificationCode, newPassword, this);
             }
          });

@@ -160,7 +160,7 @@ let tickIconSVG = tickIcon();
 			          error: function(thrownError) {
 				  	      var responseError = JSON.parse(thrownError.responseText);
 				          if(responseError.error.includes("Unauthorized")){
-				  		      er.sessionExpiredSwal(data);
+				  		      er.sessionExpiredSwal(thrownError);
 				          } else {
 				          	  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
 				          }
@@ -556,7 +556,7 @@ let tickIconSVG = tickIcon();
 	          error: function(thrownError) {
 	          	  var responseError = JSON.parse(thrownError.responseText);
 		          if(responseError.error.includes("Unauthorized")){
-		  		      er.sessionExpiredSwal(data);
+		  		      er.sessionExpiredSwal(thrownError);
 		          } else {
 		          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 		          }
@@ -686,7 +686,7 @@ er_a = {
 		          error: function(thrownError) {
 		          	  var responseError = JSON.parse(thrownError.responseText);
 			          if(responseError.error.includes("Unauthorized")){
-			  		      er.sessionExpiredSwal(data);
+			  		      er.sessionExpiredSwal(thrownError);
 			          } else {
 			          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 			          }

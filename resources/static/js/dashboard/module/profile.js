@@ -881,4 +881,169 @@
         });
 	});
 
+	// Edit Email
+	document.getElementById('emailEdit').addEventListener("click",function(e){
+		// Hide the Element
+		this.classList.add('d-none');
+		// Name
+		let emailProfileDisplay = document.getElementById('emailEdit').classList;
+		emailProfileDisplay.add('d-none');
+		// Change the User Name
+		let emailModInp = document.getElementById('emailModInp');
+		emailModInp.value = currentUser.email;
+		// Display Edit Form
+		let emailEditProf = document.getElementById('emailEditProf');
+		emailEditProf.classList.remove('d-none');
+		emailEditProf.classList.add('d-block');
+
+		// Change Focus to element
+		document.getElementById('emailModInp').focus();
+	});
+
+
+	// User Edit Complete Btn
+	document.getElementById('emailEditBtn').addEventListener("click",function(e){
+		editUserDetailsEmail();
+	});
+
+	// edit Email address of user
+	function editUserDetailsEmail() {
+		// Name
+		let emailProfileDisplay = document.getElementById('emailProfileDisplay').classList;
+		emailProfileDisplay.remove('d-none');
+		
+		// Display Edit Form
+		let emailEditProf = document.getElementById('emailEditProf');
+		emailEditProf.classList.remove('d-block');
+		emailEditProf.classList.add('d-none');
+
+		// Edit Button 
+		let emailEdit = document.getElementById('emailEdit');
+		emailEdit.classList.remove('d-none');
+
+		// Update First Name and Last Name
+		let emailModInp = document.getElementById('emailModInp').value;
+
+		if(emailModInp.length < 4) {
+			showNotification('Email field should have a valid entry','top','center','danger');
+			return;
+		}
+
+		 // Show Sweet Alert
+        Swal.fire({
+            title: 'Confirm Password',
+            html: confirmPasswordFrag(),
+            inputAttributes: {
+                autocapitalize: 'on'
+            },
+            confirmButtonClass: 'btn btn-info',
+            confirmButtonText: 'Confirm Password',
+            showCloseButton: true,
+            buttonsStyling: false
+        }).then(function(result) {
+            let confPasswordUA = document.getElementById('confPasswordUA').value;
+            // If confirm button is clicked
+            if (result.value) {
+                // Update User Email 
+				updateEmail(emailModInp, confPasswordUA);
+            }
+
+        });
+
+        // Disable Confirm Password button 
+        let confBBBtn = document.getElementsByClassName('swal2-confirm')[0];
+        if(!confBBBtn.disabled) {
+            confBBBtn.setAttribute('disabled','disabled');
+        }
+
+        // CHange Focus to Confirm Password
+        document.getElementById('confPasswordUA').focus();
+	}
+
+	// Update User Attribute Email
+    function updateEmail(emailModInp, confPasswordUA) {
+        let cognitoUser = userPool.getCurrentUser();
+
+        // Email
+		let attributeList = [];
+		let attributeEmail = createAttribute('email', emailModInp);
+		let attributeFPI = createAttribute('custom:financialPortfolioId', currentUser.financialPortfolioId);
+        // Set Default Locale
+        let attributeLocale = createAttribute('locale', currentUser.locale);
+        // Set Default Currency
+        let attributeCurrency = createAttribute('custom:currency', currentUser.currency);
+        // Set Name
+        let attributeName = createAttribute('name', currentUser.name);
+        // Set Family Name
+        let attributeFamilyName = createAttribute('family_name', currentUser.family_name);
+	    attributeList.push(attributeEmail);
+	    attributeList.push(attributeFPI);
+	    attributeList.push(attributeLocale);
+	    attributeList.push(attributeCurrency);
+	    attributeList.push(attributeName);
+	    attributeList.push(attributeFamilyName);
+
+	    // Sign up user
+        userPool.signUp(emailModInp, confPasswordUA, attributeList, null,
+            function signUpCallback(err, result) {
+                if (!err) {
+                    signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
+                } else {
+                    showNotification(err.message,'top','center','danger');
+                }
+            }
+        );
+    }
+
+    /**
+    *  Upon successful sign up call
+    **/
+    function signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser) {
+    	 // Authentication Details
+	    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username: currentUser.email,
+            Password: confPasswordUA
+        });
+
+	    let verificationCode = prompt('Please input verification code sent to ' +  emailModInp,'');
+        // Verify User Email
+        createCognitoUser(emailModInp).confirmRegistration(verificationCode, true, function confirmCallback(err, result) {
+            if (!err) {
+			        // Authenticate Before cahnging password
+			        cognitoUser.authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+					        // Delete the registered user 
+							cognitoUser.deleteUser(function(err, result) {
+						        if (err) {
+						            showNotification(err.message,'top','center','danger');
+						            return;
+						        }
+						        // Successfully deleted the user
+						        currentUser.email = emailModInp;
+						        showNotification("Successfully updated the email!",'top','center','danger');
+						    });
+					                
+			            },
+			            onFailure: function signinError(err) {
+			                showNotification(err.message,'top','center','danger');
+			            }
+			        });
+            } else {
+                showNotification(err.message,'top','center','danger');
+            }
+        });
+    }
+
+    /* 
+     * Create Attribute for user
+     */
+    function createAttribute(nameAttr, valAttr) {
+    	let dataAttribute = {
+                Name: nameAttr,
+                Value: valAttr
+        };
+    	
+        return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
+    }
+
 }(jQuery));	
