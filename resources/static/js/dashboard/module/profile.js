@@ -603,14 +603,49 @@
 	// Click Enter to Change Name and Last Name
 	document.getElementById('userNameModInp').addEventListener("keyup",function(e){
 		let keyCode = e.keyCode || e.which;
-		if (keyCode === 13) { 
+		if (keyCode === 13) {
+			// Enter key 
 			document.activeElement.blur();
 		    e.preventDefault();
 		    e.stopPropagation();
 		    // Click the confirm button to continue
 		    document.getElementById('userNameEdiBtn').click();
 		    return false;
+		} else if (e.keyCode === 27) {
+			// ESC key 
+			document.activeElement.blur();
+			e.preventDefault();
+		    e.stopPropagation();
+
+		   	// Name
+			let userNameProfileDisplay = document.getElementById('userNameProfileDisplay').classList;
+			userNameProfileDisplay.remove('d-none');
+			
+			// Display Edit Form
+			let userNameEditProf = document.getElementById('userNameEditProf');
+			userNameEditProf.classList.remove('d-block');
+			userNameEditProf.classList.add('d-none');
+
+			// Edit Button 
+			let userNameEdit = document.getElementById('userNameEdit');
+			userNameEdit.classList.remove('d-none');
 		}
+	});
+
+	// on focus out remove the modal
+	document.getElementById('userNameModInp').addEventListener("focusout",function(){
+		// Name
+		let userNameProfileDisplay = document.getElementById('userNameProfileDisplay').classList;
+		userNameProfileDisplay.remove('d-none');
+		
+		// Display Edit Form
+		let userNameEditProf = document.getElementById('userNameEditProf');
+		userNameEditProf.classList.remove('d-block');
+		userNameEditProf.classList.add('d-none');
+
+		// Edit Button 
+		let userNameEdit = document.getElementById('userNameEdit');
+		userNameEdit.classList.remove('d-none');
 	});
 
 	// User Edit Complete Btn
@@ -820,6 +855,30 @@
 
 		cpErrorDispUA.innerText = '';
 
+	});
+
+	// Ask us directly
+	document.getElementById('askUsDirectly').addEventListener("click",function(){
+		// Show Sweet Alert
+        Swal.fire({
+        	position: 'bottom-left',
+            title: 'Ask us Directly',
+            html: confirmPasswordFrag(),
+            inputAttributes: {
+                autocapitalize: 'on'
+            },
+            confirmButtonClass: 'btn btn-info',
+            confirmButtonText: 'Send',
+            showCloseButton: true,
+            buttonsStyling: false
+        }).then(function(result) {
+            // If confirm button is clicked
+            if (result.value) {
+                // Update User Name 
+				
+            }
+
+        });
 	});
 
 }(jQuery));	
