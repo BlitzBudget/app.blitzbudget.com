@@ -861,7 +861,7 @@
 	document.getElementById('askUsDirectly').addEventListener("click",function(){
 		// Show Sweet Alert
         Swal.fire({
-        	position: 'bottom-left',
+        	position: 'bottom-right',
             title: 'Ask us Directly',
             html: confirmPasswordFrag(),
             inputAttributes: {
@@ -886,7 +886,7 @@
 		// Hide the Element
 		this.classList.add('d-none');
 		// Name
-		let emailProfileDisplay = document.getElementById('emailEdit').classList;
+		let emailProfileDisplay = document.getElementById('emailProfileDisplay').classList;
 		emailProfileDisplay.add('d-none');
 		// Change the User Name
 		let emailModInp = document.getElementById('emailModInp');
@@ -960,6 +960,14 @@
         document.getElementById('confPasswordUA').focus();
 	}
 
+	// Create Cognito User
+	function createCognitoUser(email) {
+        return new AmazonCognitoIdentity.CognitoUser({
+            Username: email,
+            Pool: userPool
+        });
+    }
+
 	// Update User Attribute Email
     function updateEmail(emailModInp, confPasswordUA) {
         let cognitoUser = userPool.getCurrentUser();
@@ -1020,7 +1028,7 @@
 						        }
 						        // Successfully deleted the user
 						        currentUser.email = emailModInp;
-						        showNotification("Successfully updated the email!",'top','center','danger');
+						        showNotification("Successfully updated the email!",'top','center','success');
 						    });
 					                
 			            },
