@@ -4,15 +4,15 @@
 var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
-    var signinUrl = 'login';
-    var successfulSigninUrl = 'https://app.blitzbudget.com/home';
+    let signinUrl = 'login';
+    let successfulSigninUrl = 'https://app.blitzbudget.com/home';
 
-    var poolData = {
+    let poolData = {
         UserPoolId: _config.cognito.userPoolId,
         ClientId: _config.cognito.userPoolClientId
     };
 
-    var userPool;
+    let userPool;
 
     if (!(_config.cognito.userPoolId &&
           _config.cognito.userPoolClientId &&
@@ -32,7 +32,7 @@ var AWSCogUser = window.AWSCogUser || {};
     };
 
     AWSCogUser.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-        var cognitoUser = userPool.getCurrentUser();
+        let cognitoUser = userPool.getCurrentUser();
 
         if (cognitoUser) {
             cognitoUser.getSession(function sessionCallback(err, session) {
@@ -392,12 +392,18 @@ var AWSCogUser = window.AWSCogUser || {};
         let password = document.getElementById('passwordInputSignin').value;
         let verifyLoader = document.getElementById('verifyLoader');
         let verifyButton = verifyLoader.parentElement.firstElementChild;
+        let errorLoginPopup = document.getElementById('errorLoginPopup').innerText;
+        
+        // Replace HTML with Empty
+        while (errorLoginPopup.firstChild) {
+            errorLoginPopup.removeChild(errorLoginPopup.firstChild);
+        }
         
         if(isEmpty(code)) {
-            document.getElementById('errorLoginPopup').innerText = 'Verification code cannot be empty';
+            errorLoginPopup = 'Verification code cannot be empty';
             return;
         } else if (code.length !== 6) {
-            document.getElementById('errorLoginPopup').innerText = 'Verification code must be 6 characters long';
+            errorLoginPopup = 'Verification code must be 6 characters long';
             return;
         }
 
@@ -463,10 +469,19 @@ var AWSCogUser = window.AWSCogUser || {};
             resendLoader.classList.add('d-none');
             successLP.appendChild(successSvgMessage());
         });
+
+        // Change focus to code
+        document.getElementById('codeInputVerify').focus();
     });
 
     // Auto submit verification code
     document.getElementById('codeInputVerify').addEventListener("keyup", function(e){
+        let errorLogin = document.getElementById('errorLoginPopup');
+        // Replace HTML with Empty
+        while (errorLogin.firstChild) {
+            errorLogin.removeChild(errorLogin.firstChild);
+        }
+
         let vc = this.value;
         if(vc.length == 6) {
             verificationCode();
@@ -561,15 +576,23 @@ var AWSCogUser = window.AWSCogUser || {};
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
             document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty, Enter the new password in the password field';
+            // Change focus to email
+            document.getElementById('emailInputSignin').focus();
             return;
         } else if(isEmpty(emailInputSignin)) {
             document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            // Change focus to email
+            document.getElementById('emailInputSignin').focus();
             return;
         } else if(isEmpty(newPassword)) {
             document.getElementById('errorLoginPopup').innerText = 'Enter the new password in the password field';
+            // Change focus to password
+            document.getElementById('passwordInputSignin').focus();
             return;
         } else if (newPassword.length < 8) {
             document.getElementById('errorLoginPopup').innerText = 'The new password should have a minimum length of 8 characters';
+            // Change focus to password
+            document.getElementById('passwordInputSignin').focus();
             return;
         }
 
@@ -670,6 +693,10 @@ var AWSCogUser = window.AWSCogUser || {};
         document.getElementById('errorLoginPopup').innerText = '';
 
         document.getElementById('haveAnAccount').classList.add('d-none');
+
+        // CHange focus to verification code
+        document.getElementById('codeInputVerify').focus();
+
     }
 
     // Toggle Signup
@@ -705,6 +732,9 @@ var AWSCogUser = window.AWSCogUser || {};
         
         document.getElementById('successLoginPopup').innerText = '';
         document.getElementById('errorLoginPopup').innerText = '';
+
+        // Toggle Focus to confirm password
+        document.getElementById('password2InputRegister').focus();
     }
 
     // Fetch User From Local Storage 

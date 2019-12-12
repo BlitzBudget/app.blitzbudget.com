@@ -69,37 +69,6 @@ uh = {
 	    });
 	},
 
-	// Change Password Flow
-	changePassword(oldPassword, newPassword) {
-		// TODO Adopt Code
-		cognitoUser.changePassword(oldPassword, newPassword, function(err, result) {
-	        if (err) {
-	            alert(err);
-	            return;
-	        }
-	        console.log('call result: ' + result);
-	    });
-	},
-
-	// Update User Attributes
-	updateUserAttributes() {
-		// TODO Adopt Code
-		let attributeList = [];
-		let attribute = {
-	        Name : 'nickname',
-	        Value : 'joe'
-	    };
-		attribute = new AmazonCognitoIdentity.CognitoUserAttribute(attribute);
-	    attributeList.push(attribute);
-
-	    cognitoUser.updateAttributes(attributeList, function(err, result) {
-	        if (err) {
-	            alert(err);
-	            return;
-	        }
-	        console.log('call result: ' + result);
-	    });
-	},
 
 	// Verify an Attribute
 	verifyAnAttirbute() {
@@ -153,4 +122,7 @@ function toggleLogin(email) {
     document.getElementById('errorLoginPopup').innerText = '';
 
     document.getElementById('haveAnAccount').classList.add('d-none');
+
+    // Focus to email
+    document.getElementById('emailInputSignin').focus();
 }

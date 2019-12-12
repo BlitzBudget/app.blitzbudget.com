@@ -580,6 +580,14 @@ window.onload = function () {
 			 }
 		});
 
+
+		// Once the login modal is Shown then (focus to input)
+		$('#loginModal').on('shown.bs.modal', function (e) {
+			// Change focus to input
+			document.getElementById('emailInputSignin').focus();
+			 
+		});
+
 		function startupApplication() {
 						
 			// Read Cookies
