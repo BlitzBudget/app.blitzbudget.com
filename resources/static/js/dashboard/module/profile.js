@@ -2,6 +2,15 @@
 
 (function scopeWrapper($) {
 
+	// Custom Javascript for dashboard
+	const PROFILE_CONSTANTS = {};
+
+	// SECURITY: Defining Immutable properties as constants
+	Object.defineProperties(PROFILE_CONSTANTS, {
+		'resetAccountUrl': { value: '/reset-account', writable: false, configurable: false },
+		'deleteAccountUrl': { value: '/delete-account', writable: false, configurable: false }
+	});
+
 	displayUserDetailsProfile();
 
 	// Define Cognito User Pool adn Pool data
@@ -278,7 +287,22 @@
             }).then(function(result) {
             	 // If the Reset Button is pressed
             	 if (result.value) {
-            	 	// TODO
+            	 	jQuery.ajax({
+						url: _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl,
+						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+				        type: 'DELETE',
+				        success: function(message) {
+				        	showNotification(message,'top','center','success');
+				        },
+				        error:  function (thrownError) {
+			           	 	var responseError = JSON.parse(thrownError.responseText);
+			            	if(responseError.error.includes("Unauthorized")){
+			            		er.sessionExpiredSwal(thrownError);
+			            	} else{
+			            		showNotification('Unable to reset the account. Please try again!','top','center','danger');
+			            	}
+			            }
+		        	});
             	 }
 
             });
@@ -310,9 +334,24 @@
                 cancelButtonClass: "btn btn-secondary",
                 buttonsStyling: false,
             }).then(function(result) {
-            	 // If the Reset Button is pressed
+            	 // If the Delete Button is pressed
             	 if (result.value) {
-            	 	// TODO
+            	   	jQuery.ajax({
+						url: _config.api.invokeUrl + PROFILE_CONSTANTS.deleteAccountUrl,
+						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+				        type: 'DELETE',
+				        success: function(message) {
+				        	showNotification(message,'top','center','success');
+				        },
+				        error:  function (thrownError) {
+			           	 	var responseError = JSON.parse(thrownError.responseText);
+			            	if(responseError.error.includes("Unauthorized")){
+			            		er.sessionExpiredSwal(thrownError);
+			            	} else{
+			            		showNotification('Unable to delete the account. Please try again!','top','center','danger');
+			            	}
+			            }
+		        	});
             	 }
 
             });
