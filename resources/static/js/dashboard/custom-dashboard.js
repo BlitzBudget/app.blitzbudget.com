@@ -119,9 +119,6 @@ window.onload = function () {
 		// Startup Application
 		startupApplication();
 		
-		// Adjust styles of login for dashboad
-		adjustStylesForLoginPopup();
-		
 		/* Read Cookies */
 		function readCookie() {
 				// make sure that the cookies exists
@@ -315,17 +312,6 @@ window.onload = function () {
 			if(Swal.isVisible()) {
 				Swal.close();
 			}
-		}
-		
-		// Adjust styles of login for dashboard
-		function adjustStylesForLoginPopup() {
-			let loginModalHeader = document.getElementById('loginModalCardHeader');
-			loginModalHeader.classList.remove('card-header');
-			loginModalHeader.classList.remove('card-header-primary');
-			
-			// Disabled the close button 
-			document.getElementById('loginModalCloseButton').disabled=true;
-			
 		}
 		
 		/**
