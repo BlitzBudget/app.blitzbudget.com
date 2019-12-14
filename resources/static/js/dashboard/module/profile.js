@@ -287,19 +287,19 @@
             }).then(function(result) {
             	 // If the Reset Button is pressed
             	 if (result.value) {
+
             	 	jQuery.ajax({
 						url: _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl,
 						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				        type: 'DELETE',
-				        success: function(message) {
-				        	showNotification(message,'top','center','success');
+				        success: function(jsonObj) {
+				        	showNotification(jsonObj.message,'top','center','success');
 				        },
 				        error:  function (thrownError) {
+				        	showNotification(thrownError.message,'top','center','danger');
 			           	 	var responseError = JSON.parse(thrownError.responseText);
-			            	if(responseError.error.includes("Unauthorized")){
+			           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
 			            		er.sessionExpiredSwal(thrownError);
-			            	} else{
-			            		showNotification('Unable to reset the account. Please try again!','top','center','danger');
 			            	}
 			            }
 		        	});
@@ -340,15 +340,14 @@
 						url: _config.api.invokeUrl + PROFILE_CONSTANTS.deleteAccountUrl,
 						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				        type: 'DELETE',
-				        success: function(message) {
-				        	showNotification(message,'top','center','success');
+				        success: function(jsonObj) {
+				        	showNotification(jsonObj.message,'top','center','success');
 				        },
 				        error:  function (thrownError) {
+				        	showNotification(thrownError.message,'top','center','danger');
 			           	 	var responseError = JSON.parse(thrownError.responseText);
-			            	if(responseError.error.includes("Unauthorized")){
+			           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
 			            		er.sessionExpiredSwal(thrownError);
-			            	} else{
-			            		showNotification('Unable to delete the account. Please try again!','top','center','danger');
 			            	}
 			            }
 		        	});
@@ -717,6 +716,7 @@
 
 		let firstName = userNameLis[0];
 		let lastName = userNameLis.length > 1 ? userNameLis[1] : '';
+		let cognitoUser = userPool.getCurrentUser();
 
 		 // Show Sweet Alert
         Swal.fire({
@@ -728,13 +728,46 @@
             confirmButtonClass: 'btn btn-info',
             confirmButtonText: 'Confirm Password',
             showCloseButton: true,
-            buttonsStyling: false
+            buttonsStyling: false,
+            showLoaderOnConfirm: true,
+  			preConfirm: () => {
+  				return new Promise(function(resolve) {
+  					let confPasswordUA = document.getElementById('confPasswordUA').value;
+  					 // Authentication Details
+				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+			            Username: currentUser.email,
+			            Password: confPasswordUA
+			        });
+
+	  				// Authenticate Before cahnging password
+			        cognitoUser.authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+			            	// Hide loading 
+			               Swal.hideLoading();
+			               // Resolve the promise
+			               resolve();
+			            },
+			            onFailure: function signinError(err) {
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${err.message}`
+					        );
+			            }
+			        });
+  				});
+  			},
+  			allowOutsideClick: () => !Swal.isLoading()
         }).then(function(result) {
+        	// Hide the validation message if present
+        	Swal.resetValidationMessage()
+        	// Get the entered Confrimation password
             let confPasswordUA = document.getElementById('confPasswordUA').value;
             // If confirm button is clicked
             if (result.value) {
                 // Update User Name 
-				updateUserName(firstName, lastName, confPasswordUA);
+				updateUserName(firstName, lastName, confPasswordUA, cognitoUser);
             }
 
         });
@@ -798,8 +831,7 @@
 
 
 	 // Update User Attribute
-    function updateUserName(firstName, lastName, confPasswordUA) {
-        let cognitoUser = userPool.getCurrentUser();
+    function updateUserName(firstName, lastName, confPasswordUA, cognitoUser) {
 
         // FirstName
 		let attributeList = [];
@@ -818,38 +850,22 @@
 		attributeLN = new AmazonCognitoIdentity.CognitoUserAttribute(attributeLN);
 	    attributeList.push(attributeLN);
 
-
-	     // Authentication Details
-	    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Username: currentUser.email,
-            Password: confPasswordUA
-        });
-
-        // Authenticate Before cahnging password
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function signinSuccess(result) {
-                 // Update Attribute
-			    cognitoUser.updateAttributes(attributeList, function(err, result) {
-			        if (err) {
-			            showNotification(err.message,'top','center','danger');
-			            return;
-			        }
-			        document.getElementById('userNameProfileDisplay').innerText = firstName + ' ' + lastName;
-			        // Update User Cache
-			        currentUser.name = firstName;
-			        currentUser.family_name = lastName;
-			        // We save the item in the sessionStorage.
-                    sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-                    // Update User Name in App
-                    document.getElementById('userName').innerText = firstName + ' ' + lastName;
-			        showNotification('Successfully changed the name!','top','center','success');
-			    });
-                
-            },
-            onFailure: function signinError(err) {
-                showNotification(err.message,'top','center','danger');
-            }
-        });
+         // Update Attribute
+	    cognitoUser.updateAttributes(attributeList, function(err, result) {
+	        if (err) {
+	            showNotification(err.message,'top','center','danger');
+	            return;
+	        }
+	        document.getElementById('userNameProfileDisplay').innerText = firstName + ' ' + lastName;
+	        // Update User Cache
+	        currentUser.name = firstName;
+	        currentUser.family_name = lastName;
+	        // We save the item in the sessionStorage.
+            sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+            // Update User Name in App
+            document.getElementById('userName').innerText = firstName + ' ' + lastName;
+	        showNotification('Successfully changed the name!','top','center','success');
+	    });
     }
 
     // Confirm Password Key Up listener For Update User Attributes
