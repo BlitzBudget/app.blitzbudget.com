@@ -777,6 +777,7 @@
 
 	// on focus out remove the modal
 	document.getElementById('userNameModInp').addEventListener("focusout",function(){
+
 		// Name
 		let userNameProfileDisplay = document.getElementById('userNameProfileDisplay').classList;
 		userNameProfileDisplay.remove('d-none');
@@ -1079,6 +1080,25 @@
 		    // Click the confirm button of SWAL
 		    document.getElementById('emailEditBtn').click();
 		    return false;
+		} else if (e.keyCode === 27) {
+			// ESC key 
+			document.activeElement.blur();
+			e.preventDefault();
+		    e.stopPropagation();
+
+			// Name
+			let emailProfileDisplay = document.getElementById('emailProfileDisplay').classList;
+			emailProfileDisplay.remove('d-none');
+			
+			// Display Edit Form
+			let emailEditProf = document.getElementById('emailEditProf');
+			emailEditProf.classList.remove('d-block');
+			emailEditProf.classList.add('d-none');
+
+			// Edit Button 
+			let emailEdit = document.getElementById('emailEdit');
+			emailEdit.classList.remove('d-none');
+
 		}
 	});
 
