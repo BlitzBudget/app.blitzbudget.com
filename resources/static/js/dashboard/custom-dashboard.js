@@ -569,11 +569,21 @@ window.onload = function () {
 
 		// Once the login modal is Shown then (focus to input)
 		$('#loginModal').on('shown.bs.modal', function (e) {
-			// Change focus to input
-			document.getElementById('emailInputSignin').focus();
+			// store in session storage
+        	let currentUserSI = sessionStorage.getItem("currentUserSI");
+        	if(isNotEmpty(currentUserSI)) {
+        		// Parse JSON back to Object
+        		currentUserSI = JSON.parse(currentUserSI);
+        		document.getElementById('emailInputSignin').value = currentUserSI.email;
+        		document.getElementById('passwordInputSignin').focus();
+        	} else {
+        		// Change focus to input
+				document.getElementById('emailInputSignin').focus();
+        	}
 			 
 		});
 
+		// Start up application
 		function startupApplication() {
 						
 			// Read Cookies
@@ -756,7 +766,7 @@ er = {
 	},
 	
 	// Throw a session expired error and reload the page.
-	sessionExpiredSwal(data){
+	sessionExpiredSwal(sessionExp) {
 		// Show the login modal if the session has expired
 		// Initialize the modal to not close will when pressing ESC or clicking outside
 		toggleLogin('');

@@ -264,7 +264,8 @@
 			        });
   				});
   			},
-  			allowOutsideClick: () => !Swal.isLoading()
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
         }).then(function(result) {
         	// Hide the validation message if present
         	Swal.resetValidationMessage()
@@ -347,7 +348,8 @@
 				        });
 	  				});
 	  			},
-	  			allowOutsideClick: () => !Swal.isLoading()
+	  			allowOutsideClick: () => !Swal.isLoading(),
+	  			closeOnClickOutside: () => !Swal.isLoading()
             }).then(function(result) {
             	// Hide the validation message if present
         		Swal.resetValidationMessage()
@@ -432,7 +434,8 @@
 				        });
 	  				});
 	  			},
-	  			allowOutsideClick: () => !Swal.isLoading()
+	  			allowOutsideClick: () => !Swal.isLoading(),
+	  			closeOnClickOutside: () => !Swal.isLoading()
             }).then(function(result) {
             	// Hide the validation message if present
         		Swal.resetValidationMessage()
@@ -862,7 +865,8 @@
 			        });
   				});
   			},
-  			allowOutsideClick: () => !Swal.isLoading()
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
         }).then(function(result) {
         	// Hide the validation message if present
         	Swal.resetValidationMessage()
@@ -1103,7 +1107,7 @@
 
 		let cognitoUser = userPool.getCurrentUser();
 
-		 // Show Sweet Alert
+		// Show Sweet Alert
         Swal.fire({
             title: 'Confirm Password',
             html: confirmPasswordFrag(),
@@ -1117,6 +1121,8 @@
             showLoaderOnConfirm: true,
   			preConfirm: () => {
   				return new Promise(function(resolve) {
+  					// Hide the validation message if present
+        			Swal.resetValidationMessage();
   					let confPasswordUA = document.getElementById('confPasswordUA');
   					 // Authentication Details
 				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
@@ -1130,7 +1136,7 @@
 			            	// Hide loading 
 			               Swal.hideLoading();
 			               // Resolve the promise
-			               resolve();
+			               resolve(true);
 			            },
 			            onFailure: function signinError(err) {
 			            	// Hide loading 
@@ -1145,7 +1151,8 @@
 			        });
   				});
   			},
-  			allowOutsideClick: () => !Swal.isLoading()
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
         }).then(function(result) {
         	// Hide the validation message if present
         	Swal.resetValidationMessage();
@@ -1215,25 +1222,115 @@
     **/
     function signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser) {
 
-	    let verificationCode = prompt('Please input verification code sent to ' +  emailModInp,'');
-        // Verify User Email
-        createCognitoUser(emailModInp).confirmRegistration(verificationCode, true, function confirmCallback(err, result) {
-            if (!err) {
-			        
-		        // Delete the registered user 
+    	// Show Sweet Alert
+        Swal.fire({
+            title: 'Verification Code',
+		  	html: 'Verification code has been sent to <strong>' + emailModInp + '</strong>', 
+		  	input: 'text',
+		  	confirmButtonClass: 'btn btn-info',
+		  	confirmButtonText: 'Verify Email',
+		  	showCancelButton: false,
+		  	allowEscapeKey: false,
+		  	onOpen: (docVC) => {
+			    $( ".swal2-input" ).keyup(function() {
+					// Input Key Up listener
+					let inputVal = this.value;
+
+					if(inputVal.length == 6) {
+						Swal.clickConfirm();
+					}
+
+				});
+			},
+		  	inputValidator: (value) => {
+			    if (!value) {
+			      return 'Verification code cannot be empty'
+			    }
+
+			    if(value.length < 6) {
+			    	return 'Verification code should be 6 characters in length';
+			    }
+			},
+		    showClass: {
+			   popup: 'animated fadeInDown faster'
+			},
+			hideClass: {
+			   popup: 'animated fadeOutUp faster'
+			},
+			onClose: () => {
+		    	$( ".swal2-input" ).off('keyup');
+		    },
+		    showLoaderOnConfirm: true,
+  			preConfirm: () => {
+  				return new Promise(function(resolve) {
+  					// Hide the validation message if present
+        			Swal.resetValidationMessage();
+  					let verificationCode = document.getElementsByClassName("swal2-input" )[0];
+
+		        	if(verificationCode.value) {
+
+				        // Verify User Email
+				        createCognitoUser(emailModInp).confirmRegistration(verificationCode.value, true, function confirmCallback(err, result) {
+				            if (!err) {
+							    // Successfully deleted the user
+        					    currentUser.email = emailModInp;
+        					    // store in session storage
+        					    sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+
+        					    // Hide loading 
+				                Swal.hideLoading();
+				                // Resolve the promise
+				                resolve();
+				  				
+				            } else {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    verificationCode.focus();
+				            }
+				        });
+				    }
+  				});
+  			},
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
+        }).then(function(result) {
+        	if(result.value) {
+        		// Hide the validation message if present
+	        	Swal.resetValidationMessage();
+	        	 // Delete the registered user 
 				cognitoUser.deleteUser(function(err, result) {
 			        if (err) {
 			            showNotification(err.message,'top','center','danger');
 			            return;
 			        }
-			        // Successfully deleted the user
-			        currentUser.email = emailModInp;
-			        showNotification("Successfully updated the email!",'top','center','success');
+			        // Update email
+			        document.getElementById('emailProfileDisplay').innerText = emailModInp;
+
+			        // Authentication Details
+				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+			            Username: emailModInp,
+			            Password: confPasswordUA
+			        });
+
+			        // Authenticate Before cahnging email (SIGN IN User)
+			        createCognitoUser(emailModInp).authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+			               showNotification('Successfully changed the email!','top','center','success');
+			            },
+			            onFailure: function signinError(err) {
+			               // Login Modal
+			               er.sessionExpiredSwal(true);
+			               // Notification
+			               showNotification('Password entered is invalid','top','center','danger');
+			            }
+			        });
 			    });
-		                         
-            } else {
-                showNotification(err.message,'top','center','danger');
-            }
+        	}
         });
     }
 
