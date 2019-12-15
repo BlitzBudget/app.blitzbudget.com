@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blitzbudget</groupId>
-	<artifactId>bb-app</artifactId>
+	<artifactId>Every-Rupee-Static</artifactId>
 	<version>0.4.480-SNAPSHOT</version>
 	<name>bb-app</name>
 	<description>Core Web App for Blitz Budget</description>
@@ -54,15 +54,7 @@
         						</jsSourceExcludes>
                 		</configuration>
             	 </execution>
-             </executions>
-         </plugin>
-         <!-- Bundle the Css into core, core-website css and js -->
-         <plugin>
-            	<groupId>com.samaxes.maven</groupId>
-		        <artifactId>minify-maven-plugin</artifactId>
-		        <version>${minify-maven-plugin.version}</version>
-            	<executions>
-            		<execution>
+            	 <execution>
 			             <id>bundle-configuration-minify</id>
 			               <configuration>
 			                	<webappSourceDir>${project.basedir}/resources</webappSourceDir>
@@ -90,8 +82,8 @@
 			                    <goal>minify</goal>
 							</goals>
 			        </execution>
-             	</executions>
-           </plugin>
+             </executions>
+         </plugin>
            <!-- Copy the HTML -->
            <plugin>
 			    <artifactId>maven-resources-plugin</artifactId>
@@ -115,14 +107,7 @@
 			               </resources>              
 			            </configuration>            
 			        </execution>
-			     </executions>
-			</plugin>
-			 <!-- Copy the Images -->
-			<plugin>
-			    <artifactId>maven-resources-plugin</artifactId>
-			    <version>3.0.1</version>
-			    <executions>
-			         <execution>
+			        <execution>
 			            <id>copy-images-for-css</id>
 			            <!-- here the phase you need -->
 			            <phase>validate</phase>

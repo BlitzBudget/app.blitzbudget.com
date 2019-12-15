@@ -230,7 +230,7 @@
             error: function(thrownError) {
           	  var responseError = JSON.parse(thrownError.responseText);
 	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(data);
+	  		      er.sessionExpiredSwal(thrownError);
 	          }
 	        }
 		});
@@ -264,7 +264,7 @@
             error: function(thrownError) {
           	  var responseError = JSON.parse(thrownError.responseText);
 	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(data);
+	  		      er.sessionExpiredSwal(thrownError);
 	          }
 	        }
 		});
@@ -1603,7 +1603,7 @@
             error: function(thrownError) {
           	  var responseError = JSON.parse(thrownError.responseText);
 	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(data);
+	  		      er.sessionExpiredSwal(thrownError);
 	          }
 	        }
 		});

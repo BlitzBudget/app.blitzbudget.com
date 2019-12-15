@@ -9,3 +9,10 @@ Instructions to install and run the server
 2) http-server . -p 8080
 
 
+# Python HTTP Server (V2)
+
+Running a HTTP Server
+
+1) python -m SimpleHTTPServer 8080 
+
+

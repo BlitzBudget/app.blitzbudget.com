@@ -31,7 +31,13 @@
                     </div>
                     <a id="userNameEdit" class="editProfile text-info">Edit</a>
                     <h5 id="emailProfileDisplay" class="mb-0 mt-3 font-weight-bold">john_doe@blitzbudget.com</h5>
-                    <a id="emailEdit" class="editProfile">Email</a>
+                    <div id="emailEditProf" class="btn-group d-none">
+                        <input id="emailModInp" type="email" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left">
+                        <button id="emailEditBtn" class="btn btn-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="material-icons">arrow_forward</i>
+                        </button>
+                    </div>
+                    <a id="emailEdit" class="editProfile text-info">Edit</a>
                     <h5 class="mb-0 mt-3 font-weight-bold">**********</h5>
                     <a id="changePasswordProfile" class="editProfile text-info">Change Password</a>
                 </div>
@@ -114,7 +120,7 @@
                           <ul class="resetUlStyling">
                               <li class="mb-2"><a class="helpProfile text-info">Tutotials point</a></li>
                               <li class="mb-2"><a class="helpProfile text-info">FAQ</a></li>
-                              <li><a class="helpProfile text-info">Ask us directly</a></li>
+                              <li><a id="askUsDirectly" class="helpProfile text-info">Ask us directly</a></li>
                           </ul>
                       </div>
                   </div>

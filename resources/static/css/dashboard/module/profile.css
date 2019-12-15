@@ -88,15 +88,15 @@
     font-size: 90%;
 }
 
-#userNameModInp {
+#userNameModInp, #emailModInp {
     width: 71.5%;
     border: 0.1rem solid #88979d;
 }
 
-#userNameModInp:focus {
+#userNameModInp:focus, #emailModInp:focus {
     border: 0.1rem solid #00bcd4;
 }
 
-#userNameEdiBtn {
+#userNameEdiBtn, #emailEditBtn {
     border: 0.047rem solid #00bcd4
 }

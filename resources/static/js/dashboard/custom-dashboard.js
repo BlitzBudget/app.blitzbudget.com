@@ -119,9 +119,6 @@ window.onload = function () {
 		// Startup Application
 		startupApplication();
 		
-		// Adjust styles of login for dashboad
-		adjustStylesForLoginPopup();
-		
 		/* Read Cookies */
 		function readCookie() {
 				// make sure that the cookies exists
@@ -315,17 +312,6 @@ window.onload = function () {
 			if(Swal.isVisible()) {
 				Swal.close();
 			}
-		}
-		
-		// Adjust styles of login for dashboard
-		function adjustStylesForLoginPopup() {
-			let loginModalHeader = document.getElementById('loginModalCardHeader');
-			loginModalHeader.classList.remove('card-header');
-			loginModalHeader.classList.remove('card-header-primary');
-			
-			// Disabled the close button 
-			document.getElementById('loginModalCloseButton').disabled=true;
-			
 		}
 		
 		/**
@@ -583,11 +569,21 @@ window.onload = function () {
 
 		// Once the login modal is Shown then (focus to input)
 		$('#loginModal').on('shown.bs.modal', function (e) {
-			// Change focus to input
-			document.getElementById('emailInputSignin').focus();
+			// store in session storage
+        	let currentUserSI = sessionStorage.getItem("currentUserSI");
+        	if(isNotEmpty(currentUserSI)) {
+        		// Parse JSON back to Object
+        		currentUserSI = JSON.parse(currentUserSI);
+        		document.getElementById('emailInputSignin').value = currentUserSI.email;
+        		document.getElementById('passwordInputSignin').focus();
+        	} else {
+        		// Change focus to input
+				document.getElementById('emailInputSignin').focus();
+        	}
 			 
 		});
 
+		// Start up application
 		function startupApplication() {
 						
 			// Read Cookies
@@ -770,7 +766,7 @@ er = {
 	},
 	
 	// Throw a session expired error and reload the page.
-	sessionExpiredSwal(data){
+	sessionExpiredSwal(sessionExp) {
 		// Show the login modal if the session has expired
 		// Initialize the modal to not close will when pressing ESC or clicking outside
 		toggleLogin('');
