@@ -775,23 +775,6 @@
 		}
 	});
 
-	// on focus out remove the modal
-	document.getElementById('userNameModInp').addEventListener("focusout",function(){
-
-		// Name
-		let userNameProfileDisplay = document.getElementById('userNameProfileDisplay').classList;
-		userNameProfileDisplay.remove('d-none');
-		
-		// Display Edit Form
-		let userNameEditProf = document.getElementById('userNameEditProf');
-		userNameEditProf.classList.remove('d-block');
-		userNameEditProf.classList.add('d-none');
-
-		// Edit Button 
-		let userNameEdit = document.getElementById('userNameEdit');
-		userNameEdit.classList.remove('d-none');
-	});
-
 	// User Edit Complete Btn
 	document.getElementById('userNameEdiBtn').addEventListener("click",function(e){
 		editUserDetailsFNAndLN();
@@ -1232,6 +1215,22 @@
                     signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
                 } else {
                     showNotification(err.message,'top','center','danger');
+
+			        // Hide the Element
+					document.getElementById('emailEdit').classList.add('d-none');
+					// Name
+					let emailProfileDisplay = document.getElementById('emailProfileDisplay').classList;
+					emailProfileDisplay.add('d-none');
+					// Change the User Name
+					let emailModInp = document.getElementById('emailModInp');
+					emailModInp.value = currentUser.email;
+					// Display Edit Form
+					let emailEditProf = document.getElementById('emailEditProf');
+					emailEditProf.classList.remove('d-none');
+					emailEditProf.classList.add('d-block');
+
+					// Change Focus to element
+					document.getElementById('emailModInp').focus();
                 }
             }
         );
@@ -1251,6 +1250,8 @@
 		  	confirmButtonText: 'Verify Email',
 		  	showCancelButton: false,
 		  	allowEscapeKey: false,
+		  	allowOutsideClick: false,
+  			closeOnClickOutside: false,
 		  	onOpen: (docVC) => {
 			    $( ".swal2-input" ).keyup(function() {
 					// Input Key Up listener
@@ -1316,8 +1317,6 @@
 				    }
   				});
   			},
-  			allowOutsideClick: () => !Swal.isLoading(),
-  			closeOnClickOutside: () => !Swal.isLoading()
         }).then(function(result) {
         	if(result.value) {
         		// Hide the validation message if present
