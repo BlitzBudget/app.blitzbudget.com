@@ -790,6 +790,9 @@ er = {
 		    backdrop: 'static',
 		    keyboard: false
 		});
+
+		// If session Expired then clear storage
+		sessionStorage.clear();
 	},
 	
 	//convert from currency format to number

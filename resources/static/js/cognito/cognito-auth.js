@@ -58,7 +58,7 @@ var AWSCogUser = window.AWSCogUser || {};
         // We retrieve the object again, but in a string form.
         let currentUserSI = sessionStorage.getItem("currentUserSI");
         // If the "email" attr is not empty then verifiy if the session sotrage and the "email" attr are equal
-        if((currentUserSI && isEmpty(email)) || (currentUserSI && isNotEmpty(email) && isEqual(JSON.parse(currentUserSI).email, email))) {
+        if(currentUserSI) {
             // User Attribute retrieved from current user session storage
             window.currentUser = JSON.parse(currentUserSI);
         } else {
