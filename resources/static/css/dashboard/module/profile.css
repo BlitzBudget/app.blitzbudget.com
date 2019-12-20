@@ -100,3 +100,19 @@
 #userNameEdiBtn, #emailEditBtn {
     border: 0.047rem solid #00bcd4
 }
+
+.btn.btn-dynamic-color {
+     color: #fff;
+     background-color: #00bcd4;
+     border-color: #00bcd4;
+     box-shadow: 0 2px 2px 0 rgba(0,188,212,0.14), 0 3px 1px -2px rgba(0,188,212,0.2), 0 1px 5px 0 rgba(0,188,212,0.12);
+}
+
+.btn.btn-dynamic-color:focus,
+.btn.btn-dynamic-color:active,
+.btn.btn-dynamic-color:hover {
+    color: #fff;
+    background-color: #9124a3;
+    border-color: #701c7e;
+    box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);
+}
