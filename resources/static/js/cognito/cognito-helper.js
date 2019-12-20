@@ -95,6 +95,30 @@ uh = {
 		  if (err) console.log(err, err.stack); // an error occurred
 		  else     console.log(data);           // successful response
 		});
+	},
+
+	listRegisteredDevices() {
+		cognitoUser.listDevices(limit, paginationToken, {
+		    onSuccess: function (result) {
+		        console.log('call result: ' + result);
+		     },
+
+		    onFailure: function(err) {
+		        alert(err);
+		    }
+		});
+	},
+
+	forgetThisDevice() {
+		cognitoUser.forgetDevice({
+		    onSuccess: function (result) {
+		         console.log('call result: ' + result);
+		     },
+
+		     onFailure: function(err) {
+		         alert(err);
+		     }
+		});
 	}
 }
 
