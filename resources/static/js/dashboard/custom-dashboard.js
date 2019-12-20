@@ -783,14 +783,29 @@ er = {
 	
 	// Throw a session expired error and reload the page.
 	sessionExpiredSwal(sessionExp) {
-		// Show the login modal if the session has expired
-		// Initialize the modal to not close will when pressing ESC or clicking outside
-		toggleLogin('');
 		$('#loginModal').modal({
 		    backdrop: 'static',
 		    keyboard: false
 		});
 
+		let email = '';
+		// We retrieve the object again, but in a string form.
+        let currentUserSI = sessionStorage.getItem("currentUserSI");
+
+        // If cuurrent User does not exist then take it from session storage
+		if(!currentUser && currentUserSI) {
+			currentUser = JSON.parse(currentUserSI);
+		}
+
+		// If Current User exists then
+		if(currentUser) {
+			email = currentUser.email;
+		}
+
+		// Show the login modal if the session has expired
+		// Initialize the modal to not close will when pressing ESC or clicking outside
+		toggleLogin(email);
+		
 		// If session Expired then clear storage
 		sessionStorage.clear();
 	},
