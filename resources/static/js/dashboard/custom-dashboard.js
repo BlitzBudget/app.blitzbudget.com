@@ -789,22 +789,35 @@ er = {
 		});
 
 		let email = '';
-		// We retrieve the object again, but in a string form.
-        let currentUserSI = sessionStorage.getItem("currentUserSI");
+		// Get parameters
+        const params = (new URL(document.location)).searchParams;
 
-        // If cuurrent User does not exist then take it from session storage
-		if(!currentUser && currentUserSI) {
-			currentUser = JSON.parse(currentUserSI);
-		}
+        // First Priority to URL parameters
+        if(params != null && params.has('verify')) {
+        	let email = localStorage.getItem('verifyEmail');
+        	toggleVerify(email, params.get('verify'));
+        	// Click the verify button
+        	document.getElementById('vcBtnFrm').click();
+        	// After fetching delete param
+        	params.delete('verify');
+        }  else {
+        	// We retrieve the object again, but in a string form.
+	        let currentUserSI = sessionStorage.getItem("currentUserSI");
 
-		// If Current User exists then
-		if(currentUser) {
-			email = currentUser.email;
-		}
+	        // If cuurrent User does not exist then take it from session storage
+			if(!currentUser && currentUserSI) {
+				currentUser = JSON.parse(currentUserSI);
+			}
 
-		// Show the login modal if the session has expired
-		// Initialize the modal to not close will when pressing ESC or clicking outside
-		toggleLogin(email);
+			// If Current User exists then
+			if(currentUser) {
+				email = currentUser.email;
+			}
+
+			// Show the login modal if the session has expired
+			// Initialize the modal to not close will when pressing ESC or clicking outside
+			toggleLogin(email);
+        }
 		
 		// If session Expired then clear storage
 		sessionStorage.clear();
@@ -970,4 +983,41 @@ function formatNumber(num, locale) {
 	}
 	
 	return num.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Display Confirm Account Verification Code
+function toggleVerify(email, verifyCode) {
+    document.getElementById('google').classList.add('d-none');
+    document.getElementById('facebook').classList.add('d-none');
+    document.getElementById('twitter').classList.add('d-none');
+    document.getElementById('gmail').classList.remove('d-none');
+    document.getElementById('outlook').classList.remove('d-none');
+
+    document.getElementById('loginModalTitle').innerText = 'Email Verification';
+
+    document.getElementById('signinForm').classList.add('d-none');
+
+    document.getElementById('verifyForm').classList.remove('d-none');
+
+    document.getElementById('emailInputVerify').value = email;
+
+    document.getElementById('emailDisplayVE').innerText = email;
+
+    document.getElementById('codeInputVerify').value = verifyCode;
+
+    document.getElementById('forgotPassLogin').classList.add('d-none');
+
+    document.getElementById('resendCodeLogin').classList.remove('d-none');
+    
+    // hide Signin
+    document.getElementById('signinForm').classList.add('d-none');
+    
+    document.getElementById('successLoginPopup').innerText = '';
+    document.getElementById('errorLoginPopup').innerText = '';
+
+    document.getElementById('forgotPassLogin').classList.add('d-none');
+
+    // CHange focus to verification code
+    document.getElementById('codeInputVerify').focus();
+
 }

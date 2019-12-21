@@ -367,6 +367,10 @@ var AWSCogUser = window.AWSCogUser || {};
         signupButton.classList.add('d-none');
        
         let onSuccess = function registerSuccess(result) {
+            // Set email field in session storage (EMAIL CLICK FUNC)
+            localStorage.setItem('verifyEmail', email);
+            // set password for verification
+            localStorage.setItem('verifyPass', password);
             signupLoader.classList.add('d-none');
             signupButton.classList.remove('d-none');
             toggleVerification(email);
@@ -408,22 +412,59 @@ var AWSCogUser = window.AWSCogUser || {};
             return;
         }
 
+        // Password empty fetch from localstorage
+        if(isEmpty(password)) {
+            password = localStorage.getItem('verifyPass');
+        }
+
         verifyLoader.classList.remove('d-none');
         verifyButton.classList.add('d-none');
         let loginModal = $('#loginModal');
         verify(email, code,
             function verifySuccess(result) {
-                verifyLoader.classList.add('d-none');
-                verifyButton.classList.remove('d-none');
+                // Remove session storage verify email (EMAIL CLICK FUNC)
+                localStorage.removeItem('verifyEmail');
+                // Remove password field
+                localStorage.removeItem('verifyPass');
+                // Replace HTML with Empty
+                while (errorLoginPopup.firstChild) {
+                    errorLoginPopup.removeChild(errorLoginPopup.firstChild);
+                }
+                // Check if email and password is empty
+                if(isEmpty(email) || isEmpty(password)) {
+                    errorLoginPopup.innerText = 'Email or Password fields cannot be empty';
+                    // Toggle Sign In
+                    toggleLogin(email);
+                    // Do not trigger login
+                    return;
+                }
+                // Sign in
                 signin(email, password,
-                    function signinSuccess() {
+                    function signinSuccess(result) {
                         // Loads the current Logged in User Attributes
-                         retrieveAttributes(email);
+                        retrieveAttributes(email);
                 
                         // Hide Modal
                         loginModal.modal('hide');
+
+                        // Show verification btn
+                        verifyLoader.classList.add('d-none');
+                        verifyButton.classList.remove('d-none');
+
+                        // Set JWT Token For authentication
+                        let idToken = JSON.stringify(result.idToken.jwtToken);
+                        idToken = idToken.substring(1, idToken.length -1);
+                        sessionStorage.setItem('idToken' , idToken) ;
+                        window.authHeader = idToken;
                     },
                     function signinError(err) {
+                        // Show verification btn
+                        verifyLoader.classList.add('d-none');
+                        verifyButton.classList.remove('d-none');
+
+                        // Toggle Sign In
+                        toggleLogin(email);
+
                         handleSessionErrors(err,email,password);
                     }
                 );
@@ -604,7 +645,7 @@ var AWSCogUser = window.AWSCogUser || {};
         cognitoUser.forgotPassword({
             onSuccess: function (result) {
                 signin(emailInputSignin, newPassword,
-                    function signinSuccess() {
+                    function signinSuccess(result) {
                         // Loads the current Logged in User Attributes
                         retrieveAttributes(emailInputSignin);
 
@@ -612,6 +653,12 @@ var AWSCogUser = window.AWSCogUser || {};
                         loginModal.modal('hide');
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
+
+                        // Set JWT Token For authentication
+                        let idToken = JSON.stringify(result.idToken.jwtToken);
+                        idToken = idToken.substring(1, idToken.length -1);
+                        sessionStorage.setItem('idToken' , idToken) ;
+                        window.authHeader = idToken;
                         
                     },
                     function signinError(err) {
