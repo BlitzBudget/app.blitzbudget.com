@@ -797,9 +797,9 @@ er = {
         	let email = localStorage.getItem('verifyEmail');
         	toggleVerify(email, params.get('verify'));
         	if(isEmpty(email)) {
-        		document.getElementById('emailDisplayVE').add('d-none');
-            	document.getElementById('shyAnchor').add('d-none');
-            	document.getElementById('emailInputVerify').remove('d-none');
+        		document.getElementById('emailDisplayVE').classList.add('d-none');
+            	document.getElementById('shyAnchor').classList.add('d-none');
+            	document.getElementById('emailInputVerify').classList.remove('d-none');
         	} else {
         		// Click the verify button
         		document.getElementById('vcBtnFrm').click();
