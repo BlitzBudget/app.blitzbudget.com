@@ -431,8 +431,8 @@ var AWSCogUser = window.AWSCogUser || {};
                     errorLoginPopup.removeChild(errorLoginPopup.firstChild);
                 }
                 // Check if email and password is empty
-                if(isEmpty(email) || isEmpty(password)) {
-                    errorLoginPopup.innerText = 'Email or Password fields cannot be empty';
+                if(isEmpty(password)) {
+                    errorLoginPopup.innerText = 'Password field cannot be empty';
                     // Toggle Sign In
                     toggleLogin(email);
                     // Do not trigger login
