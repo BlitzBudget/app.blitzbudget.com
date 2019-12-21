@@ -71,6 +71,7 @@
 	$(document).on('focusout', "#oldPasswordCP", function() {
 		let oldPassword = this.value;
 		let errorCPOld = document.getElementById('cpErrorDispOld');
+		let errorCPNew = document.getElementById('cpErrorDispNew');
 
 		if(isEmpty(oldPassword) || oldPassword.length < 8) {
 			errorCPNew.innerText = '';
@@ -84,6 +85,7 @@
 	$(document).on('focusout', "#newPassCP", function() {
 		let newPassword = this.value;
 		let errorCPNew = document.getElementById('cpErrorDispNew');
+		let errorCPOld = document.getElementById('cpErrorDispOld');
 
 		if(isEmpty(newPassword) || newPassword.length < 8) {
 			errorCPOld.innerText = '';
@@ -364,10 +366,11 @@
 				        	showNotification(jsonObj.message,'top','center','success');
 				        },
 				        error:  function (thrownError) {
-				        	showNotification(thrownError.message,'top','center','danger');
-			           	 	var responseError = JSON.parse(thrownError.responseText);
+			           	 	let responseError = JSON.parse(thrownError.responseText);
 			           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
 			            		er.sessionExpiredSwal(thrownError);
+			            	} else {
+			            		showNotification(thrownError.message,'top','center','danger');
 			            	}
 			            }
 		        	});
@@ -449,10 +452,11 @@
 				        	showNotification(jsonObj.message,'top','center','success');
 				        },
 				        error:  function (thrownError) {
-				        	showNotification(thrownError.message,'top','center','danger');
-			           	 	var responseError = JSON.parse(thrownError.responseText);
+				        	let responseError = JSON.parse(thrownError.responseText);
 			           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
 			            		er.sessionExpiredSwal(thrownError);
+			            	} else {
+			            		showNotification(thrownError.message,'top','center','danger');
 			            	}
 			            }
 		        	});

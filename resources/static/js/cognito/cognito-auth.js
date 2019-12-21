@@ -49,14 +49,15 @@ var AWSCogUser = window.AWSCogUser || {};
         }
     });
 
-    retrieveAttributes();
+    retrieveAttributes('');
 
     /**
     * Retrieve Attributes
     **/
-    function retrieveAttributes() {
+    function retrieveAttributes(email) {
         // We retrieve the object again, but in a string form.
         let currentUserSI = sessionStorage.getItem("currentUserSI");
+        // If the "email" attr is not empty then verifiy if the session sotrage and the "email" attr are equal
         if(currentUserSI) {
             // User Attribute retrieved from current user session storage
             window.currentUser = JSON.parse(currentUserSI);
@@ -315,7 +316,7 @@ var AWSCogUser = window.AWSCogUser || {};
         signin(email, password,
             function signinSuccess(result) {
                 // Loads the current Logged in User Attributes
-                retrieveAttributes();
+                retrieveAttributes(email);
 
                 // Hide Modal
                 loginModal.modal('hide');
@@ -417,7 +418,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 signin(email, password,
                     function signinSuccess() {
                         // Loads the current Logged in User Attributes
-                         retrieveAttributes();
+                         retrieveAttributes(email);
                 
                         // Hide Modal
                         loginModal.modal('hide');
@@ -605,7 +606,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 signin(emailInputSignin, newPassword,
                     function signinSuccess() {
                         // Loads the current Logged in User Attributes
-                        retrieveAttributes();
+                        retrieveAttributes(emailInputSignin);
 
                         // Hide Modal
                         loginModal.modal('hide');
@@ -654,6 +655,8 @@ var AWSCogUser = window.AWSCogUser || {};
         if(cognitoUser != null) {
             // Signout user from cognito
             cognitoUser.signOut();
+            // Remove session storage data
+            sessionStorage.clear();
         }
         
         // redirect user to home page
