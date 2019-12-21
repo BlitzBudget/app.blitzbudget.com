@@ -417,6 +417,14 @@ var AWSCogUser = window.AWSCogUser || {};
             password = localStorage.getItem('verifyPass');
         }
 
+        // Email empty field
+        if(isEmpty(email)) {
+            document.getElementById('emailDisplayVE').classList.add('d-none');
+            document.getElementById('shyAnchor').classList.add('d-none');
+            document.getElementById('emailInputVerify').classList.remove('d-none');
+            return;
+        }
+
         verifyLoader.classList.remove('d-none');
         verifyButton.classList.add('d-none');
         let loginModal = $('#loginModal');

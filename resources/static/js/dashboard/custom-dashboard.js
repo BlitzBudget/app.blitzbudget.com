@@ -796,8 +796,14 @@ er = {
         if(params != null && params.has('verify')) {
         	let email = localStorage.getItem('verifyEmail');
         	toggleVerify(email, params.get('verify'));
-        	// Click the verify button
-        	document.getElementById('vcBtnFrm').click();
+        	if(isEmpty(email)) {
+        		document.getElementById('emailDisplayVE').add('d-none');
+            	document.getElementById('shyAnchor').add('d-none');
+            	document.getElementById('emailInputVerify').remove('d-none');
+        	} else {
+        		// Click the verify button
+        		document.getElementById('vcBtnFrm').click();
+        	}
         	// After fetching delete param
         	params.delete('verify');
         }  else {
