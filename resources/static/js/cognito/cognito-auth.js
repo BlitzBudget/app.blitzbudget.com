@@ -375,10 +375,6 @@ var AWSCogUser = window.AWSCogUser || {};
             signupButton.classList.remove('d-none');
             toggleVerification(email);
 
-            // Update currency
-            let xhr = new XMLHttpRequest();
-            xhr.open("POST", _config.api.invokeUrl + "/update-currency");
-            xhr.send();
         };
         let onFailure = function registerFailure(err) {
             signupLoader.classList.add('d-none');
@@ -469,6 +465,12 @@ var AWSCogUser = window.AWSCogUser || {};
                         idToken = idToken.substring(1, idToken.length -1);
                         sessionStorage.setItem('idToken' , idToken) ;
                         window.authHeader = idToken;
+
+                        // Update currency
+                        let xhr = new XMLHttpRequest();
+                        xhr.setRequestHeader("Authorization", idToken);
+                        xhr.open("POST", _config.api.invokeUrl + "/update-currency");
+                        xhr.send();
                     },
                     function signinError(err) {
                         // Show verification btn

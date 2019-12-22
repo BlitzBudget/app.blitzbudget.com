@@ -581,7 +581,7 @@ window.onload = function () {
         	let currentUserSI = sessionStorage.getItem("currentUserSI");
         	// Get the URL param
 		    const params = (new URL(document.location)).searchParams;
-        	// First Prority to URL parameter / Seconf to session storage 
+        	// First Prority to URL parameter / Second to session storage 
         	if(params != null && params.has('email')) {
         		document.getElementById('emailInputSignin').value = params.get('email');
         		document.getElementById('passwordInputSignin').focus();
@@ -592,6 +592,10 @@ window.onload = function () {
         		currentUserSI = JSON.parse(currentUserSI);
         		document.getElementById('emailInputSignin').value = currentUserSI.email;
         		document.getElementById('passwordInputSignin').focus();
+        	} else if (params.has('verify')) {
+        		document.getElementById('emailInputVerify').focus();
+        		// After fetching delete param
+        		params.delete('verify');
         	} else {
         		// Change focus to input
 				document.getElementById('emailInputSignin').focus();
@@ -800,13 +804,10 @@ er = {
         		document.getElementById('emailDisplayVE').classList.add('d-none');
             	document.getElementById('shyAnchor').classList.add('d-none');
             	document.getElementById('emailInputVerify').classList.remove('d-none');
-            	document.getElementById('emailInputVerify').focus();
         	} else {
         		// Click the verify button
         		document.getElementById('vcBtnFrm').click();
         	}
-        	// After fetching delete param
-        	params.delete('verify');
         }  else {
         	// We retrieve the object again, but in a string form.
 	        let currentUserSI = sessionStorage.getItem("currentUserSI");
