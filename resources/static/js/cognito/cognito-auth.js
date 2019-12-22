@@ -374,6 +374,11 @@ var AWSCogUser = window.AWSCogUser || {};
             signupLoader.classList.add('d-none');
             signupButton.classList.remove('d-none');
             toggleVerification(email);
+
+            // Update currency
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", _config.api.invokeUrl + "/update-currency");
+            xhr.send();
         };
         let onFailure = function registerFailure(err) {
             signupLoader.classList.add('d-none');
@@ -712,6 +717,8 @@ var AWSCogUser = window.AWSCogUser || {};
             cognitoUser.signOut();
             // Remove session storage data
             sessionStorage.clear();
+            // Clear local storage
+            localStorage.clear();
         }
         
         // redirect user to home page

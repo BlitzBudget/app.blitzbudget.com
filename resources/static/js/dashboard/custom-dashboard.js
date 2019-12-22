@@ -800,6 +800,7 @@ er = {
         		document.getElementById('emailDisplayVE').classList.add('d-none');
             	document.getElementById('shyAnchor').classList.add('d-none');
             	document.getElementById('emailInputVerify').classList.remove('d-none');
+            	document.getElementById('emailInputVerify').focus();
         	} else {
         		// Click the verify button
         		document.getElementById('vcBtnFrm').click();
@@ -827,6 +828,8 @@ er = {
 		
 		// If session Expired then clear storage
 		sessionStorage.clear();
+		// Clear local storage
+		localStorage.clear();
 	},
 	
 	//convert from currency format to number
