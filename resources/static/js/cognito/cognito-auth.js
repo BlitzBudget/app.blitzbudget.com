@@ -468,8 +468,8 @@ var AWSCogUser = window.AWSCogUser || {};
 
                         // Update currency
                         let xhr = new XMLHttpRequest();
-                        xhr.setRequestHeader("Authorization", idToken);
                         xhr.open("POST", _config.api.invokeUrl + "/update-currency");
+                        xhr.setRequestHeader("Authorization", idToken);
                         xhr.send();
                     },
                     function signinError(err) {

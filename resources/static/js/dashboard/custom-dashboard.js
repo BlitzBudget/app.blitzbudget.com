@@ -596,6 +596,7 @@ window.onload = function () {
         		document.getElementById('emailInputVerify').focus();
         		// After fetching delete param
         		params.delete('verify');
+        		window.history.replaceState({}, document.title, "/" + "home");
         	} else {
         		// Change focus to input
 				document.getElementById('emailInputSignin').focus();
