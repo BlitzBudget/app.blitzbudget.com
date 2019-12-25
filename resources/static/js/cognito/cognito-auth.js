@@ -470,7 +470,13 @@ var AWSCogUser = window.AWSCogUser || {};
                         let xhr = new XMLHttpRequest();
                         xhr.open("POST", _config.api.invokeUrl + "/update-currency");
                         xhr.setRequestHeader("Authorization", idToken);
-                        xhr.send();
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.send(JSON.stringify({ "userName" : email}));
+                        xhr.onreadystatechange = function () {
+                          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                            console.log(xhr.responseText);
+                          }
+                        };
                     },
                     function signinError(err) {
                         // Show verification btn
