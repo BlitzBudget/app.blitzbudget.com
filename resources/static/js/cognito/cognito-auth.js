@@ -452,21 +452,14 @@ var AWSCogUser = window.AWSCogUser || {};
                     function signinSuccess(result) {
                         // Loads the current Logged in User Attributes
                         retrieveAttributes(email);
-                
-                        // Hide Modal
-                        loginModal.modal('hide');
-
-                        // Show verification btn
-                        verifyLoader.classList.add('d-none');
-                        verifyButton.classList.remove('d-none');
-
+                       
                         // Set JWT Token For authentication
                         let idToken = JSON.stringify(result.idToken.jwtToken);
                         idToken = idToken.substring(1, idToken.length -1);
                         sessionStorage.setItem('idToken' , idToken) ;
                         window.authHeader = idToken;
 
-                        // Update currency
+                        // Update currency (API Gateway)
                         let xhr = new XMLHttpRequest();
                         xhr.open("POST", _config.api.invokeUrl + "/update-currency");
                         xhr.setRequestHeader("Authorization", idToken);
@@ -474,8 +467,19 @@ var AWSCogUser = window.AWSCogUser || {};
                         xhr.send(JSON.stringify({ "userName" : email}));
                         xhr.onreadystatechange = function () {
                           if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            console.log(xhr.responseText);
+                            let respBody = xhr.responseText.body-json;
+                            // Assign current currency and locale based on IP
+                            window.currentUser.currency = respBody.curency;
+                            window.currentUser.locale = respBody.locale;
+                            // We save the item in the sessionStorage.
+                            sessionStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
                           }
+                          // Hide Modal
+                          loginModal.modal('hide');
+
+                          // Show verification btn
+                          verifyLoader.classList.add('d-none');
+                          verifyButton.classList.remove('d-none');
                         };
                     },
                     function signinError(err) {
