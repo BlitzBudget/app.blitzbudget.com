@@ -1369,4 +1369,21 @@
         return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
     }
 
+    /**
+    *
+    **/
+    document.getElementById('twoFactAuthClicked').addEventListener("click",function(e){
+    	if(this.checked) {
+    		var params = {
+			  AccessToken: authHeader,
+			};
+			cognitoidentityserviceprovider.associateSoftwareToken(params, function(err, data) {
+			  if (err) showNotification(err.message,'top','center','danger');
+			  else   {
+			  	console.log(data);           // successful response
+			  }
+			});
+    	}
+    });
+
 }(jQuery));	
