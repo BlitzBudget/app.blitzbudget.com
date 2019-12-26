@@ -467,9 +467,9 @@ var AWSCogUser = window.AWSCogUser || {};
                         xhr.send(JSON.stringify({ "userName" : email}));
                         xhr.onreadystatechange = function () {
                           if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            let respBody = xhr.responseText.body-json;
+                            let respBody = JSON.parse(xhr.responseText)['body-json'];
                             // Assign current currency and locale based on IP
-                            window.currentUser.currency = respBody.curency;
+                            window.currentUser.currency = respBody.currency;
                             window.currentUser.locale = respBody.locale;
                             // We save the item in the sessionStorage.
                             sessionStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
