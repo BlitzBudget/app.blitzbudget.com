@@ -351,16 +351,6 @@ var AWSCogUser = window.AWSCogUser || {};
                 idToken = idToken.substring(1, idToken.length -1);
                 sessionStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
-
-                // Set Device Remembered status (Universal user which will be set on signin)
-                window.authenticatedUser.setDeviceStatusRemembered({
-                    onSuccess: function(result) {
-                        // Device successfully remembered
-                    },
-                    onFailure: function(err) {
-                        showNotification('Unable to remember device, If the issue persists, please contact support!','top','center','danger');
-                    },
-                });
                 
             },
             function signinError(err) {

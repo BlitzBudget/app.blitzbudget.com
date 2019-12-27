@@ -171,7 +171,7 @@ uh = {
 		        er.showLoginPopup();
 		        return;
 		    }
-
+	
 		    let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
 				if (err) {
