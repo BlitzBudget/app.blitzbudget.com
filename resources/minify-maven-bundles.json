@@ -33,9 +33,9 @@
             "type": "js",
             "name": "cognito.js",
             "files": [
-            	"/cognito/vendor/aws-cognito-sdk.min.js",
-        		"/cognito/vendor/amazon-cognito-identity.js",
                 "/cognito/config.js",
+                "/cognito/vendor/amazon-cognito-identity.min.js",
+            	"/cognito/vendor/aws-cognito-sdk.min.js",
                 "/cognito/cognito-auth.js",
                 "/cognito/cognito-helper.js"
             ]

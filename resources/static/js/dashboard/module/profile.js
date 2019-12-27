@@ -857,13 +857,11 @@
   			closeOnClickOutside: () => !Swal.isLoading()
         }).then(function(result) {
         	// Hide the validation message if present
-        	Swal.resetValidationMessage()
-        	// Get the entered Confrimation password
-            let confPasswordUA = document.getElementById('confPasswordUA').value;
+        	Swal.resetValidationMessage();
             // If confirm button is clicked
             if (result.value) {
                 // Update User Name 
-				updateUserName(firstName, lastName, confPasswordUA, cognitoUser);
+				updateUserName(firstName, lastName, cognitoUser);
             }
 
         });
@@ -927,7 +925,7 @@
 
 
 	 // Update User Attribute
-    function updateUserName(firstName, lastName, confPasswordUA, cognitoUser) {
+    function updateUserName(firstName, lastName, cognitoUser) {
 
         // FirstName
 		let attributeList = [];
@@ -1373,17 +1371,86 @@
     *
     **/
     document.getElementById('twoFactAuthClicked').addEventListener("click",function(e){
-    	if(this.checked) {
-    		var params = {
-			  AccessToken: authHeader,
-			};
-			cognitoidentityserviceprovider.associateSoftwareToken(params, function(err, data) {
-			  if (err) showNotification(err.message,'top','center','danger');
-			  else   {
-			  	console.log(data);           // successful response
-			  }
-			});
-    	}
+    	let event = this;
+    	let cognitoUser = userPool.getCurrentUser();
+    	 // Show Sweet Alert
+        Swal.fire({
+            title: 'Confirm Password',
+            html: confirmPasswordFrag(),
+            inputAttributes: {
+                autocapitalize: 'on'
+            },
+            confirmButtonClass: 'btn btn-info',
+            confirmButtonText: 'Confirm Password',
+            showCloseButton: true,
+            buttonsStyling: false,
+            showLoaderOnConfirm: true,
+  			preConfirm: () => {
+  				return new Promise(function(resolve) {
+  					let confPasswordUA = document.getElementById('confPasswordUA');
+  					 // Authentication Details
+				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+			            Username: currentUser.email,
+			            Password: confPasswordUA.value
+			        });
+
+	  				// Authenticate Before cahnging password
+			        cognitoUser.authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+			            	// Hide loading 
+			               Swal.hideLoading();
+			               // Resolve the promise
+			               resolve();
+			            },
+			            onFailure: function signinError(err) {
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${err.message}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
+			            }
+			        });
+  				});
+  			},
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
+        }).then(function(result) {
+        	// Hide the validation message if present
+        	Swal.resetValidationMessage();
+            // If confirm button is clicked
+            if (result.value) {
+                // Handle MFA (Multi Factor Authentication)
+				handleMFAForUser(event, cognitoUser);
+            }
+
+        });
     });
+
+    // Handle MFA for User
+    function handleMFAForUser(event, cognitoUser) {
+    	let totpMfaSettings = {};
+    	if(event.checked) {
+			totpMfaSettings = {
+				PreferredMfa: true,
+				Enabled: true,
+			};
+			
+    	} else {
+    		totpMfaSettings = {
+				PreferredMfa: false,
+				Enabled: false,
+			};
+    	}
+
+    	cognitoUser.setUserMfaPreference(null, totpMfaSettings, function(err, result) {
+			if (err) {
+				showNotification(err,'top','center','danger');
+			}
+			showNotification(result,'top','center','success');
+		});
+    }
 
 }(jQuery));	
