@@ -119,6 +119,38 @@ uh = {
 		         alert(err);
 		     }
 		});
+	},
+
+	checkIFMFAEnabled() {
+		cognitoUser.getMFAOptions(function(err, mfaOptions) {
+			if (err) {
+				alert(err.message || JSON.stringify(err));
+				return;
+			}
+			console.log('MFA options for user ' + mfaOptions);
+		});
+	},
+
+	refreshToken() {
+		let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
+		if (AWS.config.credentials.needsRefresh()) {
+			cognitoUser.refreshSession(refresh_token, (err, session) => {
+				if (err) {
+					console.log(err);
+				} else {
+					AWS.config.credentials.params.Logins[
+						'cognito-idp.<YOUR-REGION>.amazonaws.com/<YOUR_USER_POOL_ID>'
+					] = session.getIdToken().getJwtToken();
+					AWS.config.credentials.refresh(err => {
+						if (err) {
+							console.log(err);
+						} else {
+							console.log('TOKEN SUCCESSFULLY UPDATED');
+						}
+					});
+				}
+			});
+		}
 	}
 }
 

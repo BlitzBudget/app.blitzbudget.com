@@ -787,6 +787,7 @@ er = {
 	
 	// Throw a session expired error and reload the page.
 	sessionExpiredSwal(sessionExp) {
+
 		$('#loginModal').modal({
 		    backdrop: 'static',
 		    keyboard: false
