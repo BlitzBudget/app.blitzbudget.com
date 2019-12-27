@@ -132,20 +132,51 @@ uh = {
 	},
 
 	refreshToken() {
+		let poolData = {
+	        UserPoolId: _config.cognito.userPoolId,
+	        ClientId: _config.cognito.userPoolClientId
+	    };
+
+	    let userPool;
+
+	    if (!(_config.cognito.userPoolId &&
+	          _config.cognito.userPoolClientId &&
+	          _config.cognito.region)) {
+	    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+	    	er.showLoginPopup();
+	        return;
+	    }
+
+	    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+	    if (typeof AWSCognito !== 'undefined') {
+	        AWSCognito.config.region = _config.cognito.region;
+	    }
+
+	    let cognitoUser = userPool.getCurrentUser();
+	    // If cognito user is empty then show login popup
+	    if(isEmpty(cognitoUser)) {
+	    	er.showLoginPopup();
+	    	return;
+	    }
+
+	    let session = cognitoUser.getSession();
 		let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
 		if (AWS.config.credentials.needsRefresh()) {
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
 				if (err) {
-					console.log(err);
+					showNotification(err.message,'top','center','danger');
+					er.showLoginPopup();
 				} else {
 					AWS.config.credentials.params.Logins[
-						'cognito-idp.<YOUR-REGION>.amazonaws.com/<YOUR_USER_POOL_ID>'
+						poolData.UserPoolId
 					] = session.getIdToken().getJwtToken();
 					AWS.config.credentials.refresh(err => {
 						if (err) {
-							console.log(err);
+							showNotification(err.message,'top','center','danger');
+							er.showLoginPopup();
 						} else {
-							console.log('TOKEN SUCCESSFULLY UPDATED');
+							showNotification('Token Successfully Refreshed','top','center','success');
 						}
 					});
 				}

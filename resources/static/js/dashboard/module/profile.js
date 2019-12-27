@@ -1447,7 +1447,8 @@
 
     	cognitoUser.setUserMfaPreference(null, totpMfaSettings, function(err, result) {
 			if (err) {
-				showNotification(err,'top','center','danger');
+				showNotification(err.message,'top','center','danger');
+				return;
 			}
 			showNotification(result,'top','center','success');
 		});
