@@ -1,6 +1,5 @@
 "use strict";
 /*global AWSCogUser _config AmazonCognitoIdentity AWSCognito*/
-
 var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
@@ -255,8 +254,9 @@ var AWSCogUser = window.AWSCogUser || {};
             Password: password
         });
 
-        let cognitoUser = createCognitoUser(email);
-        cognitoUser.authenticateUser(authenticationDetails, {
+        // Set Universal Cognito User
+        window.authenticatedUser = createCognitoUser(email);
+        window.authenticatedUser.authenticateUser(authenticationDetails, {
             onSuccess: onSuccess,
             onFailure: onFailure,
             mfaSetup: function(challengeName, challengeParameters) {
@@ -351,6 +351,16 @@ var AWSCogUser = window.AWSCogUser || {};
                 idToken = idToken.substring(1, idToken.length -1);
                 sessionStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
+
+                // Set Device Remembered status (Universal user which will be set on signin)
+                window.authenticatedUser.setDeviceStatusRemembered({
+                    onSuccess: function(result) {
+                        // Device successfully remembered
+                    },
+                    onFailure: function(err) {
+                        showNotification('Unable to remember device, If the issue persists, please contact support!','top','center','danger');
+                    },
+                });
                 
             },
             function signinError(err) {

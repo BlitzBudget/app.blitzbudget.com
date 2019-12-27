@@ -98,6 +98,7 @@ uh = {
 	},
 
 	listRegisteredDevices() {
+		let cognitoUser = userPool.getCurrentUser();
 		cognitoUser.listDevices(limit, paginationToken, {
 		    onSuccess: function (result) {
 		        console.log('call result: ' + result);
@@ -110,6 +111,7 @@ uh = {
 	},
 
 	forgetThisDevice() {
+		let cognitoUser = userPool.getCurrentUser();
 		cognitoUser.forgetDevice({
 		    onSuccess: function (result) {
 		         console.log('call result: ' + result);
@@ -121,17 +123,8 @@ uh = {
 		});
 	},
 
-	checkIFMFAEnabled() {
-		cognitoUser.getMFAOptions(function(err, mfaOptions) {
-			if (err) {
-				alert(err.message || JSON.stringify(err));
-				return;
-			}
-			console.log('MFA options for user ' + mfaOptions);
-		});
-	},
+	refreshToken(ajaxData) {
 
-	refreshToken() {
 		let poolData = {
 	        UserPoolId: _config.cognito.userPoolId,
 	        ClientId: _config.cognito.userPoolClientId
@@ -160,28 +153,39 @@ uh = {
 	    	return;
 	    }
 
-	    let session = cognitoUser.getSession();
-		let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
-		if (AWS.config.credentials.needsRefresh()) {
+	    cognitoUser.getSession((err, session) => {
+		    if (err) {
+		        showNotification(err.message,'top','center','danger');
+		        er.showLoginPopup();
+		        return;
+		    }
+
+		    if (session === undefined) {
+		        showNotification('Session expired','top','center','danger');
+		        er.showLoginPopup();
+		        return;
+		    }
+
+		    if (!session.isValid()) {
+		        showNotification('Session is invalid','top','center','success');
+		        er.showLoginPopup();
+		        return;
+		    }
+
+		    let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
 				if (err) {
 					showNotification(err.message,'top','center','danger');
 					er.showLoginPopup();
 				} else {
-					AWS.config.credentials.params.Logins[
-						poolData.UserPoolId
-					] = session.getIdToken().getJwtToken();
-					AWS.config.credentials.refresh(err => {
-						if (err) {
-							showNotification(err.message,'top','center','danger');
-							er.showLoginPopup();
-						} else {
-							showNotification('Token Successfully Refreshed','top','center','success');
-						}
-					});
+					// Set JWT Token For authentication
+	                let idToken = JSON.stringify(session.idToken.jwtToken);
+	                idToken = idToken.substring(1, idToken.length -1);
+	                sessionStorage.setItem('idToken' , idToken) ;
+	                window.authHeader = idToken;
 				}
 			});
-		}
+	    });
 	}
 }
 

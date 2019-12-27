@@ -786,8 +786,8 @@ er = {
 	},
 	
 	// Throw a session expired error and reload the page.
-	sessionExpiredSwal(sessionExp) {
-		uh.refreshToken();
+	sessionExpiredSwal(ajaxData) {
+		uh.refreshToken(ajaxData);
 	},
 
 	showLoginPopup() {

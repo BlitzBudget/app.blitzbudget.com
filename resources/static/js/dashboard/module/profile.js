@@ -1368,7 +1368,7 @@
     }
 
     /**
-    *
+    *	Two Factor Authentication
     **/
     document.getElementById('twoFactAuthClicked').addEventListener("click",function(e){
     	let event = this;
@@ -1451,6 +1451,20 @@
 				return;
 			}
 			showNotification(result,'top','center','success');
+		});
+    }
+
+    // Check MFA enabled on js load
+    checkMFAEnabled();
+
+    // Check MFA Option for User
+    function checkMFAEnabled() {
+		window.authenticatedUser.getMFAOptions(function(err, mfaOptions) {
+			if (err) {
+				showNotification(err.message,'top','center','danger');
+				return;
+			}
+			console.log('MFA options for user ' + mfaOptions);
 		});
     }
 
