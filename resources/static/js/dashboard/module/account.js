@@ -1,4 +1,4 @@
-
+"use strict";
 // SECURITY: Defining Immutable properties as constants
 const BANK_ACCOUNT_CONSTANTS = {};
 Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
@@ -151,9 +151,9 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.isAjaxReq = true;
 		   		ajaxData.type = "POST";
 		   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl;
-		   		ajaxParams.dataType = "json"; 
-		   		ajaxParams.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-		   		ajaxParams.data = values;
+		   		ajaxData.dataType = "json"; 
+		   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		   		ajaxData.data = values;
 		   		ajaxData.onSuccess = function(){
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
 		        }
@@ -171,9 +171,9 @@ let tickIconSVG = tickIcon();
 			          type: ajaxData.type,
 			          url: ajaxData.url,
 			          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-			          dataType: ajaxParams.dataType,
-			          contentType: ajaxParams.contentType,
-			          data : ajaxParams.data,
+			          dataType: ajaxData.dataType,
+			          contentType: ajaxData.contentType,
+			          data : ajaxData.data,
 			          success: ajaxData.onSuccess,
 			          error: ajaxData.onFailure
 		    	});
@@ -206,9 +206,9 @@ let tickIconSVG = tickIcon();
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = "POST";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl;
-   		ajaxParams.dataType = "json"; 
-   		ajaxParams.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-   		ajaxParams.data = values;
+   		ajaxData.dataType = "json"; 
+   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+   		ajaxData.data = values;
    		ajaxData.onSuccess = function(){
 	    	  // Remove Selected Account
 	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
@@ -246,9 +246,9 @@ let tickIconSVG = tickIcon();
 	          type: ajaxData.type,
 	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: ajaxParams.dataType,
-	          contentType: ajaxParams.contentType,
-	          data : ajaxParams.data,
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType,
+	          data : ajaxData.data,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
     	});
@@ -548,7 +548,7 @@ let tickIconSVG = tickIcon();
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = "GET"; 
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
-   		ajaxParams.dataType = "json"; 
+   		ajaxData.dataType = "json"; 
    		ajaxData.onSuccess = function(categorizeBankAccount){
 	    	  let bAParentFrag = document.createDocumentFragment();
 	    	  let bAFragment = document.createDocumentFragment();
@@ -589,7 +589,7 @@ let tickIconSVG = tickIcon();
 	          type: ajaxData.type,
 	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: ajaxParams.dataType,
+	          dataType: ajaxData.dataType,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
 		});
@@ -708,7 +708,7 @@ er_a = {
 	   		ajaxData.isAjaxReq = true;
 	   		ajaxData.type = "GET";
 	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
-	   		ajaxParams.dataType = "json";
+	   		ajaxData.dataType = "json";
 	   		ajaxData.onSuccess = function(bankAccountList) {
 	        	  // Assign value to constant
 	        	  bankAccountPreview = bankAccountList;
@@ -728,7 +728,7 @@ er_a = {
 		          type: ajaxData.type,
 		          url: ajaxData.url,
 		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: ajaxParams.dataType,
+		          dataType: ajaxData.dataType,
 		          success : ajaxData.onSuccess,
 		          error: ajaxData.onFailure
 			});
