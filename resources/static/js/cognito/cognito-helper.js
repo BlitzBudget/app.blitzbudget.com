@@ -190,20 +190,23 @@ uh = {
 					          type: ajaxData.type,
 					          url: ajaxData.url,
 					          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
-					          success: ajaxData.onSuccess,
 					  	      error: ajaxData.onFailure
 						};
 
-	                	if(isNotEmpty(ajaxParams.dataType)) {
+	                	if(isNotEmpty(ajaxData.dataType)) {
 	                		ajaxParams.dataType =  ajaxData.dataType;
 	                	} 
 
-	                	if(isNotEmpty(ajaxParams.data)) {
+	                	if(isNotEmpty(ajaxData.values)) {
 	                		ajaxParams.data = ajaxData.values;
 	                	}
 
-	                	if(isNotEmpty(ajaxParams.contentType)) {
+	                	if(isNotEmpty(ajaxData.contentType)) {
 							ajaxParams.contentType = ajaxData.contentType;
+	                	}
+
+	                	if(isNotEmpty(ajaxData.onSuccess)) {
+	                		ajaxParams.success = ajaxData.onSuccess;
 	                	}
 
 	                	// AJAX request
