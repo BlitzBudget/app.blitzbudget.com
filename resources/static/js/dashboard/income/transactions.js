@@ -637,7 +637,7 @@
 			showSwal: function(type) {
 				// Delete transactions On click
 				if (type == 'warning-message-and-confirmation') {
-					 swal({
+				 Swal.fire({	
 			                title: 'Are you sure?',
 			                text: 'You will not be able to recover these transactions!',
 			                type: 'warning',
