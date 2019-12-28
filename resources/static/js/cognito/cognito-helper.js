@@ -194,12 +194,15 @@ uh = {
 					  	      error: ajaxData.onFailure
 						};
 
-	                	if(includesStr(ajaxData.type, 'POST')) {
+	                	if(isNotEmpty(ajaxParams.dataType)) {
 	                		ajaxParams.dataType =  ajaxData.dataType;
-						    ajaxParams.data = ajaxData.values;
 	                	} 
 
-	                	if(includesStr(ajaxData.type, 'DELETE') || includesStr(ajaxData.type, 'POST')) {
+	                	if(isNotEmpty(ajaxParams.data)) {
+	                		ajaxParams.data = ajaxData.values;
+	                	}
+
+	                	if(isNotEmpty(ajaxParams.contentType)) {
 							ajaxParams.contentType = ajaxData.contentType;
 	                	}
 
