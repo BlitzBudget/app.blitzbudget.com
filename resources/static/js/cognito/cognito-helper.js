@@ -98,6 +98,7 @@ uh = {
 	},
 
 	listRegisteredDevices() {
+		let cognitoUser = userPool.getCurrentUser();
 		cognitoUser.listDevices(limit, paginationToken, {
 		    onSuccess: function (result) {
 		        console.log('call result: ' + result);
@@ -110,6 +111,7 @@ uh = {
 	},
 
 	forgetThisDevice() {
+		let cognitoUser = userPool.getCurrentUser();
 		cognitoUser.forgetDevice({
 		    onSuccess: function (result) {
 		         console.log('call result: ' + result);
@@ -121,36 +123,95 @@ uh = {
 		});
 	},
 
-	checkIFMFAEnabled() {
-		cognitoUser.getMFAOptions(function(err, mfaOptions) {
-			if (err) {
-				alert(err.message || JSON.stringify(err));
-				return;
-			}
-			console.log('MFA options for user ' + mfaOptions);
-		});
-	},
+	refreshToken(ajaxData) {
 
-	refreshToken() {
-		let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
-		if (AWS.config.credentials.needsRefresh()) {
+		let poolData = {
+	        UserPoolId: _config.cognito.userPoolId,
+	        ClientId: _config.cognito.userPoolClientId
+	    };
+
+	    let userPool;
+
+	    if (!(_config.cognito.userPoolId &&
+	          _config.cognito.userPoolClientId &&
+	          _config.cognito.region)) {
+	    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+	    	er.showLoginPopup();
+	        return;
+	    }
+
+	    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+	    if (typeof AWSCognito !== 'undefined') {
+	        AWSCognito.config.region = _config.cognito.region;
+	    }
+
+	    let cognitoUser = userPool.getCurrentUser();
+	    // If cognito user is empty then show login popup
+	    if(isEmpty(cognitoUser)) {
+	    	er.showLoginPopup();
+	    	return;
+	    }
+
+	    cognitoUser.getSession((err, session) => {
+		    if (err) {
+		        showNotification(err.message,'top','center','danger');
+		        er.showLoginPopup();
+		        return;
+		    }
+
+		    if (session === undefined) {
+		        showNotification('Session expired','top','center','danger');
+		        er.showLoginPopup();
+		        return;
+		    }
+
+		    if (!session.isValid()) {
+		        showNotification('Session is invalid','top','center','success');
+		        er.showLoginPopup();
+		        return;
+		    }
+	
+		    let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
 				if (err) {
-					console.log(err);
+					showNotification(err.message,'top','center','danger');
+					er.showLoginPopup();
 				} else {
-					AWS.config.credentials.params.Logins[
-						'cognito-idp.<YOUR-REGION>.amazonaws.com/<YOUR_USER_POOL_ID>'
-					] = session.getIdToken().getJwtToken();
-					AWS.config.credentials.refresh(err => {
-						if (err) {
-							console.log(err);
-						} else {
-							console.log('TOKEN SUCCESSFULLY UPDATED');
-						}
-					});
+					// Set JWT Token For authentication
+	                let idToken = JSON.stringify(session.idToken.jwtToken);
+	                idToken = idToken.substring(1, idToken.length -1);
+	                sessionStorage.setItem('idToken' , idToken) ;
+	                window.authHeader = idToken;
+
+	                // Do the Ajax Call that failed
+	                if(ajaxData.isAjaxReq) {
+	                	let ajaxParams = {
+					          type: ajaxData.type,
+					          url: ajaxData.url,
+					          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
+					          success: ajaxData.onSuccess,
+					  	      error: ajaxData.onFailure
+						};
+
+	                	if(isNotEmpty(ajaxParams.dataType)) {
+	                		ajaxParams.dataType =  ajaxData.dataType;
+	                	} 
+
+	                	if(isNotEmpty(ajaxParams.data)) {
+	                		ajaxParams.data = ajaxData.values;
+	                	}
+
+	                	if(isNotEmpty(ajaxParams.contentType)) {
+							ajaxParams.contentType = ajaxData.contentType;
+	                	}
+
+	                	// AJAX request
+	                	$.ajax(ajaxParams);
+	                }
 				}
 			});
-		}
+	    });
 	}
 }
 

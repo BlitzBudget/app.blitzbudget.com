@@ -82,7 +82,7 @@ window.onload = function () {
 	$(document).ready(function(){
 		
 		// Transactions total income cache
-		let transactionsTotalIncomeOrExpenseCache = {}; 
+		let transactionsTotalIncomeOrExpenseCache = {};
 
 		
 		// Append "active" class name to toggle sidebar color change
@@ -786,8 +786,11 @@ er = {
 	},
 	
 	// Throw a session expired error and reload the page.
-	sessionExpiredSwal(sessionExp) {
+	sessionExpiredSwal(ajaxData) {
+		uh.refreshToken(ajaxData);
+	},
 
+	showLoginPopup() {
 		$('#loginModal').modal({
 		    backdrop: 'static',
 		    keyboard: false

@@ -1,6 +1,5 @@
 "use strict";
 /*global AWSCogUser _config AmazonCognitoIdentity AWSCognito*/
-
 var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
@@ -255,8 +254,9 @@ var AWSCogUser = window.AWSCogUser || {};
             Password: password
         });
 
-        let cognitoUser = createCognitoUser(email);
-        cognitoUser.authenticateUser(authenticationDetails, {
+        // Set Universal Cognito User
+        window.authenticatedUser = createCognitoUser(email);
+        window.authenticatedUser.authenticateUser(authenticationDetails, {
             onSuccess: onSuccess,
             onFailure: onFailure,
             mfaSetup: function(challengeName, challengeParameters) {

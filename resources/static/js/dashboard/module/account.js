@@ -146,25 +146,36 @@ let tickIconSVG = tickIcon();
 					 return;
 				}
 				
+				// Ajax Requests on Error
+				let ajaxData = {};
+		   		ajaxData.isAjaxReq = true;
+		   		ajaxData.type = "POST";
+		   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl;
+		   		ajaxParams.dataType = "json"; 
+		   		ajaxParams.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		   		ajaxParams.data = values;
+		   		ajaxData.onSuccess = function(){
+		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
+		        }
+		        ajaxData.onFailure = function(thrownError) {
+			  	     let responseError = JSON.parse(thrownError.responseText);
+			         if(responseError.error.includes("Unauthorized")){
+			  		      er.sessionExpiredSwal(ajaxData);
+			         } else {
+			          	  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
+			         }
+		        }
+
 				// AJAX call for adding a new unlinked Account
 		    	$.ajax({
-			          type: "POST",
-			          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl,
+			          type: ajaxData.type,
+			          url: ajaxData.url,
 			          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-			          dataType: "json",
-			          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-			          data : values,
-			          success: function(){
-			        	  showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
-			          },
-			          error: function(thrownError) {
-				  	      var responseError = JSON.parse(thrownError.responseText);
-				          if(responseError.error.includes("Unauthorized")){
-				  		      er.sessionExpiredSwal(thrownError);
-				          } else {
-				          	  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
-				          }
-			          }
+			          dataType: ajaxParams.dataType,
+			          contentType: ajaxParams.contentType,
+			          data : ajaxParams.data,
+			          success: ajaxData.onSuccess,
+			          error: ajaxData.onFailure
 		    	});
 	    	}
 	    });
@@ -189,46 +200,57 @@ let tickIconSVG = tickIcon();
 		values['id'] = bankAccountPreview[Number(position)-1].id;
 		values['selectedAccount'] = 'true';
 		values['financialPortfolioId'] = currentUser.financialPortfolioId;
+
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl;
+   		ajaxParams.dataType = "json"; 
+   		ajaxParams.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+   		ajaxParams.data = values;
+   		ajaxData.onSuccess = function(){
+	    	  // Remove Selected Account
+	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
+	    		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
+	    			  bankAccountPreview[i].selectedAccount = true;
+	    		  }
+	    	  }
+	    	  
+	    	  let bARows = document.getElementsByClassName('bARow');
+	    	  // Remove class from list
+	    	  for(let i = 0, length = bARows.length; i < length; i++) {
+	    		  let rowElem = bARows[i];
+	    		  if(rowElem.classList.contains('selectedBA')) {
+	    			  rowElem.classList.remove('selectedBA');
+	    			  bankAccountPreview[i].selectedAccount = false;
+	    		  }
+	    	  }
+	    	  
+	    	  currentElem.classList.add('selectedBA');
+	    	  
+	    	  // Close the account Modal
+	    	  closeAccountPopup();
+	    }
+        ajaxData.onFailure = function(thrownError) {
+        	  let responseError = JSON.parse(thrownError.responseText);
+        	  if(responseError.error.includes("Unauthorized")){
+        		  er.sessionExpiredSwal(ajaxData);
+        	  } else{
+        		  showNotification('Unable to select the account at this moment. Please try again!','top','center','danger');
+        	  }
+        }
 		
 		// AJAX call for adding a new unlinked Account
     	$.ajax({
-	          type: "POST",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl,
+	          type: ajaxData.type,
+	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	          data : values,
-	          success: function(){
-	        	  // Remove Selected Account
-	        	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-	        		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
-	        			  bankAccountPreview[i].selectedAccount = true;
-	        		  }
-	        	  }
-	        	  
-	        	  let bARows = document.getElementsByClassName('bARow');
-	        	  // Remove class from list
-	        	  for(let i = 0, length = bARows.length; i < length; i++) {
-	        		  let rowElem = bARows[i];
-	        		  if(rowElem.classList.contains('selectedBA')) {
-	        			  rowElem.classList.remove('selectedBA');
-	        			  bankAccountPreview[i].selectedAccount = false;
-	        		  }
-	        	  }
-	        	  
-	        	  currentElem.classList.add('selectedBA');
-	        	  
-	        	  // Close the account Modal
-	        	  closeAccountPopup();
-	          },
-	          error: function(thrownError) {
-	        	  var responseError = JSON.parse(thrownError.responseText);
-	        	  if(responseError.error.includes("Unauthorized")){
-	        		  er.sessionExpiredSwal(thrownError);
-	        	  } else{
-	        		  showNotification('Unable to select the account at this moment. Please try again!','top','center','danger');
-	        	  }
-	          }
+	          dataType: ajaxParams.dataType,
+	          contentType: ajaxParams.contentType,
+	          data : ajaxParams.data,
+	          success: ajaxData.onSuccess,
+	          error: ajaxData.onFailure
     	});
     	
 	});
@@ -521,46 +543,55 @@ let tickIconSVG = tickIcon();
 	
 	// Click View All 
 	$('#accountPickerWrapper').on('click', ".manageBA", function() {
-		$.ajax({
-	          type: "GET",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId,
-	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          success: function(categorizeBankAccount){
-	        	  let bAParentFrag = document.createDocumentFragment();
-	        	  let bAFragment = document.createDocumentFragment();
-		          // Fetch all the key set for the result
-	        	  let resultKeySet = Object.keys(categorizeBankAccount)
-	        	  for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
-	        		  let key = resultKeySet[countGrouped];
-	             	  let value = categorizeBankAccount[key];
-	             	  bAFragment.appendChild(populateBAHead(key));
-	             	  let valueElementKeySet = Object.keys(value)
-	             	  for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
-	             		  let subKey = valueElementKeySet[count];
-	     				  let subValue = value[subKey];
-	     				  bAFragment.appendChild(populateAllBankDetails(subValue, count));
-	             	  }
-	        	  }
-	        	  
-	        	  bAParentFrag.appendChild(buildParentViewAllHeader(bAFragment));
-	        	  
-	        	  // Append the fragment to the account picker
-	        	  let accountPickerModal = document.getElementById('accountPickerWrapper');
-	        	  // Replace the HTML to empty and then append child
-	        	  while (accountPickerModal.firstChild) {
-	        		  accountPickerModal.removeChild(accountPickerModal.firstChild);
-	        	  }
-	        	  accountPickerModal.appendChild(bAParentFrag);
-	          },
-	          error: function(thrownError) {
-	          	  var responseError = JSON.parse(thrownError.responseText);
-		          if(responseError.error.includes("Unauthorized")){
-		  		      er.sessionExpiredSwal(thrownError);
-		          } else {
-		          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-		          }
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "GET"; 
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxParams.dataType = "json"; 
+   		ajaxData.onSuccess = function(categorizeBankAccount){
+	    	  let bAParentFrag = document.createDocumentFragment();
+	    	  let bAFragment = document.createDocumentFragment();
+	          // Fetch all the key set for the result
+	    	  let resultKeySet = Object.keys(categorizeBankAccount)
+	    	  for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
+	    		  let key = resultKeySet[countGrouped];
+	         	  let value = categorizeBankAccount[key];
+	         	  bAFragment.appendChild(populateBAHead(key));
+	         	  let valueElementKeySet = Object.keys(value)
+	         	  for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
+	         		  let subKey = valueElementKeySet[count];
+	 				  let subValue = value[subKey];
+	 				  bAFragment.appendChild(populateAllBankDetails(subValue, count));
+	         	  }
+	    	  }
+	    	  
+	    	  bAParentFrag.appendChild(buildParentViewAllHeader(bAFragment));
+	    	  
+	    	  // Append the fragment to the account picker
+	    	  let accountPickerModal = document.getElementById('accountPickerWrapper');
+	    	  // Replace the HTML to empty and then append child
+	    	  while (accountPickerModal.firstChild) {
+	    		  accountPickerModal.removeChild(accountPickerModal.firstChild);
+	    	  }
+	    	  accountPickerModal.appendChild(bAParentFrag);
+	    }
+        ajaxData.onFailure = function(thrownError) {
+	      	  let responseError = JSON.parse(thrownError.responseText);
+	          if(responseError.error.includes("Unauthorized")){
+	  		      er.sessionExpiredSwal(ajaxData);
+	          } else {
+	          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 	          }
+	    }
+
+		$.ajax({
+	          type: ajaxData.type,
+	          url: ajaxData.url,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	          dataType: ajaxParams.dataType,
+	          success: ajaxData.onSuccess,
+	          error: ajaxData.onFailure
 		});
 	});
 	
@@ -672,25 +703,34 @@ let tickIconSVG = tickIcon();
 // Custom Functions to fetch all accounts
 er_a = {
 		fetchBankAccountInfo() {
-			$.ajax({
-		          type: "GET",
-		          url: CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId,
-		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: "json",
-		          success : function(bankAccountList) {
-		        	  // Assign value to constant
-		        	  bankAccountPreview = bankAccountList;
-		        	  
-		        	  er_a.populateBankInfo(bankAccountList);
-		          },
-		          error: function(thrownError) {
-		          	  var responseError = JSON.parse(thrownError.responseText);
-			          if(responseError.error.includes("Unauthorized")){
-			  		      er.sessionExpiredSwal(thrownError);
-			          } else {
-			          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-			          }
+			// Ajax Requests on Error
+			let ajaxData = {};
+	   		ajaxData.isAjaxReq = true;
+	   		ajaxData.type = "GET";
+	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+	   		ajaxParams.dataType = "json";
+	   		ajaxData.onSuccess = function(bankAccountList) {
+	        	  // Assign value to constant
+	        	  bankAccountPreview = bankAccountList;
+	        	  
+	        	  er_a.populateBankInfo(bankAccountList);
+	        }
+	        ajaxData.onFailure = function(thrownError) {
+	          	  let responseError = JSON.parse(thrownError.responseText);
+		          if(responseError.error.includes("Unauthorized")){
+		  		      er.sessionExpiredSwal(ajaxData);
+		          } else {
+		          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
 		          }
+	        }
+
+			$.ajax({
+		          type: ajaxData.type,
+		          url: ajaxData.url,
+		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+		          dataType: ajaxParams.dataType,
+		          success : ajaxData.onSuccess,
+		          error: ajaxData.onFailure
 			});
 		},
 		populateBankInfo(bankAccountsInfo) {
