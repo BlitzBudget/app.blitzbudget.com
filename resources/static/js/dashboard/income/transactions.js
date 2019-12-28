@@ -95,32 +95,44 @@
 		values['categoryOptions'] = categoryOptions;
 		values['dateMeantFor'] = chosenDate;
 		values['recurrence'] = recurrenceValue;
+
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.financialPortfolioId;
+   		ajaxData.dataType = "json"; 
+   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+   		ajaxData.data = values;
+		ajaxData.onSuccess = function(data) {
+        	let successMessageDocument = document.getElementById('successMessage');
+        	// Clone and Append the success Message
+        	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);
+        	// Add css3 to fade in and out
+        	successMessageDocument.classList.add('messageFadeInAndOut');
+  	    	resiteredNewTransaction=true;
+  	    	transactionSubmissionButton.removeAttribute("disabled");
+  	    }
+	    ajaxData.onFailure = function(data) {
+  	    	let responseError = JSON.parse(data.responseText);
+           	if(responseError.error.includes("Unauthorized")){
+  		    	$('#GSCCModal').modal('hide');
+  		    	er.sessionExpiredSwal(ajaxData);
+           	}
+  	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Unable to add this transaction.</p></div> <br/>',2000);
+  	    	resiteredNewTransaction=false;
+  	    	transactionSubmissionButton.removeAttribute("disabled");
+  	    }
+
 		$.ajax({
-	          type: "POST",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.financialPortfolioId,
+	          type: ajaxData.type,
+	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	          data : values,
-	          success: function(data) {
-	        	let successMessageDocument = document.getElementById('successMessage');
-	        	// Clone and Append the success Message
-	        	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);
-	        	// Add css3 to fade in and out
-	        	successMessageDocument.classList.add('messageFadeInAndOut');
-	  	    	resiteredNewTransaction=true;
-	  	    	transactionSubmissionButton.removeAttribute("disabled");
-	  	      },
-	  	      error: function(data) {
-	  	    	var responseError = JSON.parse(data.responseText);
-	           	if(responseError.error.includes("Unauthorized")){
-	  		    	$('#GSCCModal').modal('hide');
-	  		    	er.sessionExpiredSwal(data);
-	           	}
-	  	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Unable to add this transaction.</p></div> <br/>',2000);
-	  	    	resiteredNewTransaction=false;
-	  	    	transactionSubmissionButton.removeAttribute("disabled");
-	  	    }
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType,
+	          data : ajaxData.data,
+	          success: ajaxData.onSuccess,
+	  	      error: ajaxData.onFailure
 		});
 	    
 	}
@@ -159,114 +171,129 @@
 	
 	// Populates the transaction table
 	function fetchJSONForTransactions(){
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'GET';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+		ajaxData.onSuccess = function(result) {
+			let totalExpensesTransactions = 0.00;
+			let totalIncomeTransactions = 0.00;
+			let transactionsTableDiv = document.createDocumentFragment();
+			let documentTbody = document.getElementById(replaceTransactionsId);
+			// uncheck the select all checkbox if checked
+			let checkAllBox = document.getElementById('checkAll');
+			// Fetch all the key set for the result
+			let resultKeySet = Object.keys(result)
+         	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
+         	   let key = resultKeySet[countGrouped];
+         	   let value = result[key];
+ 			   let transactionsRowDocumentFragment = document.createDocumentFragment();
+ 			   let totalCategoryAmount = 0;
+ 			   let valueElementKeySet = Object.keys(value)
+ 			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
+ 				  let subKey = valueElementKeySet[count];
+ 				  let subValue = value[subKey];
+ 				  // Create transactions table row
+ 				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
+ 				  totalCategoryAmount += subValue.amount;
+ 			   }
+ 			   // Load all the total category amount in the category section
+ 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
+ 			   // Create category label table row
+ 			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
+ 			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
+ 			   // Total Expenses and Total Income
+ 			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+ 				   totalExpensesTransactions += totalCategoryAmount;
+ 			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+ 				   totalIncomeTransactions += totalCategoryAmount;
+ 			   }
+         	}
+		   
+		   // Update table with empty message if the transactions are empty
+		   if(result.length == 0) {
+			   checkAllBox.setAttribute('disabled', 'disabled');
+   				// Replace HTML with Empty
+       			while (documentTbody.firstChild) {
+       				documentTbody.removeChild(documentTbody.firstChild);
+       			}
+
+			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
+		   } else {
+			   $('#checkAll').prop('checked', false);
+   			   checkAllBox.removeAttribute('disabled');
+  			   // Replace HTML with Empty
+      		   while (documentTbody.firstChild) {
+      			 documentTbody.removeChild(documentTbody.firstChild);
+      		   }
+
+			   documentTbody.appendChild(transactionsTableDiv);
+		   }
+		   
+		  // Disable delete Transactions button on refreshing the transactions
+          manageDeleteTransactionsButton();
+		  // update the Total Available Section
+		  updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
+		  // Update Budget from API
+		  updateBudgetForIncome();
+		
+        }
+		ajaxData.onFailure = function(thrownError) {
+      	  let responseError = JSON.parse(thrownError.responseText);
+          if(responseError.error.includes("Unauthorized")){
+  		      er.sessionExpiredSwal(ajaxData);
+          }
+        }
 		// Load all user transaction from API
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'GET',
-            success: function(result) {
-    			let totalExpensesTransactions = 0.00;
-    			let totalIncomeTransactions = 0.00;
-    			let transactionsTableDiv = document.createDocumentFragment();
-    			let documentTbody = document.getElementById(replaceTransactionsId);
-    			// uncheck the select all checkbox if checked
-    			let checkAllBox = document.getElementById('checkAll');
-    			// Fetch all the key set for the result
-    			let resultKeySet = Object.keys(result)
-             	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
-             	   let key = resultKeySet[countGrouped];
-             	   let value = result[key];
-     			   let transactionsRowDocumentFragment = document.createDocumentFragment();
-     			   let totalCategoryAmount = 0;
-     			   let valueElementKeySet = Object.keys(value)
-     			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
-     				  let subKey = valueElementKeySet[count];
-     				  let subValue = value[subKey];
-     				  // Create transactions table row
-     				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
-     				  totalCategoryAmount += subValue.amount;
-     			   }
-     			   // Load all the total category amount in the category section
-     			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
-     			   // Create category label table row
-     			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
-     			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
-     			   // Total Expenses and Total Income
-     			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-     				   totalExpensesTransactions += totalCategoryAmount;
-     			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-     				   totalIncomeTransactions += totalCategoryAmount;
-     			   }
-             	}
-    		   
-    		   // Update table with empty message if the transactions are empty
-    		   if(result.length == 0) {
-    			   checkAllBox.setAttribute('disabled', 'disabled');
-       				// Replace HTML with Empty
-           			while (documentTbody.firstChild) {
-           				documentTbody.removeChild(documentTbody.firstChild);
-           			}
-
-    			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
-    		   } else {
-    			   $('#checkAll').prop('checked', false);
-       			   checkAllBox.removeAttribute('disabled');
-      			   // Replace HTML with Empty
-          		   while (documentTbody.firstChild) {
-          			 documentTbody.removeChild(documentTbody.firstChild);
-          		   }
-
-    			   documentTbody.appendChild(transactionsTableDiv);
-    		   }
-    		   
-    		  // Disable delete Transactions button on refreshing the transactions
-              manageDeleteTransactionsButton();
-    		  // update the Total Available Section
-    		  updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
-    		  // Update Budget from API
-    		  updateBudgetForIncome();
-    		
-            }, 
-            error: function(thrownError) {
-          	  var responseError = JSON.parse(thrownError.responseText);
-	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(thrownError);
-	          }
-	        }
+            type: ajaxData.type,
+            success: ajaxData.onSuccess, 
+            error: ajaxData.onFailure
 		});
 	}
 	
 	// Fetches the budget for all the category rows if present and updates the category row
 	function updateBudgetForIncome() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'GET';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+		ajaxData.onSuccess = function(data) {
+        	let dataKeySet = Object.keys(data)
+        	for(let count = 0, length = dataKeySet.length; count < length; count++){
+        		  let key = dataKeySet[count];
+            	  let value = data[key];
+            	  
+            	  if(isEmpty(value)) {
+            		  continue;
+            	  }
+            	  
+            	  let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
+            	  
+            	  if(categoryRowToUpdate == null) {
+            		  continue;
+            	  }
+            	  
+            	  categoryRowToUpdate.innerHTML = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
+        	}
+        }
+		ajaxData.onFailure = function(thrownError) {
+      	  let responseError = JSON.parse(thrownError.responseText);
+          if(responseError.error.includes("Unauthorized")){
+  		      er.sessionExpiredSwal(ajaxData);
+          }
+        }
+
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'GET',
-            success: function(data) {
-            	let dataKeySet = Object.keys(data)
-            	for(let count = 0, length = dataKeySet.length; count < length; count++){
-	        		  let key = dataKeySet[count];
-	            	  let value = data[key];
-	            	  
-	            	  if(isEmpty(value)) {
-	            		  continue;
-	            	  }
-	            	  
-	            	  let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
-	            	  
-	            	  if(categoryRowToUpdate == null) {
-	            		  continue;
-	            	  }
-	            	  
-	            	  categoryRowToUpdate.innerHTML = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
-            	}
-            }, 
-            error: function(thrownError) {
-          	  var responseError = JSON.parse(thrownError.responseText);
-	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(thrownError);
-	          }
-	        }
+            type: ajaxData.type,
+            success: ajaxData.onSuccess, 
+            error: ajaxData.onFailure
 		});
 	}
 	
@@ -583,11 +610,26 @@
 
 	// Deletes all auto generated user budget
 	function deleteAllAutoGeneratedUserBudget() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'DELETE';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.autoGeneratedBudgetParam;
+		ajaxData.dataType = "json"; 
+		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		ajaxData.data = values;
+		ajaxData.onFailure = function(thrownError) {
+      	  let responseError = JSON.parse(thrownError.responseText);
+          if(responseError.error.includes("Unauthorized")){
+  		      er.sessionExpiredSwal(ajaxData);
+          }
+        }
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.autoGeneratedBudgetParam,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'DELETE',
-            dataType: "json",
+            type: ajaxData.type,
+            dataType: ajaxData.dataType,
+            error: ajaxData.onFailure,
             async: true
 		});
 	}
@@ -635,64 +677,73 @@
 
 			                     transactionIds.join(",")
 			                     
-			                     jQuery.ajax({
-			                         url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
-			                         beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-			                         type: 'DELETE',
-			                         contentType: "application/json; charset=utf-8", 
-			                         success: function() {
-			                        	showNotification('Successfully deleted the selected transactions','top','center','success');
-			                        	
-			                        	let checkAllClicked = $("#checkAll:checked").length > 0;
-			                        	
-			                        	// If Check All is clicked them empty div and reset pie chart
-			                        	if(checkAllClicked){
-			                        		// uncheck the select all checkbox if checked
-			                        		let checkAllBox = document.getElementById('checkAll');
-			                        		$('#checkAll').prop('checked',false);
-			                        		checkAllBox.setAttribute('disabled','disabled');
-			                        		let documentTbody = document.getElementById(replaceTransactionsId);
-			                        		// Replace HTML with Empty
-			                       		   	while (documentTbody.firstChild) {
-			                       		   		documentTbody.removeChild(documentTbody.firstChild);
-			                       		   	}
-			                 			   	document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
-			                 			   	// update the Total Available Section with 0
-			                 	    		updateTotalAvailableSection(0 , 0);
-			                 	    		// Disable delete Transactions button on refreshing the transactions
-				                         	manageDeleteTransactionsButton();
-				                         	// Delete The auto generated user budget
-				                         	deleteAllAutoGeneratedUserBudget();
-				                         	// Close category modal
-				                         	closeCategoryModal();
-			                        	} else {
-			                        		// Choose the closest parent Div for the checked elements
-				                        	let elementsToDelete = $('.number:checked').parent().closest('div').parent().closest('div').parent().closest('div');
-				                        	let iterateOnceAfterCompletion = elementsToDelete.length;
-			                        		// Remove all the elements
-				                        	elementsToDelete.fadeOut('slow', function(){ 
-				                        		$(this).remove(); 
-				                        		
-				                        		// Execute the condition only once after all the transactions are removed.
-				                        		if(!--iterateOnceAfterCompletion) {
-				                        			// Disable delete Transactions button on refreshing the transactions
-						                         	manageDeleteTransactionsButton();
-						                         	
-						                         	// To recalculate the category total amount and to reduce user budget for the category appropriately
-						                         	recalculateCategoryTotalAmount();
-				                        		}
+			                     // Ajax Requests on Error
+								 let ajaxData = {};
+								 ajaxData.isAjaxReq = true;
+								 ajaxData.type = 'DELETE';
+								 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+								 ajaxData.contentType = "application/json; charset=utf-8";
+								 ajaxData.onSuccess = function() {
+		                        	showNotification('Successfully deleted the selected transactions','top','center','success');
+		                        	
+		                        	let checkAllClicked = $("#checkAll:checked").length > 0;
+		                        	
+		                        	// If Check All is clicked them empty div and reset pie chart
+		                        	if(checkAllClicked){
+		                        		// uncheck the select all checkbox if checked
+		                        		let checkAllBox = document.getElementById('checkAll');
+		                        		$('#checkAll').prop('checked',false);
+		                        		checkAllBox.setAttribute('disabled','disabled');
+		                        		let documentTbody = document.getElementById(replaceTransactionsId);
+		                        		// Replace HTML with Empty
+		                       		   	while (documentTbody.firstChild) {
+		                       		   		documentTbody.removeChild(documentTbody.firstChild);
+		                       		   	}
+		                 			   	document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
+		                 			   	// update the Total Available Section with 0
+		                 	    		updateTotalAvailableSection(0 , 0);
+		                 	    		// Disable delete Transactions button on refreshing the transactions
+			                         	manageDeleteTransactionsButton();
+			                         	// Delete The auto generated user budget
+			                         	deleteAllAutoGeneratedUserBudget();
+			                         	// Close category modal
+			                         	closeCategoryModal();
+		                        	} else {
+		                        		// Choose the closest parent Div for the checked elements
+			                        	let elementsToDelete = $('.number:checked').parent().closest('div').parent().closest('div').parent().closest('div');
+			                        	let iterateOnceAfterCompletion = elementsToDelete.length;
+		                        		// Remove all the elements
+			                        	elementsToDelete.fadeOut('slow', function(){ 
+			                        		$(this).remove(); 
+			                        		
+			                        		// Execute the condition only once after all the transactions are removed.
+			                        		if(!--iterateOnceAfterCompletion) {
+			                        			// Disable delete Transactions button on refreshing the transactions
+					                         	manageDeleteTransactionsButton();
 					                         	
-				                        	});
-			                        	}
-			                         },
-			                        error:  function (thrownError) {
-			                        	 var responseError = JSON.parse(thrownError.responseText);
-				                         	if(responseError.error.includes("Unauthorized")){
-				                         		er.sessionExpiredSwal(thrownError);
-				                         	} else{
-				                         		showNotification('Unable to delete the transactions','top','center','danger');
-				                         	}
-			                         }
+					                         	// To recalculate the category total amount and to reduce user budget for the category appropriately
+					                         	recalculateCategoryTotalAmount();
+			                        		}
+				                         	
+			                        	});
+		                        	}
+		                         }
+								 ajaxData.onFailure = function (thrownError) {
+		                        	let responseError = JSON.parse(thrownError.responseText);
+		                         	if(responseError.error.includes("Unauthorized")){
+		                         		er.sessionExpiredSwal(ajaxData);
+		                         	} else{
+		                         		showNotification('Unable to delete the transactions','top','center','danger');
+		                         	}
+		                         }
+
+			                     jQuery.ajax({
+			                         url: ajaxData.url,
+			                         beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+			                         type: ajaxData.type,
+			                         contentType: ajaxData.contentType, 
+			                         success: ajaxData.onSuccess,
+			                         error: ajaxData.onFailure
 			                     });
 			             	
 			                 }
@@ -770,43 +821,54 @@
 			values['categoryId'] = this.value;
 			values['transactionId'] = selectedTransactionId[selectedTransactionId.length - 1];
 			values['dateMeantFor'] = chosenDate;
+
+			// Ajax Requests on Error
+			let ajaxData = {};
+			ajaxData.isAjaxReq = true;
+			ajaxData.type = "POST";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'category';
+			ajaxData.dataType = "json"; 
+			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+			ajaxData.data = values;
+			ajaxData.onSuccess = function(userTransaction){
+	        	  let previousCategoryId ='';
+	        	  
+        		  // Update the current category
+	        	  for(let i=0, length = classList.length; i < length ; i++) {
+	        		  let classItem = classList[i]
+	        		  if(includesStr(classItem,'categoryIdForSelect')){
+	        			// Remove amount from current Category
+	        			  previousCategoryId = lastElement(splitElement(classItem,'-'));
+	    	        	  updateCategoryAmount(previousCategoryId , parseFloat('-' + userTransaction.amount), false);
+	        		  }
+	        	  }
+	        	  
+	        	  // Remove previous class related to category id and add the new one
+	        	  let selectOption = document.getElementById(categoryId);
+	        	  selectOption.classList.remove('categoryIdForSelect-' + previousCategoryId);
+	        	  selectOption.classList.add('categoryIdForSelect-'+ userTransaction.categoryId);
+	        	  // Add to the new category
+	        	  updateCategoryAmount(userTransaction.categoryId, userTransaction.amount, false);
+	        }
+			ajaxData.onFailure = function (thrownError) {
+              	let responseError = JSON.parse(thrownError.responseText);
+               	if(responseError.error.includes("Unauthorized")){
+               		er.sessionExpiredSwal(ajaxData);
+               	} else{
+               		showNotification('Unable to change the category','top','center','danger');
+               	}
+            }
+
 			$.ajax({
-		          type: "POST",
-		          url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'category',
+		          type: ajaxData.type,
+		          url: ajaxData.url,
 		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: "json",
-		          contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
-		          data : values,
-		          success: function(userTransaction){
-		        	  let previousCategoryId ='';
-		        	  
-		        		// Update the current category
-			        	  for(let i=0, length = classList.length; i < length ; i++) {
-			        		  let classItem = classList[i]
-			        		  if(includesStr(classItem,'categoryIdForSelect')){
-			        			// Remove amount from current Category
-			        			  previousCategoryId = lastElement(splitElement(classItem,'-'));
-			    	        	  updateCategoryAmount(previousCategoryId , parseFloat('-' + userTransaction.amount), false);
-			        		  }
-			        	  }
-			        	  
-			        	  // Remove previous class related to category id and add the new one
-			        	  let selectOption = document.getElementById(categoryId);
-			        	  selectOption.classList.remove('categoryIdForSelect-' + previousCategoryId);
-			        	  selectOption.classList.add('categoryIdForSelect-'+ userTransaction.categoryId);
-			        	  // Add to the new category
-			        	  updateCategoryAmount(userTransaction.categoryId, userTransaction.amount, false);
-		          },
-		          error: function (thrownError) {
-	              	 var responseError = JSON.parse(thrownError.responseText);
-	                   	if(responseError.error.includes("Unauthorized")){
-	                   		er.sessionExpiredSwal(thrownError);
-	                   	} else{
-	                   		showNotification('Unable to change the category','top','center','danger');
-	                   	}
-	               }
-		           
-		        });
+		          dataType: ajaxData.dataType,
+		          contentType: ajaxData.contentType, 
+		          data : ajaxData.data,
+		          success: ajaxData.onSuccess,
+		          error: ajaxData.onFailure       
+		    });
 		}
 	});
 	
@@ -863,25 +925,37 @@
 		values['description'] = enteredText;
 		values['transactionId'] = changedDescription[changedDescription.length - 1];
 		values['dateMeantFor'] = chosenDate;
+
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = "POST";
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'description';
+		ajaxData.dataType = "json"; 
+		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		ajaxData.data = values;
+		ajaxData.onSuccess = function() {
+        	// Set the description to empty as the data need not be stored.
+      		descriptionTextEdited = '';
+        }
+		ajaxData.onFailure = function (thrownError) {
+        	let responseError = JSON.parse(thrownError.responseText);
+         	if(responseError.error.includes("Unauthorized")){
+         		er.sessionExpiredSwal(ajaxData);
+         	} else{
+         		showNotification('Unable to change the description','top','center','danger');
+         	}
+         }
+
 		$.ajax({
-	          type: "POST",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'description',
+	          type: ajaxData.type,
+	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
-	          data : values,
-	          success: function() {
-	        	// Set the description to empty as the data need not be stored.
-	      		descriptionTextEdited = '';
-	          },
-	          error: function (thrownError) {
-            	 var responseError = JSON.parse(thrownError.responseText);
-                 	if(responseError.error.includes("Unauthorized")){
-                 		er.sessionExpiredSwal(thrownError);
-                 	} else{
-                 		showNotification('Unable to change the description','top','center','danger');
-                 	}
-             }
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType, 
+	          data : ajaxData.data,
+	          success: ajaxData.onSuccess,
+	          error: ajaxData.onFailure
 	        });
 		
 		// Prevent repeated enter button press from calling the server
@@ -947,30 +1021,40 @@
 			values['transactionId'] = changedAmount[changedAmount.length - 1];
 			values['dateMeantFor'] = chosenDate;
 			let totalAddedOrRemovedFromAmount = round(parseFloat(enteredText - previousText),2);
+			// Ajax Requests on Error
+			let ajaxData = {};
+			ajaxData.isAjaxReq = true;
+			ajaxData.type = "POST";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'transaction';
+			ajaxData.dataType = "json"; 
+			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+			ajaxData.data = values;
+			ajaxData.onSuccess = function(userTransaction){
+	        	  // Set the amount to empty as the data need not be stored.
+	        	  amountEditedTransaction = '';
+	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
+	        	  updateCategoryAmount(userTransaction.categoryId, totalAddedOrRemovedFromAmount, true);
+	        	  autoCreateBudget(userTransaction.categoryId, totalAddedOrRemovedFromAmount);
+	        	  handleCategoryModalToggle(userTransaction.categoryId, categoryRowElement, '');
+	        }
+			ajaxData.onFailure = function (thrownError) {
+	          	 let responseError = JSON.parse(thrownError.responseText);
+	             if(responseError.error.includes("Unauthorized")){
+	               		er.sessionExpiredSwal(ajaxData);
+	             } else{
+	               		showNotification('Unable to change the transacition amount','top','center','danger');
+	             }
+	        }
 			$.ajax({
-		          type: "POST",
-		          url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'transaction',
+		          type: ajaxData.type,
+		          url: ajaxData.url,
 		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: "json",
-		          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		          data : values,
-		          success: function(userTransaction){
-		        	  // Set the amount to empty as the data need not be stored.
-		        	  amountEditedTransaction = '';
-		        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
-		        	  updateCategoryAmount(userTransaction.categoryId, totalAddedOrRemovedFromAmount, true);
-		        	  autoCreateBudget(userTransaction.categoryId, totalAddedOrRemovedFromAmount);
-		        	  handleCategoryModalToggle(userTransaction.categoryId, categoryRowElement, '');
-		          },
-		          error: function (thrownError) {
-	              	 var responseError = JSON.parse(thrownError.responseText);
-	                   	if(responseError.error.includes("Unauthorized")){
-	                   		er.sessionExpiredSwal(thrownError);
-	                   	} else{
-	                   		showNotification('Unable to change the transacition amount','top','center','danger');
-	                   	}
-	               }
-		        });
+		          dataType: ajaxData.dataType,
+		          contentType: ajaxData.contentType,
+		          data : ajaxData.data,
+		          success: ajaxData.onSuccess,
+		          error: ajaxData.onFailure
+		    });
 		}
 		
 		// replace the text with a trimmed version
@@ -1107,81 +1191,92 @@
 		budgetTableCell.classList.add('fadeOutAnimation');
 		
 		
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'DELETE';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+		ajaxData.dataType = "json"; 
+		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		ajaxData.data = values;
+		ajaxData.onSuccess = function(data) {
+        	let previousCategoryId = '';
+        	let classListBudget = budgetTableCell.classList;
+        	// Set the previous category Id for updating the catergory modal
+        	for(let i=0, length = classListBudget.length; i < length; i++) {
+            	// Remove the nearest category along with the last transaction row.
+        		let classItem = classListBudget[i];
+        		if(includesStr(classItem, 'categoryIdForBudget')) {
+        			// Remove amount from current Category
+        			previousCategoryId = lastElement(splitElement(classItem,'-'));
+        			let categoryAmount = er.convertToNumberFromCurrency($('.amountCategoryId-' + previousCategoryId)[0].innerText,currentCurrencyPreference);
+        			
+        			// Category Header Deletion
+        			if(categoryAmount == 0) {
+        				$('.amountCategoryId-' + previousCategoryId).parent().closest('div').fadeOut('slow', function(){ 
+        					$(this).remove(); 
+        					// Toggle Category Modal 
+                        	toggleCategoryModal(false);
+        				});
+        			}
+        			
+        		}
+        	}
+        	
+        	// Remove the table row (No need to update category amount or total values as the value of the TR is already 0 )
+        	let closestTr = $('#budgetTransactionsRow-' + id).parent().closest('div');
+        	let closestTrLength = closestTr.length;
+        	
+        	// Remove Transactions Row
+        	closestTr.fadeOut('slow', function(){
+        		$(this).remove(); 
+        		
+        		// Check all functionality if all transactions are clicked
+            	checkAllIfAllAreChecked();
+        		
+        		// Execute these transactions only once after all elements have faded out
+        		if(!--closestTrLength) {
+        			// Disable delete Transactions button on refreshing the transactions
+                 	manageDeleteTransactionsButton();
+                 	// Updates total transactions in category Modal if open with this category
+    	        	updateTotalTransactionsInCategoryModal(previousCategoryId);
+    	        	// Display Table Empty Div if all the table rows are deleted
+    	        	let tableBodyDiv = document.getElementById(replaceTransactionsId);
+                	if(tableBodyDiv.childElementCount === 0) {
+                		tableBodyDiv.appendChild(fetchEmptyTableMessage());
+                		// uncheck the select all checkbox if checked
+            			let checkAllBox = document.getElementById('checkAll');
+            			$('#checkAll').prop('checked',false);
+            			checkAllBox.setAttribute('disabled', 'disabled');
+                	}
+        		}
+        	});
+        }
+		ajaxData.onFailure = function (thrownError) {
+       	 let responseError = JSON.parse(thrownError.responseText);
+            	if(responseError.error.includes("Unauthorized")){
+            		er.sessionExpiredSwal(ajaxData);
+            	} else{
+            		document.getElementById('budgetTransactionsRow-' + id).innerHTML = deleteButton;
+            		
+            		swal({
+                         title: "Unable to Delete!",
+                         text: "Please try again",
+                         type: 'error',
+                         timer: 1000,
+                         showConfirmButton: false
+                     }).catch(swal.noop)
+            		
+            	}
+        }
+
 		// Handle delete for individual row
 		jQuery.ajax({
-            url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+            url: ajaxData.url,
             beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'DELETE',
-            success: function(data) {
-            	let previousCategoryId = '';
-            	let classListBudget = budgetTableCell.classList;
-            	// Set the previous category Id for updating the catergory modal
-            	for(let i=0, length = classListBudget.length; i < length; i++) {
-                	// Remove the nearest category along with the last transaction row.
-            		let classItem = classListBudget[i];
-            		if(includesStr(classItem, 'categoryIdForBudget')) {
-            			// Remove amount from current Category
-	        			previousCategoryId = lastElement(splitElement(classItem,'-'));
-	        			let categoryAmount = er.convertToNumberFromCurrency($('.amountCategoryId-' + previousCategoryId)[0].innerText,currentCurrencyPreference);
-	        			
-	        			// Category Header Deletion
-	        			if(categoryAmount == 0) {
-	        				$('.amountCategoryId-' + previousCategoryId).parent().closest('div').fadeOut('slow', function(){ 
-	        					$(this).remove(); 
-	        					// Toggle Category Modal 
-	                        	toggleCategoryModal(false);
-	        				});
-	        			}
-	        			
-            		}
-            	}
-            	
-            	// Remove the table row (No need to update category amount or total values as the value of the TR is already 0 )
-            	let closestTr = $('#budgetTransactionsRow-' + id).parent().closest('div');
-            	let closestTrLength = closestTr.length;
-            	
-            	// Remove Transactions Row
-            	closestTr.fadeOut('slow', function(){
-            		$(this).remove(); 
-            		
-            		// Check all functionality if all transactions are clicked
-                	checkAllIfAllAreChecked();
-            		
-            		// Execute these transactions only once after all elements have faded out
-            		if(!--closestTrLength) {
-            			// Disable delete Transactions button on refreshing the transactions
-                     	manageDeleteTransactionsButton();
-                     	// Updates total transactions in category Modal if open with this category
-        	        	updateTotalTransactionsInCategoryModal(previousCategoryId);
-        	        	// Display Table Empty Div if all the table rows are deleted
-        	        	let tableBodyDiv = document.getElementById(replaceTransactionsId);
-                    	if(tableBodyDiv.childElementCount === 0) {
-                    		tableBodyDiv.appendChild(fetchEmptyTableMessage());
-                    		// uncheck the select all checkbox if checked
-                			let checkAllBox = document.getElementById('checkAll');
-                			$('#checkAll').prop('checked',false);
-                			checkAllBox.setAttribute('disabled', 'disabled');
-                    	}
-            		}
-            	});
-            },
-            error: function (thrownError) {
-           	 let responseError = JSON.parse(thrownError.responseText);
-                	if(responseError.error.includes("Unauthorized")){
-                		er.sessionExpiredSwal(thrownError);
-                	} else{
-                		document.getElementById('budgetTransactionsRow-' + id).innerHTML = deleteButton;
-                		
-                		swal({
-	                         title: "Unable to Delete!",
-	                         text: "Please try again",
-	                         type: 'error',
-	                         timer: 1000,
-	                         showConfirmButton: false
-	                     }).catch(swal.noop)
-                		
-                	}
-            }
+            type: ajaxData.type,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
         });
 	});
 	
@@ -1429,42 +1524,54 @@
 		 values['description'] = '';
 		 values['categoryOptions'] = id;
 		 values['dateMeantFor'] = chosenDate;
+
+		 // Ajax Requests on Error
+		 let ajaxData = {};
+		 ajaxData.isAjaxReq = true;
+		 ajaxData.type = "POST";
+		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.financialPortfolioId; 
+		 ajaxData.dataType = "json"; 
+		 ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+		 ajaxData.data = values;
+		 ajaxData.onSuccess = function(userTransaction){
+        	  let categoryParent = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
+        	  let closestSibling = categoryParent.nextSibling;
+        	  let lastClassName =  lastElement(splitElement(closestSibling.className, ' '));
+        	  
+        	  // Toggle dropdown if the rows are hidden
+    		  if(includesStr(lastClassName , 'd-none')) {
+    			  toggleDropdown(id, categoryParent);
+    		  }
+    		  
+    		  // Add the new row to the category
+        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-lg-table-row', userTransaction.categoryId), closestSibling);
+        	  
+        	  // Remove material spinner and remove d none
+        	  currentElement.parentNode.removeChild(currentElement.parentNode.lastChild);
+        	  currentElement.classList.add('d-lg-inline');
+        	  currentElement.classList.remove('d-none');
+        	  
+        	  // Updates total transactions in category Modal
+        	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
+         }
+		 ajaxData.onFailure = function (thrownError) {
+         	 let responseError = JSON.parse(thrownError.responseText);
+          	 if(responseError.error.includes("Unauthorized")){
+          		er.sessionExpiredSwal(ajaxData);
+          	 } else{
+          		showNotification('Unable to add a new transaction','top','center','danger');
+          	 }
+          }
+
 		 $.ajax({
-	          type: "POST",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.financialPortfolioId,
+	          type: ajaxData.type,
+	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
-	          data : values,
-	          success: function(userTransaction){
-	        	  let categoryParent = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
-	        	  let closestSibling = categoryParent.nextSibling;
-	        	  let lastClassName =  lastElement(splitElement(closestSibling.className, ' '));
-	        	  
-	        	  // Toggle dropdown if the rows are hidden
-        		  if(includesStr(lastClassName , 'd-none')) {
-        			  toggleDropdown(id, categoryParent);
-        		  }
-        		  
-        		  // Add the new row to the category
-	        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-lg-table-row', userTransaction.categoryId), closestSibling);
-	        	  
-	        	  // Remove material spinner and remove d none
-	        	  currentElement.parentNode.removeChild(currentElement.parentNode.lastChild);
-	        	  currentElement.classList.add('d-lg-inline');
-	        	  currentElement.classList.remove('d-none');
-	        	  
-	        	  // Updates total transactions in category Modal
-	        	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
-	          },
-	          error:  function (thrownError) {
-             	 var responseError = JSON.parse(thrownError.responseText);
-                  	if(responseError.error.includes("Unauthorized")){
-                  		er.sessionExpiredSwal(thrownError);
-                  	} else{
-                  		showNotification('Unable to add a new transaction','top','center','danger');
-                  	}
-              }
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType, 
+	          data : ajaxData.data,
+	          success: ajaxData.onSuccess,
+	          error: ajaxData.onFailure
 		 });
 	});
 	
@@ -1526,12 +1633,27 @@
 			delete updateBudgetMap[categoryIdArray];
 		}
          
+        // Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'DELETE';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + '/' + categoryIdArray + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.deleteAutoGeneratedParam;
+		ajaxData.contentType = "application/json; charset=utf-8";
+		ajaxData.onFailure = ajaxData.onFailure = function (thrownError) {
+	     	 let responseError = JSON.parse(thrownError.responseText);
+	      	 if(responseError.error.includes("Unauthorized")){
+	      		er.sessionExpiredSwal(ajaxData);
+	      	 } else{
+	      		showNotification('Unable to add a new transaction','top','center','danger');
+	      	 }
+	    }
 		// Send the AJAX request to delete the user budgets
         jQuery.ajax({
-             url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + '/' + categoryIdArray + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.deleteAutoGeneratedParam,
+             url: ajaxData.url,
              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-             type: 'DELETE',
-             contentType: "application/json; charset=utf-8", 
+             type: ajaxData.type,
+             contentType: ajaxData.contentType, 
+             error: ajaxData.onFailure,
              async: true
         });
 	}
@@ -1539,73 +1661,80 @@
 	// Recalculate category amount and append them to the table While updating auto generated user budget 
 	function recalculateCategoryTotalAmount() {
     	
+    	// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'GET';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetTrueParam;
+		ajaxData.onSuccess = function(categoryTotalMap) {
+        	// Category open in Modal
+        	let categoryIdOpenInModal = document.getElementById('categoryIdCachedForUserBudget').innerText;
+        	// Get all the category id's
+    		let categoryTotalKeys = Object.keys(categoryTotalMap);
+        	let categoryDivs = document.querySelectorAll('*[id^="categoryTableRow"]');
+        	// Category Total
+        	let totalExpensesTransactions = 0;
+        	let totalIncomeTransactions = 0;
+        	
+        	// Find the categories that are visible to the user but are not present in the database
+        	for(let count = 0, lengthArray = categoryDivs.length; count < lengthArray; count++){
+        		let categoryDiv = categoryDivs[count];
+        		let categoryId = lastElement(splitElement(categoryDiv.id,'-'));
+        		// Check if the elements are present inside the keys
+        		if(!includesStr(categoryTotalKeys, categoryId)) {
+        			// Mark those elements to be deleted
+        			$(categoryDiv).fadeOut('slow', function(){
+        				categoryDiv.remove();
+        				
+        				// Toggle Category Modal 
+                    	toggleCategoryModal(false);
+                    	
+                		// Delete category ids which are autogenerated
+                		deleteAutoGeneratedUserBudgets(categoryId);
+        			});
+        		} else {
+               	    let value = categoryTotalMap[categoryId];
+               	    let categoryIt = categoryMap[categoryId];
+               	    let categoryAmountDiv = document.getElementById('amountCategory-'+categoryId);
+            	    categoryAmountDiv.innerHTML = currentCurrencyPreference + formatNumber(value, currentUser.locale);
+
+            	    // Total Expenses and Total Income
+	     			if(categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	     				totalExpensesTransactions += value;
+	     			} else if (categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+	     				totalIncomeTransactions += value;
+	     			}
+            	    
+            	    // Check if the modal is open
+               	    if(categoryIdOpenInModal == categoryId) {
+                 		// Handle category Modal
+                     	let categoryRowElement = document.getElementById('categoryTableRow-' + categoryId);
+                     	// Fetch all the categories child transactions
+                     	let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
+                     	// Edit Category Modal
+                     	handleCategoryModalToggle(categoryId, categoryRowElement, hideableRowElement.length);
+               	    }
+        		}
+        	}
+
+        	// Build Category Modal
+		  	updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
+
+        }
+		ajaxData.onFailure = function(thrownError) {
+      	  	var responseError = JSON.parse(thrownError.responseText);
+          	if(responseError.error.includes("Unauthorized")){
+  		      	er.sessionExpiredSwal(ajaxData);
+          	}
+	    }
 		// Load all user transaction from API
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetTrueParam,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'GET',
+            type: ajaxData.type,
             async: true,
-            success: function(categoryTotalMap) {
-            	// Category open in Modal
-            	let categoryIdOpenInModal = document.getElementById('categoryIdCachedForUserBudget').innerText;
-            	// Get all the category id's
-        		let categoryTotalKeys = Object.keys(categoryTotalMap);
-            	let categoryDivs = document.querySelectorAll('*[id^="categoryTableRow"]');
-            	// Category Total
-            	let totalExpensesTransactions = 0;
-            	let totalIncomeTransactions = 0;
-            	
-            	// Find the categories that are visible to the user but are not present in the database
-            	for(let count = 0, lengthArray = categoryDivs.length; count < lengthArray; count++){
-            		let categoryDiv = categoryDivs[count];
-            		let categoryId = lastElement(splitElement(categoryDiv.id,'-'));
-            		// Check if the elements are present inside the keys
-            		if(!includesStr(categoryTotalKeys, categoryId)) {
-            			// Mark those elements to be deleted
-            			$(categoryDiv).fadeOut('slow', function(){
-            				categoryDiv.remove();
-            				
-            				// Toggle Category Modal 
-                        	toggleCategoryModal(false);
-                        	
-                    		// Delete category ids which are autogenerated
-                    		deleteAutoGeneratedUserBudgets(categoryId);
-            			});
-            		} else {
-                   	    let value = categoryTotalMap[categoryId];
-                   	    let categoryIt = categoryMap[categoryId];
-                   	    let categoryAmountDiv = document.getElementById('amountCategory-'+categoryId);
-                	    categoryAmountDiv.innerHTML = currentCurrencyPreference + formatNumber(value, currentUser.locale);
-
-                	    // Total Expenses and Total Income
-		     			if(categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-		     				totalExpensesTransactions += value;
-		     			} else if (categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-		     				totalIncomeTransactions += value;
-		     			}
-                	    
-                	    // Check if the modal is open
-                   	    if(categoryIdOpenInModal == categoryId) {
-                     		// Handle category Modal
-                         	let categoryRowElement = document.getElementById('categoryTableRow-' + categoryId);
-                         	// Fetch all the categories child transactions
-                         	let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
-                         	// Edit Category Modal
-                         	handleCategoryModalToggle(categoryId, categoryRowElement, hideableRowElement.length);
-                   	    }
-            		}
-            	}
-
-            	// Build Category Modal
-    		  	updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
-
-            }, 
-            error: function(thrownError) {
-          	  var responseError = JSON.parse(thrownError.responseText);
-	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(thrownError);
-	          }
-	        }
+            success: ajaxData.onSuccess, 
+            error: ajaxData.onFailure
 		});
 	}
 	
@@ -1845,31 +1974,43 @@
 			values['category_id'] = categoryIdForBudget;
 			values['autoGenerated'] = 'false';
 			values['dateMeantFor'] = chosenDate;
+
+			// Ajax Requests on Error
+			let ajaxData = {};
+			ajaxData.isAjaxReq = true;
+			ajaxData.type = "POST";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId;
+			ajaxData.dataType = "json"; 
+			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+			ajaxData.data = values;
+			ajaxData.onSuccess = function(userBudget){
+	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userBudget.categoryId);
+	        	  // Update the budget amount in the category row
+	        	  let formattedBudgetAmount = currentCurrencyPreference + formatNumber(userBudget.planned , currentUser.locale);
+	        	  categoryRowElement.lastChild.innerText = formattedBudgetAmount;
+	        	  handleCategoryModalToggle(userBudget.categoryId, categoryRowElement, '');
+	        }
+			ajaxData.onFailure = function (thrownError) {
+              	  var responseError = JSON.parse(thrownError.responseText);
+                  if(responseError.error.includes("Unauthorized")){
+                   		er.sessionExpiredSwal(ajaxData);
+                  } else{
+                   		showNotification('Unable to change the budget. Please try again','top','center','danger');
+                   		// update the current element with the previous amount
+                   		let formattedBudgetAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
+                   		element.innerText = formattedBudgetAmount;
+                  }
+            }
+
 			$.ajax({
-		          type: "POST",
-		          url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId,
+		          type: ajaxData.type,
+		          url: ajaxData.url,
 		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: "json",
-		          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-		          data : values,
-		          success: function(userBudget){
-		        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userBudget.categoryId);
-		        	  // Update the budget amount in the category row
-		        	  let formattedBudgetAmount = currentCurrencyPreference + formatNumber(userBudget.planned , currentUser.locale);
-		        	  categoryRowElement.lastChild.innerText = formattedBudgetAmount;
-		        	  handleCategoryModalToggle(userBudget.categoryId, categoryRowElement, '');
-		          },
-		          error: function (thrownError) {
-	              	 var responseError = JSON.parse(thrownError.responseText);
-	                   	if(responseError.error.includes("Unauthorized")){
-	                   		er.sessionExpiredSwal(thrownError);
-	                   	} else{
-	                   		showNotification('Unable to change the budget. Please try again','top','center','danger');
-	                   		// update the current element with the previous amount
-	                   		let formattedBudgetAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
-	                   		element.innerText = formattedBudgetAmount;
-	                   	}
-	               }
+		          dataType: ajaxData.dataType,
+		          contentType: ajaxData.contentType,
+		          data : ajaxData.data,
+		          success: ajaxData.onSuccess,
+		          error: ajaxData.onFailure
 		        });
 		}
 		

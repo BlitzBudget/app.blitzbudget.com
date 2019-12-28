@@ -357,22 +357,28 @@
         		Swal.resetValidationMessage()
             	 // If the Reset Button is pressed
             	 if (result.value) {
-
+					// Ajax Requests on Error
+					let ajaxData = {};
+					ajaxData.isAjaxReq = true;
+					ajaxData.type = 'DELETE';
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
+					ajaxData.onSuccess = function(jsonObj) {
+			        	showNotification(jsonObj.message,'top','center','success');
+			        }
+				    ajaxData.onFailure = function (thrownError) {
+		           	 	let responseError = JSON.parse(thrownError.responseText);
+		           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
+		            		er.sessionExpiredSwal(ajaxData);
+		            	} else {
+		            		showNotification(thrownError.message,'top','center','danger');
+		            	}
+		            }
             	 	jQuery.ajax({
-						url: _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl,
+						url: ajaxData.url,
 						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-				        type: 'DELETE',
-				        success: function(jsonObj) {
-				        	showNotification(jsonObj.message,'top','center','success');
-				        },
-				        error:  function (thrownError) {
-			           	 	let responseError = JSON.parse(thrownError.responseText);
-			           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
-			            		er.sessionExpiredSwal(thrownError);
-			            	} else {
-			            		showNotification(thrownError.message,'top','center','danger');
-			            	}
-			            }
+				        type: ajaxData.type,
+				        success: ajaxData.onSuccess,
+				        error: ajaxData.onFailure
 		        	});
             	 }
 
@@ -444,21 +450,28 @@
         		Swal.resetValidationMessage()
             	 // If the Delete Button is pressed
             	 if (result.value) {
+            	 	// Ajax Requests on Error
+					let ajaxData = {};
+					ajaxData.isAjaxReq = true;
+					ajaxData.type = 'DELETE';
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.deleteAccountUrl; 
+					ajaxData.onSuccess = function(jsonObj) {
+			        	showNotification(jsonObj.message,'top','center','success');
+			        }
+				    ajaxData.onFailure = function (thrownError) {
+			        	let responseError = JSON.parse(thrownError.responseText);
+		           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
+		            		er.sessionExpiredSwal(ajaxData);
+		            	} else {
+		            		showNotification(thrownError.message,'top','center','danger');
+		            	}
+		            }
             	   	jQuery.ajax({
-						url: _config.api.invokeUrl + PROFILE_CONSTANTS.deleteAccountUrl,
+						url: ajaxData.url,
 						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-				        type: 'DELETE',
-				        success: function(jsonObj) {
-				        	showNotification(jsonObj.message,'top','center','success');
-				        },
-				        error:  function (thrownError) {
-				        	let responseError = JSON.parse(thrownError.responseText);
-			           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
-			            		er.sessionExpiredSwal(thrownError);
-			            	} else {
-			            		showNotification(thrownError.message,'top','center','danger');
-			            	}
-			            }
+				        type: ajaxData.type,
+				        success: ajaxData.onSuccess,
+				        error: ajaxData.onFailure
 		        	});
             	 }
 
