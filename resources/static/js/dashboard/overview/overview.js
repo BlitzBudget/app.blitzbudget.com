@@ -45,52 +45,60 @@
 	
 	// Populate Recent Transactions
 	function populateRecentTransactions() {
-		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: 'GET',
-	        success: function(userTransactionsList) {
-	        	let recentTransactionsDiv = document.getElementById('recentTransactions');
-	        	let recentTransactionsFragment = document.createDocumentFragment();
-	        	
-	        	if(isEmpty(userTransactionsList)) {
-	        		let imageTransactionEmptyWrapper = document.createElement('div');
-	        		imageTransactionEmptyWrapper.classList = 'text-center d-lg-table-row';
-	        		
-	        		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
-	        		
-	        		
-	        		let emptyMessageRow = document.createElement('div');
-	        		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
-	        		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
-	        		recentTransactionsFragment.appendChild(emptyMessageRow);
-	        	} else {
-	        		let resultKeySet = Object.keys(userTransactionsList);
-		        	// Print only the first 20 records
-		        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
-	             	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
-	             	   let key = resultKeySet[countGrouped];
-	             	   let userTransaction = userTransactionsList[key];
-	             	   
-	             	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
-	             	}
-	        	}
-	        	
-	        	// Empty HTML
-	        	while (recentTransactionsDiv.firstChild) {
-	        		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
-	    		}
-	        	recentTransactionsDiv.appendChild(recentTransactionsFragment);
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.onSuccess = function(userTransactionsList) {
+        	let recentTransactionsDiv = document.getElementById('recentTransactions');
+        	let recentTransactionsFragment = document.createDocumentFragment();
+        	
+        	if(isEmpty(userTransactionsList)) {
+        		let imageTransactionEmptyWrapper = document.createElement('div');
+        		imageTransactionEmptyWrapper.classList = 'text-center d-lg-table-row';
+        		
+        		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
+        		
+        		
+        		let emptyMessageRow = document.createElement('div');
+        		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
+        		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+        		recentTransactionsFragment.appendChild(emptyMessageRow);
+        	} else {
+        		let resultKeySet = Object.keys(userTransactionsList);
+	        	// Print only the first 20 records
+	        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
+             	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
+             	   let key = resultKeySet[countGrouped];
+             	   let userTransaction = userTransactionsList[key];
              	   
-	        },
-	        error:  function (thrownError) {
-           	 var responseError = JSON.parse(thrownError.responseText);
-            	if(responseError.error.includes("Unauthorized")){
-            		er.sessionExpiredSwal(thrownError);
-            	} else{
-            		showNotification('Unable to populate recent transactions. Please refresh the page & try again!','top','center','danger');
-            	}
-            }
+             	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
+             	}
+        	}
+        	
+        	// Empty HTML
+        	while (recentTransactionsDiv.firstChild) {
+        		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
+    		}
+        	recentTransactionsDiv.appendChild(recentTransactionsFragment);
+         	   
+        }
+        ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+        	if(responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else{
+        		showNotification('Unable to populate recent transactions. Please refresh the page & try again!','top','center','danger');
+        	}
+        }
+
+		jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        type: ajaxData.type,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
 		});
 	}
 	
@@ -263,91 +271,107 @@
 	fetchCategoryTotalForTransactions();
 	
 	function fetchCategoryTotalForTransactions() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetFalseParam;
+   		ajaxData.onSuccess = function(categoryTotalMap) {
+        	// Store the result in a cache
+        	categoryTotalMapCache = categoryTotalMap;
+        	
+        	// Populate Category Break down Chart if present
+        	if(doughnutBreakdownOpen) {
+        		populateCategoryBreakdown(fetchIncomeBreakDownCache);
+        	}
+        	
+        	// Populate Optimization of budgets
+        	populateOptimizationOfBudget();
+        	
+        }
+        ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+        	if(responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else{
+        		showNotification('Unable to calculate the budget optimization. Please refresh the page & try again!','top','center','danger');
+        	}
+        }
+
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetFalseParam,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'GET',
-            success: function(categoryTotalMap) {
-            	// Store the result in a cache
-            	categoryTotalMapCache = categoryTotalMap;
-            	
-            	// Populate Category Break down Chart if present
-            	if(doughnutBreakdownOpen) {
-            		populateCategoryBreakdown(fetchIncomeBreakDownCache);
-            	}
-            	
-            	// Populate Optimization of budgets
-            	populateOptimizationOfBudget();
-            	
-            },
-            error:  function (thrownError) {
-           	 var responseError = JSON.parse(thrownError.responseText);
-            	if(responseError.error.includes("Unauthorized")){
-            		er.sessionExpiredSwal(thrownError);
-            	} else{
-            		showNotification('Unable to calculate the budget optimization. Please refresh the page & try again!','top','center','danger');
-            	}
-            }
+            type: ajaxData.type,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
 		});
 	}
 	
 	// Populate optimization of budgets
 	function populateOptimizationOfBudget() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+   		ajaxData.onSuccess = function(userBudgetList) {
+        	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
+        	let populateOptimizationFragment = document.createDocumentFragment();
+        	let dataKeySet = Object.keys(userBudgetList);
+        	for(let count = 0, length = dataKeySet.length; count < length; count++){
+            	let key = dataKeySet[count];
+          	  	let userBudgetValue = userBudgetList[key];
+          	  
+          	  	if(isEmpty(userBudgetValue)) {
+          	  		continue;
+          	  	}
+          	  	
+          	  	// Store the values in a cache
+          	  	userBudgetCache[userBudgetValue.categoryId] = userBudgetValue;
+          	  	
+          	    let categoryTotal = categoryTotalMapCache[userBudgetValue.categoryId];
+          	    // Check for Overspent budget
+          	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
+          	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
+          	    } else if (categoryTotal < userBudgetValue.planned) {
+          	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+          	    } else if (isEmpty(categoryTotal)) {
+          	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+          	    }
+         	}
+        	
+        	// Empty the div optimizations
+        	while (populateOptimizationBudgetDiv.firstChild) {
+        		populateOptimizationBudgetDiv.removeChild(populateOptimizationBudgetDiv.firstChild);
+    		}
+        	if(populateOptimizationFragment.childElementCount === 0) {
+        		populateOptimizationFragment.appendChild(buildSvgFullyOptimized());
+        		
+        		populateFullyOptimizedDesc(populateOptimizationFragment);
+        		
+        	} else {
+        		let checkAllInput = document.getElementById('checkAll');
+        		checkAllInput.removeAttribute('disabled');
+        	}
+        		
+        	populateOptimizationBudgetDiv.appendChild(populateOptimizationFragment);
+        	
+        }
+        ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+        	if(responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else{
+        		showNotification('Unable to calculate the budget optimization. Please refresh the page & try again!','top','center','danger');
+        	}
+        }
+
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: 'GET',
-            success: function(userBudgetList) {
-            	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
-	        	let populateOptimizationFragment = document.createDocumentFragment();
-            	let dataKeySet = Object.keys(userBudgetList);
-            	for(let count = 0, length = dataKeySet.length; count < length; count++){
-	            	let key = dataKeySet[count];
-	          	  	let userBudgetValue = userBudgetList[key];
-	          	  
-	          	  	if(isEmpty(userBudgetValue)) {
-	          	  		continue;
-	          	  	}
-	          	  	
-	          	  	// Store the values in a cache
-	          	  	userBudgetCache[userBudgetValue.categoryId] = userBudgetValue;
-	          	  	
-	          	    let categoryTotal = categoryTotalMapCache[userBudgetValue.categoryId];
-	          	    // Check for Overspent budget
-	          	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
-	          	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
-	          	    } else if (categoryTotal < userBudgetValue.planned) {
-	          	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
-	          	    } else if (isEmpty(categoryTotal)) {
-	          	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
-	          	    }
-             	}
-            	
-            	// Empty the div optimizations
-            	while (populateOptimizationBudgetDiv.firstChild) {
-            		populateOptimizationBudgetDiv.removeChild(populateOptimizationBudgetDiv.firstChild);
-        		}
-            	if(populateOptimizationFragment.childElementCount === 0) {
-            		populateOptimizationFragment.appendChild(buildSvgFullyOptimized());
-            		
-            		populateFullyOptimizedDesc(populateOptimizationFragment);
-            		
-            	} else {
-            		let checkAllInput = document.getElementById('checkAll');
-            		checkAllInput.removeAttribute('disabled');
-            	}
-            		
-            	populateOptimizationBudgetDiv.appendChild(populateOptimizationFragment);
-            	
-	        },
-	        error:  function (thrownError) {
-           	 var responseError = JSON.parse(thrownError.responseText);
-            	if(responseError.error.includes("Unauthorized")){
-            		er.sessionExpiredSwal(thrownError);
-            	} else{
-            		showNotification('Unable to calculate the budget optimization. Please refresh the page & try again!','top','center','danger');
-            	}
-            }
+            type: ajaxData.type,
+            success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
 		});
 	}
 	
@@ -626,54 +650,64 @@
 	
 	// Call budget amount change (Synchronous Ajax Call)
 	function callBudgetAmountChange(values, fullyOptimized, totalOptimizationPending) {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+   		ajaxData.values = values;
+   		ajaxData.onSuccess = function(userBudget){
+	        	  
+	    	  // Update the cache
+	    	  userBudgetCache[userBudget.categoryId] = userBudget;
+	    	  
+	    	  // Update the total funds available
+	    	  if(isNotEmpty(userBudgetWithFund[userBudget.categoryId])) {
+	    		  // Ensure that the transaction total is not null
+	    		  if(isNotEmpty(categoryTotalMapCache[userBudget.categoryId])) {
+	    			  userBudgetWithFund[userBudget.categoryId].amount =  categoryTotalMapCache[userBudget.categoryId] - userBudget.planned;
+	    		  } else {
+	    			  userBudgetWithFund[userBudget.categoryId].amount = userBudget.planned;
+	    		  }
+	    		  
+	    	  }
+	    	  
+	    	  let budgetOptimizationDiv = document.getElementById('budgetOptimization-' + userBudget.categoryId);
+	    	  
+	    	  // If the document is null then return
+	    	  if(budgetOptimizationDiv == null) {
+	    		  return;
+	    	  }
+	    	  
+	    	  // If fully optimized or pending is 0 then remove
+	    	  if(fullyOptimized || totalOptimizationPending == 0) {
+	    		  budgetOptimizationDiv.remove();
+	    	  } else if(totalOptimizationPending > 0) {
+	    		  // Replace the text with the pending values
+	    		  budgetOptimizationDiv.lastChild.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(totalOptimizationPending), currentUser.locale);
+	    	  }
+	    }
+        ajaxData.onFailure = function(thrownError) {
+	    	  let responseError = JSON.parse(thrownError.responseText);
+	    	  if(responseError.error.includes("Unauthorized")){
+	    		  er.sessionExpiredSwal(ajaxData);
+	    	  } else{
+	    		  showNotification('Unable to change the budget category amount at this moment. Please try again!','top','center','danger');
+	    	  }
+	    	  
+	    }
 		$.ajax({
-	          type: "POST",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId,
+	          type: ajaxData.type,
+	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-	          data : values,
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType,
+	          data : ajaxData.values,
 	          async: false,
-	          success: function(userBudget){
-	        	  
-	        	  // Update the cache
-	        	  userBudgetCache[userBudget.categoryId] = userBudget;
-	        	  
-	        	  // Update the total funds available
-	        	  if(isNotEmpty(userBudgetWithFund[userBudget.categoryId])) {
-	        		  // Ensure that the transaction total is not null
-	        		  if(isNotEmpty(categoryTotalMapCache[userBudget.categoryId])) {
-	        			  userBudgetWithFund[userBudget.categoryId].amount =  categoryTotalMapCache[userBudget.categoryId] - userBudget.planned;
-	        		  } else {
-	        			  userBudgetWithFund[userBudget.categoryId].amount = userBudget.planned;
-	        		  }
-	        		  
-	        	  }
-	        	  
-	        	  let budgetOptimizationDiv = document.getElementById('budgetOptimization-' + userBudget.categoryId);
-	        	  
-	        	  // If the document is null then return
-	        	  if(budgetOptimizationDiv == null) {
-	        		  return;
-	        	  }
-	        	  
-	        	  // If fully optimized or pending is 0 then remove
-	        	  if(fullyOptimized || totalOptimizationPending == 0) {
-	        		  budgetOptimizationDiv.remove();
-	        	  } else if(totalOptimizationPending > 0) {
-	        		  // Replace the text with the pending values
-	        		  budgetOptimizationDiv.lastChild.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(totalOptimizationPending), currentUser.locale);
-	        	  }
-	          },
-	          error: function(thrownError) {
-	        	  var responseError = JSON.parse(thrownError.responseText);
-	        	  if(responseError.error.includes("Unauthorized")){
-	        		  er.sessionExpiredSwal(thrownError);
-	        	  } else{
-	        		  showNotification('Unable to change the budget category amount at this moment. Please try again!','top','center','danger');
-	        	  }
-	        	  
-	          }
+	          success: ajaxData.onSuccess,
+	          error: ajaxData.onFailure
 		});
 	}	
 	
@@ -749,25 +783,33 @@
 	
 	// Populate Income Average
 	function populateIncomeAverage() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.onSuccess = function(averageIncome) {
+        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
+        	if(isEmpty(averageIncome)) {
+        		avIncomeAm = 0.00;
+        	} 
+        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
+        }
+        ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+        	if(responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else{
+        		showNotification('Unable to populate income average. Please refresh the page and try again!','top','center','danger');
+        	}
+        }
+
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: 'GET',
-	        success: function(averageIncome) {
-	        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
-	        	if(isEmpty(averageIncome)) {
-	        		avIncomeAm = 0.00;
-	        	} 
-	        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
-	        },
-	        error:  function (thrownError) {
-           	 var responseError = JSON.parse(thrownError.responseText);
-            	if(responseError.error.includes("Unauthorized")){
-            		er.sessionExpiredSwal(thrownError);
-            	} else{
-            		showNotification('Unable to populate income average. Please refresh the page and try again!','top','center','danger');
-            	}
-            }
+	        type: ajaxData.type,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
 		});
 	}
 	
@@ -778,25 +820,33 @@
 	
 	// Populate Expense Average
 	function  populateExpenseAverage() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET'
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.onSuccess = function(averageExpense) {
+        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
+        	if(isEmpty(avExpenseAm)) {
+        		avExpenseAm = 0.00;
+        	}
+        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
+        }
+        ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+        	if(responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else{
+        		showNotification('Unable to populate expense average. Please refresh the page and try again!','top','center','danger');
+        	}
+        }
+
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: 'GET',
-	        success: function(averageExpense) {
-	        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
-	        	if(isEmpty(avExpenseAm)) {
-	        		avExpenseAm = 0.00;
-	        	}
-	        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
-	        },
-	        error:  function (thrownError) {
-           	 var responseError = JSON.parse(thrownError.responseText);
-            	if(responseError.error.includes("Unauthorized")){
-            		er.sessionExpiredSwal(thrownError);
-            	} else{
-            		showNotification('Unable to populate expense average. Please refresh the page and try again!','top','center','danger');
-            	}
-            }
+	        type: ajaxData.type,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
 		});
 	}
 	
@@ -811,46 +861,54 @@
 	document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.onSuccess = function(dateAndAmountAsList) {
+        	
+        	calcAndBuildLineChart(dateAndAmountAsList);
+   		 	
+   		 	// Income or Expense Chart Options
+   		 	let incomeOrExpense = '';
+   		 	
+		 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
+		 			// Store it in a cache
+		        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
+		        	// Make it reasonably immutable
+		        	Object.freeze(liftimeIncomeTransactionsCache);
+		        	Object.seal(liftimeIncomeTransactionsCache);
+		        	
+		        	incomeOrExpense ='Income';
+		        	
+		 		}  else {
+		 			// Store it in a cache
+		        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
+		        	// Make it reasonably immutable
+		        	Object.freeze(liftimeExpenseTransactionsCache);
+		        	Object.seal(liftimeExpenseTransactionsCache);
+		        	
+		 			incomeOrExpense = 'Expense';
+		 		}
+   		 	
+   		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
+        }
+        ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+        	if(responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else{
+        		showNotification('Unable to populate the chart at this moment. Please try again!','top','center','danger');
+        	}
+        }
+
 		jQuery.ajax({
-			url: CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId,
+			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: 'GET',
-	        success: function(dateAndAmountAsList) {
-	        	
-	        	calcAndBuildLineChart(dateAndAmountAsList);
-	   		 	
-	   		 	// Income or Expense Chart Options
-	   		 	let incomeOrExpense = '';
-	   		 	
-   		 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
-   		 			// Store it in a cache
-   		        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
-   		        	// Make it reasonably immutable
-   		        	Object.freeze(liftimeIncomeTransactionsCache);
-   		        	Object.seal(liftimeIncomeTransactionsCache);
-   		        	
-   		        	incomeOrExpense ='Income';
-   		        	
-   		 		}  else {
-   		 			// Store it in a cache
-   		        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
-   		        	// Make it reasonably immutable
-   		        	Object.freeze(liftimeExpenseTransactionsCache);
-   		        	Object.seal(liftimeExpenseTransactionsCache);
-   		        	
-   		 			incomeOrExpense = 'Expense';
-   		 		}
-	   		 	
-	   		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
-	        },
-	        error:  function (thrownError) {
-           	 var responseError = JSON.parse(thrownError.responseText);
-            	if(responseError.error.includes("Unauthorized")){
-            		er.sessionExpiredSwal(thrownError);
-            	} else{
-            		showNotification('Unable to populate the chart at this moment. Please try again!','top','center','danger');
-            	}
-            }
+	        type: ajaxData.type,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
 		});
 	}
 	

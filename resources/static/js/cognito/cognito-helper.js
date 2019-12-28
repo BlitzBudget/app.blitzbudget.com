@@ -183,6 +183,29 @@ uh = {
 	                idToken = idToken.substring(1, idToken.length -1);
 	                sessionStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
+
+	                // Do the Ajax Call that failed
+	                if(ajaxData.isAjaxReq) {
+	                	let ajaxParams = {
+					          type: ajaxData.type,
+					          url: ajaxData.url,
+					          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
+					          success: ajaxData.onSuccess,
+					  	      error: ajaxData.onFailure
+						};
+
+	                	if(includesStr(ajaxData.type, 'POST')) {
+	                		ajaxParams.dataType =  ajaxData.dataType;
+						    ajaxParams.data = ajaxData.values;
+	                	} 
+
+	                	if(includesStr(ajaxData.type, 'DELETE') || includesStr(ajaxData.type, 'POST')) {
+							ajaxParams.contentType = ajaxData.contentType;
+	                	}
+
+	                	// AJAX request
+	                	$.ajax(ajaxParams);
+	                }
 				}
 			});
 	    });
