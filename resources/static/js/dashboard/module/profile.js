@@ -311,7 +311,7 @@
 	            inputAttributes: {
 	                autocapitalize: 'on'
 	            },
-                type: 'info',
+                icon: 'info',
                 showCancelButton: true,
                 showCloseButton: true,
                 confirmButtonText: 'Yes, reset it!',
@@ -404,7 +404,7 @@
 	            inputAttributes: {
 	                autocapitalize: 'on'
 	            },
-                type: 'info',
+                icon: 'info',
                 showCancelButton: true,
                 showCloseButton: true,
                 confirmButtonText: 'Yes, delete it!',

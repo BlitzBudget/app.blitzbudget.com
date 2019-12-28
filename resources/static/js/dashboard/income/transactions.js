@@ -640,7 +640,7 @@
 				 Swal.fire({	
 			                title: 'Are you sure?',
 			                text: 'You will not be able to recover these transactions!',
-			                type: 'warning',
+			                icon: 'warning',
 			                showCancelButton: true,
 			                confirmButtonText: 'Yes, delete it!',
 			                cancelButtonText: 'No, keep it',
@@ -1254,10 +1254,10 @@
             	} else{
             		document.getElementById('budgetTransactionsRow-' + id).innerHTML = deleteButton;
             		
-            		swal({
+            		Swal.fire({
                          title: "Unable to Delete!",
                          text: "Please try again",
-                         type: 'error',
+                         icon: 'error',
                          timer: 1000,
                          showConfirmButton: false
                      }).catch(swal.noop)
