@@ -681,7 +681,7 @@
 								 ajaxData.type = 'DELETE';
 								 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 								 ajaxData.contentType = "application/json; charset=utf-8";
-								 ajaxData.onSuccess = function() {
+								 ajaxData.onSuccess = function(result) {
 		                        	showNotification('Successfully deleted the selected transactions','top','center','success');
 		                        	
 		                        	let checkAllClicked = $("#checkAll:checked").length > 0;
@@ -932,7 +932,7 @@
 		ajaxData.dataType = "json"; 
 		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 		ajaxData.data = values;
-		ajaxData.onSuccess = function() {
+		ajaxData.onSuccess = function(result) {
         	// Set the description to empty as the data need not be stored.
       		descriptionTextEdited = '';
         }

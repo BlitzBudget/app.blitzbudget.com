@@ -154,7 +154,7 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.dataType = "json"; 
 		   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 		   		ajaxData.data = values;
-		   		ajaxData.onSuccess = function(){
+		   		ajaxData.onSuccess = function(result){
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
 		        }
 		        ajaxData.onFailure = function(thrownError) {
@@ -209,7 +209,7 @@ let tickIconSVG = tickIcon();
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
    		ajaxData.data = values;
-   		ajaxData.onSuccess = function(){
+   		ajaxData.onSuccess = function(result){
 	    	  // Remove Selected Account
 	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
 	    		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
