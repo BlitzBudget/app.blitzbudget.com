@@ -8,7 +8,7 @@
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(PROFILE_CONSTANTS, {
 		'resetAccountUrl': { value: '/reset-account', writable: false, configurable: false },
-		'deleteAccountUrl': { value: '/delete-account', writable: false, configurable: false }
+		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false }
 	});
 
 	displayUserDetailsProfile();
@@ -311,7 +311,7 @@
 	            inputAttributes: {
 	                autocapitalize: 'on'
 	            },
-                type: 'info',
+                icon: 'info',
                 showCancelButton: true,
                 showCloseButton: true,
                 confirmButtonText: 'Yes, reset it!',
@@ -361,9 +361,9 @@
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
 					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId;
 					ajaxData.onSuccess = function(jsonObj) {
-			        	showNotification(jsonObj.message,'top','center','success');
+			        	showNotification("Successfully reset your account. Your account is as good as new!",'top','center','success');
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 		           	 	let responseError = JSON.parse(thrownError.responseText);
@@ -404,7 +404,7 @@
 	            inputAttributes: {
 	                autocapitalize: 'on'
 	            },
-                type: 'info',
+                icon: 'info',
                 showCancelButton: true,
                 showCloseButton: true,
                 confirmButtonText: 'Yes, delete it!',
@@ -454,9 +454,18 @@
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
 					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.deleteAccountUrl; 
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId; 
 					ajaxData.onSuccess = function(jsonObj) {
-			        	showNotification(jsonObj.message,'top','center','success');
+			        	// Delete user
+						cognitoUser.deleteUser(function(err, result) {
+					        if (err) {
+					            showNotification(err.message,'top','center','success');
+					            return;
+					        }
+					        localStorage.clear();
+					        sessionStorage.clear();
+					        window.location.href = window._config.home.invokeUrl;
+					    });
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 			        	let responseError = JSON.parse(thrownError.responseText);

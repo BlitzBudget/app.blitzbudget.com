@@ -125,8 +125,6 @@ var AWSCogUser = window.AWSCogUser || {};
 
     // Handle Session Errors
     function handleSessionErrors(err,email,pass) {
-
-        let homepageUrl = 'https://www.blitzbudget.com';
         
         /*
          * User Does not Exist
@@ -745,7 +743,6 @@ var AWSCogUser = window.AWSCogUser || {};
         // Fetch user from local storage
         let userPool = fetchUserFromLocalStorage();
         let cognitoUser = userPool.getCurrentUser();
-        let homepageUrl = 'https://www.blitzbudget.com';
         
         if(cognitoUser != null) {
             // Signout user from cognito
@@ -757,7 +754,7 @@ var AWSCogUser = window.AWSCogUser || {};
         }
         
         // redirect user to home page
-        window.location.href = homepageUrl;
+        window.location.href = window._config.home.invokeUrl;
     }
 
 

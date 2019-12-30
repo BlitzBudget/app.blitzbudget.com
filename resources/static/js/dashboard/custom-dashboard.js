@@ -193,10 +193,10 @@ window.onload = function () {
 			let imageUrl = '../img/dashboard/sidebar/sidebar-1.jpg';
 			
 			if(isEmpty(id)){
-				swal({
+				Swal.fire({
 	                title: "Error Redirecting",
 	                text: 'Please try again later',
-	                type: 'warning',
+	                icon: 'warning',
 	                timer: 1000,
 	                showConfirmButton: false
 	            }).catch(swal.noop);
@@ -242,10 +242,10 @@ window.onload = function () {
 					color = 'green';
 				    break;
 				default:
-					swal({
+					Swal.fire({
 		                title: "Redirecting Not Possible",
 		                text: 'Please try again later',
-		                type: 'warning',
+		                icon: 'warning',
 		                timer: 1000,
 		                showConfirmButton: false
 		            }).catch(swal.noop);
@@ -289,10 +289,10 @@ window.onload = function () {
     		            $('#mutableDashboard').html(data);
     		        },
     		        error: function(){
-    		        	swal({
+    		        	Swal.fire({
     		                title: "Redirecting Not Possible",
     		                text: 'Please try again later',
-    		                type: 'warning',
+    		                icon: 'warning',
     		                timer: 1000,
     		                showConfirmButton: false
     		            }).catch(swal.noop);

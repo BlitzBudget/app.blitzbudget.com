@@ -197,8 +197,8 @@ uh = {
 	                		ajaxParams.dataType =  ajaxData.dataType;
 	                	} 
 
-	                	if(isNotEmpty(ajaxData.values)) {
-	                		ajaxParams.data = ajaxData.values;
+	                	if(isNotEmpty(ajaxData.data)) {
+	                		ajaxParams.data = ajaxData.data;
 	                	}
 
 	                	if(isNotEmpty(ajaxData.contentType)) {
