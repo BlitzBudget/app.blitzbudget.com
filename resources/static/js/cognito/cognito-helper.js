@@ -1,5 +1,6 @@
 "use strict";
 /*global AWSCogUser _config*/
+window.sessionInvalidated = 0;
 
 uh = {
 	// Fetch User From Storage
@@ -171,9 +172,19 @@ uh = {
 		        er.showLoginPopup();
 		        return;
 		    }
+
+		    // If the session was already refreshed and still happens to receive (401 HTTP)
+		    if(!sessionInvalidated) {
+		    	er.showLoginPopup();
+		    	window.sessionRefreshed = 0;
+		    	return;
+		    }
 	
 		    let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
+				// Session Refreshed
+				window.sessionRefreshed++;
+
 				if (err) {
 					showNotification(err.message,'top','center','danger');
 					er.showLoginPopup();
