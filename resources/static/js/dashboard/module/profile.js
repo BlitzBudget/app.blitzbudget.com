@@ -252,6 +252,9 @@
 			               Swal.hideLoading();
 			               // Resolve the promise
 			               resolve();
+			               // update universal authenticated user
+				           window.authenticatedUser = cognitoUser;
+
 			            },
 			            onFailure: function signinError(err) {
 			            	// Hide loading 
@@ -336,6 +339,8 @@
 				               Swal.hideLoading();
 				               // Resolve the promise
 				               resolve();
+				               // update universal authenticated user
+				               window.authenticatedUser = cognitoUser;
 				            },
 				            onFailure: function signinError(err) {
 				            	// Hide loading 
@@ -429,6 +434,8 @@
 				               Swal.hideLoading();
 				               // Resolve the promise
 				               resolve();
+				               // update universal authenticated user
+				               window.authenticatedUser = cognitoUser;
 				            },
 				            onFailure: function signinError(err) {
 				            	// Hide loading 
@@ -832,7 +839,79 @@
 		let firstName = userNameLis[0];
 		let lastName = userNameLis.length > 1 ? userNameLis[1] : '';
 		// Update User Name 
-		updateUserName(firstName, lastName, window.authenticatedUser);
+		if(window.authenticatedUser) {
+			// If Authenticated User is present
+			updateUserName(firstName, lastName, window.authenticatedUser);	
+		} else {
+			let cognitoUser = userPool.getCurrentUser();
+
+			 // Show Sweet Alert
+	        Swal.fire({
+	            title: 'Confirm Password',
+	            html: confirmPasswordFrag(),
+	            inputAttributes: {
+	                autocapitalize: 'on'
+	            },
+	            confirmButtonClass: 'btn btn-info',
+	            confirmButtonText: 'Confirm Password',
+	            showCloseButton: true,
+	            buttonsStyling: false,
+	            showLoaderOnConfirm: true,
+	  			preConfirm: () => {
+	  				return new Promise(function(resolve) {
+	  					let confPasswordUA = document.getElementById('confPasswordUA');
+	  					 // Authentication Details
+					    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+				            Username: currentUser.email,
+				            Password: confPasswordUA.value
+				        });
+
+		  				// Authenticate Before cahnging password
+				        cognitoUser.authenticateUser(authenticationDetails, {
+				            onSuccess: function signinSuccess(result) {
+				            	// Hide loading 
+				               Swal.hideLoading();
+				               // Resolve the promise
+				               resolve();
+				               // update universal authenticated user
+				               window.authenticatedUser = cognitoUser;
+				            },
+				            onFailure: function signinError(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+				        });
+	  				});
+	  			},
+	  			allowOutsideClick: () => !Swal.isLoading(),
+	  			closeOnClickOutside: () => !Swal.isLoading()
+	        }).then(function(result) {
+	        	// Hide the validation message if present
+	        	Swal.resetValidationMessage();
+	            // If confirm button is clicked
+	            if (result.value) {
+	                // Update User Name 
+					updateUserName(firstName, lastName, cognitoUser);
+	            }
+
+	        });
+
+	        // Disable Confirm Password button 
+	        let confBBBtn = document.getElementsByClassName('swal2-confirm')[0];
+	        if(!confBBBtn.disabled) {
+	            confBBBtn.setAttribute('disabled','disabled');
+	        }
+
+	        // CHange Focus to Confirm Password
+	        document.getElementById('confPasswordUA').focus();
+		}
+		
 	}
 
 	function confirmPasswordFrag() {
@@ -1101,6 +1180,8 @@
 			               Swal.hideLoading();
 			               // Resolve the promise
 			               resolve(true);
+			               // update universal authenticated user
+				           window.authenticatedUser = cognitoUser;
 			            },
 			            onFailure: function signinError(err) {
 			            	// Hide loading 
@@ -1301,6 +1382,8 @@
 			        createCognitoUser(emailModInp).authenticateUser(authenticationDetails, {
 			            onSuccess: function signinSuccess(result) {
 			               showNotification('Successfully changed the email!','top','center','success');
+			               // update universal authenticated user
+				           window.authenticatedUser = cognitoUser;
 			            },
 			            onFailure: function signinError(err) {
 			               // Login Modal

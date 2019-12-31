@@ -54,23 +54,6 @@ uh = {
 	    return sessionValid;
 	},
 
-	// Delete a User
-	deleteUser() {
-		
-		// Fetch user from local storage
-		let userPool = uh.fetchUserFromLocalStorage();
-		let cognitoUser = userPool.getCurrentUser();
-		
-		cognitoUser.deleteUser(function(err, result) {
-	        if (err) {
-	            alert(err);
-	            return;
-	        }
-	        console.log('call result: ' + result);
-	    });
-	},
-
-
 	// Verify an Attribute
 	verifyAnAttirbute() {
 		// TODO Adopt Code
@@ -86,29 +69,6 @@ uh = {
 	            cognitoUser.verifyAttribute('email', verificationCode, this);
 	        }
 		 });
-	},
-
-	globalSignout() {
-		var params = {
-		  AccessToken: 'STRING_VALUE' /* required */
-		};
-		cognitoUser.globalSignOut(params, function(err, data) {
-		  if (err) console.log(err, err.stack); // an error occurred
-		  else     console.log(data);           // successful response
-		});
-	},
-
-	listRegisteredDevices() {
-		let cognitoUser = userPool.getCurrentUser();
-		cognitoUser.listDevices(limit, paginationToken, {
-		    onSuccess: function (result) {
-		        console.log('call result: ' + result);
-		     },
-
-		    onFailure: function(err) {
-		        alert(err);
-		    }
-		});
 	},
 
 	forgetThisDevice() {
