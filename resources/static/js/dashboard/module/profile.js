@@ -372,8 +372,10 @@
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 		           	 	let responseError = JSON.parse(thrownError.responseText);
-		           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
+		           	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
 		            		er.sessionExpiredSwal(ajaxData);
+		            	} else if (isNotEmpty(thrownError.errorType)) {
+		            		showNotification("There was an error while resetting the account. Please try again later!",'top','center','danger');
 		            	} else {
 		            		showNotification(thrownError.message,'top','center','danger');
 		            	}
@@ -476,8 +478,10 @@
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 			        	let responseError = JSON.parse(thrownError.responseText);
-		           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
+		           	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
 		            		er.sessionExpiredSwal(ajaxData);
+		            	} else if (isNotEmpty(thrownError.errorType)) {
+		            		showNotification("There was an error while deleting the account. Please try again later!",'top','center','danger');
 		            	} else {
 		            		showNotification(thrownError.message,'top','center','danger');
 		            	}
