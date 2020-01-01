@@ -252,6 +252,9 @@
 			               Swal.hideLoading();
 			               // Resolve the promise
 			               resolve();
+			               // update universal authenticated user
+				           window.authenticatedUser = cognitoUser;
+
 			            },
 			            onFailure: function signinError(err) {
 			            	// Hide loading 
@@ -336,6 +339,8 @@
 				               Swal.hideLoading();
 				               // Resolve the promise
 				               resolve();
+				               // update universal authenticated user
+				               window.authenticatedUser = cognitoUser;
 				            },
 				            onFailure: function signinError(err) {
 				            	// Hide loading 
@@ -367,8 +372,10 @@
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 		           	 	let responseError = JSON.parse(thrownError.responseText);
-		           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
+		           	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
 		            		er.sessionExpiredSwal(ajaxData);
+		            	} else if (isNotEmpty(thrownError.errorType)) {
+		            		showNotification("There was an error while resetting the account. Please try again later!",'top','center','danger');
 		            	} else {
 		            		showNotification(thrownError.message,'top','center','danger');
 		            	}
@@ -429,6 +436,8 @@
 				               Swal.hideLoading();
 				               // Resolve the promise
 				               resolve();
+				               // update universal authenticated user
+				               window.authenticatedUser = cognitoUser;
 				            },
 				            onFailure: function signinError(err) {
 				            	// Hide loading 
@@ -469,8 +478,10 @@
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 			        	let responseError = JSON.parse(thrownError.responseText);
-		           	 	if(isNotEmpty(responseError) && responseError.error.includes("Unauthorized")){
+		           	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
 		            		er.sessionExpiredSwal(ajaxData);
+		            	} else if (isNotEmpty(thrownError.errorType)) {
+		            		showNotification("There was an error while deleting the account. Please try again later!",'top','center','danger');
 		            	} else {
 		            		showNotification(thrownError.message,'top','center','danger');
 		            	}
@@ -831,71 +842,80 @@
 
 		let firstName = userNameLis[0];
 		let lastName = userNameLis.length > 1 ? userNameLis[1] : '';
-		let cognitoUser = userPool.getCurrentUser();
+		// Update User Name 
+		if(window.authenticatedUser) {
+			// If Authenticated User is present
+			updateUserName(firstName, lastName, window.authenticatedUser);	
+		} else {
+			let cognitoUser = userPool.getCurrentUser();
 
-		 // Show Sweet Alert
-        Swal.fire({
-            title: 'Confirm Password',
-            html: confirmPasswordFrag(),
-            inputAttributes: {
-                autocapitalize: 'on'
-            },
-            confirmButtonClass: 'btn btn-info',
-            confirmButtonText: 'Confirm Password',
-            showCloseButton: true,
-            buttonsStyling: false,
-            showLoaderOnConfirm: true,
-  			preConfirm: () => {
-  				return new Promise(function(resolve) {
-  					let confPasswordUA = document.getElementById('confPasswordUA');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+			 // Show Sweet Alert
+	        Swal.fire({
+	            title: 'Confirm Password',
+	            html: confirmPasswordFrag(),
+	            inputAttributes: {
+	                autocapitalize: 'on'
+	            },
+	            confirmButtonClass: 'btn btn-info',
+	            confirmButtonText: 'Confirm Password',
+	            showCloseButton: true,
+	            buttonsStyling: false,
+	            showLoaderOnConfirm: true,
+	  			preConfirm: () => {
+	  				return new Promise(function(resolve) {
+	  					let confPasswordUA = document.getElementById('confPasswordUA');
+	  					 // Authentication Details
+					    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+				            Username: currentUser.email,
+				            Password: confPasswordUA.value
+				        });
 
-	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
-			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-						    confPasswordUA.focus();
-			            }
-			        });
-  				});
-  			},
-  			allowOutsideClick: () => !Swal.isLoading(),
-  			closeOnClickOutside: () => !Swal.isLoading()
-        }).then(function(result) {
-        	// Hide the validation message if present
-        	Swal.resetValidationMessage();
-            // If confirm button is clicked
-            if (result.value) {
-                // Update User Name 
-				updateUserName(firstName, lastName, cognitoUser);
-            }
+		  				// Authenticate Before cahnging password
+				        cognitoUser.authenticateUser(authenticationDetails, {
+				            onSuccess: function signinSuccess(result) {
+				            	// Hide loading 
+				               Swal.hideLoading();
+				               // Resolve the promise
+				               resolve();
+				               // update universal authenticated user
+				               window.authenticatedUser = cognitoUser;
+				            },
+				            onFailure: function signinError(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+				        });
+	  				});
+	  			},
+	  			allowOutsideClick: () => !Swal.isLoading(),
+	  			closeOnClickOutside: () => !Swal.isLoading()
+	        }).then(function(result) {
+	        	// Hide the validation message if present
+	        	Swal.resetValidationMessage();
+	            // If confirm button is clicked
+	            if (result.value) {
+	                // Update User Name 
+					updateUserName(firstName, lastName, cognitoUser);
+	            }
 
-        });
+	        });
 
-        // Disable Confirm Password button 
-        let confBBBtn = document.getElementsByClassName('swal2-confirm')[0];
-        if(!confBBBtn.disabled) {
-            confBBBtn.setAttribute('disabled','disabled');
-        }
+	        // Disable Confirm Password button 
+	        let confBBBtn = document.getElementsByClassName('swal2-confirm')[0];
+	        if(!confBBBtn.disabled) {
+	            confBBBtn.setAttribute('disabled','disabled');
+	        }
 
-        // CHange Focus to Confirm Password
-        document.getElementById('confPasswordUA').focus();
+	        // CHange Focus to Confirm Password
+	        document.getElementById('confPasswordUA').focus();
+		}
+		
 	}
 
 	function confirmPasswordFrag() {
@@ -1164,6 +1184,8 @@
 			               Swal.hideLoading();
 			               // Resolve the promise
 			               resolve(true);
+			               // update universal authenticated user
+				           window.authenticatedUser = cognitoUser;
 			            },
 			            onFailure: function signinError(err) {
 			            	// Hide loading 
@@ -1364,6 +1386,8 @@
 			        createCognitoUser(emailModInp).authenticateUser(authenticationDetails, {
 			            onSuccess: function signinSuccess(result) {
 			               showNotification('Successfully changed the email!','top','center','success');
+			               // update universal authenticated user
+				           window.authenticatedUser = cognitoUser;
 			            },
 			            onFailure: function signinError(err) {
 			               // Login Modal
@@ -1387,107 +1411,6 @@
         };
     	
         return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
-    }
-
-    /**
-    *	Two Factor Authentication
-    **/
-    document.getElementById('twoFactAuthClicked').addEventListener("click",function(e){
-    	let event = this;
-    	let cognitoUser = userPool.getCurrentUser();
-    	 // Show Sweet Alert
-        Swal.fire({
-            title: 'Confirm Password',
-            html: confirmPasswordFrag(),
-            inputAttributes: {
-                autocapitalize: 'on'
-            },
-            confirmButtonClass: 'btn btn-info',
-            confirmButtonText: 'Confirm Password',
-            showCloseButton: true,
-            buttonsStyling: false,
-            showLoaderOnConfirm: true,
-  			preConfirm: () => {
-  				return new Promise(function(resolve) {
-  					let confPasswordUA = document.getElementById('confPasswordUA');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
-
-	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
-			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-						    confPasswordUA.focus();
-			            }
-			        });
-  				});
-  			},
-  			allowOutsideClick: () => !Swal.isLoading(),
-  			closeOnClickOutside: () => !Swal.isLoading()
-        }).then(function(result) {
-        	// Hide the validation message if present
-        	Swal.resetValidationMessage();
-            // If confirm button is clicked
-            if (result.value) {
-                // Handle MFA (Multi Factor Authentication)
-				handleMFAForUser(event, cognitoUser);
-            }
-
-        });
-    });
-
-    // Handle MFA for User
-    function handleMFAForUser(event, cognitoUser) {
-    	let totpMfaSettings = {};
-    	if(event.checked) {
-			totpMfaSettings = {
-				PreferredMfa: true,
-				Enabled: true,
-			};
-			
-    	} else {
-    		totpMfaSettings = {
-				PreferredMfa: false,
-				Enabled: false,
-			};
-    	}
-
-    	cognitoUser.setUserMfaPreference(null, totpMfaSettings, function(err, result) {
-			if (err) {
-				showNotification(err.message,'top','center','danger');
-				return;
-			}
-			showNotification(result,'top','center','success');
-		});
-    }
-
-    // Check MFA enabled on js load
-    checkMFAEnabled();
-
-    // Check MFA Option for User
-    function checkMFAEnabled() {
-		window.authenticatedUser.getMFAOptions(function(err, mfaOptions) {
-			if (err) {
-				showNotification(err.message,'top','center','danger');
-				return;
-			}
-			console.log('MFA options for user ' + mfaOptions);
-		});
     }
 
 }(jQuery));	
