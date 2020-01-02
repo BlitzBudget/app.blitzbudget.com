@@ -287,6 +287,8 @@ window.onload = function () {
     		        success: function(data){
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
+    		            // reset Scroll position
+    		            window.scrollTo(0, 0);
     		        },
     		        error: function(){
     		        	Swal.fire({
