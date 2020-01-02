@@ -6,7 +6,8 @@
 
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(SETTINGS_CONSTANTS, {
-		'listDevices': { value: '/list-devices', writable: false, configurable: false }
+		'listDevices': { value: '/list-devices', writable: false, configurable: false },
+		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false }
 	});
 
 	listRegisteredDevices(this);
@@ -37,7 +38,7 @@
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
 			ajaxData.type = 'GET';
-			ajaxData.url = _config.api.invokeUrl + SETTINGS_CONSTANTS.listDevices
+			ajaxData.url = _config.api.invokeUrl + SETTINGS_CONSTANTS.listDevices + SETTINGS_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId;
 			ajaxData.onSuccess = function(jsonObj) {
 	        	let devices = result.Devices;
 			    console.log(devices);
