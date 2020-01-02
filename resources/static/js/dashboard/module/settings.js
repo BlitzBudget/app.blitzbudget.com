@@ -40,7 +40,7 @@
 			ajaxData.type = 'GET';
 			ajaxData.url = _config.api.invokeUrl + SETTINGS_CONSTANTS.listDevices + SETTINGS_CONSTANTS.firstUserNameParam + currentUser.email;
 			ajaxData.onSuccess = function(jsonObj) {
-	        	let devices = result.Devices;
+	        	let devices = jsonObj.Devices;
 			    console.log(devices);
 	        }
 		    ajaxData.onFailure = function (thrownError) {
