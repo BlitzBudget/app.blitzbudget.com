@@ -169,6 +169,7 @@
 		
 		let newPassLabel = document.createElement('label');
 		newPassLabel.innerText = 'New Password';
+		newPassLabel.appendChild(informationIconSVG());
 		newPassInput.appendChild(newPassLabel);
 
 		let dropdownGroupNP = document.createElement('div');
@@ -203,6 +204,24 @@
 		changePassFrag.appendChild(newPassInput);
 
 		return changePassFrag;
+	}
+
+	// Build info icon for password
+	function informationIconSVG() {
+		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+		svgElement.setAttribute('width','20');
+		svgElement.setAttribute('height','20');
+    	svgElement.setAttribute('viewBox','0 0 24 24');
+    	svgElement.setAttribute('class','align-middle fill-black info-pass');
+    	svgElement.setAttribute("title", "Minimum 8 characters");
+		svgElement.setAttribute("data-toggle", "tooltip");
+		svgElement.setAttribute("data-placement", "right");
+    	
+    	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement1.setAttribute('d','M 12 2 C 6.4889971 2 2 6.4889971 2 12 C 2 17.511003 6.4889971 22 12 22 C 17.511003 22 22 17.511003 22 12 C 22 6.4889971 17.511003 2 12 2 z M 12 4 C 16.430123 4 20 7.5698774 20 12 C 20 16.430123 16.430123 20 12 20 C 7.5698774 20 4 16.430123 4 12 C 4 7.5698774 7.5698774 4 12 4 z M 11 7 L 11 9 L 13 9 L 13 7 L 11 7 z M 11 11 L 11 17 L 13 17 L 13 11 L 11 11 z'); 
+    	svgElement.appendChild(pathElement1);
+
+    	return svgElement;
 	}
 
 	 // Change Password Flow

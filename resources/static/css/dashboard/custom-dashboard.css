@@ -1190,3 +1190,7 @@ progress {
         opacity: 1;
     }
 }
+
+.fill-black {
+    fill:#000000;
+}
