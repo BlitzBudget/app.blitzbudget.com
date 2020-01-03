@@ -932,7 +932,7 @@
 		ajaxData.type = 'POST';
 		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.updateUserNameUrl;
 		ajaxData.dataType = "json"; 
-   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {
 	        document.getElementById('userNameProfileDisplay').innerText = firstName + ' ' + lastName;
@@ -959,6 +959,9 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	        type: ajaxData.type,
+	        dataType: ajaxData.dataType,
+	        contentType: ajaxData.contentType,
+	        data : ajaxData.data,
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
     	});
