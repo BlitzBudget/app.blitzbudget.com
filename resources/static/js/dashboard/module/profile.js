@@ -140,6 +140,7 @@
 		oldPassInput.setAttribute('autocapitalize','off');
 		oldPassInput.setAttribute('spellcheck','false');
 		oldPassInput.setAttribute('autocorrect','off');
+		oldPassInput.setAttribute('autocomplete','off');
 		dropdownGroupOP.appendChild(oldPassInput);
 
 		let dropdownTriggerOP = document.createElement('button');
@@ -181,6 +182,7 @@
 		newPassNameInput.setAttribute('autocapitalize','off');
 		newPassNameInput.setAttribute('spellcheck','false');
 		newPassNameInput.setAttribute('autocorrect','off');
+		newPassNameInput.setAttribute('autocomplete','off');
 		dropdownGroupNP.appendChild(newPassNameInput);
 
 		let dropdownTriggerNP = document.createElement('button');
@@ -212,10 +214,9 @@
 		svgElement.setAttribute('width','20');
 		svgElement.setAttribute('height','20');
     	svgElement.setAttribute('viewBox','0 0 24 24');
-    	svgElement.setAttribute('class','align-middle fill-black ml-1');
+    	svgElement.setAttribute('class','align-middle fill-info ml-1');
     	svgElement.setAttribute('id', 'input-pass-cp');
-    	svgElement.setAttribute('data-original-title', 'Your password must: <br> <ul class="text-left tooltip-color"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul>');
-    	svgElement.setAttribute('data-content', '');
+    	svgElement.setAttribute('data-original-title', '<div class="text-left">Your password must: <br> <ul class="text-left tooltip-color"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul></div>');
     	svgElement.setAttribute('data-placement', 'right');
 
     	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');

@@ -1200,3 +1200,7 @@ progress {
     color: #616365;
     line-height: 1.5;
 }
+
+.fill-info {
+    fill: #00bcd4;
+}
