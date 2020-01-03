@@ -214,7 +214,7 @@
     	svgElement.setAttribute('viewBox','0 0 24 24');
     	svgElement.setAttribute('class','align-middle fill-black ml-1');
     	svgElement.setAttribute('id', 'input-pass-cp');
-    	svgElement.setAttribute('data-original-title', 'Your password must: <br> <ul><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul>');
+    	svgElement.setAttribute('data-original-title', 'Your password must: <br> <ul class="text-left"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul>');
     	svgElement.setAttribute('data-content', '');
     	svgElement.setAttribute('data-placement', 'right');
 
@@ -298,13 +298,14 @@
             let oldPassword = document.getElementById('oldPasswordCP').value;
             // If confirm button is clicked
             if (result.value) {
+            	// dispose the tool tip once the swal is closed
+            	$("#input-pass-cp").tooltip("dispose");
                 changePassword(oldPassword, newPassword, cognitoUser);
             }
 
         });
 
-        //$("#input-pass-cp").popover({ animation:true, delay: 200, trigger:"focus", placement: "right" });
-        //$("#input-pass-cp").popover("show");
+        // Initialize the tool tip for password
         $("#input-pass-cp").tooltip({
         	html: true,
 			delay: { "show": 300, "hide": 100 }
