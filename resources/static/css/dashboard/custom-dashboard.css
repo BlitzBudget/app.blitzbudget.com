@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+html {
+  scroll-behavior: smooth;
+}
+
 #settingsPage {
 	margin: 0 1rem;
 	color: #a9afbb;
@@ -1185,4 +1189,8 @@ progress {
     to {
         opacity: 1;
     }
+}
+
+.fill-black {
+    fill:#000000;
 }

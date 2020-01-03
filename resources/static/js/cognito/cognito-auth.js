@@ -67,13 +67,7 @@ var AWSCogUser = window.AWSCogUser || {};
 
             // If User is null
             if (!cognitoUser) {
-                // Show the login modal if the session has expired
-                // Initialize the modal to not close will when pressing ESC or clicking outside
-                toggleLogin('');
-                $('#loginModal').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
+                er.showLoginPopup();
                 return;
             }
 
@@ -81,13 +75,7 @@ var AWSCogUser = window.AWSCogUser || {};
             cognitoUser.getSession(function(err, session) {
                 // Error Session
                 if (err) {
-                    // Show the login modal if the session has expired
-                    // Initialize the modal to not close will when pressing ESC or clicking outside
-                    toggleLogin('');
-                    $('#loginModal').modal({
-                        backdrop: 'static',
-                        keyboard: false
-                    });
+                    er.showLoginPopup();
                     return;
                 }
 
