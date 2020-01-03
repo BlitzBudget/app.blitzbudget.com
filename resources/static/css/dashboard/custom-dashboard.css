@@ -1204,3 +1204,7 @@ progress {
 .fill-info {
     fill: #00bcd4;
 }
+
+.fill-white {
+    fill: #FFF;
+}

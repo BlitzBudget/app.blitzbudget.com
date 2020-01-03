@@ -308,7 +308,8 @@
         // Initialize the tool tip for password
         $("#input-pass-cp").tooltip({
         	html: true,
-			delay: { "show": 300, "hide": 100 }
+			delay: { "show": 300, "hide": 100 },
+			template: '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner bs-tooltip-cp"></div></div>'
         });
 
         // Disable Change Password button 
@@ -922,16 +923,16 @@
 	 // Update User Attribute
     function updateUserName(firstName, lastName) {
 
-    	let values = {};
-		values['name'] = firstName;
-		values['family_name'] = lastName;
+    	let values = JSON.stringify({
+    		"name" : firstName,
+    		"family_name" : lastName
+    	});
 
     	// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = 'POST';
 		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.updateUserNameUrl;
-		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {
@@ -959,36 +960,12 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	        type: ajaxData.type,
-	        dataType: ajaxData.dataType,
 	        contentType: ajaxData.contentType,
 	        data : ajaxData.data,
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
     	});
 
-
-
-        // FirstName
-		let attributeList = [];
-		let attributeFN = {
-	        Name : 'name',
-	        Value : firstName
-	    };
-		attributeFN = new AmazonCognitoIdentity.CognitoUserAttribute(attributeFN);
-	    attributeList.push(attributeFN);
-
-	    // SurName
-	    let attributeLN = {
-	        Name : 'family_name',
-	        Value : lastName
-	    };
-		attributeLN = new AmazonCognitoIdentity.CognitoUserAttribute(attributeLN);
-	    attributeList.push(attributeLN);
-
-         // Update Attribute
-	    cognitoUser.updateAttributes(attributeList, function(err, result) {
-	        
-	    });
     }
 
     // Confirm Password Key Up listener For Update User Attributes
@@ -1302,6 +1279,10 @@
 			    if(value.length < 6) {
 			    	return 'Verification code should be 6 characters in length';
 			    }
+
+			    if(isNaN(value)) {
+                    return 'Verification code can only contain numbers';
+                }
 			},
 		    showClass: {
 			   popup: 'animated fadeInDown faster'
