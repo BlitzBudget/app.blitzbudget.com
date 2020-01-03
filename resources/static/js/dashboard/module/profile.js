@@ -214,7 +214,7 @@
     	svgElement.setAttribute('viewBox','0 0 24 24');
     	svgElement.setAttribute('class','align-middle fill-black ml-1');
     	svgElement.setAttribute('id', 'input-pass-cp');
-    	svgElement.setAttribute('data-original-title', 'Your password must: <br> <ul class="text-left"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul>');
+    	svgElement.setAttribute('data-original-title', 'Your password must: <br> <ul class="text-left tooltip-color"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul>');
     	svgElement.setAttribute('data-content', '');
     	svgElement.setAttribute('data-placement', 'right');
 

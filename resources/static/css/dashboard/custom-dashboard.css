@@ -1194,3 +1194,9 @@ progress {
 .fill-black {
     fill:#000000;
 }
+
+.tooltip-color {
+    font-family: Avenir 45 Book,Arial;
+    color: #616365;
+    line-height: 1.5;
+}
