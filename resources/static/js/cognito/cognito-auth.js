@@ -241,8 +241,7 @@ var AWSCogUser = window.AWSCogUser || {};
         });
 
         // Set Universal Cognito User
-        window.authenticatedUser = createCognitoUser(email);
-        window.authenticatedUser.authenticateUser(authenticationDetails, {
+        createCognitoUser(email).authenticateUser(authenticationDetails, {
             onSuccess: onSuccess,
             onFailure: onFailure,
             mfaSetup: function(challengeName, challengeParameters) {
