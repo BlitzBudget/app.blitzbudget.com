@@ -1220,3 +1220,8 @@ progress {
 .tripleNineColor {
     color:#999;
 }
+
+button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:disabled, select:disabled, textarea:disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;    
+}

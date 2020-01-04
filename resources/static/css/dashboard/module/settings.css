@@ -32,7 +32,7 @@
     padding: 15px 0;
 }
 
-#generalLink h4 {
+#generalLink h4, #notificationLink h4 {
     font-size: 1.1rem;
     font-weight: 500;
     line-height: 1.5;
@@ -43,10 +43,29 @@
     width: 15rem;
 }
 
-#generalLink .card-title {
+#generalLink .card-title, #notificationLink .card-title {
     color: #7b7979;
 }
 
-.monthPickerDisplay {
+#monthPickerDisplay {
     display: none;
+}
+
+.dropdown-menu .dropdown-item.categorySortBy:hover,
+.dropdown-menu .dropdown-item.accountSortBy:hover,
+.dropdown-menu .dropdown-item.categorySortBy:focus,
+.dropdown-menu .dropdown-item.accountSortBy:focus,
+.dropdown-menu .dropdown-item.creationDateSortBy:hover,
+.dropdown-menu .dropdown-item.creationDateSortBy:focus {
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
+    background-color: #00bcd4;
+    color: #fff;
+}
+
+#chooseSortByDD {
+    cursor: pointer;
+}
+
+.overview-dashboard .form-check .form-check-input:checked+.form-check-sign .check {
+  background: #00bcd4;
 }
