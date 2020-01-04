@@ -533,6 +533,12 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     background-image: linear-gradient(to top,#00bcd4 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
 }
 
+.vcClassLP.swal2-file:focus, .vcClassLP.swal2-input:focus, .vcClassLP.swal2-textarea:focus {
+	border: 1px solid #008697;
+	outline: 0;
+	box-shadow: 0 0 3px rgba(0,188,212,0.42);
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 	.choose label span {

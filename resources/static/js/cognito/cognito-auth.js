@@ -241,8 +241,7 @@ var AWSCogUser = window.AWSCogUser || {};
         });
 
         // Set Universal Cognito User
-        window.authenticatedUser = createCognitoUser(email);
-        window.authenticatedUser.authenticateUser(authenticationDetails, {
+        createCognitoUser(email).authenticateUser(authenticationDetails, {
             onSuccess: onSuccess,
             onFailure: onFailure,
             mfaSetup: function(challengeName, challengeParameters) {
@@ -622,6 +621,10 @@ var AWSCogUser = window.AWSCogUser || {};
         forgotPassword(this, resendLoader);
     });
 
+    // Change enforece bootstrap focus to empty (Allow swal input to be focusable)
+    $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+
+    // Not me link 
     document.getElementById('shyAnchor').addEventListener("click",function(e){
         let email = document.getElementById('emailInputRegister').value;
         resetErrorOrSuccessMessages();
@@ -648,7 +651,7 @@ var AWSCogUser = window.AWSCogUser || {};
         let emailInputSignin = document.getElementById('emailInputSignin').value;
         let cognitoUser = createCognitoUser(emailInputSignin);
         let loginModal = $('#loginModal');
-        var newPassword = document.getElementById('passwordInputSignin').value;
+        let newPassword = document.getElementById('passwordInputSignin').value;
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
             document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty, Enter the new password in the password field';
@@ -708,10 +711,84 @@ var AWSCogUser = window.AWSCogUser || {};
                 forgotPass.classList.remove('d-none');
             },
             inputVerificationCode() {
-                let verificationCode = prompt('Please input verification code sent to ' +  emailInputSignin,'');
-                cognitoUser.confirmPassword(verificationCode, newPassword, this);
+                // Element inputVerifcicationCode
+                let inputVC = this;
+
+                // Show Sweet Alert
+                Swal.fire({
+                    title: 'Verification Code',
+                    html: 'Verification code has been sent to <strong>' + emailInputSignin + '</strong>', 
+                    input: 'text',
+                    confirmButtonClass: 'btn btn-dynamic-color',
+                    confirmButtonText: 'Verify Email',
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false,
+                    closeOnClickOutside: false,
+                    customClass: {
+                        input: 'vcClassLP'
+                    },
+                    onOpen: (docVC) => {
+                        $( ".swal2-input" ).keyup(function() {
+                            // Input Key Up listener
+                            let inputVal = this.value;
+
+                            if(inputVal.length == 6) {
+                                Swal.clickConfirm();
+                            }
+
+                        });
+                    },
+                    inputValidator: (value) => {
+                        if (!value) {
+                          return 'Verification code cannot be empty'
+                        }
+
+                        if(value.length < 6) {
+                            return 'Verification code should be 6 characters in length';
+                        }
+
+                        if(isNaN(value)) {
+                            return 'Verification code can only contain numbers';
+                        }
+                    },
+                    showClass: {
+                       popup: 'animated fadeInDown faster'
+                    },
+                    hideClass: {
+                       popup: 'animated fadeOutUp faster'
+                    },
+                    onClose: () => {
+                        $( ".swal2-input" ).off('keyup');
+                    }
+                }).then(function(result) {
+                    if(result.value) {
+                        let verificationCode = document.getElementsByClassName("swal2-input" )[0];
+                        cognitoUser.confirmPassword(verificationCode.value, newPassword, inputVC);
+                    }
+                });
+                
             }
          });
+    }
+
+    // call this before showing SweetAlert:
+    function fixBootstrapModal() {
+      var modalNode = document.querySelector('.modal[tabindex="-1"]');
+      if (!modalNode) return;
+
+      modalNode.removeAttribute('tabindex');
+      modalNode.classList.add('js-swal-fixed');
+    }
+
+    // call this before hiding SweetAlert (inside done callback):
+    function restoreBootstrapModal() {
+      var modalNode = document.querySelector('.modal.js-swal-fixed');
+      if (!modalNode) return;
+
+      modalNode.setAttribute('tabindex', '-1');
+      modalNode.classList.remove('js-swal-fixed');
     }
 
 

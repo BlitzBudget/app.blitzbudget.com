@@ -8,10 +8,12 @@
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(PROFILE_CONSTANTS, {
 		'resetAccountUrl': { value: '/reset-account', writable: false, configurable: false },
-		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false }
+		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/user-attribute', writable: false, configurable: false },
 	});
 
 	displayUserDetailsProfile();
+	displayCreatedDate();
 
 	// Define Cognito User Pool adn Pool data
 	let poolData = {
@@ -29,6 +31,41 @@
     }
 
 	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+	/**
+	*	Display User Created Date
+	**/
+	function displayCreatedDate() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'GET';
+		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl;
+		ajaxData.onSuccess = function(result) {
+			let userAttr = JSON.parse(result);
+			let userCreationDate = userAttr.UserCreateDate;
+	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + userCreationDate.substring(0,4);
+        }
+	    ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else if (isNotEmpty(thrownError.errorType)) {
+        		showNotification("There was an error while changing the name. Please try again later!",'top','center','danger');
+        	} else {
+        		showNotification(thrownError.message,'top','center','danger');
+        	}
+        }
+	 	jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        type: ajaxData.type,
+	        contentType: ajaxData.contentType,
+	        data : ajaxData.data,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+    	});
+	} 
 
 	/**
 	*  Display User Details
@@ -140,6 +177,7 @@
 		oldPassInput.setAttribute('autocapitalize','off');
 		oldPassInput.setAttribute('spellcheck','false');
 		oldPassInput.setAttribute('autocorrect','off');
+		oldPassInput.setAttribute('autocomplete','off');
 		dropdownGroupOP.appendChild(oldPassInput);
 
 		let dropdownTriggerOP = document.createElement('button');
@@ -181,6 +219,7 @@
 		newPassNameInput.setAttribute('autocapitalize','off');
 		newPassNameInput.setAttribute('spellcheck','false');
 		newPassNameInput.setAttribute('autocorrect','off');
+		newPassNameInput.setAttribute('autocomplete','off');
 		dropdownGroupNP.appendChild(newPassNameInput);
 
 		let dropdownTriggerNP = document.createElement('button');
@@ -212,10 +251,9 @@
 		svgElement.setAttribute('width','20');
 		svgElement.setAttribute('height','20');
     	svgElement.setAttribute('viewBox','0 0 24 24');
-    	svgElement.setAttribute('class','align-middle fill-black ml-1');
+    	svgElement.setAttribute('class','align-middle fill-info ml-1');
     	svgElement.setAttribute('id', 'input-pass-cp');
-    	svgElement.setAttribute('data-original-title', 'Your password must: <br> <ul><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul>');
-    	svgElement.setAttribute('data-content', '');
+    	svgElement.setAttribute('data-original-title', '<div class="text-left"><span>Your password must:</span> <br> <ul class="text-left tooltip-color mt-2"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul></div>');
     	svgElement.setAttribute('data-placement', 'right');
 
     	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
@@ -272,8 +310,6 @@
 			               Swal.hideLoading();
 			               // Resolve the promise
 			               resolve();
-			               // update universal authenticated user
-				           window.authenticatedUser = cognitoUser;
 
 			            },
 			            onFailure: function signinError(err) {
@@ -298,16 +334,18 @@
             let oldPassword = document.getElementById('oldPasswordCP').value;
             // If confirm button is clicked
             if (result.value) {
+            	// dispose the tool tip once the swal is closed
+            	$("#input-pass-cp").tooltip("dispose");
                 changePassword(oldPassword, newPassword, cognitoUser);
             }
 
         });
 
-        //$("#input-pass-cp").popover({ animation:true, delay: 200, trigger:"focus", placement: "right" });
-        //$("#input-pass-cp").popover("show");
+        // Initialize the tool tip for password
         $("#input-pass-cp").tooltip({
         	html: true,
-			delay: { "show": 300, "hide": 100 }
+			delay: { "show": 300, "hide": 100 },
+			template: '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner bs-tooltip-cp"></div></div>'
         });
 
         // Disable Change Password button 
@@ -366,8 +404,6 @@
 				               Swal.hideLoading();
 				               // Resolve the promise
 				               resolve();
-				               // update universal authenticated user
-				               window.authenticatedUser = cognitoUser;
 				            },
 				            onFailure: function signinError(err) {
 				            	// Hide loading 
@@ -463,8 +499,6 @@
 				               Swal.hideLoading();
 				               // Resolve the promise
 				               resolve();
-				               // update universal authenticated user
-				               window.authenticatedUser = cognitoUser;
 				            },
 				            onFailure: function signinError(err) {
 				            	// Hide loading 
@@ -869,80 +903,9 @@
 
 		let firstName = userNameLis[0];
 		let lastName = userNameLis.length > 1 ? userNameLis[1] : '';
-		// Update User Name 
-		if(window.authenticatedUser) {
-			// If Authenticated User is present
-			updateUserName(firstName, lastName, window.authenticatedUser);	
-		} else {
-			let cognitoUser = userPool.getCurrentUser();
 
-			 // Show Sweet Alert
-	        Swal.fire({
-	            title: 'Confirm Password',
-	            html: confirmPasswordFrag(),
-	            inputAttributes: {
-	                autocapitalize: 'on'
-	            },
-	            confirmButtonClass: 'btn btn-info',
-	            confirmButtonText: 'Confirm Password',
-	            showCloseButton: true,
-	            buttonsStyling: false,
-	            showLoaderOnConfirm: true,
-	  			preConfirm: () => {
-	  				return new Promise(function(resolve) {
-	  					let confPasswordUA = document.getElementById('confPasswordUA');
-	  					 // Authentication Details
-					    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-				            Username: currentUser.email,
-				            Password: confPasswordUA.value
-				        });
-
-		  				// Authenticate Before cahnging password
-				        cognitoUser.authenticateUser(authenticationDetails, {
-				            onSuccess: function signinSuccess(result) {
-				            	// Hide loading 
-				               Swal.hideLoading();
-				               // Resolve the promise
-				               resolve();
-				               // update universal authenticated user
-				               window.authenticatedUser = cognitoUser;
-				            },
-				            onFailure: function signinError(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
-				            }
-				        });
-	  				});
-	  			},
-	  			allowOutsideClick: () => !Swal.isLoading(),
-	  			closeOnClickOutside: () => !Swal.isLoading()
-	        }).then(function(result) {
-	        	// Hide the validation message if present
-	        	Swal.resetValidationMessage();
-	            // If confirm button is clicked
-	            if (result.value) {
-	                // Update User Name 
-					updateUserName(firstName, lastName, cognitoUser);
-	            }
-
-	        });
-
-	        // Disable Confirm Password button 
-	        let confBBBtn = document.getElementsByClassName('swal2-confirm')[0];
-	        if(!confBBBtn.disabled) {
-	            confBBBtn.setAttribute('disabled','disabled');
-	        }
-
-	        // CHange Focus to Confirm Password
-	        document.getElementById('confPasswordUA').focus();
-		}
-		
+		// If Authenticated User is present
+		updateUserName(firstName, lastName);	
 	}
 
 	function confirmPasswordFrag() {
@@ -994,31 +957,21 @@
 
 
 	 // Update User Attribute
-    function updateUserName(firstName, lastName, cognitoUser) {
+    function updateUserName(firstName, lastName) {
 
-        // FirstName
-		let attributeList = [];
-		let attributeFN = {
-	        Name : 'name',
-	        Value : firstName
-	    };
-		attributeFN = new AmazonCognitoIdentity.CognitoUserAttribute(attributeFN);
-	    attributeList.push(attributeFN);
+    	let values = JSON.stringify({
+    		"name" : firstName,
+    		"family_name" : lastName
+    	});
 
-	    // SurName
-	    let attributeLN = {
-	        Name : 'family_name',
-	        Value : lastName
-	    };
-		attributeLN = new AmazonCognitoIdentity.CognitoUserAttribute(attributeLN);
-	    attributeList.push(attributeLN);
-
-         // Update Attribute
-	    cognitoUser.updateAttributes(attributeList, function(err, result) {
-	        if (err) {
-	            showNotification(err.message,'top','center','danger');
-	            return;
-	        }
+    	// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'POST';
+		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl;
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.data = values;
+		ajaxData.onSuccess = function(result) {
 	        document.getElementById('userNameProfileDisplay').innerText = firstName + ' ' + lastName;
 	        // Update User Cache
 	        currentUser.name = firstName;
@@ -1028,7 +981,27 @@
             // Update User Name in App
             document.getElementById('userName').innerText = firstName + ' ' + lastName;
 	        showNotification('Successfully changed the name!','top','center','success');
-	    });
+        }
+	    ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else if (isNotEmpty(thrownError.errorType)) {
+        		showNotification("There was an error while changing the name. Please try again later!",'top','center','danger');
+        	} else {
+        		showNotification(thrownError.message,'top','center','danger');
+        	}
+        }
+	 	jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        type: ajaxData.type,
+	        contentType: ajaxData.contentType,
+	        data : ajaxData.data,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+    	});
+
     }
 
     // Confirm Password Key Up listener For Update User Attributes
@@ -1211,8 +1184,6 @@
 			               Swal.hideLoading();
 			               // Resolve the promise
 			               resolve(true);
-			               // update universal authenticated user
-				           window.authenticatedUser = cognitoUser;
 			            },
 			            onFailure: function signinError(err) {
 			            	// Hide loading 
@@ -1344,6 +1315,10 @@
 			    if(value.length < 6) {
 			    	return 'Verification code should be 6 characters in length';
 			    }
+
+			    if(isNaN(value)) {
+                    return 'Verification code can only contain numbers';
+                }
 			},
 		    showClass: {
 			   popup: 'animated fadeInDown faster'
@@ -1413,8 +1388,6 @@
 			        createCognitoUser(emailModInp).authenticateUser(authenticationDetails, {
 			            onSuccess: function signinSuccess(result) {
 			               showNotification('Successfully changed the email!','top','center','success');
-			               // update universal authenticated user
-				           window.authenticatedUser = cognitoUser;
 			            },
 			            onFailure: function signinError(err) {
 			               // Login Modal
