@@ -191,6 +191,7 @@ window.onload = function () {
 			let url = '';
 			let color = '';
 			let imageUrl = '../img/dashboard/sidebar/sidebar-1.jpg';
+			let currentPage = '';
 			
 			if(isEmpty(id)){
 				Swal.fire({
@@ -213,33 +214,40 @@ window.onload = function () {
 				case 'transactionsPage':
 					url = '/transactions';
 					color = 'green';
+					currentPage = 'Transactions';
 				    break;
 				case 'budgetPage':
 					url = '/budget';
 					color = 'rose';
+					currentPage = 'Budget';
 				    break;
 				case 'goalsPage':
 					url = '/goals';
 					color = 'orange';
+					currentPage = 'Goals';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
 				    break;
 				case 'overviewPage':
 					url = '/overview';
 					color = 'azure';
+					currentPage = 'Overview';
 					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
 				    break;
 				case 'investmentsPage':
 					url = '/investment';
 					color = 'purple';
+					currentPage = 'Investment';
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 				    break;
 				case 'settingsPage':
 					url = '/settings';
-					color = 'danger';
+					color = ''; /* No Color */
+					currentPage = 'Settings';
 				    break;
 				case 'profilePage':
 					url = '/profile';
-					color = 'green';
+					color = ''; /* No Color */
+					currentPage = 'Profile';
 				    break;
 				default:
 					Swal.fire({
@@ -289,6 +297,8 @@ window.onload = function () {
     		            $('#mutableDashboard').html(data);
     		            // reset Scroll position
     		            window.scrollTo(0, 0);
+    		            // Set Current Page
+    		            document.getElementById('currentPage').innerText = currentPage;
     		        },
     		        error: function(){
     		        	Swal.fire({

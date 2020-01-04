@@ -25,3 +25,28 @@
     outline: 0;
     box-shadow: 0 0 3px rgba(0,188,212,0.42);
 }
+
+.nav-pills .nav-item i {
+    display: block;
+    font-size: 30px;
+    padding: 15px 0;
+}
+
+#generalLink h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #495257;
+}
+
+.w-15 {
+    width: 15rem;
+}
+
+#generalLink .card-title {
+    color: #7b7979;
+}
+
+.monthPickerDisplay {
+    display: none;
+}

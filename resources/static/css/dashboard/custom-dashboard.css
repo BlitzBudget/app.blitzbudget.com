@@ -448,10 +448,10 @@ html {
 }
 
 /** Nav Item customization **/
-.nav-pills.nav-pills-warning .nav-item .nav-link.active, .nav-pills.nav-pills-warning .nav-item .nav-link.active:focus, .nav-pills.nav-pills-warning .nav-item .nav-link.active:hover {
-    background-color: #ff9800;
-    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14),0 7px 10px -5px rgba(255,152,0,.4);
+.nav-pills.nav-pills-info .nav-item .nav-link.active, .nav-pills.nav-pills-info .nav-item .nav-link.active:focus, .nav-pills.nav-pills-info .nav-item .nav-link.active:hover {
     color: #fff;
+    background-color: #00aec5;
+    box-shadow: 0 14px 26px -12px rgba(0,188,212,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,188,212,0.2);
 }
 
 .nav-pills.nav-pills-icons .nav-item .nav-link {
@@ -1207,4 +1207,16 @@ progress {
 
 .fill-white {
     fill: #FFF;
+}
+
+.sidebar .nav li.active.dashboard-sidebar-utils>a, .sidebar .nav li.active.dashboard-sidebar-utils>a i {
+    color: #a9afbb;
+}
+
+.w-90 {
+    width: 90%;
+}
+
+.tripleNineColor {
+    color:#999;
 }
