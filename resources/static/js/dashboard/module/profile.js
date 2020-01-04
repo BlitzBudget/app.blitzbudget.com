@@ -9,10 +9,11 @@
 	Object.defineProperties(PROFILE_CONSTANTS, {
 		'resetAccountUrl': { value: '/reset-account', writable: false, configurable: false },
 		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
-		'updateUserNameUrl': { value: '/update-user-attribute', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/user-attribute', writable: false, configurable: false },
 	});
 
 	displayUserDetailsProfile();
+	displayCreatedDate();
 
 	// Define Cognito User Pool adn Pool data
 	let poolData = {
@@ -30,6 +31,41 @@
     }
 
 	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+	/**
+	*	Display User Created Date
+	**/
+	function displayCreatedDate() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'GET';
+		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl;
+		ajaxData.onSuccess = function(result) {
+			let userAttr = JSON.parse(result);
+			let userCreationDate = userAttr.UserCreateDate;
+	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + userCreationDate.substring(0,4);
+        }
+	    ajaxData.onFailure = function (thrownError) {
+       	 	let responseError = JSON.parse(thrownError.responseText);
+       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else if (isNotEmpty(thrownError.errorType)) {
+        		showNotification("There was an error while changing the name. Please try again later!",'top','center','danger');
+        	} else {
+        		showNotification(thrownError.message,'top','center','danger');
+        	}
+        }
+	 	jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        type: ajaxData.type,
+	        contentType: ajaxData.contentType,
+	        data : ajaxData.data,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+    	});
+	} 
 
 	/**
 	*  Display User Details
@@ -932,7 +968,7 @@
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = 'POST';
-		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.updateUserNameUrl;
+		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl;
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {

@@ -621,6 +621,10 @@ var AWSCogUser = window.AWSCogUser || {};
         forgotPassword(this, resendLoader);
     });
 
+    // Change enforece bootstrap focus to empty (Allow swal input to be focusable)
+    $.fn.modal.Constructor.prototype._enforceFocus = function() {};
+
+    // Not me link 
     document.getElementById('shyAnchor').addEventListener("click",function(e){
         let email = document.getElementById('emailInputRegister').value;
         resetErrorOrSuccessMessages();
@@ -709,8 +713,6 @@ var AWSCogUser = window.AWSCogUser || {};
             inputVerificationCode() {
                 // Element inputVerifcicationCode
                 let inputVC = this;
-                // Allows input to focus on SWAL modal
-                fixBootstrapModal();
 
                 // Show Sweet Alert
                 Swal.fire({
@@ -719,6 +721,7 @@ var AWSCogUser = window.AWSCogUser || {};
                     input: 'text',
                     confirmButtonClass: 'btn btn-dynamic-color',
                     confirmButtonText: 'Verify Email',
+                    showCloseButton: true,
                     showCancelButton: false,
                     allowEscapeKey: false,
                     allowOutsideClick: false,
