@@ -69,3 +69,15 @@
 .overview-dashboard .form-check .form-check-input:checked+.form-check-sign .check {
   background: #00bcd4;
 }
+
+.editSettings {
+    margin: 0.5rem;
+    padding: 0;
+    cursor: pointer;
+    outline: 0;
+    font-size: 0.8rem;
+}
+
+#notificationLink .text-info.editSettings:hover {
+    text-decoration: underline;
+}
