@@ -81,3 +81,17 @@
 #notificationLink .text-info.editSettings:hover {
     text-decoration: underline;
 }
+
+.playstoreIcon {
+  width:auto; 
+  height:56px;
+}
+
+.appHeading {
+    color: #2e4369;
+}
+
+.appParagraph {
+    color: #5d7079;
+    font-weight: 400;
+}

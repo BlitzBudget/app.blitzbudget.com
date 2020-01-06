@@ -28,7 +28,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link9" role="tablist">
+                    <a class="nav-link" data-toggle="tab" href="#devicesTabLink" role="tablist">
                       <i class="material-icons">devices</i> Devices
                     </a>
                   </li>
@@ -46,6 +46,7 @@
                         <div class="row">
                           <div class="col-4 my-auto text-right">
                               <h4>Country</h4>
+                              <p class="tripleNineColor">Choose your country for appropriate regional currency formatting.</p>
                           </div>
                           <div class="col-8">
                               <div class="btn-group btnGroup-1 float-left">
@@ -55,6 +56,7 @@
                                 </button>
                                 <div id="chooseCountryDD" class="dropdown-menu">
                                   <!-- Drop down dynamic load -->
+                                  <input id="chooseCountryInp">
                                 </div>
                               </div>
                           </div>
@@ -62,6 +64,7 @@
                         <div class="row">
                           <div class="col-4 my-auto text-right">
                               <h4>Currency</h4>
+                              <p class="tripleNineColor">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
                           </div>
                           <div class="col-8">
                               <div class="btn-group btnGroup-1 float-left">
@@ -71,6 +74,7 @@
                                 </button>
                                 <div id="chooseCurrencyDD" class="dropdown-menu">
                                   <!-- Drop down dynamic load -->
+
                                 </div>
                               </div>
                           </div>
@@ -78,6 +82,7 @@
                         <div class="row">
                           <div class="col-4 my-auto text-right">
                               <h4>Language</h4>
+                              <p class="tripleNineColor"></p>
                           </div>
                           <div class="col-8">
                               <div class="btn-group btnGroup-1 float-left">
@@ -257,18 +262,25 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tab-pane" id="link9">
+                  <div class="tab-pane" id="devicesTabLink">
                     <div class="card">
                       <div class="card-header">
-                        <h4 class="card-title">Legal info of the product</h4>
+                        <h4 class="card-title">Registered Devices</h4>
                         <p class="card-category">
-                          More information here
+                          Devices regisetered with <span id="currentUserEmail">john_doe@blitzbudget.com</span> are listed below:
                         </p>
                       </div>
                       <div class="card-body">
-                        Completely synergize resource taxing relationships via premier niche markets. Professionally cultivate one-to-one customer service with robust ideas.
-                        <br>
-                        <br>Dynamically innovate resource-leveling customer service for state of the art customer service.
+                        <h3 class="text-center font-weight-bold appHeading mb-2 mt-5">Get the app</h3>
+                        <p class="text-center appParagraph mb-3">Track your transactions on the go, or make new ones in a couple of taps.</p>
+                        <div class="row">
+                          <div class="col-6 my-auto text-right">
+                            <img src="img/playstore/btn_download_appstore_en.svg" class="playstoreIcon mb-3" alt="Apple playstore button">
+                          </div>
+                          <div class="col-6 my-auto text-left">
+                            <img src="img/playstore/btn_download_playstore_en.png" class="playstoreIcon mb-3" alt="Android playstore button">
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
