@@ -62,7 +62,7 @@
 	}
 
 	/**
-	* Autocomplete Module for Country
+	* Autocomplete Module
 	**/
 	function autocomplete(inp, arr) {
 	  /*the autocomplete function takes two arguments,
