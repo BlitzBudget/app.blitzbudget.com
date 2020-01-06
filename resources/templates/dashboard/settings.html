@@ -10,184 +10,291 @@
 </head>
 
 <body class="settings-dashboard" >    
-      <div class="content" id="mutableDashboard">
+      <div class="content noselect" id="mutableDashboard">
         <div class="container-fluid">
         	<div class="col-lg-12 col-md-12">
-              <div class="card">
-                <div class="card-header card-header-tabs card-header-info">
-                  <div class="nav-tabs-navigation">
-                    <div class="nav-tabs-wrapper">
-                      <span class="nav-tabs-title">Settings:</span>
-                      <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li class="nav-item">
-                          <a class="nav-link" href="#profileTab" data-toggle="tab">
-                            <i class="material-icons">bug_report</i> General
-                            <div class="ripple-container"></div>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" href="#messages" data-toggle="tab">
-                            <i class="material-icons">code</i> Website
-                            <div class="ripple-container"></div>
-                          <div class="ripple-container"></div></a>
-                        </li>
-                        <li class="nav-item">
-                          <a id="devicesTabLink" class="nav-link active show" href="#listDevices" data-toggle="tab">
-                            <i class="material-icons">cloud</i> Devices
-                            <div class="ripple-container"></div>
-                          <div class="ripple-container"></div></a>
-                        </li>
-                      </ul>
+              <div class="page-categories">
+                <h3 class="title text-center"></h3>
+                <br>
+                <ul class="nav nav-pills nav-pills-info nav-pills-icons justify-content-center" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active show" data-toggle="tab" href="#generalLink" role="tablist">
+                      <i class="material-icons">language</i> General
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#notificationLink" role="tablist">
+                      <i class="material-icons">notifications_none</i> Notifications
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#devicesTabLink" role="tablist">
+                      <i class="material-icons">devices</i> Devices
+                    </a>
+                  </li>
+                </ul>
+                <div class="tab-content tab-space tab-subcategories">
+                  <div class="tab-pane active show" id="generalLink">
+                    <div class="card">
+                      <div class="card-header">
+                        <h4 class="card-title">Regional preferences</h4>
+                        <p class="card-category">
+                          Select your preferred language, currency and country for appropriate regional formatting.
+                        </p>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-4 my-auto text-right">
+                              <h4>Country</h4>
+                              <p class="tripleNineColor">Choose your country for appropriate regional currency formatting.</p>
+                          </div>
+                          <div class="col-8">
+                              <div id="chosenCountryDropdown" class="btn-group btnGroup-1 float-left">
+                                <button class="chosenCountry btn btn-secondary w-15" disabled="">United States</button>
+                                <button id="chosenCountryDownBtn" type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div id="chooseCountryDD" class="dropdown-menu">
+                                  <!-- Drop down dynamic load -->
+                                  <div class="input-group">
+                                    <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+                                    <input id="chooseCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+                                    <h6 class="dropdown-header">Countries with wallet</h6>
+                                    <div id="currentCountries" class="dropdown-item">None</div>
+                                    <div class="dropdown-divider"></div>
+                                    <h6 class="dropdown-header">Countries without wallet</h6>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-4 my-auto text-right">
+                              <h4>Currency</h4>
+                              <p class="tripleNineColor">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
+                          </div>
+                          <div class="col-8">
+                              <div class="btn-group btnGroup-1 float-left">
+                                <button class="chosenCurrency btn btn-secondary w-15" disabled="">American Dollars</button>
+                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div id="chooseCurrencyDD" class="dropdown-menu">
+                                  <!-- Drop down dynamic load -->
+
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-4 my-auto text-right">
+                              <h4>Language</h4>
+                              <p class="tripleNineColor"></p>
+                          </div>
+                          <div class="col-8">
+                              <div class="btn-group btnGroup-1 float-left">
+                                <button class="chosenLanguage btn btn-secondary w-15" disabled="">English (US)</button>
+                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div id="chooseLanguageDD" class="dropdown-menu">
+                                  <!-- Drop down dynamic load -->
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr class="w-90 mx-auto">
+                      <div class="card-header">
+                        <h4 class="card-title">Transaction settings</h4>
+                        <p class="card-category">
+                          Select your preferred sorting for the transactions table.
+                        </p>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-4 my-auto text-right">
+                              <h4>Sort by</h4>
+                              <p class="tripleNineColor">Choose between category, account and creation date.</p>
+                          </div>
+                          <div class="col-8">
+                              <div class="btn-group btnGroup-1 float-left">
+                                <button class="chosenSortBy btn btn-secondary w-15" disabled="">Category</button>
+                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div id="chooseSortByDD" class="dropdown-menu">
+                                  <a class="dropdown-item categorySortBy"><div class="font-weight-bold">Category</div></a>
+                                  <a class="dropdown-item accountSortBy"><div class="font-weight-bold">Account</div></a>
+                                  <a class="dropdown-item creationDateSortBy"><div class="font-weight-bold">Creation Date</div></a>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="notificationLink">
+                    <div class="card">
+                      <div class="card-header">
+                        <h4 class="card-title">Notification preferences</h4>
+                        <p class="card-category">
+                          Choose what we can ge in touch about
+                        </p>
+                      </div>
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-6 my-auto text-right">
+                              
+                          </div>
+                          <div class="col-2">
+                              <h4>Email</h4>
+                          </div>
+                          <div class="col-4">
+                              <h4>Push</h4>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6 my-1 text-right">
+                              <h4 class="mb-0">Your transfers and balances</h4>
+                              <p class="tripleNineColor">Notifications about where your money is.</p>
+                          </div>
+                          <div class="col-2">
+                              <div class="form-check ml-2">
+                                  <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" id="">
+                                  <span class="form-check-sign">
+                                    <span class="check">
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                          </div>
+                          <div class="col-4">
+                            <div class="form-check ml-2">
+                                <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="">
+                                <span class="form-check-sign">
+                                  <span class="check">
+                                  </span>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                         <div class="row">
+                          <div class="col-6 my-1 text-right">
+                              <h4 class="mb-0">Monthly Reports</h4>
+                              <a class="text-info editSettings">Settings</a>
+                          </div>
+                          <div class="col-2">
+                              <div class="form-check ml-2">
+                                  <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" id="">
+                                  <span class="form-check-sign">
+                                    <span class="check">
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                          </div>
+                          <div class="col-4">
+                            <div class="form-check ml-2">
+                                <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="">
+                                <span class="form-check-sign">
+                                  <span class="check">
+                                  </span>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                         <div class="row">
+                          <div class="col-6 my-1 text-right">
+                              <h4 class="mb-0">Daily reminder to enter transactions</h4>
+                              <a class="text-info editSettings">Reminder</a>
+                          </div>
+                          <div class="col-2">
+                              <div class="form-check ml-2">
+                                  <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" id="">
+                                  <span class="form-check-sign">
+                                    <span class="check">
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                          </div>
+                          <div class="col-4">
+                            <div class="form-check ml-2">
+                                <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="">
+                                <span class="form-check-sign">
+                                  <span class="check">
+                                  </span>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                         <div class="row">
+                          <div class="col-6 my-1 text-right">
+                              <h4 class="mb-0">Features & improvents</h4>
+                              <p class="tripleNineColor">News about our latest and greatest work. Plus tips on using BlitzBudget.</p>
+                          </div>
+                          <div class="col-2">
+                              <div class="form-check ml-2">
+                                  <label class="form-check-label">
+                                  <input type="checkbox" class="form-check-input" id="">
+                                  <span class="form-check-sign">
+                                    <span class="check">
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                          </div>
+                          <div class="col-4">
+                            <div class="form-check ml-2">
+                                <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="">
+                                <span class="form-check-sign">
+                                  <span class="check">
+                                  </span>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="devicesTabLink">
+                    <div class="card">
+                      <div class="card-header">
+                        <h4 class="card-title">Registered Devices</h4>
+                        <p class="card-category">
+                          Devices regisetered with <span id="currentUserEmail">john_doe@blitzbudget.com</span> are listed below:
+                        </p>
+                      </div>
+                      <div class="card-body">
+                        <h3 class="text-center font-weight-bold appHeading mb-2 mt-5">Get the app</h3>
+                        <p class="text-center appParagraph mb-3">Track your transactions on the go, or make new ones in a couple of taps.</p>
+                        <div class="row">
+                          <div class="col-6 my-auto text-right">
+                            <img src="img/playstore/btn_download_appstore_en.svg" class="playstoreIcon mb-3" alt="Apple playstore button">
+                          </div>
+                          <div class="col-6 my-auto text-left">
+                            <img src="img/playstore/btn_download_playstore_en.png" class="playstoreIcon mb-3" alt="Android playstore button">
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="tab-content">
-              <div class="tab-pane" id="profileTab">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="tab-pane" id="messages">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="" class="btn btn-primary btn-link btn-sm" data-original-title="Edit Task">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="" class="btn btn-danger btn-link btn-sm" data-original-title="Remove">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="tab-pane active show" id="listDevices">
-                
-              </div>
-            </div>
+          </div>
         </div>
       </div>
       

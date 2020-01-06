@@ -42,9 +42,8 @@
 		ajaxData.type = 'GET';
 		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl;
 		ajaxData.onSuccess = function(result) {
-			let userAttr = JSON.parse(result);
-			let userCreationDate = userAttr.UserCreateDate;
-	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + userCreationDate.substring(0,4);
+			let userCreationDate = result.UserCreateDate;
+	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
         }
 	    ajaxData.onFailure = function (thrownError) {
        	 	let responseError = JSON.parse(thrownError.responseText);
