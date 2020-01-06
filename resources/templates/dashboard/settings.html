@@ -49,14 +49,21 @@
                               <p class="tripleNineColor">Choose your country for appropriate regional currency formatting.</p>
                           </div>
                           <div class="col-8">
-                              <div class="btn-group btnGroup-1 float-left">
+                              <div id="chosenCountryDropdown" class="btn-group btnGroup-1 float-left">
                                 <button class="chosenCountry btn btn-secondary w-15" disabled="">United States</button>
-                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button id="chosenCountryDownBtn" type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div id="chooseCountryDD" class="dropdown-menu">
                                   <!-- Drop down dynamic load -->
-                                  <input id="chooseCountryInp">
+                                  <div class="input-group">
+                                    <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+                                    <input id="chooseCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+                                    <h6 class="dropdown-header">Countries with wallet</h6>
+                                    <div id="currentCountries" class="dropdown-item">None</div>
+                                    <div class="dropdown-divider"></div>
+                                    <h6 class="dropdown-header">Countries without wallet</h6>
+                                  </div>
                                 </div>
                               </div>
                           </div>

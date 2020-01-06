@@ -1225,3 +1225,7 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     cursor: not-allowed;
     pointer-events: all !important;    
 }
+
+.w-75 {
+    width: 75%;
+}

@@ -62,15 +62,9 @@
 	}
 
 	/**
-	* Autocomplete Module
+	* Autocomplete Module for Country
 	**/
 	function autocomplete(inp, arr) {
-	  /* Register /  unregister event listener */
-	  let closeAllListsEH = function (e) {
-	      closeAllLists(e.target);
-	      console.log("clicked");
-	      document.getElementById('mutableDashboard').removeEventListener("click", closeAllListsEH);
-	  }
 	  /*the autocomplete function takes two arguments,
 	  the text field element and an array of possible autocompleted values:*/
 	  let currentFocus;
@@ -99,6 +93,7 @@
 	        if (startsWithChar || includesStr(arr[i].toUpperCase(), upperVal)) {
 	          /*create a DIV element for each matching element:*/
 	          b = document.createElement("DIV");
+	          b.classList.add("dropdown-item");
 	          /*make the matching letters bold:*/
 	          if(startsWithChar) {
 	          	b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
@@ -175,8 +170,6 @@
 	      }
 	    }
 	  }
-	  /*execute a function when someone clicks in the document:*/
-	  document.getElementById('mutableDashboard').addEventListener("click", closeAllListsEH);
 
 	}
 
@@ -185,5 +178,11 @@
 
 	/*initiate the autocomplete function on the "chooseCountryInp" element, and pass along the countries array as possible autocomplete values:*/
 	autocomplete(document.getElementById("chooseCountryInp"), countries);
+
+	// On click drop down btn of country search
+	$("#chosenCountryDropdown").on("shown.bs.dropdown", function(event){
+		// Input change focus to the country search bar 
+		document.getElementById('chooseCountryInp').focus();
+	});
 
 }(jQuery));
