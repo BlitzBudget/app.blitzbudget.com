@@ -185,4 +185,10 @@
 		document.getElementById('chooseCountryInp').focus();
 	});
 
+	// On click drop down menu item of Country DD
+	$('#chooseCountryDD dropdown-item').click(function () {      
+		document.getElementById('chosenCountry').innerText = this.getElementsByTagName('input').value;
+		// TODO Process Change country request
+	});
+
 }(jQuery));
