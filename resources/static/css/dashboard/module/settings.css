@@ -143,3 +143,7 @@
     background-color: #00bcd4;
     color: #fff;
 }
+
+.dropdown-header, .autocomplete-items {
+    width: 100%;
+}
