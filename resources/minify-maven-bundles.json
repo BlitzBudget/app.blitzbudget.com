@@ -39,6 +39,15 @@
                 "/cognito/cognito-auth.js",
                 "/cognito/cognito-helper.js"
             ]
+        },
+        {
+            "type": "js",
+            "name": "settings.all.js",
+            "files": [
+                "/dashboard/data/currency-name-symbol.js",
+                "/dashboard/data/locale-country.js",
+                "/dashboard/module/settings.js"
+            ]
         }
     ]
 }
