@@ -193,9 +193,10 @@
 		document.getElementById('chooseCountryInp').focus();
 	});
 
-	// On click drop down menu item of Country DD
-	$('#chooseCountryDD dropdown-item').click(function () {      
-		document.getElementById('chosenCountry').innerText = this.getElementsByTagName('input').value;
+	// On click dropdown-items that are direct child of chooseCountryDD
+	$( "#chooseCountryDD" ).on( "click", ".dropdown-item" ,function() {
+		alert('clicked');  
+		document.getElementById('chosenCountry').innerText = this.parentElement.getElementsByTagName('input').value;
 		// TODO Process Change country request
 	});
 

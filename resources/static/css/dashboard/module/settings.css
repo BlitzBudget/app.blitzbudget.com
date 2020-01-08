@@ -117,11 +117,11 @@
     white-space: nowrap;
 }
 
-#chooseCountryInp.w-75 {
+#chooseCountryInp.w-75, #chooseCurrencyInp.w-75 {
     width: 75%;
 }
 
-#chooseCountryDD {
+#chooseCountryDD, #chooseCurrencyDD {
     height: auto;
     max-height: 20rem;
     overflow-x: hidden;
