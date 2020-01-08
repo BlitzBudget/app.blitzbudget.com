@@ -193,12 +193,11 @@
 		document.getElementById('chooseCountryInp').focus();
 	});
 
-	// On click dropdown-items that are direct child of chooseCountryDD
-	$( "#chooseCountryDD" ).on( "click", ".dropdown-item" ,function() {
-		alert('clicked');  
-		document.getElementById('chosenCountry').innerText = this.parentElement.getElementsByTagName('input').value;
-		// TODO Process Change country request
+	// On click drop down btn of country search
+	$(document).on("click", ".dropdown-item" , function(event){
+		alert('clicked');
 	});
+
 
 	/*
 	*	Currency Dropdown Populate
