@@ -123,8 +123,9 @@
 
 #chooseCountryDD {
     height: auto;
-    max-height: 200px;
+    max-height: 20rem;
     overflow-x: hidden;
+    width: 20rem;
 }
 
 .autocomplete-items .dropdown-item, #currentCountries.dropdown-item {
@@ -136,8 +137,13 @@
 .dropdown-menu .dropdown-item:focus, 
 .dropdown-menu a:hover, 
 .dropdown-menu a:focus, 
-.dropdown-menu a:active {
+.dropdown-menu a:active,
+.autocomplete-active {
     box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
     background-color: #00bcd4;
     color: #fff;
+}
+
+.dropdown-header, .autocomplete-items {
+    width: 100%;
 }

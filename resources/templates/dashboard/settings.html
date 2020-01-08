@@ -6,7 +6,7 @@
 	    Settings
 	  </title>
     <link href="css/dashboard/module/settings.min.css" rel="stylesheet preload" as="style">
-    <script defer nonce="2726d7e26r" src="js/dashboard/module/settings.min.js" type="text/javascript"></script>
+    <script defer nonce="2726d7e26r" src="js/settings.all.min.js" type="text/javascript"></script>
 </head>
 
 <body class="settings-dashboard" >    
@@ -74,14 +74,21 @@
                               <p class="tripleNineColor">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
                           </div>
                           <div class="col-8">
-                              <div class="btn-group btnGroup-1 float-left">
+                              <div id="chosenCurrencyDropdown" class="btn-group btnGroup-1 float-left">
                                 <button class="chosenCurrency btn btn-secondary w-15" disabled="">American Dollars</button>
                                 <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div id="chooseCurrencyDD" class="dropdown-menu">
                                   <!-- Drop down dynamic load -->
-
+                                  <div class="input-group">
+                                    <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+                                    <input id="chooseCurrencyInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+                                    <h6 class="dropdown-header">Currencies with wallet</h6>
+                                    <div id="currentCountries" class="dropdown-item">None</div>
+                                    <div class="dropdown-divider"></div>
+                                    <h6 class="dropdown-header">Currencies without wallet</h6>
+                                  </div>
                                 </div>
                               </div>
                           </div>
