@@ -186,6 +186,8 @@
 		countries.push(locToCou[i].name);
 		// Map of country and locale to be used later
 		lToC[locToCou[i].name] = locToCou[i].country
+		/* Update the default locale in Settings */
+		if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) document.getElementById('chosenCountry').innerText = locToCou[i].name;
 	}
 
 	/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
@@ -210,7 +212,7 @@
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCtyId))  {
-			updateUserAttr('locale', lToC[this.lastChild.value], this);
+			updateUserAttr('locale', currentUser.locale.substring(0,2) + lToC[this.lastChild.value], this);
 		}
 		if(isEqual(id, chooseCrncyId)) {
 			updateUserAttr('currency', cToS[this.lastChild.value], this);
@@ -278,6 +280,8 @@
 	for(let i = 0, l = curToSym.length; i < l; i++) {
 		currencies.push(curToSym[i].currency);
 		cToS[curToSym[i].currency] = curToSym[i].symbol;
+		/* Update the default currency in Settings */
+		if(isEqual(currentUser.currency,curToSym[i].symbol)) document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 	}
 
 	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
