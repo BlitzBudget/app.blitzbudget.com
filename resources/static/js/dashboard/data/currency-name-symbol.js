@@ -147,7 +147,7 @@ window.currencyNameToSymbol = {
     },
     {
       currency: 'Chilean Peso',
-      symbol: '$'
+      symbol: 'CLP$'
     },
     {
       currency: 'Renminbi (Yuan)',
@@ -155,7 +155,7 @@ window.currencyNameToSymbol = {
     },
     {
       currency: 'Colombian Peso',
-      symbol: '$'
+      symbol: 'COL$'
     },
     {
       currency: 'Comoro Franc',
@@ -183,7 +183,7 @@ window.currencyNameToSymbol = {
     },
     {
       currency: 'Cuban Peso',
-      symbol: '$'
+      symbol: '$MN'
     },
     {
       currency: 'Antillean Guilder',
@@ -270,7 +270,7 @@ window.currencyNameToSymbol = {
       symbol: 'GY$'
     },
     {
-      currency: 'Haitian Gourde\r\n',
+      currency: 'Haitian Gourde',
       symbol: 'G'
     },
     {
@@ -430,7 +430,7 @@ window.currencyNameToSymbol = {
       symbol: 'K'
     },
     {
-      currency: 'Namibia Dollar\r\n',
+      currency: 'Namibia Dollar',
       symbol: 'N$'
     },
     {
@@ -466,7 +466,7 @@ window.currencyNameToSymbol = {
       symbol: 'Rp'
     },
     {
-      currency: 'Panamanian Balboa\r\n',
+      currency: 'Panamanian Balboa',
       symbol: 'B/.'
     },
     {
@@ -571,7 +571,7 @@ window.currencyNameToSymbol = {
     },
     {
       currency: 'Suriname Guilder',
-      symbol: '$'
+      symbol: 'Sr$'
     },
     {
       currency: 'Lilangeni',
