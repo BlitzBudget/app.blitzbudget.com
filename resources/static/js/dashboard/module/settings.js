@@ -180,39 +180,49 @@
 
 	/*An array containing all the country names in the world:*/
 	let countries = [];
+	let lToC = {};
 	let locToCou = window.localeToCountry.localeToCountry;
 	for(let i = 0, l = locToCou.length; i < l; i++) {
 		countries.push(locToCou[i].name);
+		// Map of country and locale to be used later
+		lToC[locToCou[i].name] = locToCou[i].country
 	}
 
-	/*initiate the autocomplete function on the "chooseCountryInp" element, and pass along the countries array as possible autocomplete values:*/
-	autocomplete(document.getElementById("chooseCountryInp"), countries);
+	/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
+	autocomplete(document.getElementById("chosenCountryInp"), countries);
 
 	// On click drop down btn of country search
 	$("#chosenCountryDropdown").on("shown.bs.dropdown", function(event){
 		// Input change focus to the country search bar 
-		document.getElementById('chooseCountryInp').focus();
+		document.getElementById('chosenCountryInp').focus();
+	});
+
+	// On click drop down btn of country search
+	$("#chosenCountryDropdown").on("hidden.bs.dropdown", function(event){
+		// Input clear value for the country search bar 
+		document.getElementById('chosenCountryInp').value = '';
 	});
 
 	// On click drop down btn of country search
 	$(document).on("click", ".dropdown-item" , function(event){
-		alert('clicked');
-		let id = this.parentElement.parentElement.id;
-		if(isEqual(id, 'chooseCountryDD') || isEqual(id, 'chooseCurrencyDD')) {
-			// Choose country DD update locale
-			let param = '';
-			let paramVal = this.lastChild.value;
-			if(isEqual(id, 'chooseCountryDD')) param = 'locale';
-			if(isEqual(id, 'chooseCurrencyDD')) param = 'currency';
-			updateLocale(param, paramVal, this);
+		let chooseCtyId = 'chosenCountryInpautocomplete-list';
+		let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
+		let id = this.parentElement.id;
+		// Choose country DD update locale
+		if(isEqual(id, chooseCtyId))  {
+			updateUserAttr('locale', lToC[this.lastChild.value], this);
+		}
+		if(isEqual(id, chooseCrncyId)) {
+			updateUserAttr('currency', cToS[this.lastChild.value], this);
 		}
 	});
 
 	// Update user attributes
-	function updateLocale(param, paramVal, event) {
-		let oldTextVal = event.parentElement.parentElement.parentElement.firstChild.innerText;
+	function updateUserAttr(param, paramVal, event) {
+		// Fetch the display btn
+		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');
 		// Change button text to the input value
-		event.parentElement.parentElement.parentElement.firstChild.innerText = event.lastChild.value;
+		document.getElementById(inpId).innerText = event.lastChild.value;
 
 		// Set Param Val combination
 		let values = JSON.stringify({
@@ -227,12 +237,15 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {
-	        // After a successful updation of parameter
+	        // After a successful updation of parameters to cache
+	        currentUser[param] = paramVal;
+	        // We save the item in the sessionStorage.
+            sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Change button text to the input value
 			event.parentElement.parentElement.parentElement.firstChild.innerText = oldTextVal;
-			
+
        	 	let responseError = JSON.parse(thrownError.responseText);
        	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
         		er.sessionExpiredSwal(ajaxData);
@@ -260,18 +273,26 @@
 
 	/*An array containing all the currency names in the world:*/
 	let currencies = [];
+	let cToS = {};
 	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 	for(let i = 0, l = curToSym.length; i < l; i++) {
 		currencies.push(curToSym[i].currency);
+		cToS[curToSym[i].currency] = curToSym[i].symbol;
 	}
 
-	/*initiate the autocomplete function on the "chooseCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-	autocomplete(document.getElementById("chooseCurrencyInp"), currencies);
+	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+	autocomplete(document.getElementById("chosenCurrencyInp"), currencies);
 
 	// On click drop down btn of country search
 	$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
 		// Input change focus to the country search bar 
-		document.getElementById('chooseCurrencyInp').focus();
+		document.getElementById('chosenCurrencyInp').focus();
+	});
+
+	// On click drop down btn of country search
+	$("#chosenCurrencyDropdown").on("hidden.bs.dropdown", function(event){
+		// Input clear value for the country search bar 
+		document.getElementById('chosenCurrencyInp').value = '';
 	});
 
 }(jQuery));
