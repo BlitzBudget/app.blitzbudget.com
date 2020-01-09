@@ -7,7 +7,8 @@
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(SETTINGS_CONSTANTS, {
 		'devicesUrl': { value: '/devices', writable: false, configurable: false },
-		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false }
+		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/user-attribute', writable: false, configurable: false }
 	});
 
 	// Display Email for devices
@@ -196,7 +197,61 @@
 	// On click drop down btn of country search
 	$(document).on("click", ".dropdown-item" , function(event){
 		alert('clicked');
+		let id = this.parentElement.parentElement.id;
+		if(isEqual(id, 'chooseCountryDD') || isEqual(id, 'chooseCurrencyDD')) {
+			// Choose country DD update locale
+			let param = '';
+			let paramVal = this.lastChild.value;
+			if(isEqual(id, 'chooseCountryDD')) param = 'locale';
+			if(isEqual(id, 'chooseCurrencyDD')) param = 'currency';
+			updateLocale(param, paramVal, this);
+		}
 	});
+
+	// Update user attributes
+	function updateLocale(param, paramVal, event) {
+		let oldTextVal = event.parentElement.parentElement.parentElement.firstChild.innerText;
+		// Change button text to the input value
+		event.parentElement.parentElement.parentElement.firstChild.innerText = event.lastChild.value;
+
+		// Set Param Val combination
+		let values = JSON.stringify({
+    		param : paramVal
+    	});
+
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'POST';
+		ajaxData.url = _config.api.invokeUrl + SETTINGS_CONSTANTS.userAttributeUrl;
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.data = values;
+		ajaxData.onSuccess = function(result) {
+	        // After a successful updation of parameter
+        }
+	    ajaxData.onFailure = function (thrownError) {
+	    	// Change button text to the input value
+			event.parentElement.parentElement.parentElement.firstChild.innerText = oldTextVal;
+			
+       	 	let responseError = JSON.parse(thrownError.responseText);
+       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	} else if (isNotEmpty(thrownError.errorType)) {
+        		showNotification("There was an error while updating. Please try again later!",'top','center','danger');
+        	} else {
+        		showNotification(thrownError.message,'top','center','danger');
+        	}
+        }
+	 	jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        type: ajaxData.type,
+	        contentType: ajaxData.contentType,
+	        data : ajaxData.data,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+    	});
+	}
 
 
 	/*

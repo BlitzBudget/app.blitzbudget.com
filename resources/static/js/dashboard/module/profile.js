@@ -957,6 +957,9 @@
 
 	 // Update User Attribute
     function updateUserName(firstName, lastName) {
+    	// Update User Name in App
+    	let oldVal = document.getElementById('userName').innerText;
+        document.getElementById('userName').innerText = firstName + ' ' + lastName;
 
     	let values = JSON.stringify({
     		"name" : firstName,
@@ -977,11 +980,11 @@
 	        currentUser.family_name = lastName;
 	        // We save the item in the sessionStorage.
             sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-            // Update User Name in App
-            document.getElementById('userName').innerText = firstName + ' ' + lastName;
-	        showNotification('Successfully changed the name!','top','center','success');
         }
 	    ajaxData.onFailure = function (thrownError) {
+	    	// Revert the text back to old value
+        	document.getElementById('userName').innerText = oldVal;
+        	
        	 	let responseError = JSON.parse(thrownError.responseText);
        	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
         		er.sessionExpiredSwal(ajaxData);
