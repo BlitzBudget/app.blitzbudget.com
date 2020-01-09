@@ -212,7 +212,7 @@
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCtyId))  {
-			updateUserAttr('locale', currentUser.locale.substring(0,2) + lToC[this.lastChild.value], this);
+			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this);
 		}
 		if(isEqual(id, chooseCrncyId)) {
 			updateUserAttr('currency', cToS[this.lastChild.value], this);
