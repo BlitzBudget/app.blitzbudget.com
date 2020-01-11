@@ -158,12 +158,7 @@ let tickIconSVG = tickIcon();
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
 		        }
 		        ajaxData.onFailure = function(thrownError) {
-			  	     let responseError = JSON.parse(thrownError.responseText);
-			         if(responseError.error.includes("Unauthorized")){
-			  		      er.sessionExpiredSwal(ajaxData);
-			         } else {
-			          	  showNotification('Unable to add the account at this moment. Please try again!','top','center','danger');
-			         }
+		        	 manageErrors(thrownError, 'Unable to add the account at this moment. Please try again!');
 		        }
 
 				// AJAX call for adding a new unlinked Account
@@ -233,12 +228,7 @@ let tickIconSVG = tickIcon();
 	    	  closeAccountPopup();
 	    }
         ajaxData.onFailure = function(thrownError) {
-        	  let responseError = JSON.parse(thrownError.responseText);
-        	  if(responseError.error.includes("Unauthorized")){
-        		  er.sessionExpiredSwal(ajaxData);
-        	  } else{
-        		  showNotification('Unable to select the account at this moment. Please try again!','top','center','danger');
-        	  }
+        	manageErrors(thrownError, 'Unable to select the account at this moment. Please try again!');
         }
 		
 		// AJAX call for adding a new unlinked Account
@@ -577,12 +567,7 @@ let tickIconSVG = tickIcon();
 	    	  accountPickerModal.appendChild(bAParentFrag);
 	    }
         ajaxData.onFailure = function(thrownError) {
-	      	  let responseError = JSON.parse(thrownError.responseText);
-	          if(responseError.error.includes("Unauthorized")){
-	  		      er.sessionExpiredSwal(ajaxData);
-	          } else {
-	          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-	          }
+        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!');
 	    }
 
 		$.ajax({
@@ -716,12 +701,7 @@ er_a = {
 	        	  er_a.populateBankInfo(bankAccountList);
 	        }
 	        ajaxData.onFailure = function(thrownError) {
-	          	  let responseError = JSON.parse(thrownError.responseText);
-		          if(responseError.error.includes("Unauthorized")){
-		  		      er.sessionExpiredSwal(ajaxData);
-		          } else {
-		          	  showNotification('Unable to fetch the accounts linked with this profile. Please refresh to try again!','top','center','danger');
-		          }
+	        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!');
 	        }
 
 			$.ajax({

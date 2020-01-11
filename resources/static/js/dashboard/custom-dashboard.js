@@ -802,6 +802,19 @@ er = {
 		uh.refreshToken(ajaxData);
 	},
 
+	manageErrors(thrownError, message) {
+		if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+    		showNotification(message,'top','center','danger');
+    	} else if(isNotEmpty(thrownError.message)) {
+    		showNotification(thrownError.message,'top','center','danger');
+    	} else {
+			let responseError = JSON.parse(thrownError.responseText);
+       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+        		er.sessionExpiredSwal(ajaxData);
+        	}	
+		}
+	},
+
 	showLoginPopup() {
 		$('#loginModal').modal({
 		    backdrop: 'static',

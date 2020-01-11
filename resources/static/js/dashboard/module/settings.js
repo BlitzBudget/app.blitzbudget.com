@@ -31,14 +31,7 @@
 		    console.log(devices);
         }
 	    ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else if (isNotEmpty(thrownError.errorType)) {
-        		showNotification("There was an error while retrieving all the registered devices. Please try again later!",'top','center','danger');
-        	} else {
-        		showNotification(thrownError.message,'top','center','danger');
-        	}
+	    	manageErrors(thrownError, "There was an error while retrieving all the registered devices. Please try again later!");
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -154,6 +147,8 @@
 	    if (currentFocus < 0) currentFocus = (x.length - 1);
 	    /*add class "autocomplete-active":*/
 	    x[currentFocus].classList.add("autocomplete-active");
+	    // Change focus of the element
+	    x[currentFocus].focus();
 	  }
 	  function removeActive(x) {
 	    /*a function to remove the "active" class from all autocomplete items:*/
@@ -171,7 +166,25 @@
 	      }
 	    }
 	  }
+	  /* Paint the first five dropdown list */
+	  firstFiveElements();
 
+	  function firstFiveElements() {
+	  	let a, b;
+	  	/*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", inp.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        inp.parentNode.appendChild(a);
+	  	/*for each item in the array...*/
+	  	let len = arr.length < 5 ? arr.length : 5;
+	    for (let i = 0; i < len; i++) {
+		  	/*create a DIV element for each matching element:*/
+		    b = dropdownItemsWithWallet(arr[i]);
+		    a.appendChild(b);
+		}
+	  }
 	}
 
 	/*
@@ -183,11 +196,17 @@
 	let lToC = {};
 	let locToCou = window.localeToCountry.localeToCountry;
 	for(let i = 0, l = locToCou.length; i < l; i++) {
-		countries.push(locToCou[i].name);
 		// Map of country and locale to be used later
 		lToC[locToCou[i].name] = locToCou[i].country
 		/* Update the default locale in Settings */
-		if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) document.getElementById('chosenCountry').innerText = locToCou[i].name;
+		if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) {
+			document.getElementById('chosenCountry').innerText = locToCou[i].name;	
+			// To be used to display "with wallet" section
+			document.getElementById('currentCountries').appendChild(dropdownItemsWithWallet(locToCou[i].name));
+		} else {
+			// To be used for Auto complete
+			countries.push(locToCou[i].name);
+		}
 	}
 
 	/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
@@ -203,7 +222,21 @@
 	$("#chosenCountryDropdown").on("hidden.bs.dropdown", function(event){
 		// Input clear value for the country search bar 
 		document.getElementById('chosenCountryInp').value = '';
+		// Close all list
+		closeAllDDLists(this);
 	});
+
+	// Close all lists within element
+	function closeAllDDLists(elmnt) {
+	    /*close all autocomplete lists in the document,
+	    except the one passed as an argument:*/
+	    let x = elmnt.getElementsByClassName("autocomplete-items");
+	    for (let i = 0, len = x.length; i < len; i++) {
+	      if (elmnt != x[i] && elmnt != inp) {
+	        x[i].parentNode.removeChild(x[i]);
+	      }
+	    }
+	}
 
 	// On click drop down btn of country search
 	$(document).on("click", ".dropdown-item" , function(event){
@@ -223,13 +256,14 @@
 	function updateUserAttr(param, paramVal, event) {
 		// Fetch the display btn
 		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');
+		let inpIdText = document.getElementById(inpId).innerText;
 		// Change button text to the input value
-		document.getElementById(inpId).innerText = event.lastChild.value;
+		inpIdText = event.lastChild.value;
 
 		// Set Param Val combination
-		let values = JSON.stringify({
-    		param : paramVal
-    	});
+		let values = {};
+		values[param] = paramVal;
+		values = JSON.stringify(values);
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -245,17 +279,9 @@
             sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
         }
 	    ajaxData.onFailure = function (thrownError) {
-	    	// Change button text to the input value
-			event.parentElement.parentElement.parentElement.firstChild.innerText = oldTextVal;
-
-       	 	let responseError = JSON.parse(thrownError.responseText);
-       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else if (isNotEmpty(thrownError.errorType)) {
-        		showNotification("There was an error while updating. Please try again later!",'top','center','danger');
-        	} else {
-        		showNotification(thrownError.message,'top','center','danger');
-        	}
+	    	// Change button text to the old Inp value
+			inpIdText = currentUser[param];
+			manageErrors(thrownError, "There was an error while updating. Please try again later!");
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -278,10 +304,15 @@
 	let cToS = {};
 	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 	for(let i = 0, l = curToSym.length; i < l; i++) {
-		currencies.push(curToSym[i].currency);
 		cToS[curToSym[i].currency] = curToSym[i].symbol;
 		/* Update the default currency in Settings */
-		if(isEqual(currentUser.currency,curToSym[i].symbol)) document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+			// To be used to display "with wallet" section
+			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(locToCou[i].name));
+		} else {
+			currencies.push(curToSym[i].currency);
+		}
 	}
 
 	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
@@ -297,6 +328,22 @@
 	$("#chosenCurrencyDropdown").on("hidden.bs.dropdown", function(event){
 		// Input clear value for the country search bar 
 		document.getElementById('chosenCurrencyInp').value = '';
+		// Close all list
+		closeAllDDLists(this);
 	});
+
+	// Create the dropdown item with wallet
+	function dropdownItemsWithWallet(withWalletItem) {
+		let dpItem = document.createElement('div');
+		dpItem.classList = 'dropdown-item';
+		dpItem.innerText = withWalletItem;
+
+		let inpHi = document.createElement('div');
+		inpHi.setAttribute('type', 'hidden');
+		inpHi.setAttribute('value', withWalletItem);
+		dpItem.appendChild(inpHi);
+
+		return dpItem;
+	}
 
 }(jQuery));

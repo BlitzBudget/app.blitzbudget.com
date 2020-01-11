@@ -85,12 +85,7 @@
          	   
         }
         ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-        	if(responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else{
-        		showNotification('Unable to populate recent transactions. Please refresh the page & try again!','top','center','danger');
-        	}
+        	manageErrors(thrownError, 'Unable to populate recent transactions. Please refresh the page & try again!');
         }
 
 		jQuery.ajax({
@@ -290,12 +285,7 @@
         	
         }
         ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-        	if(responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else{
-        		showNotification('Unable to calculate the budget optimization. Please refresh the page & try again!','top','center','danger');
-        	}
+        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!');
         }
 
 		jQuery.ajax({
@@ -358,12 +348,7 @@
         	
         }
         ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-        	if(responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else{
-        		showNotification('Unable to calculate the budget optimization. Please refresh the page & try again!','top','center','danger');
-        	}
+        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!');
         }
 
 		jQuery.ajax({
@@ -690,13 +675,7 @@
 	    	  }
 	    }
         ajaxData.onFailure = function(thrownError) {
-	    	  let responseError = JSON.parse(thrownError.responseText);
-	    	  if(responseError.error.includes("Unauthorized")){
-	    		  er.sessionExpiredSwal(ajaxData);
-	    	  } else{
-	    		  showNotification('Unable to change the budget category amount at this moment. Please try again!','top','center','danger');
-	    	  }
-	    	  
+        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');	    	  
 	    }
 		$.ajax({
 	          type: ajaxData.type,
@@ -796,12 +775,7 @@
         	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
         }
         ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-        	if(responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else{
-        		showNotification('Unable to populate income average. Please refresh the page and try again!','top','center','danger');
-        	}
+        	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!');
         }
 
 		jQuery.ajax({
@@ -833,12 +807,7 @@
         	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
         }
         ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-        	if(responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else{
-        		showNotification('Unable to populate expense average. Please refresh the page and try again!','top','center','danger');
-        	}
+        	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!');
         }
 
 		jQuery.ajax({
@@ -895,12 +864,7 @@
    		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
         }
         ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-        	if(responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else{
-        		showNotification('Unable to populate the chart at this moment. Please try again!','top','center','danger');
-        	}
+        	manageErrors(thrownError, 'Unable to populate the chart at this moment. Please try again!');
         }
 
 		jQuery.ajax({

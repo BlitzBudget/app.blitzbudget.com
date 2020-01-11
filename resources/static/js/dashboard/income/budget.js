@@ -60,13 +60,8 @@
       		fetchTransactions();
         }
         ajaxData.onFailure = function (thrownError) {
-        	let responseError = JSON.parse(thrownError.responseText);
-         	if(responseError.error.includes("Unauthorized")){
-         		er.sessionExpiredSwal(ajaxData);
-         	} else{
-         		showNotification('Unable to delete the budget at this moment. Please try again!','top','center','danger');
-         	}
-         }
+        	manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!');
+        }
 
 		jQuery.ajax({
 			url: ajaxData.url,
@@ -243,13 +238,8 @@
         		
             }, 
             error:  function (thrownError) {
-            	 var responseError = JSON.parse(thrownError.responseText);
-             	if(responseError.error.includes("Unauthorized")){
-             		er.sessionExpiredSwal(thrownError);
-             	} else{
-             		showNotification('Unable to fetch transactions at this moment. Please refresh and try again!','top','center','danger');
-             	}
-             }
+            	manageErrors(thrownError, 'Unable to fetch transactions at this moment. Please refresh and try again!');
+            }
 		});
 	}
 	
@@ -450,15 +440,11 @@
 	        	  updateProgressBarAndRemaining(userBudget.categoryId, document);
             }
             ajaxData.onFailure = function (thrownError) {
-	              	var responseError = JSON.parse(thrownError.responseText);
-	               	if(responseError.error.includes("Unauthorized")){
-	               		er.sessionExpiredSwal(ajaxData);
-	               	} else{
-	               		showNotification('Unable to change the budget. Please try again','top','center','danger');
-	               		// update the current element with the previous amount
-	               		let formattedBudgetAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
-	               		element.innerText = formattedBudgetAmount;
-	               	}
+            	manageErrors(thrownError, 'Unable to change the budget. Please try again');
+            		
+	            // update the current element with the previous amount
+	            let formattedBudgetAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
+	            element.innerText = formattedBudgetAmount;
 	        }
 			$.ajax({
 		          type: ajaxData.type,
@@ -625,12 +611,7 @@
         	  }
         }
         ajaxData.onFailure = function(thrownError) {
-              let responseError = JSON.parse(thrownError.responseText);
-	          if(responseError.error.includes("Unauthorized")){
-	          		er.sessionExpiredSwal(ajaxData);
-	          } else{
-	          		showNotification('Unable to delete the budget at this moment. Please try again!','top','center','danger');
-	          }
+        	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!');
 	          	
 	          // Remove the material spinner and show the delete button again
 	          document.getElementById('deleteElementSpinner-' + categoryId).classList.toggle('d-none');
@@ -768,14 +749,7 @@
     		
           }
           ajaxData.onFailure = function(thrownError) {
-	          	var responseError = JSON.parse(thrownError.responseText);
-	           	if(responseError.error.includes("Unauthorized")){
-	           		er.sessionExpiredSwal(ajaxData);
-	           	} else if(responseError.error.includes("InvalidAttributeValue")) {
-	           		showNotification('Do you already have budget for ' + userChosenMonthName + '?','top','center','danger');
-	           	} else{
-	           		showNotification('Unable to copy the budget. Please try again','top','center','danger');
-	           	}
+          		manageErrors(thrownError, 'Unable to copy the budget. Please try again');
 	           	
 	           	// disable the button
 	        	element.removeAttribute("disabled");
@@ -839,12 +813,7 @@
             	}
         }
         ajaxData.onFailure = function (thrownError) {
-            	let responseError = JSON.parse(thrownError.responseText);
-             	if(responseError.error.includes("Unauthorized")){
-             		er.sessionExpiredSwal(ajaxData);
-             	} else{
-             		showNotification('Unable to fetch the budget at this moment. Please try again!','top','center','danger');
-             	}
+        	manageErrors(thrownError, "There was an error while changing the name. Please try again later!");
         }
 
 		// Fetch all dates
@@ -948,12 +917,7 @@
             	
 	    }
         ajaxData.onFailure = function (thrownError) {
-        	var responseError = JSON.parse(thrownError.responseText);
-         	if(responseError.error.includes("Unauthorized")){
-         		er.sessionExpiredSwal(ajaxData);
-         	} else{
-         		showNotification('Unable to create the budgets. Please refresh and try again!','top','center','danger');
-         	}
+        	manageErrors(thrownError, 'Unable to create the budgets. Please refresh and try again!');
         }
 
 		$.ajax({
@@ -1057,12 +1021,7 @@
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
-            	let responseError = JSON.parse(thrownError.responseText);
-             	if(responseError.error.includes("Unauthorized")){
-             		er.sessionExpiredSwal(ajaxData);
-             	} else{
-             		showNotification('Unable to change the budget category at this moment. Please try again!','top','center','danger');
-             	}
+        		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!');
         }
 
 		$.ajax({
@@ -1399,12 +1358,7 @@
 	    	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
 	    }
         ajaxData.onFailure = function(thrownError) {
-        	  let responseError = JSON.parse(thrownError.responseText);
-        	  if(responseError.error.includes("Unauthorized")){
-        		  er.sessionExpiredSwal(ajaxData);
-        	  } else{
-        		  showNotification('Unable to change the budget category amount at this moment. Please try again!','top','center','danger');
-        	  }
+        	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');
         }
 
 		$.ajax({
@@ -1474,12 +1428,7 @@
         	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
         }
         ajaxData.onFailure = function(thrownError) {
-        	  let responseError = JSON.parse(thrownError.responseText);
-        	  if(responseError.error.includes("Unauthorized")){
-        		  er.sessionExpiredSwal(ajaxData);
-        	  } else{
-        		  showNotification('Unable to change the budget category amount at this moment. Please try again!','top','center','danger');
-        	  }
+        	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');
         	  // Hide the modal
   			  $('#categoryCompensationModal').modal('hide');
         }
@@ -1524,12 +1473,7 @@
         	budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
         }
         ajaxData.onFailure = function(thrownError) {
-        	  let responseError = JSON.parse(thrownError.responseText);
-        	  if(responseError.error.includes("Unauthorized")){
-        		  er.sessionExpiredSwal(ajaxData);
-        	  } else{
-        		  showNotification('Unable to change the budget category amount at this moment. Please try again!','top','center','danger');
-        	  }
+        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');
         	 // Hide the modal
   			 $('#categoryCompensationModal').modal('hide');
         }
