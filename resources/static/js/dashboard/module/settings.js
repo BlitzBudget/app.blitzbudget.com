@@ -64,10 +64,15 @@
 	  let currentFocus;
 	  /*execute a function when someone writes in the text field:*/
 	  inp.addEventListener("input", function(e) {
-	      let a, b, i, val = this.value;
+	      let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal;
 	      /*close any already open lists of autocompleted values*/
 	      closeAllLists();
-	      if (!val) { return false;}
+	      debugger;
+	      if (!val) {
+	      	len = arr.length < 5 ? arr.length : 5;
+	      } else {
+	      	upperVal = val.toUpperCase()
+	      }
 	      currentFocus = -1;
 	      /*create a DIV element that will contain the items (values):*/
 	      a = document.createElement("DIV");
@@ -75,42 +80,54 @@
 	      a.setAttribute("class", "autocomplete-items");
 	      /*append the DIV element as a child of the autocomplete container:*/
 	      this.parentNode.appendChild(a);
-	      /* Upper case value entered */
-	      let upperVal = val.toUpperCase();
 	      /*for each item in the array...*/
-	      for (let i = 0, len = arr.length; i < len; i++) {
-	        /* check if the starting characters match */
-	        let startsWithChar = arr[i].substr(0, val.length).toUpperCase() == upperVal;
-	        /* build a regex with the value entered */
-	        let regVal = new RegExp(upperVal,"g");
-	        /*check if the item starts with the same letters as the text field value:*/
-	        if (startsWithChar || includesStr(arr[i].toUpperCase(), upperVal)) {
-	          /*create a DIV element for each matching element:*/
-	          b = document.createElement("DIV");
-	          b.classList.add("dropdown-item");
-	          /*make the matching letters bold:*/
-	          if(startsWithChar) {
+	      for (let i = 0; i < len; i++) {
+	      	let autoFilEl = false;
+	      	
+		  	if(!val) {
+		  		autoFilEl = true;
+		  	} else {
+		  		/* check if the starting characters match */
+		        startsWithChar = arr[i].substr(0, val.length).toUpperCase() == upperVal;
+		        /* build a regex with the value entered */
+		        regVal = new RegExp(upperVal,"g");
+		        /*check if the item starts with the same letters as the text field value:*/
+		        if (startsWithChar || includesStr(arr[i].toUpperCase(), upperVal)) {
+		        	autoFilEl = true;
+		        }	
+		  	}
+
+		  	if(!autoFilEl) {
+		  		return false;
+		  	}
+	        
+	        /*create a DIV element for each matching element:*/
+	        b = document.createElement("DIV");
+	        b.classList.add("dropdown-item");
+	        /*make the matching letters bold:*/
+	        if(startsWithChar) {
 	          	b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
 	          	b.innerHTML += arr[i].substr(val.length);
-	          } else {
+	        } else if(!val) {
+	        	b.innerHTML = arr[i];
+	        } else {
 	          	let startPos = regVal.exec(arr[i].toUpperCase()).index;
 	          	let startPos2 = startPos + val.length;
 	          	b.innerHTML = arr[i].substr(0, startPos);
 	          	b.innerHTML += "<strong>" + arr[i].substr(startPos, val.length) + "</strong>";
 	          	b.innerHTML += arr[i].substr(startPos2);
-	          }
-	          /*insert a input field that will hold the current array item's value:*/
-	          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-	          /*execute a function when someone clicks on the item value (DIV element):*/
-	          b.addEventListener("click", function(e) {
+	        }
+	        /*insert a input field that will hold the current array item's value:*/
+	        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+	        /*execute a function when someone clicks on the item value (DIV element):*/
+	        b.addEventListener("click", function(e) {
 	              /*insert the value for the autocomplete text field:*/
 	              inp.value = this.getElementsByTagName("input")[0].value;
 	              /*close the list of autocompleted values,
 	              (or any other open lists of autocompleted values:*/
 	              closeAllLists();
-	          });
-	          a.appendChild(b);
-	        } 
+	        });
+	        a.appendChild(b);
 	      }
 	  });
 	  /*execute a function presses a key on the keyboard:*/
@@ -166,25 +183,7 @@
 	      }
 	    }
 	  }
-	  /* Paint the first five dropdown list */
-	  firstFiveElements();
-
-	  function firstFiveElements() {
-	  	let a, b;
-	  	/*create a DIV element that will contain the items (values):*/
-        a = document.createElement("DIV");
-        a.setAttribute("id", inp.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-        /*append the DIV element as a child of the autocomplete container:*/
-        inp.parentNode.appendChild(a);
-	  	/*for each item in the array...*/
-	  	let len = arr.length < 5 ? arr.length : 5;
-	    for (let i = 0; i < len; i++) {
-		  	/*create a DIV element for each matching element:*/
-		    b = dropdownItemsWithWallet(arr[i]);
-		    a.appendChild(b);
-		}
-	  }
+	  // TODO trigger key press event
 	}
 
 	/*
