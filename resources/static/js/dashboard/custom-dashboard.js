@@ -956,6 +956,7 @@ er = {
 		
 }
 
+// Manage errors
 function manageErrors(thrownError, message) {
 	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
 		showNotification(message,'top','center','danger');
