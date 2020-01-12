@@ -148,3 +148,11 @@
 .dropdown-header, .autocomplete-items, #currentCountries {
     width: 100%;
 }
+
+.notiSC {
+    width: 20rem;
+}
+
+.notTitle {
+    color: #2e4369;
+}

@@ -1229,3 +1229,13 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
 .w-75 {
     width: 75%;
 }
+
+.check {
+    transition: border .15s ease-in-out;
+}
+
+.disabled-check, .form-check .form-check-input[disabled]~.form-check-sign .check.disabled-check  {
+    background: #d3d5d8;
+    border: 1px solid #8b8c8e;
+    cursor: not-allowed;
+}
