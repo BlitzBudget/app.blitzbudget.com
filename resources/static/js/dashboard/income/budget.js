@@ -60,7 +60,7 @@
       		fetchTransactions();
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!');
+        	manageErrors(thrownError, 'Unable to fetch you budget at this moment. Please try again!');
         }
 
 		jQuery.ajax({

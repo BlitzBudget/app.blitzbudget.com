@@ -46,7 +46,7 @@
 	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
         }
 	    ajaxData.onFailure = function (thrownError) {
-	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!");
+	    	manageErrors(thrownError, "There was an error while fetching user information!");
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
