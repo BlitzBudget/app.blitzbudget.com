@@ -50,7 +50,7 @@
                           </div>
                           <div class="col-8">
                               <div id="chosenCountryDropdown" class="btn-group btnGroup-1 float-left">
-                                <button class="chosenCountry btn btn-secondary w-15" disabled="">United States</button>
+                                <button id="chosenCountry" class="chosenCountry btn btn-secondary w-15" disabled="">United States</button>
                                 <button id="chosenCountryDownBtn" type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <span class="sr-only">Toggle Dropdown</span>
                                 </button>
@@ -58,9 +58,9 @@
                                   <!-- Drop down dynamic load -->
                                   <div class="input-group">
                                     <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
-                                    <input id="chooseCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+                                    <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
                                     <h6 class="dropdown-header">Countries with wallet</h6>
-                                    <div id="currentCountries" class="dropdown-item">None</div>
+                                    <div id="currentCountries"></div>
                                     <div class="dropdown-divider"></div>
                                     <h6 class="dropdown-header">Countries without wallet</h6>
                                   </div>
@@ -75,7 +75,7 @@
                           </div>
                           <div class="col-8">
                               <div id="chosenCurrencyDropdown" class="btn-group btnGroup-1 float-left">
-                                <button class="chosenCurrency btn btn-secondary w-15" disabled="">American Dollars</button>
+                                <button id="chosenCurrency" class="chosenCurrency btn btn-secondary w-15" disabled="">American Dollars</button>
                                 <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                   <span class="sr-only">Toggle Dropdown</span>
                                 </button>
@@ -83,9 +83,9 @@
                                   <!-- Drop down dynamic load -->
                                   <div class="input-group">
                                     <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
-                                    <input id="chooseCurrencyInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+                                    <input id="chosenCurrencyInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
                                     <h6 class="dropdown-header">Currencies with wallet</h6>
-                                    <div id="currentCountries" class="dropdown-item">None</div>
+                                    <div id="currentCurrencies"></div>
                                     <div class="dropdown-divider"></div>
                                     <h6 class="dropdown-header">Currencies without wallet</h6>
                                   </div>
@@ -105,7 +105,7 @@
                                   <span class="sr-only">Toggle Dropdown</span>
                                 </button>
                                 <div id="chooseLanguageDD" class="dropdown-menu">
-                                  <!-- Drop down dynamic load -->
+                                  <a class="dropdown-item languageEng"><div class="font-weight-bold">English (US)</div></a>
                                 </div>
                               </div>
                           </div>

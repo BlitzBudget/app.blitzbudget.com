@@ -117,20 +117,21 @@
     white-space: nowrap;
 }
 
-#chooseCountryInp.w-75 {
+#chooseCountryInp.w-75, #chooseCurrencyInp.w-75 {
     width: 75%;
 }
 
-#chooseCountryDD {
+#chooseCountryDD, #chooseCurrencyDD {
     height: auto;
     max-height: 20rem;
     overflow-x: hidden;
     width: 20rem;
 }
 
-.autocomplete-items .dropdown-item, #currentCountries.dropdown-item {
+.autocomplete-items .dropdown-item, #currentCountries .dropdown-item {
     width: 100%;
     cursor: pointer;
+    white-space: pre-wrap;
 }
 
 .dropdown-menu .dropdown-item:hover, 
@@ -144,6 +145,6 @@
     color: #fff;
 }
 
-.dropdown-header, .autocomplete-items {
+.dropdown-header, .autocomplete-items, #currentCountries {
     width: 100%;
 }

@@ -46,14 +46,7 @@
 	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
         }
 	    ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else if (isNotEmpty(thrownError.errorType)) {
-        		showNotification("There was an error while changing the name. Please try again later!",'top','center','danger');
-        	} else {
-        		showNotification(thrownError.message,'top','center','danger');
-        	}
+	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!");
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -433,14 +426,7 @@
 			        	showNotification("Successfully reset your account. Your account is as good as new!",'top','center','success');
 			        }
 				    ajaxData.onFailure = function (thrownError) {
-		           	 	let responseError = JSON.parse(thrownError.responseText);
-		           	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-		            		er.sessionExpiredSwal(ajaxData);
-		            	} else if (isNotEmpty(thrownError.errorType)) {
-		            		showNotification("There was an error while resetting the account. Please try again later!",'top','center','danger');
-		            	} else {
-		            		showNotification(thrownError.message,'top','center','danger');
-		            	}
+				    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!");
 		            }
             	 	jQuery.ajax({
 						url: ajaxData.url,
@@ -537,14 +523,7 @@
 					    });
 			        }
 				    ajaxData.onFailure = function (thrownError) {
-			        	let responseError = JSON.parse(thrownError.responseText);
-		           	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-		            		er.sessionExpiredSwal(ajaxData);
-		            	} else if (isNotEmpty(thrownError.errorType)) {
-		            		showNotification("There was an error while deleting the account. Please try again later!",'top','center','danger');
-		            	} else {
-		            		showNotification(thrownError.message,'top','center','danger');
-		            	}
+				    	manageErrors(thrownError, "There was an error while deleting the account. Please try again later!");
 		            }
             	   	jQuery.ajax({
 						url: ajaxData.url,
@@ -957,6 +936,9 @@
 
 	 // Update User Attribute
     function updateUserName(firstName, lastName) {
+    	let userNameProfileDisplay = document.getElementById('userNameProfileDisplay')
+    	let userNameDispText = userNameProfileDisplay.innerText;
+    	userNameProfileDisplay.innerText = firstName + ' ' + lastName;
 
     	let values = JSON.stringify({
     		"name" : firstName,
@@ -971,7 +953,6 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {
-	        document.getElementById('userNameProfileDisplay').innerText = firstName + ' ' + lastName;
 	        // Update User Cache
 	        currentUser.name = firstName;
 	        currentUser.family_name = lastName;
@@ -979,17 +960,11 @@
             sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
             // Update User Name in App
             document.getElementById('userName').innerText = firstName + ' ' + lastName;
-	        showNotification('Successfully changed the name!','top','center','success');
         }
 	    ajaxData.onFailure = function (thrownError) {
-       	 	let responseError = JSON.parse(thrownError.responseText);
-       	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-        		er.sessionExpiredSwal(ajaxData);
-        	} else if (isNotEmpty(thrownError.errorType)) {
-        		showNotification("There was an error while changing the name. Please try again later!",'top','center','danger');
-        	} else {
-        		showNotification(thrownError.message,'top','center','danger');
-        	}
+	    	// Replace Old name to Profile
+	    	userNameProfileDisplay.innerText = userNameDispText;
+	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!");
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
