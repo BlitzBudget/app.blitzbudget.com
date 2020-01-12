@@ -153,10 +153,11 @@
 	      }
 	      /* set equal to the position of the selected element minus the height of scrolling div */
 	      let scrollToEl = $("#" + scrollWrapEl);
+	      /* set to top */
+	      scrollToEl.scrollTop(0);
 	      let ddItemac = $('#' + wrapClassId + ' .autocomplete-active');
 	      /* Chceck if elements are present, then scrolls to them */
-	      if(ddItemac && scrollToEl) {
-	      	scrollToEl.scrollTop(0);//set to top
+	      if(ddItemac && scrollToEl && ddItemac.offset() && scrollToEl.offset()) {
     	  	scrollToEl.scrollTop(ddItemac.offset().top - scrollToEl.offset().top + scrollToEl.scrollTop());
 	      }
 	  });
