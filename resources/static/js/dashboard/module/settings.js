@@ -153,8 +153,12 @@
 	      }
 	      /* set equal to the position of the selected element minus the height of scrolling div */
 	      let scrollToEl = $("#" + scrollWrapEl);
-	      scrollToEl.scrollTop(0);//set to top
-    	  scrollToEl.scrollTop($('#' + wrapClassId + ' .autocomplete-active').offset().top - scrollToEl.offset().top + scrollToEl.scrollTop());
+	      let ddItemac = $('#' + wrapClassId + ' .autocomplete-active');
+	      /* Chceck if elements are present, then scrolls to them */
+	      if(ddItemac && scrollToEl) {
+	      	scrollToEl.scrollTop(0);//set to top
+    	  	scrollToEl.scrollTop(ddItemac.offset().top - scrollToEl.offset().top + scrollToEl.scrollTop());
+	      }
 	  });
 	  function addActive(x) {
 	    /*a function to classify an item as "active":*/
@@ -263,9 +267,9 @@
 	function updateUserAttr(param, paramVal, event) {
 		// Fetch the display btn
 		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');
-		let inpIdText = document.getElementById(inpId).innerText;
-		// Change button text to the input value
-		inpIdText = event.lastChild.value;
+		let oldValInTe = document.getElementById(inpId).innerText;
+		// Update the button to new value
+		document.getElementById(inpId).innerText = event.lastChild.value;
 
 		// Set Param Val combination
 		let values = {};
@@ -287,7 +291,7 @@
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Change button text to the old Inp value
-			inpIdText = currentUser[param];
+			document.getElementById(inpId).innerText = oldValInTe;
 			manageErrors(thrownError, "There was an error while updating. Please try again later!");
         }
 	 	jQuery.ajax({
