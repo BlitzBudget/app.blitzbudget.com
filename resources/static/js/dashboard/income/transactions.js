@@ -1,6 +1,14 @@
 "use strict";
 (function scopeWrapper($) {
 
+	// TRANSACTIONS CONSTANTS
+	const TRANSACTIONS_CONSTANTS = {};
+	// SECURITY: Defining Immutable properties as constants
+	Object.defineProperties(TRANSACTIONS_CONSTANTS, {
+		'recentTransactionUrl': { value: 'recentTransactions/', writable: false, configurable: false },
+		'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false}
+	});
+
 	// Description Text
 	let descriptionTextEdited = '';
 	// Amount Text
@@ -2071,7 +2079,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(userTransactionsList) {
         	let recentTransactionsDiv = document.getElementById('recentTransactions');
         	let recentTransactionsFragment = document.createDocumentFragment();
