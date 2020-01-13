@@ -257,15 +257,15 @@
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCtyId))  {
-			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this);
+			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, "currentCountries");
 		}
 		if(isEqual(id, chooseCrncyId)) {
-			updateUserAttr('currency', cToS[this.lastChild.value], this);
+			updateUserAttr('currency', cToS[this.lastChild.value], this, "currentCurrencies");
 		}
 	});
 
 	// Update user attributes
-	function updateUserAttr(param, paramVal, event) {
+	function updateUserAttr(param, paramVal, event, currentSelEl) {
 		// Fetch the display btn
 		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');
 		let oldValInTe = document.getElementById(inpId).innerText;
@@ -289,6 +289,10 @@
 	        currentUser[param] = paramVal;
 	        // We save the item in the sessionStorage.
             sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+            // Set current Curreny preference
+            if(isEqual(param, "currency")) currentCurrencyPreference = currentUser.currency;
+            // Set the dropdown item current selection
+            document.getElementById(currentSelEl).innerText = event.lastChild.value;
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Change button text to the old Inp value
