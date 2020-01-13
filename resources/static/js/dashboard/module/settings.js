@@ -59,11 +59,49 @@
 	* Autocomplete Module
 	**/
 	function autocomplete(inp, arr, scrollWrapEl) {
+	  /*Removes a function when someone writes in the text field:*/
+	  inp.removeEventListener("input", inputTriggerAutoFill);
+	  /*Removes a function presses a key on the keyboard:*/
+	  inp.removeEventListener("keydown", keydownAutoCompleteTrigger);
 	  /*the autocomplete function takes two arguments,
 	  the text field element and an array of possible autocompleted values:*/
 	  let currentFocus;
 	  /*execute a function when someone writes in the text field:*/
-	  inp.addEventListener("input", function(e) {
+	  inp.addEventListener("input", inputTriggerAutoFill);
+	  /*execute a function presses a key on the keyboard:*/
+	  inp.addEventListener("keydown", keydownAutoCompleteTrigger);
+	  function addActive(x) {
+	    /*a function to classify an item as "active":*/
+	    if (!x) return false;
+	    /*start by removing the "active" class on all items:*/
+	    removeActive(x);
+	    if (currentFocus >= x.length) currentFocus = 0;
+	    if (currentFocus < 0) currentFocus = (x.length - 1);
+	    /*add class "autocomplete-active":*/
+	    x[currentFocus].classList.add("autocomplete-active");
+	    // Change focus of the element
+	    x[currentFocus].focus();
+	  }
+	  function removeActive(x) {
+	    /*a function to remove the "active" class from all autocomplete items:*/
+	    for (let i = 0, len = x.length; i < len; i++) {
+	      x[i].classList.remove("autocomplete-active");
+	    }
+	  }
+	  function closeAllLists(elmnt) {
+	    /*close all autocomplete lists in the document,
+	    except the one passed as an argument:*/
+	    let x = document.getElementsByClassName("autocomplete-items");
+	    for (let i = 0, len = x.length; i < len; i++) {
+	      if (elmnt != x[i] && elmnt != inp) {
+	        x[i].parentNode.removeChild(x[i]);
+	      }
+	    }
+	  }
+      /*
+	  * Auto Complete Input Trigger function 
+	  */
+	  function inputTriggerAutoFill(e) {
 	      let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal;
 	      /*close any already open lists of autocompleted values*/
 	      closeAllLists();
@@ -125,9 +163,12 @@
 	        });
 	        a.appendChild(b);
 	      }
-	  });
-	  /*execute a function presses a key on the keyboard:*/
-	  inp.addEventListener("keydown", function(e) {
+	  }
+
+	  /*
+	  *	Autocomplete Key down event
+	  */
+	  function keydownAutoCompleteTrigger(e) {
 	  	  let wrapClassId = this.id + "autocomplete-list";
 	      let x = document.getElementById(wrapClassId);
 	      if (x) x = x.getElementsByTagName("div");
@@ -160,34 +201,6 @@
 	      if(ddItemac && scrollToEl && ddItemac.offset() && scrollToEl.offset()) {
     	  	scrollToEl.scrollTop(ddItemac.offset().top - scrollToEl.offset().top + scrollToEl.scrollTop());
 	      }
-	  });
-	  function addActive(x) {
-	    /*a function to classify an item as "active":*/
-	    if (!x) return false;
-	    /*start by removing the "active" class on all items:*/
-	    removeActive(x);
-	    if (currentFocus >= x.length) currentFocus = 0;
-	    if (currentFocus < 0) currentFocus = (x.length - 1);
-	    /*add class "autocomplete-active":*/
-	    x[currentFocus].classList.add("autocomplete-active");
-	    // Change focus of the element
-	    x[currentFocus].focus();
-	  }
-	  function removeActive(x) {
-	    /*a function to remove the "active" class from all autocomplete items:*/
-	    for (let i = 0, len = x.length; i < len; i++) {
-	      x[i].classList.remove("autocomplete-active");
-	    }
-	  }
-	  function closeAllLists(elmnt) {
-	    /*close all autocomplete lists in the document,
-	    except the one passed as an argument:*/
-	    let x = document.getElementsByClassName("autocomplete-items");
-	    for (let i = 0, len = x.length; i < len; i++) {
-	      if (elmnt != x[i] && elmnt != inp) {
-	        x[i].parentNode.removeChild(x[i]);
-	      }
-	    }
 	  }
 	}
 
@@ -257,17 +270,20 @@
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCtyId))  {
-			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, "currentCountries");
-		}
-		if(isEqual(id, chooseCrncyId)) {
-			updateUserAttr('currency', cToS[this.lastChild.value], this, "currentCurrencies");
+			let valObj = { parentElId : "currentCountries", valueChosen : this.lastChild.value};
+			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, valObj);
+		} else if(isEqual(id, chooseCrncyId)) {
+			let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
+			updateUserAttr('currency', cToS[this.lastChild.value], this, valObj);
+		} else if(isEqual(id, "currentCurrencies")) {
+			//showNotification("We recommend to use one currency per wallet.",'top','center','danger');
 		}
 	});
 
 	// Update user attributes
-	function updateUserAttr(param, paramVal, event, currentSelEl) {
+	function updateUserAttr(param, paramVal, event, valObj) {
 		// Fetch the display btn
-		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');
+		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
 		let oldValInTe = document.getElementById(inpId).innerText;
 		// Update the button to new value
 		document.getElementById(inpId).innerText = event.lastChild.value;
@@ -285,14 +301,47 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {
+			// Input search element
+			let inpBtnSrch = event.parentElement.id.replace('autocomplete-list','');
+			let inpSearchEl = document.getElementById(inpBtnSrch);
 	        // After a successful updation of parameters to cache
 	        currentUser[param] = paramVal;
 	        // We save the item in the sessionStorage.
             sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-            // Set current Curreny preference
-            if(isEqual(param, "currency")) currentCurrencyPreference = currentUser.currency;
+            let itemWithWallet = document.getElementById(valObj.parentElId);
+            // First Child Input value
+            let oldValText = itemWithWallet.firstChild.lastChild.value;
+            // Replace HTML with Empty
+	 		while (itemWithWallet.firstChild) {
+	 			itemWithWallet.removeChild(itemWithWallet.firstChild);
+	 		}
             // Set the dropdown item current selection
-            document.getElementById(currentSelEl).innerText = event.lastChild.value;
+            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
+            // Set current Curreny preference
+            if(isEqual(param, "currency")) {
+            	// For upadting the javascript cache for currency
+            	currentCurrencyPreference = currentUser.currency;
+            	// Remove from List
+            	const index = currencies.indexOf(valObj.valueChosen);
+				if (index > -1) {
+				  currencies.splice(index, 1);
+				}
+            	// To be used for Auto complete
+            	currencies.push(oldValText);
+            	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(inpSearchEl, currencies, "chooseCurrencyDD");
+            } else {
+            	// To be used for Auto complete
+				countries.push(oldValText);
+				// Remove from List
+				const index = countries.indexOf(valObj.valueChosen);
+				if (index > -1) {
+				  countries.splice(index, 1);
+				}
+				/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(inpSearchEl, countries, "chooseCountryDD");
+				
+            }
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Change button text to the old Inp value
@@ -362,7 +411,7 @@
 		dpItem.classList = 'dropdown-item';
 		dpItem.innerText = withWalletItem;
 
-		let inpHi = document.createElement('div');
+		let inpHi = document.createElement('input');
 		inpHi.setAttribute('type', 'hidden');
 		inpHi.setAttribute('value', withWalletItem);
 		dpItem.appendChild(inpHi);
