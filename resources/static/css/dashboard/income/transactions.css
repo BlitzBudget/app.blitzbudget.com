@@ -83,6 +83,7 @@
     font-weight: 300;
     vertical-align: middle;
     line-height: 1;
+    cursor: pointer;
 }
 
 .tableRowSelectCategory::after, .dropup .tableRowSelectCategory::after {
