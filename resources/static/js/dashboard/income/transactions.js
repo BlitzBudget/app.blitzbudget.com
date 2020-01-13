@@ -2060,4 +2060,225 @@
 		popup.showSwal('warning-message-and-confirmation');
 	});
 
+	/*
+	 * Populate Recent transactions ()Aggregated by account)
+	 */ 
+	populateRecentTransactions();
+	
+	// Populate Recent Transactions
+	function populateRecentTransactions() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'GET';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.onSuccess = function(userTransactionsList) {
+        	let recentTransactionsDiv = document.getElementById('recentTransactions');
+        	let recentTransactionsFragment = document.createDocumentFragment();
+        	
+        	if(isEmpty(userTransactionsList)) {
+        		let imageTransactionEmptyWrapper = document.createElement('div');
+        		imageTransactionEmptyWrapper.classList = 'text-center d-lg-table-row';
+        		
+        		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
+        		
+        		
+        		let emptyMessageRow = document.createElement('div');
+        		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
+        		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+        		recentTransactionsFragment.appendChild(emptyMessageRow);
+        	} else {
+        		let resultKeySet = Object.keys(userTransactionsList);
+	        	// Print only the first 20 records
+	        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
+             	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
+             	   let key = resultKeySet[countGrouped];
+             	   let userTransaction = userTransactionsList[key];
+             	   
+             	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
+             	}
+        	}
+        	
+        	// Empty HTML
+        	while (recentTransactionsDiv.firstChild) {
+        		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
+    		}
+        	recentTransactionsDiv.appendChild(recentTransactionsFragment);
+         	   
+        }
+        ajaxData.onFailure = function (thrownError) {
+        	manageErrors(thrownError, 'Unable to populate recent transactions. Please refresh the page & try again!');
+        }
+
+		jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        type: ajaxData.type,
+	        success: ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+		});
+	}
+	
+	// Builds the rows for recent transactions
+	function buildTransactionRow(userTransaction) {
+		// Convert date from UTC to user specific dates
+		let creationDateUserRelevant = new Date(userTransaction.createDate);
+		// Category Map 
+		let categoryMapForUT = categoryMap[userTransaction.categoryId];
+		
+		let tableRowTransaction = document.createElement('div');
+		tableRowTransaction.id = 'recentTransaction-' + userTransaction.transactionId;
+		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
+		
+		let tableCellImagesWrapper = document.createElement('div');
+		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
+		
+		let circleWrapperDiv = document.createElement('div');
+		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT';
+		
+		// Append a - sign if it is an expense
+		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			circleWrapperDiv.appendChild(creditCardSvg());
+		} else {
+			circleWrapperDiv.appendChild(plusRawSvg());
+		}
+		
+		tableCellImagesWrapper.appendChild(circleWrapperDiv);
+		tableRowTransaction.appendChild(tableCellImagesWrapper);
+		
+		let tableCellTransactionDescription = document.createElement('div');
+		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
+		
+		let elementWithDescription = document.createElement('div');
+		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
+		elementWithDescription.innerText = isEmpty(userTransaction.description) ? 'No Description' : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
+		tableCellTransactionDescription.appendChild(elementWithDescription);
+		
+		let elementWithCategoryName = document.createElement('div');
+		elementWithCategoryName.classList = 'small categoryNameRT w-100';
+		elementWithCategoryName.innerText = (categoryMapForUT.categoryName.length < 25 ? categoryMapForUT.categoryName : (categoryMapForUT.categoryName.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+		tableCellTransactionDescription.appendChild(elementWithCategoryName);
+		tableRowTransaction.appendChild(tableCellTransactionDescription);
+		
+		let transactionAmount = document.createElement('div');
+		
+		// Append a - sign if it is an expense
+		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+		} else {
+			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+		}
+		   
+		   
+		tableRowTransaction.appendChild(transactionAmount);
+		
+		return tableRowTransaction;
+		
+	}
+	
+	// Raw Plus Svg
+	function plusRawSvg() {
+		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+		svgElement.setAttribute('class','align-middle plusRawSvg');
+    	svgElement.setAttribute('x','0px');
+    	svgElement.setAttribute('y','0px');
+    	svgElement.setAttribute('width','30');
+    	svgElement.setAttribute('height','30');
+    	svgElement.setAttribute('viewBox','0 0 30 30');
+    	svgElement.setAttribute('fill','#000000');
+    	
+    	let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement.setAttribute('class','plusRawPath');
+    	pathElement.setAttribute('overflow','visible');
+    	pathElement.setAttribute('white-space','normal');
+    	pathElement.setAttribute('font-family','sans-serif');
+    	pathElement.setAttribute('font-weight','400');
+    	pathElement.setAttribute('d','M 14.970703 2.9726562 A 2.0002 2.0002 0 0 0 13 5 L 13 13 L 5 13 A 2.0002 2.0002 0 1 0 5 17 L 13 17 L 13 25 A 2.0002 2.0002 0 1 0 17 25 L 17 17 L 25 17 A 2.0002 2.0002 0 1 0 25 13 L 17 13 L 17 5 A 2.0002 2.0002 0 0 0 14.970703 2.9726562 z');
+    	
+    	svgElement.appendChild(pathElement);
+    	
+    	return svgElement;
+		
+	}
+	
+	// Credit card SVG Image
+	function creditCardSvg() {
+		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+		svgElement.setAttribute('class','align-middle creditCardSvg');
+    	svgElement.setAttribute('x','0px');
+    	svgElement.setAttribute('y','0px');
+    	svgElement.setAttribute('width','30');
+    	svgElement.setAttribute('height','30');
+    	svgElement.setAttribute('viewBox','0 0 80 80');
+    	svgElement.setAttribute('fill','#000000');
+    	
+    	let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement.setAttribute('class','creditCardPath');
+    	pathElement.setAttribute('d','M 11 16 C 8.2504839 16 6 18.250484 6 21 L 6 59 C 6 61.749516 8.2504839 64 11 64 L 69 64 C 71.749516 64 74 61.749516 74 59 L 74 21 C 74 18.250484 71.749516 16 69 16 L 11 16 z M 11 18 L 69 18 C 70.668484 18 72 19.331516 72 21 L 72 26 L 8 26 L 8 21 C 8 19.331516 9.3315161 18 11 18 z M 8 30 L 72 30 L 72 59 C 72 60.668484 70.668484 62 69 62 L 11 62 C 9.3315161 62 8 60.668484 8 59 L 8 30 z M 12 35 A 1 1 0 0 0 11 36 A 1 1 0 0 0 12 37 A 1 1 0 0 0 13 36 A 1 1 0 0 0 12 35 z M 16 35 A 1 1 0 0 0 15 36 A 1 1 0 0 0 16 37 A 1 1 0 0 0 17 36 A 1 1 0 0 0 16 35 z M 20 35 A 1 1 0 0 0 19 36 A 1 1 0 0 0 20 37 A 1 1 0 0 0 21 36 A 1 1 0 0 0 20 35 z M 24 35 A 1 1 0 0 0 23 36 A 1 1 0 0 0 24 37 A 1 1 0 0 0 25 36 A 1 1 0 0 0 24 35 z M 28 35 A 1 1 0 0 0 27 36 A 1 1 0 0 0 28 37 A 1 1 0 0 0 29 36 A 1 1 0 0 0 28 35 z M 32 35 A 1 1 0 0 0 31 36 A 1 1 0 0 0 32 37 A 1 1 0 0 0 33 36 A 1 1 0 0 0 32 35 z M 36 35 A 1 1 0 0 0 35 36 A 1 1 0 0 0 36 37 A 1 1 0 0 0 37 36 A 1 1 0 0 0 36 35 z M 52 43 C 48.145666 43 45 46.145666 45 50 C 45 53.854334 48.145666 57 52 57 C 53.485878 57 54.862958 56.523344 55.996094 55.730469 A 7 7 0 0 0 60 57 A 7 7 0 0 0 67 50 A 7 7 0 0 0 60 43 A 7 7 0 0 0 55.990234 44.265625 C 54.858181 43.47519 53.483355 43 52 43 z M 52 45 C 52.915102 45 53.75982 45.253037 54.494141 45.681641 A 7 7 0 0 0 53 50 A 7 7 0 0 0 54.498047 54.314453 C 53.762696 54.74469 52.916979 55 52 55 C 49.226334 55 47 52.773666 47 50 C 47 47.226334 49.226334 45 52 45 z');
+    	
+    	svgElement.appendChild(pathElement);
+    	
+    	return svgElement;
+		
+	}
+	
+	// Empty Transactions SVG
+	function buildEmptyTransactionsSvg() {
+		
+		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+		svgElement.setAttribute('width','64');
+		svgElement.setAttribute('height','64');
+    	svgElement.setAttribute('viewBox','0 0 64 64');
+    	svgElement.setAttribute('class','transactions-empty-svg svg-absolute-center');
+    	
+    	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement1.setAttribute('d','M 5 8 C 3.346 8 2 9.346 2 11 L 2 53 C 2 54.654 3.346 56 5 56 L 59 56 C 60.654 56 62 54.654 62 53 L 62 11 C 62 9.346 60.654 8 59 8 L 5 8 z M 5 10 L 59 10 C 59.551 10 60 10.449 60 11 L 60 20 L 4 20 L 4 11 C 4 10.449 4.449 10 5 10 z M 28 12 C 26.897 12 26 12.897 26 14 L 26 16 C 26 17.103 26.897 18 28 18 L 56 18 C 57.103 18 58 17.103 58 16 L 58 14 C 58 12.897 57.103 12 56 12 L 28 12 z M 28 14 L 56 14 L 56.001953 16 L 28 16 L 28 14 z M 4 22 L 60 22 L 60 53 C 60 53.551 59.551 54 59 54 L 5 54 C 4.449 54 4 53.551 4 53 L 4 22 z'); 
+    	svgElement.appendChild(pathElement1);
+    	
+    	let pathElement11 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement11.setAttribute('class','coloredTransactionLine');
+    	pathElement11.setAttribute('d',' M 8 13 A 2 2 0 0 0 6 15 A 2 2 0 0 0 8 17 A 2 2 0 0 0 10 15 A 2 2 0 0 0 8 13 z'); 
+    	svgElement.appendChild(pathElement11);
+    	
+    	let pathElement12 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement12.setAttribute('d',' M 14 13 A 2 2 0 0 0 12 15 A 2 2 0 0 0 14 17 A 2 2 0 0 0 16 15 A 2 2 0 0 0 14 13 z M 20 13 A 2 2 0 0 0 18 15 A 2 2 0 0 0 20 17 A 2 2 0 0 0 22 15 A 2 2 0 0 0 20 13 z '); 
+    	svgElement.appendChild(pathElement12);
+    	
+    	let pathElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement2.setAttribute('class','coloredTransactionLine');
+    	pathElement2.setAttribute('d','M 11 27.974609 C 10.448 27.974609 10 28.422609 10 28.974609 C 10 29.526609 10.448 29.974609 11 29.974609 L 15 29.974609 C 15.552 29.974609 16 29.526609 16 28.974609 C 16 28.422609 15.552 27.974609 15 27.974609 L 11 27.974609 z M 19 27.974609 C 18.448 27.974609 18 28.422609 18 28.974609 C 18 29.526609 18.448 29.974609 19 29.974609 L 33 29.974609 C 33.552 29.974609 34 29.526609 34 28.974609 C 34 28.422609 33.552 27.974609 33 27.974609 L 19 27.974609 z'); 
+    	svgElement.appendChild(pathElement2);
+    	
+    	let pathElement21 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement21.setAttribute('d',' M 39 27.974609 C 38.448 27.974609 38 28.422609 38 28.974609 C 38 29.526609 38.448 29.974609 39 29.974609 L 41 29.974609 C 41.552 29.974609 42 29.526609 42 28.974609 C 42 28.422609 41.552 27.974609 41 27.974609 L 39 27.974609 z M 45 27.974609 C 44.448 27.974609 44 28.422609 44 28.974609 C 44 29.526609 44.448 29.974609 45 29.974609 L 47 29.974609 C 47.552 29.974609 48 29.526609 48 28.974609 C 48 28.422609 47.552 27.974609 47 27.974609 L 45 27.974609 z M 51 27.974609 C 50.448 27.974609 50 28.422609 50 28.974609 C 50 29.526609 50.448 29.974609 51 29.974609 L 53 29.974609 C 53.552 29.974609 54 29.526609 54 28.974609 C 54 28.422609 53.552 27.974609 53 27.974609 L 51 27.974609 z');
+    	svgElement.appendChild(pathElement21);
+    	
+    	let pathElement3 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement3.setAttribute('class','coloredTransactionLine');
+    	pathElement3.setAttribute('d','M 11 33.974609 C 10.448 33.974609 10 34.422609 10 34.974609 C 10 35.526609 10.448 35.974609 11 35.974609 L 15 35.974609 C 15.552 35.974609 16 35.526609 16 34.974609 C 16 34.422609 15.552 33.974609 15 33.974609 L 11 33.974609 z M 19 33.974609 C 18.448 33.974609 18 34.422609 18 34.974609 C 18 35.526609 18.448 35.974609 19 35.974609 L 33 35.974609 C 33.552 35.974609 34 35.526609 34 34.974609 C 34 34.422609 33.552 33.974609 33 33.974609 L 19 33.974609 z'); 
+    	svgElement.appendChild(pathElement3);
+    	
+    	let pathElement31 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement31.setAttribute('d',' M 45 33.974609 C 44.448 33.974609 44 34.422609 44 34.974609 C 44 35.526609 44.448 35.974609 45 35.974609 L 47 35.974609 C 47.552 35.974609 48 35.526609 48 34.974609 C 48 34.422609 47.552 33.974609 47 33.974609 L 45 33.974609 z M 51 33.974609 C 50.448 33.974609 50 34.422609 50 34.974609 C 50 35.526609 50.448 35.974609 51 35.974609 L 53 35.974609 C 53.552 35.974609 54 35.526609 54 34.974609 C 54 34.422609 53.552 33.974609 53 33.974609 L 51 33.974609 z'); 
+    	svgElement.appendChild(pathElement31);
+    	
+    	let pathElement4 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement4.setAttribute('class','coloredTransactionLine');
+    	pathElement4.setAttribute('d','M 11 39.974609 C 10.448 39.974609 10 40.422609 10 40.974609 C 10 41.526609 10.448 41.974609 11 41.974609 L 15 41.974609 C 15.552 41.974609 16 41.526609 16 40.974609 C 16 40.422609 15.552 39.974609 15 39.974609 L 11 39.974609 z M 19 39.974609 C 18.448 39.974609 18 40.422609 18 40.974609 C 18 41.526609 18.448 41.974609 19 41.974609 L 33 41.974609 C 33.552 41.974609 34 41.526609 34 40.974609 C 34 40.422609 33.552 39.974609 33 39.974609 L 19 39.974609 z'); 
+    	svgElement.appendChild(pathElement4);
+    	
+    	let pathElement41 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement41.setAttribute('d','M 39 39.974609 C 38.448 39.974609 38 40.422609 38 40.974609 C 38 41.526609 38.448 41.974609 39 41.974609 L 41 41.974609 C 41.552 41.974609 42 41.526609 42 40.974609 C 42 40.422609 41.552 39.974609 41 39.974609 L 39 39.974609 z M 45 39.974609 C 44.448 39.974609 44 40.422609 44 40.974609 C 44 41.526609 44.448 41.974609 45 41.974609 L 47 41.974609 C 47.552 41.974609 48 41.526609 48 40.974609 C 48 40.422609 47.552 39.974609 47 39.974609 L 45 39.974609 z M 51 39.974609 C 50.448 39.974609 50 40.422609 50 40.974609 C 50 41.526609 50.448 41.974609 51 41.974609 L 53 41.974609 C 53.552 41.974609 54 41.526609 54 40.974609 C 54 40.422609 53.552 39.974609 53 39.974609 L 51 39.974609 z ');
+    	svgElement.appendChild(pathElement41);
+    	
+    	let pathElement5 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    	pathElement5.setAttribute('d','M 7 48 C 6.448 48 6 48.448 6 49 L 6 51 C 6 51.552 6.448 52 7 52 C 7.552 52 8 51.552 8 51 L 8 49 C 8 48.448 7.552 48 7 48 z M 12 48 C 11.448 48 11 48.448 11 49 L 11 51 C 11 51.552 11.448 52 12 52 C 12.552 52 13 51.552 13 51 L 13 49 C 13 48.448 12.552 48 12 48 z M 17 48 C 16.448 48 16 48.448 16 49 L 16 51 C 16 51.552 16.448 52 17 52 C 17.552 52 18 51.552 18 51 L 18 49 C 18 48.448 17.552 48 17 48 z M 22 48 C 21.448 48 21 48.448 21 49 L 21 51 C 21 51.552 21.448 52 22 52 C 22.552 52 23 51.552 23 51 L 23 49 C 23 48.448 22.552 48 22 48 z M 27 48 C 26.448 48 26 48.448 26 49 L 26 51 C 26 51.552 26.448 52 27 52 C 27.552 52 28 51.552 28 51 L 28 49 C 28 48.448 27.552 48 27 48 z M 32 48 C 31.448 48 31 48.448 31 49 L 31 51 C 31 51.552 31.448 52 32 52 C 32.552 52 33 51.552 33 51 L 33 49 C 33 48.448 32.552 48 32 48 z M 37 48 C 36.448 48 36 48.448 36 49 L 36 51 C 36 51.552 36.448 52 37 52 C 37.552 52 38 51.552 38 51 L 38 49 C 38 48.448 37.552 48 37 48 z M 42 48 C 41.448 48 41 48.448 41 49 L 41 51 C 41 51.552 41.448 52 42 52 C 42.552 52 43 51.552 43 51 L 43 49 C 43 48.448 42.552 48 42 48 z M 47 48 C 46.448 48 46 48.448 46 49 L 46 51 C 46 51.552 46.448 52 47 52 C 47.552 52 48 51.552 48 51 L 48 49 C 48 48.448 47.552 48 47 48 z M 52 48 C 51.448 48 51 48.448 51 49 L 51 51 C 51 51.552 51.448 52 52 52 C 52.552 52 53 51.552 53 51 L 53 49 C 53 48.448 52.552 48 52 48 z M 57 48 C 56.448 48 56 48.448 56 49 L 56 51 C 56 51.552 56.448 52 57 52 C 57.552 52 58 51.552 58 51 L 58 49 C 58 48.448 57.552 48 57 48 z'); 
+    	svgElement.appendChild(pathElement5);
+
+    	return svgElement;
+    	
+	}
+
 }(jQuery));

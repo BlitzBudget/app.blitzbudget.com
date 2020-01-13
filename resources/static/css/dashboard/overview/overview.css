@@ -109,6 +109,10 @@
 	mix-blend-mode:normal
 }
 
+/*
+* Budget Optimization
+*/
+
 .tableHeadingDiv {
 	display: table-header-group;
 }
