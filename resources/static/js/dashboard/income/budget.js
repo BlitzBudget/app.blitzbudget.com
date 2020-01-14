@@ -849,6 +849,12 @@
 	        	
 	        	// Store the values in a cache
           	  	userBudgetCache[userBudget.categoryId] = userBudget;
+
+          	  	// Enable the Add button
+          	  	let genericAddFnc = document.getElementById('genericAddFnc');
+          	  	genericAddFnc.removeAttribute('disabled');
+          	  	genericAddFnc.firstChild.classList.remove('d-none');
+				genericAddFnc.lastChild.classList.add('d-none');
           	  	
           	  	let categoryNameDiv = budgetDivFragment.getElementById('categoryName-' + userBudget.categoryId);
     			// Replace HTML with Empty
@@ -1036,21 +1042,19 @@
 		});
 	
 	});
-	
-	// Add Budgets Button
-	$('#budgetChart').on('click', '#addNewBudgets' , function(e) {
-		e.preventDefault();
-		createUnbudgetedCat();
-	});
 
 	// Create a new unbudgeted category
-	function createUnbudgetedCat() {
+	function createUnbudgetedCat(event) {
 		let categoryId = returnUnbudgetedCategory();
 		
 		if(isEmpty(categoryId)) {
 			showNotification('You have a budget for all the categories!','top','center','danger');
 			return;
 		}
+		// Disable the add button
+		this.setAttribute('disabled','disabled');
+		this.firstChild.classList.add('d-none');
+		this.lastChild.classList.remove('d-none');
 		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
 		createAnEmptyBudgets(categoryId, budgetAmountDiv);
@@ -1667,9 +1671,11 @@
     genericAddFnc.classList.remove('d-none');
     genericAddFnc.classList.remove('btn-success');
     genericAddFnc.classList.add('btn-rose');
+    genericAddFnc.removeAttribute('disabled');
     genericAddFnc.addEventListener('click', function() {
+    	
     	// Create a new unbudgeted category
-		createUnbudgetedCat();
+		createUnbudgetedCat(this);
 	});
 
 }(jQuery));	

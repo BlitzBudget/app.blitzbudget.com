@@ -2086,8 +2086,11 @@
     genericAddFnc.classList.remove('d-none');
     genericAddFnc.classList.add('btn-success');
     genericAddFnc.classList.remove('btn-rose');
+    genericAddFnc.removeAttribute('disabled');
     genericAddFnc.addEventListener('click', function() {
-		$('#GSCCModal').modal('show');
+    	// Rotate the + button
+		this.classList.toggle('rotate');
+		$('#GSCCModal').modal('toggle');
 	});
 
 	/*
