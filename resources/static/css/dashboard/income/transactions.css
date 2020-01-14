@@ -19,8 +19,11 @@
 }
 
 .hideableRow {
-	-webkit-transition: all 1s linear;
-  	transition: all 1s linear;
+  	 -webkit-transition: all 1s linear;
+	-moz-transition: all 1s linear;
+	-ms-transition: all 1s linear;
+	-o-transition: all 1s linear;
+	transition: all 1s linear;
 }
 .hideableRow .d-lg-table-cell {
 	border-bottom: 1px solid #f6f6f6;
@@ -55,9 +58,11 @@
 }
 
 .toggle {
-	-webkit-transition: all .3s linear 0s;
-  	transition: all .3s linear 0s;	
-  	-webkit-transition-duration: 0.5s;
+    -webkit-transition: all .3s linear;	
+	-moz-transition: all .3s linear;	
+	-ms-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
   	 cursor: pointer;
   	 color: #495257;
 }
@@ -372,11 +377,19 @@ div[class^="categoryTableRow-"]:hover .displayCategoryAddIcon , div[class*=" cat
 
 .transitionTextTo120 {
 	font-size: 120%;
+	-webkit-transition: font-size 0.5s  ease-out;
+	-moz-transition: font-size 0.5s  ease-out;
+	-ms-transition: font-size 0.5s  ease-out;
+	-o-transition: font-size 0.5s  ease-out;
 	transition: font-size 0.5s  ease-out;
 }
 
 .transitionTextToNormal {
 	font-size: inherit;
+	-webkit-transition: font-size 0.5s  ease-out;
+	-moz-transition: font-size 0.5s  ease-out;
+	-ms-transition: font-size 0.5s  ease-out;
+	-o-transition: font-size 0.5s  ease-out;
 	transition: font-size 0.5s  ease-out;
 }
 
@@ -458,7 +471,11 @@ progress::-webkit-progress-value {
 	padding-bottom: 0.5rem;
 	color: #686969;
 	display: block;
-    transition: border-color .3s ease;
+    -webkit-transition: border-color .3s ease;
+	-moz-transition: border-color .3s ease;
+	-ms-transition: border-color .3s ease;
+	-o-transition: border-color .3s ease;
+	transition: border-color .3s ease;
     margin-right: -.8rem;
     width: calc(100% + 1.6rem);
     resize: none;
@@ -468,6 +485,10 @@ progress::-webkit-progress-value {
 #addNewGoals {
 	border-color: transparent;
 	background-color: transparent;
+	 -webkit-transition: color .3s;
+	-moz-transition: color .3s;
+	-ms-transition: color .3s;
+	-o-transition: color .3s;
 	transition: color .3s;
 	margin: 0;
 	padding: 0;
@@ -528,6 +549,10 @@ progress::-moz-progress-bar {
 	height: 32px;
 	padding: 0 16px;
 	display: block;
+	 -webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	-ms-transition: all .2s ease;
+	-o-transition: all .2s ease;
 	transition: all .2s ease;
 	border: 1px solid rgba(0,0,0,0.1);
 	font-size: 0.7rem;
@@ -666,6 +691,8 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	right: 20%;
 	bottom: 0.5rem
 }
+
+
 
 /**
 *

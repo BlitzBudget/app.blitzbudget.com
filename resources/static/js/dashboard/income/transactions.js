@@ -2070,16 +2070,23 @@
 		popup.showSwal('warning-message-and-confirmation');
 	});
 
+	/**
+	*  Add Functionality Generic + Btn
+	**/
+
 	// Register Tooltips
-	$(document).tooltip({
-    	html: false,
+	let ttinit = $("#addFncTT");
+	ttinit.attr('data-original-title', 'Add Transactions')
+	ttinit.tooltip({
 		delay: { "show": 300, "hide": 100 }
     });
-    // Register Tool tip for + button
-	$('.bottomFixed').tooltip({
-    	html: false,
-		delay: { "show": 300, "hide": 100 }
-    })
+
+    // Generic Add Functionality
+    let genericAddFnc = document.getElementById('genericAddFnc');
+    genericAddFnc.classList.remove('d-none');
+    genericAddFnc.addEventListener('click', function() {
+		$('#GSCCModal').modal('show');
+	});
 
 	/*
 	 * Populate Recent transactions ()Aggregated by account)

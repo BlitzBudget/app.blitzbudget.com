@@ -1692,4 +1692,13 @@
 
 	// Replace currentCurrencySymbol with currency symbol
 	replaceWithCurrency();	
+
+	/**
+	*  Add Functionality Generic + Btn
+	**/
+
+    // Generic Add Functionality
+    let genericAddFnc = document.getElementById('genericAddFnc');
+    genericAddFnc.classList.add('d-none');
+
 }(jQuery));

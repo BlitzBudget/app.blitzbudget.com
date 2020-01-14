@@ -295,8 +295,8 @@ window.onload = function () {
     		        success: function(data){
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
-    		            // reset Scroll position
-    		            window.scrollTo(0, 0);
+    		            // reset Scroll position to header
+    		            document.getElementsByClassName('navbar')[0].scrollIntoView();
     		            // Set Current Page
     		            document.getElementById('currentPage').innerText = currentPage;
     		        },
@@ -768,29 +768,29 @@ window.onload = function () {
 		});
 
 		// While scrolling the + button disappears
-		let scroll = $(window).scrollTop();
-		$(document).scroll ( function() {
+		let mutScrollable = document.getElementById('mutableDashboard');
+		mutScrollable.addEventListener("scroll", function() {
 		  transform('bottomFixed','scale-one','scale-zero');
 		});
 
 		// While scrolling the + button disappears / appears
 		function transform (selector,classOne,classTwo) {
 		 if ($('.'+selector).length !== 0) {
-		   if ($(window).scrollTop()> scroll) {
+		   if ($("#mutableDashboard").scrollTop()> mutScrollable) {
 		    $('.'+selector).removeClass(classOne);
 		    $('.'+selector).addClass(classTwo);
-		    scroll = $(window).scrollTop();
+		    mutScrollable = $("#mutableDashboard").scrollTop();
 		   }
-		   if ($(window).scrollTop() < scroll) {
+		   if ($(window).scrollTop() < mutScrollable) {
 		    $('.'+selector).removeClass(classTwo);
 		    $('.'+selector).addClass(classOne);
-		    scroll = $(window).scrollTop();
+		    mutScrollable = $("#mutableDashboard").scrollTop();
 		   }
 		 }
 		}
 
 		// Animation for + button on click
-		$(document).on( "click", ".bottomFixed" ,function() {
+		document.getElementsById('genericAddFnc').addEventListener('click', function() {
 			// Rotate the + button
 			this.classList.toggle('rotate');
 		});

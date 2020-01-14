@@ -1040,7 +1040,11 @@
 	// Add Budgets Button
 	$('#budgetChart').on('click', '#addNewBudgets' , function(e) {
 		e.preventDefault();
-		
+		createUnbudgetedCat();
+	});
+
+	// Create a new unbudgeted category
+	function createUnbudgetedCat() {
 		let categoryId = returnUnbudgetedCategory();
 		
 		if(isEmpty(categoryId)) {
@@ -1050,7 +1054,7 @@
 		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
 		createAnEmptyBudgets(categoryId, budgetAmountDiv);
-	});
+	}
 	
 	// Find the unbudgeted category 
 	function returnUnbudgetedCategory() {
@@ -1646,4 +1650,24 @@
 		let chartVisualization = document.getElementById('chartBudgetVisualization');
 		chartVisualization.innerHTML = '<div class="material-spinner"></div>';
 	}
+
+	/**
+	*  Add Functionality Generic + Btn
+	**/
+
+	// Register Tooltips
+	let ttinit = $("#addFncTT");
+	ttinit.attr('data-original-title', 'Add Budget');
+	ttinit.tooltip({
+		delay: { "show": 300, "hide": 100 }
+    });
+
+    // Generic Add Functionality
+    let genericAddFnc = document.getElementById('genericAddFnc');
+    genericAddFnc.classList.remove('d-none');
+    genericAddFnc.addEventListener('click', function() {
+    	// Create a new unbudgeted category
+		createUnbudgetedCat();
+	});
+
 }(jQuery));	
