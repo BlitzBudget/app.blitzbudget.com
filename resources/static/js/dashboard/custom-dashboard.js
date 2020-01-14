@@ -769,7 +769,7 @@ window.onload = function () {
 
 		// While scrolling the + button disappears
 		let scroll = $(window).scrollTop();
-		$(window).scroll ( function() {
+		$(document).scroll ( function() {
 		  transform('bottomFixed','scale-one','scale-zero');
 		});
 

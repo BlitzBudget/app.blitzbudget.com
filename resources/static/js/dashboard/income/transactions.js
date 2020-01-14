@@ -161,6 +161,8 @@
 	
 	// refresh the transactions page on closing the modal
 	$('#GSCCModal').on('hidden.bs.modal', function () {
+		// Rotate the + button
+		document.getElementsByClassName('bottomFixed')[0].classList.toggle('rotate');
 		// Clear form input fields inside the modal and the error or success messages.
 		$('#transactionsForm').get(0).reset();
 		replaceHTML('successMessage',"");
@@ -2067,6 +2069,17 @@
 	document.getElementById('manageTransactionButton').addEventListener('click', function() {
 		popup.showSwal('warning-message-and-confirmation');
 	});
+
+	// Register Tooltips
+	$(document).tooltip({
+    	html: false,
+		delay: { "show": 300, "hide": 100 }
+    });
+    // Register Tool tip for + button
+	$('.bottomFixed').tooltip({
+    	html: false,
+		delay: { "show": 300, "hide": 100 }
+    })
 
 	/*
 	 * Populate Recent transactions ()Aggregated by account)
