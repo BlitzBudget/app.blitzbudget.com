@@ -2081,9 +2081,11 @@
 		delay: { "show": 300, "hide": 100 }
     });
 
-    // Generic Add Functionality
+    // Generic Add Functionalitys
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList.remove('d-none');
+    genericAddFnc.classList.add('btn-success');
+    genericAddFnc.classList.remove('btn-rose');
     genericAddFnc.addEventListener('click', function() {
 		$('#GSCCModal').modal('show');
 	});
