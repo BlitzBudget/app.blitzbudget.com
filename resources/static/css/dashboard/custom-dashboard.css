@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-html {
+html, .main-panel {
   scroll-behavior: smooth;
 }
 
@@ -1319,6 +1319,6 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
 
 .bottomFixed {
     position: fixed;
-    right: 20%;
-    bottom: 5rem
+    left: 56%;
+    top: 80%;
 }

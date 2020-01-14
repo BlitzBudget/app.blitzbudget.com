@@ -296,7 +296,9 @@ window.onload = function () {
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
     		            // reset Scroll position to header
-    		            document.getElementsByClassName('navbar')[0].scrollIntoView();
+    		            document.getElementsByClassName('navbar')[0].scrollIntoView(({
+							  behavior: 'smooth'
+						});
     		            // Set Current Page
     		            document.getElementById('currentPage').innerText = currentPage;
     		        },
@@ -768,7 +770,7 @@ window.onload = function () {
 		});
 
 		// While scrolling the + button disappears
-		let mutScrollable = document.getElementById('mutableDashboard');
+		let mutScrollable = document.getElementsByClassName('main-panel')[0];
 		mutScrollable.addEventListener("scroll", function() {
 		  transform('bottomFixed','scale-one','scale-zero');
 		});
@@ -776,15 +778,15 @@ window.onload = function () {
 		// While scrolling the + button disappears / appears
 		function transform (selector,classOne,classTwo) {
 		 if ($('.'+selector).length !== 0) {
-		   if ($("#mutableDashboard").scrollTop()> mutScrollable) {
+		   if ($(".main-panel").scrollTop()> mutScrollable) {
 		    $('.'+selector).removeClass(classOne);
 		    $('.'+selector).addClass(classTwo);
-		    mutScrollable = $("#mutableDashboard").scrollTop();
+		    mutScrollable = $(".main-panel").scrollTop();
 		   }
 		   if ($(window).scrollTop() < mutScrollable) {
 		    $('.'+selector).removeClass(classTwo);
 		    $('.'+selector).addClass(classOne);
-		    mutScrollable = $("#mutableDashboard").scrollTop();
+		    mutScrollable = $(".main-panel").scrollTop();
 		   }
 		 }
 		}
