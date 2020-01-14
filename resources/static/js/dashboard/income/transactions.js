@@ -609,12 +609,17 @@
 	
 	// Function to enable of disable the delete transactions button
 	function manageDeleteTransactionsButton(){
-		let manageTransactionsButton = document.getElementById('manageTransactionButton');
-		if($( ".number:checked" ).length > 0) {
-			manageTransactionsButton.removeAttribute('disabled');
-		  } else {
-			 manageTransactionsButton.setAttribute('disabled','disabled');
-		  }  
+		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+			// If length > 0 then change the add button to add
+			document.getElementById('addFncTT').innerText = 'delete';
+			document.getElementById('genericAddFnc').classList.remove('btn-success');
+			document.getElementById('genericAddFnc').classList.add('btn-danger');
+		} else {
+			 // If length > 0 then change the add button to add
+			document.getElementById('addFncTT').innerText = 'add';
+			document.getElementById('genericAddFnc').classList.add('btn-success');
+			document.getElementById('genericAddFnc').classList.remove('btn-danger');
+		}  
 	}
 
 	// Deletes all auto generated user budget
@@ -2065,11 +2070,6 @@
 	// Replace currentCurrencySymbol with currency symbol
 	replaceWithCurrency();
 
-	// Delete Transactions warning button
-	document.getElementById('manageTransactionButton').addEventListener('click', function() {
-		popup.showSwal('warning-message-and-confirmation');
-	});
-
 	/**
 	*  Add Functionality Generic + Btn
 	**/
@@ -2088,9 +2088,14 @@
     genericAddFnc.classList.remove('btn-rose');
     genericAddFnc.removeAttribute('disabled');
     genericAddFnc.addEventListener('click', function() {
-    	// Rotate the + button
-		this.classList.toggle('rotate');
-		$('#GSCCModal').modal('toggle');
+		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+			// If length > 0 then change the add button to add
+			popup.showSwal('warning-message-and-confirmation');
+		} else {
+			// Rotate the + button
+			this.classList.toggle('rotate');
+			$('#GSCCModal').modal('toggle');
+		}  
 	});
 
 	/*

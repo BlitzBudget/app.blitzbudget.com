@@ -1323,6 +1323,18 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     top: 80%;
 }
 
+#genericAddFnc  {
+    -webkit-transition: background-color 300ms ease;
+    -moz-transition: background-color 300ms ease;
+    -o-transition: background-color 300ms ease;
+    -ms-transition: background-color 300ms ease;
+    transition: background-color 300ms ease;  
+}
+
+#genericAddFnc:hover, #genericAddFnc:focus {
+    opacity: 0.8;
+}
+
 div#wave {
     position:relative;
     margin-top:50vh;
