@@ -790,7 +790,7 @@ window.onload = function () {
 		}
 
 		// Animation for + button on click
-		document.getElementsById('genericAddFnc').addEventListener('click', function() {
+		document.getElementById('genericAddFnc').addEventListener('click', function() {
 			// Rotate the + button
 			this.classList.toggle('rotate');
 		});

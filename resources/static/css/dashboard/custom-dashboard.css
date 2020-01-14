@@ -1316,3 +1316,9 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     -o-transition: all 0.1s linear;  
     transition: all 0.1s linear;
 }
+
+.bottomFixed {
+    position: fixed;
+    right: 20%;
+    bottom: 5rem
+}

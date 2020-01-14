@@ -1665,6 +1665,8 @@
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList.remove('d-none');
+    genericAddFnc.classList.remove('btn-success');
+    genericAddFnc.classList.add('btn-rose');
     genericAddFnc.addEventListener('click', function() {
     	// Create a new unbudgeted category
 		createUnbudgetedCat();
