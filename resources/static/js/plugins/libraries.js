@@ -207,7 +207,7 @@ function manageErrors(thrownError, message) {
 	} else {
 		let responseError = JSON.parse(thrownError.responseText);
    	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-    		er.sessionExpiredSwal(ajaxData);
+    		er.sessionExpiredSwal(thrownError);
     	}	
 	}
 }

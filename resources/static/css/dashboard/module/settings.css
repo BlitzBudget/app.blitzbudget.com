@@ -128,7 +128,7 @@
     width: 20rem;
 }
 
-.autocomplete-items .dropdown-item, #currentCountries .dropdown-item {
+.autocomplete-items .dropdown-item, #currentCountries .dropdown-item, #currentCurrencies .dropdown-item {
     width: 100%;
     cursor: pointer;
     white-space: pre-wrap;
@@ -145,7 +145,7 @@
     color: #fff;
 }
 
-.dropdown-header, .autocomplete-items, #currentCountries {
+.dropdown-header, .autocomplete-items, #currentCountries, #currentCurrencies {
     width: 100%;
 }
 
