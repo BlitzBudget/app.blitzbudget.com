@@ -296,7 +296,7 @@ window.onload = function () {
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
     		            // reset Scroll position to header
-    		            document.getElementsByClassName('navbar')[0].scrollIntoView(({
+    		            document.getElementsByClassName('navbar')[0].scrollIntoView({
 							  behavior: 'smooth'
 						});
     		            // Set Current Page
@@ -790,12 +790,6 @@ window.onload = function () {
 		   }
 		 }
 		}
-
-		// Animation for + button on click
-		document.getElementById('genericAddFnc').addEventListener('click', function() {
-			// Rotate the + button
-			this.classList.toggle('rotate');
-		});
 				
 	});
 }

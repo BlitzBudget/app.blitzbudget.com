@@ -692,6 +692,14 @@
 		let budgetAmount = document.getElementById('budgetAmount');
 		
 		if(isEmpty(datesWithUserBudgetData) && isEmpty(userBudgetCache)) {
+			// Enable the Add button
+      	  	let genericAddFnc = document.getElementById('genericAddFnc');
+      	  	genericAddFnc.setAttribute('disabled','disabled');
+      	  	let children = genericAddFnc.children;
+			for (let i = 0, len = children.length; i < len; i++) {
+			  let tableChild = children[i];
+			  if(i == 0) {tableChild.classList.add('d-none');} else if(i == 1) { tableChild.classList.remove('d-none'); break; }
+			}
 			// Appends to a document fragment
       	  	createAnEmptyBudgets(CUSTOM_DASHBOARD_CONSTANTS.defaultCategory, budgetAmount);
       	  	createAnEmptyBudgets(CUSTOM_DASHBOARD_CONSTANTS.defaultCategory+1, budgetAmount);
@@ -849,6 +857,15 @@
 	        	
 	        	// Store the values in a cache
           	  	userBudgetCache[userBudget.categoryId] = userBudget;
+
+          	  	// Enable the Add button
+          	  	let genericAddFnc = document.getElementById('genericAddFnc');
+          	  	genericAddFnc.removeAttribute('disabled');
+          	  	let children = genericAddFnc.children;
+				for (let i = 0, len = children.length; i < len; i++) {
+				  let tableChild = children[i];
+				  if(i == 0) {tableChild.classList.remove('d-none');} else if(i == 1) { tableChild.classList.add('d-none'); break; }
+				}
           	  	
           	  	let categoryNameDiv = budgetDivFragment.getElementById('categoryName-' + userBudget.categoryId);
     			// Replace HTML with Empty
@@ -917,6 +934,14 @@
             	
 	    }
         ajaxData.onFailure = function (thrownError) {
+        	// Enable the Add button
+      	  	let genericAddFnc = document.getElementById('genericAddFnc');
+      	  	genericAddFnc.removeAttribute('disabled');
+      	  	let children = genericAddFnc.children;
+			for (let i = 0, len = children.length; i < len; i++) {
+			  let tableChild = children[i];
+			  if(i == 0) {tableChild.classList.remove('d-none');} else if(i == 1) { tableChild.classList.add('d-none'); break; }
+			}
         	manageErrors(thrownError, 'Unable to create the budgets. Please refresh and try again!');
         }
 
@@ -1036,20 +1061,21 @@
 		});
 	
 	});
-	
-	// Add Budgets Button
-	$('#budgetChart').on('click', '#addNewBudgets' , function(e) {
-		e.preventDefault();
-		createUnbudgetedCat();
-	});
 
 	// Create a new unbudgeted category
-	function createUnbudgetedCat() {
+	function createUnbudgetedCat(event) {
 		let categoryId = returnUnbudgetedCategory();
 		
 		if(isEmpty(categoryId)) {
 			showNotification('You have a budget for all the categories!','top','center','danger');
 			return;
+		}
+		// Disable the add button
+		event.setAttribute('disabled','disabled');
+		let children = event.children;
+		for (let i = 0, len = children.length; i < len; i++) {
+		  let tableChild = children[i];
+		  if(i == 0) {tableChild.classList.add('d-none');} else if(i == 1) { tableChild.classList.remove('d-none'); break;}
 		}
 		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
@@ -1664,12 +1690,16 @@
 
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
+    document.getElementById('addFncTT').innerText = 'add';
     genericAddFnc.classList.remove('d-none');
     genericAddFnc.classList.remove('btn-success');
+    genericAddFnc.classList.remove('btn-danger');
     genericAddFnc.classList.add('btn-rose');
+    genericAddFnc.removeAttribute('disabled');
     genericAddFnc.addEventListener('click', function() {
+    	
     	// Create a new unbudgeted category
-		createUnbudgetedCat();
+		createUnbudgetedCat(this);
 	});
 
 }(jQuery));	
