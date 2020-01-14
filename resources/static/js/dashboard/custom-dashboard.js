@@ -766,6 +766,34 @@ window.onload = function () {
 				activeProClass.toggle('d-block');
 			}
 		});
+
+		// While scrolling the + button disappears
+		let scroll = $(window).scrollTop();
+		$(window).scroll ( function() {
+		  transform('bottomFixed','scale-one','scale-zero');
+		});
+
+		// While scrolling the + button disappears / appears
+		function transform (selector,classOne,classTwo) {
+		 if ($('.'+selector).length !== 0) {
+		   if ($(window).scrollTop()> scroll) {
+		    $('.'+selector).removeClass(classOne);
+		    $('.'+selector).addClass(classTwo);
+		    scroll = $(window).scrollTop();
+		   }
+		   if ($(window).scrollTop() < scroll) {
+		    $('.'+selector).removeClass(classTwo);
+		    $('.'+selector).addClass(classOne);
+		    scroll = $(window).scrollTop();
+		   }
+		 }
+		}
+
+		// Animation for + button on click
+		$(document).on( "click", ".bottomFixed" ,function() {
+			// Rotate the + button
+			this.classList.toggle('rotate');
+		});
 				
 	});
 }

@@ -1239,3 +1239,18 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     border: 1px solid #8b8c8e;
     cursor: not-allowed;
 }
+
+.rotate {
+    transform:rotate(45deg);  
+    transition: all 0.1s linear;  
+}
+
+.scale-zero{
+    transform: scale(0,0);
+    transition: all 0.1s linear;
+}
+
+.scale-one{
+    transform: scale(1,1);
+    transition: all 0.1s linear;
+}

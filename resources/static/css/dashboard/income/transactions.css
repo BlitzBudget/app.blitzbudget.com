@@ -661,6 +661,12 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	box-shadow: 0 0 3px rgba(76,175,80,0.42);
 }
 
+.bottomFixed {
+	position: fixed;
+	right: 20%;
+	bottom: 0.5rem
+}
+
 /**
 *
 * Recent Transactions CSS
