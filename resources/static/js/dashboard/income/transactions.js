@@ -2083,20 +2083,26 @@
 
     // Generic Add Functionalitys
     let genericAddFnc = document.getElementById('genericAddFnc');
+    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
     genericAddFnc.classList.remove('d-none');
     genericAddFnc.classList.add('btn-success');
     genericAddFnc.classList.remove('btn-rose');
     genericAddFnc.removeAttribute('disabled');
-    genericAddFnc.addEventListener('click', function() {
+    let genericAddFncByClass = document.getElementsByClassName('addNewTrans')[0];
+    genericAddFncByClass.removeEventListener('click', addNewTransClickEH);
+    genericAddFncByClass.addEventListener('click', addNewTransClickEH);
+
+    // Add new transactions Click event Handler
+    function addNewTransClickEH(event) {
 		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
 			// If length > 0 then change the add button to add
 			popup.showSwal('warning-message-and-confirmation');
 		} else {
 			// Rotate the + button
-			this.classList.toggle('rotate');
+			event.classList.toggle('rotate');
 			$('#GSCCModal').modal('toggle');
 		}  
-	});
+	}
 
 	/*
 	 * Populate Recent transactions ()Aggregated by account)
