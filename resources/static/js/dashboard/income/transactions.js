@@ -161,8 +161,8 @@
 	
 	// refresh the transactions page on closing the modal
 	$('#GSCCModal').on('hidden.bs.modal', function () {
-		// Rotate the + button
-		document.getElementsByClassName('bottomFixed')[0].classList.toggle('rotate');
+		// Add icon d-none
+		document.getElementById('genericAddFnc').classList.toggle('d-none');
 		// Clear form input fields inside the modal and the error or success messages.
 		$('#transactionsForm').get(0).reset();
 		replaceHTML('successMessage',"");
@@ -2084,8 +2084,8 @@
     // Generic Add Functionalitys
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
-    $('#genericAddFnc').unbind('click').click(function () {
-
+    $(genericAddFnc).unbind('click').click(function () {
+    	genericAddFnc.classList.toggle('d-none');
 		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
 			// If length > 0 then change the add button to add
 			popup.showSwal('warning-message-and-confirmation');

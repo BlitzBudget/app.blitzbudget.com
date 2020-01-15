@@ -927,12 +927,8 @@
         ajaxData.onFailure = function (thrownError) {
         	// Enable the Add button
       	  	let genericAddFnc = document.getElementById('genericAddFnc');
-      	  	genericAddFnc.removeAttribute('disabled');
-      	  	let children = genericAddFnc.children;
-			for (let i = 0, len = children.length; i < len; i++) {
-			  let tableChild = children[i];
-			  if(i == 0) {tableChild.classList.remove('d-none');} else if(i == 1) { tableChild.classList.add('d-none'); break; }
-			}
+      	  	genericAddFnc.classList.remove('d-none');
+      	  	
         	manageErrors(thrownError, 'Unable to create the budgets. Please refresh and try again!');
         }
 
@@ -1678,7 +1674,7 @@
     let genericAddFnc = document.getElementById('genericAddFnc');
     document.getElementById('addFncTT').innerText = 'add';
     genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
-    $('#genericAddFnc').unbind('click').click(function () {
+    $(genericAddFnc).unbind('click').click(function () {
     	if(!this.classList.contains('addNewBudget')) {
     		return;
     	}
