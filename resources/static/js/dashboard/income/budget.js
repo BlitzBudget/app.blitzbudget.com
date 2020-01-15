@@ -1678,17 +1678,13 @@
     let genericAddFnc = document.getElementById('genericAddFnc');
     document.getElementById('addFncTT').innerText = 'add';
     genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
-    genericAddFnc.removeEventListener('click', createNewBudgetClickEH);
-    genericAddFnc.addEventListener('click', createNewBudgetClickEH);
-
-    // Create a new budget event handler
-    function createNewBudgetClickEH(event) {
-    	if(!event.classList.contains('addNewBudget')) {
+    $('#genericAddFnc').unbind('click').click(function () {
+    	if(!this.classList.contains('addNewBudget')) {
     		return;
     	}
 
     	// Create a new unbudgeted category
-		createUnbudgetedCat(event);
-	}
+		createUnbudgetedCat(this);
+    });
 
 }(jQuery));	

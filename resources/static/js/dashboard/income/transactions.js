@@ -2084,24 +2084,17 @@
     // Generic Add Functionalitys
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
-    genericAddFnc.removeEventListener('click', addNewTransClickEH);
-    genericAddFnc.addEventListener('click', addNewTransClickEH);
-
-    // Add new transactions Click event Handler
-    function addNewTransClickEH(event) {
-    	if(!event.classList.contains('addNewTrans')) {
-    		return;
-    	}
+    $('#genericAddFnc').unbind('click').click(function () {
 
 		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
 			// If length > 0 then change the add button to add
 			popup.showSwal('warning-message-and-confirmation');
 		} else {
 			// Rotate the + button
-			event.classList.toggle('rotate');
+			this.classList.toggle('rotate');
 			$('#GSCCModal').modal('toggle');
 		}  
-	}
+	});
 
 	/*
 	 * Populate Recent transactions ()Aggregated by account)
