@@ -296,9 +296,7 @@ window.onload = function () {
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
     		            // reset Scroll position to header
-    		            document.getElementsByClassName('navbar')[0].scrollIntoView({
-							  behavior: 'smooth'
-						});
+    		            document.getElementsByClassName('navbar')[0].scrollIntoView();
     		            // Set Current Page
     		            document.getElementById('currentPage').innerText = currentPage;
     		        },
@@ -771,24 +769,25 @@ window.onload = function () {
 
 		// While scrolling the + button disappears
 		let mutScrollable = document.getElementsByClassName('main-panel')[0];
+		let mutableScrollPos = 0;
 		mutScrollable.addEventListener("scroll", function() {
-		  transform('bottomFixed','scale-one','scale-zero');
+		  transform('bottomFixed','scale-one','scale-zero', 'main-panel');
 		});
 
 		// While scrolling the + button disappears / appears
-		function transform (selector,classOne,classTwo) {
-		 if ($('.'+selector).length !== 0) {
-		   if ($(".main-panel").scrollTop()> mutScrollable) {
-		    $('.'+selector).removeClass(classOne);
-		    $('.'+selector).addClass(classTwo);
-		    mutScrollable = $(".main-panel").scrollTop();
-		   }
-		   if ($(window).scrollTop() < mutScrollable) {
-		    $('.'+selector).removeClass(classTwo);
-		    $('.'+selector).addClass(classOne);
-		    mutScrollable = $(".main-panel").scrollTop();
-		   }
-		 }
+		function transform (selector,classOne,classTwo,scrollableElement) {
+			let st = document.getElementsByClassName(scrollableElement)[0].scrollTop;
+			let selectorEl = document.getElementsByClassName(selector);
+			if (selectorEl.length !== 0) {
+			   if (st > mutableScrollPos) {
+			    	selectorEl[0].classList.remove(classOne);
+			    	selectorEl[0].classList.add(classTwo);
+			   } else {
+			   		selectorEl[0].classList.add(classOne);
+			    	selectorEl[0].classList.remove(classTwo);
+			   }
+			   mutableScrollPos = st <= 0 ? 0 : st;
+			}
 		}
 				
 	});

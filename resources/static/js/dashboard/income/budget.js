@@ -694,7 +694,7 @@
 		if(isEmpty(datesWithUserBudgetData) && isEmpty(userBudgetCache)) {
 			// Enable the Add button
       	  	let genericAddFnc = document.getElementById('genericAddFnc');
-      	  	genericAddFnc.setAttribute('disabled','disabled');
+      	  	genericAddFnc.classList.add('d-none');
       	  	let children = genericAddFnc.children;
 			for (let i = 0, len = children.length; i < len; i++) {
 			  let tableChild = children[i];
@@ -860,7 +860,7 @@
 
           	  	// Enable the Add button
           	  	let genericAddFnc = document.getElementById('genericAddFnc');
-          	  	genericAddFnc.removeAttribute('disabled');
+          	  	genericAddFnc.classList.remove('d-none');
           	  	let children = genericAddFnc.children;
 				for (let i = 0, len = children.length; i < len; i++) {
 				  let tableChild = children[i];
@@ -1071,7 +1071,7 @@
 			return;
 		}
 		// Disable the add button
-		event.setAttribute('disabled','disabled');
+		event.classList.add('d-none');
 		let children = event.children;
 		for (let i = 0, len = children.length; i < len; i++) {
 		  let tableChild = children[i];
@@ -1691,15 +1691,17 @@
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
     document.getElementById('addFncTT').innerText = 'add';
-    genericAddFnc.classList.remove('d-none');
-    genericAddFnc.classList.remove('btn-success');
-    genericAddFnc.classList.remove('btn-danger');
-    genericAddFnc.classList.add('btn-rose');
+    genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
     genericAddFnc.removeAttribute('disabled');
-    genericAddFnc.addEventListener('click', function() {
+    let genericAddFncByClass = document.getElementsByClassName('addNewBudget')[0];
+    genericAddFncByClass.removeEventListener('click', createNewBudgetClickEH);
+    genericAddFncByClass.addEventListener('click', createNewBudgetClickEH);
+
+    // Create a new budget event handler
+    function createNewBudgetClickEH(event) {
     	
     	// Create a new unbudgeted category
-		createUnbudgetedCat(this);
-	});
+		createUnbudgetedCat(event);
+	}
 
 }(jQuery));	

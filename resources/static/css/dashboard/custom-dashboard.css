@@ -512,6 +512,10 @@ html, .main-panel {
     padding: 0 15px;
 }
 
+#showAccounts {
+    fill: #555;
+}
+
 /* sidebar customization */
 .sidebar-mini .sidebar {
     font-weight: 200;
@@ -1317,10 +1321,58 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     transition: all 0.1s linear;
 }
 
-.bottomFixed {
+.bottomFixed#genericAddFnc {
     position: fixed;
     left: 56%;
     top: 80%;
+}
+
+.material-icons:hover,
+.nav-link:hover .material-icons,
+#dashboard-util-logout:hover .material-icons {
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+   -webkit-transform: rotate(5deg);
+  -ms-transform: rotate(5deg);
+  -o-transform: rotate(5deg);
+  transform: rotate(5deg);
+}
+
+#settingsPage:hover .material-icons, 
+#dashboard-util-fullscreen:hover .material-icons {
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+#genericAddFnc:hover .material-icons {
+    animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+
+.material-icons {
+   transition: all .3s ease;
+    -webkit-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -o-transform: scale(0.8);
+  transform: scale(0.8);
+}
+
+@-moz-keyframes spin {
+    from { -moz-transform: rotate(0deg); }
+    to { -moz-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
 }
 
 #genericAddFnc  {
