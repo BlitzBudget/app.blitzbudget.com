@@ -812,10 +812,6 @@ var AWSCogUser = window.AWSCogUser || {};
         if(cognitoUser != null) {
             // Signout user from cognito
             cognitoUser.signOut();
-            // Remove session storage data
-            sessionStorage.clear();
-            // Clear local storage
-            localStorage.clear();
         }
         
         // redirect user to home page
