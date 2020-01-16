@@ -4,7 +4,7 @@
 	<title>
 	    Income
 	  </title>
-	  <link href="css/dashboard/income/transactions.min.css" rel="stylesheet preload" as="style">
+	  <link href="css/transactions.all.min.css" rel="stylesheet preload" as="style">
 	  <script defer nonce="2726d7e26r" src="js/dashboard/income/transactions.min.js" type="text/javascript"></script>
 </head>
 <body class="income-dashboard">
@@ -18,15 +18,48 @@
                     <i class="material-icons">assignment</i>
                   </div>
                   <h4 class="card-title d-inline-block">Transactions</h4>
-                  <div class="btn-group btnGroup-1 float-left">
-                    <button class="chosenSortBy btn btn-secondary w-15" disabled="">Category</button>
-                    <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <div id="chooseSortByDD" class="dropdown-menu">
-                      <a class="dropdown-item categorySortBy"><div class="font-weight-bold">Category</div></a>
-                      <a class="dropdown-item accountSortBy"><div class="font-weight-bold">Account</div></a>
-                      <a class="dropdown-item creationDateSortBy"><div class="font-weight-bold">Creation Date</div></a>
+                  <div class="dropdown bootstrap-select show-tick">
+                    <select class="selectpicker" data-style="select-with-transition" multiple="" title="Choose City" data-size="7" tabindex="-98">
+                            <option disabled=""> Sort By</option>
+                            <option value="2">Category </option>
+                            <option value="3">Account</option>
+                            <option value="4">Creation Date</option>
+                      </select>
+                      <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition" data-toggle="dropdown" role="button" title="Choose City" aria-expanded="false">
+                        <div class="filter-option">
+                          <div class="filter-option-inner">
+                            <div class="filter-option-inner-inner">Category</div></div> </div>
+                            <div class="ripple-container"></div>
+                      </button>
+                      <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="bootstrap-combobox">
+                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                          <ul class="dropdown-menu inner show">
+                            <li class="disabled">
+                              <a role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
+                                <span class=" bs-ok-default check-mark"></span>
+                               <span class="text"> Sort By</span>
+                             </a>
+                           </li>
+                           <li>
+                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+                              <span class=" bs-ok-default check-mark"></span>
+                              <span class="text">Category </span>
+                            </a>
+                          </li>
+                          <li>
+                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+                              <span class=" bs-ok-default check-mark"></span>
+                              <span class="text">Account</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
+                              <span class=" bs-ok-default check-mark"></span>
+                              <span class="text">Creation Date</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -233,11 +266,11 @@
                                   <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction category">category</i></div>
                                 </div>
                                 <select id="categoryOptions" name="categoryOptions" class="form-control" data-toggle="dropdown" data-style="btn btn-primary" aria-haspopup="true" aria-expanded="false" data-width="auto" data-container="body" data-size="5">
-				      				<optgroup id="expenseSelection" label="Expenses">
-				      				</optgroup>
-				      				<optgroup id="incomeSelection" label="Income">
-				      				</optgroup>
-				      			</select>
+            				      				<optgroup id="expenseSelection" label="Expenses">
+            				      				</optgroup>
+            				      				<optgroup id="incomeSelection" label="Income">
+            				      				</optgroup>
+            				      			</select>
                               </div>
                             </div>
                             <div class="form-group bmd-form-group">

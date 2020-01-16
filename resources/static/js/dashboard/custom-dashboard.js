@@ -274,6 +274,8 @@ window.onload = function () {
         	changeImageOfSidebar(imageUrl);
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
+        	// reset Scroll position to header
+    		document.getElementsByClassName('navbar')[0].scrollTop = 0; 
 			
         	// Check if user is logged in
         	if(uh.checkIfUserLoggedIn()) {
@@ -295,8 +297,6 @@ window.onload = function () {
     		        success: function(data){
     		        	// Load the new HTML
     		            $('#mutableDashboard').html(data);
-    		            // reset Scroll position to header
-    		            document.getElementsByClassName('navbar')[0].scrollIntoView();
     		            // Set Current Page
     		            document.getElementById('currentPage').innerText = currentPage;
     		        },
