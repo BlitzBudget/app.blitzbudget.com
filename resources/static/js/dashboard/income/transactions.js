@@ -34,6 +34,8 @@
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
+	// current Sorting selection
+	let currentSortBySelection = 'Category';
 	
 	
 	/**
@@ -2335,6 +2337,11 @@
 
 	// Click on sort by creation date
 	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
+		// If the current selection is the same as the one already selected
+		if(isEqual(currentSortBySelection,'Creation Date')) {
+			return;
+		}
+
 		// show the recent transactions
 		document.getElementById('recentTransactions').classList.remove('d-none');
 		// hide the category view
@@ -2358,16 +2365,23 @@
 
 		// Populate recent transactions
 		populateRecentTransactions();
+		// Change title of in the dropdown
+		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
 	});
 
 	// Click on sort by creation date
 	document.getElementById('categorySortBy').addEventListener("click",function(e){
+		// If the current selection is the same as the one already selected
+		if(isEqual(currentSortBySelection,'Category')) {
+			return;
+		}
+
 		// show the recent transactions
-		document.getElementById('recentTransactions').classList.remove('d-none');
+		document.getElementById('recentTransactions').classList.add('d-none');
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
-		transactionsTable.classList.remove('d-lg-table');
-		transactionsTable.classList.add('d-none');
+		transactionsTable.classList.add('d-lg-table');
+		transactionsTable.classList.remove('d-none');
 
 		// If a new transaction is registered then population is necessary
 		if(resiteredNewTransaction) {
@@ -2378,6 +2392,8 @@
 			// Fetch JSOn for transactions and populate pie chart
 			fetchJSONForTransactions();
 		}
+		// Change title of in the dropdown
+		document.getElementById('sortByBtnTit').innerText = 'Category';
 	});
 
 }(jQuery));

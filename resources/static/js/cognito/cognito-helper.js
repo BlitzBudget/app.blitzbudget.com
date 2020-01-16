@@ -115,27 +115,13 @@ uh = {
 	    }
 
 	    cognitoUser.getSession((err, session) => {
-		    if (err) {
+		    if (isNotEmpty(err)) {
 		        showNotification(err.message,'top','center','danger');
 		        er.showLoginPopup();
 		        return;
-		    }
-
-		    if (session === undefined) {
-		        showNotification('Session expired','top','center','danger');
-		        er.showLoginPopup();
-		        return;
-		    }
-
-		    if (!session.isValid()) {
+		    } else if (isEmpty(session) || !session.isValid() || !sessionInvalidated) {
 		        showNotification('Session is invalid','top','center','success');
 		        er.showLoginPopup();
-		        return;
-		    }
-
-		    // If the session was already refreshed and still happens to receive (401 HTTP)
-		    if(!sessionInvalidated) {
-		    	er.showLoginPopup();
 		    	window.sessionRefreshed = 0;
 		    	return;
 		    }

@@ -530,10 +530,7 @@ window.onload = function () {
 		        	updateMonthExistsWithTransactionData(dateAndAmountAsList);
 		        },
 		        error: function(data) {
-		  	    	var responseError = JSON.parse(data.responseText);
-		           	if(responseError.error.includes("Unauthorized")){
-		  		    	er.sessionExpiredSwal(data);
-		           	}
+		  	    	manageErrors(data, "There was an error fetching total transactions.");
 		        }
 			});
 		}
@@ -658,10 +655,7 @@ window.onload = function () {
 	        	  Object.seal(categoryMap);
 	        	},
 	        	error: function(data) {
-		  	    	var responseError = JSON.parse(data.responseText);
-		           	if(responseError.error.includes("Unauthorized")){
-		  		    	er.sessionExpiredSwal(data);
-		           	}
+		  	    	manageErrors(data, "Unable to fetch categories at this moment");
 		        }
 	     	});
 		}
@@ -810,10 +804,7 @@ er = {
 		        	updateBudgetMap = {}; 
 		        },
 		        error: function(data) {
-		  	    	var responseError = JSON.parse(data.responseText);
-		           	if(responseError.error.includes("Unauthorized")){
-		  		    	er.sessionExpiredSwal(data);
-		           	}
+		  	    	manageErrors(data, "There was an error updating the budget.");
 		        },
 	            async: async
 			});
@@ -865,11 +856,6 @@ er = {
 			// Initialize the modal to not close will when pressing ESC or clicking outside
 			toggleLogin(email);
         }
-		
-		// If session Expired then clear storage
-		sessionStorage.clear();
-		// Clear local storage
-		localStorage.clear();
 	},
 	
 	//convert from currency format to number
