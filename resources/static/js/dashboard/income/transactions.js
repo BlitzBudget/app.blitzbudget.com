@@ -34,8 +34,6 @@
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
-	// current Sorting selection
-	let currentSortBySelection = 'Category';
 	
 	
 	/**
@@ -2337,11 +2335,6 @@
 
 	// Click on sort by creation date
 	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
-		let creationDateText = 'Creation Date';
-		// If the current selection is the same as the one already selected
-		if(isEqual(currentSortBySelection,creationDateText)) {
-			return;
-		}
 
 		// show the recent transactions
 		document.getElementById('recentTransactions').classList.remove('d-none');
@@ -2367,18 +2360,11 @@
 		// Populate recent transactions
 		populateRecentTransactions();
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = creationDateText;
-		// Update cache of current dropdown
-		currentSortBySelection = creationDateText;
+		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
 	});
 
 	// Click on sort by creation date
 	document.getElementById('categorySortBy').addEventListener("click",function(e){
-		let categoryText = 'Category';
-		// If the current selection is the same as the one already selected
-		if(isEqual(currentSortBySelection,categoryText)) {
-			return;
-		}
 
 		// show the recent transactions
 		document.getElementById('recentTransactions').classList.add('d-none');
@@ -2397,9 +2383,7 @@
 			fetchJSONForTransactions();
 		}
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = categoryText;
-		// Update cache of current dropdown
-		currentSortBySelection = categoryText;
+		document.getElementById('sortByBtnTit').innerText = 'Category';
 	});
 
 }(jQuery));
