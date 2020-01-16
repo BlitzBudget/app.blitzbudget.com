@@ -119,17 +119,17 @@ uh = {
 		        showNotification(err.message,'top','center','danger');
 		        er.showLoginPopup();
 		        return;
-		    } else if (isEmpty(session) || !session.isValid() || !sessionInvalidated) {
+		    } else if (isEmpty(session) || !session.isValid() || sessionInvalidated) {
 		        showNotification('Session is invalid','top','center','success');
 		        er.showLoginPopup();
-		    	window.sessionRefreshed = 0;
+		    	window.sessionInvalidated = 0;
 		    	return;
 		    }
 	
 		    let refresh_token = session.getRefreshToken(); // receive session from calling cognitoUser.getSession()
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
 				// Session Refreshed
-				window.sessionRefreshed++;
+				window.sessionInvalidated++;
 
 				if (err) {
 					showNotification(err.message,'top','center','danger');
@@ -141,6 +141,11 @@ uh = {
 	                sessionStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
 
+	                // If ajax Data is empty then don't do anything
+	                if(isEmpty(ajaxData)) {
+	                	return;
+	                }
+	                
 	                // Do the Ajax Call that failed
 	                if(ajaxData.isAjaxReq) {
 	                	let ajaxParams = {
