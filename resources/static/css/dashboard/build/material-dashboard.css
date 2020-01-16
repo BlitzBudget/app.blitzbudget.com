@@ -14129,6 +14129,7 @@ h2.title {
   background-color: transparent;
   background-image: none;
   color: #777;
+  box-shadow: none;
 }
 
 .dropdown-menu.dropdown-with-icons .dropdown-item {

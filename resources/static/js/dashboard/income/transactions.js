@@ -29,6 +29,8 @@
 	let transactionsChart = '';
 	// Fetch Drag Handle for transactions row table
 	let dragHandle = fetchDragHandle();
+	// recent transactions populated
+	let recentTransactionsPopulated = '';
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -113,6 +115,7 @@
    		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(data) {
+
         	let successMessageDocument = document.getElementById('successMessage');
         	// Clone and Append the success Message
         	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);
@@ -2099,7 +2102,13 @@
 	/*
 	 * Populate Recent transactions ()Aggregated by account)
 	 */ 
-	populateRecentTransactions();
+
+	// Append Material Spinner
+	function materialSpinnerApp() {
+		let rtSpinner = document.createElement('div');
+		rtSpinner.classList = "material-spinner rtSpinner";
+		return rtSpinner;
+	}
 	
 	// Populate Recent Transactions
 	function populateRecentTransactions() {
@@ -2109,6 +2118,9 @@
    		ajaxData.type = 'GET';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(userTransactionsList) {
+   			// Update the recent transactions
+   			recentTransactionsPopulated = true;
+
         	let recentTransactionsDiv = document.getElementById('recentTransactions');
         	let recentTransactionsFragment = document.createDocumentFragment();
         	
@@ -2316,5 +2328,56 @@
     	return svgElement;
     	
 	}
+
+	/*
+	* Sort By Functionality
+	*/
+
+	// Click on sort by creation date
+	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
+		// show the recent transactions
+		document.getElementById('recentTransactions').classList.remove('d-none');
+		// hide the category view
+		let transactionsTable = document.getElementById('transactionsTable');
+		transactionsTable.classList.remove('d-lg-table');
+		transactionsTable.classList.add('d-none');
+
+		// If a new transaction is registered then population is necessary
+		if(resiteredNewTransaction) {
+			resiteredNewTransaction = false;
+			recentTransactionsPopulated = false;
+			// replace pie chart with material spinner
+			replacePieChartWithMSpinner();
+			// Fetch JSOn for transactions and populate pie chart
+			fetchJSONForTransactions();
+		}
+
+		if(recentTransactionsPopulated) {
+			return;
+		}
+
+		// Populate recent transactions
+		populateRecentTransactions();
+	});
+
+	// Click on sort by creation date
+	document.getElementById('categorySortBy').addEventListener("click",function(e){
+		// show the recent transactions
+		document.getElementById('recentTransactions').classList.remove('d-none');
+		// hide the category view
+		let transactionsTable = document.getElementById('transactionsTable');
+		transactionsTable.classList.remove('d-lg-table');
+		transactionsTable.classList.add('d-none');
+
+		// If a new transaction is registered then population is necessary
+		if(resiteredNewTransaction) {
+			resiteredNewTransaction = false;
+			// Replace Transactions Table with empty spinner
+			replaceTransactionsWithMSpinner();
+			replacePieChartWithMSpinner();
+			// Fetch JSOn for transactions and populate pie chart
+			fetchJSONForTransactions();
+		}
+	});
 
 }(jQuery));

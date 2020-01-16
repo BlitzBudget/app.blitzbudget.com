@@ -547,7 +547,7 @@ select.bs-select-hidden,select.selectpicker {
     border-radius: 0!important;
     color: #3c4858!important;
     height: 34px;
-    padding-left: 0!important;
+    padding-left: 0;
     padding-bottom: 5px!important
 }
 
