@@ -11,6 +11,14 @@
             ]
         },
         {
+            "type": "css",
+            "name": "transactions.all.css",
+            "files": [
+                "/dashboard/income/transactions.css",
+                "/dashboard/build/bootstrap-select.css"
+            ]
+        },
+        {
             "type": "js",
             "name": "core.js",
             "files": [
