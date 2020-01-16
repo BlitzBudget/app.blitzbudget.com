@@ -817,17 +817,16 @@ er = {
 	},
 
 	showLoginPopup() {
-		$('#loginModal').modal({
-		    backdrop: 'static',
-		    keyboard: false
-		});
-
 		let email = '';
 		// Get parameters
         const params = (new URL(document.location)).searchParams;
 
         // First Priority to URL parameters
         if(params != null && params.has('verify')) {
+        	$('#loginModal').modal({
+			    backdrop: 'static',
+			    keyboard: false
+			});
         	let email = localStorage.getItem('verifyEmail');
         	toggleVerify(email, params.get('verify'));
         	if(isEmpty(email)) {
@@ -849,12 +848,20 @@ er = {
 
 			// If Current User exists then
 			if(currentUser) {
-				email = currentUser.email;
+				$('#unlockModal').modal({
+				    backdrop: 'static',
+				    keyboard: false
+				});
+				document.getElementById('unlockName').innerText = currentUser.name + ' ' + currentUser.family_name;
+			} else {
+				$('#loginModal').modal({
+				    backdrop: 'static',
+				    keyboard: false
+				});
+				// Show the login modal if the session has expired
+				// Initialize the modal to not close will when pressing ESC or clicking outside
+				toggleLogin(email);
 			}
-
-			// Show the login modal if the session has expired
-			// Initialize the modal to not close will when pressing ESC or clicking outside
-			toggleLogin(email);
         }
 	},
 	

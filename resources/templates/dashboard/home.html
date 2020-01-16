@@ -255,6 +255,30 @@
       <i class="material-icons" id="addFncTT" data-toggle="tooltip" data-original-title="Add Transactions" data-placement="top">add</i>
     </button>  
   </div>
+  <!-- Unlock Application -->
+  <div class="modal" id="unlockModal" tabindex="-1" role="">
+    <div class="col-md-4 ml-auto mr-auto">
+      <div class="card card-profile text-center">
+        <div class="card-header ">
+          <div class="card-avatar">
+            <a href="#">
+              <img class="img" src="../img/characters/beon/beon-sleeping.svg">
+            </a>
+          </div>
+        </div>
+        <div class="card-body ">
+          <h4 id="unlockName" class="card-title">John Doe</h4>
+          <div class="form-group bmd-form-group">
+            <label for="exampleInput1" class="bmd-label-floating">Enter Password</label>
+            <input type="password" class="form-control" id="exampleInput1">
+          </div>
+        </div>
+        <div class="card-footer justify-content-center">
+          <a href="#" class="btn btn-dynamic-color btn-round">Unlock</a>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="modal fade" id="loginModal" tabindex="-1" role="">
 	    <div class="modal-dialog modal-login" role="document">
 	        <div class="modal-content">
@@ -387,7 +411,7 @@
                             <button class="btn btn-dynamic-color btn-raised" name="Submit" value="Signup" type="Submit">Sign Up</button>
                             <div class="material-spinner-medium d-none mx-auto my-auto" id="signupLoader"></div>
                           </div>
-			          </form>
+			                 </form>
 	                </div>
 	                <div class="modal-footer justify-content-center">
 	                    <a id="forgotPassLogin" href="#" class="btn btn-primary btn-link btn-wd btn-lg">I Forgot My Password</a>
