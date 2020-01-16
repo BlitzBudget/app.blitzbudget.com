@@ -19,16 +19,10 @@
                   </div>
                   <h4 class="card-title d-inline-block">Transactions</h4>
                   <div class="dropdown bootstrap-select show-tick mt-2 float-right">
-                    <select class="selectpicker" data-style="select-with-transition" multiple="" title="Choose City" data-size="7" tabindex="-98">
-                            <option disabled=""> Sort By</option>
-                            <option value="2">Category </option>
-                            <option value="3">Account</option>
-                            <option value="4">Creation Date</option>
-                      </select>
                       <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose City" aria-expanded="false">
                         <div class="filter-option">
                           <div class="filter-option-inner">
-                            <div class="filter-option-inner-inner">Category</div></div> </div>
+                            <div id="sortByBtnTit" class="filter-option-inner-inner">Category</div></div> </div>
                             <div class="ripple-container"></div>
                       </button>
                       <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="bootstrap-combobox">
@@ -36,25 +30,21 @@
                           <ul class="dropdown-menu inner show">
                             <li class="disabled">
                               <a role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
-                                <span class=" bs-ok-default check-mark"></span>
                                <span class="text"> Sort By</span>
                              </a>
                            </li>
                            <li>
-                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
-                              <span class=" bs-ok-default check-mark"></span>
+                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="categorySortBy">
                               <span class="text">Category </span>
                             </a>
                           </li>
                           <li>
-                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
-                              <span class=" bs-ok-default check-mark"></span>
+                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="accountSortBy">
                               <span class="text">Account</span>
                             </a>
                           </li>
                           <li>
-                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false">
-                              <span class=" bs-ok-default check-mark"></span>
+                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="creationDateSortBy">
                               <span class="text">Creation Date</span>
                             </a>
                           </li>
