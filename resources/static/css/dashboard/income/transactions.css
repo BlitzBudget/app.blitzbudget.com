@@ -797,6 +797,16 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	mix-blend-mode:normal
 }
 
+#bootstrap-combobox.dropdown-menu .dropdown-item:hover, 
+#bootstrap-combobox.dropdown-menu .dropdown-item:focus, 
+#bootstrap-combobox.dropdown-menu a:hover, 
+#bootstrap-combobox.dropdown-menu a:focus, 
+#bootstrap-combobox.dropdown-menu a:active {
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(156,39,176,0.4);
+    background-color: #9c27b0;
+    color: #fff;
+}
+
 /** Change the size of the text if the width and height pf the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
 	
