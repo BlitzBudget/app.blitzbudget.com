@@ -31,7 +31,7 @@
 		    console.log(devices);
         }
 	    ajaxData.onFailure = function (thrownError) {
-	    	manageErrors(thrownError, "There was an error while retrieving all the registered devices. Please try again later!");
+	    	manageErrors(thrownError, "There was an error while retrieving all the registered devices. Please try again later!",ajaxData);
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -346,7 +346,7 @@
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Change button text to the old Inp value
 			document.getElementById(inpId).innerText = oldValInTe;
-			manageErrors(thrownError, "There was an error while updating. Please try again later!");
+			manageErrors(thrownError, "There was an error while updating. Please try again later!",ajaxData);
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,

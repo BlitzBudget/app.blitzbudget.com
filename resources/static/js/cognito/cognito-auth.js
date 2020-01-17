@@ -299,7 +299,7 @@ var AWSCogUser = window.AWSCogUser || {};
 
     document.getElementById('unlockApplication').addEventListener("click",function(e){
         let password  = document.getElementById('unlockAppPass').value;
-        let email = cognitoUser.email;
+        let email = currentUser.email;
         let unlockModal = $('#unlockModal');
         let unlockApplication = document.getElementById('unlockApplication');
         let unlockLoader = document.getElementById('unlockLoader');
@@ -329,6 +329,19 @@ var AWSCogUser = window.AWSCogUser || {};
                 handleSessionErrors(err,email,password,'errorUnlockPopup');
             }
         );
+    });
+
+    document.getElementById('unlockAppPass').addEventListener("keyup",function(e){
+        let unlockAccountBtn = document.getElementById('unlockApplication');
+        let keyCode = e.keyCode || e.which;
+        if (keyCode === 13) { 
+            document.activeElement.blur();
+            e.preventDefault();
+            e.stopPropagation();
+            // Click the confirm button to continue
+            unlockAccountBtn.click();
+            return false;
+        }
     });
 
     function handleSignin(event) {

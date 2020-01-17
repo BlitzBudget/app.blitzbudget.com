@@ -60,7 +60,7 @@
       		fetchTransactions();
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to fetch you budget at this moment. Please try again!');
+        	manageErrors(thrownError, 'Unable to fetch you budget at this moment. Please try again!',ajaxData);
         }
 
 		jQuery.ajax({
@@ -238,7 +238,7 @@
         		
             }, 
             error:  function (thrownError) {
-            	manageErrors(thrownError, 'Unable to fetch transactions at this moment. Please refresh and try again!');
+            	manageErrors(thrownError, 'Unable to fetch transactions at this moment. Please refresh and try again!',ajaxData);
             }
 		});
 	}
@@ -440,7 +440,7 @@
 	        	  updateProgressBarAndRemaining(userBudget.categoryId, document);
             }
             ajaxData.onFailure = function (thrownError) {
-            	manageErrors(thrownError, 'Unable to change the budget. Please try again');
+            	manageErrors(thrownError, 'Unable to change the budget. Please try again',ajaxData);
             		
 	            // update the current element with the previous amount
 	            let formattedBudgetAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
@@ -611,7 +611,7 @@
         	  }
         }
         ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!');
+        	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!',ajaxData);
 	          	
 	          // Remove the material spinner and show the delete button again
 	          document.getElementById('deleteElementSpinner-' + categoryId).classList.toggle('d-none');
@@ -753,7 +753,7 @@
     		
           }
           ajaxData.onFailure = function(thrownError) {
-          		manageErrors(thrownError, 'Unable to copy the budget. Please try again');
+          		manageErrors(thrownError, 'Unable to copy the budget. Please try again',ajaxData);
 	           	
 	           	// disable the button
 	        	element.removeAttribute("disabled");
@@ -817,7 +817,7 @@
             	}
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, "There was an error while changing the name. Please try again later!");
+        	manageErrors(thrownError, "There was an error while changing the name. Please try again later!",ajaxData);
         }
 
 		// Fetch all dates
@@ -929,7 +929,7 @@
       	  	let genericAddFnc = document.getElementById('genericAddFnc');
       	  	genericAddFnc.classList.remove('d-none');
       	  	
-        	manageErrors(thrownError, 'Unable to create the budgets. Please refresh and try again!');
+        	manageErrors(thrownError, 'Unable to create the budgets. Please refresh and try again!',ajaxData);
         }
 
 		$.ajax({
@@ -1033,7 +1033,7 @@
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
-        		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!');
+        		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!',ajaxData);
         }
 
 		$.ajax({
@@ -1370,7 +1370,7 @@
 	    	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
 	    }
         ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');
+        	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);
         }
 
 		$.ajax({
@@ -1440,7 +1440,7 @@
         	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
         }
         ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');
+        	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);
         	  // Hide the modal
   			  $('#categoryCompensationModal').modal('hide');
         }
@@ -1485,7 +1485,7 @@
         	budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
         }
         ajaxData.onFailure = function(thrownError) {
-        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');
+        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);
         	 // Hide the modal
   			 $('#categoryCompensationModal').modal('hide');
         }

@@ -46,7 +46,7 @@
 	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
         }
 	    ajaxData.onFailure = function (thrownError) {
-	    	manageErrors(thrownError, "There was an error while fetching user information!");
+	    	manageErrors(thrownError, "There was an error while fetching user information!",ajaxData);
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -426,7 +426,7 @@
 			        	showNotification("Successfully reset your account. Your account is as good as new!",'top','center','success');
 			        }
 				    ajaxData.onFailure = function (thrownError) {
-				    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!");
+				    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);
 		            }
             	 	jQuery.ajax({
 						url: ajaxData.url,
@@ -523,7 +523,7 @@
 					    });
 			        }
 				    ajaxData.onFailure = function (thrownError) {
-				    	manageErrors(thrownError, "There was an error while deleting the account. Please try again later!");
+				    	manageErrors(thrownError, "There was an error while deleting the account. Please try again later!",ajaxData);
 		            }
             	   	jQuery.ajax({
 						url: ajaxData.url,
@@ -964,7 +964,7 @@
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Replace Old name to Profile
 	    	userNameProfileDisplay.innerText = userNameDispText;
-	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!");
+	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!",ajaxData);
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
