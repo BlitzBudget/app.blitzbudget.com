@@ -55,60 +55,58 @@ var AWSCogUser = window.AWSCogUser || {};
     **/
     function retrieveAttributes(email) {
         // We retrieve the object again, but in a string form.
-        let currentUserSI = sessionStorage.getItem("currentUserSI");
-        // If the "email" attr is not empty then verifiy if the session sotrage and the "email" attr are equal
-        if(currentUserSI) {
-            // User Attribute retrieved from current user session storage
-            window.currentUser = JSON.parse(currentUserSI);
-        } else {
-            // Fetch user from local storage
-            let userPool = fetchUserFromLocalStorage();
-            let cognitoUser = userPool.getCurrentUser();
+        let currentCogUser = sessionStorage.getItem("currentUserSI");
+        window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
+        // If the session storage is 
+        if(isNotEmpty(currentCogUser)) {
+            return;
+        }
+        // Fetch user from local storage
+        let userPool = fetchUserFromLocalStorage();
+        let cognitoUser = userPool.getCurrentUser();
 
-            // If User is null
-            if (!cognitoUser) {
+        // If User is null
+        if (!cognitoUser) {
+            er.showLoginPopup();
+            return;
+        }
+
+        // User Attribute retrieved from cognito
+        cognitoUser.getSession(function(err, session) {
+            // Error Session
+            if (err) {
                 er.showLoginPopup();
                 return;
             }
 
-            // User Attribute retrieved from cognito
-            cognitoUser.getSession(function(err, session) {
-                // Error Session
+            cognitoUser.getUserAttributes(function(err, result) {
+                let currentUserLocal = {};
+
+                // ERROR scenarios
                 if (err) {
-                    er.showLoginPopup();
+                    handleSessionErrors(err,"","",'errorLoginPopup');
                     return;
                 }
+                // SUCCESS Scenarios
+                for (i = 0; i < result.length; i++) {
+                    let name = result[i].getName();
 
-                cognitoUser.getUserAttributes(function(err, result) {
-                    let currentUserLocal = {};
-
-                    // ERROR scenarios
-                    if (err) {
-                        handleSessionErrors(err,"","",'errorLoginPopup');
-                        return;
+                    if(name.includes('custom:')) {
+                        // if custom values then remove custom: 
+                        let elemName = lastElement(splitElement(name,':'));
+                        currentUserLocal[elemName] = result[i].getValue();
+                    } else {
+                        currentUserLocal[name] = result[i].getValue();
                     }
-                    // SUCCESS Scenarios
-                    for (i = 0; i < result.length; i++) {
-                        let name = result[i].getName();
+                }
 
-                        if(name.includes('custom:')) {
-                            // if custom values then remove custom: 
-                            let elemName = lastElement(splitElement(name,':'));
-                            currentUserLocal[elemName] = result[i].getValue();
-                        } else {
-                            currentUserLocal[name] = result[i].getValue();
-                        }
-                    }
+                // Current User to global variable
+                window.currentUser = currentUserLocal;
+                // We save the item in the sessionStorage.
+                sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 
-                    // Current User to global variable
-                    window.currentUser = currentUserLocal;
-                    // We save the item in the sessionStorage.
-                    sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-
-                });
             });
-        }       
-        
+        });
     }
 
     // Handle Session Errors

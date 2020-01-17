@@ -1,7 +1,7 @@
 "use strict";
 /* global currentUser authHeader*/
 
-let currentUser = window.currentUser || {}; 
+let currentUser = isEmpty(window.currentUser) ? ((sessionStorage.getItem("currentUserSI") == null) ? {} :  JSON.parse(sessionStorage.getItem("currentUserSI"))) : window.currentUser;
 let authHeader = window.authHeader || sessionStorage.getItem('idToken');
 
 // Custom Javascript for dashboard
@@ -277,40 +277,37 @@ window.onload = function () {
         	// reset Scroll position to header
     		document.getElementsByClassName('navbar')[0].scrollTop = 0; 
 			
-        	// Check if user is logged in
-        	if(uh.checkIfUserLoggedIn()) {
-        		// Set Currency If empty
-        		if(isEmpty(currentCurrencyPreference)) {
-        		    currentCurrencyPreference = currentUser.currency;
-        			Object.freeze(currentCurrencyPreference);
-        			Object.seal(currentCurrencyPreference);
+    		// Set Currency If empty
+    		if(isEmpty(currentCurrencyPreference)) {
+    		    currentCurrencyPreference = currentUser.currency;
+    			Object.freeze(currentCurrencyPreference);
+    			Object.seal(currentCurrencyPreference);
 
-        			// Set the name of the user
-        			document.getElementById('userName').innerText = currentUser.name + ' ' + currentUser.family_name;
-        		}
+    			// Set the name of the user
+    			document.getElementById('userName').innerText = currentUser.name + ' ' + currentUser.family_name;
+    		}
 
-        		// Call the actual page which was requested to be loaded
-        		$.ajax({
-    		        type: "GET",
-    		        url: url,
-    		        dataType: 'html',
-    		        success: function(data){
-    		        	// Load the new HTML
-    		            $('#mutableDashboard').html(data);
-    		            // Set Current Page
-    		            document.getElementById('currentPage').innerText = currentPage;
-    		        },
-    		        error: function(){
-    		        	Swal.fire({
-    		                title: "Redirecting Not Possible",
-    		                text: 'Please try again later',
-    		                icon: 'warning',
-    		                timer: 1000,
-    		                showConfirmButton: false
-    		            }).catch(swal.noop);
-    		        }
-    		    });
-        	}
+    		// Call the actual page which was requested to be loaded
+    		$.ajax({
+		        type: "GET",
+		        url: url,
+		        dataType: 'html',
+		        success: function(data){
+		        	// Load the new HTML
+		            $('#mutableDashboard').html(data);
+		            // Set Current Page
+		            document.getElementById('currentPage').innerText = currentPage;
+		        },
+		        error: function(){
+		        	Swal.fire({
+		                title: "Redirecting Not Possible",
+		                text: 'Please try again later',
+		                icon: 'warning',
+		                timer: 1000,
+		                showConfirmButton: false
+		            }).catch(swal.noop);
+		        }
+		    });
 		}
 		
 		function closeCategoryModalIfOpen() {
