@@ -85,7 +85,7 @@
          	   
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate recent transactions. Please refresh the page & try again!');
+        	manageErrors(thrownError, 'Unable to populate recent transactions. Please refresh the page & try again!',ajaxData);
         }
 
 		jQuery.ajax({
@@ -285,7 +285,7 @@
         	
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!');
+        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!',ajaxData);
         }
 
 		jQuery.ajax({
@@ -348,7 +348,7 @@
         	
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!');
+        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!',ajaxData);
         }
 
 		jQuery.ajax({
@@ -675,7 +675,7 @@
 	    	  }
 	    }
         ajaxData.onFailure = function(thrownError) {
-        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!');	    	  
+        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);	    	  
 	    }
 		$.ajax({
 	          type: ajaxData.type,
@@ -775,7 +775,7 @@
         	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!');
+        	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!',ajaxData);
         }
 
 		jQuery.ajax({
@@ -807,7 +807,7 @@
         	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!');
+        	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!',ajaxData);
         }
 
 		jQuery.ajax({
@@ -864,7 +864,7 @@
    		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate the chart at this moment. Please try again!');
+        	manageErrors(thrownError, 'Unable to populate the chart at this moment. Please try again!',ajaxData);
         }
 
 		jQuery.ajax({
