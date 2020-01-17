@@ -853,6 +853,8 @@ er = {
 				    keyboard: false
 				});
 				document.getElementById('unlockName').innerText = currentUser.name + ' ' + currentUser.family_name;
+				// Id token refresh
+				sessionStorage.removeItem('idToken');
 			} else {
 				$('#loginModal').modal({
 				    backdrop: 'static',
