@@ -1,7 +1,7 @@
 "use strict";
 /* global currentUser authHeader*/
 
-let currentUser = window.currentUser || {};
+let currentUser = isEmpty(window.currentUser) ? ((sessionStorage.getItem("currentUserSI") == null) ? {} :  JSON.parse(sessionStorage.getItem("currentUserSI"))) : window.currentUser;
 let authHeader = window.authHeader || sessionStorage.getItem('idToken');
 
 // Custom Javascript for dashboard
@@ -48,9 +48,9 @@ let currentCurrencyPreference = '';
 
 let currentActiveSideBar = '';
 //Load Expense category and income category
-let expenseSelectionOptGroup = document.createDocumentFragment();
-let incomeSelectionOptGroup = document.createDocumentFragment();
-let categoryMap = {};
+window.expenseSelectionOptGroup = document.createDocumentFragment();
+window.incomeSelectionOptGroup = document.createDocumentFragment();
+window.categoryMap = {};
 //Regex to check if the entered value is a float
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 
@@ -277,40 +277,37 @@ window.onload = function () {
         	// reset Scroll position to header
     		document.getElementsByClassName('navbar')[0].scrollTop = 0; 
 			
-        	// Check if user is logged in
-        	if(uh.checkIfUserLoggedIn()) {
-        		// Set Currency If empty
-        		if(isEmpty(currentCurrencyPreference)) {
-        		    currentCurrencyPreference = currentUser.currency;
-        			Object.freeze(currentCurrencyPreference);
-        			Object.seal(currentCurrencyPreference);
+    		// Set Currency If empty
+    		if(isEmpty(currentCurrencyPreference)) {
+    		    currentCurrencyPreference = currentUser.currency;
+    			Object.freeze(currentCurrencyPreference);
+    			Object.seal(currentCurrencyPreference);
 
-        			// Set the name of the user
-        			document.getElementById('userName').innerText = currentUser.name + ' ' + currentUser.family_name;
-        		}
+    			// Set the name of the user
+    			document.getElementById('userName').innerText = currentUser.name + ' ' + currentUser.family_name;
+    		}
 
-        		// Call the actual page which was requested to be loaded
-        		$.ajax({
-    		        type: "GET",
-    		        url: url,
-    		        dataType: 'html',
-    		        success: function(data){
-    		        	// Load the new HTML
-    		            $('#mutableDashboard').html(data);
-    		            // Set Current Page
-    		            document.getElementById('currentPage').innerText = currentPage;
-    		        },
-    		        error: function(){
-    		        	Swal.fire({
-    		                title: "Redirecting Not Possible",
-    		                text: 'Please try again later',
-    		                icon: 'warning',
-    		                timer: 1000,
-    		                showConfirmButton: false
-    		            }).catch(swal.noop);
-    		        }
-    		    });
-        	}
+    		// Call the actual page which was requested to be loaded
+    		$.ajax({
+		        type: "GET",
+		        url: url,
+		        dataType: 'html',
+		        success: function(data){
+		        	// Load the new HTML
+		            $('#mutableDashboard').html(data);
+		            // Set Current Page
+		            document.getElementById('currentPage').innerText = currentPage;
+		        },
+		        error: function(){
+		        	Swal.fire({
+		                title: "Redirecting Not Possible",
+		                text: 'Please try again later',
+		                icon: 'warning',
+		                timer: 1000,
+		                showConfirmButton: false
+		            }).catch(swal.noop);
+		        }
+		    });
 		}
 		
 		function closeCategoryModalIfOpen() {
@@ -522,17 +519,17 @@ window.onload = function () {
 		
 		// Fetch income total or expense total
 		function fetchIncomeTotalOrExpeseTotal(incomeTotalParameter) {
-			
+
 			// Ajax Requests on Error
 			let ajaxData = {};
 	   		ajaxData.isAjaxReq = true;
-	   		ajaxData.type = 'POST';
+	   		ajaxData.type = 'GET';
 	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.lifetimeUrl + incomeTotalParameter + CUSTOM_DASHBOARD_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
 	   		ajaxData.onSuccess = function(result){
 	        	updateMonthExistsWithTransactionData(result);
 	        }
 	        ajaxData.onFailure = function(thrownError) {
-	        	manageErrors(data, "There was an error fetching total transactions.",ajaxData);
+	        	manageErrors(thrownError, "There was an error fetching total transactions.",ajaxData);
 	        }
 
 			// AJAX call for adding a new unlinked Account
@@ -624,50 +621,58 @@ window.onload = function () {
 
 		// Start up application
 		function startupApplication() {
-						
 			// Read Cookies
 	        readCookie();
 			// Fetch Bank Account Information and populate
 			er_a.fetchBankAccountInfo();
 			// Fetch Category 
-			fetchJSONForCategories();
-			 
+			fetchJSONForCategories();						 
 		}
 
 		// Load all categories from API (Call synchronously to set global variable)
 		function fetchJSONForCategories() {
-			$.ajax({
-	          type: "GET",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.fetchCategoriesUrl,
-	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          success : function(data) {
-	        	  for(let count = 0, length = Object.keys(data).length; count < length; count++){
+			// Ajax Requests on Error
+			let ajaxData = {};
+			ajaxData.isAjaxReq = true;
+			ajaxData.type = "GET";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.fetchCategoriesUrl;
+			ajaxData.dataType = "json";
+			ajaxData.onSuccess = function(data) {
+				for(let count = 0, length = Object.keys(data).length; count < length; count++){
 	        		  let key = Object.keys(data)[count];
 	            	  let value = data[key];
 
 	            	  // Freeze the object so it cannot be mutable
 		        	  Object.freeze(value);
-		        	  
-	        		  categoryMap[value.categoryId] = value;
+		        	  console.log('fetch category URL - ' + data);
+	        		  window.categoryMap[value.categoryId] = value;
 	        		  let option = document.createElement('option');
 	    			  option.className = 'categoryOption-' + value.categoryId;
 	    			  option.value = value.categoryId;
 	    			  option.text = value.categoryName;
 	        		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-	        			  expenseSelectionOptGroup.appendChild(option);
+	        			  window.expenseSelectionOptGroup.appendChild(option);
 	        		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-	        			  incomeSelectionOptGroup.appendChild(option);
+	        			  window.incomeSelectionOptGroup.appendChild(option);
 	        		  }
 	    		   
 	        	  	}
 	        	  // Sealing the object so new objects or properties cannot be added
-	        	  Object.seal(categoryMap);
-	        	},
-	        	error: function(data) {
-		  	    	manageErrors(data, "Unable to fetch categories at this moment",ajaxData);
-		        }
-	     	});
+	        	  Object.seal(window.categoryMap);
+			}
+			ajaxData.onFailure = function(thrownError) {
+			  manageErrors(thrownError, "Unable to fetch categories at this moment",ajaxData);
+	        }
+
+			jQuery.ajax({
+				url: ajaxData.url,
+				beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	            type: ajaxData.type,
+	            dataType: ajaxData.dataType,
+	            success: ajaxData.onSuccess,
+	            error: ajaxData.onFailure,
+	            async: true
+			});
 		}
 
 		/* When the toggleFullscreen() function is executed, open the video in fullscreen.
@@ -815,7 +820,7 @@ er = {
 		        updateBudgetMap = {}; 
 	        }
 	        ajaxData.onFailure = function(thrownError) {
-	        	 manageErrors(data, "There was an error updating the budget.",ajaxData);
+	        	 manageErrors(thrownError, "There was an error updating the budget.",ajaxData);
 	        }
 
 			// AJAX call for adding a new unlinked Account
@@ -827,7 +832,8 @@ er = {
 		          contentType: ajaxData.contentType,
 		          data : ajaxData.data,
 		          success: ajaxData.onSuccess,
-		          error: ajaxData.onFailure
+		          error: ajaxData.onFailure,
+		          async: async
 	    	});
 		}
 	},
@@ -868,7 +874,7 @@ er = {
 			}
 
 			// If Current User exists then
-			if(currentUser) {
+			if(currentUser && currentUser.email && currentUser.name && currentUser.family_name) {
 				$('#unlockModal').modal({
 				    backdrop: 'static',
 				    keyboard: false

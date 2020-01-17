@@ -1442,3 +1442,7 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     padding: .9375rem 1.875rem;
     margin: 0;
 }
+
+.bb-name {
+    font-size: 1rem;
+}

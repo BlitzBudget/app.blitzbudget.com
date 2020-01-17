@@ -85,17 +85,13 @@ uh = {
 	},
 
 	refreshToken(ajaxData) {
-		let af = sessionStorage.getItem('afterRefreshAjaxRequests');
-		debugger;
-		if(isEmpty(af)) {
-			let af = [];
-			af.push(ajaxData)
-			sessionStorage.setItem('afterRefreshAjaxRequests', JSON.stringify(af));
-		} else {
-			af = JSON.parse(af);
-			af.push(ajaxData);
-			sessionStorage.setItem('afterRefreshAjaxRequests', JSON.stringify(af));
+		
+		// If window.afterRefreshAjaxRequests is empty then reinitialize it
+		if(isEmpty(window.afterRefreshAjaxRequests)) {
+			window.afterRefreshAjaxRequests = [];
 		}
+
+		window.afterRefreshAjaxRequests.push(ajaxData);
 
 		// If a refresh was already requested (DO NOTHING)
 		if(window.alreadyRequestedRefresh) {
@@ -157,49 +153,46 @@ uh = {
 	                sessionStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
 
-	                let af = sessionStorage.getItem('afterRefreshAjaxRequests');
 	                // If ajax Data is empty then don't do anything
-	                if(isEmpty(af)) {
+	                if(isEmpty(window.afterRefreshAjaxRequests)) {
 	                	return;
 	                }
-	                // Parse the stored value
-	                af = JSON.parse(af);
+	                let af = window.afterRefreshAjaxRequests;
 
 	                for(let i = 0, l = af.length; i < l; i++) {
-	                	let ajaxData = af[i];
-	                	console.log(' af - ' + JSON.stringify(af[i]));
+	                	let ajData = af[i];
+	                	
 	                	// Do the Ajax Call that failed
-		                if(ajaxData.isAjaxReq) {
+		                if(ajData.isAjaxReq) {
 		                	let ajaxParams = {
-						          type: ajaxData.type,
-						          url: ajaxData.url,
+						          type: ajData.type,
+						          url: ajData.url,
 						          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
-						  	      error: ajaxData.onFailure
+						  	      error: ajData.onFailure
 							};
 
-		                	if(isNotEmpty(ajaxData.dataType)) {
-		                		ajaxParams.dataType =  ajaxData.dataType;
+		                	if(isNotEmpty(ajData.dataType)) {
+		                		ajaxParams.dataType =  ajData.dataType;
 		                	} 
 
-		                	if(isNotEmpty(ajaxData.data)) {
-		                		ajaxParams.data = ajaxData.data;
+		                	if(isNotEmpty(ajData.data)) {
+		                		ajaxParams.data = ajData.data;
 		                	}
 
-		                	if(isNotEmpty(ajaxData.contentType)) {
-								ajaxParams.contentType = ajaxData.contentType;
+		                	if(isNotEmpty(ajData.contentType)) {
+								ajaxParams.contentType = ajData.contentType;
 		                	}
 
-		                	if(isNotEmpty(ajaxData.onSuccess)) {
-		                		ajaxParams.success = ajaxData.onSuccess;
+		                	if(isNotEmpty(ajData.onSuccess)) {
+		                		ajaxParams.success = ajData.onSuccess;
 		                	}
 
 		                	// AJAX request
 		                	$.ajax(ajaxParams);
 		                }
 	                }
-	                // Session storage remove item
-	                sessionStorage.removeItem('afterRefreshAjaxRequests');
-
+	                // Reset the window.afterRefreshAjaxRequests token
+	                window.afterRefreshAjaxRequests = [];
 				}
 			});
 	    });
