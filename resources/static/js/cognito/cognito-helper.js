@@ -85,7 +85,22 @@ uh = {
 	},
 
 	refreshToken(ajaxData) {
+		let af = sessionStorage.getItem('afterRefreshAjaxRequests');
+		if(isEmpty(af)) {
+			let af = [];
+			af.push(ajaxData)
+			sessionStorage.setItem('afterRefreshAjaxRequests', JSON.stringify(af));
+		} else {
+			af = JSON.parse(af);
+			af.push(ajaxData);
+			sessionStorage.setItem('afterRefreshAjaxRequests', JSON.stringify(af));
+		}
 
+		// If a refresh was already requested (DO NOTHING)
+		if(window.alreadyRequestedRefresh) {
+			return;
+		}
+		window.alreadyRequestedRefresh = true;
 		let poolData = {
 	        UserPoolId: _config.cognito.userPoolId,
 	        ClientId: _config.cognito.userPoolClientId
@@ -130,7 +145,7 @@ uh = {
 			cognitoUser.refreshSession(refresh_token, (err, session) => {
 				// Session Refreshed
 				window.sessionInvalidated++;
-
+				window.alreadyRequestedRefresh = false;
 				if (err) {
 					showNotification(err.message,'top','center','danger');
 					er.showLoginPopup();
@@ -141,39 +156,48 @@ uh = {
 	                sessionStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
 
+	                let af = sessionStorage.getItem('afterRefreshAjaxRequests');
 	                // If ajax Data is empty then don't do anything
-	                if(isEmpty(ajaxData)) {
+	                if(isEmpty(af)) {
 	                	return;
 	                }
-	                
-	                // Do the Ajax Call that failed
-	                if(ajaxData.isAjaxReq) {
-	                	let ajaxParams = {
-					          type: ajaxData.type,
-					          url: ajaxData.url,
-					          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
-					  	      error: ajaxData.onFailure
-						};
+	                // Parse the stored value
+	                af = JSON.parse(af);
 
-	                	if(isNotEmpty(ajaxData.dataType)) {
-	                		ajaxParams.dataType =  ajaxData.dataType;
-	                	} 
+	                for(let i = 0, l = af.length; i < l; i++) {
+	                	let ajaxData = af[i];
+	                	// Do the Ajax Call that failed
+		                if(ajaxData.isAjaxReq) {
+		                	let ajaxParams = {
+						          type: ajaxData.type,
+						          url: ajaxData.url,
+						          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
+						  	      error: ajaxData.onFailure
+							};
 
-	                	if(isNotEmpty(ajaxData.data)) {
-	                		ajaxParams.data = ajaxData.data;
-	                	}
+		                	if(isNotEmpty(ajaxData.dataType)) {
+		                		ajaxParams.dataType =  ajaxData.dataType;
+		                	} 
 
-	                	if(isNotEmpty(ajaxData.contentType)) {
-							ajaxParams.contentType = ajaxData.contentType;
-	                	}
+		                	if(isNotEmpty(ajaxData.data)) {
+		                		ajaxParams.data = ajaxData.data;
+		                	}
 
-	                	if(isNotEmpty(ajaxData.onSuccess)) {
-	                		ajaxParams.success = ajaxData.onSuccess;
-	                	}
+		                	if(isNotEmpty(ajaxData.contentType)) {
+								ajaxParams.contentType = ajaxData.contentType;
+		                	}
 
-	                	// AJAX request
-	                	$.ajax(ajaxParams);
+		                	if(isNotEmpty(ajaxData.onSuccess)) {
+		                		ajaxParams.success = ajaxData.onSuccess;
+		                	}
+
+		                	// AJAX request
+		                	$.ajax(ajaxParams);
+		                }
 	                }
+	                // Session storage remove item
+	                sessionStorage.removeItem('afterRefreshAjaxRequests');
+
 				}
 			});
 	    });

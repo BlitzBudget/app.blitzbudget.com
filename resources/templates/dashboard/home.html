@@ -221,19 +221,29 @@
       <div class="content" id="mutableDashboard">
         <style type="text/css" nonce="2726f7e26d">
              .btn.btn-dynamic-color {
-                 color: #fff;
-                 background-color: #9c27b0;
-                 border-color: #9c27b0;
-                 box-shadow: 0 2px 2px 0 rgba(156, 39, 176, 0.14), 0 3px 1px -2px rgba(156, 39, 176, 0.2), 0 1px 5px 0 rgba(156, 39, 176, 0.12);
+                  color: #fff;
+                  background-color: #00bcd4;
+                  border-color: #00bcd4;
+                  box-shadow: 0 2px 2px 0 rgba(0,188,212,0.14), 0 3px 1px -2px rgba(0,188,212,0.2), 0 1px 5px 0 rgba(0,188,212,0.12);
               }
 
-              .btn.btn-dynamic-color:focus,
-              .btn.btn-dynamic-color:active,
-              .btn.btn-dynamic-color:hover {
-                color: #fff;
-                background-color: #9124a3;
-                border-color: #701c7e;
-                box-shadow: 0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);
+              .btn.btn-dynamic-color:focus, .btn.btn-dynamic-color.focus, .btn.btn-dynamic-color:hover {
+                  color: #fff;
+                  background-color: #00aec5;
+                  border-color: #008697;
+                  box-shadow: 0 14px 26px -12px rgba(0,188,212,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,188,212,0.2);
+              }
+
+              .btn-dynamic-color:hover, .show>.btn.btn-dynamic-color.dropdown-toggle:hover, .show>.btn.btn-dynamic-color.dropdown-toggle:focus {
+                  color: #fff;
+                  background-color: #009aae;
+                  border-color: #008fa1;
+              }
+              .btn-dynamic-color {
+                  color: #fff;
+                  background-color: #00bcd4;
+                  border-color: #00bcd4;
+                  box-shadow: none;
               }
 
               .vcClassLP.swal2-file:focus, .vcClassLP.swal2-input:focus, .vcClassLP.swal2-textarea:focus {
@@ -262,19 +272,21 @@
         <div class="card-header ">
           <div class="card-avatar">
             <a href="#">
-              <img class="img" src="../img/characters/beon/beon-sleeping.svg">
+              <img class="img" src="../img/dummy/avatarProfile.jpg">
             </a>
           </div>
         </div>
         <div class="card-body ">
           <h4 id="unlockName" class="card-title">John Doe</h4>
           <div class="form-group bmd-form-group">
-            <label for="exampleInput1" class="bmd-label-floating">Enter Password</label>
-            <input type="password" class="form-control" id="exampleInput1">
+            <label for="unlockAppPass" class="bmd-label-floating">Enter Password</label>
+            <input type="password" class="form-control" id="unlockAppPass" minlength="8">
           </div>
         </div>
         <div class="card-footer justify-content-center">
-          <a href="#" class="btn btn-dynamic-color btn-round">Unlock</a>
+          <a href="#" class="btn btn-dynamic-color btn-round" id="unlockApplication">Unlock</a>
+          <div class="material-spinner-medium d-none" id="unlockLoader"></div>
+          <div id="errorUnlockPopup" class="justify-content-center px-4 pb-3 errorCodePopup text-center"></div>
         </div>
       </div>
     </div>

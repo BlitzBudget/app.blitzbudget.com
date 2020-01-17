@@ -53,14 +53,14 @@ html, .main-panel {
 }
 
 .sidebar li > a.active {
-   background-color: #9c27b0;
+   background-color: #00bcd4;
    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
    color: #fff;
 }
 
 /**  To prevent the color from disappearing once it is selected **/
 .sidebar .nav li:hover > a.active {
-   background-color: #9c27b0;
+   background-color: #00bcd4;
    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
    color: #fff;
 }
@@ -231,8 +231,8 @@ html, .main-panel {
 
 
 .pagination > .page-item.active > a, .pagination > .page-item.active > a:focus, .pagination > .page-item.active > a:hover, .pagination > .page-item.active > span, .pagination > .page-item.active > span:focus, .pagination > .page-item.active > span:hover {
-    background-color: #9c27b0;
-    border-color: #9c27b0;
+    background-color: #00bcd4;
+    border-color: #00bcd4;
     color: #fff;
     box-shadow: 0 4px 5px 0 rgba(156,39,176,.14),0 1px 10px 0 rgba(156,39,176,.12),0 2px 4px -1px rgba(156,39,176,.2);
 }
@@ -773,7 +773,7 @@ br[type="_moz"]{display: none;}
 }
 
 .icon.icon-primary {
-    color: #9c27b0;
+    color: #00bcd4;
 }
 
 .info-horizontal .icon > i {
@@ -1413,7 +1413,7 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
 /**
 * Unlock Modal
 **/
-.card-profile {
+#unlockModal .card-profile {
     width: 240px;
     margin: 60px auto 0;
     color: #fff;
@@ -1423,22 +1423,22 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     transform: translateZ(0);
 }
 
-.card-profile .card-header:not([class*=card-header-]) {
+#unlockModal .card-profile .card-header:not([class*=card-header-]) {
     background: transparent;
 }
 
-.card-profile .card-avatar {
+#unlockModal .card-profile .card-avatar {
     max-width: 90px;
     max-height: 90px;
     margin-top: -45px;
 }
 
-.card-profile .form-group {
+#unlockModal .card-profile .form-group {
     text-align: left;
     margin-top: 15px;
 }
 
-.card-profile .card-body+.card-footer {
+#unlockModal .card-profile .card-body+.card-footer {
     padding: .9375rem 1.875rem;
     margin: 0;
 }
