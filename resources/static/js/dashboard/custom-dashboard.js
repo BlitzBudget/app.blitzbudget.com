@@ -1,7 +1,7 @@
 "use strict";
 /* global currentUser authHeader*/
 
-let currentUser = window.currentUser || {};
+let currentUser = window.currentUser || {}; 
 let authHeader = window.authHeader || sessionStorage.getItem('idToken');
 
 // Custom Javascript for dashboard
@@ -48,9 +48,9 @@ let currentCurrencyPreference = '';
 
 let currentActiveSideBar = '';
 //Load Expense category and income category
-let expenseSelectionOptGroup = document.createDocumentFragment();
-let incomeSelectionOptGroup = document.createDocumentFragment();
-let categoryMap = {};
+window.expenseSelectionOptGroup = document.createDocumentFragment();
+window.incomeSelectionOptGroup = document.createDocumentFragment();
+window.categoryMap = {};
 //Regex to check if the entered value is a float
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 
@@ -624,14 +624,12 @@ window.onload = function () {
 
 		// Start up application
 		function startupApplication() {
-						
 			// Read Cookies
 	        readCookie();
 			// Fetch Bank Account Information and populate
 			er_a.fetchBankAccountInfo();
 			// Fetch Category 
-			fetchJSONForCategories();
-			 
+			fetchJSONForCategories();						 
 		}
 
 		// Load all categories from API (Call synchronously to set global variable)
@@ -649,21 +647,21 @@ window.onload = function () {
 
 	            	  // Freeze the object so it cannot be mutable
 		        	  Object.freeze(value);
-		        	  
-	        		  categoryMap[value.categoryId] = value;
+		        	  console.log('fetch category URL - ' + data);
+	        		  window.categoryMap[value.categoryId] = value;
 	        		  let option = document.createElement('option');
 	    			  option.className = 'categoryOption-' + value.categoryId;
 	    			  option.value = value.categoryId;
 	    			  option.text = value.categoryName;
 	        		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-	        			  expenseSelectionOptGroup.appendChild(option);
+	        			  window.expenseSelectionOptGroup.appendChild(option);
 	        		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-	        			  incomeSelectionOptGroup.appendChild(option);
+	        			  window.incomeSelectionOptGroup.appendChild(option);
 	        		  }
 	    		   
 	        	  	}
 	        	  // Sealing the object so new objects or properties cannot be added
-	        	  Object.seal(categoryMap);
+	        	  Object.seal(window.categoryMap);
 			}
 			ajaxData.onFailure = function(thrownError) {
 			  manageErrors(thrownError, "Unable to fetch categories at this moment",ajaxData);
@@ -836,7 +834,8 @@ er = {
 		          contentType: ajaxData.contentType,
 		          data : ajaxData.data,
 		          success: ajaxData.onSuccess,
-		          error: ajaxData.onFailure
+		          error: ajaxData.onFailure,
+		          async: async
 	    	});
 		}
 	},
@@ -877,7 +876,7 @@ er = {
 			}
 
 			// If Current User exists then
-			if(currentUser) {
+			if(currentUser && currentUser.email && currentUser.name && currentUser.family_name) {
 				$('#unlockModal').modal({
 				    backdrop: 'static',
 				    keyboard: false

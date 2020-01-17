@@ -165,31 +165,31 @@ uh = {
 	                af = JSON.parse(af);
 
 	                for(let i = 0, l = af.length; i < l; i++) {
-	                	let ajaxData = af[i];
+	                	let ajData = af[i];
 	                	
 	                	// Do the Ajax Call that failed
-		                if(ajaxData.isAjaxReq) {
+		                if(ajData.isAjaxReq) {
 		                	let ajaxParams = {
-						          type: ajaxData.type,
-						          url: ajaxData.url,
+						          type: ajData.type,
+						          url: ajData.url,
 						          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
-						  	      error: ajaxData.onFailure
+						  	      error: ajData.onFailure,
+						  	      success: ajData.onSuccess
 							};
 
-		                	if(isNotEmpty(ajaxData.dataType)) {
-		                		ajaxParams.dataType =  ajaxData.dataType;
+							// Print on success
+							console.log('on success - ' + JSON.stringify(ajData));
+
+		                	if(isNotEmpty(ajData.dataType)) {
+		                		ajaxParams.dataType =  ajData.dataType;
 		                	} 
 
-		                	if(isNotEmpty(ajaxData.data)) {
-		                		ajaxParams.data = ajaxData.data;
+		                	if(isNotEmpty(ajData.data)) {
+		                		ajaxParams.data = ajData.data;
 		                	}
 
-		                	if(isNotEmpty(ajaxData.contentType)) {
-								ajaxParams.contentType = ajaxData.contentType;
-		                	}
-
-		                	if(isNotEmpty(ajaxData.onSuccess)) {
-		                		ajaxParams.success = ajaxData.onSuccess;
+		                	if(isNotEmpty(ajData.contentType)) {
+								ajaxParams.contentType = ajData.contentType;
 		                	}
 
 		                	// AJAX request
