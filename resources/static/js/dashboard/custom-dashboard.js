@@ -522,11 +522,11 @@ window.onload = function () {
 		
 		// Fetch income total or expense total
 		function fetchIncomeTotalOrExpeseTotal(incomeTotalParameter) {
-			
+
 			// Ajax Requests on Error
 			let ajaxData = {};
 	   		ajaxData.isAjaxReq = true;
-	   		ajaxData.type = 'POST';
+	   		ajaxData.type = 'GET';
 	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.lifetimeUrl + incomeTotalParameter + CUSTOM_DASHBOARD_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
 	   		ajaxData.onSuccess = function(result){
 	        	updateMonthExistsWithTransactionData(result);
@@ -636,13 +636,14 @@ window.onload = function () {
 
 		// Load all categories from API (Call synchronously to set global variable)
 		function fetchJSONForCategories() {
-			$.ajax({
-	          type: "GET",
-	          url: CUSTOM_DASHBOARD_CONSTANTS.fetchCategoriesUrl,
-	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: "json",
-	          success : function(data) {
-	        	  for(let count = 0, length = Object.keys(data).length; count < length; count++){
+			// Ajax Requests on Error
+			let ajaxData = {};
+			ajaxData.isAjaxReq = true;
+			ajaxData.type = "GET";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.fetchCategoriesUrl;
+			ajaxData.dataType = "json";
+			ajaxData.onSuccess = function(data) {
+				for(let count = 0, length = Object.keys(data).length; count < length; count++){
 	        		  let key = Object.keys(data)[count];
 	            	  let value = data[key];
 
@@ -663,11 +664,19 @@ window.onload = function () {
 	        	  	}
 	        	  // Sealing the object so new objects or properties cannot be added
 	        	  Object.seal(categoryMap);
-	        	},
-	        	error: function(data) {
-		  	    	manageErrors(data, "Unable to fetch categories at this moment",ajaxData);
-		        }
-	     	});
+			}
+			ajaxData.onFailure = function(thrownError) {
+			  manageErrors(data, "Unable to fetch categories at this moment",ajaxData);
+	        }
+			jQuery.ajax({
+				url: ajaxData.url,
+				beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	            type: ajaxData.type,
+	            dataType: ajaxData.dataType,
+	            success: ajaxData.onSuccess,
+	            error: ajaxData.onFailure,
+	            async: true
+			});
 		}
 
 		/* When the toggleFullscreen() function is executed, open the video in fullscreen.

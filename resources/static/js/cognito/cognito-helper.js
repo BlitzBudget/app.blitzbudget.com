@@ -86,7 +86,6 @@ uh = {
 
 	refreshToken(ajaxData) {
 		let af = sessionStorage.getItem('afterRefreshAjaxRequests');
-		debugger;
 		if(isEmpty(af)) {
 			let af = [];
 			af.push(ajaxData)
@@ -167,7 +166,7 @@ uh = {
 
 	                for(let i = 0, l = af.length; i < l; i++) {
 	                	let ajaxData = af[i];
-	                	console.log(' af - ' + JSON.stringify(af[i]));
+	                	
 	                	// Do the Ajax Call that failed
 		                if(ajaxData.isAjaxReq) {
 		                	let ajaxParams = {
