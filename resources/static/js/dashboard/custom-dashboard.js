@@ -532,7 +532,7 @@ window.onload = function () {
 	        	updateMonthExistsWithTransactionData(result);
 	        }
 	        ajaxData.onFailure = function(thrownError) {
-	        	manageErrors(data, "There was an error fetching total transactions.",ajaxData);
+	        	manageErrors(thrownError, "There was an error fetching total transactions.",ajaxData);
 	        }
 
 			// AJAX call for adding a new unlinked Account
@@ -666,7 +666,7 @@ window.onload = function () {
 	        	  Object.seal(categoryMap);
 			}
 			ajaxData.onFailure = function(thrownError) {
-			  manageErrors(data, "Unable to fetch categories at this moment",ajaxData);
+			  manageErrors(thrownError, "Unable to fetch categories at this moment",ajaxData);
 	        }
 			jQuery.ajax({
 				url: ajaxData.url,
@@ -824,7 +824,7 @@ er = {
 		        updateBudgetMap = {}; 
 	        }
 	        ajaxData.onFailure = function(thrownError) {
-	        	 manageErrors(data, "There was an error updating the budget.",ajaxData);
+	        	 manageErrors(thrownError, "There was an error updating the budget.",ajaxData);
 	        }
 
 			// AJAX call for adding a new unlinked Account
