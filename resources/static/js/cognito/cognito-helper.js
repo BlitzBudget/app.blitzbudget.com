@@ -168,12 +168,8 @@ uh = {
 						          type: ajData.type,
 						          url: ajData.url,
 						          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
-						  	      error: ajData.onFailure,
-						  	      success: ajData.onSuccess
+						  	      error: ajData.onFailure
 							};
-
-							// Print on success
-							debugger;
 
 		                	if(isNotEmpty(ajData.dataType)) {
 		                		ajaxParams.dataType =  ajData.dataType;
@@ -187,13 +183,16 @@ uh = {
 								ajaxParams.contentType = ajData.contentType;
 		                	}
 
+		                	if(isNotEmpty(ajData.onSuccess)) {
+		                		ajaxParams.success = ajData.onSuccess;
+		                	}
+
 		                	// AJAX request
 		                	$.ajax(ajaxParams);
 		                }
 	                }
-	                // Session storage remove item
-	                sessionStorage.removeItem('afterRefreshAjaxRequests');
-
+	                // Reset the window.afterRefreshAjaxRequests token
+	                window.afterRefreshAjaxRequests = [];
 				}
 			});
 	    });
