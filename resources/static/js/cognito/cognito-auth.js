@@ -84,7 +84,7 @@ var AWSCogUser = window.AWSCogUser || {};
 
                     // ERROR scenarios
                     if (err) {
-                        handleSessionErrors(err,"","");
+                        handleSessionErrors(err,"","",'errorLoginPopup');
                         return;
                     }
                     // SUCCESS Scenarios
@@ -112,7 +112,7 @@ var AWSCogUser = window.AWSCogUser || {};
     }
 
     // Handle Session Errors
-    function handleSessionErrors(err,email,pass) {
+    function handleSessionErrors(err,email,pass,errM) {
         
         /*
          * User Does not Exist
@@ -141,7 +141,7 @@ var AWSCogUser = window.AWSCogUser || {};
         /**
         *   Other Errors
         **/
-        document.getElementById('errorLoginPopup').innerText = err.message;
+        document.getElementById(errM).innerText = err.message;
     }
 
 
@@ -297,12 +297,47 @@ var AWSCogUser = window.AWSCogUser || {};
         $('#verifyForm').submit(handleVerify);
     });
 
+    document.getElementById('unlockApplication').addEventListener("click",function(e){
+        let password  = document.getElementById('unlockAppPass').value;
+        let email = cognitoUser.email;
+        let unlockModal = $('#unlockModal');
+        let unlockApplication = document.getElementById('unlockApplication');
+        let unlockLoader = document.getElementById('unlockLoader');
+        unlockLoader.classList.remove('d-none');
+        unlockApplication.classList.add('d-none');
+        document.getElementById('errorUnlockPopup').innerText = '';
+        event.preventDefault();
+
+        signin(email, password,
+            function signinSuccess(result) {
+               
+                // Hide Modal
+                unlockModal.modal('hide');
+                unlockLoader.classList.add('d-none');
+                unlockApplication.classList.remove('d-none');
+
+                // Set JWT Token For authentication
+                let idToken = JSON.stringify(result.idToken.jwtToken);
+                idToken = idToken.substring(1, idToken.length -1);
+                sessionStorage.setItem('idToken' , idToken) ;
+                window.authHeader = idToken;
+                
+            },
+            function signinError(err) {
+                unlockLoader.classList.add('d-none');
+                unlockApplication.classList.remove('d-none');
+                handleSessionErrors(err,email,password,'errorUnlockPopup');
+            }
+        );
+    });
+
     function handleSignin(event) {
         let email = document.getElementById('emailInputSignin').value;
         let password = document.getElementById('passwordInputSignin').value;
         let loginLoader = document.getElementById('loginLoader');
         let loginButton = loginLoader.parentElement.firstElementChild;
         let loginModal = $('#loginModal');
+        document.getElementById('errorLoginPopup').innerText = '';
         event.preventDefault();
 
         if(isEmpty(email) && isEmpty(password)) {
@@ -341,7 +376,7 @@ var AWSCogUser = window.AWSCogUser || {};
             function signinError(err) {
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
-            	handleSessionErrors(err,email,password);
+            	handleSessionErrors(err,email,password,'errorLoginPopup');
             }
         );
     }
@@ -498,7 +533,7 @@ var AWSCogUser = window.AWSCogUser || {};
                         // Toggle Sign In
                         toggleLogin(email);
 
-                        handleSessionErrors(err,email,password);
+                        handleSessionErrors(err,email,password,'errorLoginPopup');
                     }
                 );
             },
@@ -699,7 +734,7 @@ var AWSCogUser = window.AWSCogUser || {};
                         
                     },
                     function signinError(err) {
-                        handleSessionErrors(err,email,password);
+                        handleSessionErrors(err,email,password,'errorLoginPopup');
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
                     }

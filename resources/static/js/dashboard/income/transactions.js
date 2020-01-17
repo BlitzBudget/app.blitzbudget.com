@@ -185,6 +185,16 @@
 	$('#GSCCModal').on('shown.bs.modal', function () {
 		// Change focus
 		document.getElementById('amount').focus();
+		// Load Expense category and income category
+		let expenseOptGroup = document.getElementById('expenseSelection');
+		let incomeOptgroup = document.getElementById('incomeSelection');
+		// If the Category items are not populate then populate them
+		if(!expenseOptGroup.hasChildNodes()) {
+			expenseSelectionOptGroup = cloneElementAndAppend(expenseOptGroup, expenseSelectionOptGroup);
+		}
+		if(!incomeOptgroup.hasChildNodes()) {
+			incomeSelectionOptGroup = cloneElementAndAppend(incomeOptgroup, incomeSelectionOptGroup);
+		}
 	});
 	
 	// Populates the transaction table
@@ -195,67 +205,66 @@
 		ajaxData.type = 'GET';
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 		ajaxData.onSuccess = function(result) {
-			let totalExpensesTransactions = 0.00;
-			let totalIncomeTransactions = 0.00;
-			let transactionsTableDiv = document.createDocumentFragment();
-			let documentTbody = document.getElementById(replaceTransactionsId);
-			// uncheck the select all checkbox if checked
-			let checkAllBox = document.getElementById('checkAll');
-			// Fetch all the key set for the result
-			let resultKeySet = Object.keys(result)
-         	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
-         	   let key = resultKeySet[countGrouped];
-         	   let value = result[key];
- 			   let transactionsRowDocumentFragment = document.createDocumentFragment();
- 			   let totalCategoryAmount = 0;
- 			   let valueElementKeySet = Object.keys(value)
- 			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
- 				  let subKey = valueElementKeySet[count];
- 				  let subValue = value[subKey];
- 				  // Create transactions table row
- 				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
- 				  totalCategoryAmount += subValue.amount;
- 			   }
- 			   // Load all the total category amount in the category section
- 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
- 			   // Create category label table row
- 			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
- 			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
- 			   // Total Expenses and Total Income
- 			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
- 				   totalExpensesTransactions += totalCategoryAmount;
- 			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
- 				   totalIncomeTransactions += totalCategoryAmount;
- 			   }
-         	}
-		   
-		   // Update table with empty message if the transactions are empty
-		   if(result.length == 0) {
-			   checkAllBox.setAttribute('disabled', 'disabled');
-   				// Replace HTML with Empty
-       			while (documentTbody.firstChild) {
-       				documentTbody.removeChild(documentTbody.firstChild);
-       			}
+				let totalExpensesTransactions = 0.00;
+				let totalIncomeTransactions = 0.00;
+				let transactionsTableDiv = document.createDocumentFragment();
+				let documentTbody = document.getElementById(replaceTransactionsId);
+				// uncheck the select all checkbox if checked
+				let checkAllBox = document.getElementById('checkAll');
+				// Fetch all the key set for the result
+				let resultKeySet = Object.keys(result)
+	         	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
+	         	   let key = resultKeySet[countGrouped];
+	         	   let value = result[key];
+	 			   let transactionsRowDocumentFragment = document.createDocumentFragment();
+	 			   let totalCategoryAmount = 0;
+	 			   let valueElementKeySet = Object.keys(value)
+	 			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
+	 				  let subKey = valueElementKeySet[count];
+	 				  let subValue = value[subKey];
+	 				  // Create transactions table row
+	 				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
+	 				  totalCategoryAmount += subValue.amount;
+	 			   }
+	 			   // Load all the total category amount in the category section
+	 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
+	 			   // Create category label table row
+	 			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
+	 			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
+	 			   // Total Expenses and Total Income
+	 			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	 				   totalExpensesTransactions += totalCategoryAmount;
+	 			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+	 				   totalIncomeTransactions += totalCategoryAmount;
+	 			   }
+	         	}
+			   
+			   // Update table with empty message if the transactions are empty
+			   if(result.length == 0) {
+				   checkAllBox.setAttribute('disabled', 'disabled');
+	   				// Replace HTML with Empty
+	       			while (documentTbody.firstChild) {
+	       				documentTbody.removeChild(documentTbody.firstChild);
+	       			}
 
-			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
-		   } else {
-			   $('#checkAll').prop('checked', false);
-   			   checkAllBox.removeAttribute('disabled');
-  			   // Replace HTML with Empty
-      		   while (documentTbody.firstChild) {
-      			 documentTbody.removeChild(documentTbody.firstChild);
-      		   }
+				   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
+			   } else {
+				   $('#checkAll').prop('checked', false);
+	   			   checkAllBox.removeAttribute('disabled');
+	  			   // Replace HTML with Empty
+	      		   while (documentTbody.firstChild) {
+	      			 documentTbody.removeChild(documentTbody.firstChild);
+	      		   }
 
-			   documentTbody.appendChild(transactionsTableDiv);
-		   }
-		   
-		  // Disable delete Transactions button on refreshing the transactions
-          manageDeleteTransactionsButton();
-		  // update the Total Available Section
-		  updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
-		  // Update Budget from API
-		  updateBudgetForIncome();
-		
+				   documentTbody.appendChild(transactionsTableDiv);
+			   }
+			   
+			  // Disable delete Transactions button on refreshing the transactions
+	          manageDeleteTransactionsButton();
+			  // update the Total Available Section
+			  updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
+			  // Update Budget from API
+			  updateBudgetForIncome();
         }
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "There was an error while fetching the transactions. Please try again later!");
