@@ -85,16 +85,13 @@ uh = {
 	},
 
 	refreshToken(ajaxData) {
-		let af = sessionStorage.getItem('afterRefreshAjaxRequests');
-		if(isEmpty(af)) {
-			let af = [];
-			af.push(ajaxData)
-			sessionStorage.setItem('afterRefreshAjaxRequests', JSON.stringify(af));
-		} else {
-			af = JSON.parse(af);
-			af.push(ajaxData);
-			sessionStorage.setItem('afterRefreshAjaxRequests', JSON.stringify(af));
+		
+		// If window.afterRefreshAjaxRequests is empty then reinitialize it
+		if(isEmpty(window.afterRefreshAjaxRequests)) {
+			window.afterRefreshAjaxRequests = [];
 		}
+
+		window.afterRefreshAjaxRequests.push(ajaxData);
 
 		// If a refresh was already requested (DO NOTHING)
 		if(window.alreadyRequestedRefresh) {
@@ -156,13 +153,11 @@ uh = {
 	                sessionStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
 
-	                let af = sessionStorage.getItem('afterRefreshAjaxRequests');
 	                // If ajax Data is empty then don't do anything
-	                if(isEmpty(af)) {
+	                if(isEmpty(window.afterRefreshAjaxRequests)) {
 	                	return;
 	                }
-	                // Parse the stored value
-	                af = JSON.parse(af);
+	                let af = window.afterRefreshAjaxRequests;
 
 	                for(let i = 0, l = af.length; i < l; i++) {
 	                	let ajData = af[i];
@@ -178,7 +173,7 @@ uh = {
 							};
 
 							// Print on success
-							console.log('on success - ' + JSON.stringify(ajData));
+							debugger;
 
 		                	if(isNotEmpty(ajData.dataType)) {
 		                		ajaxParams.dataType =  ajData.dataType;

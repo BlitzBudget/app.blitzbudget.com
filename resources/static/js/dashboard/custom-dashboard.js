@@ -666,6 +666,7 @@ window.onload = function () {
 			ajaxData.onFailure = function(thrownError) {
 			  manageErrors(thrownError, "Unable to fetch categories at this moment",ajaxData);
 	        }
+
 			jQuery.ajax({
 				url: ajaxData.url,
 				beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
