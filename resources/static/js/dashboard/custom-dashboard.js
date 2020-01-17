@@ -783,12 +783,6 @@ window.onload = function () {
 			   mutableScrollPos = st <= 0 ? 0 : st;
 			}
 		}
-
-		// Error handling
-		window.addEventListener("error", function (e) {
-		   alert("Error occurred: " + e.error.message);
-		   return false;
-		})
 				
 	});
 }
