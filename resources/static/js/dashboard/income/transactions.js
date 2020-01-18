@@ -2010,8 +2010,8 @@
 	}
 	
 	// Date Picker
-	// On click month
-	$('.monthPickerMonth').click(function() {
+	// On click month (UNBIND other click events)
+	$('.monthPickerMonth').unbind('click').click(function() {
 		let transactionTable = document.getElementById('transactionsTable');
 		
 		if(transactionTable == null) {

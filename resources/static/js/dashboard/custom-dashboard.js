@@ -366,8 +366,6 @@ window.onload = function () {
 			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
 			if(dateControlClass.contains('d-none')) {
 				overvierDateArrow.remove('transformUpwardArrow');
-				// Remove event listener once the function performed its task
-				document.removeEventListener('mouseup', closeMonthPickerModal, false);
 			} else {
 				overvierDateArrow.add('transformUpwardArrow');
 				// Add click outside event listener to close the modal
@@ -473,22 +471,26 @@ window.onload = function () {
 		function closeMonthPickerModal(event) {
 			let dateControlDiv = document.getElementById('dateControl');
 			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
-			let monthPickerDisplay = document.getElementById('monthPickerDisplay');
-			if (!(dateControlDiv.contains(event.target) || monthPickerDisplay.contains(event.target)) && !dateControlDiv.classList.contains('d-none')){
-			    // Click outside the modal
-				dateControlDiv.classList.add('d-none');
-				// Remove upward arrow
-				overvierDateArrow.remove('transformUpwardArrow');
-				// Remove event listener once the function performed its task
-				document.removeEventListener('mouseup', closeMonthPickerModal, false);
+			let monthPickerPrev = document.getElementById('monthPickerPrev');
+			let monthPickerNext = document.getElementById('monthPickerNext');
+			// DO not remove the mouse up event if the prev or next btn is clicked
+			if (monthPickerNext.contains(event.target) || monthPickerPrev.contains(event.target) || event.target.parentNode.classList.contains('monthPickerPrev') || event.target.parentNode.classList.contains('monthPickerNext') || event.target.classList.contains('monthPicker')){
+				return;
 			}
+		    // Click outside the modal
+			dateControlDiv.classList.add('d-none');
+			// Remove upward arrow
+			overvierDateArrow.remove('transformUpwardArrow');
+			// Remove event listener once the function performed its task
+			document.removeEventListener('mouseup', closeMonthPickerModal, false);
+			console.log('mouseup listener removed');
 		}
 		
 		// Date Picker On click month
-		$('.monthPickerMonth').click(function() {
+//		$('.monthPickerMonth').click(function() {
 			// Remove event listener once the function performed its task
-			document.removeEventListener('mouseup', closeMonthPickerModal, false);
-		});
+//			document.removeEventListener('mouseup', closeMonthPickerModal, false);
+//		});
 		
 		// Update Transactions in month picker
 		function updateExistingTransactionsInMonthPicker() {

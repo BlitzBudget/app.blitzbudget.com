@@ -1508,7 +1508,7 @@
 	 */
 	
 	// Date Picker On click month
-	$('.monthPickerMonth').click(function() {
+	$('.monthPickerMonth').unbind('click').click(function() {
 		let budgetAmountDiv = document.getElementById('budgetAmount');
 		
 		// If other pages are present then return this event

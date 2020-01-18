@@ -1454,7 +1454,7 @@
 	 */
 	
 	// Date Picker on click month
-	$('.monthPickerMonth').click(function() {
+	$('.monthPickerMonth').unbind('click').click(function() {
 		let recentTransactionsDiv = document.getElementsByClassName('recentTransactionCard');
 
 		// If other pages are present then return this event
