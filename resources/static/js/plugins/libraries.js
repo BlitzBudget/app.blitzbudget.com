@@ -124,10 +124,12 @@ function calcPage() {
 
 // Replace currentCurrencySymbol with currency
 function replaceWithCurrency() {
-	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
+	if(currentUser.currency) {
+		let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
 
-	for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
-		currencySymbolDivs[i].innerText = currentUser.currency;
+		for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
+			currencySymbolDivs[i].innerText = currentUser.currency;
+		}
 	}
 }
 

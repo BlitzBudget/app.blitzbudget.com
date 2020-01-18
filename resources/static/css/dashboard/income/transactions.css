@@ -676,7 +676,7 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     font-weight: 700;
 }
 
-#loginModal .form-control,#loginModal .is-focused .form-control {
+#loginModal .form-control,#loginModal .is-focused .form-control,#unlockModal .form-control,#unlockModal .is-focused .form-control {
     background-image: linear-gradient(to top,#4caf50 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
 }
 
@@ -807,6 +807,20 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2);
     color: #fff;
 }
+
+#bootstrap-combobox.dropdown-menu .disabled .dropdown-item:hover, 
+#bootstrap-combobox.dropdown-menu .disabled .dropdown-item:focus, 
+#bootstrap-combobox.dropdown-menu .disabled a:hover, 
+#bootstrap-combobox.dropdown-menu .disabled a:focus, 
+#bootstrap-combobox.dropdown-menu .disabled a:active {
+	text-decoration: none;
+	background-color: transparent;
+	background-image: none;
+	color: #777;
+	box-shadow: none;
+}
+
+
 
 .dropdown-toggle::after, .filter-option-inner-inner {
 	color: #929292;

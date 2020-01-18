@@ -59,6 +59,8 @@ var AWSCogUser = window.AWSCogUser || {};
         window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
         // If the session storage is 
         if(isNotEmpty(currentCogUser)) {
+            // Fill currency and Name
+            fillCurrencyAndName();           
             return;
         }
         // Fetch user from local storage
@@ -104,9 +106,25 @@ var AWSCogUser = window.AWSCogUser || {};
                 window.currentUser = currentUserLocal;
                 // We save the item in the sessionStorage.
                 sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-
+                // Fill currency and Name
+                fillCurrencyAndName();
             });
         });
+    }
+
+    // Fill currency and name
+    function fillCurrencyAndName() {
+        // Set Currency If empty
+        if(currentUser.currency && currentUser.name) {
+            window.currentCurrencyPreference = window.currentUser.currency;
+            Object.freeze(window.currentCurrencyPreference);
+            Object.seal(window.currentCurrencyPreference);
+
+            // Set the name of the user
+            document.getElementById('userName').innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
+            // Replace with currency
+            replaceWithCurrency();
+        }
     }
 
     // Handle Session Errors
@@ -859,6 +877,10 @@ var AWSCogUser = window.AWSCogUser || {};
             // Signout user from cognito
             cognitoUser.signOut();
         }
+
+        // Clear all local stroage
+        localStorage.clear();
+        sessionStorage.clear();
         
         // redirect user to home page
         window.location.href = window._config.home.invokeUrl;
