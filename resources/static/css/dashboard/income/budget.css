@@ -410,7 +410,7 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     font-weight: 700;
 }
 
-#loginModal .form-control,#loginModal .is-focused .form-control {
+#loginModal .form-control,#loginModal .is-focused .form-control,#unlockModal .form-control,#unlockModal .is-focused .form-control {
 	background-image: linear-gradient(to top,#ff3479 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
 }
 

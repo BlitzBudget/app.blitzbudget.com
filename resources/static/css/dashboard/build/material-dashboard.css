@@ -15015,7 +15015,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   .sidebar-mini .sidebar .sidebar-wrapper>.nav [data-toggle="collapse"]~div>ul>li>a .sidebar-normal,
   .sidebar-mini .sidebar .sidebar-wrapper .user .user-info [data-toggle="collapse"]~div>ul>li>a .sidebar-normal,
   .sidebar-mini .sidebar .sidebar-wrapper .user .user-info>a>span,
-  .sidebar-mini .sidebar .sidebar-wrapper>.nav li>a p {
+  .sidebar-mini .sidebar .sidebar-wrapper>.nav li>a p,
+  .sidebar-mini .sidebar .sidebar-wrapper>.nav li>#dashboard-util-fullscreen,
+  .sidebar-mini .sidebar .sidebar-wrapper>.nav li>#dashboard-util-logout,
+  .sidebar-mini .sidebar .sidebar-wrapper>.nav li>#settingsPage {
     -webkit-transform: translate3d(-25px, 0, 0);
     -moz-transform: translate3d(-25px, 0, 0);
     -o-transform: translate3d(-25px, 0, 0);
@@ -15040,7 +15043,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   .sidebar-mini .sidebar:hover .sidebar-wrapper>.nav li>a p,
   .sidebar-mini .sidebar:hover .sidebar-wrapper>.nav [data-toggle="collapse"]~div>ul>li>a .sidebar-normal,
   .sidebar-mini .sidebar:hover .sidebar-wrapper .user .user-info [data-toggle="collapse"]~div>ul>li>a .sidebar-normal,
-  .sidebar-mini .sidebar:hover .sidebar-wrapper .user .user-info>a>span {
+  .sidebar-mini .sidebar:hover .sidebar-wrapper .user .user-info>a>span,
+  .sidebar-mini .sidebar:hover .sidebar-wrapper>.nav li>#dashboard-util-fullscreen,
+  .sidebar-mini .sidebar:hover .sidebar-wrapper>.nav li>#dashboard-util-logout,
+  .sidebar-mini .sidebar:hover .sidebar-wrapper>.nav li>#settingsPage {
     -webkit-transform: translate3d(0px, 0, 0);
     -moz-transform: translate3d(0px, 0, 0);
     -o-transform: translate3d(0px, 0, 0);
@@ -15051,7 +15057,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   .sidebar .nav .nav-item.active-pro {
     position: absolute;
     width: 100%;
-    bottom: 13px;
+    bottom: 2rem;
   }
 }
 

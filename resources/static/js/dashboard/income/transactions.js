@@ -2111,13 +2111,6 @@
 	/*
 	 * Populate Recent transactions ()Aggregated by account)
 	 */ 
-
-	// Append Material Spinner
-	function materialSpinnerApp() {
-		let rtSpinner = document.createElement('div');
-		rtSpinner.classList = "material-spinner rtSpinner";
-		return rtSpinner;
-	}
 	
 	// Populate Recent Transactions
 	function populateRecentTransactions() {

@@ -44,7 +44,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 });
 
 //Currency Preference
-let currentCurrencyPreference = '';
+window.currentCurrencyPreference = '$';
 
 let currentActiveSideBar = '';
 //Load Expense category and income category
@@ -240,11 +240,13 @@ window.onload = function () {
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 				    break;
 				case 'settingsPage':
+				case 'settingsPgDD':
 					url = '/settings';
 					color = ''; /* No Color */
 					currentPage = 'Settings';
 				    break;
 				case 'profilePage':
+				case 'profilePgDD':
 					url = '/profile';
 					color = ''; /* No Color */
 					currentPage = 'Profile';
@@ -276,16 +278,6 @@ window.onload = function () {
         	resetMonthExistingPicker();
         	// reset Scroll position to header
     		document.getElementsByClassName('navbar')[0].scrollTop = 0; 
-			
-    		// Set Currency If empty
-    		if(isEmpty(currentCurrencyPreference)) {
-    		    currentCurrencyPreference = currentUser.currency;
-    			Object.freeze(currentCurrencyPreference);
-    			Object.seal(currentCurrencyPreference);
-
-    			// Set the name of the user
-    			document.getElementById('userName').innerText = currentUser.name + ' ' + currentUser.family_name;
-    		}
 
     		// Call the actual page which was requested to be loaded
     		$.ajax({
@@ -644,7 +636,6 @@ window.onload = function () {
 
 	            	  // Freeze the object so it cannot be mutable
 		        	  Object.freeze(value);
-		        	  console.log('fetch category URL - ' + data);
 	        		  window.categoryMap[value.categoryId] = value;
 	        		  let option = document.createElement('option');
 	    			  option.className = 'categoryOption-' + value.categoryId;
@@ -719,7 +710,7 @@ window.onload = function () {
 		    /* Create a cookie to store user preference */
 		    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
 		    
-		  });
+		 });
 
 		/* Minimise sidebar*/
 		function minimizeSidebar(){
@@ -731,14 +722,6 @@ window.onload = function () {
 		 	    setTimeout(function () {
 		 	      clearInterval(e)
 		 	    }, 1000)
-		   
-		 	    // hide the active pro bottom pane
-		   if(1 == md.misc.sidebar_mini_active){
-		    	$('.active-pro').addClass('d-none').removeClass('d-block').animate({ height: '20px' }, 'easeOutQuad', function(){ 
-		        });
-		    } else {
-		    	$('.active-pro').removeClass('d-none').addClass('d-block').animate({ height: '20px' }, 'easeOutQuad', function(){});
-		    }
 		}
 
 		// Assign background image for sidebar
@@ -760,21 +743,6 @@ window.onload = function () {
 				 $sidebar.attr('data-color', color);
 			 }
 		}
-
-		// Sidebar hover event if hidden
-		$(".sidebar").hover(function() {
-			let activeProClass = document.getElementsByClassName('active-pro')[0].classList;
-			if(1 == md.misc.sidebar_mini_active) {
-				activeProClass.toggle('d-none');
-				activeProClass.toggle('d-block');
-			}
-		}, function() {
-			let activeProClass = document.getElementsByClassName('active-pro')[0].classList;
-			if(1 == md.misc.sidebar_mini_active) {
-				activeProClass.toggle('d-none');
-				activeProClass.toggle('d-block');
-			}
-		});
 
 		// While scrolling the + button disappears
 		let mutScrollable = document.getElementsByClassName('main-panel')[0];
@@ -874,7 +842,7 @@ er = {
 			}
 
 			// If Current User exists then
-			if(currentUser && currentUser.email && currentUser.name && currentUser.family_name) {
+			if(currentUser && currentUser.email && currentUser.name) {
 				$('#unlockModal').modal({
 				    backdrop: 'static',
 				    keyboard: false
