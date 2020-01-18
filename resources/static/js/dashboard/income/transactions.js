@@ -748,7 +748,15 @@
 			                        	let iterateOnceAfterCompletion = elementsToDelete.length;
 		                        		// Remove all the elements
 			                        	elementsToDelete.fadeOut('slow', function(){ 
-			                        		$(this).remove(); 
+			                        		this.remove();
+			                        		let selectId = this.getElementsByTagName('select')[0].id; 
+			                        		let transId = lastElement(splitElement(selectId,'-'));
+			                        		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
+			                        		// Check if recent transaction is present and remove it
+			                        		if(isNotEmpty(recentTransactionEntry)) {
+			                        			// remove the recent transactions
+			                        			document.getElementById('recentTransaction-' + transId).remove();
+			                        		}
 			                        		
 			                        		// Execute the condition only once after all the transactions are removed.
 			                        		if(!--iterateOnceAfterCompletion) {
