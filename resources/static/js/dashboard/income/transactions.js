@@ -17,6 +17,7 @@
 	let userUpdateBudgetCached = '';
 	
 	const replaceTransactionsId = "productsJson";
+	const recentTransactionsId = 'recentTransactions';
 	// Used to refresh the transactions only if new ones are added
 	let resiteredNewTransaction = false;
 	// Divs for error message while adding transactions
@@ -172,9 +173,15 @@
 		replaceHTML('errorMessage',"");
 		
 		if(resiteredNewTransaction) {
-			fetchJSONForTransactions();
-			// Do not refresh the transactions if no new transactions are added
-			resiteredNewTransaction = false;
+			// populate recent transactions /  category modal
+			let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
+			if(isNotEmpty(recentTransactionEntry)) {
+				populateRecentTransactions();	
+			} else {
+				fetchJSONForTransactions();
+				// Do not refresh the transactions if no new transactions are added
+				resiteredNewTransaction = false;
+			}
 			// Close category modal
          	closeCategoryModal();
 		}
@@ -716,11 +723,17 @@
 		                        		$('#checkAll').prop('checked',false);
 		                        		checkAllBox.setAttribute('disabled','disabled');
 		                        		let documentTbody = document.getElementById(replaceTransactionsId);
+		                        		let recentTransactionsTab = document.getElementById(recentTransactionsId);
 		                        		// Replace HTML with Empty
 		                       		   	while (documentTbody.firstChild) {
 		                       		   		documentTbody.removeChild(documentTbody.firstChild);
 		                       		   	}
-		                 			   	document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
+		                 			   	documentTbody.appendChild(fetchEmptyTableMessage());
+		                 			   	// Replace HTML with Empty
+		                       		   	while (recentTransactionsTab.firstChild) {
+		                       		   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
+		                       		   	}
+		                 			   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
 		                 			   	// update the Total Available Section with 0
 		                 	    		updateTotalAvailableSection(0 , 0);
 		                 	    		// Disable delete Transactions button on refreshing the transactions
@@ -784,14 +797,9 @@
 		let classToHide = '.hideableRow-' + categoryId;
 		let childCategories = $(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
-		// Hide all child categories
-		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
-		// Toggle the drop down arrow
-	  	dropdownArrowDiv.toggle('dropdown-toggle');
-	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
 	  	
 	  	// Call method only when the category div is expanding and if the category modal is already open by other categories
-	  	if(dropdownArrowDiv.contains('dropdown-toggle')) {
+	  	if(dropdownArrowDiv.contains('dropdown-toggle-right')) {
 	  		toggleCategoryModal(true);
 	  		// Show the category modal on click category row
 		  	handleCategoryModalToggle(categoryId, closestTrElement, childCategories.length);
@@ -799,6 +807,12 @@
 	  		// If the category modal is active then hide it
 	  		toggleCategoryModal(false);
 	  	}
+
+	  	// Hide all child categories
+		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
+		// Toggle the drop down arrow
+	  	dropdownArrowDiv.toggle('dropdown-toggle');
+	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
 	}
 	
 	// Catch the description when the user focuses on the description
@@ -2127,16 +2141,7 @@
         	let recentTransactionsFragment = document.createDocumentFragment();
         	
         	if(isEmpty(userTransactionsList)) {
-        		let imageTransactionEmptyWrapper = document.createElement('div');
-        		imageTransactionEmptyWrapper.classList = 'text-center d-lg-table-row';
-        		
-        		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
-        		
-        		
-        		let emptyMessageRow = document.createElement('div');
-        		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
-        		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
-        		recentTransactionsFragment.appendChild(emptyMessageRow);
+        		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
         	} else {
         		let resultKeySet = Object.keys(userTransactionsList);
 	        	// Print only the first 20 records
@@ -2167,6 +2172,19 @@
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
 		});
+	}
+
+	// Build EmptyRecTransTable
+	function buildEmptyTransactionsTab() {
+		let recentTransactionsFragment = document.createDocumentFragment();
+		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
+		
+		
+		let emptyMessageRow = document.createElement('div');
+		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
+		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+		recentTransactionsFragment.appendChild(emptyMessageRow);
+		return recentTransactionsFragment;
 	}
 	
 	// Builds the rows for recent transactions
