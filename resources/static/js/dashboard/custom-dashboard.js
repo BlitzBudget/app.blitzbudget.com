@@ -366,6 +366,8 @@ window.onload = function () {
 			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
 			if(!dateControlClass.contains('d-none')) {
 				overvierDateArrow.remove('transformUpwardArrow');
+				// Remove event listener once the function performed its task
+				document.removeEventListener('mouseup', closeMonthPickerModal, false);
 			} else {
 				overvierDateArrow.add('transformUpwardArrow');
 				// Add click outside event listener to close the modal
@@ -484,7 +486,10 @@ window.onload = function () {
 				event.target.parentNode.classList.contains('monthPickerNext') || 
 				event.target.classList.contains('monthPicker') || 
 				event.target.classList.contains('monthPickerMonthSelected') ||
-				event.target.parentNode.classList.contains('monthPickerMonthSelected')) {
+				event.target.parentNode.classList.contains('monthPickerMonthSelected') ||
+				event.target.id == 'monthPickerDisplay' ||
+				event.target.parentNode.id == 'monthPickerDisplay') {
+				// Do not remove listener Previous btn, Next Btn, Month Picker Selected, Area of the popover date, date display click
 				return;
 			}
 		    // Click outside the modal
