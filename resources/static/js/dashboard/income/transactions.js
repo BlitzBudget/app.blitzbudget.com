@@ -1568,6 +1568,10 @@
         	  
         	  // Updates total transactions in category Modal
         	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
+        	  // If recent transactions are populated then
+        	  if(recentTransactionsPopulated) {
+        	  		document.getElementById('recentTransactions').appendChild(buildTransactionRow(userTransaction));
+        	  }
          }
 		 ajaxData.onFailure = function (thrownError) {
 		 	manageErrors(thrownError, 'Unable to add a new transaction.',ajaxData);
@@ -2155,15 +2159,18 @@
    		ajaxData.type = 'GET';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(userTransactionsList) {
-   			// Update the recent transactions
-   			recentTransactionsPopulated = true;
-
+   			
         	let recentTransactionsDiv = document.getElementById('recentTransactions');
         	let recentTransactionsFragment = document.createDocumentFragment();
         	
         	if(isEmpty(userTransactionsList)) {
         		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
+        		// Update the recent transactions (FALSE for empty tables)
+	   			recentTransactionsPopulated = false;
         	} else {
+        		// Update the recent transactions
+	   			recentTransactionsPopulated = true;
+
         		let resultKeySet = Object.keys(userTransactionsList);
 	        	// Print only the first 20 records
 	        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
