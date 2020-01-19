@@ -31,7 +31,7 @@
 	// Fetch Drag Handle for transactions row table
 	let dragHandle = fetchDragHandle();
 	// recent transactions populated
-	let recentTransactionsPopulated = '';
+	let recentTransactionsPopulated = false;
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -177,11 +177,12 @@
 			let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
 			if(isNotEmpty(recentTransactionEntry)) {
 				populateRecentTransactions();	
-			} else {
-				fetchJSONForTransactions();
-				// Do not refresh the transactions if no new transactions are added
-				resiteredNewTransaction = false;
 			}
+			// Populate category based table 
+			fetchJSONForTransactions();
+			// Do not refresh the transactions if no new transactions are added
+			resiteredNewTransaction = false;
+		
 			// Close category modal
          	closeCategoryModal();
 		}
@@ -734,6 +735,8 @@
 		                       		   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
 		                       		   	}
 		                 			   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
+		                 			   	// CHange the recent transactions populated to false
+		                 			   	recentTransactionsPopulated = false;
 		                 			   	// update the Total Available Section with 0
 		                 	    		updateTotalAvailableSection(0 , 0);
 		                 	    		// Disable delete Transactions button on refreshing the transactions
@@ -754,6 +757,8 @@
 			                        		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
 			                        		// Check if recent transaction is present and remove it
 			                        		if(isNotEmpty(recentTransactionEntry)) {
+			                        			// If all the recent transactions are removed
+			                        			if(recentTransactionEntry.length == 1) recentTransactionsPopulated = false;
 			                        			// remove the recent transactions
 			                        			document.getElementById('recentTransaction-' + transId).remove();
 			                        		}
