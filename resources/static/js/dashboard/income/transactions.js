@@ -774,6 +774,8 @@
 				                         	
 			                        	});
 		                        	}
+		                        	// Add icon d-none
+									document.getElementById('genericAddFnc').classList.toggle('d-none');
 		                         }
 								 ajaxData.onFailure = function (thrownError) {
 								 	manageErrors(thrownError, 'Unable to delete the transactions',ajaxData);
@@ -1254,7 +1256,9 @@
         	
         	// Remove Transactions Row
         	closestTr.fadeOut('slow', function(){
-        		$(this).remove(); 
+        		this.remove();
+        		// IF the recent transactions are populated then remove
+        		document.getElementById('recentTransaction-' + id).remove();
         		
         		// Check all functionality if all transactions are clicked
             	checkAllIfAllAreChecked();
@@ -1752,7 +1756,8 @@
 		
 		// Populate the category label with the one selected
 		let categoryNameDiv = document.getElementById('categoryLabelInModal');
-		categoryNameDiv.innerText = categoryMap[categoryId].categoryName;
+		// If the category can be found then
+		if(isNotEmpty(categoryMap[categoryId])) categoryNameDiv.innerText = categoryMap[categoryId].categoryName;
 		
 		// Set the number of transactions if present
 		if(isNotEmpty(totalTransactions)) {
@@ -2039,6 +2044,11 @@
 	// Date Picker
 	// On click month (UNBIND other click events)
 	$('.monthPickerMonth').unbind('click').click(function() {
+		// Month picker is current selected then do nothing
+		if(this.classList.contains('monthPickerMonthSelected')) {
+			return;
+		}
+
 		let transactionTable = document.getElementById('transactionsTable');
 		
 		if(transactionTable == null) {
@@ -2129,8 +2139,6 @@
 			// If length > 0 then change the add button to add
 			popup.showSwal('warning-message-and-confirmation');
 		} else {
-			// Rotate the + button
-			this.classList.toggle('rotate');
 			$('#GSCCModal').modal('toggle');
 		}  
 	});

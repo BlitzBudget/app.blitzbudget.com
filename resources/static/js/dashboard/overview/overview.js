@@ -1455,6 +1455,11 @@
 	
 	// Date Picker on click month
 	$('.monthPickerMonth').unbind('click').click(function() {
+		// Month picker is current selected then do nothing
+		if(this.classList.contains('monthPickerMonthSelected')) {
+			return;
+		}
+		
 		let recentTransactionsDiv = document.getElementsByClassName('recentTransactionCard');
 
 		// If other pages are present then return this event

@@ -1509,6 +1509,11 @@
 	
 	// Date Picker On click month
 	$('.monthPickerMonth').unbind('click').click(function() {
+		// Month picker is current selected then do nothing
+		if(this.classList.contains('monthPickerMonthSelected')) {
+			return;
+		}
+		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
 		
 		// If other pages are present then return this event
