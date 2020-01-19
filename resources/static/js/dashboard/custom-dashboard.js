@@ -121,62 +121,66 @@ window.onload = function () {
 		
 		/* Read Cookies */
 		function readCookie() {
-				// make sure that the cookies exists
-		        if (document.cookie != "") { 
-		        		//Get the value from the name=value pair
-		                let sidebarActiveCookie = getCookie('sidebarMini');
-		                
-		                if(includesStr(sidebarActiveCookie, 'active')) {
-		                	 minimizeSidebar();
-		                }
-		                
-		                // Get the value from the name=value pair
-		                let cookieCurrentPage = getCookie('currentPage');
-		                // Get parameters
-		                const params = (new URL(document.location)).searchParams;
+			// make sure that the cookies exists
+	        if (document.cookie != "") { 
+        		//Get the value from the name=value pair
+                let sidebarActiveCookie = getCookie('sidebarMini');
+                
+                if(includesStr(sidebarActiveCookie, 'active')) {
+                	 minimizeSidebar();
+                }
+                
+                // Get the value from the name=value pair
+                let cookieCurrentPage = getCookie('currentPage');
+                // Get parameters
+                const params = (new URL(document.location)).searchParams;
 
-		                // First Priority to URL parameters
-		                if(params != null && params.has('page')) {
-		                	fetchCurrentPage(params.get('page'));
-		                	// After fetching delete param
-		                	params.delete('page');
-		                } else if(!isEmpty(cookieCurrentPage)) {
-		                	// Second Priority to cookies
-		                	fetchCurrentPage(cookieCurrentPage);
-		                } else {
-		                	// Fetch overview page and display if cookie is empty
-		                	fetchCurrentPage('overviewPage');
-		                }
-		        } else {
-		        	// fetch overview page and display if no cookie is present
-		        	fetchCurrentPage('overviewPage');
-		        }
+                // First Priority to URL parameters
+                if(params != null && params.has('page')) {
+                	fetchCurrentPage(params.get('page'));
+                	// After fetching delete param
+                	params.delete('page');
+                } else if(!isEmpty(cookieCurrentPage)) {
+                	// Second Priority to cookies
+                	fetchCurrentPage(cookieCurrentPage);
+                } else {
+                	// Fetch overview page and display if cookie is empty
+                	fetchCurrentPage('overviewPage');
+                }
+	        } else {
+	        	// fetch overview page and display if no cookie is present
+	        	fetchCurrentPage('overviewPage');
+	        }
 		}
 		
 		// Gets the cookie with the name
 		function getCookie(cname) {
-			  var name = cname + "=";
-			  var decodedCookie = decodeURIComponent(document.cookie);
-			  var ca = decodedCookie.split(';');
-			  for(var i = 0; i <ca.length; i++) {
-			    var c = ca[i];
-			    while (c.charAt(0) == ' ') {
-			      c = c.substring(1);
-			    }
-			    if (c.indexOf(name) == 0) {
-			      return c.substring(name.length, c.length);
-			    }
-			  }
-			  return "";
-			}
+		  let name = cname + "=";
+		  let decodedCookie = decodeURIComponent(document.cookie);
+		  let ca = decodedCookie.split(';');
+		  for(let i = 0; i <ca.length; i++) {
+		    let c = ca[i];
+		    while (c.charAt(0) == ' ') {
+		      c = c.substring(1);
+		    }
+		    if (c.indexOf(name) == 0) {
+		      return c.substring(name.length, c.length);
+		    }
+		  }
+		  return "";
+		}
 		
 		// DO NOT load the html from request just refresh div if possible without downloading JS
 		$('.pageDynamicLoadForDashboard').click(function(e){
 			e.preventDefault();
         	let id = this.id;
+        	// If the current sidebar is selected then do nothing
+        	if(this.parentNode.classList.contains('active')) {
+        		return;
+        	}
 			
 			/* Create a cookie to store user preference */
-		    var expirationDate = new Date;
+		    let expirationDate = new Date;
 		    expirationDate.setMonth(expirationDate.getMonth()+2);
 		    
 		    /* Create a cookie to store user preference */
@@ -357,14 +361,10 @@ window.onload = function () {
 		// Click event for month picker
 		document.getElementById('monthPickerDisplay').addEventListener("click",function(e){
 			e.stopPropagation();
-			
-			// Show the modal (Do not close)
 			let dateControlClass = document.getElementById('dateControl').classList;
-			dateControlClass.toggle('d-none');
-			
 			// Change the SVG to down arrow or up arrow
 			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
-			if(dateControlClass.contains('d-none')) {
+			if(!dateControlClass.contains('d-none')) {
 				overvierDateArrow.remove('transformUpwardArrow');
 				// Remove event listener once the function performed its task
 				document.removeEventListener('mouseup', closeMonthPickerModal, false);
@@ -381,6 +381,10 @@ window.onload = function () {
 				// Fetch the transactions data if the tab is open
 				updateExistingTransactionsInMonthPicker();
 			}
+
+
+			// Show the modal (Do not close)
+			dateControlClass.toggle('d-none');
 			
 		});
 		
@@ -473,22 +477,29 @@ window.onload = function () {
 		function closeMonthPickerModal(event) {
 			let dateControlDiv = document.getElementById('dateControl');
 			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
-			let monthPickerDisplay = document.getElementById('monthPickerDisplay');
-			if (!(dateControlDiv.contains(event.target) || monthPickerDisplay.contains(event.target)) && !dateControlDiv.classList.contains('d-none')){
-			    // Click outside the modal
-				dateControlDiv.classList.add('d-none');
-				// Remove upward arrow
-				overvierDateArrow.remove('transformUpwardArrow');
-				// Remove event listener once the function performed its task
-				document.removeEventListener('mouseup', closeMonthPickerModal, false);
+			let monthPickerPrev = document.getElementById('monthPickerPrev');
+			let monthPickerNext = document.getElementById('monthPickerNext');
+			// DO not remove the mouse up event if the prev or next btn is clicked
+			if (monthPickerNext.contains(event.target) || 
+				monthPickerPrev.contains(event.target) || 
+				event.target.parentNode.classList.contains('monthPickerPrev') || 
+				event.target.parentNode.classList.contains('monthPickerNext') || 
+				event.target.classList.contains('monthPicker') || 
+				event.target.classList.contains('monthPickerMonthSelected') ||
+				event.target.parentNode.classList.contains('monthPickerMonthSelected') ||
+				event.target.id == 'monthPickerDisplay' ||
+				event.target.parentNode.id == 'monthPickerDisplay') {
+				// Do not remove listener Previous btn, Next Btn, Month Picker Selected, Area of the popover date, date display click
+				return;
 			}
-		}
-		
-		// Date Picker On click month
-		$('.monthPickerMonth').click(function() {
+		    // Click outside the modal
+			dateControlDiv.classList.add('d-none');
+			// Remove upward arrow
+			overvierDateArrow.remove('transformUpwardArrow');
 			// Remove event listener once the function performed its task
 			document.removeEventListener('mouseup', closeMonthPickerModal, false);
-		});
+			console.log('mouseup listener removed');
+		}
 		
 		// Update Transactions in month picker
 		function updateExistingTransactionsInMonthPicker() {
@@ -609,6 +620,12 @@ window.onload = function () {
 				document.getElementById('emailInputSignin').focus();
         	}
 			 
+		});
+
+		// unlock modal on shown modal
+		$('#unlockModal').on('shown.bs.modal', function (e) {
+			// after the modal is shown focus on password
+			document.getElementById('unlockAppPass').focus();
 		});
 
 		// Start up application

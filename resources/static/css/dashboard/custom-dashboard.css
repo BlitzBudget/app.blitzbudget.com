@@ -1367,12 +1367,25 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
   transform: rotate(90deg);
 }
 
-.logo:hover #svg2,
 .user:hover .photo {
    -webkit-transform: scale(1.12) rotate(5deg);
   -ms-transform: scale(1.12) rotate(5deg);
   -o-transform: scale(1.12) rotate(5deg);
   transform: scale(1.12) rotate(5deg);
+}
+
+.logo:hover #svg2 {
+   -webkit-transform: scale(1.12) rotate(0deg);
+  -ms-transform: scale(1.12) rotate(0deg);
+  -o-transform: scale(1.12) rotate(0deg);
+  transform: scale(1.12) rotate(0deg);
+}
+
+.logo #svg2 {
+ -webkit-transform: scale(1) rotate(5deg);
+  -ms-transform: scale(1) rotate(5deg);
+  -o-transform: scale(1) rotate(5deg);
+  transform: scale(1) rotate(5deg);   
 }
 
 .logo #svg2,
@@ -1552,4 +1565,14 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
 
 #currentPage:hover {
     color: #6a6a6a;
+}
+
+.nav-link.pageDynamicLoadForDashboard p {
+    cursor: pointer;
+}
+
+.monthPickerMonthSelected, 
+.sidebar-wrapper .nav .nav-item.active .nav-link.pageDynamicLoadForDashboard,
+.sidebar-wrapper .nav .nav-item.active .nav-link.pageDynamicLoadForDashboard p {
+    cursor: auto;
 }

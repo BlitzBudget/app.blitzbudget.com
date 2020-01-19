@@ -17,6 +17,7 @@
 	let userUpdateBudgetCached = '';
 	
 	const replaceTransactionsId = "productsJson";
+	const recentTransactionsId = 'recentTransactions';
 	// Used to refresh the transactions only if new ones are added
 	let resiteredNewTransaction = false;
 	// Divs for error message while adding transactions
@@ -30,7 +31,7 @@
 	// Fetch Drag Handle for transactions row table
 	let dragHandle = fetchDragHandle();
 	// recent transactions populated
-	let recentTransactionsPopulated = '';
+	let recentTransactionsPopulated = false;
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -172,9 +173,16 @@
 		replaceHTML('errorMessage',"");
 		
 		if(resiteredNewTransaction) {
+			// populate recent transactions /  category modal
+			let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
+			if(isNotEmpty(recentTransactionEntry)) {
+				populateRecentTransactions();	
+			}
+			// Populate category based table 
 			fetchJSONForTransactions();
 			// Do not refresh the transactions if no new transactions are added
 			resiteredNewTransaction = false;
+		
 			// Close category modal
          	closeCategoryModal();
 		}
@@ -716,11 +724,19 @@
 		                        		$('#checkAll').prop('checked',false);
 		                        		checkAllBox.setAttribute('disabled','disabled');
 		                        		let documentTbody = document.getElementById(replaceTransactionsId);
+		                        		let recentTransactionsTab = document.getElementById(recentTransactionsId);
 		                        		// Replace HTML with Empty
 		                       		   	while (documentTbody.firstChild) {
 		                       		   		documentTbody.removeChild(documentTbody.firstChild);
 		                       		   	}
-		                 			   	document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
+		                 			   	documentTbody.appendChild(fetchEmptyTableMessage());
+		                 			   	// Replace HTML with Empty
+		                       		   	while (recentTransactionsTab.firstChild) {
+		                       		   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
+		                       		   	}
+		                 			   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
+		                 			   	// CHange the recent transactions populated to false
+		                 			   	recentTransactionsPopulated = false;
 		                 			   	// update the Total Available Section with 0
 		                 	    		updateTotalAvailableSection(0 , 0);
 		                 	    		// Disable delete Transactions button on refreshing the transactions
@@ -735,7 +751,17 @@
 			                        	let iterateOnceAfterCompletion = elementsToDelete.length;
 		                        		// Remove all the elements
 			                        	elementsToDelete.fadeOut('slow', function(){ 
-			                        		$(this).remove(); 
+			                        		this.remove();
+			                        		let selectId = this.getElementsByTagName('select')[0].id; 
+			                        		let transId = lastElement(splitElement(selectId,'-'));
+			                        		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
+			                        		// Check if recent transaction is present and remove it
+			                        		if(isNotEmpty(recentTransactionEntry)) {
+			                        			// If all the recent transactions are removed
+			                        			if(recentTransactionEntry.length == 1) recentTransactionsPopulated = false;
+			                        			// remove the recent transactions
+			                        			document.getElementById('recentTransaction-' + transId).remove();
+			                        		}
 			                        		
 			                        		// Execute the condition only once after all the transactions are removed.
 			                        		if(!--iterateOnceAfterCompletion) {
@@ -748,6 +774,8 @@
 				                         	
 			                        	});
 		                        	}
+		                        	// Add icon d-none
+									document.getElementById('genericAddFnc').classList.toggle('d-none');
 		                         }
 								 ajaxData.onFailure = function (thrownError) {
 								 	manageErrors(thrownError, 'Unable to delete the transactions',ajaxData);
@@ -784,14 +812,9 @@
 		let classToHide = '.hideableRow-' + categoryId;
 		let childCategories = $(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
-		// Hide all child categories
-		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
-		// Toggle the drop down arrow
-	  	dropdownArrowDiv.toggle('dropdown-toggle');
-	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
 	  	
 	  	// Call method only when the category div is expanding and if the category modal is already open by other categories
-	  	if(dropdownArrowDiv.contains('dropdown-toggle')) {
+	  	if(dropdownArrowDiv.contains('dropdown-toggle-right')) {
 	  		toggleCategoryModal(true);
 	  		// Show the category modal on click category row
 		  	handleCategoryModalToggle(categoryId, closestTrElement, childCategories.length);
@@ -799,6 +822,12 @@
 	  		// If the category modal is active then hide it
 	  		toggleCategoryModal(false);
 	  	}
+
+	  	// Hide all child categories
+		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
+		// Toggle the drop down arrow
+	  	dropdownArrowDiv.toggle('dropdown-toggle');
+	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
 	}
 	
 	// Catch the description when the user focuses on the description
@@ -1227,7 +1256,9 @@
         	
         	// Remove Transactions Row
         	closestTr.fadeOut('slow', function(){
-        		$(this).remove(); 
+        		this.remove();
+        		// IF the recent transactions are populated then remove
+        		document.getElementById('recentTransaction-' + id).remove();
         		
         		// Check all functionality if all transactions are clicked
             	checkAllIfAllAreChecked();
@@ -1725,7 +1756,8 @@
 		
 		// Populate the category label with the one selected
 		let categoryNameDiv = document.getElementById('categoryLabelInModal');
-		categoryNameDiv.innerText = categoryMap[categoryId].categoryName;
+		// If the category can be found then
+		if(isNotEmpty(categoryMap[categoryId])) categoryNameDiv.innerText = categoryMap[categoryId].categoryName;
 		
 		// Set the number of transactions if present
 		if(isNotEmpty(totalTransactions)) {
@@ -2010,8 +2042,13 @@
 	}
 	
 	// Date Picker
-	// On click month
-	$('.monthPickerMonth').click(function() {
+	// On click month (UNBIND other click events)
+	$('.monthPickerMonth').unbind('click').click(function() {
+		// Month picker is current selected then do nothing
+		if(this.classList.contains('monthPickerMonthSelected')) {
+			return;
+		}
+
 		let transactionTable = document.getElementById('transactionsTable');
 		
 		if(transactionTable == null) {
@@ -2102,8 +2139,6 @@
 			// If length > 0 then change the add button to add
 			popup.showSwal('warning-message-and-confirmation');
 		} else {
-			// Rotate the + button
-			this.classList.toggle('rotate');
 			$('#GSCCModal').modal('toggle');
 		}  
 	});
@@ -2127,16 +2162,7 @@
         	let recentTransactionsFragment = document.createDocumentFragment();
         	
         	if(isEmpty(userTransactionsList)) {
-        		let imageTransactionEmptyWrapper = document.createElement('div');
-        		imageTransactionEmptyWrapper.classList = 'text-center d-lg-table-row';
-        		
-        		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
-        		
-        		
-        		let emptyMessageRow = document.createElement('div');
-        		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
-        		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
-        		recentTransactionsFragment.appendChild(emptyMessageRow);
+        		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
         	} else {
         		let resultKeySet = Object.keys(userTransactionsList);
 	        	// Print only the first 20 records
@@ -2167,6 +2193,19 @@
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
 		});
+	}
+
+	// Build EmptyRecTransTable
+	function buildEmptyTransactionsTab() {
+		let recentTransactionsFragment = document.createDocumentFragment();
+		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
+		
+		
+		let emptyMessageRow = document.createElement('div');
+		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
+		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+		recentTransactionsFragment.appendChild(emptyMessageRow);
+		return recentTransactionsFragment;
 	}
 	
 	// Builds the rows for recent transactions
