@@ -2412,7 +2412,8 @@
 
 	// Click on sort by creation date
 	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
-
+		// Change title of in the dropdown
+		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
 		// show the recent transactions
 		document.getElementById('recentTransactions').classList.remove('d-none');
 		// hide the category view
@@ -2436,13 +2437,12 @@
 
 		// Populate recent transactions
 		populateRecentTransactions();
-		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
 	});
 
 	// Click on sort by creation date
 	document.getElementById('categorySortBy').addEventListener("click",function(e){
-
+		// Change title of in the dropdown
+		document.getElementById('sortByBtnTit').innerText = 'Category';
 		// show the recent transactions
 		document.getElementById('recentTransactions').classList.add('d-none');
 		// hide the category view
@@ -2459,8 +2459,6 @@
 			// Fetch JSOn for transactions and populate pie chart
 			fetchJSONForTransactions();
 		}
-		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = 'Category';
 	});
 
 }(jQuery));
