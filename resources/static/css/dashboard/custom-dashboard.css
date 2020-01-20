@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-html, .main-panel {
+html {
   scroll-behavior: smooth;
 }
 
@@ -1575,4 +1575,12 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
 .sidebar-wrapper .nav .nav-item.active .nav-link.pageDynamicLoadForDashboard,
 .sidebar-wrapper .nav .nav-item.active .nav-link.pageDynamicLoadForDashboard p {
     cursor: auto;
+}
+
+.w-15 {
+    width:15%;
+}
+
+.w-65 {
+    width:65%;
 }

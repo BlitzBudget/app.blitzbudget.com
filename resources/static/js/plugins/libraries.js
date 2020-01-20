@@ -2,6 +2,16 @@
  * Helpful functions with javascript
  */
 
+ // Initialize the weekday variable
+window.weekday=new Array(7);
+window.weekday[0]="Monday";
+window.weekday[1]="Tuesday";
+window.weekday[2]="Wednesday";
+window.weekday[3]="Thursday";
+window.weekday[4]="Friday";
+window.weekday[5]="Saturday";
+window.weekday[6]="Sunday";
+
 function lastElement(arr){
 	if(Array.isArray(arr)){
 		return isEmpty(arr) ? arr : arr[arr.length-1];
@@ -268,4 +278,39 @@ function formatNumber(num, locale) {
 	}
 	
 	return num.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+	
+// Get the weekdays name
+function getWeekDays(day) {
+	return window.weekday[day];
+}
+
+// OrdinalSuffix
+function ordinalSuffixOf(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+}
+
+// Check if the date is today
+const isToday = (someDate) => {
+  return someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
+}
+
+// Check if both the days are same
+function sameDate(inpDate, checkWith) {
+	return inpDate.getDate() == checkWith.getDate() &&
+    inpDate.getMonth() == checkWith.getMonth() &&
+    inpDate.getFullYear() == checkWith.getFullYear();
 }

@@ -766,6 +766,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	line-height: 48px;
 }
 
+.recentTransactionEntry {
+	letter-spacing: 0.016em;
+}
+
 .recentTransactionEntry:hover {
 	background-color: #f2f5f7;
 } 
@@ -834,6 +838,11 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 #unlockModal .form-control,
 #unlockModal .is-focused .form-control {
     background-image: linear-gradient(to top,#4caf50 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
+}
+
+.recentTransactionDateGrp {
+    line-height: 2.2rem;
+    color: #5d7079;
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/
