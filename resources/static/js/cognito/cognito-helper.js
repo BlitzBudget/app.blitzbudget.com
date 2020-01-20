@@ -1,6 +1,12 @@
 "use strict";
 /*global AWSCogUser _config*/
+
+// Session invalidated as 0 on start up
 window.sessionInvalidated = 0;
+// Already requested refresh to false
+window.alreadyRequestedRefresh = false;
+// Reset the window.afterRefreshAjaxRequests token
+window.afterRefreshAjaxRequests = [];
 
 uh = {
 	// Fetch User From Storage

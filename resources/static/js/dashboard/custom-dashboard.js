@@ -55,7 +55,7 @@ window.categoryMap = {};
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 
 //Create Budget Map for transactions
-let updateBudgetMap = {};
+window.updateBudgetMap = {};
 
 // Get today
 window.today = new Date();
