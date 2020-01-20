@@ -2414,6 +2414,10 @@
 	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
+		// Close the category Modal
+		closeCategoryModal();
+		// Uncheck all the checked rows
+		$('.number:checked').click();
 		// show the recent transactions
 		document.getElementById('recentTransactions').classList.remove('d-none');
 		// hide the category view
