@@ -16,6 +16,8 @@
 	let userBudgetAndTotalAvailable = {};
 	// Category modal user budget category id;
 	let categoryForModalOpened = '';
+	// Choose the current month from the user chosen date
+	let userChosenMonthName = months[Number(chosenDate.slice(2, 4)) - 1]; 
 	
 	/**
 	 * START loading the page

@@ -1,8 +1,8 @@
 "use strict";
 /* global currentUser authHeader*/
 
-let currentUser = isEmpty(window.currentUser) ? ((sessionStorage.getItem("currentUserSI") == null) ? {} :  JSON.parse(sessionStorage.getItem("currentUserSI"))) : window.currentUser;
-let authHeader = window.authHeader || sessionStorage.getItem('idToken');
+window.currentUser = window.currentUser || sessionStorage.getItem("currentUserSI") || {};
+window.authHeader = window.authHeader || sessionStorage.getItem('idToken');
 
 // Custom Javascript for dashboard
 const CUSTOM_DASHBOARD_CONSTANTS = {};
@@ -46,7 +46,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 //Currency Preference
 window.currentCurrencyPreference = '$';
 
-let currentActiveSideBar = '';
+window.currentActiveSideBar = '';
 //Load Expense category and income category
 window.expenseSelectionOptGroup = document.createDocumentFragment();
 window.incomeSelectionOptGroup = document.createDocumentFragment();
@@ -58,29 +58,26 @@ const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 let updateBudgetMap = {};
 
 // Get today
-let today = new Date();
+window.today = new Date();
 // chosenDate for transactions (April 2019 as 042019)
-let chosenDate = '01'+("0" + (today.getMonth() + 1)).slice(-2) + today.getFullYear();
+window.chosenDate = '01'+("0" + (today.getMonth() + 1)).slice(-2) + today.getFullYear();
 // Name of the months (0-January :: 11-December)
-let months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+window.months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 // Freeze the months object
 Object.freeze(months);
 Object.seal(months);
-// Choose the current month from the user chosen date
-let userChosenMonthName = months[Number(chosenDate.slice(2, 4)) - 1]; 
-
-//Popover Cache
-let popoverYear = new Date().getFullYear();
-
-// Position for month selection
-let positionMonthCache = 0;
 
 // Fetch all dates from the user budget
-let datesWithUserBudgetData = [];
+window.datesWithUserBudgetData = [];
 
 window.onload = function () {
 	$(document).ready(function(){
-		
+		//Popover Cache
+		let popoverYear = new Date().getFullYear();
+
+		// Position for month selection
+		let positionMonthCache = 0;
+
 		// Transactions total income cache
 		let transactionsTotalIncomeOrExpenseCache = {};
 

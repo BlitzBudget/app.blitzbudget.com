@@ -2159,7 +2159,7 @@
    		ajaxData.type = 'GET';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(userTransactionsList) {
-   			
+   			let latestCreationDateItr = new Date();
         	let recentTransactionsDiv = document.getElementById('recentTransactions');
         	let recentTransactionsFragment = document.createDocumentFragment();
         	
@@ -2171,13 +2171,24 @@
         		// Update the recent transactions
 	   			recentTransactionsPopulated = true;
 
+	   			// Check if it is the same day
+         	   if(isToday(new Date(userTransactionsList[0].createDate))) {
+         	   		recentTransactionsFragment.appendChild(appendToday());
+         	   }
+
         		let resultKeySet = Object.keys(userTransactionsList);
 	        	// Print only the first 20 records
 	        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
              	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
              	   let key = resultKeySet[countGrouped];
              	   let userTransaction = userTransactionsList[key];
+             	   let creationDate = new Date(userTransaction.createDate);
              	   
+             	   if(!sameDate(creationDate,latestCreationDateItr)) {
+             	   		recentTransactionsFragment.appendChild(appendDateHeader(creationDate));
+             	   		// Set the latest header to creation date
+             	   		latestCreationDateItr = creationDate;
+             	   }
              	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
              	}
         	}
@@ -2200,6 +2211,24 @@
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
 		});
+	}
+
+	// Appends the date header (TODAY) for recent transactions
+	function appendToday() {
+		let dateHeader = document.createElement('div');
+		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
+		dateHeader.innerText = 'Today';
+		
+		return dateHeader;
+	}
+
+	// Appends the date header for recent transactions
+	function appendDateHeader(creationDate) {
+		let dateHeader = document.createElement('div');
+		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
+		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + creationDate.getDate() + ordinalSuffixOf(creationDate.getDate());
+		
+		return dateHeader;
 	}
 
 	// Build EmptyRecTransTable
@@ -2227,10 +2256,10 @@
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 		
 		let tableCellImagesWrapper = document.createElement('div');
-		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
+		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center w-15';
 		
 		let circleWrapperDiv = document.createElement('div');
-		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT';
+		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
 		
 		// Append a - sign if it is an expense
 		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
@@ -2243,7 +2272,7 @@
 		tableRowTransaction.appendChild(tableCellImagesWrapper);
 		
 		let tableCellTransactionDescription = document.createElement('div');
-		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
+		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell w-65';
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
