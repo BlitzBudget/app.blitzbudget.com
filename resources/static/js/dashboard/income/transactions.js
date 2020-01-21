@@ -2210,7 +2210,7 @@
 	function appendDateHeader(creationDate) {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + creationDate.getDate() + ordinalSuffixOf(creationDate.getDate());
+		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
 		
 		return dateHeader;
 	}
