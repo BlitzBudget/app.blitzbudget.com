@@ -2244,7 +2244,7 @@
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 		
 		let tableCellImagesWrapper = document.createElement('div');
-		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center w-15';
+		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
 		
 		let circleWrapperDiv = document.createElement('div');
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
@@ -2260,7 +2260,7 @@
 		tableRowTransaction.appendChild(tableCellImagesWrapper);
 		
 		let tableCellTransactionDescription = document.createElement('div');
-		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell w-65';
+		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
