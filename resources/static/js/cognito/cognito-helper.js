@@ -156,7 +156,7 @@ uh = {
 					// Set JWT Token For authentication
 	                let idToken = JSON.stringify(session.idToken.jwtToken);
 	                idToken = idToken.substring(1, idToken.length -1);
-	                sessionStorage.setItem('idToken' , idToken) ;
+	                localStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
 
 	                // If ajax Data is empty then don't do anything

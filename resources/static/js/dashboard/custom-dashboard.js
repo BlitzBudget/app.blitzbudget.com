@@ -1,8 +1,8 @@
 "use strict";
 /* global currentUser authHeader*/
 
-window.currentUser = window.currentUser || sessionStorage.getItem("currentUserSI") || {};
-window.authHeader = window.authHeader || sessionStorage.getItem('idToken');
+window.currentUser = window.currentUser || localStorage.getItem("currentUserSI") || {};
+window.authHeader = window.authHeader || localStorage.getItem('idToken');
 
 // Custom Javascript for dashboard
 const CUSTOM_DASHBOARD_CONSTANTS = {};
@@ -594,7 +594,7 @@ window.onload = function () {
 		// Once the login modal is Shown then (focus to input)
 		$('#loginModal').on('shown.bs.modal', function (e) {
 			// store in session storage
-        	let currentUserSI = sessionStorage.getItem("currentUserSI");
+        	let currentUserSI = localStorage.getItem("currentUserSI");
         	// Get the URL param
 		    const params = (new URL(document.location)).searchParams;
         	// First Prority to URL parameter / Second to session storage 
@@ -780,6 +780,17 @@ window.onload = function () {
 			   mutableScrollPos = st <= 0 ? 0 : st;
 			}
 		}
+
+		// Before calling AJAX verify the following
+		$(document).ajaxSend(function() {
+		  	if(isEmpty(window.currentUser) || 
+		  		isEmpty(window.currentUser.email) || 
+		  		isEmpty(window.currentUser.financialPortfolioId)) {
+		  		console.log('triggered ajaxSend');
+		  	 	er.showLoginPopup();
+		     	return false;
+		  	}
+		});
 				
 	});
 }
@@ -848,7 +859,7 @@ er = {
         	}
         }  else {
         	// We retrieve the object again, but in a string form.
-	        let currentUserSI = sessionStorage.getItem("currentUserSI");
+	        let currentUserSI = localStorage.getItem("currentUserSI");
 
 	        // If cuurrent User does not exist then take it from session storage
 			if(!currentUser && currentUserSI) {
@@ -863,7 +874,7 @@ er = {
 				});
 				document.getElementById('unlockName').innerText = currentUser.name + ' ' + currentUser.family_name;
 				// Id token refresh
-				sessionStorage.removeItem('idToken');
+				localStorage.removeItem('idToken');
 			} else {
 				$('#loginModal').modal({
 				    backdrop: 'static',

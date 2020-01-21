@@ -306,8 +306,8 @@
 			let inpSearchEl = document.getElementById(inpBtnSrch);
 	        // After a successful updation of parameters to cache
 	        currentUser[param] = paramVal;
-	        // We save the item in the sessionStorage.
-            sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+	        // We save the item in the localStorage.
+            localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
             let itemWithWallet = document.getElementById(valObj.parentElId);
             // First Child Input value
             let oldValText = itemWithWallet.firstChild.lastChild.value;
