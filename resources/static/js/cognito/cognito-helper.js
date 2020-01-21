@@ -1,6 +1,12 @@
 "use strict";
 /*global AWSCogUser _config*/
+
+// Session invalidated as 0 on start up
 window.sessionInvalidated = 0;
+// Already requested refresh to false
+window.alreadyRequestedRefresh = false;
+// Reset the window.afterRefreshAjaxRequests token
+window.afterRefreshAjaxRequests = [];
 
 uh = {
 	// Fetch User From Storage
@@ -150,7 +156,7 @@ uh = {
 					// Set JWT Token For authentication
 	                let idToken = JSON.stringify(session.idToken.jwtToken);
 	                idToken = idToken.substring(1, idToken.length -1);
-	                sessionStorage.setItem('idToken' , idToken) ;
+	                localStorage.setItem('idToken' , idToken) ;
 	                window.authHeader = idToken;
 
 	                // If ajax Data is empty then don't do anything

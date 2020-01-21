@@ -55,7 +55,7 @@ var AWSCogUser = window.AWSCogUser || {};
     **/
     function retrieveAttributes(email) {
         // We retrieve the object again, but in a string form.
-        let currentCogUser = sessionStorage.getItem("currentUserSI");
+        let currentCogUser = localStorage.getItem("currentUserSI");
         window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
         // If the session storage is 
         if(isNotEmpty(currentCogUser)) {
@@ -104,8 +104,8 @@ var AWSCogUser = window.AWSCogUser || {};
 
                 // Current User to global variable
                 window.currentUser = currentUserLocal;
-                // We save the item in the sessionStorage.
-                sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+                // We save the item in the localStorage.
+                localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
                 // Fill currency and Name
                 fillCurrencyAndName();
             });
@@ -335,7 +335,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 // Set JWT Token For authentication
                 let idToken = JSON.stringify(result.idToken.jwtToken);
                 idToken = idToken.substring(1, idToken.length -1);
-                sessionStorage.setItem('idToken' , idToken) ;
+                localStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
                 
             },
@@ -398,7 +398,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 // Set JWT Token For authentication
                 let idToken = JSON.stringify(result.idToken.jwtToken);
                 idToken = idToken.substring(1, idToken.length -1);
-                sessionStorage.setItem('idToken' , idToken) ;
+                localStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
                 
             },
@@ -528,7 +528,7 @@ var AWSCogUser = window.AWSCogUser || {};
                         // Set JWT Token For authentication
                         let idToken = JSON.stringify(result.idToken.jwtToken);
                         idToken = idToken.substring(1, idToken.length -1);
-                        sessionStorage.setItem('idToken' , idToken) ;
+                        localStorage.setItem('idToken' , idToken) ;
                         window.authHeader = idToken;
 
                         // Update currency (API Gateway)
@@ -543,8 +543,8 @@ var AWSCogUser = window.AWSCogUser || {};
                             // Assign current currency and locale based on IP
                             window.currentUser.currency = respBody.currency;
                             window.currentUser.locale = respBody.locale;
-                            // We save the item in the sessionStorage.
-                            sessionStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
+                            // We save the item in the localStorage.
+                            localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
                           }
                           // Hide Modal
                           loginModal.modal('hide');
@@ -758,7 +758,7 @@ var AWSCogUser = window.AWSCogUser || {};
                         // Set JWT Token For authentication
                         let idToken = JSON.stringify(result.idToken.jwtToken);
                         idToken = idToken.substring(1, idToken.length -1);
-                        sessionStorage.setItem('idToken' , idToken) ;
+                        localStorage.setItem('idToken' , idToken) ;
                         window.authHeader = idToken;
                         
                     },
@@ -880,7 +880,6 @@ var AWSCogUser = window.AWSCogUser || {};
 
         // Clear all local stroage
         localStorage.clear();
-        sessionStorage.clear();
         
         // redirect user to home page
         window.location.href = window._config.home.invokeUrl;

@@ -518,7 +518,6 @@
 					            return;
 					        }
 					        localStorage.clear();
-					        sessionStorage.clear();
 					        window.location.href = window._config.home.invokeUrl;
 					    });
 			        }
@@ -956,8 +955,8 @@
 	        // Update User Cache
 	        currentUser.name = firstName;
 	        currentUser.family_name = lastName;
-	        // We save the item in the sessionStorage.
-            sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+	        // We save the item in the localStorage.
+            localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
             // Update User Name in App
             document.getElementById('userName').innerText = firstName + ' ' + lastName;
         }
@@ -1318,7 +1317,7 @@
 							    // Successfully deleted the user
         					    currentUser.email = emailModInp;
         					    // store in session storage
-        					    sessionStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+        					    localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 
         					    // Hide loading 
 				                Swal.hideLoading();
