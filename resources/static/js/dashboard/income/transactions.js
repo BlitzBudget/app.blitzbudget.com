@@ -189,10 +189,8 @@
 		
 	});
 
-	// Change the focus to amount after the modal is shown
-	$('#GSCCModal').on('shown.bs.modal', function () {
-		// Change focus
-		document.getElementById('amount').focus();
+	// show the login modal
+	$('#GSCCModal').on('show.bs.modal', function () {
 		// Load Expense category and income category
 		let expenseOptGroup = document.getElementById('expenseSelection');
 		let incomeOptgroup = document.getElementById('incomeSelection');
@@ -203,6 +201,12 @@
 		if(!incomeOptgroup.hasChildNodes()) {
 			incomeSelectionOptGroup = cloneElementAndAppend(incomeOptgroup, incomeSelectionOptGroup);
 		}
+	});
+
+	// Change the focus to amount after the modal is shown
+	$('#GSCCModal').on('shown.bs.modal', function () {
+		// Change focus
+		document.getElementById('amount').focus();
 	});
 	
 	// Populates the transaction table

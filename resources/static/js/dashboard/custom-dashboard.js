@@ -787,7 +787,7 @@ window.onload = function () {
 		  	if(isEmpty(window.currentUser) || 
 		  		isEmpty(window.currentUser.email) || 
 		  		isEmpty(window.currentUser.financialPortfolioId) ||
-		  		!uh.checkIfUserLoggedIn()) {
+		  		localStorage.getItem('loggedOutUser') != null) {
 		  	 	er.showLoginPopup();
 		     	return false;
 		  	}
