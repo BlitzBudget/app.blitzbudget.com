@@ -32,6 +32,8 @@
 	let dragHandle = fetchDragHandle();
 	// recent transactions populated
 	let recentTransactionsPopulated = false;
+	// String Today
+	const TODAY = 'Today';
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -1567,7 +1569,12 @@
         	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
         	  // If recent transactions are populated then
         	  if(recentTransactionsPopulated) {
-        	  		document.getElementById('recentTransactions').appendChild(buildTransactionRow(userTransaction));
+        	  	let recentTrans = document.getElementById('recentTransactions');
+        	  	if(isNotEqual(recentTrans.firstElementChild.innertext,TODAY)) {
+        	  		// Insert as a first child
+        	  		recentTrans.insertBefore(appendToday(),insertBefore.childNodes[0]);
+        	  	}
+        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction),insertBefore.childNodes[1]);
         	  }
          }
 		 ajaxData.onFailure = function (thrownError) {
@@ -2205,7 +2212,7 @@
 	function appendToday() {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = 'Today';
+		dateHeader.innerText = TODAY;
 		
 		return dateHeader;
 	}
