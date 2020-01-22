@@ -818,15 +818,14 @@
 		let classToHide = '.hideableRow-' + categoryId;
 		let childCategories = $(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
-	  	
-	  	// If the category modal is active then hide it
-	  	toggleCategoryModal();
-
 	  	// Hide all child categories
 		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
 		// Toggle the drop down arrow
 	  	dropdownArrowDiv.toggle('dropdown-toggle');
 	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
+	  	
+	  	// If the category modal is active then hide it
+	  	toggleCategoryModal();
 	}
 	
 	// Catch the description when the user focuses on the description
@@ -1869,9 +1868,12 @@
 			// show the financial position div and hide the category modal
 			categoryModalDiv[0].classList.add('d-none');
 			financialPositionDiv[0].classList.remove('d-none');
-		} else {
 			// Update the chart and redraw it
 			rebuildPieChart();
+		} else {
+			// show the financial position div and hide the category modal
+			categoryModalDiv[0].classList.remove('d-none');
+			financialPositionDiv[0].classList.add('d-none');
 			// If there are other drop down categories open then show the first one from the list
 			let categoryRowToShowInModal = categoryRowsDiv[0].parentNode;
 			let categoryId = lastElement(splitElement(categoryRowToShowInModal.id,'-'));
@@ -2221,7 +2223,11 @@
 	function appendDateHeader(creationDate) {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
+
+		if(someDate.getMonth() == today.getMonth() &&
+    		someDate.getFullYear() == today.getFullYear()) {
+			dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
+		}
 		
 		return dateHeader;
 	}
@@ -2304,9 +2310,9 @@
 		svgElement.setAttribute('class','align-middle plusRawSvg');
     	svgElement.setAttribute('x','0px');
     	svgElement.setAttribute('y','0px');
-    	svgElement.setAttribute('width','30');
-    	svgElement.setAttribute('height','30');
-    	svgElement.setAttribute('viewBox','0 0 30 30');
+    	svgElement.setAttribute('width','24');
+    	svgElement.setAttribute('height','24');
+    	svgElement.setAttribute('viewBox','0 0 24 24');
     	svgElement.setAttribute('fill','#000000');
     	
     	let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
@@ -2315,7 +2321,7 @@
     	pathElement.setAttribute('white-space','normal');
     	pathElement.setAttribute('font-family','sans-serif');
     	pathElement.setAttribute('font-weight','400');
-    	pathElement.setAttribute('d','M 14.970703 2.9726562 A 2.0002 2.0002 0 0 0 13 5 L 13 13 L 5 13 A 2.0002 2.0002 0 1 0 5 17 L 13 17 L 13 25 A 2.0002 2.0002 0 1 0 17 25 L 17 17 L 25 17 A 2.0002 2.0002 0 1 0 25 13 L 17 13 L 17 5 A 2.0002 2.0002 0 0 0 14.970703 2.9726562 z');
+    	pathElement.setAttribute('d','M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z');
     	
     	svgElement.appendChild(pathElement);
     	

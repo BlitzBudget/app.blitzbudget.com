@@ -741,6 +741,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	color: #58c65c;
 }
 
+#transactionsTable .incomeCategory, #transactionsTable .expenseCategory, #transactionsTable .dropdown-toggle::after {
+	color:#495257;
+}
+
 .recentTransactionsBody, .optimizationsBody {
 	overflow-y: auto;
 }
@@ -841,7 +845,7 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 }
 
 .recentTransactionDateGrp {
-    line-height: 2.2rem;
+    line-height: 3rem;
     color: #5d7079;
 }
 

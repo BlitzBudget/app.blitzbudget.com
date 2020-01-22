@@ -8,180 +8,180 @@
 	  <script defer nonce="2726d7e26r" src="js/dashboard/income/transactions.min.js" type="text/javascript"></script>
 </head>
 <body class="income-dashboard">
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-			       <div class="col-lg-9">
-              <div class="card">
-                <div class="card-header card-header-success card-header-icon">
-                  <div class="card-icon">
-                    <i class="material-icons">assignment</i>
-                  </div>
-                  <h4 class="card-title d-inline-block noselect">Transactions</h4>
-                  <div class="dropdown bootstrap-select show-tick mt-2 float-right">
-                      <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose City" aria-expanded="false">
-                        <div class="filter-option">
-                          <div class="filter-option-inner">
-                            <div id="sortByBtnTit" class="filter-option-inner-inner">Category</div></div> </div>
-                            <div class="ripple-container"></div>
-                      </button>
-                      <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="bootstrap-combobox">
-                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
-                          <ul class="dropdown-menu inner show">
-                            <li class="disabled">
-                              <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
-                                <span class="text"> Sort By</span>
-                              </span>
-                           </li>
-                           <li>
-                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="categorySortBy">
-                              <span class="text">Category</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="accountSortBy">
-                              <span class="text">Account</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="creationDateSortBy">
-                              <span class="text">Creation Date</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <div id="transactionsTable" class="table table-fixed d-lg-table">
-                        <div class="tableHeadingDiv">
-                          <div class="text-center width-3 d-lg-table-cell">#</div>
-                          <div class="text-center width-7 d-lg-table-cell">
-                            	<div class="form-check">
-                                		<label class="form-check-label">
-                                		<input type="checkbox" class="form-check-input" id="checkAll">
-                  									<span class="form-check-sign">
-                  										<span class="check">
-                  										</span>
-                  									</span>
-                								</label>
-                							</div>
-            						  </div>
-            						  <div class="width-30 d-lg-table-cell" title="Category assigned to the transactions">Category</div>
-                          <div class="width-30 d-lg-table-cell" title="Description for the transaction">Notes</div>
-                          <div class="text-right width-15 d-lg-table-cell" title="The amount spent or received">Transaction</div>
-                          <div class="text-right width-15 d-lg-table-cell" title="Budget assigned for this category">Planned</div>
-                        </div>
-                        <div id="productsJson" class="tableBodyDiv">
-                        	<div class="d-lg-table-row"><div class='d-lg-table-cell'></div><div class='d-lg-table-cell'></div><div class='d-lg-table-cell'></div><div class='d-lg-table-cell'><div class="material-spinner"></div></div></div>
-                          <!-- Filled with Javascript dynamically -->
-                        </div>
-                    </div>
-                    <div class="table table-fixed d-lg-table">
-                      <div class="tableHeadingDiv">
-                        <div class="w-15 d-lg-table-cell" title=""></div>
-                        <div class="w-65 d-lg-table-cell" title=""></div>
-                        <div class="text-right d-lg-table-cell" title=""></div>
-                      </div>
-                      <div id="recentTransactions" class=" tableBodyDiv d-none">
-                        <div class="material-spinner mx-auto"></div>
-                        <!-- Recent transactions dynamic load -->
-                      </div>
-                    </div>
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+	       <div class="col-lg-9">
+          <div class="card">
+            <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">assignment</i>
+              </div>
+              <h4 class="card-title d-inline-block noselect">Transactions</h4>
+              <div class="dropdown bootstrap-select show-tick mt-2 float-right">
+                  <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose City" aria-expanded="false">
+                    <div class="filter-option">
+                      <div class="filter-option-inner">
+                        <div id="sortByBtnTit" class="filter-option-inner-inner">Category</div></div> </div>
+                        <div class="ripple-container"></div>
+                  </button>
+                  <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="bootstrap-combobox">
+                    <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                      <ul class="dropdown-menu inner show">
+                        <li class="disabled">
+                          <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
+                            <span class="text"> Sort By</span>
+                          </span>
+                       </li>
+                       <li>
+                        <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="categorySortBy">
+                          <span class="text">Category</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="accountSortBy">
+                          <span class="text">Account</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="creationDateSortBy">
+                          <span class="text">Creation Date</span>
+                        </a>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
-            </div> 
-             <div class="col-lg-3 information-modal">
-              <div class="card transactions-chart noselect">
-              	<div class="card-header card-header-icon card-header-danger">
-                  <div class="card-icon">
-                    <i class="material-icons">pie_chart</i>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <div id="transactionsTable" class="table table-fixed d-lg-table">
+                    <div class="tableHeadingDiv">
+                      <div class="text-center width-3 d-lg-table-cell">#</div>
+                      <div class="text-center width-7 d-lg-table-cell">
+                        	<div class="form-check">
+                            		<label class="form-check-label">
+                            		<input type="checkbox" class="form-check-input" id="checkAll">
+              									<span class="form-check-sign">
+              										<span class="check">
+              										</span>
+              									</span>
+            								</label>
+            							</div>
+        						  </div>
+        						  <div class="width-30 d-lg-table-cell" title="Category assigned to the transactions">Category</div>
+                      <div class="width-30 d-lg-table-cell" title="Description for the transaction">Notes</div>
+                      <div class="text-right width-15 d-lg-table-cell" title="The amount spent or received">Transaction</div>
+                      <div class="text-right width-15 d-lg-table-cell" title="Budget assigned for this category">Planned</div>
+                    </div>
+                    <div id="productsJson" class="tableBodyDiv">
+                    	<div class="d-lg-table-row"><div class='d-lg-table-cell'></div><div class='d-lg-table-cell'></div><div class='d-lg-table-cell'></div><div class='d-lg-table-cell'><div class="material-spinner"></div></div></div>
+                      <!-- Filled with Javascript dynamically -->
+                    </div>
+                </div>
+                <div class="table table-fixed d-lg-table">
+                  <div class="tableHeadingDiv">
+                    <div class="w-15 d-lg-table-cell" title=""></div>
+                    <div class="w-65 d-lg-table-cell" title=""></div>
+                    <div class="text-right d-lg-table-cell" title=""></div>
                   </div>
-                  <h4 class="card-title noselect">Financial Position</h4>
+                  <div id="recentTransactions" class=" tableBodyDiv d-none">
+                    <div class="material-spinner mx-auto"></div>
+                    <!-- Recent transactions dynamic load -->
+                  </div>
                 </div>
-                <div class="card-body text-center">
-                	<div id="chartFinancialPosition" class="ct-chart">
-                		<div class="material-spinner"></div>
-                	</div>
-               		<div>
-               			<i class="material-icons text-success legend-spacing">fiber_manual_record</i><span class="align-middle">Total Income</span>
-               		</div>
-               			<h4 id="totalIncomeTransactions" class="font-weight-bold transitionTextToNormal"><span class="currentCurrencySymbol"></span>0.00</h4>
-               		<hr>
-               		<div>
-                		<i class="material-icons text-danger legend-spacing">fiber_manual_record</i><span class="align-middle">Total Spent</span>
-                	</div>
-	                	<h4 id="totalExpensesTransactions" class="font-weight-bold transitionTextToNormal"><span class="currentCurrencySymbol"></span>0.00</h4>
-               		<hr>
-               		<div>
-        						<i class="material-icons text-orange legend-spacing">fiber_manual_record</i><span id="totalAvailableLabel" class="align-middle">Total Available</span>
-        					</div>
-                		<h4 id="totalAvailableTransactions" class="font-weight-bold transitionTextToNormal"><span class="currentCurrencySymbol"></span>0.00</h4>
-                </div>
-                <div id="chartLegend" class="card-footer hiddenAfterHalfASec">
-                    <div id="legendPieChart" class="col-md-12 text-center">
-                    </div>
-                </div>
-               </div>
-               <div class="card category-modal d-none">
-               	<div class="row"> 
-               		<div id="debtBadge" class="col-lg-6">
-               			<span class="" ></span>
-               		</div> 
-               		<div class="col-lg-6">
-               			<button type="button" id="categoryHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
-                  			<i class="material-icons float-right">clear</i>
-        						</button>
-        					</div>
-        				</div>
-              	<div class="card-header card-header-icon card-header-danger">
-                    <div id="categoryLabelInModal" class="text-center card-title"></div>
-                </div>
-                <div class="card-body text-center">
-                	<div class="row"> 
-                		<div id="budgetInfoLabelInModal" class="col-lg-12 text-right headingDiv justify-content-center align-self-center">Remaining (%)</div> 
-                	</div>
-                	<div class="row"> 
-                		<span id="percentageAvailable" class="col-lg-12 text-right">
-                			NA
-                		</span> 
-                	</div>
-                	<div class="text-left headingDiv">
-                		<div class="progress">
-        						  <div id="amountSpentAgainstBudget" class="progress-bar progress-bar-success-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        						</div>
-                		<span id="remainingAmount" class="mild-text-success">
-                			<span class="currentCurrencySymbol"></span>0.00
-                		</span> 
-                		Remaining
-                	</div>
-                	<hr>
-                	<div class="row budgetAmountDiv">
-                		<div class="col-lg-3 d-lg-inline-block h-100">
-                			<img id="budgetImage" src="" data-toggle="tooltip" title="Budget">
-                		</div> 
-                		<span id="plannedAmountCategoryModal" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
-                			<span class="currentCurrencySymbol"></span>0.00
-                		</span> 
-                		<span id="categoryIdCachedForUserBudget" class="d-none"></span>
-                	</div>
-                </div>
-                <div id="" class="card-footer row">
-                	<div class="col-lg-6 text-left"><span id="numberOfTransactions"></span> Transactions</div>
-                    <div class="col-lg-6 text-right">
-	                    <a id="addNewGoals" href="#" class="text-warning d-none">
-	                    </a>
-                    </div>
-                </div>
-               </div>
-            </div> 
+              </div>
+            </div>
           </div>
-          <!-- end row -->
-        </div>
+        </div> 
+         <div class="col-lg-3 information-modal">
+          <div class="card transactions-chart noselect">
+          	<div class="card-header card-header-icon card-header-danger">
+              <div class="card-icon">
+                <i class="material-icons">pie_chart</i>
+              </div>
+              <h4 class="card-title noselect">Financial Position</h4>
+            </div>
+            <div class="card-body text-center">
+            	<div id="chartFinancialPosition" class="ct-chart">
+            		<div class="material-spinner"></div>
+            	</div>
+           		<div>
+           			<i class="material-icons text-success legend-spacing">fiber_manual_record</i><span class="align-middle">Total Income</span>
+           		</div>
+           			<h4 id="totalIncomeTransactions" class="font-weight-bold transitionTextToNormal"><span class="currentCurrencySymbol"></span>0.00</h4>
+           		<hr>
+           		<div>
+            		<i class="material-icons text-danger legend-spacing">fiber_manual_record</i><span class="align-middle">Total Spent</span>
+            	</div>
+              	<h4 id="totalExpensesTransactions" class="font-weight-bold transitionTextToNormal"><span class="currentCurrencySymbol"></span>0.00</h4>
+           		<hr>
+           		<div>
+    						<i class="material-icons text-orange legend-spacing">fiber_manual_record</i><span id="totalAvailableLabel" class="align-middle">Total Available</span>
+    					</div>
+            		<h4 id="totalAvailableTransactions" class="font-weight-bold transitionTextToNormal"><span class="currentCurrencySymbol"></span>0.00</h4>
+            </div>
+            <div id="chartLegend" class="card-footer hiddenAfterHalfASec">
+                <div id="legendPieChart" class="col-md-12 text-center">
+                </div>
+            </div>
+           </div>
+           <div class="card category-modal d-none">
+           	<div class="row"> 
+           		<div id="debtBadge" class="col-lg-6">
+           			<span class="" ></span>
+           		</div> 
+           		<div class="col-lg-6">
+           			<button type="button" id="categoryHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
+              			<i class="material-icons float-right">clear</i>
+    						</button>
+    					</div>
+    				</div>
+          	<div class="card-header card-header-icon card-header-danger">
+                <div id="categoryLabelInModal" class="text-center card-title"></div>
+            </div>
+            <div class="card-body text-center">
+            	<div class="row"> 
+            		<div id="budgetInfoLabelInModal" class="col-lg-12 text-right headingDiv justify-content-center align-self-center">Remaining (%)</div> 
+            	</div>
+            	<div class="row"> 
+            		<span id="percentageAvailable" class="col-lg-12 text-right">
+            			NA
+            		</span> 
+            	</div>
+            	<div class="text-left headingDiv">
+            		<div class="progress">
+    						  <div id="amountSpentAgainstBudget" class="progress-bar progress-bar-success-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    						</div>
+            		<span id="remainingAmount" class="mild-text-success">
+            			<span class="currentCurrencySymbol"></span>0.00
+            		</span> 
+            		Remaining
+            	</div>
+            	<hr>
+            	<div class="row budgetAmountDiv">
+            		<div class="col-lg-3 d-lg-inline-block h-100">
+            			<img id="budgetImage" src="" data-toggle="tooltip" title="Budget">
+            		</div> 
+            		<span id="plannedAmountCategoryModal" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
+            			<span class="currentCurrencySymbol"></span>0.00
+            		</span> 
+            		<span id="categoryIdCachedForUserBudget" class="d-none"></span>
+            	</div>
+            </div>
+            <div id="" class="card-footer row">
+            	<div class="col-lg-6 text-left"><span id="numberOfTransactions"></span> Transactions</div>
+                <div class="col-lg-6 text-right">
+                  <a id="addNewGoals" href="#" class="text-warning d-none">
+                  </a>
+                </div>
+            </div>
+           </div>
+        </div> 
       </div>
+      <!-- end row -->
+    </div>
+  </div>
       
   
 	<!-- Vertically Centered Modal -->
@@ -280,15 +280,15 @@
                       <div class="input-group">
                       	<div class="input-group-prepend">
                             <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction Recurrence">repeat</i></div>
-                          </div>
-              		<div id="recurrenceForm" class="text-left" contenteditable="true" data-gramm_editor="false">
-              			<fieldset class="choose">
-      						    <label><input type="radio" value="NEVER" name="recurrence" checked/><span class="disable-select">Never</span></label>
-      						    <label><input type="radio" value="MONTHLY" name="recurrence"/><span class="disable-select">Monthly</span></label>
-      						</fieldset>
-              		</div> 
-                </div>
-              </div>
+                        </div>
+                    		<div id="recurrenceForm" class="text-left" contenteditable="true" data-gramm_editor="false">
+                    			<fieldset class="choose">
+            						    <label><input type="radio" value="NEVER" name="recurrence" checked/><span class="disable-select">Never</span></label>
+            						    <label><input type="radio" value="MONTHLY" name="recurrence"/><span class="disable-select">Monthly</span></label>
+            						</fieldset>
+                    		</div> 
+                      </div>
+                    </div>
                   </div>
                   <div class="modal-footer justify-content-center">
                     <button class="btn btn-success btn-round" id="transactionsFormButtonSubmission"  type="submit" form="transactionsForm">Add Transaction</button>
