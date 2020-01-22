@@ -495,7 +495,6 @@ window.onload = function () {
 			overvierDateArrow.remove('transformUpwardArrow');
 			// Remove event listener once the function performed its task
 			document.removeEventListener('mouseup', closeMonthPickerModal, false);
-			console.log('mouseup listener removed');
 		}
 		
 		// Update Transactions in month picker

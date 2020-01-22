@@ -1571,9 +1571,9 @@
         	  	let recentTrans = document.getElementById('recentTransactions');
         	  	if(isNotEqual(recentTrans.firstElementChild.innertext,TODAY)) {
         	  		// Insert as a first child
-        	  		recentTrans.insertBefore(appendToday(),insertBefore.childNodes[0]);
+        	  		recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
         	  	}
-        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction),insertBefore.childNodes[1]);
+        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction),recentTrans.childNodes[1]);
         	  }
          }
 		 ajaxData.onFailure = function (thrownError) {
@@ -2223,11 +2223,7 @@
 	function appendDateHeader(creationDate) {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-
-		if(someDate.getMonth() == today.getMonth() &&
-    		someDate.getFullYear() == today.getFullYear()) {
-			dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
-		}
+		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
 		
 		return dateHeader;
 	}
