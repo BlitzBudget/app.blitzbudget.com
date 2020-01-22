@@ -32,6 +32,8 @@
 	let dragHandle = fetchDragHandle();
 	// recent transactions populated
 	let recentTransactionsPopulated = false;
+	// String Today
+	const TODAY = 'Today';
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -189,10 +191,8 @@
 		
 	});
 
-	// Change the focus to amount after the modal is shown
-	$('#GSCCModal').on('shown.bs.modal', function () {
-		// Change focus
-		document.getElementById('amount').focus();
+	// show the login modal
+	$('#GSCCModal').on('show.bs.modal', function () {
 		// Load Expense category and income category
 		let expenseOptGroup = document.getElementById('expenseSelection');
 		let incomeOptgroup = document.getElementById('incomeSelection');
@@ -203,6 +203,12 @@
 		if(!incomeOptgroup.hasChildNodes()) {
 			incomeSelectionOptGroup = cloneElementAndAppend(incomeOptgroup, incomeSelectionOptGroup);
 		}
+	});
+
+	// Change the focus to amount after the modal is shown
+	$('#GSCCModal').on('shown.bs.modal', function () {
+		// Change focus
+		document.getElementById('amount').focus();
 	});
 	
 	// Populates the transaction table
@@ -1563,7 +1569,12 @@
         	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
         	  // If recent transactions are populated then
         	  if(recentTransactionsPopulated) {
-        	  		document.getElementById('recentTransactions').appendChild(buildTransactionRow(userTransaction));
+        	  	let recentTrans = document.getElementById('recentTransactions');
+        	  	if(isNotEqual(recentTrans.firstElementChild.innertext,TODAY)) {
+        	  		// Insert as a first child
+        	  		recentTrans.insertBefore(appendToday(),insertBefore.childNodes[0]);
+        	  	}
+        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction),insertBefore.childNodes[1]);
         	  }
          }
 		 ajaxData.onFailure = function (thrownError) {
@@ -2201,7 +2212,7 @@
 	function appendToday() {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = 'Today';
+		dateHeader.innerText = TODAY;
 		
 		return dateHeader;
 	}
@@ -2210,7 +2221,7 @@
 	function appendDateHeader(creationDate) {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + creationDate.getDate() + ordinalSuffixOf(creationDate.getDate());
+		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
 		
 		return dateHeader;
 	}
@@ -2240,7 +2251,7 @@
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 		
 		let tableCellImagesWrapper = document.createElement('div');
-		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center w-15';
+		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
 		
 		let circleWrapperDiv = document.createElement('div');
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
@@ -2256,7 +2267,7 @@
 		tableRowTransaction.appendChild(tableCellImagesWrapper);
 		
 		let tableCellTransactionDescription = document.createElement('div');
-		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell w-65';
+		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';

@@ -783,10 +783,14 @@ window.onload = function () {
 
 		// Before calling AJAX verify the following
 		$(document).ajaxSend(function() {
+			console.log('triggered ajaxSend');
 		  	if(isEmpty(window.currentUser) || 
 		  		isEmpty(window.currentUser.email) || 
-		  		isEmpty(window.currentUser.financialPortfolioId)) {
-		  		console.log('triggered ajaxSend');
+		  		isEmpty(window.currentUser.financialPortfolioId) ||
+		  		localStorage.getItem('loggedOutUser') != null) {
+		  		// Set current user as empty if the user has logged out
+		  		if(localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
+		  		// Show login popup
 		  	 	er.showLoginPopup();
 		     	return false;
 		  	}

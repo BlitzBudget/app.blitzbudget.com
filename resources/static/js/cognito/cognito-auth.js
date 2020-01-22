@@ -400,6 +400,9 @@ var AWSCogUser = window.AWSCogUser || {};
                 idToken = idToken.substring(1, idToken.length -1);
                 localStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
+
+                // Remove loggedout user
+                localStorage.removeItem('loggedOutUser');
                 
             },
             function signinError(err) {
@@ -880,6 +883,8 @@ var AWSCogUser = window.AWSCogUser || {};
 
         // Clear all local stroage
         localStorage.clear();
+        // Set user logged out
+        localStorage.setItem('loggedOutUser', 'yes');
         
         // redirect user to home page
         window.location.href = window._config.home.invokeUrl;
