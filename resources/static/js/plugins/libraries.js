@@ -29,12 +29,11 @@ function  isEmpty(obj) {
 	if(typeof(obj.length) != 'undefined')
 	    return obj.length == 0;
 	 
-	 for(var key in obj) {
-	        if(obj.hasOwnProperty(key))
-	            return false;
-	    }
+	for(var key in obj) {
+        if(obj.hasOwnProperty(key))return false;
+    }
 	    
-	 return true;
+	return true;
 }
 
 function  isNotEmpty(obj) {
@@ -268,7 +267,6 @@ function cloneElementAndAppend(document, elementToClone){
 	let clonedElement = elementToClone.cloneNode(true);
 	document.appendChild(elementToClone);
 	return clonedElement;
-	
 }
 
 //Format numbers in Indian Currency

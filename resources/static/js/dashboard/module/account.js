@@ -7,7 +7,7 @@ Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
 	'bankAccountPreviewUrl' : { value: '/preview', writable: false, configurable: false },
 	'bankAccountSelectUrl' : { value: '/select', writable: false, configurable: false },
 	'bankAccountCategorizeUrl' : { value: '/categorize', writable: false, configurable: false },
-	'firstfinancialPortfolioId': { value : '?financialPortfolioId=', writable: false, configurable: false},
+	'firstfinancialPortfolioId': { value : '?financialPortfolioId=', writable: false, configurable: false}
 });
 let unsyncSVG = unsyncSVGFc();
 let syncSVG = syncSVGFc();
@@ -205,7 +205,7 @@ let tickIconSVG = tickIcon();
    		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
    		ajaxData.data = values;
    		ajaxData.onSuccess = function(result){
-	    	  // Remove Selected Account
+	    	  // Append as Selected Account
 	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
 	    		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
 	    			  bankAccountPreview[i].selectedAccount = true;
@@ -299,7 +299,7 @@ let tickIconSVG = tickIcon();
 		
 		// Heading
 		let headingWrap = document.createElement('div');
-		headingWrap.classList = 'row aKMTitle';
+		headingWrap.classList = 'row aKMTitle noselect';
 		
 		let svgElemWrapThree = document.createElement('div');
 		svgElemWrapThree.classList = 'col-lg-2 vertical-center-svg px-2 account-info-color infoAO';
@@ -322,13 +322,13 @@ let tickIconSVG = tickIcon();
 		
 		// Account Info Description
 		let accountInfoDesc = document.createElement('div');
-		accountInfoDesc.classList = 'accInfoDesc text-left small mt-3';
+		accountInfoDesc.classList = 'accInfoDesc text-left small mt-3 noselect';
 		accountInfoDesc.innerText = 'You will always have the option to unsync or sync the accounts at any time.';
 		knowMoreFrag.appendChild(accountInfoDesc);
 		
 		// Table Responsive
 		let tableReponsive = document.createElement('div');
-		tableReponsive.classList = 'table-responsive mt-2';
+		tableReponsive.classList = 'table-responsive mt-2 noselect';
 		
 		// Table
 		let tableInfo = document.createElement('div');
@@ -531,102 +531,6 @@ let tickIconSVG = tickIcon();
 		}
 	});
 	
-	// Click View All 
-	$('#accountPickerWrapper').on('click', ".manageBA", function() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "GET"; 
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountCategorizeUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
-   		ajaxData.dataType = "json"; 
-   		ajaxData.onSuccess = function(categorizeBankAccount){
-	    	  let bAParentFrag = document.createDocumentFragment();
-	    	  let bAFragment = document.createDocumentFragment();
-	          // Fetch all the key set for the result
-	    	  let resultKeySet = Object.keys(categorizeBankAccount)
-	    	  for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
-	    		  let key = resultKeySet[countGrouped];
-	         	  let value = categorizeBankAccount[key];
-	         	  bAFragment.appendChild(populateBAHead(key));
-	         	  let valueElementKeySet = Object.keys(value)
-	         	  for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
-	         		  let subKey = valueElementKeySet[count];
-	 				  let subValue = value[subKey];
-	 				  bAFragment.appendChild(populateAllBankDetails(subValue, count));
-	         	  }
-	    	  }
-	    	  
-	    	  bAParentFrag.appendChild(buildParentViewAllHeader(bAFragment));
-	    	  
-	    	  // Append the fragment to the account picker
-	    	  let accountPickerModal = document.getElementById('accountPickerWrapper');
-	    	  // Replace the HTML to empty and then append child
-	    	  while (accountPickerModal.firstChild) {
-	    		  accountPickerModal.removeChild(accountPickerModal.firstChild);
-	    	  }
-	    	  accountPickerModal.appendChild(bAParentFrag);
-	    }
-        ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-	    }
-
-		$.ajax({
-	          type: ajaxData.type,
-	          url: ajaxData.url,
-	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: ajaxData.dataType,
-	          success: ajaxData.onSuccess,
-	          error: ajaxData.onFailure
-		});
-	});
-	
-
-	// Build head for view all
-	function populateBAHead(headValue) {
-		let divHead = document.createElement('div');
-		divHead.classList = 'text-left mt-2 font-weight-bold';
-		divHead.innerText = headValue.substring(0,1) + headValue.substring(1).toLowerCase();
-		return divHead;
-		
-	}
-
-	// Populate complete bank account details
-	function populateAllBankDetails(bankAccount, count) {
-		let wrapperRow = document.createElement('div');
-		wrapperRow.classList = 'row bAAllRow';
-		wrapperRow.id = 'bAR-' + count;
-		
-		// If Selected then highlight account
-		if(bankAccount.selectedAccount) {
-			wrapperRow.classList.add('selectedBA');
-		}
-		
-		// Link Icon
-		let wrapperSVG = document.createElement('div');
-		wrapperSVG.classList = 'col-lg-2 py-2 bAAllIcon';
-		
-		if(bankAccount.linked) {
-			syncSVG = cloneElementAndAppend(wrapperSVG, syncSVG);
-		} else {
-			unsyncSVG = cloneElementAndAppend(wrapperSVG, unsyncSVG);
-		}
-		wrapperRow.appendChild(wrapperSVG);
-		
-		// Bank Account Name
-		let bAName = document.createElement('div');
-		bAName.classList = 'col-lg-5 text-left bAAllName py-2';
-		bAName.innerText = bankAccount.bankAccountName;
-		wrapperRow.appendChild(bAName);
-		
-		// Bank Account Balance
-		let bABalance = document.createElement('div');
-		bABalance.classList = 'col-lg-5 text-right font-weight-bold py-2 bAAllAmount';
-		bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
-		wrapperRow.appendChild(bABalance);
-		
-		return wrapperRow;
-	}
-	
 	// Build an X with SVG
 	function xMark() {
 		let syncSVGTwo = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
@@ -643,86 +547,58 @@ let tickIconSVG = tickIcon();
 		
 		return syncSVGTwo;
 	}
-	
-	// Builds the parent header for view all accounts 
-	function buildParentViewAllHeader(bAFragment) {
-		let wrapperDiv = document.createElement('div');
-		
-		let headerDiv = document.createElement('div');
-		headerDiv.classList = 'headVAWrap row';
-		
-		let title = document.createElement('div');
-		title.classList = 'bAHeading text-left pl-3 pr-0 col-lg-7 font-weight-bold';
-		title.innerText = 'All Accounts';
-		headerDiv.appendChild(title);
-		
-		let backToPreview = document.createElement('a');
-		backToPreview.href = '#';
-		backToPreview.classList = 'text-right col-lg-5 pr-3 previewBA text-dynamic-color';
-		backToPreview.innerText = 'preview';
-		headerDiv.appendChild(backToPreview);
-		wrapperDiv.appendChild(headerDiv);
-		
-		let wrapperContent = document.createElement('div');
-		wrapperContent.classList = 'overflowy-auto';
-		wrapperContent.appendChild(bAFragment);
-		wrapperDiv.appendChild(wrapperContent); 
-		
-		return wrapperDiv;
-	}
 
-	/* Mouse Over  */
-	document.getElementById("triggerShowPass").addEventListener("mouseover",function(e){
-		let passInpSignin = document.getElementById('passwordInputSignin');
-		passInpSignin.setAttribute('type','text');
+	// Click View All 
+	$('#accountPickerWrapper').on('click', ".manageBA", function() {
+		// Close the account Modal
+	   	closeAccountPopup();
+	   	// Store the account sorting in sessionstorage
+	   	sessionStorage.setItem('sortingTransTable', 'Account');
+	   	// Click the transactions page
+	   	document.getElementById('transactionsPage').click();
 	});
-
-	/* Mouse Over  */
-	document.getElementById("triggerShowPass").addEventListener("mouseout",function(e){
-		let passInpSignin = document.getElementById('passwordInputSignin');
-		passInpSignin.setAttribute('type','password');
-	});
+		
 
 }(jQuery));
 
 // Custom Functions to fetch all accounts
 er_a = {
-		fetchBankAccountInfo() {
-			// Ajax Requests on Error
-			let ajaxData = {};
-	   		ajaxData.isAjaxReq = true;
-	   		ajaxData.type = "GET";
-	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
-	   		ajaxData.dataType = "json";
-	   		ajaxData.onSuccess = function(bankAccountList) {
-	        	  // Assign value to constant
-	        	  bankAccountPreview = bankAccountList;
-	        	  
-	        	  er_a.populateBankInfo(bankAccountList);
-	        }
-	        ajaxData.onFailure = function(thrownError) {
-	        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-	        }
+	fetchBankAccountInfo() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "GET";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.dataType = "json";
+   		ajaxData.onSuccess = function(bankAccountList) {
+        	  // Assign value to constant
+        	  bankAccountPreview = bankAccountList;
+        	  
+        	  er_a.populateBankInfo(bankAccountList);
+        }
+        ajaxData.onFailure = function(thrownError) {
+        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
+        }
 
-			$.ajax({
-		          type: ajaxData.type,
-		          url: ajaxData.url,
-		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: ajaxData.dataType,
-		          success : ajaxData.onSuccess,
-		          error: ajaxData.onFailure
-			});
-		},
-		populateBankInfo(bankAccountsInfo) {
-			// Populate empty bank account info
-			if(isEmpty(bankAccountsInfo)) {
-				populateEmptyAccountInfo();
-				return;
-			}
-			
-			// Populate the bank account info
-			populateAccountInfo(bankAccountsInfo);
+		$.ajax({
+	          type: ajaxData.type,
+	          url: ajaxData.url,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	          dataType: ajaxData.dataType,
+	          success : ajaxData.onSuccess,
+	          error: ajaxData.onFailure
+		});
+	},
+	populateBankInfo(bankAccountsInfo) {
+		// Populate empty bank account info
+		if(isEmpty(bankAccountsInfo)) {
+			populateEmptyAccountInfo();
+			return;
 		}
+		
+		// Populate the bank account info
+		populateAccountInfo(bankAccountsInfo);
+	}
 }
 
 //Build a tick icon
