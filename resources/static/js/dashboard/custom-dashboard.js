@@ -794,7 +794,19 @@ window.onload = function () {
 		     	return false;
 		  	}
 		});
-				
+
+		/* Mouse Over  */
+		document.getElementById("triggerShowPass").addEventListener("mouseover",function(e){
+			let passInpSignin = document.getElementById('passwordInputSignin');
+			passInpSignin.setAttribute('type','text');
+		});
+
+		/* Mouse Over  */
+		document.getElementById("triggerShowPass").addEventListener("mouseout",function(e){
+			let passInpSignin = document.getElementById('passwordInputSignin');
+			passInpSignin.setAttribute('type','password');
+		});
+
 	});
 }
 

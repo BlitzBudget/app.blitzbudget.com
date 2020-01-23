@@ -73,6 +73,14 @@
     max-width: 14rem;
     position: relative;
     width: 100%;
+    animation: fadeIn 0.6s;
+    -moz-animation: fadeIn 0.6s;
+    -webkit-animation: fadeIn 0.6s;
+    -o-animation: fadeIn 0.6s;
+}
+
+.arrowWrapBA>.material-icons {
+
 }
 
 .knowMoreAccount:hover {
@@ -140,6 +148,10 @@
 
 .selectedBA {
 	background-color: #f2f5f7;
+     animation: fadeIn 0.6s;
+    -moz-animation: fadeIn 0.6s;
+    -webkit-animation: fadeIn 0.6s;
+    -o-animation: fadeIn 0.6s;
 }
 
 .bAAmount, .bAName, .bAIcon, .bAAllIcon, .bAAllName, .bAAllAmount {
