@@ -173,7 +173,7 @@
     	pathElement.setAttribute('white-space','normal');
     	pathElement.setAttribute('font-family','sans-serif');
     	pathElement.setAttribute('font-weight','400');
-    	pathElement.setAttribute('d','pathElement.setAttribute('d','M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z');');
+    	pathElement.setAttribute('d','M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z');
     	
     	svgElement.appendChild(pathElement);
     	

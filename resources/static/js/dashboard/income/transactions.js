@@ -2490,8 +2490,8 @@
 	// Change the table sorting on page load
 	let tableSortMech = sessionStorage.getItem('sortingTransTable');
 	if(tableSortMech != null) {
-		let sortingPref = JSON.parse(tableSortMech);
-		switch(id) {
+		// Switch accordingly
+		switch(tableSortMech) {
 			case 'Account':
 				// Click the account sorting mechanism
 				document.getElementById('accountSortBy').click();
@@ -2581,7 +2581,7 @@
 	function fetchBankAccountName(accountId) {
 	  // Return the Bank Account Name
 	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
+		  if(bankAccountPreview[i].id == accountId) {
 			  return bankAccountPreview[i].bankAccountName;
 		  }
 	  }
