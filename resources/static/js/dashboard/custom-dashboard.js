@@ -780,9 +780,8 @@ window.onload = function () {
 			}
 		}
 
-		// Before calling AJAX verify the following
+		// Before calling AJAX verify the following (ALL requests including CORS)
 		$(document).ajaxSend(function() {
-			console.log('triggered ajaxSend');
 		  	if(isEmpty(window.currentUser) || 
 		  		isEmpty(window.currentUser.email) || 
 		  		isEmpty(window.currentUser.financialPortfolioId) ||
@@ -852,6 +851,11 @@ er = {
 	},
 
 	showLoginPopup() {
+		// If the modal is open then return
+		if($('#loginModal').hasClass('show') || $('#unlockModal').hasClass('show')) {
+			return;
+		}
+
 		let email = '';
 		// Get parameters
         const params = (new URL(document.location)).searchParams;

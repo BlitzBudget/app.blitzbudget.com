@@ -203,6 +203,7 @@
 
 	// show the login modal
 	$('#GSCCModal').on('show.bs.modal', function () {
+		debugger;
 		// Load Expense category and income category
 		let expenseOptGroup = document.getElementById('expenseSelection');
 		let incomeOptgroup = document.getElementById('incomeSelection');
@@ -739,22 +740,8 @@
 		                        		let checkAllBox = document.getElementById('checkAll');
 		                        		$('#checkAll').prop('checked',false);
 		                        		checkAllBox.setAttribute('disabled','disabled');
-		                        		let documentTbody = document.getElementById(replaceTransactionsId);
-		                        		let recentTransactionsTab = document.getElementById(recentTransactionsId);
-		                        		// Replace HTML with Empty
-		                       		   	while (documentTbody.firstChild) {
-		                       		   		documentTbody.removeChild(documentTbody.firstChild);
-		                       		   	}
-		                 			   	documentTbody.appendChild(fetchEmptyTableMessage());
-		                 			   	// Replace HTML with Empty
-		                       		   	while (recentTransactionsTab.firstChild) {
-		                       		   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
-		                       		   	}
-		                 			   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
-		                 			   	// CHange the recent transactions populated to false
-		                 			   	recentTransactionsPopulated = false;
-		                 			   	// Update the transaction list to empty
-		                 			   	userTransSortedByDate = [];
+		                 			   	// Remove other table data
+		                 			   	removeAllTableData();
 		                 			   	// update the Total Available Section with 0
 		                 	    		updateTotalAvailableSection(0 , 0);
 		                 	    		// Disable delete Transactions button on refreshing the transactions
@@ -770,16 +757,8 @@
 		                        		// Remove all the elements
 			                        	elementsToDelete.fadeOut('slow', function(){ 
 			                        		this.remove();
-			                        		let selectId = this.getElementsByTagName('select')[0].id; 
-			                        		let transId = lastElement(splitElement(selectId,'-'));
-			                        		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
-			                        		// Check if recent transaction is present and remove it
-			                        		if(isNotEmpty(recentTransactionEntry)) {
-			                        			// If all the recent transactions are removed
-			                        			if(recentTransactionEntry.length == 1) { recentTransactionsPopulated = false; document.getElementById('recentTransactions').appendChild(buildEmptyTransactionsTab()); };
-			                        			// remove the recent transactions
-			                        			document.getElementById('recentTransaction-' + transId).remove();
-			                        		}
+			                        		// Remove entries from table
+			                        		removeEntriesFromTable(this);
 			                        		
 			                        		// Execute the condition only once after all the transactions are removed.
 			                        		if(!--iterateOnceAfterCompletion) {
@@ -812,6 +791,30 @@
 			            });
 			    } 
 			}
+	}
+
+	// Remove all other table Data
+	function removeAllTableData() {
+		let documentTbody = document.getElementById(replaceTransactionsId);
+		// Replace HTML with Empty
+	   	while (documentTbody.firstChild) {
+	   		documentTbody.removeChild(documentTbody.firstChild);
+	   	}
+	   	documentTbody.appendChild(fetchEmptyTableMessage());
+		let recentTransactionsTab = document.getElementById(recentTransactionsId);
+		// Replace HTML with Empty
+	   	while (recentTransactionsTab.firstChild) {
+	   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
+	   	}
+	   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
+	   	// CHange the recent transactions populated to false
+	   	recentTransactionsPopulated = false;
+	   	// Update the transaction list to empty
+	   	userTransSortedByDate = [];
+	   	// Change the Account populated to false
+	   	sortByAccountPopulated = false;
+	   	// Remove all Account Data Table
+	   	$('.accountInfoTable').remove();
 	}
 
 	// Show or hide multiple rows in the transactions table
@@ -1252,6 +1255,8 @@
         			if(categoryAmount == 0) {
         				$('.amountCategoryId-' + previousCategoryId).parent().closest('div').fadeOut('slow', function(){ 
         					this.remove(); 
+        					// Remove entries from Account & Creation Date
+        					removeEntriesFromTable(this);
         					// Toggle Category Modal 
                         	toggleCategoryModal();
         				});
@@ -1304,6 +1309,48 @@
             error: ajaxData.onFailure
         });
 	});
+
+	// Remove entries from Account & Creation Date
+	function removeEntriesFromTable(element) {
+		let selectId = element.getElementsByTagName('select')[0].id; 
+		let transId = lastElement(splitElement(selectId,'-'));
+		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
+		// Check if recent transaction is present and remove it
+		if(isNotEmpty(recentTransactionEntry)) {
+			// remove the recent transactions
+			let recentTransEl = document.getElementById('recentTransaction-' + transId);
+			if(recentTransEl) {
+				recentTransEl.remove();
+			}
+			// Remove Account Sort by If exists
+			let accountAggre = document.getElementById('accountAggre-' + transId);
+			let parentNode = accountAggre.parentNode;
+			if(accountAggre) {
+				accountAggre.remove();
+			}
+
+			// If the surrounding Parent does not have any child nodes then remove parent
+			if(!parentNode.hasChildNodes()) {
+				parentNode.remove();
+				// Check if all the account information has been removed
+				if(!document.getElementsByClassName('accountInfoTable')) { 
+					sortByAccountPopulated = false;
+					// Update the transaction list to empty
+	   				userTransSortedByDate = [];
+				}
+			}
+
+			// If all the recent transactions are removed
+			let recentTransactionsEl = document.getElementById(recentTransactionsId);
+			// Recent Transactions Exists
+			if(!recentTransactionsEl.hasChildNodes()) { 
+				recentTransactionsPopulated = false; 
+				recentTransactionsEl.appendChild(buildEmptyTransactionsTab());
+				// Update the transaction list to empty
+	   			userTransSortedByDate = [];
+			}
+		}
+	}
 	
 	// Build empty table message as document
 	function fetchEmptyTableMessage() {
@@ -1534,7 +1581,7 @@
 		 divMaterialSpinner.classList = 'material-spinner-small d-lg-inline-block';
 		 this.classList.remove('d-lg-inline');
 		 this.classList.add('d-none');
-		 this.parentNode.appendChild(divMaterialSpinner;
+		 this.parentNode.appendChild(divMaterialSpinner);
 		 let currentElement = this;
 		 
 		 event.preventDefault();
@@ -1579,7 +1626,7 @@
         	  
         	  // If recent transactions are populated then
         	  if(recentTransactionsPopulated) {
-        	  	let recentTrans = document.getElementById('recentTransactions');
+        	  	let recentTrans = document.getElementById(recentTransactionsId);
         	  	if(isNotEqual(recentTrans.firstElementChild.innertext,TODAY)) {
         	  		// Insert as a first child
         	  		recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
@@ -2191,8 +2238,12 @@
    				if(isEmpty(userTransactionsList)) {
    					// Sort by Account is populated
 	        		sortByAccountPopulated = false;
-   					let accountAggreDiv = document.getElementById('accountTable');
-	        		accountAggreDiv.appendChild(buildEmptyTransactionsTab());
+   					let accountTable = document.getElementById('accountTable');
+   					// Replace HTML with Empty
+					while (accountTable.firstChild) {
+						accountTable.removeChild(accountTable.firstChild);
+					}
+	        		accountTable.appendChild(buildEmptyTransactionsTab());
 	        	} else {
 	        		// Sort by Account is populated
 	        		sortByAccountPopulated = true;
@@ -2221,7 +2272,7 @@
 	// POpulate Recent Transaction information
 	function populateRecentTransInfo(userTransactionsList) {
 		let latestCreationDateItr = new Date();
-    	let recentTransactionsDiv = document.getElementById('recentTransactions');
+    	let recentTransactionsDiv = document.getElementById(recentTransactionsId);
     	let recentTransactionsFragment = document.createDocumentFragment();
     	
     	if(isEmpty(userTransactionsList)) {
@@ -2473,7 +2524,7 @@
 		// hide the accountTable
 		document.getElementById('accountTable').classList.add('d-none');
 		// show the recent transactions
-		document.getElementById('recentTransactions').classList.remove('d-none');
+		document.getElementById(recentTransactionsId).classList.remove('d-none');
 
 		// If a new transaction is registered then population is necessary
 		if(resiteredNewTransaction) {
@@ -2505,7 +2556,7 @@
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Category';
 		// hide the recent transactions
-		document.getElementById('recentTransactions').classList.add('d-none');
+		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the accountTable
 		document.getElementById('accountTable').classList.add('d-none');
 		// show the category view
@@ -2549,7 +2600,7 @@
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Account';
 		// hide the recent transactions
-		document.getElementById('recentTransactions').classList.add('d-none');
+		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-lg-table');
@@ -2603,6 +2654,7 @@
 	function buildAccountHeader(accountId) {
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
+		accountHeader.classList = 'tableBodyDiv accountInfoTable';
 
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
