@@ -38,6 +38,8 @@
 	userTransSortedByDate = [];
 	// Flag to get all bank accounts
 	let fetchAllBankAccountInfo = false;
+	// Sort by Account is populated
+	let sortByAccountPopulated = false;
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -128,7 +130,11 @@
         	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);
         	// Add css3 to fade in and out
         	successMessageDocument.classList.add('messageFadeInAndOut');
+        	// Set Registered new transactions as true
   	    	resiteredNewTransaction=true;
+  	    	// Update the transaction list to empty
+		    userTransSortedByDate = [];
+		    // Enable the Add Button
   	    	transactionSubmissionButton.removeAttribute("disabled");
   	    }
 	    ajaxData.onFailure = function(data) {
@@ -747,6 +753,8 @@
 		                 			   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
 		                 			   	// CHange the recent transactions populated to false
 		                 			   	recentTransactionsPopulated = false;
+		                 			   	// Update the transaction list to empty
+		                 			   	userTransSortedByDate = [];
 		                 			   	// update the Total Available Section with 0
 		                 	    		updateTotalAvailableSection(0 , 0);
 		                 	    		// Disable delete Transactions button on refreshing the transactions
@@ -768,7 +776,7 @@
 			                        		// Check if recent transaction is present and remove it
 			                        		if(isNotEmpty(recentTransactionEntry)) {
 			                        			// If all the recent transactions are removed
-			                        			if(recentTransactionEntry.length == 1) recentTransactionsPopulated = false;
+			                        			if(recentTransactionEntry.length == 1) { recentTransactionsPopulated = false; document.getElementById('recentTransactions').appendChild(buildEmptyTransactionsTab()); };
 			                        			// remove the recent transactions
 			                        			document.getElementById('recentTransaction-' + transId).remove();
 			                        		}
@@ -1568,6 +1576,7 @@
         	  
         	  // Updates total transactions in category Modal
         	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
+        	  
         	  // If recent transactions are populated then
         	  if(recentTransactionsPopulated) {
         	  	let recentTrans = document.getElementById('recentTransactions');
@@ -1575,12 +1584,27 @@
         	  		// Insert as a first child
         	  		recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
         	  	}
-        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction),recentTrans.childNodes[1], 'recentTransaction');
+        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction, 'recentTransaction'),recentTrans.childNodes[1]);
         	  }
+
+        	  // If the sort option is Account then
+        	  if(sortByAccountPopulated) {
+        	  	let accountAggTable = document.getElementById('accountSB-' + userTransaction.accountId);
+        	  	if(isEmpty(accountAggTable)) {
+        	  		let recentTransactionsFragment = document.createDocumentFragment();
+        	  		let recTransAndAccTable = document.getElementById('recTransAndAccTable');
+        	  		recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.accountId));
+        	  		recentTransactionsFragment.getElementById('accountSB-' + userTransaction.accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  		recTransAndAccTable.appendChild(recentTransactionsFragment);
+        	  	} else {
+        	  		accountAggTable.appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  	}
+        	  }
+
          }
 		 ajaxData.onFailure = function (thrownError) {
 		 	manageErrors(thrownError, 'Unable to add a new transaction.',ajaxData);
-          }
+         }
 
 		 $.ajax({
 	          type: ajaxData.type,
@@ -2165,9 +2189,13 @@
    			ajaxData.onSuccess = function(userTransactionsList) {
 
    				if(isEmpty(userTransactionsList)) {
+   					// Sort by Account is populated
+	        		sortByAccountPopulated = false;
    					let accountAggreDiv = document.getElementById('accountTable');
 	        		accountAggreDiv.appendChild(buildEmptyTransactionsTab());
 	        	} else {
+	        		// Sort by Account is populated
+	        		sortByAccountPopulated = true;
 		   			// cache the results
 		   			userTransSortedByDate = userTransactionsList;
 		   			// Populate the transaction of account
@@ -2212,9 +2240,7 @@
      	   }
 
     		let resultKeySet = Object.keys(userTransactionsList);
-        	// Print only the first 20 records
-        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
-         	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
+         	for(let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
          	   let key = resultKeySet[countGrouped];
          	   let userTransaction = userTransactionsList[key];
          	   let creationDate = new Date(userTransaction.createDate);
@@ -2547,7 +2573,7 @@
 
 	// Populate the account sort by section
 	function popTransByAccWOAJAX() {
-		let accountAggreDiv = document.getElementById('accountTable');
+		let accountAggreDiv = document.getElementById('recTransAndAccTable');
         let recentTransactionsFragment = document.createDocumentFragment();
 		let resultKeySet = Object.keys(userTransSortedByDate);
 		let createdAccIds = [];
@@ -2563,12 +2589,13 @@
      	   		// Add Created Accounts ID to the array
      	   		createdAccIds.push(accountId);
      	   }
-     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'))
+     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
      	}
      	// Empty HTML
     	while (accountAggreDiv.firstChild) {
     		accountAggreDiv.removeChild(accountAggreDiv.firstChild);
 		}
+		document.getElementById('accountTable').classList.add('d-none');
     	accountAggreDiv.appendChild(recentTransactionsFragment);
 	}
 
