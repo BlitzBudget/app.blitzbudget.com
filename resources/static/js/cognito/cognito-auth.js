@@ -314,7 +314,8 @@ var AWSCogUser = window.AWSCogUser || {};
     });
 
     document.getElementById('unlockApplication').addEventListener("click",function(e){
-        let password  = document.getElementById('unlockAppPass').value;
+        let unlockAppPass = document.getElementById('unlockAppPass');
+        let password  = unlockAppPass.value;
         let email = currentUser.email;
         let unlockModal = $('#unlockModal');
         let unlockApplication = document.getElementById('unlockApplication');
@@ -342,6 +343,7 @@ var AWSCogUser = window.AWSCogUser || {};
             function signinError(err) {
                 unlockLoader.classList.add('d-none');
                 unlockApplication.classList.remove('d-none');
+                unlockAppPass.focus();
                 handleSessionErrors(err,email,password,'errorUnlockPopup');
             }
         );

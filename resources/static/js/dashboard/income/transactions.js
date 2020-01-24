@@ -38,6 +38,8 @@
 	userTransSortedByDate = [];
 	// Flag to get all bank accounts
 	let fetchAllBankAccountInfo = false;
+	// Sort by Account is populated
+	let sortByAccountPopulated = false;
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -128,7 +130,11 @@
         	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);
         	// Add css3 to fade in and out
         	successMessageDocument.classList.add('messageFadeInAndOut');
+        	// Set Registered new transactions as true
   	    	resiteredNewTransaction=true;
+  	    	// Update the transaction list to empty
+		    userTransSortedByDate = [];
+		    // Enable the Add Button
   	    	transactionSubmissionButton.removeAttribute("disabled");
   	    }
 	    ajaxData.onFailure = function(data) {
@@ -197,6 +203,7 @@
 
 	// show the login modal
 	$('#GSCCModal').on('show.bs.modal', function () {
+		debugger;
 		// Load Expense category and income category
 		let expenseOptGroup = document.getElementById('expenseSelection');
 		let incomeOptgroup = document.getElementById('incomeSelection');
@@ -582,9 +589,9 @@
 		amountTransactionsRow.setAttribute('id', 'amountCategory-' + categoryId);
 		
 		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-lg-table-cell amountCategoryId-' + categoryId + ' spendingCategory';
+			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-lg-table-cell amountCategoryId-' + categoryId;
 		} else {
-			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-lg-table-cell amountCategoryId-' + categoryId + ' incomeCategory';
+			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-lg-table-cell amountCategoryId-' + categoryId;
 		}
 		
 		// Append a - sign for the category if it is an expense
@@ -733,20 +740,8 @@
 		                        		let checkAllBox = document.getElementById('checkAll');
 		                        		$('#checkAll').prop('checked',false);
 		                        		checkAllBox.setAttribute('disabled','disabled');
-		                        		let documentTbody = document.getElementById(replaceTransactionsId);
-		                        		let recentTransactionsTab = document.getElementById(recentTransactionsId);
-		                        		// Replace HTML with Empty
-		                       		   	while (documentTbody.firstChild) {
-		                       		   		documentTbody.removeChild(documentTbody.firstChild);
-		                       		   	}
-		                 			   	documentTbody.appendChild(fetchEmptyTableMessage());
-		                 			   	// Replace HTML with Empty
-		                       		   	while (recentTransactionsTab.firstChild) {
-		                       		   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
-		                       		   	}
-		                 			   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
-		                 			   	// CHange the recent transactions populated to false
-		                 			   	recentTransactionsPopulated = false;
+		                 			   	// Remove other table data
+		                 			   	removeAllTableData();
 		                 			   	// update the Total Available Section with 0
 		                 	    		updateTotalAvailableSection(0 , 0);
 		                 	    		// Disable delete Transactions button on refreshing the transactions
@@ -762,16 +757,8 @@
 		                        		// Remove all the elements
 			                        	elementsToDelete.fadeOut('slow', function(){ 
 			                        		this.remove();
-			                        		let selectId = this.getElementsByTagName('select')[0].id; 
-			                        		let transId = lastElement(splitElement(selectId,'-'));
-			                        		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
-			                        		// Check if recent transaction is present and remove it
-			                        		if(isNotEmpty(recentTransactionEntry)) {
-			                        			// If all the recent transactions are removed
-			                        			if(recentTransactionEntry.length == 1) recentTransactionsPopulated = false;
-			                        			// remove the recent transactions
-			                        			document.getElementById('recentTransaction-' + transId).remove();
-			                        		}
+			                        		// Remove entries from table
+			                        		removeEntriesFromTable(this);
 			                        		
 			                        		// Execute the condition only once after all the transactions are removed.
 			                        		if(!--iterateOnceAfterCompletion) {
@@ -804,6 +791,30 @@
 			            });
 			    } 
 			}
+	}
+
+	// Remove all other table Data
+	function removeAllTableData() {
+		let documentTbody = document.getElementById(replaceTransactionsId);
+		// Replace HTML with Empty
+	   	while (documentTbody.firstChild) {
+	   		documentTbody.removeChild(documentTbody.firstChild);
+	   	}
+	   	documentTbody.appendChild(fetchEmptyTableMessage());
+		let recentTransactionsTab = document.getElementById(recentTransactionsId);
+		// Replace HTML with Empty
+	   	while (recentTransactionsTab.firstChild) {
+	   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
+	   	}
+	   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
+	   	// CHange the recent transactions populated to false
+	   	recentTransactionsPopulated = false;
+	   	// Update the transaction list to empty
+	   	userTransSortedByDate = [];
+	   	// Change the Account populated to false
+	   	sortByAccountPopulated = false;
+	   	// Remove all Account Data Table
+	   	$('.accountInfoTable').remove();
 	}
 
 	// Show or hide multiple rows in the transactions table
@@ -1244,6 +1255,8 @@
         			if(categoryAmount == 0) {
         				$('.amountCategoryId-' + previousCategoryId).parent().closest('div').fadeOut('slow', function(){ 
         					this.remove(); 
+        					// Remove entries from Account & Creation Date
+        					removeEntriesFromTable(this);
         					// Toggle Category Modal 
                         	toggleCategoryModal();
         				});
@@ -1296,6 +1309,48 @@
             error: ajaxData.onFailure
         });
 	});
+
+	// Remove entries from Account & Creation Date
+	function removeEntriesFromTable(element) {
+		let selectId = element.getElementsByTagName('select')[0].id; 
+		let transId = lastElement(splitElement(selectId,'-'));
+		let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
+		// Check if recent transaction is present and remove it
+		if(isNotEmpty(recentTransactionEntry)) {
+			// remove the recent transactions
+			let recentTransEl = document.getElementById('recentTransaction-' + transId);
+			if(recentTransEl) {
+				recentTransEl.remove();
+			}
+			// Remove Account Sort by If exists
+			let accountAggre = document.getElementById('accountAggre-' + transId);
+			let parentNode = accountAggre.parentNode;
+			if(accountAggre) {
+				accountAggre.remove();
+			}
+
+			// If the surrounding Parent does not have any child nodes then remove parent
+			if(!parentNode.hasChildNodes()) {
+				parentNode.remove();
+				// Check if all the account information has been removed
+				if(!document.getElementsByClassName('accountInfoTable')) { 
+					sortByAccountPopulated = false;
+					// Update the transaction list to empty
+	   				userTransSortedByDate = [];
+				}
+			}
+
+			// If all the recent transactions are removed
+			let recentTransactionsEl = document.getElementById(recentTransactionsId);
+			// Recent Transactions Exists
+			if(!recentTransactionsEl.hasChildNodes()) { 
+				recentTransactionsPopulated = false; 
+				recentTransactionsEl.appendChild(buildEmptyTransactionsTab());
+				// Update the transaction list to empty
+	   			userTransSortedByDate = [];
+			}
+		}
+	}
 	
 	// Build empty table message as document
 	function fetchEmptyTableMessage() {
@@ -1521,9 +1576,12 @@
     
     // Add button to add the table row to the corresponding category
 	$( "#transactionsTable" ).on( "click", ".addTableRowListener" ,function(event) {
+		// Add small Material Spinner
+		 let divMaterialSpinner = document.createElement('div');
+		 divMaterialSpinner.classList = 'material-spinner-small d-lg-inline-block';
 		 this.classList.remove('d-lg-inline');
 		 this.classList.add('d-none');
-		 this.parentNode.appendChild(buildSmallMaterialSpinner());
+		 this.parentNode.appendChild(divMaterialSpinner);
 		 let currentElement = this;
 		 
 		 event.preventDefault();
@@ -1565,19 +1623,35 @@
         	  
         	  // Updates total transactions in category Modal
         	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
+        	  
         	  // If recent transactions are populated then
         	  if(recentTransactionsPopulated) {
-        	  	let recentTrans = document.getElementById('recentTransactions');
+        	  	let recentTrans = document.getElementById(recentTransactionsId);
         	  	if(isNotEqual(recentTrans.firstElementChild.innertext,TODAY)) {
         	  		// Insert as a first child
         	  		recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
         	  	}
-        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction),recentTrans.childNodes[1]);
+        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction, 'recentTransaction'),recentTrans.childNodes[1]);
         	  }
+
+        	  // If the sort option is Account then
+        	  if(sortByAccountPopulated) {
+        	  	let accountAggTable = document.getElementById('accountSB-' + userTransaction.accountId);
+        	  	if(isEmpty(accountAggTable)) {
+        	  		let recentTransactionsFragment = document.createDocumentFragment();
+        	  		let recTransAndAccTable = document.getElementById('recTransAndAccTable');
+        	  		recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.accountId));
+        	  		recentTransactionsFragment.getElementById('accountSB-' + userTransaction.accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  		recTransAndAccTable.appendChild(recentTransactionsFragment);
+        	  	} else {
+        	  		accountAggTable.appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  	}
+        	  }
+
          }
 		 ajaxData.onFailure = function (thrownError) {
 		 	manageErrors(thrownError, 'Unable to add a new transaction.',ajaxData);
-          }
+         }
 
 		 $.ajax({
 	          type: ajaxData.type,
@@ -2156,59 +2230,23 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		if(recentTrans) {
    			ajaxData.onSuccess = function(userTransactionsList) {
-	   			let latestCreationDateItr = new Date();
-	        	let recentTransactionsDiv = document.getElementById('recentTransactions');
-	        	let recentTransactionsFragment = document.createDocumentFragment();
-	        	
-	        	if(isEmpty(userTransactionsList)) {
-	        		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
-	        		// Update the recent transactions (FALSE for empty tables)
-		   			recentTransactionsPopulated = false;
-	        	} else {
-	        		// Update the recent transactions
-		   			recentTransactionsPopulated = true;
-		   			// cache the results
-		   			userTransSortedByDate = userTransactionsList;
-
-		   			// Check if it is the same day
-	         	   if(isToday(new Date(userTransactionsList[0].createDate))) {
-	         	   		recentTransactionsFragment.appendChild(appendToday());
-	         	   }
-
-	        		let resultKeySet = Object.keys(userTransactionsList);
-		        	// Print only the first 20 records
-		        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
-	             	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
-	             	   let key = resultKeySet[countGrouped];
-	             	   let userTransaction = userTransactionsList[key];
-	             	   let creationDate = new Date(userTransaction.createDate);
-	             	   
-	             	   if(!sameDate(creationDate,latestCreationDateItr)) {
-	             	   		recentTransactionsFragment.appendChild(appendDateHeader(creationDate));
-	             	   		// Set the latest header to creation date
-	             	   		latestCreationDateItr = creationDate;
-	             	   }
-	             	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
-	             	}
-	        	}
-	        	
-	        	// Empty HTML
-	        	while (recentTransactionsDiv.firstChild) {
-	        		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
-	    		}
-	        	recentTransactionsDiv.appendChild(recentTransactionsFragment);
-	         	   
+	   			populateRecentTransInfo(userTransactionsList);
 	        }
    		} else {
    			ajaxData.onSuccess = function(userTransactionsList) {
 
    				if(isEmpty(userTransactionsList)) {
-	        		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
-	        		// Update the recent transactions (FALSE for empty tables)
-		   			recentTransactionsPopulated = false;
+   					// Sort by Account is populated
+	        		sortByAccountPopulated = false;
+   					let accountTable = document.getElementById('accountTable');
+   					// Replace HTML with Empty
+					while (accountTable.firstChild) {
+						accountTable.removeChild(accountTable.firstChild);
+					}
+	        		accountTable.appendChild(buildEmptyTransactionsTab());
 	        	} else {
-	        		// Update the recent transactions
-		   			recentTransactionsPopulated = true;
+	        		// Sort by Account is populated
+	        		sortByAccountPopulated = true;
 		   			// cache the results
 		   			userTransSortedByDate = userTransactionsList;
 		   			// Populate the transaction of account
@@ -2229,6 +2267,49 @@
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
 		});
+	}
+
+	// POpulate Recent Transaction information
+	function populateRecentTransInfo(userTransactionsList) {
+		let latestCreationDateItr = new Date();
+    	let recentTransactionsDiv = document.getElementById(recentTransactionsId);
+    	let recentTransactionsFragment = document.createDocumentFragment();
+    	
+    	if(isEmpty(userTransactionsList)) {
+    		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
+    		// Update the recent transactions (FALSE for empty tables)
+   			recentTransactionsPopulated = false;
+    	} else {
+    		// Update the recent transactions
+   			recentTransactionsPopulated = true;
+   			// cache the results
+   			userTransSortedByDate = userTransactionsList;
+
+   			// Check if it is the same day
+     	   if(isToday(new Date(userTransactionsList[0].createDate))) {
+     	   		recentTransactionsFragment.appendChild(appendToday());
+     	   }
+
+    		let resultKeySet = Object.keys(userTransactionsList);
+         	for(let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
+         	   let key = resultKeySet[countGrouped];
+         	   let userTransaction = userTransactionsList[key];
+         	   let creationDate = new Date(userTransaction.createDate);
+         	   
+         	   if(!sameDate(creationDate,latestCreationDateItr)) {
+         	   		recentTransactionsFragment.appendChild(appendDateHeader(creationDate));
+         	   		// Set the latest header to creation date
+         	   		latestCreationDateItr = creationDate;
+         	   }
+         	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction,'recentTransaction'));
+         	}
+    	}
+    	
+    	// Empty HTML
+    	while (recentTransactionsDiv.firstChild) {
+    		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
+		}
+    	recentTransactionsDiv.appendChild(recentTransactionsFragment);
 	}
 
 	// Appends the date header (TODAY) for recent transactions
@@ -2263,14 +2344,14 @@
 	}
 	
 	// Builds the rows for recent transactions
-	function buildTransactionRow(userTransaction) {
+	function buildTransactionRow(userTransaction, idName) {
 		// Convert date from UTC to user specific dates
 		let creationDateUserRelevant = new Date(userTransaction.createDate);
 		// Category Map 
 		let categoryMapForUT = categoryMap[userTransaction.categoryId];
 		
 		let tableRowTransaction = document.createElement('div');
-		tableRowTransaction.id = 'recentTransaction-' + userTransaction.transactionId;
+		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 		
 		let tableCellImagesWrapper = document.createElement('div');
@@ -2443,7 +2524,7 @@
 		// hide the accountTable
 		document.getElementById('accountTable').classList.add('d-none');
 		// show the recent transactions
-		document.getElementById('recentTransactions').classList.remove('d-none');
+		document.getElementById(recentTransactionsId).classList.remove('d-none');
 
 		// If a new transaction is registered then population is necessary
 		if(resiteredNewTransaction) {
@@ -2453,14 +2534,21 @@
 			replacePieChartWithMSpinner();
 			// Fetch JSOn for transactions and populate pie chart
 			fetchJSONForTransactions();
+			// Populate recent transactions
+			populateRecentTransactions(true);
 		}
 
 		if(recentTransactionsPopulated) {
 			return;
 		}
 
-		// Populate recent transactions
-		populateRecentTransactions(true);
+		// Populate recent transactions from the cache if present
+		if(isNotEmpty(userTransSortedByDate)) {
+			populateRecentTransInfo(userTransSortedByDate);
+		} else {
+			// Populate recent transactions
+			populateRecentTransactions(true);
+		}
 	});
 
 	// Click on sort by creation date
@@ -2468,7 +2556,7 @@
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Category';
 		// hide the recent transactions
-		document.getElementById('recentTransactions').classList.add('d-none');
+		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the accountTable
 		document.getElementById('accountTable').classList.add('d-none');
 		// show the category view
@@ -2490,22 +2578,17 @@
 	// Change the table sorting on page load
 	let tableSortMech = sessionStorage.getItem('sortingTransTable');
 	if(tableSortMech != null) {
-		let sortingPref = JSON.parse(tableSortMech);
-		switch(id) {
-			case 'Account':
-				// Click the account sorting mechanism
-				document.getElementById('accountSortBy').click();
-				break;
-			case 'Category':
-				// default is category sort (do nothing)
-				break;
-			case 'Creation Date':
-				// Click the creation date sorting mechanism
-				document.getElementById('creationDateSortBy').click();
-				break;
-			default:
-				break;
+
+		if(isEqual(tableSortMech, "Account")) {
+			// Click the account sorting mechanism
+			document.getElementById('accountSortBy').click();
+		} else if (isEqual(tableSortMech, "CreationDate")) {
+			// Click the creation date sorting mechanism
+			document.getElementById('creationDateSortBy').click();
 		}
+
+		// Remove the stored item
+		sessionStorage.removeItem('sortingTransTable');
 	}
 
 	// Sorts the table by aggregating transactions by account
@@ -2517,7 +2600,7 @@
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Account';
 		// hide the recent transactions
-		document.getElementById('recentTransactions').classList.add('d-none');
+		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-lg-table');
@@ -2541,7 +2624,7 @@
 
 	// Populate the account sort by section
 	function popTransByAccWOAJAX() {
-		let accountAggreDiv = document.getElementById('accountTable');
+		let accountAggreDiv = document.getElementById('recTransAndAccTable');
         let recentTransactionsFragment = document.createDocumentFragment();
 		let resultKeySet = Object.keys(userTransSortedByDate);
 		let createdAccIds = [];
@@ -2554,13 +2637,16 @@
      	   
      	   if(!includesStr(createdAccIds,accountId)) {
      	   		recentTransactionsFragment.appendChild(buildAccountHeader(accountId));
+     	   		// Add Created Accounts ID to the array
+     	   		createdAccIds.push(accountId);
      	   }
-     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction))
+     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
      	}
      	// Empty HTML
     	while (accountAggreDiv.firstChild) {
     		accountAggreDiv.removeChild(accountAggreDiv.firstChild);
 		}
+		document.getElementById('accountTable').classList.add('d-none');
     	accountAggreDiv.appendChild(recentTransactionsFragment);
 	}
 
@@ -2568,6 +2654,7 @@
 	function buildAccountHeader(accountId) {
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
+		accountHeader.classList = 'tableBodyDiv accountInfoTable';
 
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
@@ -2581,7 +2668,7 @@
 	function fetchBankAccountName(accountId) {
 	  // Return the Bank Account Name
 	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
+		  if(bankAccountPreview[i].id == accountId) {
 			  return bankAccountPreview[i].bankAccountName;
 		  }
 	  }

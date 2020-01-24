@@ -79,7 +79,7 @@
                       <!-- Filled with Javascript dynamically -->
                     </div>
                 </div>
-                <div class="table table-fixed d-lg-table">
+                <div id="recTransAndAccTable" class="table table-fixed d-lg-table">
                   <div class="tableHeadingDiv">
                     <div class="w-15 d-lg-table-cell" title=""></div>
                     <div class="w-65 d-lg-table-cell" title=""></div>
@@ -89,9 +89,9 @@
                     <div class="material-spinner mx-auto"></div>
                     <!-- Recent transactions dynamic load -->
                   </div>
-                  <div id="accountTable" class=" tableBodyDiv d-none">
+                  <div id="accountTable" class="tableBodyDiv d-none">
                     <div class="material-spinner mx-auto"></div>
-                    <!-- Recent transactions dynamic load -->
+                    <!-- Account Sort dynamic load -->
                   </div>
                 </div>
               </div>
@@ -189,7 +189,7 @@
       
   
 	<!-- Vertically Centered Modal -->
-	<div class="modal fade" id="GSCCModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="GSCCModal">
+	<div class="modal" id="GSCCModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="GSCCModal">
     <div class="modal-dialog modal-signup" role="document">
       <div class="modal-content">
         <div class="card card-signup card-plain">
@@ -254,7 +254,7 @@
                     <div class="form-group bmd-form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction amount">money</i></div>
+                          <div class="input-group-text"><span class="currentCurrencySymbol"></span></div>
                         </div>
                         <input id="amount" name="amount" type="number" class="form-control small-input" required aria-required="true" aria-invalid="true" placeholder="Amount"/>
                       </div>
