@@ -2524,7 +2524,8 @@
 		document.getElementById('accountTable').classList.add('d-none');
 		// show the recent transactions
 		document.getElementById(recentTransactionsId).classList.remove('d-none');
-
+		// Hide all account tables loaded
+		$('.accountInfoTable').addClass('d-none');
 		// If a new transaction is registered then population is necessary
 		if(resiteredNewTransaction) {
 			resiteredNewTransaction = false;
@@ -2558,6 +2559,8 @@
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the accountTable
 		document.getElementById('accountTable').classList.add('d-none');
+		// Hide all account tables loaded
+		$('.accountInfoTable').addClass('d-none');
 		// show the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.add('d-lg-table');
@@ -2574,12 +2577,13 @@
 		}
 	});
 
-	// Change the table sorting on page load
-	er.tableSortMechanism();
+	window.onload = (event) => {
+	  	// Change the table sorting on page load
+		er.tableSortMechanism();
+	};
 
 	// Sorts the table by aggregating transactions by account
 	document.getElementById('accountSortBy').addEventListener("click",function(e){
-		debugger;
 		// Close the category Modal
 		closeCategoryModal();
 		// Uncheck all the checked rows
@@ -2592,6 +2596,12 @@
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-lg-table');
 		transactionsTable.classList.add('d-none');
+		// Remove all the transactions
+		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
+     	// Replace HTML with Empty
+		while (accountInfoTable.firstChild) {
+			accountInfoTable.removeChild(accountInfoTable.firstChild);
+		}
 		// Show the accountTable
 		document.getElementById('accountTable').classList.remove('d-none');
 		// Populates the transactions by account
