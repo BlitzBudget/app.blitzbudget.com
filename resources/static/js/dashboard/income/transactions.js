@@ -203,15 +203,14 @@
 
 	// show the login modal
 	$('#GSCCModal').on('show.bs.modal', function () {
-		debugger;
 		// Load Expense category and income category
 		let expenseOptGroup = document.getElementById('expenseSelection');
 		let incomeOptgroup = document.getElementById('incomeSelection');
 		// If the Category items are not populate then populate them
-		if(!expenseOptGroup.hasChildNodes()) {
+		if(!expenseOptGroup.firstElementChild) {
 			expenseSelectionOptGroup = cloneElementAndAppend(expenseOptGroup, expenseSelectionOptGroup);
 		}
-		if(!incomeOptgroup.hasChildNodes()) {
+		if(!incomeOptgroup.firstElementChild) {
 			incomeSelectionOptGroup = cloneElementAndAppend(incomeOptgroup, incomeSelectionOptGroup);
 		}
 	});
@@ -1042,8 +1041,8 @@
 	// Append amount to user transaction
 	function postNewAmountToUserTransactions(element){
 		// If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-		let enteredText = round(parseFloat(trimElement(lastElement(splitElement(element.innerText,currentCurrencyPreference))).replace(/[^0-9.-]+/g,"")),2);
-		let previousText = parseFloat(lastElement(splitElement(amountEditedTransaction,currentCurrencyPreference)).replace(/[^0-9.-]+/g,""));
+		let enteredText = convertToNumberFromCurrency(element.innerText, currentCurrencyPreference);
+		let previousText = convertToNumberFromCurrency(amountEditedTransaction, currentCurrencyPreference);
 		
 		// Test if the entered value is valid
 		if(isNaN(enteredText) || !regexForFloat.test(enteredText) || enteredText == 0) {
@@ -1171,12 +1170,12 @@
 	function updateTotalCalculations(categoryForCalculation , totalAddedOrRemovedFromAmount){
 		
 		if(categoryForCalculation.contains('spendingCategory')) {
-			let currentValueExpense = round(parseFloat(trimElement(lastElement(splitElement($("#totalExpensesTransactions")[0].innerText,currentCurrencyPreference))).replace(/[^0-9.-]+/g,"")),2);
+			let currentValueExpense = convertToNumberFromCurrency($("#totalExpensesTransactions")[0].innerText, currentCurrencyPreference);
 			let totalAmountLeftForExpenses = currentValueExpense+ totalAddedOrRemovedFromAmount;
 			replaceHTML('totalExpensesTransactions' , '-' + currentCurrencyPreference + formatNumber(Number(totalAmountLeftForExpenses), currentUser.locale));
 			
 		} else if(categoryForCalculation.contains('incomeCategory')) {
-			let currentValueIncome = round(parseFloat(trimElement(lastElement(splitElement($("#totalIncomeTransactions")[0].innerText,currentCurrencyPreference))).replace(/[^0-9.-]+/g,"")),2);
+			let currentValueIncome = convertToNumberFromCurrency($("#totalIncomeTransactions")[0].innerText, currentCurrencyPreference);
 			let totalAmountLeftForIncome = currentValueIncome + totalAddedOrRemovedFromAmount;
 			replaceHTML('totalIncomeTransactions' , currentCurrencyPreference + formatNumber(Number(totalAmountLeftForIncome), currentUser.locale));
 		}
@@ -1330,7 +1329,7 @@
 			}
 
 			// If the surrounding Parent does not have any child nodes then remove parent
-			if(!parentNode.hasChildNodes()) {
+			if(!parentNode.firstElementChild) {
 				parentNode.remove();
 				// Check if all the account information has been removed
 				if(!document.getElementsByClassName('accountInfoTable')) { 
@@ -1343,7 +1342,7 @@
 			// If all the recent transactions are removed
 			let recentTransactionsEl = document.getElementById(recentTransactionsId);
 			// Recent Transactions Exists
-			if(!recentTransactionsEl.hasChildNodes()) { 
+			if(!recentTransactionsEl.firstElementChild) { 
 				recentTransactionsPopulated = false; 
 				recentTransactionsEl.appendChild(buildEmptyTransactionsTab());
 				// Update the transaction list to empty
@@ -2576,23 +2575,11 @@
 	});
 
 	// Change the table sorting on page load
-	let tableSortMech = sessionStorage.getItem('sortingTransTable');
-	if(tableSortMech != null) {
-
-		if(isEqual(tableSortMech, "Account")) {
-			// Click the account sorting mechanism
-			document.getElementById('accountSortBy').click();
-		} else if (isEqual(tableSortMech, "CreationDate")) {
-			// Click the creation date sorting mechanism
-			document.getElementById('creationDateSortBy').click();
-		}
-
-		// Remove the stored item
-		sessionStorage.removeItem('sortingTransTable');
-	}
+	er.tableSortMechanism();
 
 	// Sorts the table by aggregating transactions by account
 	document.getElementById('accountSortBy').addEventListener("click",function(e){
+		debugger;
 		// Close the category Modal
 		closeCategoryModal();
 		// Uncheck all the checked rows
@@ -2642,10 +2629,7 @@
      	   }
      	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
      	}
-     	// Empty HTML
-    	while (accountAggreDiv.firstChild) {
-    		accountAggreDiv.removeChild(accountAggreDiv.firstChild);
-		}
+
 		document.getElementById('accountTable').classList.add('d-none');
     	accountAggreDiv.appendChild(recentTransactionsFragment);
 	}

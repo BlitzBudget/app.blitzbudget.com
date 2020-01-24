@@ -173,6 +173,8 @@ window.onload = function () {
         	let id = this.id;
         	// If the current sidebar is selected then do nothing
         	if(this.parentNode.classList.contains('active')) {
+        		// If the tab is transactiosn tab then
+        		if(isEqual(this.id,'transactionsPage')) er.tableSortMechanism();
         		return;
         	}
 			
@@ -1009,6 +1011,27 @@ er = {
 		
 		// Rotate the arrow head in the month display
 		document.getElementsByClassName('overviewDateArrow')[0].classList.remove('transformUpwardArrow');
+	},
+
+	tableSortMechanism() {
+		let tableSortMech = window.sortingTransTable;
+		if(isNotEmpty(tableSortMech != null)) {
+
+			switch(tableSortMech) {
+				
+				case 'Account':
+					// Click the account sorting mechanism
+					document.getElementById('accountSortBy').click();
+					break;
+				case 'CreationDate':
+					// Click the creation date sorting mechanism
+					document.getElementById('creationDateSortBy').click();
+					break;
+			}
+
+			// Remove the stored item
+			window.sortingTransTable = null;
+		}
 	}
 		
 }
