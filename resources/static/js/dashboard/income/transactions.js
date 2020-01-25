@@ -1273,8 +1273,6 @@
         		this.remove();
         		// Remove entries from Account & Creation Date
         		removeEntriesFromTable(this);
-        		// IF the recent transactions are populated then remove
-        		document.getElementById('recentTransaction-' + id).remove();
         		
         		// Check all functionality if all transactions are clicked
             	checkAllIfAllAreChecked();
@@ -1637,7 +1635,7 @@
         	  // If the sort option is Account then
         	  if(sortByAccountPopulated) {
         	  	let accountAggTable = document.getElementById('accountSB-' + userTransaction.accountId);
-        	  	if(accountAggTable != null) {
+        	  	if(accountAggTable == null) {
         	  		let recentTransactionsFragment = document.createDocumentFragment();
         	  		let recTransAndAccTable = document.getElementById('recTransAndAccTable');
         	  		recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.accountId));
@@ -1929,8 +1927,7 @@
 		let categoryModalDiv = document.getElementsByClassName('category-modal');
 		debugger;
 		// Find all the category rows that are expanded
-		let categoryRowsDiv = document.getElementsByClassName('dropdown-toggle');
-		let categoriesShown = document.getelementsByClassName('categoryShown');
+		let categoriesShown = document.getElementsByClassName('categoryShown');
 		
 		if(categoriesShown.length == 0) {
 			// show the financial position div and hide the category modal
@@ -1943,7 +1940,7 @@
 			categoryModalDiv[0].classList.remove('d-none');
 			financialPositionDiv[0].classList.add('d-none');
 			// If there are other drop down categories open then show the first one from the list
-			let categoryRowToShowInModal = categoryRowsDiv[0].parentNode;
+			let categoryRowToShowInModal = categoriesShown[0];
 			let categoryId = lastElement(splitElement(categoryRowToShowInModal.id,'-'));
 			// Fetch all the categories child transactions
 			let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
@@ -2601,6 +2598,18 @@
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-lg-table');
 		transactionsTable.classList.add('d-none');
+		// Remove Account Table Class
+		$('.accountInfoTable').removeClass('d-none');
+
+		// If register new transaction is populated then populate account again
+		if(resiteredNewTransaction) {
+			sortByAccountPopulated = false;
+		}
+
+		// If already sorted then do nothing
+		if(sortByAccountPopulated) {
+			return;
+		}
 		// Remove all the transactions
 		$('.accountInfoTable').remove();
 		// Show the accountTable

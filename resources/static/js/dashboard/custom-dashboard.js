@@ -854,7 +854,7 @@ er = {
 
 	showLoginPopup() {
 		// If the modal is open then return
-		if($('#loginModal').hasClass('show') || $('#unlockModal').hasClass('show')) {
+		if(document.getElementById('loginModal').classList.contains('show') || document.getElementById('unlockModal').classList.contains('show')) {
 			return;
 		}
 
