@@ -681,115 +681,115 @@
 	
 	// Swal Sweetalerts
 	popup = {
-			showSwal: function(type) {
-				// Delete transactions On click
-				if (type == 'warning-message-and-confirmation') {
-				 Swal.fire({	
-			                title: 'Are you sure?',
-			                text: 'You will not be able to recover these transactions!',
-			                icon: 'warning',
-			                showCancelButton: true,
-			                confirmButtonText: 'Yes, delete it!',
-			                cancelButtonText: 'No, keep it',
-			                confirmButtonClass: "btn btn-success",
-			                cancelButtonClass: "btn btn-danger",
-			                buttonsStyling: false,
-			            }).then(function(result) {
-			            	
-			            	 if (result.value) {
-			             		// Check all check boxes by default
-			                     var transactionIds = [];
-			                    
-			                     let allCheckedItems = $("input[type=checkbox]:checked")
-			                     for(let i = 0, length = allCheckedItems.length; i < length; i++) {
-			                     	// To remove the select all check box values
-			                    	let transactionId = allCheckedItems[i].innerHTML;
-			                    	
-			                    	// Remove the check all from the list
-			                    	if(isEqual(allCheckedItems[i].id, 'checkAll')) {
-			                    		continue;
-			                    	}
-			                    	
-			                    	// Google Chrome Compatibility 
-			                        if(isEmpty(transactionId)) {
-			                        	transactionId = allCheckedItems[i].childNodes[0].nodeValue; 
-			                        }
-			                    	
-			                     	if(transactionId != "on" && isNotBlank(transactionId)){
-			                     		transactionIds.push(transactionId);
-			                     	}
-			                     }
+		showSwal: function(type) {
+			// Delete transactions On click
+			if (type == 'warning-message-and-confirmation') {
+			 	Swal.fire({	
+	                title: 'Are you sure?',
+	                text: 'You will not be able to recover these transactions!',
+	                icon: 'warning',
+	                showCancelButton: true,
+	                confirmButtonText: 'Yes, delete it!',
+	                cancelButtonText: 'No, keep it',
+	                confirmButtonClass: "btn btn-success",
+	                cancelButtonClass: "btn btn-danger",
+	                buttonsStyling: false,
+	            }).then(function(result) {
+	            	// Add icon d-none
+					document.getElementById('genericAddFnc').classList.toggle('d-none');
+					// After OKAY button
+	            	if (result.value) {
+	             		// Check all check boxes by default
+	                    let transactionIds = [];
+	                    
+	                    let allCheckedItems = $("input[type=checkbox]:checked");
+	                    for(let i = 0, length = allCheckedItems.length; i < length; i++) {
+	                     	// To remove the select all check box values
+	                    	let transactionId = allCheckedItems[i].innerHTML;
+	                    	
+	                    	// Remove the check all from the list
+	                    	if(isEqual(allCheckedItems[i].id, 'checkAll')) {
+	                    		continue;
+	                    	}
+	                    	
+	                    	// Google Chrome Compatibility 
+	                        if(isEmpty(transactionId)) {
+	                        	transactionId = allCheckedItems[i].childNodes[0].nodeValue; 
+	                        }
+	                    	
+	                     	if(transactionId != "on" && isNotBlank(transactionId)){
+	                     		transactionIds.push(transactionId);
+	                     	}
+	                    }
 
-			                     transactionIds.join(",")
-			                     
-			                     // Ajax Requests on Error
-								 let ajaxData = {};
-								 ajaxData.isAjaxReq = true;
-								 ajaxData.type = 'DELETE';
-								 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-								 ajaxData.contentType = "application/json; charset=utf-8";
-								 ajaxData.onSuccess = function(result) {
-		                        	showNotification('Successfully deleted the selected transactions','top','center','success');
-		                        	
-		                        	let checkAllClicked = $("#checkAll:checked").length > 0;
-		                        	
-		                        	// If Check All is clicked them empty div and reset pie chart
-		                        	if(checkAllClicked){
-		                        		// uncheck the select all checkbox if checked
-		                        		let checkAllBox = document.getElementById('checkAll');
-		                        		$('#checkAll').prop('checked',false);
-		                        		checkAllBox.setAttribute('disabled','disabled');
-		                 			   	// Remove other table data
-		                 			   	removeAllTableData();
-		                 			   	// update the Total Available Section with 0
-		                 	    		updateTotalAvailableSection(0 , 0);
-		                 	    		// Disable delete Transactions button on refreshing the transactions
+	                    transactionIds.join(",");
+	                     
+	                    // Ajax Requests on Error
+						let ajaxData = {};
+						ajaxData.isAjaxReq = true;
+						ajaxData.type = 'DELETE';
+						ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+						ajaxData.contentType = "application/json; charset=utf-8";
+						ajaxData.onSuccess = function(result) {
+                        	showNotification('Successfully deleted the selected transactions','top','center','success');
+                        	
+                        	let checkAllClicked = $("#checkAll:checked").length > 0;
+                        	
+                        	// If Check All is clicked them empty div and reset pie chart
+                        	if(checkAllClicked){
+                        		// uncheck the select all checkbox if checked
+                        		let checkAllBox = document.getElementById('checkAll');
+                        		$('#checkAll').prop('checked',false);
+                        		checkAllBox.setAttribute('disabled','disabled');
+                 			   	// Remove other table data
+                 			   	removeAllTableData();
+                 			   	// update the Total Available Section with 0
+                 	    		updateTotalAvailableSection(0 , 0);
+                 	    		// Disable delete Transactions button on refreshing the transactions
+	                         	manageDeleteTransactionsButton();
+	                         	// Delete The auto generated user budget
+	                         	deleteAllAutoGeneratedUserBudget();
+	                         	// Close category modal
+	                         	closeCategoryModal();
+                        	} else {
+                        		// Choose the closest parent Div for the checked elements
+	                        	let elementsToDelete = $('.number:checked').parent().closest('div').parent().closest('div').parent().closest('div');
+	                        	let iterateOnceAfterCompletion = elementsToDelete.length;
+                        		// Remove all the elements
+	                        	elementsToDelete.fadeOut('slow', function(){ 
+	                        		this.remove();
+	                        		// Remove entries from table
+	                        		removeEntriesFromTable(this);
+	                        		
+	                        		// Execute the condition only once after all the transactions are removed.
+	                        		if(!--iterateOnceAfterCompletion) {
+	                        			// Disable delete Transactions button on refreshing the transactions
 			                         	manageDeleteTransactionsButton();
-			                         	// Delete The auto generated user budget
-			                         	deleteAllAutoGeneratedUserBudget();
-			                         	// Close category modal
-			                         	closeCategoryModal();
-		                        	} else {
-		                        		// Choose the closest parent Div for the checked elements
-			                        	let elementsToDelete = $('.number:checked').parent().closest('div').parent().closest('div').parent().closest('div');
-			                        	let iterateOnceAfterCompletion = elementsToDelete.length;
-		                        		// Remove all the elements
-			                        	elementsToDelete.fadeOut('slow', function(){ 
-			                        		this.remove();
-			                        		// Remove entries from table
-			                        		removeEntriesFromTable(this);
-			                        		
-			                        		// Execute the condition only once after all the transactions are removed.
-			                        		if(!--iterateOnceAfterCompletion) {
-			                        			// Disable delete Transactions button on refreshing the transactions
-					                         	manageDeleteTransactionsButton();
-					                         	
-					                         	// To recalculate the category total amount and to reduce user budget for the category appropriately
-					                         	recalculateCategoryTotalAmount();
-			                        		}
-				                         	
-			                        	});
-		                        	}
-		                        	// Add icon d-none
-									document.getElementById('genericAddFnc').classList.toggle('d-none');
-		                         }
-								 ajaxData.onFailure = function (thrownError) {
-								 	manageErrors(thrownError, 'Unable to delete the transactions',ajaxData);
-		                         }
+			                         	
+			                         	// To recalculate the category total amount and to reduce user budget for the category appropriately
+			                         	recalculateCategoryTotalAmount();
+	                        		}
+		                         	
+	                        	});
+                        	}
+                        }
+						ajaxData.onFailure = function (thrownError) {
+						 	manageErrors(thrownError, 'Unable to delete the transactions',ajaxData);
+                        }
 
-			                     jQuery.ajax({
-			                         url: ajaxData.url,
-			                         beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-			                         type: ajaxData.type,
-			                         contentType: ajaxData.contentType, 
-			                         success: ajaxData.onSuccess,
-			                         error: ajaxData.onFailure
-			                     });
-			             	
-			                 }
-			            });
-			    } 
-			}
+	                    jQuery.ajax({
+	                        url: ajaxData.url,
+	                        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	                        type: ajaxData.type,
+	                        contentType: ajaxData.contentType, 
+	                        success: ajaxData.onSuccess,
+	                        error: ajaxData.onFailure
+	                    });
+	             	
+	                }
+	            });
+		    } 
+		}
 	}
 
 	// Remove all other table Data
@@ -834,12 +834,13 @@
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
 	  	// Hide all child categories
 		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
-		// Toggle the drop down arrow
+	  	// Toggle the drop down arrow
 	  	dropdownArrowDiv.toggle('dropdown-toggle');
 	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
-	  	
+	  	closestTrElement.toggle('categoryShown');
 	  	// If the category modal is active then hide it
 	  	toggleCategoryModal();
+	  	
 	}
 	
 	// Catch the description when the user focuses on the description
@@ -1239,6 +1240,9 @@
 		ajaxData.type = 'DELETE';
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 		ajaxData.onSuccess = function(data) {
+			// Remove entries from Account & Creation Date
+        	removeEntriesFromTable(this);
+        	
         	let previousCategoryId = '';
         	let classListBudget = budgetTableCell.classList;
         	// Set the previous category Id for updating the catergory modal
@@ -1254,8 +1258,6 @@
         			if(categoryAmount == 0) {
         				$('.amountCategoryId-' + previousCategoryId).parent().closest('div').fadeOut('slow', function(){ 
         					this.remove(); 
-        					// Remove entries from Account & Creation Date
-        					removeEntriesFromTable(this);
         					// Toggle Category Modal 
                         	toggleCategoryModal();
         				});
@@ -1515,7 +1517,6 @@
        			  totalAvailable.classList.toggle('transitionTextTo120');
        		  });
 			});
-        	
         }
         
 	}
@@ -1636,7 +1637,7 @@
         	  // If the sort option is Account then
         	  if(sortByAccountPopulated) {
         	  	let accountAggTable = document.getElementById('accountSB-' + userTransaction.accountId);
-        	  	if(isEmpty(accountAggTable)) {
+        	  	if(accountAggTable != null) {
         	  		let recentTransactionsFragment = document.createDocumentFragment();
         	  		let recTransAndAccTable = document.getElementById('recTransAndAccTable');
         	  		recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.accountId));
@@ -1827,12 +1828,6 @@
 	// Toggle Category modal upon click of a category
 	function handleCategoryModalToggle(categoryId, closestTrElement, totalTransactions) {
 		
-		let categoryModal = document.getElementsByClassName('category-modal');
-		// If the category modal is closed then do not calculate and return
-		if(categoryModal[0].classList.contains('d-none')) {
-			return;
-		}
-		
 		// Populate the category label with the one selected
 		let categoryNameDiv = document.getElementById('categoryLabelInModal');
 		// If the category can be found then
@@ -1932,11 +1927,12 @@
 	function toggleCategoryModal() {
 		let financialPositionDiv = document.getElementsByClassName('transactions-chart');
 		let categoryModalDiv = document.getElementsByClassName('category-modal');
-		
+		debugger;
 		// Find all the category rows that are expanded
 		let categoryRowsDiv = document.getElementsByClassName('dropdown-toggle');
+		let categoriesShown = document.getelementsByClassName('categoryShown');
 		
-		if(categoryRowsDiv.length == 0) {
+		if(categoriesShown.length == 0) {
 			// show the financial position div and hide the category modal
 			categoryModalDiv[0].classList.add('d-none');
 			financialPositionDiv[0].classList.remove('d-none');
@@ -2331,15 +2327,29 @@
 
 	// Build EmptyRecTransTable
 	function buildEmptyTransactionsTab() {
-		let recentTransactionsFragment = document.createDocumentFragment();
-		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
-		
-		
+
+		let rowEmpty = document.createElement('div');
+		rowEmpty.classList = 'd-lg-table-row';
+
+		let cell1 = document.createElement('div');
+		cell1.classList = 'd-lg-table-cell';
+		rowEmpty.appendChild(cell1);
+
+		let cell2 = document.createElement('div');
+		cell2.classList = 'd-lg-table-cell text-center';
+		cell2.appendChild(buildEmptyTransactionsSvg());
+
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
 		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
-		recentTransactionsFragment.appendChild(emptyMessageRow);
-		return recentTransactionsFragment;
+		cell2.appendChild(emptyMessageRow);
+		rowEmpty.appendChild(cell2);
+
+		let cell3 = document.createElement('div');
+		cell3.classList = 'd-lg-table-cell';
+		rowEmpty.appendChild(cell3);
+		
+		return rowEmpty;
 	}
 	
 	// Builds the rows for recent transactions
@@ -2577,13 +2587,9 @@
 		}
 	});
 
-	window.onload = (event) => {
-	  	// Change the table sorting on page load
-		er.tableSortMechanism();
-	};
-
 	// Sorts the table by aggregating transactions by account
 	document.getElementById('accountSortBy').addEventListener("click",function(e){
+		debugger;
 		// Close the category Modal
 		closeCategoryModal();
 		// Uncheck all the checked rows
@@ -2597,11 +2603,7 @@
 		transactionsTable.classList.remove('d-lg-table');
 		transactionsTable.classList.add('d-none');
 		// Remove all the transactions
-		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
-     	// Replace HTML with Empty
-		while (accountInfoTable.firstChild) {
-			accountInfoTable.removeChild(accountInfoTable.firstChild);
-		}
+		$('.accountInfoTable').remove();
 		// Show the accountTable
 		document.getElementById('accountTable').classList.remove('d-none');
 		// Populates the transactions by account
@@ -2648,7 +2650,7 @@
 	function buildAccountHeader(accountId) {
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
-		accountHeader.classList = 'tableBodyDiv accountInfoTable';
+		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
@@ -2738,5 +2740,11 @@
 	        error: ajaxData.onFailure
 		});
 	}
+
+	// Click on the relevant sorting mechanism
+	window.onload = (event) => {
+	  	// Change the table sorting on page load
+		er.tableSortMechanism();
+	};
 
 }(jQuery));
