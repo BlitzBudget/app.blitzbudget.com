@@ -837,7 +837,7 @@
 	  	// Toggle the drop down arrow
 	  	dropdownArrowDiv.toggle('dropdown-toggle');
 	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
-	  	closestTrElement.toggle('categoryShown');
+	  	closestTrElement.classList.toggle('categoryShown');
 	  	// If the category modal is active then hide it
 	  	toggleCategoryModal();
 	  	
@@ -1240,9 +1240,7 @@
 		ajaxData.type = 'DELETE';
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 		ajaxData.onSuccess = function(data) {
-			// Remove entries from Account & Creation Date
-        	removeEntriesFromTable(this);
-        	
+
         	let previousCategoryId = '';
         	let classListBudget = budgetTableCell.classList;
         	// Set the previous category Id for updating the catergory modal
@@ -1273,6 +1271,8 @@
         	// Remove Transactions Row
         	closestTr.fadeOut('slow', function(){
         		this.remove();
+        		// Remove entries from Account & Creation Date
+        		removeEntriesFromTable(this);
         		// IF the recent transactions are populated then remove
         		document.getElementById('recentTransaction-' + id).remove();
         		
@@ -2340,7 +2340,7 @@
 		cell2.appendChild(buildEmptyTransactionsSvg());
 
 		let emptyMessageRow = document.createElement('div');
-		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
+		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
 		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
@@ -2589,7 +2589,6 @@
 
 	// Sorts the table by aggregating transactions by account
 	document.getElementById('accountSortBy').addEventListener("click",function(e){
-		debugger;
 		// Close the category Modal
 		closeCategoryModal();
 		// Uncheck all the checked rows
