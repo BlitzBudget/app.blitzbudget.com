@@ -338,6 +338,13 @@ var AWSCogUser = window.AWSCogUser || {};
                 idToken = idToken.substring(1, idToken.length -1);
                 localStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
+
+                // Session invalidated as 0 on start up
+                window.sessionInvalidated = 0;
+                // Already requested refresh to false
+                window.alreadyRequestedRefresh = false;
+                // Reset the window.afterRefreshAjaxRequests token
+                window.afterRefreshAjaxRequests = [];
                 
             },
             function signinError(err) {

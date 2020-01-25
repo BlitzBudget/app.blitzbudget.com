@@ -552,8 +552,8 @@ let tickIconSVG = tickIcon();
 	$('#accountPickerWrapper').on('click', ".manageBA", function() {
 		// Close the account Modal
 	   	closeAccountPopup();
-	   	// Store the account sorting in sessionstorage
-	   	sessionStorage.setItem('sortingTransTable', 'Account');
+	   	// Store the account sorting in window.sortingTransTable
+	   	window.sortingTransTable = 'Account';
 	   	// Click the transactions page
 	   	document.getElementById('transactionsPage').click();
 	});
