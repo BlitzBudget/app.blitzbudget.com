@@ -840,7 +840,9 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 }
 
 #unlockModal .form-control,
-#unlockModal .is-focused .form-control {
+#unlockModal .is-focused .form-control,
+.form-control,
+.is-focused .form-control {
     background-image: linear-gradient(to top,#4caf50 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
 }
 

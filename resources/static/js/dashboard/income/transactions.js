@@ -1273,8 +1273,6 @@
         		this.remove();
         		// Remove entries from Account & Creation Date
         		removeEntriesFromTable(this);
-        		// IF the recent transactions are populated then remove
-        		document.getElementById('recentTransaction-' + id).remove();
         		
         		// Check all functionality if all transactions are clicked
             	checkAllIfAllAreChecked();
@@ -1930,7 +1928,7 @@
 		debugger;
 		// Find all the category rows that are expanded
 		let categoryRowsDiv = document.getElementsByClassName('dropdown-toggle');
-		let categoriesShown = document.getelementsByClassName('categoryShown');
+		let categoriesShown = document.getElementsByClassName('categoryShown');
 		
 		if(categoriesShown.length == 0) {
 			// show the financial position div and hide the category modal
@@ -2601,6 +2599,16 @@
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-lg-table');
 		transactionsTable.classList.add('d-none');
+
+		// If register new transaction is populated then populate account again
+		if(resiteredNewTransaction) {
+			sortByAccountPopulated = false;
+		}
+
+		// If already sorted then do nothing
+		if(sortByAccountPopulated) {
+			return;
+		}
 		// Remove all the transactions
 		$('.accountInfoTable').remove();
 		// Show the accountTable
