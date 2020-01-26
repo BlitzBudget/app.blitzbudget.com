@@ -19,7 +19,7 @@
 	const replaceTransactionsId = "productsJson";
 	const recentTransactionsId = 'recentTransactions';
 	// Used to refresh the transactions only if new ones are added
-	let resiteredNewTransaction = false;
+	let registeredNewTransaction = false;
 	// Divs for error message while adding transactions
 	let errorAddingTransactionDiv = '<div class="row ml-auto mr-auto"><i class="material-icons red-icon">highlight_off</i><p class="margin-bottom-zero red-icon margin-left-five">';
 	// Bills & Fees Options selection
@@ -131,7 +131,7 @@
         	// Add css3 to fade in and out
         	successMessageDocument.classList.add('messageFadeInAndOut');
         	// Set Registered new transactions as true
-  	    	resiteredNewTransaction=true;
+  	    	registeredNewTransaction=true;
   	    	// Update the transaction list to empty
 		    userTransSortedByDate = [];
 		    // Enable the Add Button
@@ -139,7 +139,7 @@
   	    }
 	    ajaxData.onFailure = function(data) {
   	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Unable to add this transaction.</p></div> <br/>',2000);
-  	    	resiteredNewTransaction=false;
+  	    	registeredNewTransaction=false;
   	    	transactionSubmissionButton.removeAttribute("disabled");
 
   	    	if(isEmpty(data)) {
@@ -184,21 +184,27 @@
 		replaceHTML('successMessage',"");
 		replaceHTML('errorMessage',"");
 		
-		if(resiteredNewTransaction) {
-			// populate recent transactions /  category modal
-			let recentTransactionEntry = document.getElementsByClassName('recentTransactionEntry');
-			if(isNotEmpty(recentTransactionEntry)) {
-				populateRecentTransactions(true);	
-			}
+		if(registeredNewTransaction) {
+
 			// Populate category based table 
 			fetchJSONForTransactions();
 			// Do not refresh the transactions if no new transactions are added
-			resiteredNewTransaction = false;
+			registeredNewTransaction = false;
 		
 			// Close category modal
          	closeCategoryModal();
-		}
-		
+
+         	// populate recent transactions /  category modal
+			let recentTransactionHeading = document.getElementsByClassName('recentTransactionDateGrp');
+			let accountInfoTable = document.getElementsByClassName('accountInfoTable');
+			if(recentTransactionHeading.length > 0 && accountInfoTable.length > 0) {
+				populateRecentTransactions(false, true);
+			} else if (recentTransactionHeading.length > 0) {
+				populateRecentTransactions(true, false);
+			} else {
+				populateRecentTransactions(false, false);
+			}
+		}		
 	});
 
 	// show the login modal
@@ -229,66 +235,68 @@
 		ajaxData.type = 'GET';
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 		ajaxData.onSuccess = function(result) {
-				let totalExpensesTransactions = 0.00;
-				let totalIncomeTransactions = 0.00;
-				let transactionsTableDiv = document.createDocumentFragment();
-				let documentTbody = document.getElementById(replaceTransactionsId);
-				// uncheck the select all checkbox if checked
-				let checkAllBox = document.getElementById('checkAll');
-				// Fetch all the key set for the result
-				let resultKeySet = Object.keys(result)
-	         	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
-	         	   let key = resultKeySet[countGrouped];
-	         	   let value = result[key];
-	 			   let transactionsRowDocumentFragment = document.createDocumentFragment();
-	 			   let totalCategoryAmount = 0;
-	 			   let valueElementKeySet = Object.keys(value)
-	 			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
-	 				  let subKey = valueElementKeySet[count];
-	 				  let subValue = value[subKey];
-	 				  // Create transactions table row
-	 				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
-	 				  totalCategoryAmount += subValue.amount;
-	 			   }
-	 			   // Load all the total category amount in the category section
-	 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
-	 			   // Create category label table row
-	 			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
-	 			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
-	 			   // Total Expenses and Total Income
-	 			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-	 				   totalExpensesTransactions += totalCategoryAmount;
-	 			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-	 				   totalIncomeTransactions += totalCategoryAmount;
-	 			   }
-	         	}
+			let totalExpensesTransactions = 0.00;
+			let totalIncomeTransactions = 0.00;
+			let transactionsTableDiv = document.createDocumentFragment();
+			let documentTbody = document.getElementById(replaceTransactionsId);
+			// uncheck the select all checkbox if checked
+			let checkAllBox = document.getElementById('checkAll');
+			// Fetch all the key set for the result
+			let resultKeySet = Object.keys(result)
+         	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
+         	   let key = resultKeySet[countGrouped];
+         	   let value = result[key];
+ 			   let transactionsRowDocumentFragment = document.createDocumentFragment();
+ 			   let totalCategoryAmount = 0;
+ 			   let valueElementKeySet = Object.keys(value)
+ 			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
+ 				  let subKey = valueElementKeySet[count];
+ 				  let subValue = value[subKey];
+ 				  // Create transactions table row
+ 				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
+ 				  totalCategoryAmount += subValue.amount;
+ 			   }
+ 			   // Load all the total category amount in the category section
+ 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
+ 			   // Create category label table row
+ 			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
+ 			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
+ 			   // Total Expenses and Total Income
+ 			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+ 				   totalExpensesTransactions += totalCategoryAmount;
+ 			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+ 				   totalIncomeTransactions += totalCategoryAmount;
+ 			   }
+         	}
 			   
-			   // Update table with empty message if the transactions are empty
-			   if(result.length == 0) {
-				   checkAllBox.setAttribute('disabled', 'disabled');
-	   				// Replace HTML with Empty
-	       			while (documentTbody.firstChild) {
-	       				documentTbody.removeChild(documentTbody.firstChild);
-	       			}
+		    // Update table with empty message if the transactions are empty
+		    if(result.length == 0) {
+			   checkAllBox.setAttribute('disabled', 'disabled');
+   				// Replace HTML with Empty
+       			while (documentTbody.firstChild) {
+       				documentTbody.removeChild(documentTbody.firstChild);
+       			}
 
-				   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
-			   } else {
-				   $('#checkAll').prop('checked', false);
-	   			   checkAllBox.removeAttribute('disabled');
-	  			   // Replace HTML with Empty
-	      		   while (documentTbody.firstChild) {
-	      			 documentTbody.removeChild(documentTbody.firstChild);
-	      		   }
+			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
+		    } else {
+			    $('#checkAll').prop('checked', false);
+   			    checkAllBox.removeAttribute('disabled');
+  			    // Replace HTML with Empty
+      		    while (documentTbody.firstChild) {
+      			  documentTbody.removeChild(documentTbody.firstChild);
+      		    }
 
-				   documentTbody.appendChild(transactionsTableDiv);
-			   }
+			    documentTbody.appendChild(transactionsTableDiv);
+		    }
 			   
-			  // Disable delete Transactions button on refreshing the transactions
-	          manageDeleteTransactionsButton();
-			  // update the Total Available Section
-			  updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
-			  // Update Budget from API
-			  updateBudgetForIncome();
+			// Disable delete Transactions button on refreshing the transactions
+	        manageDeleteTransactionsButton();
+			// update the Total Available Section
+			updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
+			// Update Budget from API
+			updateBudgetForIncome();
+			// Change the table sorting on page load
+			er.tableSortMechanism();
         }
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "There was an error while fetching the transactions. Please try again later!",ajaxData);
@@ -839,8 +847,7 @@
 	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
 	  	closestTrElement.classList.toggle('categoryShown');
 	  	// If the category modal is active then hide it
-	  	toggleCategoryModal();
-	  	
+	  	toggleCategoryModal(closestTrElement);
 	}
 	
 	// Catch the description when the user focuses on the description
@@ -1257,7 +1264,7 @@
         				$('.amountCategoryId-' + previousCategoryId).parent().closest('div').fadeOut('slow', function(){ 
         					this.remove(); 
         					// Toggle Category Modal 
-                        	toggleCategoryModal();
+                        	toggleCategoryModal('');
         				});
         			}
         			
@@ -1320,12 +1327,16 @@
 			let recentTransEl = document.getElementById('recentTransaction-' + transId);
 			if(recentTransEl) {
 				recentTransEl.remove();
+				// remove element from User transaction List
+				removeElementFromUserTransactionList(transId);
 			}
 			// Remove Account Sort by If exists
 			let accountAggre = document.getElementById('accountAggre-' + transId);
 			let parentNode = accountAggre.parentNode;
 			if(accountAggre) {
 				accountAggre.remove();
+				// remove element from User transaction List
+				removeElementFromUserTransactionList(transId);
 			}
 
 			// If the surrounding Parent does not have any child nodes then remove parent
@@ -1347,6 +1358,19 @@
 				recentTransactionsEl.appendChild(buildEmptyTransactionsTab());
 				// Update the transaction list to empty
 	   			userTransSortedByDate = [];
+			}
+		}
+	}
+
+	// Remove element from user transaction list
+	function removeElementFromUserTransactionList(transId) {
+		// Length of usertransaction
+		for(let i = 0, l = userTransSortedByDate.length; i < l; i++) {
+			let ut = userTransSortedByDate[i];
+			if(isEqual(ut.transactionId, transId)) {
+				// Remove user transaction from user transaction list
+				userTransSortedByDate.splice(i, 1);
+				return;
 			}
 		}
 	}
@@ -1625,7 +1649,7 @@
         	  // If recent transactions are populated then
         	  if(recentTransactionsPopulated) {
         	  	let recentTrans = document.getElementById(recentTransactionsId);
-        	  	if(isNotEqual(recentTrans.firstElementChild.innertext,TODAY)) {
+        	  	if(isNotEqual(recentTrans.firstElementChild.innerText,TODAY)) {
         	  		// Insert as a first child
         	  		recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
         	  	}
@@ -1645,6 +1669,9 @@
         	  		accountAggTable.appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
         	  	}
         	  }
+
+        	  // Add element to User transaction List
+        	  userTransSortedByDate.push(userTransaction);
 
          }
 		 ajaxData.onFailure = function (thrownError) {
@@ -1770,7 +1797,7 @@
         				categoryDiv.remove();
         				
         				// Toggle Category Modal 
-                    	toggleCategoryModal();
+                    	toggleCategoryModal('');
                     	
                 		// Delete category ids which are autogenerated
                 		deleteAutoGeneratedUserBudgets(categoryId);
@@ -1922,7 +1949,7 @@
 	}
 	
 	// Toggles the category modal
-	function toggleCategoryModal() {
+	function toggleCategoryModal(closestTrElement) {
 		let financialPositionDiv = document.getElementsByClassName('transactions-chart');
 		let categoryModalDiv = document.getElementsByClassName('category-modal');
 		debugger;
@@ -1940,7 +1967,7 @@
 			categoryModalDiv[0].classList.remove('d-none');
 			financialPositionDiv[0].classList.add('d-none');
 			// If there are other drop down categories open then show the first one from the list
-			let categoryRowToShowInModal = categoriesShown[0];
+			let categoryRowToShowInModal = closestTrElement.classList.contains('categoryShown') ? closestTrElement : categoriesShown[0];
 			let categoryId = lastElement(splitElement(categoryRowToShowInModal.id,'-'));
 			// Fetch all the categories child transactions
 			let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
@@ -2214,38 +2241,24 @@
 	 */ 
 	
 	// Populate Recent Transactions
-	function populateRecentTransactions(recentTrans) {
+	function populateRecentTransactions(recentTrans, popBothInfo) {
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
-   		if(recentTrans) {
+   		if(popBothInfo) {
+   			ajaxData.onSuccess = function(userTransactionsList) {
+	   			populateRecentTransInfo(userTransactionsList);
+	   			populateAccountTableInformation(userTransactionsList);
+	        }
+   		} else if(recentTrans) {
    			ajaxData.onSuccess = function(userTransactionsList) {
 	   			populateRecentTransInfo(userTransactionsList);
 	        }
    		} else {
    			ajaxData.onSuccess = function(userTransactionsList) {
-
-   				if(isEmpty(userTransactionsList)) {
-   					// Sort by Account is populated
-	        		sortByAccountPopulated = false;
-   					let accountTable = document.getElementById('accountTable');
-   					// Replace HTML with Empty
-					while (accountTable.firstChild) {
-						accountTable.removeChild(accountTable.firstChild);
-					}
-	        		accountTable.appendChild(buildEmptyTransactionsTab());
-	        	} else {
-	        		// Sort by Account is populated
-	        		sortByAccountPopulated = true;
-		   			// cache the results
-		   			userTransSortedByDate = userTransactionsList;
-		   			// Populate the transaction of account
-		   			popTransByAccWOAJAX();
-		   			// If fetch all bank account flag is true then
-					if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
-		   		}
+   				populateAccountTableInformation(userTransactionsList);
    			}
    		}
         ajaxData.onFailure = function (thrownError) {
@@ -2259,6 +2272,29 @@
 	        success: ajaxData.onSuccess,
 	        error: ajaxData.onFailure
 		});
+	}
+
+	// POpulate Account table information
+	function populateAccountTableInformation(userTransactionsList) {
+		if(isEmpty(userTransactionsList)) {
+				// Sort by Account is populated
+    		sortByAccountPopulated = false;
+				let accountTable = document.getElementById('accountTable');
+				// Replace HTML with Empty
+			while (accountTable.firstChild) {
+				accountTable.removeChild(accountTable.firstChild);
+			}
+    		accountTable.appendChild(buildEmptyTransactionsTab());
+    	} else {
+    		// Sort by Account is populated
+    		sortByAccountPopulated = true;
+   			// cache the results
+   			userTransSortedByDate = userTransactionsList;
+   			// Populate the transaction of account
+   			popTransByAccWOAJAX();
+   			// If fetch all bank account flag is true then
+			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
+   		}
 	}
 
 	// POpulate Recent Transaction information
@@ -2534,15 +2570,15 @@
 		// Hide all account tables loaded
 		$('.accountInfoTable').addClass('d-none');
 		// If a new transaction is registered then population is necessary
-		if(resiteredNewTransaction) {
-			resiteredNewTransaction = false;
+		if(registeredNewTransaction) {
+			registeredNewTransaction = false;
 			recentTransactionsPopulated = false;
 			// replace pie chart with material spinner
 			replacePieChartWithMSpinner();
 			// Fetch JSOn for transactions and populate pie chart
 			fetchJSONForTransactions();
 			// Populate recent transactions
-			populateRecentTransactions(true);
+			populateRecentTransactions(true, false);
 		}
 
 		if(recentTransactionsPopulated) {
@@ -2554,7 +2590,7 @@
 			populateRecentTransInfo(userTransSortedByDate);
 		} else {
 			// Populate recent transactions
-			populateRecentTransactions(true);
+			populateRecentTransactions(true, false);
 		}
 	});
 
@@ -2574,8 +2610,8 @@
 		transactionsTable.classList.remove('d-none');
 
 		// If a new transaction is registered then population is necessary
-		if(resiteredNewTransaction) {
-			resiteredNewTransaction = false;
+		if(registeredNewTransaction) {
+			registeredNewTransaction = false;
 			// Replace Transactions Table with empty spinner
 			replaceTransactionsWithMSpinner();
 			replacePieChartWithMSpinner();
@@ -2602,7 +2638,7 @@
 		$('.accountInfoTable').removeClass('d-none');
 
 		// If register new transaction is populated then populate account again
-		if(resiteredNewTransaction) {
+		if(registeredNewTransaction) {
 			sortByAccountPopulated = false;
 		}
 
@@ -2625,7 +2661,7 @@
 			// If fetch all bank account flag is true then
 			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
 		} else {
-			populateRecentTransactions(false);	
+			populateRecentTransactions(false, false);	
 		}
 	}
 
@@ -2748,11 +2784,5 @@
 	        error: ajaxData.onFailure
 		});
 	}
-
-	// Click on the relevant sorting mechanism
-	window.onload = (event) => {
-	  	// Change the table sorting on page load
-		er.tableSortMechanism();
-	};
 
 }(jQuery));
