@@ -833,10 +833,12 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	cursor: not-allowed;
 }
 
-
-
 .dropdown-toggle::after, .filter-option-inner-inner {
 	color: #929292;
+}
+
+.changeBtnClr .dropdown-toggle::after {
+	color: #fff;
 }
 
 #unlockModal .form-control,
@@ -857,6 +859,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
         -ms-animation: fadein 1s; /* Internet Explorer */
          -o-animation: fadein 1s; /* Opera < 12.1 */
             animation: fadein 1s;
+}
+
+#accountName:focus, #accountBal:focus {
+    border: 2px solid #4caf50;
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/

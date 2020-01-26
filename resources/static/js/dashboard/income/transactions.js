@@ -197,12 +197,13 @@
          	// populate recent transactions /  category modal
 			let recentTransactionHeading = document.getElementsByClassName('recentTransactionDateGrp');
 			let accountInfoTable = document.getElementsByClassName('accountInfoTable');
-			if(recentTransactionHeading.length > 0 && accountInfoTable.length > 0) {
+			if((recentTransactionHeading.length > 0 && accountInfoTable.length > 0) || recentTransactionHeading.length == 0) {
+				// Load both populate recent & accounts table
 				populateRecentTransactions(false, true);
 			} else if (recentTransactionHeading.length > 0) {
 				populateRecentTransactions(true, false);
 			} else {
-				populateRecentTransactions(false, false);
+				populateRecentTransactions(false, true);
 			}
 		}		
 	});
@@ -1666,7 +1667,7 @@
         	  		recentTransactionsFragment.getElementById('accountSB-' + userTransaction.accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
         	  		recTransAndAccTable.appendChild(recentTransactionsFragment);
         	  	} else {
-        	  		accountAggTable.insertBefore(buildTransactionRow(userTransaction, 'accountAggre'), recentTrans.childNodes[0]);
+        	  		accountAggTable.insertBefore(buildTransactionRow(userTransaction, 'accountAggre'), accountAggTable.childNodes[1]);
         	  	}
         	  }
 
@@ -2295,8 +2296,8 @@
    			// If fetch all bank account flag is true then
 			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
 			// If Account Table is hidden then add d-none
-			if(document.getElementById('transactionsTable').classList.contains('d-none') && 
-				document.getElementById('recentTransactions').classList.contains('d-none')) {
+			if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
+				!document.getElementById('recentTransactions').classList.contains('d-none')) {
 				$('.accountInfoTable').addClass('d-none');
 			}
    		}
@@ -2651,8 +2652,6 @@
 		if(sortByAccountPopulated) {
 			return;
 		}
-		// Remove all the transactions
-		$('.accountInfoTable').remove();
 		// Show the accountTable
 		document.getElementById('accountTable').classList.remove('d-none');
 		// Populates the transactions by account
@@ -2672,13 +2671,13 @@
 
 	// Populate the account sort by section
 	function popTransByAccWOAJAX() {
+		// Remove all the transactions
+		$('.accountInfoTable').remove();
 		let accountAggreDiv = document.getElementById('recTransAndAccTable');
         let recentTransactionsFragment = document.createDocumentFragment();
 		let resultKeySet = Object.keys(userTransSortedByDate);
 		let createdAccIds = [];
-    	// Print only the first 20 records
-    	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
-     	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
+     	for(let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
      	   let key = resultKeySet[countGrouped];
      	   let userTransaction = userTransSortedByDate[key];
      	   let accountId = userTransaction.accountId;
