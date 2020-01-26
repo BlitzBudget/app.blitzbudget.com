@@ -128,7 +128,21 @@ let tickIconSVG = tickIcon();
 	        confirmButtonClass: 'createAccount btn btn-dynamic-color',
 	        confirmButtonText: 'Create Account',
 	        showCloseButton: true,
-	        buttonsStyling: false
+	        buttonsStyling: false,
+	        onOpen: (docVC) => {
+                $( "#accountBal" ).keyup(function(e) {
+                    let keyCode = e.keyCode || e.which;
+					if (keyCode === 13) { 
+						Swal.clickConfirm();
+						e.preventDefault();
+						e.stopPropagation();
+						return false;
+					}
+                });
+            },
+            onClose: () => {
+                $( "#accountBal" ).off('keyup');
+            }
 	    }).then(function(result) {
 	    	// If confirm button is clicked
 	    	if (result.value) {

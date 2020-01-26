@@ -422,6 +422,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	outline: 0;
 	box-shadow: 0 0 3px rgba(233,30,99,0.14);
 }
+
+#accountName:focus, #accountBal:focus {
+    border: 2px solid #e91e63;
+}
  
 /** Change the size of the text if the width and height of the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
