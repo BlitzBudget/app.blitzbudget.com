@@ -2575,6 +2575,9 @@
 		document.getElementById(recentTransactionsId).classList.remove('d-none');
 		// Hide all account tables loaded
 		$('.accountInfoTable').addClass('d-none');
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.add('d-none');
+		
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
 			registeredNewTransaction = false;
@@ -2614,6 +2617,8 @@
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.add('d-lg-table');
 		transactionsTable.classList.remove('d-none');
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.add('d-none');
 
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
@@ -2642,6 +2647,8 @@
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
 		$('.accountInfoTable').removeClass('d-none');
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.remove('d-none');
 
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
@@ -2749,13 +2756,8 @@
 	  		}
     	}
 		
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
-   		ajaxData.dataType = "json";
-   		ajaxData.onSuccess = function(bankAccountList) {
+		// Fetch all bank account information
+		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
         	// Set Fetch all bank account information to false
         	fetchAllBankAccountInfo = false;
         	// Replace all account info
@@ -2774,19 +2776,7 @@
 	  				}
 	  			}
 		  	}	
-        }
-        ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-        }
-
-		$.ajax({
-	        type: ajaxData.type,
-	        url: ajaxData.url,
-	        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        dataType: ajaxData.dataType,
-	        success : ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+        });
 	}
 
 }(jQuery));

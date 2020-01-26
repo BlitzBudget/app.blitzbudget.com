@@ -617,6 +617,27 @@ er_a = {
 		
 		// Populate the bank account info
 		populateAccountInfo(bankAccountsInfo);
+	},
+	fetchAllBankAccountInfo(successCall) {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "GET";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.dataType = "json";
+   		ajaxData.onSuccess = successCall;
+        ajaxData.onFailure = function(thrownError) {
+        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
+        }
+
+		$.ajax({
+	        type: ajaxData.type,
+	        url: ajaxData.url,
+	        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        dataType: ajaxData.dataType,
+	        success : ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+		});
 	}
 }
 
