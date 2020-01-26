@@ -170,6 +170,11 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.data = values;
 		   		ajaxData.onSuccess = function(result){
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
+		        	 // Add Accounts to the preview mode if < 4
+		        	 let bARows = document.getElementsByClassName('bARow');
+		        	 if(bARows.length < 4) {
+		        	 	populateBankAccountInfo(result, bARows.length + 1);
+		        	 }
 		        }
 		        ajaxData.onFailure = function(thrownError) {
 		        	 manageErrors(thrownError, 'Unable to add the account at this moment. Please try again!',ajaxData);
