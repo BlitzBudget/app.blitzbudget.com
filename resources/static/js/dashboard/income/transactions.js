@@ -1666,7 +1666,7 @@
         	  		recentTransactionsFragment.getElementById('accountSB-' + userTransaction.accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
         	  		recTransAndAccTable.appendChild(recentTransactionsFragment);
         	  	} else {
-        	  		accountAggTable.appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  		accountAggTable.insertBefore(buildTransactionRow(userTransaction, 'accountAggre'), recentTrans.childNodes[0]);
         	  	}
         	  }
 
@@ -2274,7 +2274,7 @@
 		});
 	}
 
-	// POpulate Account table information
+	// Populate Account table information
 	function populateAccountTableInformation(userTransactionsList) {
 		if(isEmpty(userTransactionsList)) {
 				// Sort by Account is populated
@@ -2294,6 +2294,11 @@
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
 			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
+			// If Account Table is hidden then add d-none
+			if(document.getElementById('transactionsTable').classList.contains('d-none') && 
+				document.getElementById('recentTransactions').classList.contains('d-none')) {
+				$('.accountInfoTable').addClass('d-none');
+			}
    		}
 	}
 
