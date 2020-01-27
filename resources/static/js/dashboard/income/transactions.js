@@ -36,8 +36,6 @@
 	const TODAY = 'Today';
 	// Cache the recent transactions
 	userTransSortedByDate = [];
-	// Flag to get all bank accounts
-	let fetchAllBankAccountInfo = false;
 	// Sort by Account is populated
 	let sortByAccountPopulated = false;
 		
@@ -2294,7 +2292,7 @@
    			// Populate the transaction of account
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
-			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
+			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
 			// If Account Table is hidden then add d-none
 			if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 				!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2670,7 +2668,7 @@
 		if(isNotEmpty(userTransSortedByDate)) {
 			popTransByAccWOAJAX();
 			// If fetch all bank account flag is true then
-			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
+			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
 		} else {
 			populateRecentTransactions(false, false);	
 		}
@@ -2708,10 +2706,26 @@
 		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
-		accountTit.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		accountTit.innerHTML = fetchBankAccountName(accountId);
+		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
+
+		// Title
+		let accountTitle = document.createElement('div');
+		accountTitle.classList = 'd-lg-table-cell';
+		accountTitle.innerHTML = fetchBankAccountName(accountId);
+		accountTit.appendChild(accountTitle);
+
+		// Empty Cell
+		let emptyCell = document.createElement('div');
+		emptyCell.classList = 'd-lg-table-cell';
+		accountTit.appendChild(emptyCell);
+
+		// Account Balance
+		let accountBalance = document.createElement('div');
+		accountBalance.classList = 'd-lg-table-cell text-right';
+		accountBalance.id = 'accountBalance-' + accountId;
+		accountTit.appendChild(accountBalance);
+
 		accountHeader.appendChild(accountTit);
-		
 		return accountHeader;
 	}
 
@@ -2723,8 +2737,6 @@
 			  return bankAccountPreview[i].bankAccountName;
 		  }
 	  }
-	  // Fetch all Bank account data
-	  fetchAllBankAccountInfo = true;
 	  return buildSmallMaterialSpinner(accountId);
 	}
 
@@ -2758,24 +2770,27 @@
 		
 		// Fetch all bank account information
 		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-        	// Set Fetch all bank account information to false
-        	fetchAllBankAccountInfo = false;
-        	// Replace all account info
-		  	if(isNotEmpty(accHeadersToReplace)) {
-		  		// Iterate all bank accounts
-	  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
-	  				let bankAcc = bankAccountList[i];
-	  				// If the ID corresponding wiht the bank account is not populated then
-	  				if(includesStr(accHeadersToReplace, bankAcc.id)) {
-	  					let accHeading = document.getElementById('accountSB-' + bankAcc.id).firstElementChild;
-	  					// Replace HTML with Empty
-		       			while (accHeading.firstChild) {
-		       				accHeading.removeChild(accHeading.firstChild);
-		       			}
-	  					accHeading.innerText = bankAcc.bankAccountName;
-	  				}
-	  			}
-		  	}	
+			let accountAggreDiv = document.getElementById('recTransAndAccTable');
+	  		// Iterate all bank accounts
+  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
+  				let bankAcc = bankAccountList[i];
+  				// If the ID corresponding wiht the bank account is not populated then
+  				if(includesStr(accHeadersToReplace, bankAcc.id)) {
+  					let accHeading = document.getElementById('accountSB-' + bankAcc.id).firstElementChild;
+  					// Replace HTML with Empty
+	       			while (accHeading.firstChild) {
+	       				accHeading.removeChild(accHeading.firstChild);
+	       			}
+  					accHeading.innerText = bankAcc.bankAccountName;
+  				} else {
+  					// A new header for the rest
+  					let accountHeaderNew = buildAccountHeader(bankAcc.id);
+  					accountHeaderNew.getElementsByClassName('recentTransactionDateGrp')[0].innerText = bankAcc.bankAccountName;
+  					// Append to the transaction view
+  					accountAggreDiv.appendChild(accountHeaderNew);
+  				}
+  			}
+
         });
 	}
 
