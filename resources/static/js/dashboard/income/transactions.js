@@ -2400,6 +2400,7 @@
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 		
+		// Cell 1
 		let tableCellImagesWrapper = document.createElement('div');
 		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
 		
@@ -2416,6 +2417,7 @@
 		tableCellImagesWrapper.appendChild(circleWrapperDiv);
 		tableRowTransaction.appendChild(tableCellImagesWrapper);
 		
+		// Cell 2
 		let tableCellTransactionDescription = document.createElement('div');
 		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
 		
@@ -2430,19 +2432,26 @@
 		tableCellTransactionDescription.appendChild(elementWithCategoryName);
 		tableRowTransaction.appendChild(tableCellTransactionDescription);
 		
+		// Cell 3
+		let surCell = document.createElement('div');
+		surCell.classList = 'd-lg-table-cell';
+
 		let transactionAmount = document.createElement('div');
 		
 		// Append a - sign if it is an expense
 		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold text-right align-middle';
 			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
-			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold text-right align-middle';
 			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		}
-		   
-		   
-		tableRowTransaction.appendChild(transactionAmount);
+		surCell.appencChild(transactionAmount);  
+		  
+		let accountBalDiv = document.createElement('div');
+		accountBalDiv.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
+		surCell.appencChild(accountBalDiv); 
+		tableRowTransaction.appendChild(surCell);
 		
 		return tableRowTransaction;
 		
@@ -2708,10 +2717,13 @@
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
 
+		// Bank Account 
+		let bankAccount = fetchBankAccountFromPreview(accountId);
 		// Title
 		let accountTitle = document.createElement('div');
+		accountTitle.id = 'accountTitle-' + accountId;
 		accountTitle.classList = 'd-lg-table-cell';
-		accountTitle.innerHTML = fetchBankAccountName(accountId);
+		accountTitle.innerHTML =  isEmpty(bankAccount) ? buildSmallMaterialSpinner(accountId) : bankAccount.bankAccountName;
 		accountTit.appendChild(accountTitle);
 
 		// Empty Cell
@@ -2723,6 +2735,16 @@
 		let accountBalance = document.createElement('div');
 		accountBalance.classList = 'd-lg-table-cell text-right';
 		accountBalance.id = 'accountBalance-' + accountId;
+
+		if(isNotEmpty(bankAccount)) {
+			if(bankAccount.accountBalance < 0) { 
+				accountBalance.classList.add('expenseCategory');
+				accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+			} else { 
+				accountBalance.classList.add('incomeCategory');
+				accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+			}
+		}
 		accountTit.appendChild(accountBalance);
 
 		accountHeader.appendChild(accountTit);
@@ -2730,14 +2752,14 @@
 	}
 
 	// Fetch Bank Account Name
-	function fetchBankAccountName(accountId) {
+	function fetchBankAccountFromPreview(accountId) {
 	  // Return the Bank Account Name
 	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
 		  if(bankAccountPreview[i].id == accountId) {
-			  return bankAccountPreview[i].bankAccountName;
+			  return bankAccountPreview[i];
 		  }
 	  }
-	  return buildSmallMaterialSpinner(accountId);
+	  return null;
 	}
 
 	// Build small material spinner
@@ -2776,16 +2798,32 @@
   				let bankAcc = bankAccountList[i];
   				// If the ID corresponding wiht the bank account is not populated then
   				if(includesStr(accHeadersToReplace, bankAcc.id)) {
-  					let accHeading = document.getElementById('accountSB-' + bankAcc.id).firstElementChild;
+  					let accHeading = document.getElementById('accountTitle-' + bankAcc.id);
+  					let accountBalance = document.getElementById('accountBalance-' + bankAcc.id);
   					// Replace HTML with Empty
 	       			while (accHeading.firstChild) {
 	       				accHeading.removeChild(accHeading.firstChild);
 	       			}
   					accHeading.innerText = bankAcc.bankAccountName;
+  					if(bankAcc.accountBalance < 0) { 
+  						accountBalance.classList.add('expenseCategory');
+  						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					} else { 
+  						accountBalance.classList.add('incomeCategory');
+  						accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					}
   				} else {
   					// A new header for the rest
   					let accountHeaderNew = buildAccountHeader(bankAcc.id);
-  					accountHeaderNew.getElementsByClassName('recentTransactionDateGrp')[0].innerText = bankAcc.bankAccountName;
+  					accountHeaderNew.getElementById('accountTitle-' + bankAcc.id).innerText = bankAcc.bankAccountName;
+  					let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.id);
+  					if(bankAcc.accountBalance < 0) { 
+  						accBal.classList.add('expenseCategory');
+  						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					} else { 
+  						accBal.classList.add('incomeCategory');
+  						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					} 
   					// Append to the transaction view
   					accountAggreDiv.appendChild(accountHeaderNew);
   				}
