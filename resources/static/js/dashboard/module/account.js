@@ -170,6 +170,11 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.data = values;
 		   		ajaxData.onSuccess = function(result){
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
+		        	 // Add Accounts to the preview mode if < 4
+		        	 let bARows = document.getElementsByClassName('bARow');
+		        	 if(bARows.length < 4) {
+		        	 	populateBankAccountInfo(result, bARows.length + 1);
+		        	 }
 		        }
 		        ajaxData.onFailure = function(thrownError) {
 		        	 manageErrors(thrownError, 'Unable to add the account at this moment. Please try again!',ajaxData);
@@ -612,6 +617,27 @@ er_a = {
 		
 		// Populate the bank account info
 		populateAccountInfo(bankAccountsInfo);
+	},
+	fetchAllBankAccountInfo(successCall) {
+		// Ajax Requests on Error
+		let ajaxData = {};
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "GET";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.dataType = "json";
+   		ajaxData.onSuccess = successCall;
+        ajaxData.onFailure = function(thrownError) {
+        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
+        }
+
+		$.ajax({
+	        type: ajaxData.type,
+	        url: ajaxData.url,
+	        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	        dataType: ajaxData.dataType,
+	        success : ajaxData.onSuccess,
+	        error: ajaxData.onFailure
+		});
 	}
 }
 

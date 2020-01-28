@@ -36,8 +36,6 @@
 	const TODAY = 'Today';
 	// Cache the recent transactions
 	userTransSortedByDate = [];
-	// Flag to get all bank accounts
-	let fetchAllBankAccountInfo = false;
 	// Sort by Account is populated
 	let sortByAccountPopulated = false;
 		
@@ -2294,7 +2292,7 @@
    			// Populate the transaction of account
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
-			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
+			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
 			// If Account Table is hidden then add d-none
 			if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 				!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2402,6 +2400,7 @@
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 		
+		// Cell 1
 		let tableCellImagesWrapper = document.createElement('div');
 		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
 		
@@ -2418,6 +2417,7 @@
 		tableCellImagesWrapper.appendChild(circleWrapperDiv);
 		tableRowTransaction.appendChild(tableCellImagesWrapper);
 		
+		// Cell 2
 		let tableCellTransactionDescription = document.createElement('div');
 		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
 		
@@ -2432,19 +2432,26 @@
 		tableCellTransactionDescription.appendChild(elementWithCategoryName);
 		tableRowTransaction.appendChild(tableCellTransactionDescription);
 		
+		// Cell 3
+		let surCell = document.createElement('div');
+		surCell.classList = 'd-lg-table-cell';
+
 		let transactionAmount = document.createElement('div');
 		
 		// Append a - sign if it is an expense
 		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold text-right align-middle';
 			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
-			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold text-right align-middle';
 			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		}
-		   
-		   
-		tableRowTransaction.appendChild(transactionAmount);
+		surCell.appencChild(transactionAmount);  
+		  
+		let accountBalDiv = document.createElement('div');
+		accountBalDiv.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
+		surCell.appencChild(accountBalDiv); 
+		tableRowTransaction.appendChild(surCell);
 		
 		return tableRowTransaction;
 		
@@ -2575,6 +2582,9 @@
 		document.getElementById(recentTransactionsId).classList.remove('d-none');
 		// Hide all account tables loaded
 		$('.accountInfoTable').addClass('d-none');
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.add('d-none');
+		
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
 			registeredNewTransaction = false;
@@ -2614,6 +2624,8 @@
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.add('d-lg-table');
 		transactionsTable.classList.remove('d-none');
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.add('d-none');
 
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
@@ -2642,6 +2654,8 @@
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
 		$('.accountInfoTable').removeClass('d-none');
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.remove('d-none');
 
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
@@ -2663,7 +2677,7 @@
 		if(isNotEmpty(userTransSortedByDate)) {
 			popTransByAccWOAJAX();
 			// If fetch all bank account flag is true then
-			if(fetchAllBankAccountInfo) fetchAllBankAccountInformation();
+			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
 		} else {
 			populateRecentTransactions(false, false);	
 		}
@@ -2701,24 +2715,51 @@
 		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
-		accountTit.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		accountTit.innerHTML = fetchBankAccountName(accountId);
+		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
+
+		// Bank Account 
+		let bankAccount = fetchBankAccountFromPreview(accountId);
+		// Title
+		let accountTitle = document.createElement('div');
+		accountTitle.id = 'accountTitle-' + accountId;
+		accountTitle.classList = 'd-lg-table-cell';
+		accountTitle.innerHTML =  isEmpty(bankAccount) ? buildSmallMaterialSpinner(accountId) : bankAccount.bankAccountName;
+		accountTit.appendChild(accountTitle);
+
+		// Empty Cell
+		let emptyCell = document.createElement('div');
+		emptyCell.classList = 'd-lg-table-cell';
+		accountTit.appendChild(emptyCell);
+
+		// Account Balance
+		let accountBalance = document.createElement('div');
+		accountBalance.classList = 'd-lg-table-cell text-right';
+		accountBalance.id = 'accountBalance-' + accountId;
+
+		if(isNotEmpty(bankAccount)) {
+			if(bankAccount.accountBalance < 0) { 
+				accountBalance.classList.add('expenseCategory');
+				accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+			} else { 
+				accountBalance.classList.add('incomeCategory');
+				accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+			}
+		}
+		accountTit.appendChild(accountBalance);
+
 		accountHeader.appendChild(accountTit);
-		
 		return accountHeader;
 	}
 
 	// Fetch Bank Account Name
-	function fetchBankAccountName(accountId) {
+	function fetchBankAccountFromPreview(accountId) {
 	  // Return the Bank Account Name
 	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
 		  if(bankAccountPreview[i].id == accountId) {
-			  return bankAccountPreview[i].bankAccountName;
+			  return bankAccountPreview[i];
 		  }
 	  }
-	  // Fetch all Bank account data
-	  fetchAllBankAccountInfo = true;
-	  return buildSmallMaterialSpinner(accountId);
+	  return null;
 	}
 
 	// Build small material spinner
@@ -2749,44 +2790,46 @@
 	  		}
     	}
 		
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
-   		ajaxData.dataType = "json";
-   		ajaxData.onSuccess = function(bankAccountList) {
-        	// Set Fetch all bank account information to false
-        	fetchAllBankAccountInfo = false;
-        	// Replace all account info
-		  	if(isNotEmpty(accHeadersToReplace)) {
-		  		// Iterate all bank accounts
-	  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
-	  				let bankAcc = bankAccountList[i];
-	  				// If the ID corresponding wiht the bank account is not populated then
-	  				if(includesStr(accHeadersToReplace, bankAcc.id)) {
-	  					let accHeading = document.getElementById('accountSB-' + bankAcc.id).firstElementChild;
-	  					// Replace HTML with Empty
-		       			while (accHeading.firstChild) {
-		       				accHeading.removeChild(accHeading.firstChild);
-		       			}
-	  					accHeading.innerText = bankAcc.bankAccountName;
-	  				}
-	  			}
-		  	}	
-        }
-        ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-        }
+		// Fetch all bank account information
+		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
+			let accountAggreDiv = document.getElementById('recTransAndAccTable');
+	  		// Iterate all bank accounts
+  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
+  				let bankAcc = bankAccountList[i];
+  				// If the ID corresponding wiht the bank account is not populated then
+  				if(includesStr(accHeadersToReplace, bankAcc.id)) {
+  					let accHeading = document.getElementById('accountTitle-' + bankAcc.id);
+  					let accountBalance = document.getElementById('accountBalance-' + bankAcc.id);
+  					// Replace HTML with Empty
+	       			while (accHeading.firstChild) {
+	       				accHeading.removeChild(accHeading.firstChild);
+	       			}
+  					accHeading.innerText = bankAcc.bankAccountName;
+  					if(bankAcc.accountBalance < 0) { 
+  						accountBalance.classList.add('expenseCategory');
+  						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					} else { 
+  						accountBalance.classList.add('incomeCategory');
+  						accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					}
+  				} else {
+  					// A new header for the rest
+  					let accountHeaderNew = buildAccountHeader(bankAcc.id);
+  					accountHeaderNew.getElementById('accountTitle-' + bankAcc.id).innerText = bankAcc.bankAccountName;
+  					let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.id);
+  					if(bankAcc.accountBalance < 0) { 
+  						accBal.classList.add('expenseCategory');
+  						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					} else { 
+  						accBal.classList.add('incomeCategory');
+  						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  					} 
+  					// Append to the transaction view
+  					accountAggreDiv.appendChild(accountHeaderNew);
+  				}
+  			}
 
-		$.ajax({
-	        type: ajaxData.type,
-	        url: ajaxData.url,
-	        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        dataType: ajaxData.dataType,
-	        success : ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+        });
 	}
 
 }(jQuery));
