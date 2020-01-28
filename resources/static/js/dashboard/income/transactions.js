@@ -2292,7 +2292,7 @@
    			// Populate the transaction of account
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
-			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
+			if(bankAccountPreview.length >= 4) {fetchAllBankAccountInformation();}
 			// If Account Table is hidden then add d-none
 			if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 				!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2446,11 +2446,11 @@
 			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold text-right align-middle';
 			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		}
-		surCell.appencChild(transactionAmount);  
+		surCell.appendChild(transactionAmount);  
 		  
 		let accountBalDiv = document.createElement('div');
 		accountBalDiv.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
-		surCell.appencChild(accountBalDiv); 
+		surCell.appendChild(accountBalDiv); 
 		tableRowTransaction.appendChild(surCell);
 		
 		return tableRowTransaction;
@@ -2677,7 +2677,7 @@
 		if(isNotEmpty(userTransSortedByDate)) {
 			popTransByAccWOAJAX();
 			// If fetch all bank account flag is true then
-			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
+			if(bankAccountPreview.length >= 4) {fetchAllBankAccountInformation();}
 		} else {
 			populateRecentTransactions(false, false);	
 		}
