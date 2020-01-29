@@ -1231,7 +1231,7 @@
 	// Dynamically generated button click event
 	$( "#transactionsTable" ).on( "click", ".removeRowTransaction" ,function() {
 		// Prevents the add amount event listener focus out from being executed
-		var id = lastElement(splitElement($(this).parent().closest('div').attr('id'),'-'));
+		let id = lastElement(splitElement($(this).parent().closest('div').attr('id'),'-'));
 		// Remove the button and append the loader with fade out
 		let budgetTableCell = document.getElementById('budgetTransactionsRow-' + id);
 		budgetTableCell.classList.add('fadeOutAnimation');
@@ -1547,7 +1547,6 @@
     	// Parent Div Svg container
     	let divSvgContainer = document.createElement('div');
     	divSvgContainer.className = 'svg-container';
-    	
     	
     	// SVG element
     	let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
@@ -2396,6 +2395,11 @@
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
+
+		if(isEqual(idName,'accountAggre')) {
+			tableRowTransaction.classList.add('accTransEntry');
+			tableRowTransaction.classList.add('fadeOut');
+		}
 		
 		// Cell 1
 		let tableCellImagesWrapper = document.createElement('div');
@@ -2733,9 +2737,9 @@
 		// Bank Account 
 		let bankAccount = fetchBankAccountFromPreview(accountId);
 		// Title
-		let accountTitle = document.createElement('div');
+		let accountTitle = document.createElement('a');
 		accountTitle.id = 'accountTitle-' + accountId;
-		accountTitle.classList = 'd-lg-table-cell text-nowrap pl-4';
+		accountTitle.classList = 'd-lg-table-cell text-nowrap pl-4 accTitleAnchor';
 		accountTitle.innerHTML =  isEmpty(bankAccount) ? buildSmallMaterialSpinner(accountId) : bankAccount.bankAccountName;
 		accountTit.appendChild(accountTitle);
 

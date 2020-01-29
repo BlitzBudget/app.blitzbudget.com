@@ -17607,6 +17607,11 @@ Copyright (c) 2015 Daniel Eden
   animation-name: fadeOut;
 }
 
+.fadeIn {
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+}
+
 @-webkit-keyframes fadeOutDown {
   from {
     opacity: 1;
