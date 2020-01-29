@@ -10,7 +10,7 @@
 		accountModal.toggle('d-none');
 		accountModal.toggle('accountModalShown');
 		// Toggle Account Transaction 
-		let accTransEntry = this.parentNode.getElementByClassName('accTransEntry');
+		let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
 		for(let i = 0, l = accTransEntry.length; i < l; i++) {
 			accTransEntry[i].classList.toggle('fadeIn');
 			accTransEntry[i].classList.toggle('fadeOut');
