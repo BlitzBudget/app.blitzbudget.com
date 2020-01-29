@@ -953,7 +953,6 @@
 			document.activeElement.blur();
 		    e.preventDefault();
 		    e.stopPropagation();
-		    return false;
 		  }
 	});
 	
@@ -1030,19 +1029,18 @@
 	});
 	
 	// Amount - disable enter key and submit request (Key up for making sure that the remove button is shown)
-	$('#transactionsTable').on('keyup', '.amountTransactionsRow' , function(e) {
+	$('#transactionsTable').on('keypress', '.amountTransactionsRow' , function(e) {
 		  let keyCode = e.keyCode || e.which;
-		  if (keyCode === 13) { 
-			document.activeElement.blur();
-		    e.preventDefault();
+		  if (keyCode === 13) {
+		  	e.preventDefault();
 		    e.stopPropagation();
-		    return false;
+			document.activeElement.blur();
+		  } else {
+		  	let amountEntered = er.convertToNumberFromCurrency(this.innerText,currentCurrencyPreference);
+			let selectTransactionId = splitElement(this.id,'-');
+			// Handles the addition of buttons in the budget column for the row
+			appendButtonForAmountEdition(amountEntered, selectTransactionId);
 		  }
-		  
-		  let amountEntered = er.convertToNumberFromCurrency(this.innerText,currentCurrencyPreference);
-		  let selectTransactionId = splitElement(this.id,'-');
-		  // Handles the addition of buttons in the budget column for the row
-		  appendButtonForAmountEdition(amountEntered, selectTransactionId);
 	});
 
 	// Append amount to user transaction
@@ -2292,7 +2290,7 @@
    			// Populate the transaction of account
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
-			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
+			if(bankAccountPreview.length >= 4) {fetchAllBankAccountInformation();}
 			// If Account Table is hidden then add d-none
 			if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 				!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2433,25 +2431,40 @@
 		tableRowTransaction.appendChild(tableCellTransactionDescription);
 		
 		// Cell 3
-		let surCell = document.createElement('div');
-		surCell.classList = 'd-lg-table-cell';
-
-		let transactionAmount = document.createElement('div');
+		if(isEqual(idName, 'recentTransaction')) {
+			let transactionAmount = document.createElement('div');
 		
-		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold text-right align-middle';
-			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+			// Append a - sign if it is an expense
+			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+			} else {
+				transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
+				transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+			}
+			   
+			tableRowTransaction.appendChild(transactionAmount);
 		} else {
-			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold text-right align-middle';
-			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+			let surCell = document.createElement('div');
+			surCell.classList = 'd-lg-table-cell';
+
+			let transactionAmount = document.createElement('div');
+			
+			// Append a - sign if it is an expense
+			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
+				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+			} else {
+				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
+				transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+			}
+			surCell.appendChild(transactionAmount);  
+			  
+			let accountBalDiv = document.createElement('div');
+			accountBalDiv.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
+			surCell.appendChild(accountBalDiv); 
+			tableRowTransaction.appendChild(surCell);
 		}
-		surCell.appencChild(transactionAmount);  
-		  
-		let accountBalDiv = document.createElement('div');
-		accountBalDiv.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
-		surCell.appencChild(accountBalDiv); 
-		tableRowTransaction.appendChild(surCell);
 		
 		return tableRowTransaction;
 		
@@ -2677,7 +2690,7 @@
 		if(isNotEmpty(userTransSortedByDate)) {
 			popTransByAccWOAJAX();
 			// If fetch all bank account flag is true then
-			if(bankAccountPreview.length > 4) {fetchAllBankAccountInformation();}
+			if(bankAccountPreview.length >= 4) {fetchAllBankAccountInformation();}
 		} else {
 			populateRecentTransactions(false, false);	
 		}
@@ -2733,7 +2746,7 @@
 
 		// Account Balance
 		let accountBalance = document.createElement('div');
-		accountBalance.classList = 'd-lg-table-cell text-right';
+		accountBalance.classList = 'd-lg-table-cell text-right pr-3';
 		accountBalance.id = 'accountBalance-' + accountId;
 
 		if(isNotEmpty(bankAccount)) {
