@@ -56,6 +56,14 @@
                 "/dashboard/data/locale-country.js",
                 "/dashboard/module/settings.js"
             ]
+        },
+        {
+            "type": "js",
+            "name": "transactions.all.js",
+            "files": [
+                "/dashboard/income/transactions/accountModal.js",
+                "/dashboard/income/transactions.js"
+            ]
         }
     ]
 }

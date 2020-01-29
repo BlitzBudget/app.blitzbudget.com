@@ -873,6 +873,11 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	white-space: nowrap;
 }
 
+.recentTransactionDateGrp:hover .accTitleAnchor {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
 /** Change the size of the text if the width and height pf the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
 	

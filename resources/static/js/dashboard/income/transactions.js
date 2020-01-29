@@ -595,9 +595,9 @@
 		amountTransactionsRow.setAttribute('id', 'amountCategory-' + categoryId);
 		
 		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-lg-table-cell amountCategoryId-' + categoryId;
+			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-lg-table-cell spendingTrans amountCategoryId-' + categoryId;
 		} else {
-			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-lg-table-cell amountCategoryId-' + categoryId;
+			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-lg-table-cell incomeTrans amountCategoryId-' + categoryId;
 		}
 		
 		// Append a - sign for the category if it is an expense
@@ -1046,8 +1046,8 @@
 	// Append amount to user transaction
 	function postNewAmountToUserTransactions(element){
 		// If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-		let enteredText = convertToNumberFromCurrency(element.innerText, currentCurrencyPreference);
-		let previousText = convertToNumberFromCurrency(amountEditedTransaction, currentCurrencyPreference);
+		let enteredText = er.convertToNumberFromCurrency(element.innerText, currentCurrencyPreference);
+		let previousText = er.convertToNumberFromCurrency(amountEditedTransaction, currentCurrencyPreference);
 		
 		// Test if the entered value is valid
 		if(isNaN(enteredText) || !regexForFloat.test(enteredText) || enteredText == 0) {
@@ -1174,13 +1174,12 @@
 	// Updates the final amount section with the current value
 	function updateTotalCalculations(categoryForCalculation , totalAddedOrRemovedFromAmount){
 		
-		if(categoryForCalculation.contains('spendingCategory')) {
-			let currentValueExpense = convertToNumberFromCurrency($("#totalExpensesTransactions")[0].innerText, currentCurrencyPreference);
+		if(categoryForCalculation.contains('spendingTrans')) {
+			let currentValueExpense = er.convertToNumberFromCurrency(document.getElementById('totalExpensesTransactions').innerText, currentCurrencyPreference);
 			let totalAmountLeftForExpenses = currentValueExpense+ totalAddedOrRemovedFromAmount;
 			replaceHTML('totalExpensesTransactions' , '-' + currentCurrencyPreference + formatNumber(Number(totalAmountLeftForExpenses), currentUser.locale));
-			
-		} else if(categoryForCalculation.contains('incomeCategory')) {
-			let currentValueIncome = convertToNumberFromCurrency($("#totalIncomeTransactions")[0].innerText, currentCurrencyPreference);
+		} else if(categoryForCalculation.contains('incomeTrans')) {
+			let currentValueIncome = er.convertToNumberFromCurrency(document.getElementById('totalIncomeTransactions').innerText, currentCurrencyPreference);
 			let totalAmountLeftForIncome = currentValueIncome + totalAddedOrRemovedFromAmount;
 			replaceHTML('totalIncomeTransactions' , currentCurrencyPreference + formatNumber(Number(totalAmountLeftForIncome), currentUser.locale));
 		}
@@ -1232,7 +1231,7 @@
 	// Dynamically generated button click event
 	$( "#transactionsTable" ).on( "click", ".removeRowTransaction" ,function() {
 		// Prevents the add amount event listener focus out from being executed
-		var id = lastElement(splitElement($(this).parent().closest('div').attr('id'),'-'));
+		let id = lastElement(splitElement($(this).parent().closest('div').attr('id'),'-'));
 		// Remove the button and append the loader with fade out
 		let budgetTableCell = document.getElementById('budgetTransactionsRow-' + id);
 		budgetTableCell.classList.add('fadeOutAnimation');
@@ -1548,7 +1547,6 @@
     	// Parent Div Svg container
     	let divSvgContainer = document.createElement('div');
     	divSvgContainer.className = 'svg-container';
-    	
     	
     	// SVG element
     	let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
@@ -2397,6 +2395,11 @@
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
+
+		if(isEqual(idName,'accountAggre')) {
+			tableRowTransaction.classList.add('accTransEntry');
+			tableRowTransaction.classList.add('fadeOut');
+		}
 		
 		// Cell 1
 		let tableCellImagesWrapper = document.createElement('div');
@@ -2723,6 +2726,7 @@
 
 	// Appends the date header for recent transactions
 	function buildAccountHeader(accountId) {
+		let docFrag = document.createDocumentFragment();
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
 		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
@@ -2733,9 +2737,9 @@
 		// Bank Account 
 		let bankAccount = fetchBankAccountFromPreview(accountId);
 		// Title
-		let accountTitle = document.createElement('div');
+		let accountTitle = document.createElement('a');
 		accountTitle.id = 'accountTitle-' + accountId;
-		accountTitle.classList = 'd-lg-table-cell';
+		accountTitle.classList = 'd-lg-table-cell text-nowrap pl-4 accTitleAnchor';
 		accountTitle.innerHTML =  isEmpty(bankAccount) ? buildSmallMaterialSpinner(accountId) : bankAccount.bankAccountName;
 		accountTit.appendChild(accountTitle);
 
@@ -2746,7 +2750,7 @@
 
 		// Account Balance
 		let accountBalance = document.createElement('div');
-		accountBalance.classList = 'd-lg-table-cell text-right pr-3';
+		accountBalance.classList = 'd-lg-table-cell text-right text-nowrap pr-3';
 		accountBalance.id = 'accountBalance-' + accountId;
 
 		if(isNotEmpty(bankAccount)) {
@@ -2761,7 +2765,8 @@
 		accountTit.appendChild(accountBalance);
 
 		accountHeader.appendChild(accountTit);
-		return accountHeader;
+		docFrag.appendChild(accountHeader);
+		return docFrag;
 	}
 
 	// Fetch Bank Account Name
