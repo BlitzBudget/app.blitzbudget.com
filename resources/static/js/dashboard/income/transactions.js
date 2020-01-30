@@ -1067,7 +1067,7 @@
 		// Test if the entered value is the same as the previous one
 		if(previousText != enteredText){
 			// obtain the transaction id of the table row
-			let changedAmount = splitElement($(element).attr('id'),'-');
+			let changedAmount = splitElement(element.id,'-');
 			var values = {};
 			values['amount'] = enteredText;
 			values['transactionId'] = changedAmount[changedAmount.length - 1];
