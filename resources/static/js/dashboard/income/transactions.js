@@ -2396,9 +2396,11 @@
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
 		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
 
+		// Make the account section draggable
 		if(isEqual(idName,'accountAggre')) {
 			tableRowTransaction.classList.add('accTransEntry');
-			tableRowTransaction.classList.add('fadeOut');
+			tableRowTransaction.draggable = 'true';
+			tableRowTransaction.classList.add('d-none');
 		}
 		
 		// Cell 1

@@ -62,7 +62,8 @@
             "name": "transactions.all.js",
             "files": [
                 "/dashboard/income/transactions/accountModal.js",
-                "/dashboard/income/transactions.js"
+                "/dashboard/income/transactions.js",
+                "/dashboard/income/transactions/dragAndDropTransInAcc.js"
             ]
         }
     ]
