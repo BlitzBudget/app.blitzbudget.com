@@ -7,7 +7,7 @@
 	});
 
 	function handleDragStart(e) {
-	  this.classList.add('op-50');  // this / e.target is the source node.
+	  e.classList.add('op-50');  // this / e.target is the source node.
 	}
 
 	// On DRAG START Account transaction display information
@@ -17,7 +17,7 @@
 
 	function handleDragEnter(e) {
 	  // this / e.target is the current hover target.
-	  this.classList.add('dragStarted');
+	  e.classList.add('dragStarted');
 	}
 
 	// On DRAG START Account transaction display information
@@ -26,7 +26,7 @@
 	});
 
 	function handleDragLeave(e) {
-	  this.classList.remove('dragStarted');  // this / e.target is previous target element.
+	  e.classList.remove('dragStarted');  // this / e.target is previous target element.
 	}
 
 

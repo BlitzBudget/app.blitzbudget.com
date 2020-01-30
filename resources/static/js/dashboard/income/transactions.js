@@ -2394,13 +2394,15 @@
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
-		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
+		tableRowTransaction.classList = 'recentTransactionEntry';
 
 		// Make the account section draggable
 		if(isEqual(idName,'accountAggre')) {
 			tableRowTransaction.classList.add('accTransEntry');
 			tableRowTransaction.draggable = 'true';
 			tableRowTransaction.classList.add('d-none');
+		} else {
+			tableRowTransaction.classList.add('d-lg-table-row');
 		}
 		
 		// Cell 1

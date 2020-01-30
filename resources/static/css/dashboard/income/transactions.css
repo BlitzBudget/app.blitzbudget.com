@@ -886,7 +886,7 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 }
 
 .dragStarted {
-	border: 2px dashed #000;
+	border: 2px dashed #f6f6f6;
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/
