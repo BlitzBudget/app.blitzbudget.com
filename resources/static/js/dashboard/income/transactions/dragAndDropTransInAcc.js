@@ -1,5 +1,6 @@
 "use strict";
 (function scopeWrapper($) {
+	let dragSrcEl = null;
 
 	// On DRAG START Account transaction display information
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -7,37 +8,32 @@
 	});
 
 	function handleDragStart(e) {
-	  e.classList.add('op-50');  // this / e.target is the source node.
+		// this / e.target is the source node.
+	  	e.classList.add('op-50');
+	  	// Set the drag start element
+	  	dragSrcEl = e;
+	  	e.dataTransfer.effectAllowed = 'move';
+	  	e.dataTransfer.dropEffect = 'move';
+ 	 	e.dataTransfer.setData('text/plain', e.target.id);
 	}
 
-	// On DRAG START Account transaction display information
-	$('#recTransAndAccTable').on('dragenter', '.accTransEntry' , function(e) {
-		handleDragEnter(this);
-	});
-
-	function handleDragEnter(e) {
-	  // this / e.target is the current hover target.
-	  e.classList.add('dragStarted');
-	}
-
-	// On DRAG START Account transaction display information
-	$('#recTransAndAccTable').on('dragleave', '.accTransEntry' , function(e) {
-		handleDragLeave(this);
-	});
-
-	function handleDragLeave(e) {
-	  e.classList.remove('dragStarted');  // this / e.target is previous target element.
-	}
-
+	
 
 	function handleDrop(e) {
-	  // this / e.target is current target element.
+	  // this or e.target is current target element.
+	  e.preventDefault();
 
 	  if (e.stopPropagation) {
-	    e.stopPropagation(); // stops the browser from redirecting.
+	  	// stops the browser from redirecting.
+	    e.stopPropagation(); 
 	  }
 
-	  // See the section on the DataTransfer object.
+	  // Don't do anything if dropping the same column we're dragging.
+	  if (dragSrcEl != this) {
+	    // Set the source column's HTML to the HTML of the column we dropped on.
+	    let a = document.getElementById(e.dataTransfer.getData('text/plain'));
+	    e.appendChild(a);
+	  }
 
 	  return false;
 	}
