@@ -2,7 +2,7 @@
 (function scopeWrapper($) {
 
 	// On Click Account Header display information
-	$('#recTransAndAccTable').on('click', '.accTitleAnchor' , function(e) {
+	$('#recTransAndAccTable').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
 		// TODO account modal
 		let accountId = lastElement(splitElement(this.id,'-'));
 		let accountModal = document.getElementById('accountInformationMdl').classList;
@@ -10,10 +10,10 @@
 		accountModal.toggle('d-none');
 		accountModal.toggle('accountModalShown');
 		// Toggle Account Transaction 
-		let accTransEntry = this.parentNode.getElementByClassName('accTransEntry');
+		let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
 		for(let i = 0, l = accTransEntry.length; i < l; i++) {
-			accTransEntry[i].classList.toggle('fadeIn');
-			accTransEntry[i].classList.toggle('fadeOut');
+			accTransEntry[i].classList.toggle('d-none');
+			accTransEntry[i].classList.toggle('d-lg-table-row');
 		}
 
 	});

@@ -873,16 +873,27 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	white-space: nowrap;
 }
 
-.recentTransactionDateGrp:hover .accTitleAnchor {
+.accountInfoTable .recentTransactionDateGrp {
 	cursor: pointer;
+}
+
+.recentTransactionDateGrp:hover .accTitleAnchor {
 	text-decoration: underline;
+}
+
+.op-50 {
+	opacity: 0.5;
+}
+
+.dragStarted {
+	border: 2px dashed #f6f6f6;
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
 	
  #plannedAmountCategoryModal {
-  font-size: 1.5rem;
+  	font-size: 1.5rem;
  }
  
  .choose label span {
