@@ -67,6 +67,7 @@
 	// On Drop Account transaction display information
 	$('#recTransAndAccTable').on('dragover', '.accountInfoTable' , function(e) {
 		e.preventDefault();
+		e.originalEvent.dataTransfer.dropEffect = 'move';
 		return false;
 	});
 

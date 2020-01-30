@@ -1947,7 +1947,6 @@
 	function toggleCategoryModal(closestTrElement) {
 		let financialPositionDiv = document.getElementsByClassName('transactions-chart');
 		let categoryModalDiv = document.getElementsByClassName('category-modal');
-		debugger;
 		// Find all the category rows that are expanded
 		let categoriesShown = document.getElementsByClassName('categoryShown');
 		
@@ -2288,7 +2287,7 @@
    			// Populate the transaction of account
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
-			if(bankAccountPreview.length >= 4) {fetchAllBankAccountInformation();}
+			fetchAllBankAccountInformation();
 			// If Account Table is hidden then add d-none
 			if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 				!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2394,15 +2393,12 @@
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
-		tableRowTransaction.classList = 'recentTransactionEntry';
+		tableRowTransaction.classList = 'recentTransactionEntry d-lg-table-row';
 
 		// Make the account section draggable
 		if(isEqual(idName,'accountAggre')) {
 			tableRowTransaction.classList.add('accTransEntry');
 			tableRowTransaction.draggable = 'true';
-			tableRowTransaction.classList.add('d-none');
-		} else {
-			tableRowTransaction.classList.add('d-lg-table-row');
 		}
 		
 		// Cell 1
@@ -2697,7 +2693,7 @@
 		if(isNotEmpty(userTransSortedByDate)) {
 			popTransByAccWOAJAX();
 			// If fetch all bank account flag is true then
-			if(bankAccountPreview.length >= 4) {fetchAllBankAccountInformation();}
+			fetchAllBankAccountInformation();
 		} else {
 			populateRecentTransactions(false, false);	
 		}
@@ -2738,13 +2734,11 @@
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
 
-		// Bank Account 
-		let bankAccount = fetchBankAccountFromPreview(accountId);
 		// Title
 		let accountTitle = document.createElement('a');
 		accountTitle.id = 'accountTitle-' + accountId;
 		accountTitle.classList = 'd-lg-table-cell text-nowrap pl-4 accTitleAnchor';
-		accountTitle.innerHTML =  isEmpty(bankAccount) ? buildSmallMaterialSpinner(accountId) : bankAccount.bankAccountName;
+		accountTitle.appendChild(buildSmallMaterialSpinner(accountId));
 		accountTit.appendChild(accountTitle);
 
 		// Empty Cell
@@ -2756,32 +2750,11 @@
 		let accountBalance = document.createElement('div');
 		accountBalance.classList = 'd-lg-table-cell text-right text-nowrap pr-3';
 		accountBalance.id = 'accountBalance-' + accountId;
-
-		if(isNotEmpty(bankAccount)) {
-			if(bankAccount.accountBalance < 0) { 
-				accountBalance.classList.add('expenseCategory');
-				accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
-			} else { 
-				accountBalance.classList.add('incomeCategory');
-				accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
-			}
-		}
 		accountTit.appendChild(accountBalance);
 
 		accountHeader.appendChild(accountTit);
 		docFrag.appendChild(accountHeader);
 		return docFrag;
-	}
-
-	// Fetch Bank Account Name
-	function fetchBankAccountFromPreview(accountId) {
-	  // Return the Bank Account Name
-	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-		  if(bankAccountPreview[i].id == accountId) {
-			  return bankAccountPreview[i];
-		  }
-	  }
-	  return null;
 	}
 
 	// Build small material spinner
