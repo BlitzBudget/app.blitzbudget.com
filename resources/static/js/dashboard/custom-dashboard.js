@@ -66,14 +66,16 @@ window.months = ['January','February','March','April','May','June','July','Augus
 // Freeze the months object
 Object.freeze(months);
 Object.seal(months);
+//Popover Cache
+let popoverYear = new Date().getFullYear();
+// Login popup already shown
+let loginPopupShown = false;
 
 // Fetch all dates from the user budget
 window.datesWithUserBudgetData = [];
 
 window.onload = function () {
 	$(document).ready(function(){
-		//Popover Cache
-		let popoverYear = new Date().getFullYear();
 
 		// Position for month selection
 		let positionMonthCache = 0;
@@ -583,6 +585,8 @@ window.onload = function () {
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
 		$('#loginModal').on('hidden.bs.modal', function (e) {
+			// Set loginPopup shown to false
+			loginPopupShown = false;
 			// If the current user data is still not loaded from Cognito (Refresh)
 			 if(isEmpty(currentUser)) {
 			 	window.location.reload();
@@ -624,6 +628,12 @@ window.onload = function () {
 		$('#unlockModal').on('shown.bs.modal', function (e) {
 			// after the modal is shown focus on password
 			document.getElementById('unlockAppPass').focus();
+		});
+
+		// unlock modal on hidden modal
+		$('#unlockModal').on('hide.bs.modal', function (e) {
+			// Set the login popup shown to false
+			loginPopupShown = false;
 		});
 
 		// Start up application
@@ -854,9 +864,14 @@ er = {
 
 	showLoginPopup() {
 		// If the modal is open then return
-		if(document.getElementById('loginModal').classList.contains('show') || document.getElementById('unlockModal').classList.contains('show')) {
+		if(document.getElementById('loginModal').classList.contains('show') || 
+			document.getElementById('unlockModal').classList.contains('show') || 
+			loginPopupShown) {
 			return;
 		}
+
+		// Set the login popup shown to true
+		loginPopupShown = true;
 
 		let email = '';
 		// Get parameters
