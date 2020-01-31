@@ -2793,7 +2793,7 @@
   			for(let i = 0, length = bankAccountList.length; i < length; i++) {
   				let bankAcc = bankAccountList[i];
   				// If the ID corresponding wiht the bank account is not populated then
-  				if(includesStr(accHeadersToReplace, bankAcc.id)) {
+  				if(includesStr(accHeadersToReplace, bankAcc.id.toString())) {
   					let accHeading = document.getElementById('accountTitle-' + bankAcc.id);
   					let accountBalance = document.getElementById('accountBalance-' + bankAcc.id);
   					// Replace HTML with Empty

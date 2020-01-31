@@ -16,7 +16,13 @@
 	// On DRAG ENTER (When the dragging has entered this div)
 	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
 		e.preventDefault();
-		dropHereChild = cloneElementAndAppend(this, dropHereChild);
+		// Add Drag class to handle drag events
+		e.target.classList.add('drag');
+		// Don't do anything if dragged on the same wrapper.
+		let closestParentWrapper = e.target.closest('.accountInfoTable');
+		if (dragSrcEl != closestParentWrapper) {
+			dropHereChild = cloneElementAndAppend(this, dropHereChild);
+		}
 		return false;
 	});
 
@@ -34,6 +40,8 @@
 		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
 		}
 		e.originalEvent.dataTransfer.dropEffect = 'move';
+		// Remove Drag class to handle drag events
+		e.target.classList.remove('drag');
 	});
 
 	// On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
