@@ -2784,10 +2784,11 @@
 	  			}
 	  		}
     	}
-		
+		debugger;
 		// Fetch all bank account information
 		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
 			let accountAggreDiv = document.getElementById('recTransAndAccTable');
+			let accHeadFrag = document.createDocumentFragment();
 	  		// Iterate all bank accounts
   			for(let i = 0, length = bankAccountList.length; i < length; i++) {
   				let bankAcc = bankAccountList[i];
@@ -2820,8 +2821,13 @@
   						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
   					} 
   					// Append to the transaction view
-  					accountAggreDiv.appendChild(accountHeaderNew);
+  					accHeadFrag.appendChild(accountHeaderNew);
   				}
+  			}
+
+  			// If the document fragment contains a child
+  			if(accHeadFrag.firstElementChild) {
+  				accountAggreDiv.appendChild(accHeadFrag);
   			}
 
         });
