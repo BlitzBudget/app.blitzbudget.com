@@ -16,12 +16,12 @@
 	// On DRAG ENTER (When the dragging has entered this div)
 	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
 		e.preventDefault();
-		// Add Drag class to handle drag events
-		e.target.classList.add('drag');
 		// Don't do anything if dragged on the same wrapper.
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
 		if (dragSrcEl != closestParentWrapper) {
 			dropHereChild = cloneElementAndAppend(this, dropHereChild);
+			// Add Drag class to handle drag events (parent element)
+			closestParentWrapper.classList.add('drag');
 		}
 		return false;
 	});
@@ -34,14 +34,19 @@
 
 	// On DRAG LEAVE (The dragleave event is fired when a dragged element or text selection leaves a valid drop target.)
 	$('#recTransAndAccTable').on('dragleave', '.accountInfoTable' , function(e) {
+		// Remove the drop here element appended
 		let dropHereElements = this.getElementsByClassName('dropHereElement');
 		// Remove all elements by classname
 		while(dropHereElements[0]) {
 		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
 		}
 		e.originalEvent.dataTransfer.dropEffect = 'move';
-		// Remove Drag class to handle drag events
-		e.target.classList.remove('drag');
+		// Don't do anything if dragged on the same wrapper.
+		let closestParentWrapper = e.target.closest('.accountInfoTable');
+		if (dragSrcEl != closestParentWrapper) {
+			// Remove Drag class to handle drag events (parent element)
+			closestParentWrapper.classList.remove('drag');
+		}
 	});
 
 	// On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
