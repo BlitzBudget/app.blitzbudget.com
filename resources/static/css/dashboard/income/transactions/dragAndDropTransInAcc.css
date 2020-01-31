@@ -11,7 +11,3 @@
   -khtml-user-drag: element;
   -webkit-user-drag: element;
 }
-
-.drag * {
- pointer-events: none;
-}

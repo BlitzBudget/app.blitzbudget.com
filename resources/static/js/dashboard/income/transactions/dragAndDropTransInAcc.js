@@ -2,6 +2,8 @@
 (function scopeWrapper($) {
 	let dragSrcEl = null;
 	let dropHereChild = dropHereElement();
+	// All dragsters initialized
+	let initializedDragsters = [];
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -13,40 +15,17 @@
 		handleDragEnd(e);
 	});
 
-	// On DRAG ENTER (When the dragging has entered this div)
+	// On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
 		e.preventDefault();
-		// Don't do anything if dragged on the same wrapper.
-		let closestParentWrapper = e.target.closest('.accountInfoTable');
-		if (dragSrcEl != closestParentWrapper) {
-			dropHereChild = cloneElementAndAppend(this, dropHereChild);
-			// Add Drag class to handle drag events (parent element)
-			closestParentWrapper.classList.add('drag');
-		}
 		return false;
 	});
 
-	// On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)).
+	// On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragover', '.accountInfoTable' , function(e) {
 		e.preventDefault();
-		return false;
-	});
-
-	// On DRAG LEAVE (The dragleave event is fired when a dragged element or text selection leaves a valid drop target.)
-	$('#recTransAndAccTable').on('dragleave', '.accountInfoTable' , function(e) {
-		// Remove the drop here element appended
-		let dropHereElements = this.getElementsByClassName('dropHereElement');
-		// Remove all elements by classname
-		while(dropHereElements[0]) {
-		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
-		}
 		e.originalEvent.dataTransfer.dropEffect = 'move';
-		// Don't do anything if dragged on the same wrapper.
-		let closestParentWrapper = e.target.closest('.accountInfoTable');
-		if (dragSrcEl != closestParentWrapper) {
-			// Remove Drag class to handle drag events (parent element)
-			closestParentWrapper.classList.remove('drag');
-		}
+		return false;
 	});
 
 	// On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
@@ -63,6 +42,13 @@
 	  	e.originalEvent.dataTransfer.effectAllowed = 'move';
 	  	e.originalEvent.dataTransfer.dropEffect = 'move';
  	 	e.originalEvent.dataTransfer.setData('text/plain', e.target.id);
+ 	 	// Initialize dragster to all tables
+		let dropzones = document.getElementsByClassName("accountInfoTable");
+		for(let i = 0, l = dropzones.length; i < l; i++) {
+			let dropzone = dropzones[i];
+			let dragster = new Dragster( dropzone );
+			initializedDragsters.push(dragster);
+		}
 	}
 
 	function handleDragEnd(e) {
@@ -73,6 +59,11 @@
 	  	// Remove all elements by classname
 		while(dropHereElements[0]) {
 		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
+		}
+		// Remove all dragster events attached
+		for(let i = 0, l = initializedDragsters.length; i < l; i++) {
+			// Remove all dragster events attached
+			initializedDragsters[i].removeListeners();
 		}
 	}
 
@@ -195,5 +186,24 @@
 
 		return tableRowTransaction;
 	}
+
+	// ON DRAG ENTER (Only parent elements)
+	document.addEventListener( "dragster:enter", function (e) {
+	  	// Don't do anything if dragged on the same wrapper.
+		let closestParentWrapper = e.target.closest('.accountInfoTable');
+		if (dragSrcEl != closestParentWrapper) {
+			dropHereChild = cloneElementAndAppend(this, dropHereChild);
+		}
+	}, false );
+
+	// On DRAG LEAVE (only parent elements)
+	document.addEventListener( "dragster:leave", function (e) {
+	  	// Remove the drop here element appended
+		let dropHereElements = this.getElementsByClassName('dropHereElement');
+		// Remove all elements by classname
+		while(dropHereElements[0]) {
+		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
+		}
+	}, false );
 
 }(jQuery));
