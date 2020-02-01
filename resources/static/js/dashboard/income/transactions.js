@@ -2832,14 +2832,14 @@
 	// Populate Empty account entry
 	function buildEmptyAccountEntry(accId) {
 		let rowEmpty = document.createElement('div');
-		rowEmpty.classList = 'd-lg-table-row';
+		rowEmpty.classList = 'd-lg-table-row recentTransactionDateGrp';
 		rowEmpty.id = 'emptyAccountEntry-' + accId;
 
 		let cell1 = document.createElement('div');
 		cell1.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
 
 		let roundedCircle = document.createElement('div');
-		roundedCircle.clasList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
+		roundedCircle.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
 		roundedCircle.appendChild(buildEmptyAccTransactionsSvg());
 		cell1.appendChild(roundedCircle);
 		rowEmpty.appendChild(cell1);
