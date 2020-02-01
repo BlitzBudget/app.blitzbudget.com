@@ -24,15 +24,16 @@
 
 		// If parent element is the same then return
 		if(parentElementDragEnterAndLeave == closestParentWrapper || 
-			isEqual(parentElementDragEnterAndLeave.id,closestParentWrapper.id) || 
 			parentElementDragEnterAndLeave == e.target) {
 			return false;
 		}
 
 		// Show all the transactions
 		let recentTransactionEntry = closestParentWrapper.getElementsByClassName('recentTransactionEntry');
-		for(let i = 0, l = recentTransactionEntry.length; i < l; i++) {
-			recentTransactionEntry[i].classList.remove('d-none');
+		if(recentTransactionEntry.length > 0) {
+			for(let i = 0, l = recentTransactionEntry.length; i < l; i++) {
+				recentTransactionEntry[i].classList.remove('d-none');
+			}
 		}
 		// Set the parent event as the account table
 		parentElementDragEnterAndLeave = closestParentWrapper;
@@ -92,13 +93,6 @@
 		for(let i = 0, l = dragsterList.length; i < l; i++) {
 			// Remove Listeners
 			dragsterList[i].removeListeners();
-		}
-		// Replace with Empty Acc Trans
-		let currentTable = e.target.closest('.accountInfoTable');
-		let recentTransactionEntry = currentTable.getElementsByClassName('recentTransactionEntry');
-		if(recentTransactionEntry.length == 0) {
-			// Build empty account entry
-			currentTable.appendChild(buildEmptyAccountEntry());
 		}
 	}
 
@@ -175,6 +169,13 @@
 			if(isNotEmpty(newAccMinusSign)) {accDiv.classList.add('expenseCategory');accDiv.classList.remove('incomeCategory'); } else { accDiv.classList.add('incomeCategory');accDiv.classList.remove('expenseCategory');}
 			// Remove empty entries for the account
 			document.getElementById('emptyAccountEntry-' + accountId).remove();
+			// Replace with Empty Acc Trans
+			let oldAccTable = document.getElementById('accountSB-' + oldAccountId);
+			let oldRecentTransactionEntry = oldAccTable.getElementsByClassName('recentTransactionEntry');
+			if(oldRecentTransactionEntry.length == 0) {
+				// Build empty account entry
+				oldAccTable.appendChild(buildEmptyAccountEntry());
+			}
         }
 		ajaxData.onFailure = function (thrownError) {
 			manageErrors(thrownError, 'Unable to change the transacition amount.',ajaxData);
