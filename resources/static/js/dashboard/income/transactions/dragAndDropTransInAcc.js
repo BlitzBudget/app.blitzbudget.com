@@ -174,7 +174,7 @@
 			let oldRecentTransactionEntry = oldAccTable.getElementsByClassName('recentTransactionEntry');
 			if(oldRecentTransactionEntry.length == 0) {
 				// Build empty account entry
-				oldAccTable.appendChild(buildEmptyAccountEntry());
+				oldAccTable.appendChild(buildEmptyAccountEntry(oldAccountId));
 			}
         }
 		ajaxData.onFailure = function (thrownError) {

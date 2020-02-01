@@ -2594,7 +2594,8 @@
 		$('.accountInfoTable').addClass('d-none');
 		// Open Account Modal
 		document.getElementById('accountInformationMdl').classList.add('d-none');
-		
+		// Toggle  Financial Position
+		document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
 			registeredNewTransaction = false;
@@ -2636,6 +2637,8 @@
 		transactionsTable.classList.remove('d-none');
 		// Open Account Modal
 		document.getElementById('accountInformationMdl').classList.add('d-none');
+		// Toggle  Financial Position
+		document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
 
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
@@ -2666,7 +2669,8 @@
 		$('.accountInfoTable').removeClass('d-none');
 		// Open Account Modal
 		document.getElementById('accountInformationMdl').classList.remove('d-none');
-
+		// Toggle  Financial Position
+		document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
 			sortByAccountPopulated = false;
