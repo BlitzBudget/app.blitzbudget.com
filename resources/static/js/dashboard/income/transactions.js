@@ -2815,7 +2815,7 @@
   						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
   					} 
   					// Append Empty Table to child
-  					accountHeaderNew.getElementById('accountSB-' + bankAcc.id).appendChild(buildEmptyAccountEntry());
+  					accountHeaderNew.getElementById('accountSB-' + bankAcc.id).appendChild(buildEmptyAccountEntry(bankAcc.id));
   					// Append to the transaction view
   					accHeadFrag.appendChild(accountHeaderNew);
   				}
@@ -2857,11 +2857,7 @@
 		cell3.classList = 'descriptionCellRT d-lg-table-cell';
 		rowEmpty.appendChild(cell3);
 			
-		<div class="">
-		<div class="text-center tripleNineColor font-weight-bold">Oh! Snap! You don't have any transactions yet.</div>
-		</div>
-		<div class=""></div>
-		</div>
+		return rowEmpty;
 	}
 
 	// Populates account / recent transaction info as necessary
