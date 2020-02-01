@@ -3,6 +3,7 @@
 	let dragSrcEl = null;
 	let dropHereChild = dropHereElement();
 	let parentElementDragEnterAndLeave = null;
+	let dragsterList = [];
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -22,12 +23,16 @@
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
 
 		// If parent element is the same then return
-		if(parentElementDragEnterAndLeave == closestParentWrapper) {
+		if(parentElementDragEnterAndLeave == closestParentWrapper || 
+			isEqual(parentElementDragEnterAndLeave.id,closestParentWrapper.id) || 
+			parentElementDragEnterAndLeave == e.target) {
 			return false;
 		}
 
-		if (dragSrcEl != closestParentWrapper) {
-			dropHereChild = cloneElementAndAppend(this, dropHereChild);
+		// Show all the transactions
+		let recentTransactionEntry = closestParentWrapper.getElementsByClassName('recentTransactionEntry');
+		for(let i = 0, l = recentTransactionEntry.length; i < l; i++) {
+			recentTransactionEntry[i].classList.remove('d-none');
 		}
 		// Set the parent event as the account table
 		parentElementDragEnterAndLeave = closestParentWrapper;
@@ -38,27 +43,6 @@
 	$('#recTransAndAccTable').on('dragover', '.accountInfoTable' , function(e) {
 		e.preventDefault();
 		e.originalEvent.dataTransfer.dropEffect = 'move';
-		return false;
-	});
-
-	// On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
-	$('#recTransAndAccTable').on('dragleave', '.accountInfoTable' , function(e) {
-		e.preventDefault();
-		
-		// If child element triggers the drag leave then do nothing
-		if(parentElementDragEnterAndLeave != e.target.closest('.accountInfoTable')) {
-			return false;
-		}
-		
-		// Remove the drop here element appended
-		let dropHereElements = document.getElementsByClassName('dropHereElement');
-		// Remove all elements by classname
-		while(dropHereElements[0]) {
-		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
-		}
-		e.originalEvent.dataTransfer.dropEffect = 'move';
-		// set the parent element back to null
-		parentElementDragEnterAndLeave = null;
 		return false;
 	});
 
@@ -75,7 +59,12 @@
 	  	// Set Drag effects
 	  	e.originalEvent.dataTransfer.effectAllowed = 'move';
 	  	e.originalEvent.dataTransfer.dropEffect = 'move';
- 	 	e.originalEvent.dataTransfer.setData('text/plain', e.target.id); 	 	
+ 	 	e.originalEvent.dataTransfer.setData('text/plain', e.target.id); 
+ 	 	// Register dragster for Account Info Table
+ 	 	let accountInfoTables = document.getElementsByClassName('accountInfoTable');
+ 	 	for(let i = 0, l = accountInfoTables.length; i < l; i++) {
+			dragsterList.push(new Dragster( accountInfoTables[i] ));
+ 	 	}	
 	}
 
 	function handleDragEnd(e) {
@@ -86,6 +75,11 @@
 	  	// Remove all elements by classname
 		while(dropHereElements[0]) {
 		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
+		}
+		// Remove all registered dragster
+		for(let i = 0, l = dragsterList.length; i < l; i++) {
+			// Remove Listeners
+			dragsterList[i].removeListeners();
 		}
 	}
 
@@ -161,6 +155,8 @@
 			// If the account balance is negative then change color
 			if(isNotEmpty(oldAccMinusSign)) {oldAccDiv.classList.add('expenseCategory');oldAccDiv.classList.remove('incomeCategory'); } else { oldAccDiv.classList.add('incomeCategory');oldAccDiv.classList.remove('expenseCategory');}
 			if(isNotEmpty(newAccMinusSign)) {accDiv.classList.add('expenseCategory');accDiv.classList.remove('incomeCategory'); } else { accDiv.classList.add('incomeCategory');accDiv.classList.remove('expenseCategory');}
+			// Remove empty entries for the account
+			document.getElementById('emptyAccountEntry-' + accountId).remove();
         }
 		ajaxData.onFailure = function (thrownError) {
 			manageErrors(thrownError, 'Unable to change the transacition amount.',ajaxData);
@@ -209,14 +205,16 @@
 		return tableRowTransaction;
 	}
 
-	// ON DRAG ENTER (Only parent elements)
-	document.addEventListener( "dragster:enter", function (e) {
-	  	
-	}, false );
-
 	// On DRAG LEAVE (only parent elements)
-	document.addEventListener( "dragster:leave", function (e) {
-	  	
+	document.addEventListener( "dragster:leave", function (e) {		
+		
+		// If parent element is not populated then return
+		if(isEmpty(parentElementDragEnterAndLeave)) {
+			return;
+		}
+	
+		// set the parent element back to null
+		parentElementDragEnterAndLeave = null;
 	}, false );
 
 }(jQuery));
