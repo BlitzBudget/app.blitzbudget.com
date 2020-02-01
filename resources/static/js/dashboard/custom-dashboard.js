@@ -638,12 +638,12 @@ window.onload = function () {
 
 		// Start up application
 		function startupApplication() {
-			// Read Cookies
-	        readCookie();
+			// Fetch Category 
+			fetchJSONForCategories();
 			// Fetch Bank Account Information and populate
 			er_a.fetchBankAccountInfo();
-			// Fetch Category 
-			fetchJSONForCategories();						 
+			// Read Cookies
+	        readCookie();
 		}
 
 		// Load all categories from API (Call synchronously to set global variable)

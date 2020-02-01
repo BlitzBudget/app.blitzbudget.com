@@ -3,7 +3,6 @@
 	let dragSrcEl = null;
 	let dropHereChild = dropHereElement();
 	let parentElementDragEnterAndLeave = null;
-	let enterAndLeave = 0;
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -22,8 +21,6 @@
 		// Don't do anything if dragged on the same wrapper.
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
 
-		// Increment the number of times triggered
-		enterAndLeave++;
 		// If parent element is the same then return
 		if(parentElementDragEnterAndLeave == closestParentWrapper) {
 			return false;
@@ -47,13 +44,12 @@
 	// On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragleave', '.accountInfoTable' , function(e) {
 		e.preventDefault();
-		// Increment the number of times triggered
-		enterAndLeave--;
+		
 		// If child element triggers the drag leave then do nothing
-		if(enterAndLeave != 0) {
+		if(parentElementDragEnterAndLeave != e.target.closest('.accountInfoTable')) {
 			return false;
 		}
-
+		
 		// Remove the drop here element appended
 		let dropHereElements = document.getElementsByClassName('dropHereElement');
 		// Remove all elements by classname

@@ -193,16 +193,7 @@
          	closeCategoryModal();
 
          	// populate recent transactions /  category modal
-			let recentTransactionHeading = document.getElementsByClassName('recentTransactionDateGrp');
-			let accountInfoTable = document.getElementsByClassName('accountInfoTable');
-			if((recentTransactionHeading.length > 0 && accountInfoTable.length > 0) || recentTransactionHeading.length == 0) {
-				// Load both populate recent & accounts table
-				populateRecentTransactions(false, true);
-			} else if (recentTransactionHeading.length > 0) {
-				populateRecentTransactions(true, false);
-			} else {
-				populateRecentTransactions(false, true);
-			}
+			populateAccountOrRecentTransactionInfo();
 		}		
 	});
 
@@ -2151,6 +2142,9 @@
 		
 		// Call transactions
 		fetchJSONForTransactions();
+
+		// Call Account / Recent Transactions
+		populateAccountOrRecentTransactionInfo();
 		
 	});
 	
@@ -2831,6 +2825,20 @@
   			}
 
         });
+	}
+
+	// POpulates account / recent transaction info as necessary
+	function populateAccountOrRecentTransactionInfo() {
+		let recentTransactionHeading = document.getElementsByClassName('recentTransactionDateGrp');
+		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
+		if((recentTransactionHeading.length > 0 && accountInfoTable.length > 0) || recentTransactionHeading.length == 0) {
+			// Load both populate recent & accounts table
+			populateRecentTransactions(false, true);
+		} else if (recentTransactionHeading.length > 0) {
+			populateRecentTransactions(true, false);
+		} else if(accountInfoTable.length > 0) {
+			populateRecentTransactions(false, true);
+		}
 	}
 
 }(jQuery));
