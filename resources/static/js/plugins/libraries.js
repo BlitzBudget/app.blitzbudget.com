@@ -37,7 +37,7 @@ function  isEmpty(obj) {
     // Check if obj is an element
     if(obj instanceof Element) return false;
 	    
-	return obj == null || obj == undefined;
+	return true;
 }
 
 function  isNotEmpty(obj) {

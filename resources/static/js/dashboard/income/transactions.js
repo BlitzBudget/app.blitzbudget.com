@@ -2801,7 +2801,7 @@
   					accHeading.innerText = bankAcc.bankAccountName;
   					if(bankAcc.accountBalance < 0) { 
   						accountBalance.classList.add('expenseCategory');
-  						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc.accountBalance), currentUser.locale);
   					} else { 
   						accountBalance.classList.add('incomeCategory');
   						accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
@@ -2813,7 +2813,7 @@
   					let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.id);
   					if(bankAcc.accountBalance < 0) { 
   						accBal.classList.add('expenseCategory');
-  						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
+  						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc.accountBalance), currentUser.locale);
   					} else { 
   						accBal.classList.add('incomeCategory');
   						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
