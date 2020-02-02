@@ -1,0 +1,26 @@
+/**
+*	Account Modal
+**/
+#accountHeaderClose > i {
+	color: #999;
+}
+
+#accountInformationMdl {
+    padding: .5rem;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+}
+
+#accountLabelInModal {
+    display: block;
+    margin-bottom: .8rem;
+    line-height: 1;
+    color: #495257;
+    font-weight: 600;
+    text-align: left;
+}
+
+#accountInformationMdl .card-footer .text-left {
+    color: #999;
+}

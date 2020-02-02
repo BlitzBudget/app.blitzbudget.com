@@ -2827,6 +2827,17 @@
 
   			// If the document fragment contains a child
   			if(accHeadFrag.firstElementChild) {
+  				// If Account Table is hidden then add d-none
+				if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
+					!document.getElementById('recentTransactions').classList.contains('d-none')) {
+					let accTableInfo = accHeadFrag.getElementsByClassName('accountInfoTable');
+
+					// For all the account tables add d-none
+					for(let i = 0, l = accTableInfo.length; i < l; i++) {
+						accTableInfo[i].classList.add('d-none');
+					}
+
+				}
   				accountAggreDiv.appendChild(accHeadFrag);
   			}
 
@@ -2874,7 +2885,8 @@
 			populateRecentTransactions(false, true);
 		} else if (recentTransactionHeading.length > 0) {
 			populateRecentTransactions(true, false);
-		} else if(accountInfoTable.length > 0) {
+		} else {
+			// This populates the recent transactions for all other scenarios
 			populateRecentTransactions(false, true);
 		}
 	}

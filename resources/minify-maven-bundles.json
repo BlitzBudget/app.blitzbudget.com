@@ -16,7 +16,8 @@
             "files": [
                 "/dashboard/income/transactions.css",
                 "/dashboard/build/bootstrap-select.css",
-                "/dashboard/income/transactions/dragAndDropTransInAcc.css"
+                "/dashboard/income/transactions/dragAndDropTransInAcc.css",
+                "/dashboard/income/transactions/accountModal.css"
             ]
         },
         {

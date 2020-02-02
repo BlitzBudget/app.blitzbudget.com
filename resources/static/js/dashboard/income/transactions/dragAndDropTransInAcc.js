@@ -147,8 +147,12 @@
 			// Fetch the current account balance
 			let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
 			let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.innerText,currentCurrencyPreference);
+			// If the acc balance is negative then
+			if(~oldAccDiv.innerText.indexOf("-")) oldAccBal *= -1;
 			let accDiv = document.getElementById('accountBalance-' + accountId);
 			let accBal = er.convertToNumberFromCurrency(accDiv.innerText,currentCurrencyPreference);
+			// If the acc balance is negative then
+			if(~accDiv.innerText.indexOf("-")) accBal *= -1;
 			let currAccBal = 0;
 			let currNewAccBal = 0;
         	// Append a - sign if it is an expense

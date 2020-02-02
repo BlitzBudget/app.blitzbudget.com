@@ -19,7 +19,7 @@
               </div>
               <h4 class="card-title d-inline-block noselect">Transactions</h4>
               <div class="dropdown bootstrap-select show-tick mt-2 float-right">
-                  <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose City" aria-expanded="false">
+                  <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose Category" aria-expanded="false">
                     <div class="filter-option">
                       <div class="filter-option-inner">
                         <div id="sortByBtnTit" class="filter-option-inner-inner text-right mr-4">Category</div></div> </div>
@@ -182,13 +182,32 @@
             </div>
           </div>
           <div id="accountInformationMdl" class="card d-none">
-            <div class="card-header card-header-icon card-header-danger">
-              <div class="card-icon">
-                <i class="material-icons">pie_chart</i>
+            <div class="row"> 
+              <div id="" class="col-lg-6">
+                <span class="" ></span>
+              </div> 
+              <div class="col-lg-6">
+                <button type="button" id="accountHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="material-icons float-right">clear</i>
+                </button>
               </div>
-              <h4 class="card-title noselect">All Accounts</h4>
+            </div>
+            <div class="card-header card-header-icon card-header-danger">
+                <div id="accountLabelInModal" class="text-center card-title"></div>
             </div>
             <div class="card-body text-center">
+              <div class="row accountAmountDiv">
+                <div class="col-lg-3 d-lg-inline-block h-100">
+                  <i class="material-icons">account_balance</i>
+                </div> 
+                <span id="accountAmountModal" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
+                <span class="currentCurrencySymbol"></span>0.00</span> 
+              </div>
+            </div>
+            <div id="" class="card-footer row">
+              <div class="col-lg-6 text-left"><span id="numberOfTransInAcc"></span> Transactions</div>
+              <div class="col-lg-6 text-right">
+              </div>
             </div>
           </div>
         </div> 
