@@ -32,7 +32,9 @@
 		let recentTransactionEntry = closestParentWrapper.getElementsByClassName('recentTransactionEntry');
 		if(recentTransactionEntry.length > 0) {
 			for(let i = 0, l = recentTransactionEntry.length; i < l; i++) {
-				recentTransactionEntry[i].classList.remove('d-none');
+				let recTransEntry = recentTransactionEntry[i];
+				recTransEntry.classList.remove('d-none');
+				recTransEntry.classList.add('d-lg-table-row');
 			}
 		}
 		// Set the parent event as the account table
@@ -168,7 +170,10 @@
 			if(isNotEmpty(oldAccMinusSign)) {oldAccDiv.classList.add('expenseCategory');oldAccDiv.classList.remove('incomeCategory'); } else { oldAccDiv.classList.add('incomeCategory');oldAccDiv.classList.remove('expenseCategory');}
 			if(isNotEmpty(newAccMinusSign)) {accDiv.classList.add('expenseCategory');accDiv.classList.remove('incomeCategory'); } else { accDiv.classList.add('incomeCategory');accDiv.classList.remove('expenseCategory');}
 			// Remove empty entries for the account
-			document.getElementById('emptyAccountEntry-' + accountId).remove();
+			let emptyEntriesNewAcc = document.getElementById('emptyAccountEntry-' + accountId);
+			if(isNotEmpty(emptyEntriesNewAcc)) {
+				emptyEntriesNewAcc.remove();
+			}
 			// Replace with Empty Acc Trans
 			let oldAccTable = document.getElementById('accountSB-' + oldAccountId);
 			let oldRecentTransactionEntry = oldAccTable.getElementsByClassName('recentTransactionEntry');
