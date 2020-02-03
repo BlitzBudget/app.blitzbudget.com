@@ -1,4 +1,4 @@
-"use strict";
++"use strict";
 (function scopeWrapper($) {
 	let dragSrcEl = null;
 	let dropHereChild = dropHereElement();
@@ -17,6 +17,9 @@
 
 	// On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
+
+		// Draw a line defining the position
+		defineHrElement(e.target);
 
 		// Don't do anything if dragged on the same wrapper.
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
@@ -62,6 +65,12 @@
 		handleDrop(e);
 	});
 
+	// On DRAG LEAVE event is fired when a dragged element or text selection leaves a valid drop target.
+	$('#recTransAndAccTable').on('dragleave', '.accountInfoTable' , function(e) {
+		// Remove position indicator
+		removePositionIndicator();
+	});
+
 	// On DRAG LEAVE (only parent elements)
 	document.addEventListener( "dragster:leave", function (e) {		
 		
@@ -73,6 +82,17 @@
 		// set the parent element back to null
 		parentElementDragEnterAndLeave = null;
 	}, false );
+
+	function defineHrElement(target) {
+		let dropped = populateHrElement();
+		insertAfterElement(dropped, target);
+	}
+
+	function populateHrElement() {
+		let hrEl = document.createElement('hr');
+		hrEl.classList = 'positionOfDrag d-lg-table-row';
+		return hrEl;
+	}
 
 	function handleDragStart(e) {
 		// this / e.target is the source node.
@@ -134,7 +154,24 @@
 	    updateTransactionWithAccId(transId, closestParentWrapper.id, dragSrcEl.id);
 	  }
 
+	  // Remove position indicator
+	  removePositionIndicator();
+
 	  return false;
+	}
+
+	// Remove the position indicator
+	function removePositionIndicator() {
+		// Remove all the separator
+	  let positionOfDrag = document.getElementsByClassName('positionOfDrag');
+	  // If position is empty 
+	  if(isNotEmpty(positionOfDrag)) { 
+		  // Else remove all the hr element
+		  for(let i = 0, l = positionOfDrag.length; i < l; i++) {
+		  	// Remove all the element
+		  	positionOfDrag[i].remove();
+		  }
+	  }
 	}
 
 	// Insert element after the dropped target
