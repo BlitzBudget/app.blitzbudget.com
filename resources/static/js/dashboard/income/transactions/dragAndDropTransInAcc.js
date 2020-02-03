@@ -5,9 +5,6 @@
 	let parentElementDragEnterAndLeave = null;
 	let dragsterList = [];
 
-	// Dragscrollable table (only respond to the accTransEntry drag)
-	$('#recTransAndAccTable').dragscrollable({dragSelector:'.accTransEntry', acceptPropagatedEvent: false});
-
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
 		handleDragStart(e);
@@ -20,10 +17,14 @@
 
 	// On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
-		e.preventDefault();
 
 		// Don't do anything if dragged on the same wrapper.
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
+
+		// Allow to be dropped only on different accounts
+		if (dragSrcEl != closestParentWrapper) {
+			e.preventDefault();
+		}
 
 		// If parent element is the same then return
 		if(parentElementDragEnterAndLeave == closestParentWrapper || 
@@ -47,9 +48,13 @@
 
 	// On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragover', '.accountInfoTable' , function(e) {
-		e.preventDefault();
-		e.originalEvent.dataTransfer.dropEffect = 'move';
-		return false;
+		// Allow to be dropped only on different accounts
+		let closestParentWrapper = e.target.closest('.accountInfoTable');
+		if (dragSrcEl != closestParentWrapper) {
+			e.preventDefault();
+			e.originalEvent.dataTransfer.dropEffect = 'move';
+			return false;
+		}
 	});
 
 	// On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
@@ -82,7 +87,9 @@
  	 	let accountInfoTables = document.getElementsByClassName('accountInfoTable');
  	 	for(let i = 0, l = accountInfoTables.length; i < l; i++) {
 			dragsterList.push(new Dragster( accountInfoTables[i] ));
- 	 	}	
+ 	 	}
+ 	 	// Start Mouse Move on drag
+ 	 	startMouseMove();
 	}
 
 	function handleDragEnd(e) {
@@ -101,6 +108,8 @@
 			// Remove Listeners
 			dragsterList[i].removeListeners();
 		}
+		// Stop Mouse move on drag
+		stopMouseMove();
 	}
 
 	// Drop event is fired only on a valid target
@@ -140,7 +149,7 @@
 
 		if(isNotEmpty(insertAfter)) {
 			// Insert the element after the dropped element
-			target.closest('.accountInfoTable').parentNode.insertBefore(dropped, insertAfter.nextSibling);
+			insertAfter.parentNode.insertBefore(dropped, insertAfter.nextSibling);
 			return;
 		}
 
@@ -351,5 +360,34 @@
     	return svgElement;
     	
 	}
+
+	//call this function when we want to initiate the listener for moving the mouse
+	//For instance, call this function once the user starts dragging an element
+	function startMouseMove() {
+		document.addEventListener('mousemove', scrollWindow);
+	}
+	 
+	function scrollWindow(e) {
+	    const y = e.pageY; //This collects details on where your mouse is located vertically
+	    const container = $('#mutableDashboard'); //Replace this with the element class(.) or id(#) that needs to scroll
+	    const buffer = 200; //You can set this directly to a number or dynamically find some type of buffer for the top and bottom of your page
+	    const containerBottom = container.offset().top + container.outerHeight(); //Find the bottom of the container
+	    const containerTop = container.offset().top; //Find the top position of the container
+	    const scrollPosition = container.scrollTop(); //Find the current scroll position
+	    const scrollRate = 20; //increase or decrease this to speed up or slow down scrolling
+	 
+	    if (containerBottom - y < buffer) { //If the bottom of the container's position minus y is less than the buffer, scroll down!
+	      container.scrollTop(scrollPosition + scrollRate);
+	    } else if (containerTop + y < buffer) { //If the top of the container's position plus y is less than the buffer, scroll up!
+	      container.scrollTop(scrollPosition - scrollRate);
+	    }
+	}
+	 
+	//call this function when we want to stop the listener for moving the mouse
+	//For instance, call this function once the user drops a dragging element
+	function stopMouseMove() {
+		// Remove event listener once the function performed its task
+		document.removeEventListener('mousemove', scrollWindow);
+	} 
 
 }(jQuery));

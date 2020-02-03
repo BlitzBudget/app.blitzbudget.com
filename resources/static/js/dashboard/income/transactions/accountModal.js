@@ -7,7 +7,8 @@
 		let accInfoTable = this.closest('.accountInfoTable');
 		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
 		let accountModal = document.getElementById('accountInformationMdl').classList;
-		let recentTransactionEntry = this.getElementsByClassName('recentTransactionEntry');
+		// Fetch the total number of transactions for the account
+		let recentTransactionEntry = accInfoTable.getElementsByClassName('recentTransactionEntry');
 		// Set the number of transactions if present
 		let numberOfTransactionsDiv = document.getElementById('numberOfTransInAcc');
 		numberOfTransactionsDiv.innerText = isEmpty(recentTransactionEntry) ? 0 : recentTransactionEntry.length;

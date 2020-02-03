@@ -65,7 +65,6 @@
             "files": [
                 "/dashboard/income/transactions/accountModal.js",
                 "/plugins/dragster.js",
-                "/plugins/dragscrollable.js",
                 "/dashboard/income/transactions.js",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js"
             ]
