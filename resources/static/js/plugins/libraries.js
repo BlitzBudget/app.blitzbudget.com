@@ -316,3 +316,15 @@ function sameDate(inpDate, checkWith) {
     inpDate.getMonth() == checkWith.getMonth() &&
     inpDate.getFullYear() == checkWith.getFullYear();
 }
+
+function findScrollYPosition() {
+	let supportPageOffset = window.pageYOffset !== undefined;
+	let isCSS1Compat = ((document.compatMode) || "") === "CSS1Compat";
+	return supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+}
+
+function findScrollXPosition() {
+	let supportPageOffset = window.pageXOffset !== undefined;
+	let isCSS1Compat = ((document.compatMode) || "") === "CSS1Compat";
+	return supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
+}

@@ -4,7 +4,8 @@
 	// On Click Account Header display information
 	$('#recTransAndAccTable').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
 		// Account modal id
-		let accountId = lastElement(splitElement(this.id,'-'));
+		let accInfoTable = this.closest('.accountInfoTable');
+		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
 		let accountModal = document.getElementById('accountInformationMdl').classList;
 		let recentTransactionEntry = this.getElementsByClassName('recentTransactionEntry');
 		// Set the number of transactions if present

@@ -4,6 +4,7 @@
 	let dropHereChild = dropHereElement();
 	let parentElementDragEnterAndLeave = null;
 	let dragsterList = [];
+	let stopScroll = true;
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -54,6 +55,24 @@
 		handleDrop(e);
 	});
 
+	// On DRAG (the event is fired when an element or text selection is being dragged)
+	$('#recTransAndAccTable').on('drag', '.accountInfoTable' , function(e) {
+		// Do not scroll
+		stopScroll = true;
+
+		if(e.originalEvent.clientY < 150) {
+			stopScroll = false;
+			// scroll the page
+			scroll(-1);
+		}
+
+		if(e.originalEvent.clientY > (window.innerHeight - 150)) {
+			stopScroll = false;
+			// Scrolls the page
+			scroll(1);
+		}
+	});
+
 	// On DRAG LEAVE (only parent elements)
 	document.addEventListener( "dragster:leave", function (e) {		
 		
@@ -83,6 +102,8 @@
 	}
 
 	function handleDragEnd(e) {
+		// Do not scroll
+		stopScroll = true;
 		// this / e.target is the source node.
 	  	e.target.classList.remove('op-50');
 	  	// Remove all the drop here elements
@@ -115,12 +136,38 @@
 	    let transId = e.originalEvent.dataTransfer.getData('text/plain');
 	    let a = document.getElementById(transId);
 	    // Find the closest parent element and drop. (Should never be null)
-	    closestParentWrapper.appendChild(a);
+	    insertAfterElement(a, e.target);
 	    // Update the transaction with the new account ID
 	    updateTransactionWithAccId(transId, closestParentWrapper.id, dragSrcEl.id);
 	  }
 
 	  return false;
+	}
+
+	// Insert element after the dropped target
+	function insertAfterElement(dropped, target) {
+		// fetch the closest transaction entry
+		let insertAfter = target.closest('.recentTransactionEntry');
+		
+		if(insertAfter.length == 0) {
+			// Fetch the closest heading
+			insertAfter = target.closest('.recentTransactionDateGrp');
+		}
+
+		if(insertAfter.length > 0) {
+			// Insert the element after the dropped element
+			insertAfter.parentNode.insertBefore(dropped, insertAfter.nextSibling);
+			return;
+		}
+
+		if(insertAfter.length == 0) {
+			// Fetch the closest account table wrapper
+			insertAfter = target.closest('.accountInfoTable');
+		}
+
+		// Drop the element at the end of the table
+		insertAfter.appendChild(dropped);
+
 	}
 
 	// Update the transaction with the account ID
@@ -319,6 +366,15 @@
 
     	return svgElement;
     	
+	}
+
+	// Scrolls the page 
+	let scroll = function (step) {
+		window.scrollTo(findScrollXPosition() , findScrollYPosition() + step);
+		// Keep scrolling
+		if(!stopScroll) {
+			setTimeout(function() { scroll(step) }, 20)
+		}
 	}
 
 }(jQuery));
