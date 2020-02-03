@@ -4,7 +4,9 @@
 	let dropHereChild = dropHereElement();
 	let parentElementDragEnterAndLeave = null;
 	let dragsterList = [];
-	let stopScroll = true;
+
+	// Dragscrollable table (only respond to the accTransEntry drag)
+	$('#recTransAndAccTable').dragscrollable({dragSelector:'.accTransEntry', acceptPropagatedEvent: false});
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -53,24 +55,6 @@
 	// On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
 	$('#recTransAndAccTable').on('drop', '.accountInfoTable' , function(e) {
 		handleDrop(e);
-	});
-
-	// On DRAG (the event is fired when an element or text selection is being dragged)
-	$('#recTransAndAccTable').on('drag', '.accountInfoTable' , function(e) {
-		// Do not scroll
-		stopScroll = true;
-
-		if(e.originalEvent.clientY < 150) {
-			stopScroll = false;
-			// scroll the page
-			scroll(-1);
-		}
-
-		if(e.originalEvent.clientY > (window.innerHeight - 150)) {
-			stopScroll = false;
-			// Scrolls the page
-			scroll(1);
-		}
 	});
 
 	// On DRAG LEAVE (only parent elements)
@@ -149,18 +133,18 @@
 		// fetch the closest transaction entry
 		let insertAfter = target.closest('.recentTransactionEntry');
 		
-		if(insertAfter.length == 0) {
+		if(isEmpty(insertAfter)) {
 			// Fetch the closest heading
 			insertAfter = target.closest('.recentTransactionDateGrp');
 		}
 
-		if(insertAfter.length > 0) {
+		if(isNotEmpty(insertAfter)) {
 			// Insert the element after the dropped element
-			insertAfter.parentNode.insertBefore(dropped, insertAfter.nextSibling);
+			target.closest('.accountInfoTable').parentNode.insertBefore(dropped, insertAfter.nextSibling);
 			return;
 		}
 
-		if(insertAfter.length == 0) {
+		if(isEmpty(insertAfter)) {
 			// Fetch the closest account table wrapper
 			insertAfter = target.closest('.accountInfoTable');
 		}
@@ -366,15 +350,6 @@
 
     	return svgElement;
     	
-	}
-
-	// Scrolls the page 
-	let scroll = function (step) {
-		window.scrollTo(findScrollXPosition() , findScrollYPosition() + step);
-		// Keep scrolling
-		if(!stopScroll) {
-			setTimeout(function() { scroll(step) }, 20)
-		}
 	}
 
 }(jQuery));
