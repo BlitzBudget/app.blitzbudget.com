@@ -3,6 +3,8 @@
 	let dragSrcEl = null;
 	let parentElementDragEnterAndLeave = null;
 	let dragsterList = [];
+	// Cache the current drag position
+	let dragPosition = null;
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -193,17 +195,12 @@
 		if(isNotEmpty(insertAfter)) {
 			// Insert the element after the dropped element
 			insertAfter.parentNode.insertBefore(dropped, insertAfter.nextSibling);
-			return;
-		}
-
-		if(isEmpty(insertAfter)) {
+		} else {
 			// Fetch the closest account table wrapper
 			insertAfter = target.closest('.accountInfoTable');
+			// Drop the element at the end of the table
+			insertAfter.appendChild(dropped);
 		}
-
-		// Drop the element at the end of the table
-		insertAfter.appendChild(dropped);
-
 	}
 
 	// Update the transaction with the account ID
