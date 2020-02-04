@@ -1,7 +1,6 @@
 +"use strict";
 (function scopeWrapper($) {
 	let dragSrcEl = null;
-	let dropHereChild = dropHereElement();
 	let parentElementDragEnterAndLeave = null;
 	let dragsterList = [];
 
@@ -17,10 +16,7 @@
 
 	// On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
 	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
-
-		// Draw a line defining the position
-		defineHrElement(e.target);
-
+		
 		// Don't do anything if dragged on the same wrapper.
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
 
@@ -28,6 +24,9 @@
 		if (dragSrcEl != closestParentWrapper) {
 			e.preventDefault();
 		}
+
+		// Draw a line defining the position
+		defineHrElement(e.target);
 
 		// If parent element is the same then return
 		if(parentElementDragEnterAndLeave == closestParentWrapper || 
@@ -65,12 +64,6 @@
 		handleDrop(e);
 	});
 
-	// On DRAG LEAVE event is fired when a dragged element or text selection leaves a valid drop target.
-	$('#recTransAndAccTable').on('dragleave', '.accountInfoTable' , function(e) {
-		// Remove position indicator
-		removePositionIndicator();
-	});
-
 	// On DRAG LEAVE (only parent elements)
 	document.addEventListener( "dragster:leave", function (e) {		
 		
@@ -84,14 +77,38 @@
 	}, false );
 
 	function defineHrElement(target) {
-		let dropped = populateHrElement();
+		let dropped = null;
+		let positionOfDrag = document.getElementsByClassName('positionOfDrag');
+		// If the element is already present then move the element
+		if(positionOfDrag.length == 0) {
+			dropped = populateHrElement();	
+		} else {
+			dropped = positionOfDrag[0];
+		}
+		
 		insertAfterElement(dropped, target);
 	}
 
 	function populateHrElement() {
-		let hrEl = document.createElement('hr');
-		hrEl.classList = 'positionOfDrag d-lg-table-row';
-		return hrEl;
+		let hrDiv = document.createElement('div');
+		hrDiv.classList = 'positionOfDrag d-lg-table-row';
+
+		// Cell1 
+		let cell1 = document.createElement('div');
+		cell1.classList = 'd-lg-table-cell';
+		hrDiv.appendChild(cell1);
+
+		// Cell 2 
+		let cell2 = document.createElement('div');
+		cell2.classList = 'd-lg-table-cell';
+		hrDiv.appendChild(cell2);
+
+		// Cell 3
+		let cell3 = document.createElement('div');
+		cell3.classList = 'd-lg-table-cell';
+		hrDiv.appendChild(cell3);
+
+		return hrDiv;
 	}
 
 	function handleDragStart(e) {
@@ -117,17 +134,13 @@
 		stopScroll = true;
 		// this / e.target is the source node.
 	  	e.target.classList.remove('op-50');
-	  	// Remove all the drop here elements
-	  	let dropHereElements = document.getElementsByClassName('dropHereElement');
-	  	// Remove all elements by classname
-		while(dropHereElements[0]) {
-		    dropHereElements[0].parentNode.removeChild(dropHereElements[0]);
-		}
 		// Remove all registered dragster
 		for(let i = 0, l = dragsterList.length; i < l; i++) {
 			// Remove Listeners
 			dragsterList[i].removeListeners();
 		}
+		// Remove position indicator
+	  	removePositionIndicator();
 		// Stop Mouse move on drag
 		stopMouseMove();
 	}
@@ -154,24 +167,18 @@
 	    updateTransactionWithAccId(transId, closestParentWrapper.id, dragSrcEl.id);
 	  }
 
-	  // Remove position indicator
-	  removePositionIndicator();
-
 	  return false;
 	}
 
 	// Remove the position indicator
 	function removePositionIndicator() {
 		// Remove all the separator
-	  let positionOfDrag = document.getElementsByClassName('positionOfDrag');
-	  // If position is empty 
-	  if(isNotEmpty(positionOfDrag)) { 
-		  // Else remove all the hr element
-		  for(let i = 0, l = positionOfDrag.length; i < l; i++) {
-		  	// Remove all the element
-		  	positionOfDrag[i].remove();
-		  }
-	  }
+	    let positionOfDrag = document.getElementsByClassName('positionOfDrag');
+		
+		while(positionOfDrag[0]) {
+			// Remove all the element
+			positionOfDrag[0].parentNode.removeChild(positionOfDrag[0]);
+		}
 	}
 
 	// Insert element after the dropped target
@@ -276,38 +283,6 @@
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
 	    });
-	}
-
-	// Drop here element
-	function dropHereElement() {
-		let tableRowTransaction = document.createElement('div');
-		tableRowTransaction.classList = 'recentTransactionEntry d-lg-table-row dropHereElement';
-
-		// Cell 1
-		let tableCellImagesWrapper = document.createElement('div');
-		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
-		tableRowTransaction.appendChild(tableCellImagesWrapper);
-
-		// Cell 2
-		let tableCellTransactionDescription = document.createElement('div');
-		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
-
-		let elementWithDescription = document.createElement('div');
-		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
-		elementWithDescription.innerText = 'Drop Here'
-		tableCellTransactionDescription.appendChild(elementWithDescription);
-		
-		let elementWithCategoryName = document.createElement('div');
-		elementWithCategoryName.classList = 'small categoryNameRT w-100';
-		tableCellTransactionDescription.appendChild(elementWithCategoryName);
-		tableRowTransaction.appendChild(tableCellTransactionDescription);
-
-		// Cell 3
-		let transactionAmount = document.createElement('div');
-		transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
-		tableRowTransaction.appendChild(transactionAmount);
-
-		return tableRowTransaction;
 	}
 
 	// Populate Empty account entry

@@ -11,3 +11,8 @@
   -khtml-user-drag: element;
   -webkit-user-drag: element;
 }
+
+.positionOfDrag .d-lg-table-cell {
+	border-bottom: 1px solid #58c65c;
+	border-radius: 0.025rem;
+}
