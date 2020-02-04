@@ -891,7 +891,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	cursor: pointer;
 }
 
-.recentTransactionDateGrp:hover .accTitleAnchor, .accTitleAnchor:hover {
+.recentTransactionDateGrp:hover .accTitleAnchor,
+.accTitleAnchor:hover,
+a.accTitleAnchor:not([href]):not([tabindex]):hover,
+a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 	text-decoration: underline;
 }
 

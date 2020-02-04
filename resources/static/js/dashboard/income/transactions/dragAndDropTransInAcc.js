@@ -52,6 +52,9 @@
 	$('#recTransAndAccTable').on('dragover', '.accountInfoTable' , function(e) {
 		// Allow to be dropped only on different accounts
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
+		// Scroll the window 
+		scrollWindow(e);
+		// Drag element comparison with closest parent
 		if (dragSrcEl != closestParentWrapper) {
 			e.preventDefault();
 			e.originalEvent.dataTransfer.dropEffect = 'move';
@@ -125,8 +128,6 @@
  	 	for(let i = 0, l = accountInfoTables.length; i < l; i++) {
 			dragsterList.push(new Dragster( accountInfoTables[i] ));
  	 	}
- 	 	// Start Mouse Move on drag
- 	 	startMouseMove();
 	}
 
 	function handleDragEnd(e) {
@@ -141,8 +142,6 @@
 		}
 		// Remove position indicator
 	  	removePositionIndicator();
-		// Stop Mouse move on drag
-		stopMouseMove();
 	}
 
 	// Drop event is fired only on a valid target
@@ -372,12 +371,6 @@
     	return svgElement;
     	
 	}
-
-	//call this function when we want to initiate the listener for moving the mouse
-	//For instance, call this function once the user starts dragging an element
-	function startMouseMove() {
-		document.addEventListener('mousemove', scrollWindow);
-	}
 	 
 	function scrollWindow(e) {
 	    const y = e.pageY; //This collects details on where your mouse is located vertically
@@ -395,11 +388,4 @@
 	    }
 	}
 	 
-	//call this function when we want to stop the listener for moving the mouse
-	//For instance, call this function once the user drops a dragging element
-	function stopMouseMove() {
-		// Remove event listener once the function performed its task
-		document.removeEventListener('mousemove', scrollWindow);
-	} 
-
 }(jQuery));
