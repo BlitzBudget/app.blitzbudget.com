@@ -282,7 +282,7 @@ window.onload = function () {
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
         	// reset Scroll position to header
-    		document.getElementsByClassName('navbar')[0].scrollTop = 0; 
+    		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10; 
 
     		// Call the actual page which was requested to be loaded
     		$.ajax({

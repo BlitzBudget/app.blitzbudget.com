@@ -371,7 +371,7 @@
 	 
 	function scrollWindow(e) {
 	    const y = e.pageY; //This collects details on where your mouse is located vertically
-	    const container = $('#mutableDashboard'); //Replace this with the element class(.) or id(#) that needs to scroll
+	    const container = $('.main-panel'); //Replace this with the element class(.) or id(#) that needs to scroll
 	    const buffer = 200; //You can set this directly to a number or dynamically find some type of buffer for the top and bottom of your page
 	    const containerBottom = container.offset().top + container.outerHeight(); //Find the bottom of the container
 	    const containerTop = container.offset().top; //Find the top position of the container
