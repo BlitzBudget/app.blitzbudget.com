@@ -130,7 +130,7 @@
                 </div>
             </div>
            </div>
-           <div class="card category-modal d-none">
+           <div class="card category-modal d-none noselect">
            	<div class="row"> 
            		<div id="debtBadge" class="col-lg-6">
            			<span class="" ></span>
@@ -181,7 +181,7 @@
                 </div>
             </div>
           </div>
-          <div id="accountInformationMdl" class="card d-none">
+          <div id="accountInformationMdl" class="card d-none noselect">
             <div class="row"> 
               <div id="" class="col-lg-6">
                 <span class="" ></span>
@@ -196,17 +196,43 @@
                 <div id="accountLabelInModal" class="text-center card-title"></div>
             </div>
             <div class="card-body text-center">
+              <div class="row"> 
+                <div id="goalInfoLabelInModal" class="col-lg-12 text-right headingDiv justify-content-center align-self-center">Remaining (%)</div> 
+              </div>
+              <div class="row"> 
+                <span id="percentageAchieved" class="col-lg-12 text-right">
+                  NA
+                </span> 
+              </div>
+              <div class="text-left headingDiv">
+                <div class="progress">
+                  <div id="amountAccumulated" class="progress-bar progress-bar-warning-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <span id="remainingBalance" class="mild-text-success">
+                  <span class="currentCurrencySymbol"></span>0.00
+                </span> 
+                Remaining
+              </div>
+              <hr>
               <div class="row accountAmountDiv">
                 <div class="col-lg-3 d-lg-inline-block h-100">
                   <i class="material-icons">account_balance</i>
                 </div> 
-                <span id="accountAmountModal" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
+                <span id="accountAmountEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
                 <span class="currentCurrencySymbol"></span>0.00</span> 
               </div>
             </div>
             <div id="" class="card-footer row">
-              <div class="col-lg-6 text-left"><span id="numberOfTransInAcc"></span> Transactions</div>
-              <div class="col-lg-6 text-right">
+              <div class="pl-0 col-lg-6 text-left">
+                <span id="numberOfTransInAcc"></span> Transactions
+              </div>
+              <div class="pr-0 col-lg-6 text-right">
+                <div class="svg-container deleteIconAccountWrapper d-lg-inline-block" data-toggle="tooltip" data-placement="bottom" title="Delete account">
+                  <svg id="deleteSvgElement-19" class="deleteAccount" height="16" width="16" viewBox="0 0 14 18">
+                    <path fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" d="M4.273 3.727V2a1 1 0 0 1 1-1h3.454a1 1 0 0 1 1 1v1.727M13 5.91v10.455a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5.909m6 2.727v5.455M4.273 8.636v5.455m5.454-5.455v5.455M13 3.727H1"></path>
+                  </svg>
+                  <div id="deleteElementSpinner-19" class="material-spinner-small d-none"></div>
+                </div>
               </div>
             </div>
           </div>

@@ -22,7 +22,18 @@
 			accTransEntry[i].classList.toggle('d-none');
 			accTransEntry[i].classList.toggle('d-lg-table-row');
 		}
+		// Open Account Modal
+		document.getElementById('accountInformationMdl').classList.remove('d-none');
+		// Close  Financial Position
+		document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
 
+	});
+
+	document.getElementById('accountHeaderClose').addEventListener("click",function(e){
+		// Close Account Modal
+		document.getElementById('accountInformationMdl').classList.add('d-none');
+		// Open  Financial Position
+		document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
 	});
 
 }(jQuery));

@@ -14,8 +14,8 @@
 }
 
 .hideableRow:hover .d-lg-table-cell, .background-snow .d-lg-table-cell, .tableRowTransactionHighlight .d-lg-table-cell, .categoryTableRow .d-lg-table-cell{
-	border-bottom: 1px solid #fff1f1;
-	border-top: 1px solid #fff1f1;
+	border-bottom: 1px solid #f6f6f6;
+	border-top: 1px solid #f6f6f6;
 }
 
 .hideableRow {
@@ -26,7 +26,7 @@
 	transition: all 0.2s ease;
 }
 .hideableRow .d-lg-table-cell {
-	border-bottom: 1px solid #f6f6f6;
+	border-top: 1px solid #f6f6f6;
 	padding: .18rem 0;
 }
 
@@ -514,13 +514,6 @@ progress::-webkit-progress-value {
 	background: linear-gradient(#d5d9db,#d5d9db) 0 calc(100% - .025rem)/100% 0.050rem no-repeat, transparent;
 }
 
- .budgetAmountDiv span:active, .budgetAmountDiv span:focus, .budgetAmountDiv span:focus-within {
- 	border: 1px solid #d5d9db;
- 	box-shadow: 0 3px 4px -2px rgba(0,0,0,.15);
- 	border-radius: .25rem;
-	color: #333a3d;
- }
-
 .budgetAmountDiv #plannedAmountCategoryModal {
 	padding-top: 0.5rem;
 }
@@ -904,6 +897,14 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 
 .dragStarted {
 	border: 2px dashed #f6f6f6;
+}
+
+
+.categoryHeaderClose .material-icons:hover {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/

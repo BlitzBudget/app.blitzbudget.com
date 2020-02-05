@@ -4,7 +4,7 @@
 	let parentElementDragEnterAndLeave = null;
 	let dragsterList = [];
 	// Cache the current drag position
-	let dragPosition = null;
+	let currentPosInd = null;
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
 	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
@@ -90,7 +90,14 @@
 		} else {
 			dropped = positionOfDrag[0];
 		}
-		
+
+		// Compare if the new position indicator is equal to the same position
+		let nearestTrans = target.closest('.recentTransactionEntry');
+		if(isNotEmpty(nearestTrans) && currentPosInd == nearestTrans) {
+			return;
+		}
+		// Set the position indicator to the new position
+		currentPosInd = nearestTrans
 		insertAfterElement(dropped, target);
 	}
 

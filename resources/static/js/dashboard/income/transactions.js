@@ -2661,7 +2661,7 @@
 		document.getElementById('sortByBtnTit').innerText = 'Account';
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
-		// hide the category view
+		// hide the transactions table
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-lg-table');
 		transactionsTable.classList.add('d-none');
