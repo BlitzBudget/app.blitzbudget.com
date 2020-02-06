@@ -2667,10 +2667,11 @@
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
 		$('.accountInfoTable').removeClass('d-none');
-		// Open Account Modal
-		document.getElementById('accountInformationMdl').classList.remove('d-none');
-		// Toggle  Financial Position
-		document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
+		// Simulate a click on the first table heading
+		let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+		if(accountTableHeaders.length > 0) {
+			accountTableHeaders.get(0).click();
+		}
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
 			sortByAccountPopulated = false;
