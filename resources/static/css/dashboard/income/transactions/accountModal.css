@@ -36,7 +36,7 @@
 }
 
 .deleteIconAccountWrapper:hover {
-    color: #58c65c;
+    color: #f44336;
 }
 
 #accountAmountEntry {
@@ -57,7 +57,7 @@
     line-height: 1;
 }
 
-#accountAmountEntry span:hover {
+#accountAmountEntry:hover, #accountAmountEntry:focus, #accountAmountEntry:active {
     background: linear-gradient(#d5d9db,#d5d9db) 0 calc(100% - .025rem)/100% .050rem no-repeat,transparent;
 }
 
