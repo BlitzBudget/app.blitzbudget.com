@@ -84,8 +84,8 @@
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
-			ajaxData.type = "POST";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId;
+			ajaxData.type = "PUT";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl + currentUser.financialPortfolioId;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 			ajaxData.data = values;
