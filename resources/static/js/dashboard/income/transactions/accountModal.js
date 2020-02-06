@@ -1,11 +1,14 @@
 "use strict";
 (function scopeWrapper($) {
+	let currentAccount = 0;
 
 	// On Click Account Header display information
 	$('#recTransAndAccTable').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
 		// Account modal id
 		let accInfoTable = this.closest('.accountInfoTable');
 		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
+		// Set the current account
+		currentAccount = accountId;
 		let accountModal = document.getElementById('accountInformationMdl').classList;
 		// Fetch the total number of transactions for the account
 		let recentTransactionEntry = accInfoTable.getElementsByClassName('recentTransactionEntry');
