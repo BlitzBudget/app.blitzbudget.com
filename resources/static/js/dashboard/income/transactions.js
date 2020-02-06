@@ -2005,19 +2005,13 @@
 	
 	// Budget Amount - disable enter key and submit request
 	plannedAmountCategoryModal.addEventListener('keyup', function(e) {
-		  var keyCode = e.keyCode || e.which;
+		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) { 
 		    e.preventDefault();
 
 		    document.activeElement.blur();
 		    return false;
 		  }
-	},false);
-	
-	// Double Click Budget Event
-	plannedAmountCategoryModal.addEventListener("dblclick", function() {
-		
-		
 	},false);
 	
 	// User updates the budget
@@ -2667,11 +2661,7 @@
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
 		$('.accountInfoTable').removeClass('d-none');
-		// Simulate a click on the first table heading
-		let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-		if(accountTableHeaders.length > 0) {
-			accountTableHeaders.get(0).click();
-		}
+		
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
 			sortByAccountPopulated = false;
@@ -2841,6 +2831,12 @@
 				}
   				accountAggreDiv.appendChild(accHeadFrag);
   			}
+
+  			// Simulate a click on the first table heading (Show Account Modal)
+			let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+			if(accountTableHeaders.length > 0) {
+				accountTableHeaders.get(0).click();
+			}
 
         });
 	}
