@@ -15,7 +15,7 @@
 		// Set Account Title
 		document.getElementById('accountLabelInModal').innerText = document.getElementById('accountTitle-' + accountId).innerText;
 		// Account Balance Update 
-		document.getElementById('accountAmountModal').innerText = document.getElementById('accountBalance-' + accountId).innerText;
+		document.getElementById('accountAmountEntry').innerText = document.getElementById('accountBalance-' + accountId).innerText;
 		// Toggle Account Transaction 
 		let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
 		for(let i = 0, l = accTransEntry.length; i < l; i++) {
