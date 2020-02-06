@@ -1,0 +1,84 @@
+/**
+*	Account Modal
+**/
+#accountHeaderClose > i {
+	color: #999;
+}
+
+#accountInformationMdl {
+    padding: .5rem;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+}
+
+#accountLabelInModal {
+    display: block;
+    margin-bottom: .8rem;
+    line-height: 1;
+    color: #495257;
+    font-weight: 600;
+    text-align: left;
+}
+
+#accountInformationMdl .card-footer .text-left {
+    color: #999;
+    white-space: nowrap;
+}
+
+.deleteIconAccountWrapper {
+    color: #999;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 600ms, visibility 600ms;
+    -webkit-transition: opacity 600ms, visibility 600ms;
+}
+
+.deleteIconAccountWrapper:hover {
+    color: #58c65c;
+}
+
+#accountAmountEntry {
+    font-size: 1.2rem;
+    padding-top: .25rem;
+    font-weight: 400;
+    padding-bottom: .5rem;
+    color: #686969;
+    display: block;
+    -webkit-transition: border-color .3s ease;
+    -moz-transition: border-color .3s ease;
+    -ms-transition: border-color .3s ease;
+    -o-transition: border-color .3s ease;
+    transition: border-color .3s ease;
+    margin-right: -.8rem;
+    width: calc(100%+1.6rem);
+    resize: none;
+    line-height: 1;
+}
+
+#accountAmountEntry span:hover {
+    background: linear-gradient(#d5d9db,#d5d9db) 0 calc(100% - .025rem)/100% .050rem no-repeat,transparent;
+}
+
+#accountInformationMdl .material-icons:hover {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
+
+#percentageAchieved {
+    color: #333a3d;
+    font-weight: 400;
+    font-size: 1.1rem;
+}
+
+#remainingBalance {
+    font-weight: 600;
+}
+
+#accountInformationMdl:hover .deleteIconAccountWrapper {
+    visibility: visible;
+    opacity: 1;
+}

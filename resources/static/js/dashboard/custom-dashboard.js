@@ -66,14 +66,16 @@ window.months = ['January','February','March','April','May','June','July','Augus
 // Freeze the months object
 Object.freeze(months);
 Object.seal(months);
+//Popover Cache
+let popoverYear = new Date().getFullYear();
+// Login popup already shown
+let loginPopupShown = false;
 
 // Fetch all dates from the user budget
 window.datesWithUserBudgetData = [];
 
 window.onload = function () {
 	$(document).ready(function(){
-		//Popover Cache
-		let popoverYear = new Date().getFullYear();
 
 		// Position for month selection
 		let positionMonthCache = 0;
@@ -280,7 +282,7 @@ window.onload = function () {
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
         	// reset Scroll position to header
-    		document.getElementsByClassName('navbar')[0].scrollTop = 0; 
+    		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10; 
 
     		// Call the actual page which was requested to be loaded
     		$.ajax({
@@ -583,6 +585,8 @@ window.onload = function () {
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
 		$('#loginModal').on('hidden.bs.modal', function (e) {
+			// Set loginPopup shown to false
+			loginPopupShown = false;
 			// If the current user data is still not loaded from Cognito (Refresh)
 			 if(isEmpty(currentUser)) {
 			 	window.location.reload();
@@ -626,14 +630,20 @@ window.onload = function () {
 			document.getElementById('unlockAppPass').focus();
 		});
 
+		// unlock modal on hidden modal
+		$('#unlockModal').on('hide.bs.modal', function (e) {
+			// Set the login popup shown to false
+			loginPopupShown = false;
+		});
+
 		// Start up application
 		function startupApplication() {
-			// Read Cookies
-	        readCookie();
+			// Fetch Category 
+			fetchJSONForCategories();
 			// Fetch Bank Account Information and populate
 			er_a.fetchBankAccountInfo();
-			// Fetch Category 
-			fetchJSONForCategories();						 
+			// Read Cookies
+	        readCookie();
 		}
 
 		// Load all categories from API (Call synchronously to set global variable)
@@ -854,9 +864,14 @@ er = {
 
 	showLoginPopup() {
 		// If the modal is open then return
-		if(document.getElementById('loginModal').classList.contains('show') || document.getElementById('unlockModal').classList.contains('show')) {
+		if(document.getElementById('loginModal').classList.contains('show') || 
+			document.getElementById('unlockModal').classList.contains('show') || 
+			loginPopupShown) {
 			return;
 		}
+
+		// Set the login popup shown to true
+		loginPopupShown = true;
 
 		let email = '';
 		// Get parameters
