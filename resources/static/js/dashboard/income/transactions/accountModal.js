@@ -1,6 +1,6 @@
 "use strict";
 (function scopeWrapper($) {
-	let currentAccount = 0;
+	let currentAccountId = 0;
 	let amountEditedAccount = null;
 
 	// On Click Account Header display information
@@ -9,7 +9,7 @@
 		let accInfoTable = this.closest('.accountInfoTable');
 		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
 		// Set the current account
-		currentAccount = accountId;
+		currentAccountId = accountId;
 		let accountModal = document.getElementById('accountInformationMdl').classList;
 		// Fetch the total number of transactions for the account
 		let recentTransactionEntry = accInfoTable.getElementsByClassName('recentTransactionEntry');
@@ -84,8 +84,8 @@
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
-			ajaxData.type = "PUT";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl + currentUser.financialPortfolioId;
+			ajaxData.type = "PATCH";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 			ajaxData.data = values;
