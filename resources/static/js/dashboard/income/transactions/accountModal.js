@@ -66,10 +66,7 @@
 		if(isNaN(enteredText) || !regexForFloat.test(enteredText) || enteredText == 0) {
 			// Replace the entered text with 0 inorder for the code to progress.
 			enteredText = 0;
-		} else if(enteredText < 0){
-			// Replace negative sign to positive sign if entered by the user
-			enteredText = parseFloat(Math.abs(enteredText),2);
-		}
+		} 
 		
 		// Test if the previous value is valid
 		if(isNaN(previousText) || !regexForFloat.test(previousText) || previousText == 0) {
@@ -96,6 +93,9 @@
 	        	  // Update the budget amount in the category row
 	        	  let formattedBudgetAmount = currentCurrencyPreference + formatNumber(bankAccount.accountBalance , currentUser.locale);
 	        	  element.innerText = formattedBudgetAmount;
+
+	        	  // Account Balance for account Header
+	        	  document.getElementById('accountBalance-' + bankAccount.id).innerText = formattedBudgetAmount;
 	        }
 			ajaxData.onFailure = function (thrownError) {
 				manageErrors(thrownError, 'Unable to change the account balance. Please try again!',ajaxData);
@@ -116,6 +116,43 @@
 		          error: ajaxData.onFailure
 		        });
 		}
+	}
+
+	// Delete Account functionality
+	document.getElementById('deleteSvgAccount').addEventListener("click",function(e){
+		// Show Sweet Alert
+        Swal.fire({
+            title: 'Delete Account',
+		  	html: deleteAccountFrag(),
+		  	confirmButtonClass: 'btn btn-secondary',
+		  	confirmButtonText: 'Delete Account',
+		  	showCancelButton: false,
+		  	allowEscapeKey: false,
+		  	allowOutsideClick: false,
+  			closeOnClickOutside: false,
+		}).then(function(result) {
+			// If the Reset Button is pressed
+        	if (result.value) {
+        	}
+		});
+	});
+
+	// Delete Account Fragment
+	function deleteAccountFrag() {
+		let accountLabelInModal = document.getElementById('accountLabelInModal').innerText;
+		let docFragDelAcc = document.createDocumentFragment();
+
+		let delAccMessage = document.createElement('div');
+		delAccMessage.classList = 'font-weight-bold';
+		delAccMessage.innerText = 'You are about to delete the account ' + accountLabelInModal;
+		docFragDelAcc.appendChild(delAccMessage);
+
+		let moveTrans = document.createElement('button');
+		moveTrans.classList = 'btn btn-secondary';
+		moveTrans.innerText = 'Move transactions to a different account'		
+		docFragDelAcc.appendChild(moveTrans);
+
+		return docFragDelAcc;
 	}
 
 }(jQuery));
