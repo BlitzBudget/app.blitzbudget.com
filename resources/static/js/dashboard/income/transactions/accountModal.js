@@ -124,12 +124,10 @@
         Swal.fire({
             title: 'Delete Account',
 		  	html: deleteAccountFrag(),
-		  	confirmButtonClass: 'btn btn-secondary',
+		  	confirmButtonClass: 'btn btn-danger',
 		  	confirmButtonText: 'Delete Account',
-		  	showCancelButton: false,
-		  	allowEscapeKey: false,
-		  	allowOutsideClick: false,
-  			closeOnClickOutside: false,
+		  	showCancelButton: true,
+            showCloseButton: true
 		}).then(function(result) {
 			// If the Reset Button is pressed
         	if (result.value) {
@@ -143,7 +141,7 @@
 		let docFragDelAcc = document.createDocumentFragment();
 
 		let delAccMessage = document.createElement('div');
-		delAccMessage.classList = 'font-weight-bold';
+		delAccMessage.classList = 'text-left';
 		delAccMessage.innerText = 'You are about to delete the account ' + accountLabelInModal;
 		docFragDelAcc.appendChild(delAccMessage);
 
