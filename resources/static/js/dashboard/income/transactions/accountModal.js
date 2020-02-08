@@ -41,9 +41,10 @@
 		document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
 	});
 
+	// Focus in for the remaining account amount
 	document.getElementById('remainingAmount').addEventListener("focusin",function(e){
 		amountEditedAccount = trimElement(this.innerText);
-	}
+	});
 
 	// Change the remaining amount
 	document.getElementById('remainingAmount').addEventListener("keyup",function(e){
