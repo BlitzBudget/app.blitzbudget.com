@@ -42,12 +42,12 @@
 	});
 
 	// Focus in for the remaining account amount
-	document.getElementById('remainingAmount').addEventListener("focusin",function(e){
+	document.getElementById('accountAmountEntry').addEventListener("focusin",function(e){
 		amountEditedAccount = trimElement(this.innerText);
 	});
 
 	// Change the remaining amount
-	document.getElementById('remainingAmount').addEventListener("keyup",function(e){
+	document.getElementById('accountAmountEntry').addEventListener("keyup",function(e){
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) { 
 		    e.preventDefault();
@@ -81,6 +81,8 @@
 			
 			let values = {};
 			values['accountBalance'] = enteredText;
+			values['financialPortfolioId'] = currentUser.financialPortfolioId;
+			values = JSON.stringify(values);
 
 			// Ajax Requests on Error
 			let ajaxData = {};
@@ -88,7 +90,7 @@
 			ajaxData.type = "PATCH";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId;
 			ajaxData.dataType = "json"; 
-			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+			ajaxData.contentType = "application/json; charset=UTF-8";
 			ajaxData.data = values;
 			ajaxData.onSuccess = function(bankAccount){
 	        	  // Update the budget amount in the category row
