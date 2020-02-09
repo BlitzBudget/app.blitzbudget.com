@@ -96,6 +96,19 @@
 
 	        	  // Account Balance for account Header
 	        	  document.getElementById('accountBalance-' + bankAccount.id).innerText = formattedBudgetAmount;
+
+	        	    // Append as Selected Account
+			        for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
+			    		if(bankAccountPreview[i].id == currentAccountId) {
+			    			// Account Balance update in preview
+			    			bankAccountPreview[i].accountBalance = bankAccount.accountBalance;
+			    			// Position of the row
+			    			let position = i + 1;
+			    			// update the formatted button
+				    		document.getElementById('bAR-' + position).lastElementChild.innerText = formattedBudgetAmount;
+				    		break;
+			    		}
+			        }
 	        }
 			ajaxData.onFailure = function (thrownError) {
 				manageErrors(thrownError, 'Unable to change the account balance. Please try again!',ajaxData);
@@ -106,15 +119,15 @@
             }
 
 			$.ajax({
-		          type: ajaxData.type,
-		          url: ajaxData.url,
-		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: ajaxData.dataType,
-		          contentType: ajaxData.contentType,
-		          data : ajaxData.data,
-		          success: ajaxData.onSuccess,
-		          error: ajaxData.onFailure
-		        });
+	          type: ajaxData.type,
+	          url: ajaxData.url,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType,
+	          data : ajaxData.data,
+	          success: ajaxData.onSuccess,
+	          error: ajaxData.onFailure
+	        });
 		}
 	}
 
@@ -172,15 +185,36 @@
         }).then(function(result) {
         	// Hide the validation message if present
     		Swal.resetValidationMessage()
-        	 // If the Delete Button is pressed
-        	 if (result.value) {
+        	// If the Delete Button is pressed
+        	if (result.value) {
         	 	// Ajax Requests on Error
 				let ajaxData = {};
 				ajaxData.isAjaxReq = true;
 				ajaxData.type = 'DELETE';
-				ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId +  + currentUser.financialPortfolioId;
+				ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
 				ajaxData.onSuccess = function(jsonObj) {
-		        	// TODO remove / shuffle all transactions
+		        	$('#accountSB-' + currentAccountId).fadeOut('slow', function(){ 
+	                    this.remove();
+
+	                    // Append as Selected Account
+	                    let posToRemove = null;
+				    	for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
+				    		if(bankAccountPreview[i].id == currentAccountId) {
+				    			let position = i + 1;
+				    			// Remove the preview banka count
+				    			document.getElementById('bAR-' + position).remove();
+				    			// Update the position to remove
+				    			posToRemove = i;
+				    			break;
+				    		}
+				    	}
+
+				    	// Position to remove
+				    	if(isNotEmpty(posToRemove)) {
+				    		// Remove the bank account preview
+				    		bankAccountPreview.splice(posToRemove , 1);
+				    	}
+	                });
 		        }
 			    ajaxData.onFailure = function (thrownError) {
 			    	manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!",ajaxData);
@@ -192,7 +226,7 @@
 			        success: ajaxData.onSuccess,
 			        error: ajaxData.onFailure
 	        	});
-        	 }
+        	}
 
         });
 
@@ -208,12 +242,13 @@
 
 	// Delete BB Account
 	function deleteBBAccount() {
+		let accountLabelInModal = document.getElementById('accountLabelInModal');
 		let deletePassFrag = document.createDocumentFragment();
 
 		// Warning Text
 		let warnDiv = document.createElement('div');
 		warnDiv.classList = 'noselect text-left mb-3 fs-90';
-		warnDiv.innerHTML = 'Do you want to delete your user account <strong>' + currentUser.email + '</strong> and <strong>delete all data</strong> from Blitz Budget?';
+		warnDiv.innerHTML = 'Do you want to delete your bank account <strong>' + accountLabelInModal.innerText + '</strong> and <strong>delete all the transactions.</strong>?';
 		deletePassFrag.appendChild(warnDiv);
 
 		// UL tag
@@ -221,22 +256,18 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.innerHTML = 'all your data, <strong>Everything!</strong> will be deleted';
+		liOne.innerHTML = 'all your transactions associated with ' + accountLabelInModal.innerText + ' will be deleted.';
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.innerText = "premium subscription will be terminated";
+		liTwo.innerText = accountLabelInModal.innerText + ' financial account will be deleted.';
 		ulWarn.appendChild(liTwo);
-
-		let liThree = document.createElement('li');
-		liThree.innerText = 'your Blitz Budget user account will be deleted';
-		ulWarn.appendChild(liThree);
 		deletePassFrag.appendChild(ulWarn);
 
-		// Subscription
+		// Move Transactions
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.innerText = 'Consider exporting your data!';
+		subsText.innerText = 'Consider dragging and dropping the transaction to another account before deleting the financial account!';
 		deletePassFrag.appendChild(subsText);
 
 		// Old Password
