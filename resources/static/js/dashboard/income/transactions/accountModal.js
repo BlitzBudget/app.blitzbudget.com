@@ -120,37 +120,211 @@
 
 	// Delete Account functionality
 	document.getElementById('deleteSvgAccount').addEventListener("click",function(e){
-		// Show Sweet Alert
-        Swal.fire({
-            title: 'Delete Account',
-		  	html: deleteAccountFrag(),
-		  	confirmButtonClass: 'btn btn-danger',
-		  	confirmButtonText: 'Delete Account',
-		  	showCancelButton: true,
-            showCloseButton: true
-		}).then(function(result) {
-			// If the Reset Button is pressed
-        	if (result.value) {
-        	}
-		});
+		let cognitoUser = userPool.getCurrentUser();
+
+		Swal.fire({
+            title: 'Delete financial account',
+            html: deleteBBAccount(),
+            inputAttributes: {
+                autocapitalize: 'on'
+            },
+            icon: 'info',
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it',
+            confirmButtonClass: "btn btn-info",
+            cancelButtonClass: "btn btn-secondary",
+            buttonsStyling: false,
+            showLoaderOnConfirm: true,
+  			preConfirm: () => {
+  				return new Promise(function(resolve) {
+  					let confPasswordUA = document.getElementById('oldPasswordDA');
+  					 // Authentication Details
+				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+			            Username: currentUser.email,
+			            Password: confPasswordUA.value
+			        });
+
+	  				// Authenticate Before cahnging password
+			        cognitoUser.authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+			            	// Hide loading 
+			               Swal.hideLoading();
+			               // Resolve the promise
+			               resolve();
+			            },
+			            onFailure: function signinError(err) {
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${err.message}`
+					        );
+					        // Change focus to Password Field
+					        confPasswordUA.focus();
+			            }
+			        });
+  				});
+  			},
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
+        }).then(function(result) {
+        	// Hide the validation message if present
+    		Swal.resetValidationMessage()
+        	 // If the Delete Button is pressed
+        	 if (result.value) {
+        	 	// Ajax Requests on Error
+				let ajaxData = {};
+				ajaxData.isAjaxReq = true;
+				ajaxData.type = 'DELETE';
+				ajaxData.url = ;
+				ajaxData.onSuccess = function(jsonObj) {
+		        	
+		        }
+			    ajaxData.onFailure = function (thrownError) {
+			    	manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!",ajaxData);
+	            }
+        	   	jQuery.ajax({
+					url: ajaxData.url,
+					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+			        type: ajaxData.type,
+			        success: ajaxData.onSuccess,
+			        error: ajaxData.onFailure
+	        	});
+        	 }
+
+        });
+
+        // Disable Change Password button 
+        let deleteBBBtn = document.getElementsByClassName('swal2-confirm')[0];
+        if(!deleteBBBtn.disabled) {
+            deleteBBBtn.setAttribute('disabled','disabled');
+        }
+
+        // Change focus to old password
+        document.getElementById('oldPasswordDA').focus();
 	});
 
-	// Delete Account Fragment
-	function deleteAccountFrag() {
-		let accountLabelInModal = document.getElementById('accountLabelInModal').innerText;
-		let docFragDelAcc = document.createDocumentFragment();
+	// Delete BB Account
+	function deleteBBAccount() {
+		let deletePassFrag = document.createDocumentFragment();
 
-		let delAccMessage = document.createElement('div');
-		delAccMessage.classList = 'text-left';
-		delAccMessage.innerText = 'You are about to delete the account ' + accountLabelInModal;
-		docFragDelAcc.appendChild(delAccMessage);
+		// Warning Text
+		let warnDiv = document.createElement('div');
+		warnDiv.classList = 'noselect text-left mb-3 fs-90';
+		warnDiv.innerHTML = 'Do you want to delete your user account <strong>' + currentUser.email + '</strong> and <strong>delete all data</strong> from Blitz Budget?';
+		deletePassFrag.appendChild(warnDiv);
 
-		let moveTrans = document.createElement('button');
-		moveTrans.classList = 'btn btn-secondary';
-		moveTrans.innerText = 'Move transactions to a different account'		
-		docFragDelAcc.appendChild(moveTrans);
+		// UL tag
+		let ulWarn = document.createElement('ul');
+		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
-		return docFragDelAcc;
+		let liOne = document.createElement('li');
+		liOne.innerHTML = 'all your data, <strong>Everything!</strong> will be deleted';
+		ulWarn.appendChild(liOne);
+
+		let liTwo = document.createElement('li');
+		liTwo.innerText = "premium subscription will be terminated";
+		ulWarn.appendChild(liTwo);
+
+		let liThree = document.createElement('li');
+		liThree.innerText = 'your Blitz Budget user account will be deleted';
+		ulWarn.appendChild(liThree);
+		deletePassFrag.appendChild(ulWarn);
+
+		// Subscription
+		let subsText = document.createElement('div');
+		subsText.classList = 'noselect text-left mb-3 fs-90';
+		subsText.innerText = 'Consider exporting your data!';
+		deletePassFrag.appendChild(subsText);
+
+		// Old Password
+		let oldPassWrapper = document.createElement('div');
+		oldPassWrapper.setAttribute('data-gramm_editor',"false");
+		oldPassWrapper.classList = 'oldPassWrapper text-left';
+		
+		let oldPassLabel = document.createElement('label');
+		oldPassLabel.innerText = 'Confirm Password';
+		oldPassWrapper.appendChild(oldPassLabel);
+
+
+		let dropdownGroupOP = document.createElement('div');
+		dropdownGroupOP.classList = 'btn-group d-md-block d-lg-block';
+		
+		let oldPassInput = document.createElement('input');
+		oldPassInput.id='oldPasswordDA';
+		oldPassInput.setAttribute('type','password');
+		oldPassInput.setAttribute('autocapitalize','off');
+		oldPassInput.setAttribute('spellcheck','false');
+		oldPassInput.setAttribute('autocorrect','off');
+		dropdownGroupOP.appendChild(oldPassInput);
+
+		let dropdownTriggerOP = document.createElement('button');
+		dropdownTriggerOP.classList = 'changeDpt btn btn-info';
+		dropdownTriggerOP.setAttribute('data-toggle' , 'dropdown');
+		dropdownTriggerOP.setAttribute('aria-haspopup' , 'true');
+		dropdownTriggerOP.setAttribute('aria-expanded' , 'false');
+
+		let miEye = document.createElement('i');
+		miEye.classList = 'material-icons';
+		miEye.innerText = 'remove_red_eye';
+		dropdownTriggerOP.appendChild(miEye);
+		dropdownGroupOP.appendChild(dropdownTriggerOP);
+		oldPassWrapper.appendChild(dropdownGroupOP);
+
+		// Error Text
+		let errorCPOld = document.createElement('div');
+		errorCPOld.id = 'cpErrorDispOldDA';
+		errorCPOld.classList = 'text-danger text-left small mb-2 noselect';
+		oldPassWrapper.appendChild(errorCPOld);		
+		deletePassFrag.appendChild(oldPassWrapper);
+
+		return deletePassFrag;
 	}
+
+	// Confirm Password Key Up listener For Delete User
+	$(document).on('keyup', "#oldPasswordDA", function(e) {
+	
+		let deleteAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
+		let errorDispRA = document.getElementById('cpErrorDispOldDA');
+		let passwordEnt = this.value;
+
+		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
+			deleteAccountBtn.setAttribute('disabled','disabled');
+			return;
+		}
+
+		errorDispRA.innerText = '';
+		deleteAccountBtn.removeAttribute('disabled');
+
+		// Delete Account
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 13) { 
+			document.activeElement.blur();
+		    e.preventDefault();
+		    e.stopPropagation();
+		    // Click the confirm button of SWAL
+		    deleteAccountBtn.click();
+		    return false;
+		}
+	});
+
+	// Confirm Password Focus Out listener For Delete User
+	$(document).on('focusout', "#oldPasswordDA", function() {
+	
+		let deleteAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
+		let errorDispRA = document.getElementById('cpErrorDispOldDA');
+		let passwordEnt = this.value;
+
+		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
+			errorDispRA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
+			deleteAccountBtn.setAttribute('disabled','disabled');
+			return;
+		}
+
+		errorDispRA.innerText = '';
+
+	});
 
 }(jQuery));
