@@ -178,9 +178,9 @@
 				let ajaxData = {};
 				ajaxData.isAjaxReq = true;
 				ajaxData.type = 'DELETE';
-				ajaxData.url = ;
+				ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId +  + currentUser.financialPortfolioId;
 				ajaxData.onSuccess = function(jsonObj) {
-		        	
+		        	// TODO remove / shuffle all transactions
 		        }
 			    ajaxData.onFailure = function (thrownError) {
 			    	manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!",ajaxData);
