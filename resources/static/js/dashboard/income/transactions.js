@@ -2259,10 +2259,10 @@
 	// Populate Account table information
 	function populateAccountTableInformation(userTransactionsList) {
 		if(isEmpty(userTransactionsList)) {
-				// Sort by Account is populated
+			// Sort by Account is populated
     		sortByAccountPopulated = false;
-				let accountTable = document.getElementById('accountTable');
-				// Replace HTML with Empty
+			let accountTable = document.getElementById('accountTable');
+			// Replace HTML with Empty
 			while (accountTable.firstChild) {
 				accountTable.removeChild(accountTable.firstChild);
 			}

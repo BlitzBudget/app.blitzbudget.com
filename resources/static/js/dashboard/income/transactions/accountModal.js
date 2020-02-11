@@ -236,6 +236,20 @@
 						let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
 						if(accountTableHeaders.length > 0) {
 							accountTableHeaders.get(0).click();
+						} else {
+							// Append account Table empty information
+							let accountTable = document.getElementById('accountTable');
+							// Replace HTML with Empty
+							while (accountTable.firstChild) {
+								accountTable.removeChild(accountTable.firstChild);
+							}
+				    		accountTable.appendChild(buildEmptyTransactionsTab());
+				    		// Show the empty table
+				    		accountTable.classList.remove('d-none');
+				    		// Close the account info Modal
+				    		document.getElementById('accountHeaderClose').click();
+				    		// Replace the Transactions Table with empty entry
+				    		// Replace recent transactions table with empty entry
 						}
 	                });
 		        }
@@ -380,5 +394,44 @@
 		errorDispRA.innerText = '';
 
 	});
+
+	// Change Input to Text
+	$(document).on('mouseover', ".changeDpt", function() {		
+		let firstChild = this.parentElement.firstChild;
+		firstChild.setAttribute('type', 'text');
+	});
+
+	// Change it back to password 
+	$(document).on('mouseout', ".changeDpt", function() {
+		let firstChild = this.parentElement.firstChild;
+		firstChild.setAttribute('type', 'password');
+	});
+
+	// Build EmptyRecTransTable
+	function buildEmptyTransactionsTab() {
+
+		let rowEmpty = document.createElement('div');
+		rowEmpty.classList = 'd-lg-table-row';
+
+		let cell1 = document.createElement('div');
+		cell1.classList = 'd-lg-table-cell';
+		rowEmpty.appendChild(cell1);
+
+		let cell2 = document.createElement('div');
+		cell2.classList = 'd-lg-table-cell text-center';
+		cell2.appendChild(buildEmptyTransactionsSvg());
+
+		let emptyMessageRow = document.createElement('div');
+		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
+		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+		cell2.appendChild(emptyMessageRow);
+		rowEmpty.appendChild(cell2);
+
+		let cell3 = document.createElement('div');
+		cell3.classList = 'd-lg-table-cell';
+		rowEmpty.appendChild(cell3);
+		
+		return rowEmpty;
+	}
 
 }(jQuery));
