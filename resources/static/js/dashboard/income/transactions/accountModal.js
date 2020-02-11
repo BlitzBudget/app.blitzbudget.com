@@ -133,6 +133,23 @@
 
 	// Delete Account functionality
 	document.getElementById('deleteSvgAccount').addEventListener("click",function(e){
+		// Define Cognito User Pool adn Pool data
+		let poolData = {
+	        UserPoolId: _config.cognito.userPoolId,
+	        ClientId: _config.cognito.userPoolClientId
+	    };
+
+	    let userPool;
+
+	    if (!(_config.cognito.userPoolId &&
+	          _config.cognito.userPoolClientId &&
+	          _config.cognito.region)) {
+	    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+	        return;
+	    }
+
+		userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
 		let cognitoUser = userPool.getCurrentUser();
 
 		Swal.fire({
@@ -196,7 +213,7 @@
 		        	$('#accountSB-' + currentAccountId).fadeOut('slow', function(){ 
 	                    this.remove();
 
-	                    // Append as Selected Account
+	                    // Remove from preivew if present
 	                    let posToRemove = null;
 				    	for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
 				    		if(bankAccountPreview[i].id == currentAccountId) {
@@ -214,6 +231,12 @@
 				    		// Remove the bank account preview
 				    		bankAccountPreview.splice(posToRemove , 1);
 				    	}
+
+				    	// Simulate a click on the first table heading (Show Account Modal)
+						let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+						if(accountTableHeaders.length > 0) {
+							accountTableHeaders.get(0).click();
+						}
 	                });
 		        }
 			    ajaxData.onFailure = function (thrownError) {

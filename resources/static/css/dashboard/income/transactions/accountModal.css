@@ -82,3 +82,41 @@
     visibility: visible;
     opacity: 1;
 }
+
+/**
+*   Delete account modal
+**/
+#oldPasswordDA {
+    border: 2px solid #88979d;
+    font-size: 1em;
+    margin-bottom: .5em;
+    padding: .5em;
+    width: 80%;
+}
+
+#oldPasswordDA:focus {
+    border: 2px solid #00bcd4;
+}
+
+.changeDpt.btn.btn-info {
+    margin-bottom: 0.25rem;
+    border: 0.062rem solid #00bcd4;
+}
+
+.fs-90 {
+    font-size: 90%;
+}
+
+.oldPassWrapper label {
+    display: block;
+    font-weight: 700;
+    padding: .3em 0 .1em;
+    width: 100%;
+    color: #383e41;
+}
+
+.overview-dashboard .swal2-popup .swal2-title {
+    color: #999;
+    font-size: 1.4rem;
+}
+
