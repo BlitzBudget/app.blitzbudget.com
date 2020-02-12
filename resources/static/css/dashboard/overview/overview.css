@@ -539,6 +539,12 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	box-shadow: 0 0 3px rgba(0,188,212,0.42);
 }
 
+.overview-dashboard .dropdown-menu .accountType:hover {
+	background: #009cc2;
+	color: #fff;
+	box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgb(150, 203, 222);
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 	.choose label span {

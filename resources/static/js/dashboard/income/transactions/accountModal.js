@@ -33,8 +33,13 @@
 		// Close  Financial Position
 		document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
 		// Rotate the arrow indicator
-		this.firstElementChild.classList.toggle('rotateZero');
-		this.firstElementChild.classList.toggle('rotateNinty');
+		let emptyTransInAcc = document.getElementById('emptyAccountEntry-' + accountId);
+		if(isNotEmpty(emptyTransInAcc)) {
+			let arrowIndicator = this.firstElementChild.firstElementChild;
+			arrowIndicator.classList.toggle('rotateZero');
+			arrowIndicator.classList.toggle('rotateNinty');
+		}
+		
 
 	});
 

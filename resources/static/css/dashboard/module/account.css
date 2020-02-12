@@ -130,12 +130,6 @@
 	border-radius: .25rem;
 }
 
-.overview-dashboard .dropdown-menu .accountType:hover {
-	background: #009cc2;
-	color: #fff;
-	box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgb(150, 203, 222);
-}
-
 #accountPickerWrapper .rtSpinner {
 	position: absolute;
     left: 41%;

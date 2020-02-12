@@ -833,8 +833,7 @@
 	  	// Hide all child categories
 		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
 	  	// Toggle the drop down arrow
-	  	dropdownArrowDiv.toggle('dropdown-toggle');
-	  	dropdownArrowDiv.toggle('dropdown-toggle-right');
+	  	dropdownArrowDiv.toggle('rotateNinty');
 	  	closestTrElement.classList.toggle('categoryShown');
 	  	// If the category modal is active then hide it
 	  	toggleCategoryModal(closestTrElement);
@@ -2267,6 +2266,14 @@
 				accountTable.removeChild(accountTable.firstChild);
 			}
     		accountTable.appendChild(buildEmptyTransactionsTab());
+    		// Show the empty table information
+    		accountTable.classList.remove('d-none');
+    		// Remove all the account transaction information
+    		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
+    		// Replace HTML with Empty
+			while (accountInfoTable.firstChild) {
+				accountInfoTable.removeChild(accountInfoTable.firstChild);
+			}
     	} else {
     		// Sort by Account is populated
     		sortByAccountPopulated = true;
@@ -2662,6 +2669,10 @@
 		// Remove Account Table Class
 		let popAccInfoTab = $('.accountInfoTable')
 		popAccInfoTab.removeClass('d-none');
+		// Show all the entries
+		let allAccountRows = $(popAccInfoTab + ' .recentTransactionEntry')
+		allAccountRows.removeClass('d-none');
+		allAccountRows.addClass('d-lg-table-row');
 		
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
@@ -2723,19 +2734,24 @@
 
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
+
+		// Title Wrapper
+		let titleWrapper = document.createElement('div');
+		titleWrapper.classList = 'd-lg-table-cell';
 		
 		// Right Arrow
 		let rightArrow = document.createElement('div');
-		rightArrow.classList = 'material-icons f-90 rotateZero';
+		rightArrow.classList = 'material-icons rotateNinty';
 		rightArrow.innerText = 'keyboard_arrow_right';
-		accountTit.appendChild(rightArrow);
+		titleWrapper.appendChild(rightArrow);
 
 		// Title
 		let accountTitle = document.createElement('a');
 		accountTitle.id = 'accountTitle-' + accountId;
-		accountTitle.classList = 'd-lg-table-cell text-nowrap pl-4 accTitleAnchor';
+		accountTitle.classList = 'text-nowrap pl-4 accTitleAnchor';
 		accountTitle.appendChild(buildSmallMaterialSpinner(accountId));
-		accountTit.appendChild(accountTitle);
+		titleWrapper.appendChild(accountTitle);
+		accountTit.appendChild(titleWrapper);
 
 		// Empty Cell
 		let emptyCell = document.createElement('div');
