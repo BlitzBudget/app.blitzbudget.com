@@ -2266,8 +2266,6 @@
 				accountTable.removeChild(accountTable.firstChild);
 			}
     		accountTable.appendChild(buildEmptyTransactionsTab());
-    		// Show the empty table information
-    		accountTable.classList.remove('d-none');
     		// Remove all the account transaction information
     		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
     		// Replace HTML with Empty
@@ -2669,10 +2667,14 @@
 		// Remove Account Table Class
 		let popAccInfoTab = $('.accountInfoTable')
 		popAccInfoTab.removeClass('d-none');
-		// Show all the entries
-		let allAccountRows = $(popAccInfoTab + ' .recentTransactionEntry')
+		// Show all the account table entries
+		let allAccountRows = popAccInfoTab.find('.recentTransactionEntry')
 		allAccountRows.removeClass('d-none');
 		allAccountRows.addClass('d-lg-table-row');
+		// Find all misaligned arrows and align them
+		let allZeroTurnedEl = allAccountRows.find('rotateZero');
+		allZeroTurnedEl.removeClass('rotateZero');
+		allZeroTurnedEl.addClass('rotateNinty');
 		
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {

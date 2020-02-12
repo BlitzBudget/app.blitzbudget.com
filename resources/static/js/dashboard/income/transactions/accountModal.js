@@ -34,7 +34,7 @@
 		document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
 		// Rotate the arrow indicator
 		let emptyTransInAcc = document.getElementById('emptyAccountEntry-' + accountId);
-		if(isNotEmpty(emptyTransInAcc)) {
+		if(isEmpty(emptyTransInAcc)) {
 			let arrowIndicator = this.firstElementChild.firstElementChild;
 			arrowIndicator.classList.toggle('rotateZero');
 			arrowIndicator.classList.toggle('rotateNinty');
