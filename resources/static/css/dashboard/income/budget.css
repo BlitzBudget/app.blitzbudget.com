@@ -282,7 +282,12 @@
 	display: inline-block;	
 }
 
-.dropdown-menu .dropdown-item.compensationDropdownMenu:hover {
+.dropdown-menu .dropdown-item.compensationDropdownMenu:hover, 
+.dropdown-menu .dropdown-item.compensationDropdownMenu:focus, 
+.dropdown-menu .dropdown-item.compensationDropdownMenu:active, 
+.overview-dashboard .dropdown-menu .accountType:hover,
+.overview-dashboard .dropdown-menu .accountType:focus,
+.overview-dashboard .dropdown-menu .accountType:active {
 	box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14),0 7px 10px -5px rgba(176, 39, 83, 0.4);
 	background-color: #ea2c6d;
 	color: #fff;

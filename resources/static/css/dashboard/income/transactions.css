@@ -18,13 +18,15 @@
 	border-top: 1px solid #f6f6f6;
 }
 
-.hideableRow {
-  	 -webkit-transition: all 0.2s ease;
+.hideableRow, 
+.d-lg-table-cell {
+  	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-ms-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 }
+
 .hideableRow .d-lg-table-cell {
 	border-top: 1px solid #f6f6f6;
 	padding: .18rem 0;
@@ -816,7 +818,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 #bootstrap-combobox.dropdown-menu .dropdown-item:focus, 
 #bootstrap-combobox.dropdown-menu a:hover, 
 #bootstrap-combobox.dropdown-menu a:focus, 
-#bootstrap-combobox.dropdown-menu a:active {
+#bootstrap-combobox.dropdown-menu a:active,
+.overview-dashboard .dropdown-menu .accountType:hover,
+.overview-dashboard .dropdown-menu .accountType:focus,
+.overview-dashboard .dropdown-menu .accountType:active {
     background-color: #47a44b;
 	border-color: #39843c;
 	box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2);
@@ -913,6 +918,10 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 
 .rotateNinty {
 	transform: rotate(90deg);
+}
+
+.changeBtnClr.btn.btn-dynamic-color.dropdown-toggle {
+	color: #fff;
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/
