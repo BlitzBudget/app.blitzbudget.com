@@ -534,7 +534,6 @@
 		tableRow.setAttribute('id', 'categoryTableRow-' + categoryId);
 		tableRow.setAttribute('data-toggle', 'collapse');
 		tableRow.setAttribute('role' , 'button');
-		tableRow.classList = 'ripple-row';
 		
 		// Change the table color if for expense vs income
 		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
@@ -2661,7 +2660,8 @@
 		transactionsTable.classList.remove('d-lg-table');
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
-		$('.accountInfoTable').removeClass('d-none');
+		let popAccInfoTab = $('.accountInfoTable')
+		popAccInfoTab.removeClass('d-none');
 		
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
@@ -2669,7 +2669,7 @@
 		}
 
 		// If already sorted then do nothing
-		if(sortByAccountPopulated) {
+		if(sortByAccountPopulated && popAccInfoTab.length > 0) {
 			return;
 		}
 		// Show the accountTable
@@ -2719,10 +2719,16 @@
 		let docFrag = document.createDocumentFragment();
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
-		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect ripple-row';
+		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
+		
+		// Right Arrow
+		let rightArrow = document.createElement('div');
+		rightArrow.classList = 'material-icons f-90 rotateZero';
+		rightArrow.innerText = 'keyboard_arrow_right';
+		accountTit.appendChild(rightArrow);
 
 		// Title
 		let accountTitle = document.createElement('a');
@@ -2945,30 +2951,5 @@
     	return svgElement;
     	
 	}
-
-	// Material Design on click row
-	$( ".overview-dashboard" ).on( "click", ".ripple-row" ,function() {
-      event.preventDefault();
-      var $btn = $(this),
-        $div = $('<div/>'),
-        btnOffset = $btn.offset(),
-        xPos = event.pageX - btnOffset.left,
-        yPos = event.pageY - btnOffset.top;
-
-      $div.addClass('ripple-effect');
-      $div
-        .css({
-          height: $btn.height(),
-          width: $btn.height(),
-          top: yPos - ($div.height() / 2),
-          left: xPos - ($div.width() / 2),
-          background: $btn.data("ripple-color") || "#fff"
-        });
-      $btn.append($div);
-
-      window.setTimeout(function() {
-        $div.remove();
-      }, 2000);
-    });
 
 }(jQuery));
