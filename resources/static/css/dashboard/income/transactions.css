@@ -907,6 +907,27 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
     transform: scale(1);
 }
 
+.ripple-row {
+  overflow: hidden;
+}
+
+.ripple-effect-row {
+  position: absolute;
+  border-radius: 50%;
+  animation: ripple-animation-row 2s;
+}
+
+@keyframes ripple-animation-row {
+  from {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  to {
+    transform: scale(100);
+    opacity: 0;
+  }
+}
+
 /** Change the size of the text if the width and height pf the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
 	
