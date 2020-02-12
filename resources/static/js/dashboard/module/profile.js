@@ -366,87 +366,87 @@
 	document.getElementById('resetBBAccount').addEventListener("click",function(e){
 		let cognitoUser = userPool.getCurrentUser();
 		Swal.fire({
-                title: 'Reset your Blitz Budget user account',
-                html: resetBBAccount(),
-	            inputAttributes: {
-	                autocapitalize: 'on'
-	            },
-                icon: 'info',
-                showCancelButton: true,
-                showCloseButton: true,
-                confirmButtonText: 'Yes, reset it!',
-                cancelButtonText: 'No, keep it',
-                confirmButtonClass: "btn btn-info",
-                cancelButtonClass: "btn btn-secondary",
-                buttonsStyling: false,
-                showLoaderOnConfirm: true,
-	  			preConfirm: () => {
-	  				return new Promise(function(resolve) {
-	  					let confPasswordUA = document.getElementById('oldPasswordRP');
-	  					 // Authentication Details
-					    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-				            Username: currentUser.email,
-				            Password: confPasswordUA.value
-				        });
+            title: 'Reset your Blitz Budget user account',
+            html: resetBBAccount(),
+            inputAttributes: {
+                autocapitalize: 'on'
+            },
+            icon: 'info',
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: 'Yes, reset it!',
+            cancelButtonText: 'No, keep it',
+            confirmButtonClass: "btn btn-info",
+            cancelButtonClass: "btn btn-secondary",
+            buttonsStyling: false,
+            showLoaderOnConfirm: true,
+  			preConfirm: () => {
+  				return new Promise(function(resolve) {
+  					let confPasswordUA = document.getElementById('oldPasswordRP');
+  					 // Authentication Details
+				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+			            Username: currentUser.email,
+			            Password: confPasswordUA.value
+			        });
 
-		  				// Authenticate Before cahnging password
-				        cognitoUser.authenticateUser(authenticationDetails, {
-				            onSuccess: function signinSuccess(result) {
-				            	// Hide loading 
-				               Swal.hideLoading();
-				               // Resolve the promise
-				               resolve();
-				            },
-				            onFailure: function signinError(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change Focus to password field
-						        confPasswordUA.focus();
-				            }
-				        });
-	  				});
-	  			},
-	  			allowOutsideClick: () => !Swal.isLoading(),
-	  			closeOnClickOutside: () => !Swal.isLoading()
-            }).then(function(result) {
-            	// Hide the validation message if present
-        		Swal.resetValidationMessage()
-            	 // If the Reset Button is pressed
-            	 if (result.value) {
-					// Ajax Requests on Error
-					let ajaxData = {};
-					ajaxData.isAjaxReq = true;
-					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId;
-					ajaxData.onSuccess = function(jsonObj) {
-			        	showNotification("Successfully reset your account. Your account is as good as new!",'top','center','success');
-			        }
-				    ajaxData.onFailure = function (thrownError) {
-				    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);
-		            }
-            	 	jQuery.ajax({
-						url: ajaxData.url,
-						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-				        type: ajaxData.type,
-				        success: ajaxData.onSuccess,
-				        error: ajaxData.onFailure
-		        	});
-            	 }
+	  				// Authenticate Before cahnging password
+			        cognitoUser.authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+			            	// Hide loading 
+			               Swal.hideLoading();
+			               // Resolve the promise
+			               resolve();
+			            },
+			            onFailure: function signinError(err) {
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${err.message}`
+					        );
+					        // Change Focus to password field
+					        confPasswordUA.focus();
+			            }
+			        });
+  				});
+  			},
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
+        }).then(function(result) {
+        	// Hide the validation message if present
+    		Swal.resetValidationMessage()
+        	// If the Reset Button is pressed
+        	if (result.value) {
+				// Ajax Requests on Error
+				let ajaxData = {};
+				ajaxData.isAjaxReq = true;
+				ajaxData.type = 'DELETE';
+				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId;
+				ajaxData.onSuccess = function(jsonObj) {
+		        	showNotification("Successfully reset your account. Your account is as good as new!",'top','center','success');
+		        }
+			    ajaxData.onFailure = function (thrownError) {
+			    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);
+	            }
+        	 	jQuery.ajax({
+					url: ajaxData.url,
+					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+			        type: ajaxData.type,
+			        success: ajaxData.onSuccess,
+			        error: ajaxData.onFailure
+	        	});
+        	}
 
-            });
+        });
 
-			// Disable Change Password button 
-	        let resetBBBtn = document.getElementsByClassName('swal2-confirm')[0];
-	        if(!resetBBBtn.disabled) {
-	            resetBBBtn.setAttribute('disabled','disabled');
-	        }
+		// Disable Change Password button 
+        let resetBBBtn = document.getElementsByClassName('swal2-confirm')[0];
+        if(!resetBBBtn.disabled) {
+            resetBBBtn.setAttribute('disabled','disabled');
+        }
 
-	        // Change Focus to Confirm Password
-	        document.getElementById('oldPasswordRP').focus();            
+        // Change Focus to Confirm Password
+        document.getElementById('oldPasswordRP').focus();            
 	});
 
 	// Delete button

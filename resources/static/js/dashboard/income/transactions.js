@@ -534,6 +534,7 @@
 		tableRow.setAttribute('id', 'categoryTableRow-' + categoryId);
 		tableRow.setAttribute('data-toggle', 'collapse');
 		tableRow.setAttribute('role' , 'button');
+		tableRow.classList = 'ripple-row';
 		
 		// Change the table color if for expense vs income
 		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
@@ -2259,10 +2260,10 @@
 	// Populate Account table information
 	function populateAccountTableInformation(userTransactionsList) {
 		if(isEmpty(userTransactionsList)) {
-				// Sort by Account is populated
+			// Sort by Account is populated
     		sortByAccountPopulated = false;
-				let accountTable = document.getElementById('accountTable');
-				// Replace HTML with Empty
+			let accountTable = document.getElementById('accountTable');
+			// Replace HTML with Empty
 			while (accountTable.firstChild) {
 				accountTable.removeChild(accountTable.firstChild);
 			}
@@ -2718,7 +2719,7 @@
 		let docFrag = document.createDocumentFragment();
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
-		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
+		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect ripple-row';
 
 		let accountTit = document.createElement('div');
 		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
@@ -2944,5 +2945,30 @@
     	return svgElement;
     	
 	}
+
+	// Material Design on click row
+	$( ".overview-dashboard" ).on( "click", ".ripple-row" ,function() {
+      event.preventDefault();
+      var $btn = $(this),
+        $div = $('<div/>'),
+        btnOffset = $btn.offset(),
+        xPos = event.pageX - btnOffset.left,
+        yPos = event.pageY - btnOffset.top;
+
+      $div.addClass('ripple-effect');
+      $div
+        .css({
+          height: $btn.height(),
+          width: $btn.height(),
+          top: yPos - ($div.height() / 2),
+          left: xPos - ($div.width() / 2),
+          background: $btn.data("ripple-color") || "#fff"
+        });
+      $btn.append($div);
+
+      window.setTimeout(function() {
+        $div.remove();
+      }, 2000);
+    });
 
 }(jQuery));
