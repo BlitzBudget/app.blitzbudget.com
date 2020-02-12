@@ -2672,9 +2672,7 @@
 		allAccountRows.removeClass('d-none');
 		allAccountRows.addClass('d-lg-table-row');
 		// Find all misaligned arrows and align them
-		let allZeroTurnedEl = allAccountRows.find('rotateZero');
-		allZeroTurnedEl.removeClass('rotateZero');
-		allZeroTurnedEl.addClass('rotateNinty');
+		popAccInfoTab.find('.rotateZero').removeClass('rotateZero').addClass('rotateNinty');
 		
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
