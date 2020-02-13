@@ -2257,6 +2257,9 @@
 
 	// Populate Account table information
 	function populateAccountTableInformation(userTransactionsList) {
+		// cache the results
+   		userTransSortedByDate = userTransactionsList;
+
 		if(isEmpty(userTransactionsList)) {
 			// Sort by Account is populated
     		sortByAccountPopulated = false;
@@ -2269,14 +2272,17 @@
     		// Remove all the account transaction information
     		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
     		// Replace HTML with Empty
-			while (accountInfoTable.firstChild) {
-				accountInfoTable.removeChild(accountInfoTable.firstChild);
+			while (accountInfoTable[0]) {
+				accountInfoTable[0].parentNode.removeChild(accountInfoTable[0]);
+			}
+			// If Account Table is shown then remove d-none
+			if(document.getElementById('transactionsTable').classList.contains('d-none') && 
+				document.getElementById('recentTransactions').classList.contains('d-none')) {
+				accountTable.classList.remove('d-none');
 			}
     	} else {
     		// Sort by Account is populated
     		sortByAccountPopulated = true;
-   			// cache the results
-   			userTransSortedByDate = userTransactionsList;
    			// Populate the transaction of account
    			popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
@@ -2291,6 +2297,9 @@
 
 	// POpulate Recent Transaction information
 	function populateRecentTransInfo(userTransactionsList) {
+		// cache the results
+   		userTransSortedByDate = userTransactionsList;
+
 		let latestCreationDateItr = new Date();
     	let recentTransactionsDiv = document.getElementById(recentTransactionsId);
     	let recentTransactionsFragment = document.createDocumentFragment();
@@ -2302,8 +2311,6 @@
     	} else {
     		// Update the recent transactions
    			recentTransactionsPopulated = true;
-   			// cache the results
-   			userTransSortedByDate = userTransactionsList;
 
    			// Check if it is the same day
      	   if(isToday(new Date(userTransactionsList[0].createDate))) {
@@ -2841,6 +2848,7 @@
 
   			// If the document fragment contains a child
   			if(accHeadFrag.firstElementChild) {
+  				let clickOnHeader = false;
   				// If Account Table is hidden then add d-none
 				if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 					!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2851,15 +2859,20 @@
 						accTableInfo[i].classList.add('d-none');
 					}
 
-				}
-  				accountAggreDiv.appendChild(accHeadFrag);
-  			}
+					// Click on header
+					clickOnHeader = true;
 
-  			// Simulate a click on the first table heading (Show Account Modal)
-			let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-			if(accountTableHeaders.length > 0) {
-				accountTableHeaders.get(0).click();
-			}
+				}
+
+				// Append the account transactions to the table
+  				accountAggreDiv.appendChild(accHeadFrag);
+
+  				// Simulate a click on the first table heading (Show Account Modal)
+				let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+				if(accountTableHeaders.length > 0 && clickOnHeader) {
+					accountTableHeaders.get(0).click();
+				}
+  			}
 
         });
 	}
