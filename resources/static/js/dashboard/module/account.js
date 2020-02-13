@@ -736,7 +736,11 @@ function populateBankAccountInfo(bankAccount, count) {
 	// Bank Account Balance
 	let bABalance = document.createElement('div');
 	bABalance.classList = 'col-lg-5 text-right font-weight-bold py-2 bAAmount';
-	bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+	if(bankAccount.accountBalance < 0) { 
+		bABalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount.accountBalance), currentUser.locale);
+	} else { 
+		bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+	}
 	wrapperRow.appendChild(bABalance);
 	
 	return wrapperRow;

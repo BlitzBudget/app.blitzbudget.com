@@ -2669,10 +2669,12 @@
 		// Remove Account Table Class
 		let popAccInfoTab = $('.accountInfoTable')
 		popAccInfoTab.removeClass('d-none');
-		// Show all the entries
-		let allAccountRows = $(popAccInfoTab + ' .recentTransactionEntry')
+		// Show all the account table entries
+		let allAccountRows = popAccInfoTab.find('.recentTransactionEntry')
 		allAccountRows.removeClass('d-none');
 		allAccountRows.addClass('d-lg-table-row');
+		// Find all misaligned arrows and align them
+		popAccInfoTab.find('.rotateZero').removeClass('rotateZero').addClass('rotateNinty');
 		
 		// If register new transaction is populated then populate account again
 		if(registeredNewTransaction) {
