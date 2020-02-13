@@ -2848,6 +2848,7 @@
 
   			// If the document fragment contains a child
   			if(accHeadFrag.firstElementChild) {
+  				let clickOnHeader = false;
   				// If Account Table is hidden then add d-none
 				if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 					!document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -2858,14 +2859,19 @@
 						accTableInfo[i].classList.add('d-none');
 					}
 
-					// Simulate a click on the first table heading (Show Account Modal)
-					let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-					if(accountTableHeaders.length > 0) {
-						accountTableHeaders.get(0).click();
-					}
+					// Click on header
+					clickOnHeader = true;
 
 				}
+
+				// Append the account transactions to the table
   				accountAggreDiv.appendChild(accHeadFrag);
+
+  				// Simulate a click on the first table heading (Show Account Modal)
+				let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+				if(accountTableHeaders.length > 0 && clickOnHeader) {
+					accountTableHeaders.get(0).click();
+				}
   			}
 
         });
