@@ -2275,6 +2275,11 @@
 			while (accountInfoTable[0]) {
 				accountInfoTable[0].parentNode.removeChild(accountInfoTable[0]);
 			}
+			// If Account Table is shown then remove d-none
+			if(document.getElementById('transactionsTable').classList.contains('d-none') && 
+				document.getElementById('recentTransactions').classList.contains('d-none')) {
+				accountTable.classList.remove('d-none');
+			}
     	} else {
     		// Sort by Account is populated
     		sortByAccountPopulated = true;
@@ -2853,15 +2858,15 @@
 						accTableInfo[i].classList.add('d-none');
 					}
 
+					// Simulate a click on the first table heading (Show Account Modal)
+					let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+					if(accountTableHeaders.length > 0) {
+						accountTableHeaders.get(0).click();
+					}
+
 				}
   				accountAggreDiv.appendChild(accHeadFrag);
   			}
-
-  			// Simulate a click on the first table heading (Show Account Modal)
-			let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-			if(accountTableHeaders.length > 0) {
-				accountTableHeaders.get(0).click();
-			}
 
         });
 	}
