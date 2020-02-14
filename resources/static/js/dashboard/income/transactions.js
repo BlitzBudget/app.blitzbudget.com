@@ -648,11 +648,27 @@
 			document.getElementById('addFncTT').innerText = 'delete';
 			document.getElementById('genericAddFnc').classList.remove('btn-success');
 			document.getElementById('genericAddFnc').classList.add('btn-danger');
+			// Show the export button in conjunction with delete button
+			let expDataCL = document.getElementById('exportData').classList;
+			expDataCL.remove('d-none');
+			expDataCL.add('d-inline-block');
+			// show the Sort Options wrapper
+			let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
+			sortOptionsWrapper.add('d-none');
+			sortOptionsWrapper.remove('d-inline-block');
 		} else {
 			 // If length > 0 then change the add button to add
 			document.getElementById('addFncTT').innerText = 'add';
 			document.getElementById('genericAddFnc').classList.add('btn-success');
 			document.getElementById('genericAddFnc').classList.remove('btn-danger');
+			// Hide the export button in conjunction with delete button
+			let expDataCL = document.getElementById('exportData').classList;
+			expDataCL.add('d-none');
+			expDataCL.remove('d-inline-block');
+			// show the Sort Options wrapper
+			let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
+			sortOptionsWrapper.remove('d-none');
+			sortOptionsWrapper.add('d-inline-block');
 		}  
 	}
 
