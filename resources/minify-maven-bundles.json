@@ -68,7 +68,8 @@
                 "/dashboard/income/transactions.js",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
                 "/dashboard/income/transactions/importTransactionsFromFile.js",
-                "/dashboard/income/transactions/export/exportSelectedToCSV.js"
+                "/dashboard/income/transactions/export/exportSelectedToCSV.js",
+                "/dashboard/income/transactions/export/chooseExportFileType.js"
             ]
         }
     ]

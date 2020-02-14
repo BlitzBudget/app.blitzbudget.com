@@ -64,9 +64,7 @@
             let row = "";
             
             //2nd loop will extract each column and convert it in string comma-seprated
-            for (var index in arrData[i]) {
-                row += '"' + arrData[i][index] + '",';
-            }
+            row += '"' + arrData[i] + '",';
 
             row.slice(0, row.length - 1);
             
@@ -80,7 +78,7 @@
         }   
         
         //Generate a file name
-        let fileName = "MyReport_";
+        let fileName = "";
         //this will remove the blank-spaces from the title and replace it with an underscore
         fileName += ReportTitle.replace(/ /g,"_");   
         
