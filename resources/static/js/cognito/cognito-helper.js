@@ -24,7 +24,7 @@ uh = {
 	    if (!(_config.cognito.userPoolId &&
 	          _config.cognito.userPoolClientId &&
 	          _config.cognito.region)) {
-	    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+	    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
 	        return;
 	    }
 	    
@@ -114,7 +114,7 @@ uh = {
 	    if (!(_config.cognito.userPoolId &&
 	          _config.cognito.userPoolClientId &&
 	          _config.cognito.region)) {
-	    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+	    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
 	    	er.showLoginPopup();
 	        return;
 	    }
@@ -134,11 +134,11 @@ uh = {
 
 	    cognitoUser.getSession((err, session) => {
 		    if (isNotEmpty(err)) {
-		        showNotification(err.message,'top','center','danger');
+		        showNotification(err.message,window._constants.notification.error);
 		        er.showLoginPopup();
 		        return;
 		    } else if (isEmpty(session) || !session.isValid() || sessionInvalidated) {
-		        showNotification('Session is invalid','top','center','success');
+		        showNotification('Session is invalid',window._constants.notification.success);
 		        er.showLoginPopup();
 		    	window.sessionInvalidated = 0;
 		    	return;
@@ -150,7 +150,7 @@ uh = {
 				window.sessionInvalidated++;
 				window.alreadyRequestedRefresh = false;
 				if (err) {
-					showNotification(err.message,'top','center','danger');
+					showNotification(err.message,window._constants.notification.error);
 					er.showLoginPopup();
 				} else {
 					// Set JWT Token For authentication

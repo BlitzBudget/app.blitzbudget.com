@@ -159,7 +159,7 @@
 	    if (!(_config.cognito.userPoolId &&
 	          _config.cognito.userPoolClientId &&
 	          _config.cognito.region)) {
-	    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+	    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
 	        return;
 	    }
 

@@ -26,7 +26,7 @@
     if (!(_config.cognito.userPoolId &&
           _config.cognito.userPoolClientId &&
           _config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
         return;
     }
 
@@ -261,10 +261,10 @@
         // Loads the current Logged in User Attributes
         cognitoUser.changePassword(oldPassword, newPassword, function(err, result) {
             if (err) {
-                showNotification(err.message,'top','center','danger');
+                showNotification(err.message,window._constants.notification.error);
                 return;
             }
-            showNotification('Successfully changed the password!','top','center','success');
+            showNotification('Successfully changed the password!',window._constants.notification.success);
         });
                 
     }
@@ -423,7 +423,7 @@
 				ajaxData.type = 'DELETE';
 				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId;
 				ajaxData.onSuccess = function(jsonObj) {
-		        	showNotification("Successfully reset your account. Your account is as good as new!",'top','center','success');
+		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
 		        }
 			    ajaxData.onFailure = function (thrownError) {
 			    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);
@@ -514,7 +514,7 @@
 			        	// Delete user
 						cognitoUser.deleteUser(function(err, result) {
 					        if (err) {
-					            showNotification(err.message,'top','center','success');
+					            showNotification(err.message,window._constants.notification.success);
 					            return;
 					        }
 					        localStorage.clear();
@@ -874,7 +874,7 @@
 		let userNameLis = splitElement(userNameModInp,' ');
 
 		if(userNameLis.length < 1) {
-			showNotification('First name and last name cannot be empty','top','center','danger');
+			showNotification('First name and last name cannot be empty',window._constants.notification.error);
 			return;
 		}
 
@@ -1121,7 +1121,7 @@
 		let emailModInp = document.getElementById('emailModInp').value;
 
 		if(emailModInp.length < 4) {
-			showNotification('Email field should have a valid entry','top','center','danger');
+			showNotification('Email field should have a valid entry',window._constants.notification.error);
 			return;
 		}
 
@@ -1231,7 +1231,7 @@
                 if (!err) {
                     signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
                 } else {
-                    showNotification(err.message,'top','center','danger');
+                    showNotification(err.message,window._constants.notification.error);
 
 			        // Hide the Element
 					document.getElementById('emailEdit').classList.add('d-none');
@@ -1345,7 +1345,7 @@
 	        	 // Delete the registered user 
 				cognitoUser.deleteUser(function(err, result) {
 			        if (err) {
-			            showNotification(err.message,'top','center','danger');
+			            showNotification(err.message,window._constants.notification.error);
 			            return;
 			        }
 			        // Update email
@@ -1360,13 +1360,13 @@
 			        // Authenticate Before cahnging email (SIGN IN User)
 			        createCognitoUser(emailModInp).authenticateUser(authenticationDetails, {
 			            onSuccess: function signinSuccess(result) {
-			               showNotification('Successfully changed the email!','top','center','success');
+			               showNotification('Successfully changed the email!',window._constants.notification.success);
 			            },
 			            onFailure: function signinError(err) {
 			               // Login Modal
 			               er.sessionExpiredSwal(true);
 			               // Notification
-			               showNotification('Password entered is invalid','top','center','danger');
+			               showNotification('Password entered is invalid',window._constants.notification.error);
 			            }
 			        });
 			    });

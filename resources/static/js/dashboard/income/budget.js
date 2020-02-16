@@ -576,7 +576,7 @@
 		
 		// Security check to ensure that the budget is present
 		if(isEmpty(userBudgetCache[categoryId])) {
-			showNotification('Unable to delete the budget. Please refresh and try again!','top','center','danger');
+			showNotification('Unable to delete the budget. Please refresh and try again!',window._constants.notification.error);
 			return;
 		}
 		
@@ -953,7 +953,7 @@
 		// Make sure that the category selected is not budgeted
 		let allUnbudgetedCategories = returnUnbudgetedCategories();
 		if(!includesStr(allUnbudgetedCategories,this.value)) {
-			showNotification('The selected category already has a budget. Please choose a different category!','top','center','danger');
+			showNotification('The selected category already has a budget. Please choose a different category!',window._constants.notification.error);
 			return;
 		}
 		
@@ -975,7 +975,7 @@
    		ajaxData.onSuccess = function(userBudget){
 	        	  
 	        	 if(isEmpty(userBudget)) {
-	        		 showNotification("Sorry, We couldn't change the budegt at the moment. Please refresh and try again",'top','center','danger');
+	        		 showNotification("Sorry, We couldn't change the budegt at the moment. Please refresh and try again",window._constants.notification.error);
 	        		 return;
 	        	 }
 	        	  
@@ -1056,7 +1056,7 @@
 		let categoryId = returnUnbudgetedCategory();
 		
 		if(isEmpty(categoryId)) {
-			showNotification('You have a budget for all the categories!','top','center','danger');
+			showNotification('You have a budget for all the categories!',window._constants.notification.error);
 			return;
 		}
 		// Disable the add button
@@ -1156,7 +1156,7 @@
 		
 		// If user budget or the category is empty then show the message
 		if(isEmpty(userBudgetCache) || isEmpty(userBudgetCache[categoryId])) {
-			showNotification('You do not have any budgets to compensate it with!','top','center','danger');
+			showNotification('You do not have any budgets to compensate it with!',window._constants.notification.error);
 			return;
 		}
 		
@@ -1188,7 +1188,7 @@
 		
 		// If there are no user budget available to compensate then show message
 		if(isEmpty(userBudgetAndTotalAvailable)) {
-			showNotification('You do not have any budgets available to compensate it with!','top','center','danger');
+			showNotification('You do not have any budgets available to compensate it with!',window._constants.notification.error);
 			return;
 		}
 		
@@ -1250,7 +1250,7 @@
 		values['dateMeantFor'] = chosenDate;
 		
 		if(compensationDisplay.length == 0 || isEmpty(categoryMap[selectedCategoryId]) || isEmpty(categoryMap[categoryForModalOpened]) || isEmpty(categoryTotalMapCache[categoryForModalOpened])) {
-			showNotification('There was an error while compensating the categories. Try refreshing the page!','top','center','danger');
+			showNotification('There was an error while compensating the categories. Try refreshing the page!',window._constants.notification.error);
 			return;
 		}
 		
@@ -1394,7 +1394,7 @@
 		this.firstChild.classList.toggle('d-none');
 		
 		if(isEmpty(categoryMap[toDeleteCategoryId]) || isEmpty(userBudgetAndTotalAvailable[toDeleteCategoryId])) {
-			showNotification('Please refresh the page and try again!','top','center','danger');
+			showNotification('Please refresh the page and try again!',window._constants.notification.error);
 			// Hide the modal
 			$('#categoryCompensationModal').modal('hide');
 			return;

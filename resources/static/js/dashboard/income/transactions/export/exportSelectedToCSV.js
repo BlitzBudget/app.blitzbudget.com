@@ -30,6 +30,9 @@
         // Json to csv convertor
         JSONToCSVConvertor(JSON.stringify(transactionIds), "transactions", false);
 
+        // Successfully downloaded the excel
+        showNotification('Successfully downloaded the selected transactions',window._constants.notification.success);
+
     });
 
     // Convert JSON to CSV
@@ -73,7 +76,7 @@
         }
 
         if (CSV == '') {        
-            showNotification('Invalid data. Please refresh and try again!','top','center','danger');
+            showNotification('Invalid data. Please refresh and try again!',window._constants.notification.error);
             return;
         }   
         

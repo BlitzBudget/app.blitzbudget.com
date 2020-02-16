@@ -931,7 +931,7 @@ er = {
 	checkIfInvalidCategory(categoryIdForBudget) {
 		
 		if(isEmpty(categoryMap[Number(categoryIdForBudget)])) {
-			showNotification('Unable to the update budget at the moment. Please refresh the page and try again!','top','center','danger');
+			showNotification('Unable to the update budget at the moment. Please refresh the page and try again!',window._constants.notification.error);
 			return true;
 		}
 		

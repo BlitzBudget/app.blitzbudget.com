@@ -745,7 +745,7 @@
 						ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 						ajaxData.contentType = "application/json; charset=utf-8";
 						ajaxData.onSuccess = function(result) {
-                        	showNotification('Successfully deleted the selected transactions','top','center','success');
+                        	showNotification('Successfully deleted the selected transactions',window._constants.notification.success);
                         	
                         	let checkAllClicked = $("#checkAll:checked").length > 0;
                         	

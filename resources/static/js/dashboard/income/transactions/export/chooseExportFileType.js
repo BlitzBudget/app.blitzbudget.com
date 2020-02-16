@@ -3,14 +3,15 @@
 
 	// Fetch CurrentUser
 	let exportFileFormat = currentUser.exportFileFormat;
+	let chosenJs = "/dashboard/income/transactions/export/exportSelectedToCSV.js"; 
 
-	$.getScript( "ajax/test.js" )
+	$.getScript( chosenJs )
 	  .done(function( script, textStatus ) {
-	    console.log( textStatus );
+	    // Successfully downloaded the scripts
 	  })
 	  .fail(function( jqxhr, settings, exception ) {
-	    $( "div.log" ).text( "Triggered ajaxError handler." );
-	});
+	  	showNotification('Unable to fetch dependencies for export',window._constants.notification.error);
+	  });
 
 
 }(jQuery));
