@@ -247,10 +247,25 @@ function round(value, decimals) {
 }
 
 function showNotification(message, colorCode){
-	Toast.fire({
-		icon: colorCode,
-		title: message
-	})
+
+	if(isEqual(colorCode,'error')) {
+		$.notify({
+	    	icon: "notifications",
+	    	message: message
+		},{
+		    type: 'danger',
+		    timer: 2000,
+		    placement: {
+		        from: 'top',
+		        align: 'center'
+		    }
+		});
+	} else {
+		Toast.fire({
+			icon: colorCode,
+			title: message
+		});
+	}
 }
 
 function replaceHTML(el, html) {
