@@ -209,11 +209,6 @@ window.onload = function () {
 				return;
 			}
 			
-			// Close the category modals if open
-			closeCategoryModalIfOpen();
-			// Updates the budget before navigating away
-			er.updateBudget(true);
-			
 			switch(id) {
 			
 				case 'transactionsPage':
@@ -267,6 +262,10 @@ window.onload = function () {
 					return;
 			}
 			
+			// Close the category modals if open
+			closeCategoryModalIfOpen();
+			// Updates the budget before navigating away
+			er.updateBudget(true);
 			// Remove the active class from the current sidebar
 			if(currentActiveSideBar) {
 				currentActiveSideBar.classList.remove('active');
@@ -282,7 +281,7 @@ window.onload = function () {
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
         	// reset Scroll position to header
-    		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10; 
+    		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10;
 
     		// Call the actual page which was requested to be loaded
     		$.ajax({
@@ -932,7 +931,7 @@ er = {
 	checkIfInvalidCategory(categoryIdForBudget) {
 		
 		if(isEmpty(categoryMap[Number(categoryIdForBudget)])) {
-			showNotification('Unable to the update budget at the moment. Please refresh the page and try again!','top','center','danger');
+			showNotification('Unable to the update budget at the moment. Please refresh the page and try again!',window._constants.notification.error);
 			return true;
 		}
 		

@@ -509,7 +509,7 @@
 		let checkedbudgetOptimizations = $('.number:checked');
 		// Show choose atleast one budget to optimize message
 		if(checkedbudgetOptimizations == 0) {
-			showNotification('Please choose atleast one budget to optimize','top','center','danger');
+			showNotification('Please choose atleast one budget to optimize',window._constants.notification.error);
 			return;
 		}
 		
@@ -600,9 +600,9 @@
 		
 	   // Show notification to users
 	   if(optimizedSome) {
-		   showNotification('Successfully optimized the budgets with the funds available from other budgets!','top','center','success');
+		   showNotification('Successfully optimized the budgets with the funds available from other budgets!',window._constants.notification.success);
 	   } else {
-		   showNotification('Unable to optimize any budgets as there are no other budgets with available funds','top','center','danger');
+		   showNotification('Unable to optimize any budgets as there are no other budgets with available funds',window._constants.notification.error);
 	   }
 	   
 	   // Uncheck all the checked values

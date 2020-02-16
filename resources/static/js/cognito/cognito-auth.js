@@ -16,7 +16,7 @@ var AWSCogUser = window.AWSCogUser || {};
     if (!(_config.cognito.userPoolId &&
           _config.cognito.userPoolClientId &&
           _config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
         return;
     }
 
@@ -183,6 +183,8 @@ var AWSCogUser = window.AWSCogUser || {};
         let attributeName = createAttribute('name', nameObj.firstName);
         // Set Family Name
         let attributeFamilyName = createAttribute('family_name', nameObj.familyName);
+        // Set Export File Format
+        let attributeExportFileFormat = createAttribute('custom:exportFileFormat', 'csv');
         
         // Append Attributes to list
         var attributeList = [];
@@ -192,6 +194,7 @@ var AWSCogUser = window.AWSCogUser || {};
         attributeList.push(attributeCurrency);
         attributeList.push(attributeName);
         attributeList.push(attributeFamilyName);
+        attributeList.push(attributeExportFileFormat);
 
         userPool.signUp(email, password, attributeList, null,
             function signUpCallback(err, result) {
@@ -991,7 +994,7 @@ var AWSCogUser = window.AWSCogUser || {};
         if (!(_config.cognito.userPoolId &&
               _config.cognito.userPoolClientId &&
               _config.cognito.region)) {
-            showNotification('There is an error configuring the user access. Please contact support!','top','center','danger');
+            showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
             return;
         }
         

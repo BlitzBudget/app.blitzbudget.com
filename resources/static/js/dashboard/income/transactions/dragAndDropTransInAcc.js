@@ -1,4 +1,4 @@
-+"use strict";
+"use strict";
 (function scopeWrapper($) {
 	let dragSrcEl = null;
 	let parentElementDragEnterAndLeave = null;

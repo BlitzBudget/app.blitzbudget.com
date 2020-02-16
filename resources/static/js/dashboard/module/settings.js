@@ -50,7 +50,7 @@
 		};
 
 		cognitoUser.globalSignOut(params, function(err, data) {
-		  if (err) showNotification(err.message,'top','center','danger'); // an error occurred
+		  if (err) showNotification(err.message,window._constants.notification.error); // an error occurred
 		  else     console.log(data);           // successful response
 		});
 	}
@@ -276,7 +276,7 @@
 			let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
 			updateUserAttr('currency', cToS[this.lastChild.value], this, valObj);
 		} else if(isEqual(id, "currentCurrencies")) {
-			//showNotification("We recommend to use one currency per wallet.",'top','center','danger');
+			//showNotification("We recommend to use one currency per wallet.",window._constants.notification.error);
 		}
 	});
 

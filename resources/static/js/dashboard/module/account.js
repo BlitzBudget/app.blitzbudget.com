@@ -156,7 +156,7 @@ let tickIconSVG = tickIcon();
 				
 				// Check if the account type is valid (Upper Case)
 				if(!includesStr(accountTypeUCConst,values['accountType'])) {
-					 showNotification('Invalid account type. Please try again!','top','center','danger');
+					 showNotification('Invalid account type. Please try again!',window._constants.notification.error);
 					 return;
 				}
 				
@@ -169,7 +169,7 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 		   		ajaxData.data = values;
 		   		ajaxData.onSuccess = function(result){
-		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully','top','center','success');
+		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully',window._constants.notification.success);
 		        	 // Add Accounts to the preview mode if < 4
 		        	 let bARows = document.getElementsByClassName('bARow');
 		        	 if(bARows.length < 4) {

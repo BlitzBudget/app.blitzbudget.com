@@ -12,6 +12,19 @@ window.weekday[4]="Friday";
 window.weekday[5]="Saturday";
 window.weekday[6]="Sunday";
 
+// Toast for mixin (Notification)
+const Toast = Swal.mixin({
+	toast: true,
+	position: 'top-end',
+	showConfirmButton: false,
+	timer: 3000,
+	timerProgressBar: true,
+	onOpen: (toast) => {
+	   toast.addEventListener('mouseenter', Swal.stopTimer)
+	   toast.addEventListener('mouseleave', Swal.resumeTimer)
+	}
+})
+
 function lastElement(arr){
 	if(Array.isArray(arr)){
 		return isEmpty(arr) ? arr : arr[arr.length-1];
@@ -216,9 +229,9 @@ function getAllUrlParams(url) {
 // Manage errors
 function manageErrors(thrownError, message, ajaxData) {
 	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-		showNotification(message,'top','center','danger');
+		showNotification(message,window._constants.notification.error);
 	} else if(isNotEmpty(thrownError.message)) {
-		showNotification(thrownError.message,'top','center','danger');
+		showNotification(thrownError.message,window._constants.notification.error);
 	} else {
 		let responseError = JSON.parse(thrownError.responseText);
    	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
@@ -233,24 +246,11 @@ function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 
-function showNotification(message, from, align, colorCode){
-
-//	type = ['', 'info', 'danger', 'success', 'warning', 'rose', 'primary'];
-//    color = Math.floor((Math.random() * 6) + 1);
-    
-	  $.notify({
-	      icon: "notifications",
-	      message: message
-
-	  },{
-		 // type: type[color],
-	      type: colorCode,
-	      timer: 2000,
-	      placement: {
-	          from: from,
-	          align: align
-	      }
-	  });
+function showNotification(message, colorCode){
+	Toast.fire({
+		icon: colorCode,
+		title: message
+	})
 }
 
 function replaceHTML(el, html) {
