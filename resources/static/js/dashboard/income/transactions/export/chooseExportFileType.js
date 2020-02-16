@@ -3,7 +3,7 @@
 
 	// Fetch CurrentUser
 	let exportFileFormat = currentUser.exportFileFormat;
-	let chosenJs = "/dashboard/income/transactions/export/exportSelectedToCSV.js"; 
+	let chosenJs = "/dashboard/income/transactions/export/exportSelectedToCSV.min.js"; 
 
 	$.getScript( chosenJs )
 	  .done(function( script, textStatus ) {
