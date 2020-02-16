@@ -262,6 +262,9 @@ function showNotification(message, colorCode){
 		});
 	} else {
 		Toast.fire({
+			customClass: {
+  				container: 'mixinSuccess',
+  			},
 			icon: colorCode,
 			title: message
 		});
