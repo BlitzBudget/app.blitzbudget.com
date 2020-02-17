@@ -67,7 +67,7 @@
                     '"Amount"' + ',' + 
                     '"Recurrence"' + ',' + 
                     '"Account Id"' + ',' + 
-                    '"Budget Amount"';
+                    '"Budget Amount"' + ',';
             
 
             row = row.slice(0, -1);
@@ -102,7 +102,7 @@
                     transactionAmount + '","' + 
                     transactionCached.recurrence + '","' + 
                     transactionCached.accountId + '","' + 
-                    + budgetAmount + '"';
+                    budgetAmount + '"';
 
             row.slice(0, row.length - 1);
             
