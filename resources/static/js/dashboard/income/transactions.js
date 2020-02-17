@@ -39,9 +39,9 @@
 	// Sort by Account is populated
 	let sortByAccountPopulated = false;
 	// Initialize transactions Cache
-	window.transactionsCache = [];
+	window.transactionsCache = {};
 	// Initialize user budget 
-	window.userBudgetMap = [];
+	window.userBudgetMap = {};
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -247,7 +247,7 @@
  				  let subKey = valueElementKeySet[count];
  				  let subValue = value[subKey];
  				  // Cache the value for exportation
- 				  window.transactionsCache[subKey] = subValue;
+ 				  window.transactionsCache[subValue.transactionId] = subValue;
  				  // Create transactions table row
  				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
  				  totalCategoryAmount += subValue.amount;
@@ -320,7 +320,7 @@
         		let key = dataKeySet[count];
             	let value = data[key];
             	// Update user budget to global map (Exportation)
-				window.userBudgetMap[key] = value;
+				window.userBudgetMap[value.categoryId] = value;
             	  
             	if(isEmpty(value)) {
             		continue;
@@ -2827,7 +2827,7 @@
 	  			}
 	  		}
     	}
-		debugger;
+		
 		// Fetch all bank account information
 		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
 			let accountAggreDiv = document.getElementById('recTransAndAccTable');
