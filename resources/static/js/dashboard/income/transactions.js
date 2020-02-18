@@ -38,6 +38,10 @@
 	userTransSortedByDate = [];
 	// Sort by Account is populated
 	let sortByAccountPopulated = false;
+	// Initialize transactions Cache
+	window.transactionsCache = {};
+	// Initialize user budget 
+	window.userBudgetMap = {};
 		
 	// Call the transaction API to fetch information.
 	fetchJSONForTransactions();
@@ -242,6 +246,8 @@
  			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
  				  let subKey = valueElementKeySet[count];
  				  let subValue = value[subKey];
+ 				  // Cache the value for exportation
+ 				  window.transactionsCache[subValue.transactionId] = subValue;
  				  // Create transactions table row
  				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
  				  totalCategoryAmount += subValue.amount;
@@ -311,20 +317,22 @@
 		ajaxData.onSuccess = function(data) {
         	let dataKeySet = Object.keys(data)
         	for(let count = 0, length = dataKeySet.length; count < length; count++){
-        		  let key = dataKeySet[count];
-            	  let value = data[key];
+        		let key = dataKeySet[count];
+            	let value = data[key];
+            	// Update user budget to global map (Exportation)
+				window.userBudgetMap[value.categoryId] = value;
             	  
-            	  if(isEmpty(value)) {
-            		  continue;
-            	  }
+            	if(isEmpty(value)) {
+            		continue;
+            	}
             	  
-            	  let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
+            	let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
             	  
-            	  if(categoryRowToUpdate == null) {
-            		  continue;
-            	  }
+            	if(categoryRowToUpdate == null) {
+            		continue;
+            	}
             	  
-            	  categoryRowToUpdate.innerHTML = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
+            	categoryRowToUpdate.innerHTML = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
         	}
         }
 		ajaxData.onFailure = function(thrownError) {
@@ -501,7 +509,7 @@
 		amountDiv.className = 'amountDivCentering';
 		amountDiv.tabIndex = 0;
 		
-		// Append a - sign if it is an expense
+	   // Append a - sign if it is an expense
 	   if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 		   amountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
 	   } else {
@@ -2819,7 +2827,7 @@
 	  			}
 	  		}
     	}
-		debugger;
+		
 		// Fetch all bank account information
 		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
 			let accountAggreDiv = document.getElementById('recTransAndAccTable');

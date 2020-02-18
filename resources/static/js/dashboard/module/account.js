@@ -129,6 +129,9 @@ let tickIconSVG = tickIcon();
 	        confirmButtonText: 'Create Account',
 	        showCloseButton: true,
 	        buttonsStyling: false,
+	        customClass: {
+  				container: 'unsyncContainer',
+  			},
 	        onOpen: (docVC) => {
                 $( "#accountBal" ).keyup(function(e) {
                     let keyCode = e.keyCode || e.which;

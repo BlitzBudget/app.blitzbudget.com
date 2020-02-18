@@ -28,10 +28,20 @@
         transactionIds.join(",");
 
         // Json to csv convertor
-        JSONToCSVConvertor(JSON.stringify(transactionIds), "transactions", false);
+        JSONToCSVConvertor(JSON.stringify(transactionIds), "transactions", true);
 
         // Successfully downloaded the excel
         showNotification('Successfully downloaded the selected transactions',window._constants.notification.success);
+
+        // Hide the export button in conjunction with delete button
+        let expDataCL = document.getElementById('exportData').classList;
+        expDataCL.add('d-none');
+        expDataCL.remove('d-inline-block');
+
+        // show the Sort Options wrapper
+        let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
+        sortOptionsWrapper.remove('d-none');
+        sortOptionsWrapper.add('d-inline-block');
 
     });
 
@@ -49,12 +59,16 @@
         if (ShowLabel) {
             let row = "";
             
-            //This loop will extract the label from 1st index of on array
-            for (let index in arrData[0]) {
-                
-                //Now convert each value to string and comma-seprated
-                row += index + ',';
-            }
+            
+            //Now convert each value to string and comma-seprated
+            row += '"Date Meant For"' + ',' + 
+                    '"Description"' + ',' + 
+                    '"Category Name"' + ',' + 
+                    '"Amount"' + ',' + 
+                    '"Recurrence"' + ',' + 
+                    '"Account Id"' + ',' + 
+                    '"Budget Amount"' + ',';
+            
 
             row = row.slice(0, -1);
             
@@ -65,9 +79,29 @@
         //1st loop is to extract each row
         for (let i = 0; i < arrData.length; i++) {
             let row = "";
+            // Fetch the transaction cached
+            let transactionCached = window.transactionsCache[parseInt(arrData[i])];
+            // Current Category for transaction
+            let currentCategory = window.categoryMap[transactionCached.categoryId];
+            // Fetch the budgeted amount
+            let budgetAmount = currentCurrencyPreference + formatNumber(window.userBudgetMap[transactionCached.categoryId].planned, currentUser.locale);
+            // Fetch the transaction amount
+            let transactionAmount = '';
+            // Append a - sign if it is an expense
+            if(currentCategory.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+               transactionAmount = '-' + currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);
+            } else {
+               transactionAmount = currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);
+            }
             
             //2nd loop will extract each column and convert it in string comma-seprated
-            row += '"' + arrData[i] + '",';
+            row += '"' + new Date(transactionCached.dateMeantFor) + '","' + 
+                    transactionCached.description + '","' + 
+                    currentCategory.categoryName  + '","' +  
+                    transactionAmount + '","' + 
+                    transactionCached.recurrence + '","' + 
+                    transactionCached.accountId + '","' + 
+                    budgetAmount + '"';
 
             row.slice(0, row.length - 1);
             
