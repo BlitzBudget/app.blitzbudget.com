@@ -67,19 +67,6 @@
         // Json to csv convertor
         JSONToXLSConvertor(JSON.stringify(transactionData), "transactions");
 
-        // Successfully downloaded the excel
-        showNotification('Successfully downloaded the selected transactions',window._constants.notification.success);
-
-        // Hide the export button in conjunction with delete button
-        let expDataCL = document.getElementById('exportData').classList;
-        expDataCL.add('d-none');
-        expDataCL.remove('d-inline-block');
-
-        // show the Sort Options wrapper
-        let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
-        sortOptionsWrapper.remove('d-none');
-        sortOptionsWrapper.add('d-inline-block');
-
     });
 
     function JSONToXLSConvertor(data, fileName) {
