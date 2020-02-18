@@ -8,6 +8,8 @@
 	// XLS format
 	if(isEqual(exportFileFormat , 'XLS')) {
 		chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToXLS.min.js";
+	} else if (isEqual(exportFileFormat , 'DOCX')) {
+		chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToDOCX.min.js";
 	}
 
 	$.getScript( chosenJs )
