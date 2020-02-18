@@ -151,8 +151,8 @@
         elem.download = filename;
         document.body.appendChild(elem);
         elem.click();        
+        window.URL.revokeObjectURL(blob);
         document.body.removeChild(elem);
-        elem.href.revokeObjectURL(blob);
         // Successfully downloaded content
         succesfullyDownloadedContent();
     };
@@ -172,5 +172,5 @@
         sortOptionsWrapper.remove('d-none');
         sortOptionsWrapper.add('d-inline-block');
     }
-    
+
 }(jQuery));
