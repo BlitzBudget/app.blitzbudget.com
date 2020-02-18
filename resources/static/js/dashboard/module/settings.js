@@ -1,5 +1,4 @@
 "use strict";
-
 (function scopeWrapper($) {
 	// Custom Javascript for dashboard
 	const SETTINGS_CONSTANTS = {};

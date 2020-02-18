@@ -30,19 +30,6 @@
         // Json to csv convertor
         JSONToCSVConvertor(JSON.stringify(transactionIds), "transactions", true);
 
-        // Successfully downloaded the excel
-        showNotification('Successfully downloaded the selected transactions',window._constants.notification.success);
-
-        // Hide the export button in conjunction with delete button
-        let expDataCL = document.getElementById('exportData').classList;
-        expDataCL.add('d-none');
-        expDataCL.remove('d-inline-block');
-
-        // show the Sort Options wrapper
-        let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
-        sortOptionsWrapper.remove('d-none');
-        sortOptionsWrapper.add('d-inline-block');
-
     });
 
     // Convert JSON to CSV
@@ -132,13 +119,32 @@
         link.href = uri;
         
         //set the visibility hidden so it will not effect on your web-layout
-        link.style = "visibility:hidden";
+        link.classList = "invisible";
         link.download = fileName + ".csv";
         
         //this part will append the anchor tag and remove it after automatic click
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        // Successfully downloaded content
+        succesfullyDownloadedContent();
+    }
+
+    // Revert back to sort by functionality
+    function succesfullyDownloadedContent() {
+        // Successfully downloaded the excel
+        showNotification('Successfully downloaded the selected transactions',window._constants.notification.success);
+
+        // Hide the export button in conjunction with delete button
+        let expDataCL = document.getElementById('exportData').classList;
+        expDataCL.add('d-none');
+        expDataCL.remove('d-inline-block');
+
+        // show the Sort Options wrapper
+        let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
+        sortOptionsWrapper.remove('d-none');
+        sortOptionsWrapper.add('d-inline-block');
     }
 
 }(jQuery));

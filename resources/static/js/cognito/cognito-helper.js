@@ -138,7 +138,7 @@ uh = {
 		        er.showLoginPopup();
 		        return;
 		    } else if (isEmpty(session) || !session.isValid() || sessionInvalidated) {
-		        showNotification('Session is invalid',window._constants.notification.success);
+		        showNotification('Session is invalid',window._constants.notification.error);
 		        er.showLoginPopup();
 		    	window.sessionInvalidated = 0;
 		    	return;
