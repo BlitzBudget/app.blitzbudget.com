@@ -6,7 +6,7 @@
 	let exportFileFormatObj = {};
 	exportFileFormatObj['XLS'] = 'Excel (XLS)';
 	exportFileFormatObj['PDF'] = 'Adobe (PDF)';
-	exportFileFormatObj['DOCX'] = 'Google Docs (DOCX)';
+	exportFileFormatObj['DOC'] = 'Google Docs (DOC)';
 	exportFileFormatObj['CSV'] = 'Comma Separated Values (CSV)';
 
 	// SECURITY: Defining Immutable properties as constants
