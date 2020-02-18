@@ -283,6 +283,7 @@
 
 	// Update user attributes
 	function updateUserAttr(param, paramVal, event, valObj) {
+		debugger;
 		let oldValInTe = '';
 		let inpId = '';
 		// Current countries and current currencies then do
