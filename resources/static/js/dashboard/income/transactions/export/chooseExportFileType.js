@@ -5,6 +5,11 @@
 	let exportFileFormat = currentUser.exportFileFormat;
 	let chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToCSV.min.js"; 
 
+	// XLS format
+	if(isEqual(exportFileFormat , 'XLS')) {
+		chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToXLS.min.js";
+	}
+
 	$.getScript( chosenJs )
 	  .done(function( script, textStatus ) {
 	    // Successfully downloaded the scripts

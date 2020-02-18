@@ -275,19 +275,29 @@
 		} else if(isEqual(id, chooseCrncyId)) {
 			let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
 			updateUserAttr('currency', cToS[this.lastChild.value], this, valObj);
-		} else if(isEqual(id, "currentCurrencies")) {
-			//showNotification("We recommend to use one currency per wallet.",window._constants.notification.error);
+		} else if(isEqual(id, "chosenExportFileFormatDD")) {
+			let valObj = { parentElId : "exportFileFormat", valueChosen : this.lastChild.value};
+			updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
 		}
 	});
 
 	// Update user attributes
 	function updateUserAttr(param, paramVal, event, valObj) {
-		// Fetch the display btn
-		let inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
-		let oldValInTe = document.getElementById(inpId).innerText;
-		// Update the button to new value
+		let oldValInTe = '';
+		let inpId = '';
+		// Current countries and current currencies then do
+        if(isEqual(param, 'currency') && isEqual(param, 'locale')) {
+        	// Fetch the display btn for auto complete
+			inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
+			oldValInTe = document.getElementById(inpId).innerText;
+        } else {
+        	// Fetch the display btn from drop down
+			inpId = event.parentElement.id.replace('DD','');		
+			oldValInTe = document.getElementById(inpId).innerText;
+        }
+        // Update the button to new value
 		document.getElementById(inpId).innerText = event.lastChild.value;
-
+		
 		// Set Param Val combination
 		let values = {};
 		values[param] = paramVal;
@@ -301,46 +311,49 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = values;
 		ajaxData.onSuccess = function(result) {
-			// Input search element
-			let inpBtnSrch = event.parentElement.id.replace('autocomplete-list','');
-			let inpSearchEl = document.getElementById(inpBtnSrch);
 	        // After a successful updation of parameters to cache
 	        currentUser[param] = paramVal;
 	        // We save the item in the localStorage.
             localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-            let itemWithWallet = document.getElementById(valObj.parentElId);
-            // First Child Input value
-            let oldValText = itemWithWallet.firstChild.lastChild.value;
-            // Replace HTML with Empty
-	 		while (itemWithWallet.firstChild) {
-	 			itemWithWallet.removeChild(itemWithWallet.firstChild);
-	 		}
-            // Set the dropdown item current selection
-            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
-            // Set current Curreny preference
-            if(isEqual(param, "currency")) {
-            	// For upadting the javascript cache for currency
-            	currentCurrencyPreference = currentUser.currency;
-            	// Remove from List
-            	const index = currencies.indexOf(valObj.valueChosen);
-				if (index > -1) {
-				  currencies.splice(index, 1);
-				}
-            	// To be used for Auto complete
-            	currencies.push(oldValText);
-            	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-				autocomplete(inpSearchEl, currencies, "chooseCurrencyDD");
-            } else {
-            	// To be used for Auto complete
-				countries.push(oldValText);
-				// Remove from List
-				const index = countries.indexOf(valObj.valueChosen);
-				if (index > -1) {
-				  countries.splice(index, 1);
-				}
-				/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
-				autocomplete(inpSearchEl, countries, "chooseCountryDD");
-				
+            // Current countries and current currencies then do
+            if(isEqual(param, 'currency') && isEqual(param, 'locale')) {
+            	// Input search element
+				let inpBtnSrch = event.parentElement.id.replace('autocomplete-list','');
+				let inpSearchEl = document.getElementById(inpBtnSrch);
+            	let itemWithWallet = document.getElementById(valObj.parentElId);
+	            // First Child Input value
+	            let oldValText = itemWithWallet.firstChild.lastChild.value;
+	            // Replace HTML with Empty
+		 		while (itemWithWallet.firstChild) {
+		 			itemWithWallet.removeChild(itemWithWallet.firstChild);
+		 		}
+	            // Set the dropdown item current selection
+	            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
+	            // Set current Curreny preference
+	            if(isEqual(param, "currency")) {
+	            	// For upadting the javascript cache for currency
+	            	currentCurrencyPreference = currentUser.currency;
+	            	// Remove from List
+	            	const index = currencies.indexOf(valObj.valueChosen);
+					if (index > -1) {
+					  currencies.splice(index, 1);
+					}
+	            	// To be used for Auto complete
+	            	currencies.push(oldValText);
+	            	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+					autocomplete(inpSearchEl, currencies, "chooseCurrencyDD");
+	            } else if(isEqual(param, 'locale')) {
+	            	// To be used for Auto complete
+					countries.push(oldValText);
+					// Remove from List
+					const index = countries.indexOf(valObj.valueChosen);
+					if (index > -1) {
+					  countries.splice(index, 1);
+					}
+					/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
+					autocomplete(inpSearchEl, countries, "chooseCountryDD");
+					
+	            }
             }
         }
 	    ajaxData.onFailure = function (thrownError) {
@@ -426,5 +439,6 @@
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList.add('d-none');
+
 
 }(jQuery));

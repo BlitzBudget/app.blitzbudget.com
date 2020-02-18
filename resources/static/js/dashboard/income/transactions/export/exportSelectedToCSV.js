@@ -79,7 +79,6 @@
         //1st loop is to extract each row
         for (let i = 0; i < arrData.length; i++) {
             let row = "";
-            debugger;
             // Fetch the transaction cached
             let transactionCached = window.transactionsCache[parseInt(arrData[i])];
             // Current Category for transaction
