@@ -2770,7 +2770,7 @@
 
 		// Title Wrapper
 		let titleWrapper = document.createElement('div');
-		titleWrapper.classList = 'd-lg-table-cell';
+		titleWrapper.classList = 'd-lg-table-cell text-nowrap';
 		
 		// Right Arrow
 		let rightArrow = document.createElement('div');
@@ -2781,7 +2781,7 @@
 		// Title
 		let accountTitle = document.createElement('a');
 		accountTitle.id = 'accountTitle-' + accountId;
-		accountTitle.classList = 'text-nowrap pl-4 accTitleAnchor';
+		accountTitle.classList = 'pl-4 accTitleAnchor';
 		accountTitle.appendChild(buildSmallMaterialSpinner(accountId));
 		titleWrapper.appendChild(accountTitle);
 		accountTit.appendChild(titleWrapper);

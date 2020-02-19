@@ -3,13 +3,15 @@
 
 	// Fetch CurrentUser
 	let exportFileFormat = currentUser.exportFileFormat;
-	let chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToCSV.min.js"; 
+	let chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToXLS.min.js"; 
 
 	// XLS format
 	if(isEqual(exportFileFormat , 'XLS')) {
 		chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToXLS.min.js";
 	} else if (isEqual(exportFileFormat , 'DOC')) {
 		chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToDOC.min.js";
+	} else if (isEqual(exportFileFormat , 'CSV')) {
+		chosenJs = "/js/dashboard/income/transactions/export/exportSelectedToCSV.min.js";
 	}
 
 	$.getScript( chosenJs )
