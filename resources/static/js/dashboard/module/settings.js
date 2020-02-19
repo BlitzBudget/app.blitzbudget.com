@@ -2,6 +2,12 @@
 (function scopeWrapper($) {
 	// Custom Javascript for dashboard
 	const SETTINGS_CONSTANTS = {};
+	// Build export file format object
+	let exportFileFormatObj = {};
+	exportFileFormatObj['XLS'] = 'Excel (XLS)';
+	exportFileFormatObj['PDF'] = 'Adobe (PDF)';
+	exportFileFormatObj['DOC'] = 'Word Document (DOC)';
+	exportFileFormatObj['CSV'] = 'Comma Separated Values (CSV)';
 
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(SETTINGS_CONSTANTS, {
@@ -289,13 +295,21 @@
         	// Fetch the display btn for auto complete
 			inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
 			oldValInTe = document.getElementById(inpId).innerText;
+			// Update the button to new value
+			document.getElementById(inpId).innerText = event.lastChild.value;
         } else {
         	// Fetch the display btn from drop down
 			inpId = event.parentElement.id.replace('DD','');		
 			oldValInTe = document.getElementById(inpId).innerText;
+
+			if(isEqual(param, 'exportFileFormat')) {
+				// Update the button to new value
+				document.getElementById(inpId).innerText = exportFileFormatObj[event.lastChild.value];
+			} else {
+				// Update the button to new value
+				document.getElementById(inpId).innerText = event.lastChild.value;
+			}
         }
-        // Update the button to new value
-		document.getElementById(inpId).innerText = event.lastChild.value;
 		
 		// Set Param Val combination
 		let values = {};
@@ -438,6 +452,11 @@
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList.add('d-none');
+
+    /**
+    *	Add current preferrence of export file format
+    **/
+    document.getElementById('chosenExportFileFormat').innerText = exportFileFormatObj[currentUser.exportFileFormat];
 
 
 }(jQuery));

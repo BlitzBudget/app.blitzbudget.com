@@ -1638,6 +1638,8 @@
         	  let categoryParent = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
         	  let closestSibling = categoryParent.nextSibling;
         	  let lastClassName =  lastElement(splitElement(closestSibling.className, ' '));
+        	  // Cache the value for exportation
+ 			  window.transactionsCache[userTransaction.transactionId] = userTransaction;
         	  
         	  // Toggle dropdown if the rows are hidden
     		  if(includesStr(lastClassName , 'd-none')) {
