@@ -14,7 +14,6 @@
 
     // Export to Word
     function exportToWord() {
-      debugger;
       let sourceHTML = header + getTransactionsFrag() + footer;
 
       let source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
@@ -25,6 +24,8 @@
       fileDownload.download = 'document.doc';
       fileDownload.click();
       document.body.removeChild(fileDownload);
+      // Trigger Successfully downloaded content
+      succesfullyDownloadedContent();
     }
 
     // Transaction Fragment
@@ -102,105 +103,105 @@
       return accountHeader;
    }
 
-    // Builds the rows for recent transactions
-     function buildTransactionRow(userTransaction, idName) {
-       // Convert date from UTC to user specific dates
-       let creationDateUserRelevant = new Date(userTransaction.createDate);
-       // Category Map 
-       let categoryMapForUT = categoryMap[userTransaction.categoryId];
-       
-       let tableRowTransaction = document.createElement('div');
-       tableRowTransaction.style.letterSpacing = '0.016em';
-       tableRowTransaction.style.display = 'table-row';
-       
-       // Cell 1
-       let tableCellImagesWrapper = document.createElement('div');
-       tableCellImagesWrapper.style.display =  'table-cell';
-       tableCellImagesWrapper.style.verticalAlign = 'middle';
-       tableCellImagesWrapper.style.borderTop = '1px solid #f6f6f6';
-       tableCellImagesWrapper.style.padding = '0.25rem';
-       tableCellImagesWrapper.style.textAlign = 'center';
-       
-       let circleWrapperDiv = document.createElement('div');
-       circleWrapperDiv.style.borderRadius = '50%';
-       circleWrapperDiv.style.verticalAlign = 'middle';
-       circleWrapperDiv.style.backgroundColor = '#f2f5f7';
-       circleWrapperDiv.style.fontSize = '16px';
-       circleWrapperDiv.style.width = '48px';
-       circleWrapperDiv.style.height = '48px';
-       circleWrapperDiv.style.lineHeight = '48px';
-       circleWrapperDiv.style.marginRight = 'auto';
-       circleWrapperDiv.style.marginLeft = 'auto';
-       
-       // Append a - sign if it is an expense
-       if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-         circleWrapperDiv.appendChild(creditCardSvg());
-       } else {
-         circleWrapperDiv.appendChild(plusRawSvg());
-       }
-       
-       tableCellImagesWrapper.appendChild(circleWrapperDiv);
-       tableRowTransaction.appendChild(tableCellImagesWrapper);
-       
-       // Cell 2
-       let tableCellTransactionDescription = document.createElement('div');
-       tableCellTransactionDescription.style.borderTop = '1px solid #f6f6f6';
-       tableCellTransactionDescription.style.paddingTop = '0.25rem';
-       tableCellTransactionDescription.style.display =  'table-cell';
-       
-       let elementWithDescription = document.createElement('div');
-       elementWithDescription.style.fontWeight = '500';
-       elementWithDescription.style.color = '#2e4369';
-       elementWithDescription.style.letterSpacing = '0';
-       elementWithDescription.style.clear = 'both';
-       elementWithDescription.style.overflow = 'hidden';
-       elementWithDescription.style.whiteSpace = 'nowrap';
-       elementWithDescription.innerText = isEmpty(userTransaction.description) ? 'No Description' : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
-       tableCellTransactionDescription.appendChild(elementWithDescription);
-       
-       let elementWithCategoryName = document.createElement('div');
-       elementWithCategoryName.style.fontSize = '80%';
-       elementWithCategoryName.style.marginBottom = '0';
-       elementWithCategoryName.style.color = '#5d7079';
-       elementWithCategoryName.style.width = '100%';
-       elementWithCategoryName.innerText = (categoryMapForUT.categoryName.length < 25 ? categoryMapForUT.categoryName : (categoryMapForUT.categoryName.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
-       tableCellTransactionDescription.appendChild(elementWithCategoryName);
-       tableRowTransaction.appendChild(tableCellTransactionDescription);
-       
-       // Cell 3    
-       let surCell = document.createElement('div');
-       surCell.style.display =  'table-cell';
+   // Builds the rows for recent transactions
+   function buildTransactionRow(userTransaction, idName) {
+    // Convert date from UTC to user specific dates
+    let creationDateUserRelevant = new Date(userTransaction.createDate);
+    // Category Map 
+    let categoryMapForUT = categoryMap[userTransaction.categoryId];
+    
+    let tableRowTransaction = document.createElement('div');
+    tableRowTransaction.style.letterSpacing = '0.016em';
+    tableRowTransaction.style.display = 'table-row';
+    
+    // Cell 1
+    let tableCellImagesWrapper = document.createElement('div');
+    tableCellImagesWrapper.style.display =  'table-cell';
+    tableCellImagesWrapper.style.verticalAlign = 'middle';
+    tableCellImagesWrapper.style.borderTop = '1px solid #f6f6f6';
+    tableCellImagesWrapper.style.padding = '0.25rem';
+    tableCellImagesWrapper.style.textAlign = 'center';
+    
+    let circleWrapperDiv = document.createElement('div');
+    circleWrapperDiv.style.borderRadius = '50%';
+    circleWrapperDiv.style.verticalAlign = 'middle';
+    circleWrapperDiv.style.backgroundColor = '#f2f5f7';
+    circleWrapperDiv.style.fontSize = '16px';
+    circleWrapperDiv.style.width = '48px';
+    circleWrapperDiv.style.height = '48px';
+    circleWrapperDiv.style.lineHeight = '48px';
+    circleWrapperDiv.style.marginRight = 'auto';
+    circleWrapperDiv.style.marginLeft = 'auto';
+    
+    // Append a - sign if it is an expense
+    if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+      circleWrapperDiv.appendChild(creditCardSvg());
+    } else {
+      circleWrapperDiv.appendChild(plusRawSvg());
+    }
+    
+    tableCellImagesWrapper.appendChild(circleWrapperDiv);
+    tableRowTransaction.appendChild(tableCellImagesWrapper);
+    
+    // Cell 2
+    let tableCellTransactionDescription = document.createElement('div');
+    tableCellTransactionDescription.style.borderTop = '1px solid #f6f6f6';
+    tableCellTransactionDescription.style.paddingTop = '0.25rem';
+    tableCellTransactionDescription.style.display =  'table-cell';
+    
+    let elementWithDescription = document.createElement('div');
+    elementWithDescription.style.fontWeight = '500';
+    elementWithDescription.style.color = '#2e4369';
+    elementWithDescription.style.letterSpacing = '0';
+    elementWithDescription.style.clear = 'both';
+    elementWithDescription.style.overflow = 'hidden';
+    elementWithDescription.style.whiteSpace = 'nowrap';
+    elementWithDescription.innerText = isEmpty(userTransaction.description) ? 'No Description' : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
+    tableCellTransactionDescription.appendChild(elementWithDescription);
+    
+    let elementWithCategoryName = document.createElement('div');
+    elementWithCategoryName.style.fontSize = '80%';
+    elementWithCategoryName.style.marginBottom = '0';
+    elementWithCategoryName.style.color = '#5d7079';
+    elementWithCategoryName.style.width = '100%';
+    elementWithCategoryName.innerText = (categoryMapForUT.categoryName.length < 25 ? categoryMapForUT.categoryName : (categoryMapForUT.categoryName.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+    tableCellTransactionDescription.appendChild(elementWithCategoryName);
+    tableRowTransaction.appendChild(tableCellTransactionDescription);
+    
+    // Cell 3    
+    let surCell = document.createElement('div');
+    surCell.style.display =  'table-cell';
 
-       let transactionAmount = document.createElement('div');
-       transactionAmount.style.verticalAlign = 'middle';
-       transactionAmount.style.borderTop = '1px solid #f6f6f6';
-       transactionAmount.style.paddingTop = '0.25rem';
-       transactionAmount.style.paddingRight = '1rem';
-       transactionAmount.style.fontWeight = '500';
-       transactionAmount.style.textAlign = 'right';
-       
-       // Append a - sign if it is an expense
-       if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-         transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
-       } else {
-         transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
-       }
-       surCell.appendChild(transactionAmount);  
-         
-       let accountBalDiv = document.createElement('div');
-       accountBalDiv.style.color = '#bfbfbf';
-       accountBalDiv.style.paddingLeft = '0.5rem';
-       accountBalDiv.style.fontWeight = '500';
-       accountBalDiv.style.textAlign = 'right';
-       accountBalDiv.style.verticalAlign = 'middle';
-       accountBalDiv.style.fontSize = '80%';
-       surCell.appendChild(accountBalDiv); 
-       tableRowTransaction.appendChild(surCell);
-       
-       
-       return tableRowTransaction;
-       
-     }
+    let transactionAmount = document.createElement('div');
+    transactionAmount.style.verticalAlign = 'middle';
+    transactionAmount.style.borderTop = '1px solid #f6f6f6';
+    transactionAmount.style.paddingTop = '0.25rem';
+    transactionAmount.style.paddingRight = '1rem';
+    transactionAmount.style.fontWeight = '500';
+    transactionAmount.style.textAlign = 'right';
+    
+    // Append a - sign if it is an expense
+    if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+      transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+    } else {
+      transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+    }
+    surCell.appendChild(transactionAmount);  
+      
+    let accountBalDiv = document.createElement('div');
+    accountBalDiv.style.color = '#bfbfbf';
+    accountBalDiv.style.paddingLeft = '0.5rem';
+    accountBalDiv.style.fontWeight = '500';
+    accountBalDiv.style.textAlign = 'right';
+    accountBalDiv.style.verticalAlign = 'middle';
+    accountBalDiv.style.fontSize = '80%';
+    surCell.appendChild(accountBalDiv); 
+    tableRowTransaction.appendChild(surCell);
+    
+    
+    return tableRowTransaction;
+    
+   }
 
    // Credit card SVG Image
    function creditCardSvg() {
@@ -245,7 +246,22 @@
       svgElement.appendChild(pathElement);
       
       return svgElement;
-      
+   }
+
+   // Revert back to sort by functionality
+   function succesfullyDownloadedContent() {
+      // Successfully downloaded the excel
+      showNotification('Successfully downloaded the selected transactions',window._constants.notification.success);
+
+      // Hide the export button in conjunction with delete button
+      let expDataCL = document.getElementById('exportData').classList;
+      expDataCL.add('d-none');
+      expDataCL.remove('d-inline-block');
+
+      // show the Sort Options wrapper
+      let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
+      sortOptionsWrapper.remove('d-none');
+      sortOptionsWrapper.add('d-inline-block');
    }
   
 }(jQuery));
