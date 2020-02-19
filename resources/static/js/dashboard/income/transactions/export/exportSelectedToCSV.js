@@ -71,7 +71,8 @@
             // Current Category for transaction
             let currentCategory = window.categoryMap[transactionCached.categoryId];
             // Fetch the budgeted amount
-            let budgetAmount = currentCurrencyPreference + formatNumber(window.userBudgetMap[transactionCached.categoryId].planned, currentUser.locale);
+            let budgetCategory = window.userBudgetMap[transactionCached.categoryId];
+            let budgetAmount = isNotEmpty(budgetCategory) ? currentCurrencyPreference + formatNumber(budgetCategory.planned, currentUser.locale) : currentCurrencyPreference + formatNumber(0, currentUser.locale) ;
             // Fetch the transaction amount
             let transactionAmount = '';
             // Append a - sign if it is an expense
