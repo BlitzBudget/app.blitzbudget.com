@@ -456,7 +456,8 @@
     /**
     *	Add current preferrence of export file format
     **/
-    document.getElementById('chosenExportFileFormat').innerText = exportFileFormatObj[currentUser.exportFileFormat];
+    let currentExportFileFormat = exportFileFormatObj[currentUser.exportFileFormat];
+    document.getElementById('chosenExportFileFormat').innerText = isNotEmpty(currentExportFileFormat) ? currentExportFileFormat : exportFileFormatObj['XLS'];
 
 
 }(jQuery));
