@@ -51,14 +51,18 @@
     display: none;
 }
 
+.dropdown-menu .dropdown-item {
+    cursor: pointer;
+}
+
 .dropdown-menu .dropdown-item.categorySortBy:hover,
 .dropdown-menu .dropdown-item.accountSortBy:hover,
 .dropdown-menu .dropdown-item.categorySortBy:focus,
 .dropdown-menu .dropdown-item.accountSortBy:focus,
 .dropdown-menu .dropdown-item.creationDateSortBy:hover,
 .dropdown-menu .dropdown-item.creationDateSortBy:focus,
-.dropdown-menu .dropdown-item:hover,
-.dropdown-menu .dropdown-item:focus {
+.dropdown-menu a:not([href]):not([tabindex]).dropdown-item:hover, 
+.dropdown-menu a:not([href]):not([tabindex]).dropdown-item:focus {
     box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
     background-color: #00bcd4;
     color: #fff;
