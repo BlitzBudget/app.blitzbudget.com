@@ -547,6 +547,19 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgb(150, 203, 222);
 }
 
+.ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: center;
+  text-align: middle;
+  transform-origin: 100% 0;
+  white-space:nowrap;
+}
+
+.ct-chart .ct-bar {
+    fill: none;
+    stroke-width: 2.5rem;
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 	.choose label span {

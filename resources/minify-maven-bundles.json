@@ -71,6 +71,14 @@
                 "/dashboard/income/transactions/importTransactionsFromFile.js",
                 "/dashboard/income/transactions/export/chooseExportFileType.js"
             ]
+        },
+        {
+            "type": "js",
+            "name": "overview.all.js",
+            "files": [
+                "/dashboard/overview/overview.js",
+                "/dashboard/overview/assetAndLiability.js"
+            ]
         }
     ]
 }
