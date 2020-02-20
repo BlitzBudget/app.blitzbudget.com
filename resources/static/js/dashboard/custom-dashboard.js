@@ -1046,6 +1046,21 @@ er = {
 			// Remove the stored item
 			window.sortingTransTable = null;
 		}
+	},
+
+	startAnimationForBarChart: function (e) {
+	    e.on('draw', function (e) {
+	      'bar' === e.type && (seq2++, e.element.animate({
+	        opacity: {
+	          begin: seq2 * delays2,
+	          dur: durations2,
+	          from: 0,
+	          to: 1,
+	          easing: 'ease'
+	        }
+	      }))
+	    }),
+	    seq2 = 0
 	}
 		
 }

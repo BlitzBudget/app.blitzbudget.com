@@ -1034,15 +1034,8 @@
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Expense');
 		} else if(firstChildClassList.contains('assetsImage')) {
-			let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
-			
+			// Populate Asset Chart
+			populateAssetBarChart();
 		} else if(firstChildClassList.contains('debtImage')) {
 			let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
     		let emptyMessageDocumentFragment = document.createDocumentFragment();
@@ -1111,22 +1104,22 @@
 		 // Dispose the previous tooltips created
 		 $("#colouredRoundedLineChart").tooltip('dispose');
 		 
-		 // Append tooltip with line chart
-	     var colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
-	    		if (data.type === "point") {
-	    			data.element._node.setAttribute("title", "Total: <strong>" + currentCurrencyPreference + formatNumber(data.value.y, currentUser.locale) + '</strong>');
-	    			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
-	    		}
-	    	}).on("created", function() {
-	    		// Initiate Tooltip
-	    		$("#colouredRoundedLineChart").tooltip({
-	    			selector: '[data-chart-tooltip="colouredRoundedLineChart"]',
-	    			container: "#colouredRoundedLineChart",
-	    			html: true,
-	    			placement: 'auto',
-					delay: { "show": 300, "hide": 100 }
-	    		});
-	    	});
+		// Append tooltip with line chart
+	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
+    		if (data.type === "point") {
+    			data.element._node.setAttribute("title", "Total: <strong>" + currentCurrencyPreference + formatNumber(data.value.y, currentUser.locale) + '</strong>');
+    			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
+    		}
+    	}).on("created", function() {
+    		// Initiate Tooltip
+    		$("#colouredRoundedLineChart").tooltip({
+    			selector: '[data-chart-tooltip="colouredRoundedLineChart"]',
+    			container: "#colouredRoundedLineChart",
+    			html: true,
+    			placement: 'auto',
+				delay: { "show": 300, "hide": 100 }
+    		});
+    	});
 
 	     md.startAnimationForLineChart(colouredRoundedLineChart);
 	 }
@@ -1705,5 +1698,120 @@
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
     genericAddFnc.classList.add('d-none');
+
+    /**
+    * Build Total Assets
+    **/
+    function populateAssetBarChart() {
+
+    	// Reset the line chart with spinner
+		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
+		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+
+		// Fetch all bank account information
+		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
+			debugger;
+			let labelsArray = [];
+			let seriesArray = [];
+			window.allBankAccountInfoCache = bankAccountList;
+			
+			// Iterate all bank accounts
+  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
+  				let bankAcc = bankAccountList[i];
+  				labelsArray.push(bankAcc.bankAccountName);
+  				seriesArray.push(bankAcc.accountBalance);
+	    	}
+
+	    	let dataSimpleBarChart = {
+	            labels: labelsArray,
+	            series: [seriesArray]
+	        };
+
+	        buildBarChart(dataSimpleBarChart);
+
+		});
+    }
+
+    // Build Empty Chart information
+    function populateEmptyChartInfo() {
+    	let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+		let emptyMessageDocumentFragment = document.createDocumentFragment();
+		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+		// Replace inner HTML with EMPTY
+		while (chartAppendingDiv.firstChild) {
+			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+		}
+		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    }
+
+    // build line chart
+    function buildBarChart(dataSimpleBarChart) {
+    	/*  **************** Simple Bar Chart - barchart ******************** */
+
+        let optionsSimpleBarChart = {
+            seriesBarDistance: 10,
+            axisX: {
+            	showGrid: false
+            },
+            axisY: {
+			    labelInterpolationFnc: function(value, index) {
+			        value = formatLargeCurrencies(value);
+			        let minusSign = '';
+			        if(value < 0) {
+			        	minusSign = '-';
+			        }
+	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+			    }
+			}
+        };
+
+        let responsiveOptionsSimpleBarChart = [
+            ['screen and (max-width: 640px)', {
+                seriesBarDistance: 5,
+                axisX: {
+                    labelInterpolationFnc: function(value) {
+                        return value[0];
+                    }
+                }
+            }]
+        ];
+
+        // Empty the chart div
+		let coloredChartDiv = document.getElementById('colouredRoundedLineChart');
+		// Replace inner HTML with EMPTY
+ 		while (coloredChartDiv.firstChild) {
+ 			coloredChartDiv.removeChild(coloredChartDiv.firstChild);
+ 		}
+ 		// Dispose the previous tooltips created
+		$("#colouredRoundedLineChart").tooltip('dispose');
+
+        let simpleBarChart = Chartist.Bar('#colouredRoundedLineChart', dataSimpleBarChart, optionsSimpleBarChart, responsiveOptionsSimpleBarChart);
+
+        // On draw bar chart
+        simpleBarChart.on("draw", function(data) {
+    		if (data.type === "bar") {
+    			let minusSign = '';
+    			let amount = 0;
+    			if(data.value.y < 0) minusSign = '-';
+    			amount = minusSign + currentCurrencyPreference + formatNumber(Math.abs(data.value.y), currentUser.locale);
+    			data.element._node.setAttribute("title", "Total: <strong>" + amount + '</strong>');
+    			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
+    		}
+    	}).on("created", function() {
+    		// Initiate Tooltip
+    		$("#colouredRoundedLineChart").tooltip({
+    			selector: '[data-chart-tooltip="colouredRoundedLineChart"]',
+    			container: "#colouredRoundedLineChart",
+    			html: true,
+    			placement: 'auto',
+				delay: { "show": 300, "hide": 100 }
+    		});
+    	});
+
+
+        //start animation for the Emails Subscription Chart
+        md.startAnimationForBarChart(simpleBarChart);
+
+    }
 
 }(jQuery));
