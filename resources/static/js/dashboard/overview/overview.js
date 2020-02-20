@@ -1762,7 +1762,8 @@
 			        }
 	            	return minusSign + currentCurrencyPreference + Math.abs(value);
 			    }
-			}
+			},
+			height: '400px'
         };
 
         let responsiveOptionsSimpleBarChart = [
