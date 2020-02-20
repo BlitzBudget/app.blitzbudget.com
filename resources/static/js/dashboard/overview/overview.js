@@ -1719,7 +1719,7 @@
   			for(let i = 0, length = bankAccountList.length; i < length; i++) {
   				let bankAcc = bankAccountList[i];
   				// Ensure if the asset type matches the bank account
-  				if(isEqual(window.assetCategoryTypeRel, bankAcc.accountType)) {
+  				if(includesStr(window.assetCategoryTypeRel, bankAcc.accountType)) {
   					labelsArray.push(bankAcc.bankAccountName);
   					seriesArray.push(bankAcc.accountBalance);	
   				}
