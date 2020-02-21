@@ -671,3 +671,22 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	}
 	
 }
+
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (max-width:697px) {
+	.ct-chart .ct-bar {
+	    fill: none;
+	    stroke-width: 1.8rem;
+	}
+}
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (max-width:400px) {
+	.ct-chart .ct-bar {
+	    fill: none;
+	    stroke-width: 1rem;
+	}
+}
+
+
