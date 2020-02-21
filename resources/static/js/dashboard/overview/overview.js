@@ -1732,8 +1732,6 @@
             seriesBarDistance: 10,
             axisX: {
             	showGrid: false,
-            	// Offset Y axis label
-    			offset: 10
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
@@ -1865,13 +1863,10 @@
         };
 
         let optionsSimpleBarChart = {
-        	reverseData: true,
-  			horizontalBars: true,
             seriesBarDistance: 10,
+            stackBars: true,
             axisX: {
             	showGrid: false,
-            	// Offset Y axis label
-    			offset: 10
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
