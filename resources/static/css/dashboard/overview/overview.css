@@ -346,7 +346,8 @@
 	-webkit-transition: stroke-width 0.3s ease-out;
 }
 
-#colouredRoundedLineChart.ct-chart .ct-slice-donut {
+#colouredRoundedLineChart.ct-chart .ct-slice-donut, 
+#colouredRoundedLineChart.ct-chart .ct-series {
 	-webkit-transition: stroke-width 0.3s ease-in;
 	transition: stroke-width 0.3s ease-in;
 }
@@ -355,6 +356,10 @@
     stroke-width: 2px;
     transition: stroke-width 0.3s ease-out;
 	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-series:hover {
+    opacity: 0.8;
 }
 
 .budgetOptimization {

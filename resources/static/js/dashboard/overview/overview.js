@@ -1865,14 +1865,8 @@
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
 			let bankAcc = bankAccountList[i];
-			// Ensure if the asset type matches the bank account
-			if(includesStr(window.assetCategoryTypeRel, bankAcc.accountType)) {
-				labelsArray.push(bankAcc.bankAccountName);
-				seriesArray.push(bankAcc.accountBalance);	
-			} else {
-				labelsArray.push(bankAcc.bankAccountName);
-				seriesArrayDebt.push(bankAcc.accountBalance);
-			}
+			labelsArray.push(bankAcc.bankAccountName);
+			seriesArray.push(bankAcc.accountBalance);	
     	}
 
     	let dataSimpleBarChart = {
@@ -1881,6 +1875,7 @@
         };
 
         let optionsSimpleBarChart = {
+        	distributeSeries: true,
             seriesBarDistance: 10,
             axisX: {
             	showGrid: false,
