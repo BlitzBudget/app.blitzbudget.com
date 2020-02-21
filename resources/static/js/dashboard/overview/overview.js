@@ -1044,6 +1044,8 @@
 			populateAssetBarChart(true);
 			// Hide the Year Picker in Overview Chart Display
     		hideYearPickerICD(true);
+    		// Change Label
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Asset Overview';
 		} else if(firstChildClassList.contains('debtImage')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
@@ -1051,12 +1053,16 @@
 			populateAssetBarChart(false);
 			// Hide the Year Picker in Overview Chart Display
     		hideYearPickerICD(true);
+    		// Change Label
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Debt Overview';
 		} else if(firstChildClassList.contains('networthImage')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			populateNetworthBarChart();
 			// Hide the Year Picker in Overview Chart Display
     		hideYearPickerICD(true);
+    		// Change Label
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Networth Overview';
 		}
 		
 		// Remove the old highlighted element
