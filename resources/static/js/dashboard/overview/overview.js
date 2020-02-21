@@ -1871,7 +1871,7 @@
 
     	let dataSimpleBarChart = {
             labels: labelsArray,
-            series: [seriesArray,seriesArrayDebt]
+            series: seriesArray
         };
 
         let optionsSimpleBarChart = {
