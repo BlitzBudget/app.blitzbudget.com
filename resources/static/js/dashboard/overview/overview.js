@@ -978,6 +978,8 @@
 		// Start requesting the chart  
 		let firstChildClassList = this.children[0].classList;
 		if(firstChildClassList.contains('incomeImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
         	if(doughnutBreakdownOpen) {
         		// Fetch the expense cache 
@@ -1006,6 +1008,8 @@
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Income');
 		} else if(firstChildClassList.contains('expenseImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
         	if(doughnutBreakdownOpen) {
         		// Fetch the expense cache 
@@ -1034,13 +1038,25 @@
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Expense');
 		} else if(firstChildClassList.contains('assetsImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Asset Chart
 			populateAssetBarChart(true);
+			// Hide the Year Picker in Overview Chart Display
+    		hideYearPickerICD(true);
 		} else if(firstChildClassList.contains('debtImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Debt Chart
 			populateAssetBarChart(false);
+			// Hide the Year Picker in Overview Chart Display
+    		hideYearPickerICD(true);
 		} else if(firstChildClassList.contains('networthImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			populateNetworthBarChart();
+			// Hide the Year Picker in Overview Chart Display
+    		hideYearPickerICD(true);
 		}
 		
 		// Remove the old highlighted element
@@ -1793,6 +1809,7 @@
         // On draw bar chart
         simpleBarChart.on("draw", function(data) {
     		if (data.type === "bar") {
+    			// Tooltip
     			let minusSign = '';
     			let amount = 0;
     			if(data.value.y < 0) minusSign = '-';
@@ -1853,6 +1870,7 @@
 				labelsArray.push(bankAcc.bankAccountName);
 				seriesArray.push(bankAcc.accountBalance);	
 			} else {
+				labelsArray.push(bankAcc.bankAccountName);
 				seriesArrayDebt.push(bankAcc.accountBalance);
 			}
     	}
@@ -1864,7 +1882,6 @@
 
         let optionsSimpleBarChart = {
             seriesBarDistance: 10,
-            stackBars: true,
             axisX: {
             	showGrid: false,
             },
