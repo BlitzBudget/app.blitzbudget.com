@@ -1109,13 +1109,13 @@
  		while (coloredChartDiv.firstChild) {
  			coloredChartDiv.removeChild(coloredChartDiv.firstChild);
  		}
-		 // Dispose the previous tooltips created
-		 $("#colouredRoundedLineChart").tooltip('dispose');
+		// Dispose the previous tooltips created
+		$("#colouredRoundedLineChart").tooltip('dispose');
 		 
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
     		if (data.type === "point") {
-    			data.element._node.setAttribute("title", "Total: <strong>" + currentCurrencyPreference + formatNumber(data.value.y, currentUser.locale) + '</strong>');
+    			data.element._node.setAttribute("title", buildTooltipForLC(data.value.y));
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1129,8 +1129,34 @@
     		});
     	});
 
-	     md.startAnimationForLineChart(colouredRoundedLineChart);
-	 }
+	    md.startAnimationForLineChart(colouredRoundedLineChart);
+	}
+
+	// Tooltip for line chart
+	function buildTooltipForLC(currencyValue) {
+		let cardBal = document.createElement('div');
+		cardBal.classList = 'card-balance';
+
+		let icon = document.createElement('div');
+		icon.classList = 'card-icon icon mx-auto mb-2';
+		
+
+		let materialIcon = document.createElement('i');
+		materialIcon.classList = 'material-icons';
+		materialIcon.innerText = 'arrow_upward';
+		icon.appendChild(materialIcon);
+		cardBal.appendChild(icon);
+
+		let para = document.createElement('p');
+		para.innerText = 'Current Balance';
+
+		let spanP = document.createElement('span');
+		spanP.innerText = currentCurrencyPreference + formatNumber(currencyValue, currentUser.locale);
+		para.appendChild(spanP);
+		cardBal.appendChild(para);
+		
+		return cardBal;
+	}
 	
 	// Build material Spinner
 	function buildMaterialSpinner() {
