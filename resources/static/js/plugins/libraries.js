@@ -335,23 +335,25 @@ function sameDate(inpDate, checkWith) {
     inpDate.getFullYear() == checkWith.getFullYear();
 }
 
-function animateValue(id, start, end, formatToCurrency ,duration) {
+function animateValue(element, start, end, prefix ,duration) {
     let range = end - start;
     let current = start;
     let increment = end > start? 1 : -1;
     let stepTime = Math.abs(Math.floor(duration / range));
-    let obj = null;
-     // Check if obj is an element
-    if(obj instanceof Element) {
-    	obj = id;
-    } else{
-    	obj = document.getElementById(id);
-    }    
+
     let timer = setInterval(function() {
-        current += increment;
-        obj.textContent = current;
+    	// If start == end then return
         if (current == end) {
             clearInterval(timer);
         }
+        // Incremenet current (append prefix)
+        current += increment;
+        // Set as text content
+        if(isNotEmpty(prefix)) {
+        	element.textContent = prefix + formatNumber(current, currentUser.locale);
+        } else {
+        	element.textContent = current;
+        }
+        
     }, stepTime);
 }

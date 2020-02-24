@@ -768,11 +768,11 @@
    		ajaxData.type = 'GET';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(averageIncome) {
-        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
         	if(isEmpty(averageIncome)) {
-        		avIncomeAm = 0.00;
-        	} 
-        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
+        		averageIncome = 0;
+        	}
+        	// Animate Value from 0 to value 
+        	animateValue(document.getElementById('averageIncomeAmount'), 0, averageIncome, currentCurrencyPreference ,2000);
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!',ajaxData);
@@ -800,11 +800,11 @@
    		ajaxData.type = 'GET'
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(averageExpense) {
-        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
-        	if(isEmpty(avExpenseAm)) {
-        		avExpenseAm = 0.00;
+        	if(isEmpty(averageExpense)) {
+        		averageExpense = 0;
         	}
-        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
+        	// Animate Value from 0 to value 
+        	animateValue(document.getElementById('averageExpenseAmount'), 0, averageExpense, currentCurrencyPreference ,2000);
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!',ajaxData);

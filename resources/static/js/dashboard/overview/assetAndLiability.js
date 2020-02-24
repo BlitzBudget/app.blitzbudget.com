@@ -38,32 +38,34 @@
    			if(asset < 0) {
    				minusSign = '-';
    			}
-   			asset = minusSign + currentCurrencyPreference + formatNumber(Math.abs(asset), currentUser.locale);
-        	// Minus sign for asset
+   			// Asset Accumulated
+        // Animate Value from 0 to value 
+        animateValue(document.getElementById('assetAccumuluatedAmount'), 0, Math.abs(asset), minusSign + currentCurrencyPreference ,2000);
+
+        // Minus sign for LIABILITY
    			minusSign = '';
    			// Liability less than 0
    			if(liability < 0) {
    				minusSign = '-';
    			}
-   			liability = minusSign + currentCurrencyPreference + formatNumber(Math.abs(liability), currentUser.locale);
-   			// Minus sign for asset
+        // Debt Accumulated
+        // Animate Value from 0 to value 
+        animateValue(document.getElementById('debtAccumulatedAmount'), 0, Math.abs(liability), minusSign + currentCurrencyPreference ,2000);
+
+   			// Minus sign for Nteworth
    			minusSign = '';
    			// Networth less than 0
    			if(networth < 0) {
    				minusSign = '-';
    			}
-   			networth = minusSign + currentCurrencyPreference + formatNumber(Math.abs(networth), currentUser.locale);
-
-        	// Asset Accumulated
-        	document.getElementById('assetAccumuluatedAmount').innerText = asset;
-        	// Debt Accumulated
-        	document.getElementById('debtAccumulatedAmount').innerText = liability;
-        	// Networth Accumulated
-        	document.getElementById('networthAmount').innerText = networth;
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate assets, liability and total networth. Please refresh the page and try again!',ajaxData);
-        }
+        // Networth Accumulated
+        // Animate Value from 0 to value 
+        animateValue(document.getElementById('networthAmount'), 0, Math.abs(networth), minusSign + currentCurrencyPreference ,2000);
+      
+      }
+      ajaxData.onFailure = function (thrownError) {
+      	manageErrors(thrownError, 'Unable to populate assets, liability and total networth. Please refresh the page and try again!',ajaxData);
+      }
 
 		jQuery.ajax({
 			url: ajaxData.url,
