@@ -334,3 +334,24 @@ function sameDate(inpDate, checkWith) {
     inpDate.getMonth() == checkWith.getMonth() &&
     inpDate.getFullYear() == checkWith.getFullYear();
 }
+
+function animateValue(id, start, end, formatToCurrency ,duration) {
+    let range = end - start;
+    let current = start;
+    let increment = end > start? 1 : -1;
+    let stepTime = Math.abs(Math.floor(duration / range));
+    let obj = null;
+     // Check if obj is an element
+    if(obj instanceof Element) {
+    	obj = id;
+    } else{
+    	obj = document.getElementById(id);
+    }    
+    let timer = setInterval(function() {
+        current += increment;
+        obj.textContent = current;
+        if (current == end) {
+            clearInterval(timer);
+        }
+    }, stepTime);
+}
