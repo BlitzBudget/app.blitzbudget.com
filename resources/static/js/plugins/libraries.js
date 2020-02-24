@@ -336,6 +336,18 @@ function sameDate(inpDate, checkWith) {
 }
 
 function animateValue(element, start, end, prefix ,duration) {
+	// If start == end then return
+    if (start == end) {
+        // Set as text content
+        if(isNotEmpty(prefix)) {
+        	element.textContent = prefix + formatNumber(end, currentUser.locale);
+        } else {
+        	element.textContent = end;
+        }
+        return;
+    }
+
+    // If different 
     let range = end - start;
     let current = start;
     let increment = end > start? 1 : -1;
@@ -343,17 +355,17 @@ function animateValue(element, start, end, prefix ,duration) {
 
     let timer = setInterval(function() {
     	// If start == end then return
-        if (current == end) {
+        if (current >= end) {
             clearInterval(timer);
-        }
-        // Incremenet current (append prefix)
-        current += increment;
-        // Set as text content
-        if(isNotEmpty(prefix)) {
-        	element.textContent = prefix + formatNumber(current, currentUser.locale);
         } else {
-        	element.textContent = current;
-        }
-        
+        	// Incremenet current (append prefix)
+	        current += increment;
+	        // Set as text content
+	        if(isNotEmpty(prefix)) {
+	        	element.textContent = prefix + formatNumber(current, currentUser.locale);
+	        } else {
+	        	element.textContent = current;
+	        }
+        }   
     }, stepTime);
 }

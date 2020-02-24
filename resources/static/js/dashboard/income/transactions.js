@@ -352,12 +352,13 @@
 	function updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions) {
 			let totalAvailableTransactions = totalIncomeTransactions - totalExpensesTransactions;
 		   if(totalAvailableTransactions < 0) {
-			   replaceHTML('totalAvailableTransactions' , '-' + currentCurrencyPreference + formatNumber(Math.abs(totalAvailableTransactions), currentUser.locale));
+		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, Math.abs(totalAvailableTransactions),  '-' + currentCurrencyPreference ,2000);
 		   } else {
-			   replaceHTML('totalAvailableTransactions', currentCurrencyPreference + formatNumber(totalAvailableTransactions, currentUser.locale));
+		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference ,2000);
 		   }
-		   replaceHTML('totalIncomeTransactions', currentCurrencyPreference + formatNumber(totalIncomeTransactions, currentUser.locale));
-		   replaceHTML('totalExpensesTransactions', '-' + currentCurrencyPreference + formatNumber(totalExpensesTransactions, currentUser.locale));
+
+           animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference ,2000);
+		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, '-' + currentCurrencyPreference ,2000);
 		   
 		   // Build Pie chart
 		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions), 'chartFinancialPosition');
@@ -1191,11 +1192,11 @@
 		if(categoryForCalculation.contains('spendingTrans')) {
 			let currentValueExpense = er.convertToNumberFromCurrency(document.getElementById('totalExpensesTransactions').innerText, currentCurrencyPreference);
 			let totalAmountLeftForExpenses = currentValueExpense+ totalAddedOrRemovedFromAmount;
-			replaceHTML('totalExpensesTransactions' , '-' + currentCurrencyPreference + formatNumber(Number(totalAmountLeftForExpenses), currentUser.locale));
+			animateValue(document.getElementById('totalExpensesTransactions'), currentValueExpense, Number(totalAmountLeftForExpenses), '-' + currentCurrencyPreference ,2000);
 		} else if(categoryForCalculation.contains('incomeTrans')) {
 			let currentValueIncome = er.convertToNumberFromCurrency(document.getElementById('totalIncomeTransactions').innerText, currentCurrencyPreference);
 			let totalAmountLeftForIncome = currentValueIncome + totalAddedOrRemovedFromAmount;
-			replaceHTML('totalIncomeTransactions' , currentCurrencyPreference + formatNumber(Number(totalAmountLeftForIncome), currentUser.locale));
+			animateValue(document.getElementById('totalIncomeTransactions'), currentValueIncome, Number(totalAmountLeftForIncome), currentCurrencyPreference ,2000);
 		}
 		
 		// Update the total available 
@@ -1209,7 +1210,8 @@
 			availableCash = Math.abs(availableCash);
 		}
 		
-		replaceHTML('totalAvailableTransactions' , minusSign + currentCurrencyPreference + formatNumber(availableCash, currentUser.locale));
+		animateValue(document.getElementById('totalAvailableTransactions'), 0, Number(availableCash), minusSign + currentCurrencyPreference ,2000);
+		
 		
 		// Update the pie chart
 		let dataPreferencesChart = updatePieChartTransactions(income, expense);

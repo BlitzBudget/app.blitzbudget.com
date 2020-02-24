@@ -1733,6 +1733,12 @@
     	let labelsArray = [];
 		let seriesArray = [];
 		window.allBankAccountInfoCache = bankAccountList;
+
+		// If empty account List then
+		if(isEmpty(bankAccountList)) {
+			populateEmptyChartInfo();
+			return;
+		}
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
@@ -1743,6 +1749,12 @@
 				seriesArray.push(bankAcc.accountBalance);	
 			}
     	}
+
+    	// If empty series List then
+		if(isEmpty(seriesArray)) {
+			populateEmptyChartInfo();
+			return;
+		}
 
     	let dataSimpleBarChart = {
             labels: labelsArray,
@@ -1867,6 +1879,13 @@
 		let seriesArray = [];
 		let seriesArrayDebt = [];
 		window.allBankAccountInfoCache = bankAccountList;
+
+
+		// If empty account List then
+		if(isEmpty(bankAccountList)) {
+			populateEmptyChartInfo();
+			return;
+		}
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
@@ -1874,6 +1893,12 @@
 			labelsArray.push(bankAcc.bankAccountName);
 			seriesArray.push(bankAcc.accountBalance);	
     	}
+
+    	// If empty series List then
+		if(isEmpty(seriesArray)) {
+			populateEmptyChartInfo();
+			return;
+		}
 
     	let dataSimpleBarChart = {
             labels: labelsArray,
