@@ -334,3 +334,38 @@ function sameDate(inpDate, checkWith) {
     inpDate.getMonth() == checkWith.getMonth() &&
     inpDate.getFullYear() == checkWith.getFullYear();
 }
+
+function animateValue(element, start, end, prefix ,duration) {
+	// If start == end then return
+    if (start == end) {
+        // Set as text content
+        if(isNotEmpty(prefix)) {
+        	element.textContent = prefix + formatNumber(end, currentUser.locale);
+        } else {
+        	element.textContent = end;
+        }
+        return;
+    }
+
+    // If different 
+    let range = end - start;
+    let current = start;
+    let increment = end > start? 1 : -1;
+    let stepTime = Math.abs(Math.floor(duration / range));
+
+    let timer = setInterval(function() {
+    	// If start == end then return
+        if (current >= end) {
+            clearInterval(timer);
+        } else {
+        	// Incremenet current (append prefix)
+	        current += increment;
+	        // Set as text content
+	        if(isNotEmpty(prefix)) {
+	        	element.textContent = prefix + formatNumber(current, currentUser.locale);
+	        } else {
+	        	element.textContent = current;
+	        }
+        }   
+    }, stepTime);
+}

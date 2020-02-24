@@ -258,7 +258,7 @@
 		let toBeBudgetedDiv = document.getElementById('toBeBudgeted');
 		let detachChart = false;
 		if(isNotEmpty(userBudgetCacheKeys)) {
-			totalBudgetedCategoriesDiv.innerText = userBudgetCacheKeys.length;
+			animateValue(totalBudgetedCategoriesDiv, 0, userBudgetCacheKeys.length, '' ,2000);
 			// If empty then update the chart with the 0
 			toBeBudgetedDiv.innerText = 0;
 			
@@ -274,7 +274,7 @@
 					}
 				}
 				// assign the to be budgeted
-				toBeBudgetedDiv.innerText = toBeBudgetedAvailable;
+				animateValue(toBeBudgetedDiv, 0, toBeBudgetedAvailable, '' ,2000);				
 				
 				let totalCategoriesAvailable = toBeBudgetedAvailable + userBudgetCacheKeys.length;
 				let userBudgetPercentage = round(((userBudgetCacheKeys.length / totalCategoriesAvailable) * 100),1);
