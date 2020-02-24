@@ -291,7 +291,7 @@
 		let oldValInTe = '';
 		let inpId = '';
 		// Current countries and current currencies then do
-        if(isEqual(param, 'currency') && isEqual(param, 'locale')) {
+        if(isEqual(param, 'currency') || isEqual(param, 'locale')) {
         	// Fetch the display btn for auto complete
 			inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
 			oldValInTe = document.getElementById(inpId).innerText;
@@ -329,7 +329,7 @@
 	        // We save the item in the localStorage.
             localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
             // Current countries and current currencies then do
-            if(isEqual(param, 'currency') && isEqual(param, 'locale')) {
+            if(isEqual(param, 'currency') || isEqual(param, 'locale')) {
             	// Input search element
 				let inpBtnSrch = event.parentElement.id.replace('autocomplete-list','');
 				let inpSearchEl = document.getElementById(inpBtnSrch);

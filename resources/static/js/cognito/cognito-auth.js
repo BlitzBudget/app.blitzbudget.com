@@ -183,8 +183,6 @@ var AWSCogUser = window.AWSCogUser || {};
         let attributeName = createAttribute('name', nameObj.firstName);
         // Set Family Name
         let attributeFamilyName = createAttribute('family_name', nameObj.familyName);
-        // Set Export File Format
-        let attributeExportFileFormat = createAttribute('custom:exportFileFormat', 'csv');
         
         // Append Attributes to list
         var attributeList = [];
@@ -194,7 +192,6 @@ var AWSCogUser = window.AWSCogUser || {};
         attributeList.push(attributeCurrency);
         attributeList.push(attributeName);
         attributeList.push(attributeFamilyName);
-        attributeList.push(attributeExportFileFormat);
 
         userPool.signUp(email, password, attributeList, null,
             function signUpCallback(err, result) {

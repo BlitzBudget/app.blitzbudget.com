@@ -978,6 +978,8 @@
 		// Start requesting the chart  
 		let firstChildClassList = this.children[0].classList;
 		if(firstChildClassList.contains('incomeImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
         	if(doughnutBreakdownOpen) {
         		// Fetch the expense cache 
@@ -1006,6 +1008,8 @@
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Income');
 		} else if(firstChildClassList.contains('expenseImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
         	if(doughnutBreakdownOpen) {
         		// Fetch the expense cache 
@@ -1034,27 +1038,31 @@
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Expense');
 		} else if(firstChildClassList.contains('assetsImage')) {
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Asset Chart
-			populateAssetBarChart();
+			populateAssetBarChart(true);
+			// Hide the Year Picker in Overview Chart Display
+    		hideYearPickerICD(true);
+    		// Change Label
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Asset Overview';
 		} else if(firstChildClassList.contains('debtImage')) {
-			let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
-			
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
+			// Populate Debt Chart
+			populateAssetBarChart(false);
+			// Hide the Year Picker in Overview Chart Display
+    		hideYearPickerICD(true);
+    		// Change Label
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Debt Overview';
 		} else if(firstChildClassList.contains('networthImage')) {
-			let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+			// Show the button to choose charts
+			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
+			populateNetworthBarChart();
+			// Hide the Year Picker in Overview Chart Display
+    		hideYearPickerICD(true);
+    		// Change Label
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Networth Overview';
 		}
 		
 		// Remove the old highlighted element
@@ -1080,7 +1088,7 @@
 	             }),
 	             axisY: {
 	            	 	showGrid: true,
-	            	 	offset: 40,
+	            	 	offset: 70,
 	            	    labelInterpolationFnc: function(value) {
 	            	      
 	            	      value = formatLargeCurrencies(value);
@@ -1700,39 +1708,70 @@
     genericAddFnc.classList.add('d-none');
 
     /**
-    * Build Total Assets
+    * Build Total Assets / liability
     **/
-    function populateAssetBarChart() {
+    function populateAssetBarChart(fetchAssets) {
+    	// Fetch asset or liability
+    	let arrayOfAccCat = fetchAssets ? window.assetCategoryTypeRel : window.liabilityCategoryTypeRel;
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
 
-		// Fetch all bank account information
-		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-			debugger;
-			let labelsArray = [];
-			let seriesArray = [];
-			window.allBankAccountInfoCache = bankAccountList;
-			
-			// Iterate all bank accounts
-  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
-  				let bankAcc = bankAccountList[i];
-  				// Ensure if the asset type matches the bank account
-  				if(includesStr(window.assetCategoryTypeRel, bankAcc.accountType)) {
-  					labelsArray.push(bankAcc.bankAccountName);
-  					seriesArray.push(bankAcc.accountBalance);	
-  				}
-	    	}
+		if(isNotEmpty(window.allBankAccountInfoCache)) {
+			buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, arrayOfAccCat);
+		} else {
+			// Fetch all bank account information
+			er_a.fetchAllBankAccountInfo(function(bankAccountList) {
+				buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat);
+			});
+		}
+    }
 
-	    	let dataSimpleBarChart = {
-	            labels: labelsArray,
-	            series: [seriesArray]
-	        };
+    // Build Barchart For Asset Or Debt
+    function buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat) {
+    	let labelsArray = [];
+		let seriesArray = [];
+		window.allBankAccountInfoCache = bankAccountList;
+		
+		// Iterate all bank accounts
+		for(let i = 0, length = bankAccountList.length; i < length; i++) {
+			let bankAcc = bankAccountList[i];
+			// Ensure if the asset type matches the bank account
+			if(includesStr(arrayOfAccCat, bankAcc.accountType)) {
+				labelsArray.push(bankAcc.bankAccountName);
+				seriesArray.push(bankAcc.accountBalance);	
+			}
+    	}
 
-	        buildBarChart(dataSimpleBarChart);
+    	let dataSimpleBarChart = {
+            labels: labelsArray,
+            series: seriesArray
+        };
 
-		});
+        let optionsSimpleBarChart = {
+        	distributeSeries: true,
+            seriesBarDistance: 10,
+            axisX: {
+            	showGrid: false,
+            },
+            axisY: {
+			    labelInterpolationFnc: function(value, index) {
+			    	let minusSign = '';
+			        if(value < 0) {
+			        	minusSign = '-';
+			        }
+			        value = formatLargeCurrencies(value);
+	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+			    },
+			    // Offset Y axis label
+    			offset: 70
+			},
+			height: '400px'
+        };
+
+
+        buildBarChart(dataSimpleBarChart, optionsSimpleBarChart);
     }
 
     // Build Empty Chart information
@@ -1748,26 +1787,8 @@
     }
 
     // build line chart
-    function buildBarChart(dataSimpleBarChart) {
+    function buildBarChart(dataSimpleBarChart, optionsSimpleBarChart) {
     	/*  **************** Simple Bar Chart - barchart ******************** */
-
-        let optionsSimpleBarChart = {
-            seriesBarDistance: 10,
-            axisX: {
-            	showGrid: false
-            },
-            axisY: {
-			    labelInterpolationFnc: function(value, index) {
-			        value = formatLargeCurrencies(value);
-			        let minusSign = '';
-			        if(value < 0) {
-			        	minusSign = '-';
-			        }
-	            	return minusSign + currentCurrencyPreference + Math.abs(value);
-			    }
-			},
-			height: '400px'
-        };
 
         let responsiveOptionsSimpleBarChart = [
             ['screen and (max-width: 640px)', {
@@ -1794,6 +1815,7 @@
         // On draw bar chart
         simpleBarChart.on("draw", function(data) {
     		if (data.type === "bar") {
+    			// Tooltip
     			let minusSign = '';
     			let amount = 0;
     			if(data.value.y < 0) minusSign = '-';
@@ -1816,6 +1838,71 @@
         //start animation for the Emails Subscription Chart
         md.startAnimationForBarChart(simpleBarChart);
 
+    }
+
+
+    /**
+    *	Populate networth
+    **/
+    function populateNetworthBarChart() {
+
+    	// Reset the line chart with spinner
+		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
+		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+
+		if(isNotEmpty(window.allBankAccountInfoCache)) {
+			buildchartForNetworth(window.allBankAccountInfoCache);
+		} else {
+			// Fetch all bank account information
+			er_a.fetchAllBankAccountInfo(function(bankAccountList) {
+				buildchartForNetworth(bankAccountList);
+			});
+		}
+    }
+
+
+    // Build Barchart For Asset Or Debt
+    function buildchartForNetworth(bankAccountList) {
+    	let labelsArray = [];
+		let seriesArray = [];
+		let seriesArrayDebt = [];
+		window.allBankAccountInfoCache = bankAccountList;
+		
+		// Iterate all bank accounts
+		for(let i = 0, length = bankAccountList.length; i < length; i++) {
+			let bankAcc = bankAccountList[i];
+			labelsArray.push(bankAcc.bankAccountName);
+			seriesArray.push(bankAcc.accountBalance);	
+    	}
+
+    	let dataSimpleBarChart = {
+            labels: labelsArray,
+            series: seriesArray
+        };
+
+        let optionsSimpleBarChart = {
+        	distributeSeries: true,
+            seriesBarDistance: 10,
+            axisX: {
+            	showGrid: false,
+            },
+            axisY: {
+			    labelInterpolationFnc: function(value, index) {
+			        value = formatLargeCurrencies(value);
+			        let minusSign = '';
+			        if(value < 0) {
+			        	minusSign = '-';
+			        }
+	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+			    },
+			    // Offset Y axis label
+    			offset: 70
+			},
+			height: '400px'
+        };
+
+
+        buildBarChart(dataSimpleBarChart, optionsSimpleBarChart);
     }
 
 }(jQuery));

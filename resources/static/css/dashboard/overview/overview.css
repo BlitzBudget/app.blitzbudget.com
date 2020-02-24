@@ -346,7 +346,8 @@
 	-webkit-transition: stroke-width 0.3s ease-out;
 }
 
-#colouredRoundedLineChart.ct-chart .ct-slice-donut {
+#colouredRoundedLineChart.ct-chart .ct-slice-donut, 
+#colouredRoundedLineChart.ct-chart .ct-series {
 	-webkit-transition: stroke-width 0.3s ease-in;
 	transition: stroke-width 0.3s ease-in;
 }
@@ -355,6 +356,10 @@
     stroke-width: 2px;
     transition: stroke-width 0.3s ease-out;
 	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
+#colouredRoundedLineChart.ct-chart .ct-series:hover {
+    opacity: 0.8;
 }
 
 .budgetOptimization {
@@ -671,3 +676,22 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	}
 	
 }
+
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (max-width:697px) {
+	.ct-chart .ct-bar {
+	    fill: none;
+	    stroke-width: 1.8rem;
+	}
+}
+
+/** Change the size of the text if the width and height of the screen are less **/
+@media (max-width:400px) {
+	.ct-chart .ct-bar {
+	    fill: none;
+	    stroke-width: 1rem;
+	}
+}
+
+
