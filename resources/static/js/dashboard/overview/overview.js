@@ -768,11 +768,11 @@
    		ajaxData.type = 'GET';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(averageIncome) {
+        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
         	if(isEmpty(averageIncome)) {
-        		averageIncome = 0;
-        	}
-        	// Animate Value from 0 to value 
-        	animateValue(document.getElementById('averageIncomeAmount'), 0, averageIncome, currentCurrencyPreference ,2000);
+        		avIncomeAm = 0.00;
+        	} 
+        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!',ajaxData);
@@ -800,11 +800,11 @@
    		ajaxData.type = 'GET'
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
    		ajaxData.onSuccess = function(averageExpense) {
-        	if(isEmpty(averageExpense)) {
-        		averageExpense = 0;
+        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
+        	if(isEmpty(avExpenseAm)) {
+        		avExpenseAm = 0.00;
         	}
-        	// Animate Value from 0 to value 
-        	animateValue(document.getElementById('averageExpenseAmount'), 0, averageExpense, currentCurrencyPreference ,2000);
+        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!',ajaxData);
@@ -1115,7 +1115,7 @@
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
     		if (data.type === "point") {
-    			data.element._node.setAttribute("title", buildTooltipForLC(data.value.y));
+    			data.element._node.setAttribute("title", buldTooltipForLC(data.value.y));
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1132,30 +1132,9 @@
 	    md.startAnimationForLineChart(colouredRoundedLineChart);
 	}
 
-	// Tooltip for line chart
-	function buildTooltipForLC(currencyValue) {
-		let cardBal = document.createElement('div');
-		cardBal.classList = 'card-balance';
-
-		let icon = document.createElement('div');
-		icon.classList = 'card-icon icon mx-auto mb-2';
-		
-
-		let materialIcon = document.createElement('i');
-		materialIcon.classList = 'material-icons';
-		materialIcon.innerText = 'arrow_upward';
-		icon.appendChild(materialIcon);
-		cardBal.appendChild(icon);
-
-		let para = document.createElement('p');
-		para.innerText = 'Current Balance';
-
-		let spanP = document.createElement('span');
-		spanP.innerText = currentCurrencyPreference + formatNumber(currencyValue, currentUser.locale);
-		para.appendChild(spanP);
-		cardBal.appendChild(para);
-		
-		return cardBal;
+	// Buil tooltip for line chart
+	function buldTooltipForLC(currencyVal) {
+		return '<div class="card-balance"> <div class="card-icon icon mx-auto mb-2"><i class="material-icons">arrow_upward</i></div><p>Current Balance <span class="color-green mt-2" id="positive">' + currentCurrencyPreference + formatNumber(currencyVal, currentUser.locale) + '</span></p></div>';
 	}
 	
 	// Build material Spinner
@@ -1759,12 +1738,6 @@
     	let labelsArray = [];
 		let seriesArray = [];
 		window.allBankAccountInfoCache = bankAccountList;
-
-		// If empty account List then
-		if(isEmpty(bankAccountList)) {
-			populateEmptyChartInfo();
-			return;
-		}
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
@@ -1775,12 +1748,6 @@
 				seriesArray.push(bankAcc.accountBalance);	
 			}
     	}
-
-    	// If empty series List then
-		if(isEmpty(seriesArray)) {
-			populateEmptyChartInfo();
-			return;
-		}
 
     	let dataSimpleBarChart = {
             labels: labelsArray,
@@ -1905,13 +1872,6 @@
 		let seriesArray = [];
 		let seriesArrayDebt = [];
 		window.allBankAccountInfoCache = bankAccountList;
-
-
-		// If empty account List then
-		if(isEmpty(bankAccountList)) {
-			populateEmptyChartInfo();
-			return;
-		}
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
@@ -1919,12 +1879,6 @@
 			labelsArray.push(bankAcc.bankAccountName);
 			seriesArray.push(bankAcc.accountBalance);	
     	}
-
-    	// If empty series List then
-		if(isEmpty(seriesArray)) {
-			populateEmptyChartInfo();
-			return;
-		}
 
     	let dataSimpleBarChart = {
             labels: labelsArray,
