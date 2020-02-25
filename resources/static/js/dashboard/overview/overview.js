@@ -1115,7 +1115,7 @@
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
     		if (data.type === "point") {
-    			data.element._node.setAttribute("title", buldTooltipForLC(data.value.y));
+    			data.element._node.setAttribute("title", "Total: <strong>" + currentCurrencyPreference + formatNumber(data.value.y, currentUser.locale) + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1130,11 +1130,6 @@
     	});
 
 	    md.startAnimationForLineChart(colouredRoundedLineChart);
-	}
-
-	// Buil tooltip for line chart
-	function buldTooltipForLC(currencyVal) {
-		return '<div class="card-balance"> <div class="card-icon icon mx-auto mb-2"><i class="material-icons">arrow_upward</i></div><p>Current Balance <span class="color-green mt-2" id="positive">' + currentCurrencyPreference + formatNumber(currencyVal, currentUser.locale) + '</span></p></div>';
 	}
 	
 	// Build material Spinner
