@@ -1353,7 +1353,7 @@
     		}
     		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
     		return;
-    	}
+    	} 
 		
 		// Build the data for the line chart
     	let dataSimpleBarChart = {
@@ -1749,6 +1749,23 @@
             series: seriesArray
         };
 
+    	// If series array is empty then
+    	if(isEmpty(seriesArray)) {
+    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+    		let emptyMessageDocumentFragment = document.createDocumentFragment();
+    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+    		// Replace inner HTML with EMPTY
+    		while (chartAppendingDiv.firstChild) {
+    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+    		}
+    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		return;
+    	} else if(seriesArray.length == 1) {
+    		// Absolute total is the first series element
+    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', seriesArray[0]);
+    	}
+
+    	
         let optionsSimpleBarChart = {
         	distributeSeries: true,
             seriesBarDistance: 10,
@@ -1879,6 +1896,22 @@
             labels: labelsArray,
             series: seriesArray
         };
+
+    	// If series array is empty then
+    	if(isEmpty(seriesArray)) {
+    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+    		let emptyMessageDocumentFragment = document.createDocumentFragment();
+    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+    		// Replace inner HTML with EMPTY
+    		while (chartAppendingDiv.firstChild) {
+    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+    		}
+    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		return;
+    	} else if(seriesArray.length == 1) {
+    		// Absolute total is the first element in series
+    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', seriesArray[0]);
+    	}
 
         let optionsSimpleBarChart = {
         	distributeSeries: true,
