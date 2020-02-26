@@ -1357,8 +1357,8 @@
 		
 		// Build the data for the line chart
     	let dataSimpleBarChart = {
-		         labels: labelsArray,
-		         series: seriesArray
+	         labels: labelsArray,
+	         series: seriesArray
 		         
     	}
 
