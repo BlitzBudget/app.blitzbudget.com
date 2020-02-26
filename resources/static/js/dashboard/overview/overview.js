@@ -1109,8 +1109,8 @@
  		while (coloredChartDiv.firstChild) {
  			coloredChartDiv.removeChild(coloredChartDiv.firstChild);
  		}
-		 // Dispose the previous tooltips created
-		 $("#colouredRoundedLineChart").tooltip('dispose');
+		// Dispose the previous tooltips created
+		$("#colouredRoundedLineChart").tooltip('dispose');
 		 
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
@@ -1129,8 +1129,8 @@
     		});
     	});
 
-	     md.startAnimationForLineChart(colouredRoundedLineChart);
-	 }
+	    md.startAnimationForLineChart(colouredRoundedLineChart);
+	}
 	
 	// Build material Spinner
 	function buildMaterialSpinner() {
@@ -1353,12 +1353,12 @@
     		}
     		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
     		return;
-    	}
+    	} 
 		
 		// Build the data for the line chart
     	let dataSimpleBarChart = {
-		         labels: labelsArray,
-		         series: seriesArray
+	         labels: labelsArray,
+	         series: seriesArray
 		         
     	}
 
@@ -1749,6 +1749,24 @@
             series: seriesArray
         };
 
+    	// If series array is empty then
+    	if(isEmpty(seriesArray)) {
+    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+    		let emptyMessageDocumentFragment = document.createDocumentFragment();
+    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+    		// Replace inner HTML with EMPTY
+    		while (chartAppendingDiv.firstChild) {
+    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+    		}
+    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		return;
+    	} else if(seriesArray.length == 1) {
+    		// Absolute total is the first series element
+    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', seriesArray[0]);
+    		return;
+    	}
+
+    	
         let optionsSimpleBarChart = {
         	distributeSeries: true,
             seriesBarDistance: 10,
@@ -1879,6 +1897,23 @@
             labels: labelsArray,
             series: seriesArray
         };
+
+    	// If series array is empty then
+    	if(isEmpty(seriesArray)) {
+    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+    		let emptyMessageDocumentFragment = document.createDocumentFragment();
+    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+    		// Replace inner HTML with EMPTY
+    		while (chartAppendingDiv.firstChild) {
+    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+    		}
+    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		return;
+    	} else if(seriesArray.length == 1) {
+    		// Absolute total is the first element in series
+    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', seriesArray[0]);
+    		return;
+    	}
 
         let optionsSimpleBarChart = {
         	distributeSeries: true,
