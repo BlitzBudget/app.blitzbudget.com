@@ -1598,3 +1598,8 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
      margin:0 .6em;
      font-size:1em
 }
+
+.nav-link .budgetIcon {
+    height: 1.1rem;
+    margin-top: 0.7rem;
+}
