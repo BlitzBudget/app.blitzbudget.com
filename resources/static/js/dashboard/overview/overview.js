@@ -1762,7 +1762,7 @@
     		return;
     	} else if(seriesArray.length == 1) {
     		// Absolute total is the first series element
-    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', seriesArray[0]);
+    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', Math.abs(seriesArray[0]));
     		return;
     	}
 
@@ -1911,7 +1911,7 @@
     		return;
     	} else if(seriesArray.length == 1) {
     		// Absolute total is the first element in series
-    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', seriesArray[0]);
+    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', Math.abs(seriesArray[0]));
     		return;
     	}
 
