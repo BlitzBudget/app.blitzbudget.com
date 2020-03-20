@@ -20,6 +20,15 @@
                 "/dashboard/income/transactions/accountModal.css"
             ]
         },
+        {   
+            "type": "css",
+            "name": "signup.all.css",
+            "files": [
+                "/fragments/login-popup.css",
+                "/dashboard/build/material-dashboard.css",
+                "/dashboard/module/signup.css"
+            ]
+        },
         {
             "type": "js",
             "name": "core.js",
@@ -79,6 +88,15 @@
                 "/dashboard/overview/overview.js",
                 "/dashboard/overview/assetAndLiability.js",
                 "/dashboard/data/bankAccountCategories.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "signup.all.js",
+            "files": [
+                "/core/jquery.min.js",
+                "/plugins/sweetalert2.all.min.js",
+                "/plugins/libraries.js"
             ]
         }
     ]
