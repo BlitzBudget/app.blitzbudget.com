@@ -1020,30 +1020,6 @@
 
 	});
 
-	// Ask us directly
-	document.getElementById('askUsDirectly').addEventListener("click",function(){
-		// Show Sweet Alert
-        Swal.fire({
-        	position: 'bottom-right',
-            title: 'Ask us Directly',
-            html: confirmPasswordFrag(),
-            inputAttributes: {
-                autocapitalize: 'on'
-            },
-            confirmButtonClass: 'btn btn-info',
-            confirmButtonText: 'Send',
-            showCloseButton: true,
-            buttonsStyling: false
-        }).then(function(result) {
-            // If confirm button is clicked
-            if (result.value) {
-                // Update User Name 
-				
-            }
-
-        });
-	});
-
 	// Edit Email
 	document.getElementById('emailEdit').addEventListener("click",function(e){
 		// Hide the Element
