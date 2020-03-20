@@ -1353,7 +1353,8 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
 .material-icons:hover,
 .nav-link:hover .material-icons,
 #dashboard-util-logout:hover .material-icons,
-.card-icon .material-icons {
+.card-icon .material-icons,
+.nav-link:hover svg {
    -webkit-transform: scale(1) rotate(5deg);
   -ms-transform: scale(1) rotate(5deg);
   -o-transform: scale(1) rotate(5deg);
@@ -1400,7 +1401,8 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     animation-iteration-count: 1;
 }
 
-.material-icons {
+.material-icons,
+.nav-link svg {
    transition: all .3s ease;
     -webkit-transform: scale(0.8);
   -ms-transform: scale(0.8);

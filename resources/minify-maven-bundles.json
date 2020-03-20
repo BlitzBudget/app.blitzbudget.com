@@ -32,7 +32,6 @@
                 "/dashboard/material-dashboard/material-dashboard.js",
                 "/dashboard/custom-dashboard.js",
                 "/dashboard/sidebar/sidebar.js",
-                "/plugins/bootstrap-notify.js",
                 "/plugins/sweetalert2.all.min.js",
                 "/plugins/chartist.min.js",
                 "/dashboard/module/account.js",
@@ -79,6 +78,15 @@
                 "/dashboard/overview/overview.js",
                 "/dashboard/overview/assetAndLiability.js",
                 "/dashboard/data/bankAccountCategories.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "profile.all.js",
+            "files": [
+                "/dashboard/module/profile.js",
+                "/dashboard/support/askUsDirectly.js",
+                "/dashboard/support/support.js"
             ]
         }
     ]
