@@ -22,7 +22,6 @@
                 let message =  document.getElementById('askUsDirectlyText').value;
 				sendEmailToSupport(email, message);
             }
-
         });
 	});
 }(jQuery));

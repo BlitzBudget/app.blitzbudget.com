@@ -32,7 +32,6 @@
                 "/dashboard/material-dashboard/material-dashboard.js",
                 "/dashboard/custom-dashboard.js",
                 "/dashboard/sidebar/sidebar.js",
-                "/plugins/bootstrap-notify.js",
                 "/plugins/sweetalert2.all.min.js",
                 "/plugins/chartist.min.js",
                 "/dashboard/module/account.js",

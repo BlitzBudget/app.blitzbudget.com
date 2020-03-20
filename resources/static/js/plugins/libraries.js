@@ -249,17 +249,24 @@ function round(value, decimals) {
 function showNotification(message, colorCode){
 
 	if(isEqual(colorCode,'error')) {
-		$.notify({
-	    	icon: "notifications",
-	    	message: message
-		},{
-		    type: 'danger',
-		    timer: 2000,
-		    placement: {
-		        from: 'top',
-		        align: 'center'
-		    }
+		Toast.fire({
+			customClass: {
+  				container: 'mixinSuccess',
+  			},
+			icon: colorCode,
+			title: message
 		});
+		//$.notify({
+	    //	icon: "notifications",
+	    //	message: message
+		//},{
+		//    type: 'danger',
+		//    timer: 2000,
+		//    placement: {
+		//        from: 'top',
+		//        align: 'center'
+		//    }
+		//});
 	} else {
 		Toast.fire({
 			customClass: {
