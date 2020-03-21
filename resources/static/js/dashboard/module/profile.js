@@ -10,6 +10,7 @@
 		'resetAccountUrl': { value: '/reset-account', writable: false, configurable: false },
 		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/user-attribute', writable: false, configurable: false },
+		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },
 	});
 
 	displayUserDetailsProfile();
@@ -421,7 +422,7 @@
 				let ajaxData = {};
 				ajaxData.isAjaxReq = true;
 				ajaxData.type = 'DELETE';
-				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId;
+				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId  + PROFILE_CONSTANTS.deleteAccountParam + false;
 				ajaxData.onSuccess = function(jsonObj) {
 		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
 		        }
@@ -509,17 +510,10 @@
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
 					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId; 
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true; 
 					ajaxData.onSuccess = function(jsonObj) {
-			        	// Delete user
-						cognitoUser.deleteUser(function(err, result) {
-					        if (err) {
-					            showNotification(err.message,window._constants.notification.success);
-					            return;
-					        }
-					        localStorage.clear();
-					        window.location.href = window._config.home.invokeUrl;
-					    });
+				        localStorage.clear();
+				        window.location.href = window._config.home.invokeUrl;
 			        }
 				    ajaxData.onFailure = function (thrownError) {
 				    	manageErrors(thrownError, "There was an error while deleting the account. Please try again later!",ajaxData);
