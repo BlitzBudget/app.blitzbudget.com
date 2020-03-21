@@ -220,24 +220,25 @@ window.onload = function () {
 					url = '/budget';
 					color = 'rose';
 					currentPage = 'Budget';
+					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
 				    break;
 				case 'goalsPage':
 					url = '/goals';
 					color = 'orange';
 					currentPage = 'Goals';
-					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
+					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
 				    break;
 				case 'overviewPage':
 					url = '/overview';
 					color = 'azure';
 					currentPage = 'Overview';
-					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
+					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 				    break;
 				case 'investmentsPage':
 					url = '/investment';
 					color = 'purple';
 					currentPage = 'Investment';
-					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
+					imageUrl = '../img/dashboard/sidebar/sidebar-5.jpg';
 				    break;
 				case 'settingsPage':
 				case 'settingsPgDD':
