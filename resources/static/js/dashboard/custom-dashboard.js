@@ -115,8 +115,14 @@ window.onload = function () {
 			currentActiveSideBar.classList.add('active');
 		}
 
-		// Startup Application
-		startupApplication();
+		// If the current user data is still not loaded from Cognito (Refresh)
+		if(isNotEmpty(currentUser)) {
+			// Startup Application
+			startupApplication();
+		} else {
+			// Show login
+			er.showLoginPopup();
+		}
 		
 		/* Read Cookies */
 		function readCookie() {
@@ -220,24 +226,25 @@ window.onload = function () {
 					url = '/budget';
 					color = 'rose';
 					currentPage = 'Budget';
+					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
 				    break;
 				case 'goalsPage':
 					url = '/goals';
 					color = 'orange';
 					currentPage = 'Goals';
-					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
+					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
 				    break;
 				case 'overviewPage':
 					url = '/overview';
 					color = 'azure';
 					currentPage = 'Overview';
-					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
+					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 				    break;
 				case 'investmentsPage':
 					url = '/investment';
 					color = 'purple';
 					currentPage = 'Investment';
-					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
+					imageUrl = '../img/dashboard/sidebar/sidebar-5.jpg';
 				    break;
 				case 'settingsPage':
 				case 'settingsPgDD':
@@ -587,11 +594,11 @@ window.onload = function () {
 			// Set loginPopup shown to false
 			loginPopupShown = false;
 			// If the current user data is still not loaded from Cognito (Refresh)
-			 if(isEmpty(currentUser)) {
+			if(isEmpty(currentUser)) {
 			 	window.location.reload();
-			 } else {
+			} else {
 			 	startupApplication();
-			 }
+			}
 		});
 
 

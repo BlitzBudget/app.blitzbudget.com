@@ -545,7 +545,7 @@ var AWSCogUser = window.AWSCogUser || {};
 
                         // Update currency (API Gateway)
                         let xhr = new XMLHttpRequest();
-                        xhr.open("POST", _config.api.invokeUrl + "/update-currency");
+                        xhr.open("POST", _config.api.invokeUrl + "/cognito/user-attribute/update-currency");
                         xhr.setRequestHeader("Authorization", idToken);
                         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                         xhr.send(JSON.stringify({ "userName" : email}));
