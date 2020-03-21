@@ -48,12 +48,12 @@ var AWSCogUser = window.AWSCogUser || {};
         }
     });
 
-    retrieveAttributes('');
+    retrieveAttributes('','');
 
     /**
     * Retrieve Attributes
     **/
-    function retrieveAttributes(email) {
+    function retrieveAttributes(email,loginModal) {
         // We retrieve the object again, but in a string form.
         let currentCogUser = localStorage.getItem("currentUserSI");
         window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
@@ -108,6 +108,8 @@ var AWSCogUser = window.AWSCogUser || {};
                 localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
                 // Fill currency and Name
                 fillCurrencyAndName();
+                // Hide Modal
+                if(loginModal) loginModal.modal('hide');
             });
         });
     }
@@ -397,10 +399,10 @@ var AWSCogUser = window.AWSCogUser || {};
         signin(email, password,
             function signinSuccess(result) {
                 // Loads the current Logged in User Attributes
-                retrieveAttributes(email);
+                retrieveAttributes(email,loginModal);
 
-                // Hide Modal
-                loginModal.modal('hide');
+                // Post success message
+                document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
 
@@ -535,7 +537,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 signin(email, password,
                     function signinSuccess(result) {
                         // Loads the current Logged in User Attributes
-                        retrieveAttributes(email);
+                        retrieveAttributes(email,'');
                        
                         // Set JWT Token For authentication
                         let idToken = JSON.stringify(result.idToken.jwtToken);
@@ -760,10 +762,10 @@ var AWSCogUser = window.AWSCogUser || {};
                 signin(emailInputSignin, newPassword,
                     function signinSuccess(result) {
                         // Loads the current Logged in User Attributes
-                        retrieveAttributes(emailInputSignin);
+                        retrieveAttributes(emailInputSignin, loginModal);
 
-                        // Hide Modal
-                        loginModal.modal('hide');
+                        // Post success message
+                        document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
 
