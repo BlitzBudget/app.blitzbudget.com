@@ -203,6 +203,7 @@ window.onload = function () {
 			let color = '';
 			let imageUrl = '../img/dashboard/sidebar/sidebar-1.jpg';
 			let currentPage = '';
+			let chosenJs = '';
 			
 			if(isEmpty(id)){
 				Swal.fire({
@@ -221,12 +222,14 @@ window.onload = function () {
 					url = '/transactions';
 					color = 'green';
 					currentPage = 'Transactions';
+					chosenJs = 'js/transactions.all.min.js';
 				    break;
 				case 'budgetPage':
 					url = '/budget';
 					color = 'rose';
 					currentPage = 'Budget';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
+					chosenJs = 'js/dashboard/income/budget.min.js';
 				    break;
 				case 'goalsPage':
 					url = '/goals';
@@ -239,6 +242,7 @@ window.onload = function () {
 					color = 'azure';
 					currentPage = 'Overview';
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
+					chosenJs = 'js/overview.all.min.js';
 				    break;
 				case 'investmentsPage':
 					url = '/investment';
@@ -251,12 +255,14 @@ window.onload = function () {
 					url = '/settings';
 					color = ''; /* No Color */
 					currentPage = 'Settings';
+					chosenJs = 'js/settings.all.min.js';
 				    break;
 				case 'profilePage':
 				case 'profilePgDD':
 					url = '/profile';
 					color = ''; /* No Color */
 					currentPage = 'Profile';
+					chosenJs = 'js/profile.all.min.js';
 				    break;
 				default:
 					Swal.fire({
@@ -300,6 +306,13 @@ window.onload = function () {
 		            $('#mutableDashboard').html(data);
 		            // Set Current Page
 		            document.getElementById('currentPage').innerText = currentPage;
+		            // Fetch the script
+		            if(chosenJs) {
+			            $.getScript( chosenJs )
+						  .fail(function( jqxhr, settings, exception ) {
+						  	showNotification('Unable to fetch dependencies for the page. Please refresh the page!',window._constants.notification.error);
+						  });
+					}
 		        },
 		        error: function(){
 		        	Swal.fire({
@@ -810,18 +823,6 @@ window.onload = function () {
 		  	 	er.showLoginPopup();
 		     	return false;
 		  	}
-		});
-
-		/* Mouse Over  */
-		document.getElementById("triggerShowPass").addEventListener("mouseover",function(e){
-			let passInpSignin = document.getElementById('passwordInputSignin');
-			passInpSignin.setAttribute('type','text');
-		});
-
-		/* Mouse Over  */
-		document.getElementById("triggerShowPass").addEventListener("mouseout",function(e){
-			let passInpSignin = document.getElementById('passwordInputSignin');
-			passInpSignin.setAttribute('type','password');
 		});
 
 	});
