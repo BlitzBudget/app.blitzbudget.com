@@ -151,6 +151,11 @@
     margin-top: 0.5rem;
 }
 
+#emailIdAUD:focus,
+.askUsDirectlyText:focus {
+    border: 2px solid #00bcd4;
+}
+
 .askUsDirectlyText {
     height: 20rem;
 }
@@ -163,4 +168,3 @@
     top: 50%;
     left: 50%;
 }
-

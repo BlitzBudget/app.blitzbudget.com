@@ -1,27 +1,29 @@
 "use strict";
-(function scopeWrapper($) {
-	
-	// Ask Us Directly
-	document.getElementById("helpCenter").addEventListener("click",function(e){
+(function scopeWrapper($) {	
+
+	// Show help center
+	$('.main-panel').on('click', '.helpCenter' , function(e) {
 		// Show Sweet Alert
         Swal.fire({
         	position: 'bottom-right',
-            title: 'Help Center',
-            html: '',
+            title: 'HelpCenter',
+            html: loadHelpCenter(),
+            customClass: {
+            	popup: 'help-center-popup',
+            	content: 'help-center-content'
+            },
             inputAttributes: {
                 autocapitalize: 'on'
             },
             showCloseButton: true,
             showConfirmButton: false,
             buttonsStyling: false
-        }).then(function(result) {
-            // If confirm button is clicked
-            if (result.value) {
-                // send Email
-                let email =  document.getElementById('emailIdAUD').value; 
-                let message =  document.getElementById('askUsDirectlyText').value;
-				sendEmailToSupport(email, message);
-            }
         });
 	});
+
+	// Load Help center
+	function loadHelpCenter() {
+
+	}
+
 }(jQuery));

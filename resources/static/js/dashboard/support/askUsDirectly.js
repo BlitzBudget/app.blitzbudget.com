@@ -166,8 +166,6 @@
 		if(isEmpty(textAreaEnt) || textAreaEnt.length < 40) {
 			textErrorDispUA.innerText = 'Please enter a minimum of 40 characters.';
 			sendEmailBtn.setAttribute('disabled','disabled');
-			// Change the focus back to text area
-			this.focus();
 			return;
 		}
 

@@ -1,3 +1,4 @@
+
 {
     "bundles": [
         {
@@ -36,7 +37,8 @@
                 "/plugins/chartist.min.js",
                 "/dashboard/module/account.js",
                 "/dashboard/configuration/commonConfiguration.js",
-                "/plugins/libraries.js"
+                "/plugins/libraries.js",
+                "/dashboard/support/support.js"
             ]
         },
         {
@@ -85,8 +87,7 @@
             "name": "profile.all.js",
             "files": [
                 "/dashboard/module/profile.js",
-                "/dashboard/support/askUsDirectly.js",
-                "/dashboard/support/support.js"
+                "/dashboard/support/askUsDirectly.js"
             ]
         }
     ]
