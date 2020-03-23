@@ -3,45 +3,33 @@
 
 	// Show help center
 	$('.main-panel').on('click', '.helpCenter' , function(e) {
-		// Show Sweet Alert
-        Swal.fire({
-        	position: 'bottom-right',
-            title: 'How Can We Help?',
-            html: loadHelpCenter(),
-            customClass: {
-            	popup: 'help-center-popup',
-            	content: 'help-center-content'
+		// Show Information
+        // Call the actual page which was requested to be loaded
+        $.ajax({
+            type: "GET",
+            url: '/support/modal',
+            dataType: 'html',
+            success: function(data){
+                // Support Modal
+                $('#supportModal').modal('show');
+                // Load the new HTML
+                $('#supportContent').html(data);
+                // Load the auto complete module
+                loadAutoCompleteModuleOnSwal();
+                // Focus the search article
+                document.getElementById('searchArticle').focus();
             },
-            inputAttributes: {
-                autocapitalize: 'on'
-            },
-            showCloseButton: true,
-            showConfirmButton: false,
-            buttonsStyling: false
+            error: function(){
+                Swal.fire({
+                    title: "Redirecting Not Possible",
+                    text: 'Please try again later',
+                    icon: 'warning',
+                    timer: 1000,
+                    showConfirmButton: false
+                }).catch(swal.noop);
+            }
         });
-
-        // Load the auto complete module
-        loadAutoCompleteModuleOnSwal();
 	});
-
-	// Load Help center
-	function loadHelpCenter() {
-        let searchModule = document.createDocumentFragment();
-
-        let inputSearchArt = document.createElement('input');
-        inputSearchArt.classList = "form-control w-75 mx-auto";
-        inputSearchArt.id = 'searchArticle';
-        inputSearchArt.type =  "text";
-        inputSearchArt.placeholder="Search for articles...";
-        searchModule.appendChild(inputSearchArt);
-
-        let searchArticleDD = document.createElement('div');
-        searchArticleDD.classList = 'mx-auto w-75';
-        searchArticleDD.id = 'searchArticleDD';
-        searchModule.appendChild(searchArticleDD);
-
-        return searchModule;
-	}
 
     /**
     * Autocomplete Module
@@ -129,6 +117,7 @@
                 /*create a DIV element for each matching element:*/
                 b = document.createElement("a");
                 b.classList.add("dropdown-item");
+                b.classList.add('help-center-result');
                 /*make the matching letters bold:*/
                 if(startsWithChar) {
                     b.innerHTML = "<strong>" + arr[i].title.substr(0, val.length) + "</strong>" + arr[i].title.substr(val.length);
@@ -140,7 +129,7 @@
                     b.innerHTML = arr[i].title.substr(0, startPos) + "<strong>" + arr[i].title.substr(startPos, val.length) + "</strong>" + arr[i].title.substr(startPos2);
                 }
                 /*insert a input field that will hold the current array item's value:*/
-                b.href = arr[i].url;
+                b.href = window._config.help.invokeUrl + arr[i].url;
                 
                 a.appendChild(b);
               }
@@ -219,6 +208,166 @@
 
         /*initiate the autocomplete function on the "searchArticle" element, and pass along the countries array as possible autocomplete values:*/
         autocomplete(document.getElementById("searchArticle"), faq, "searchArticleDD");
+
+        // Dispatch click event
+        let event = new Event('input', {
+            bubbles: true,
+            cancelable: true,
+        });
+
+        // Display the first 5 results
+        document.getElementById("searchArticle").dispatchEvent(event);
     }
+
+    // On click a tag then
+    $( "#supportModal" ).on( "click", ".help-center-result" ,function() {
+        let anchorHref = this.href;
+        // Retrieve categories / articles
+        jQuery.ajax({
+            url: anchorHref + 'info.json',
+            type: 'GET',
+            success: function(result) {
+                loadPage(result);
+                return false;
+            },
+            error: function(userTransactionsList) {
+                Toast.fire({
+                    icon: 'error',
+                    title: "Unable to fetch the requested url"
+                });
+            }
+        });
+
+        return false;
+    });
+
+    function loadPage(result) {
+        // Check if subcategory
+        if(result.subcategoryPresent) {
+            // Populate article information
+            populateSubCategoryInfo(result);
+        } else {
+            // Populate article information
+            populateArticleInfo(result);
+        }
+    }
+
+    // Populate Sub Category Info
+    function populateSubCategoryInfo(result) {
+        let title = result.title;
+        let categoryInfo = window.categoryInfo;
+
+        // Category Information iteration
+        for(let i=0, len=categoryInfo.length; i<len ; i++) {
+            let category = categoryInfo[i];
+            if(isEqual(category.categoryName, title)) {
+                // Update body
+                document.getElementById('article-title').innerText = category.categoryName;
+                document.getElementById('article-description').innerText = category.description;
+                let bcEl = document.getElementById('breadcrumb');
+                while(bcEl.firstChild) {
+                    bcEl.removeChild(bcEl.firstChild);
+                }
+                bcEl.appendChild(populateBreadcrumb(result));
+                // Remove article body
+                let articleBody = document.getElementById('article-body');
+                while(articleBody.firstChild) {
+                    articleBody.removeChild(articleBody.firstChild);
+                }
+                
+                articleBody.appendChild(populateSubCategory(category));
+
+                return;
+            }
+        }
+    }
+
+    // Populate sub category information
+    function populateSubCategory(category) {
+        let subCategoryDiv = document.createDocumentFragment();
+        let subCategoryNav = category.subCategory;
+
+        if(isEmpty(subCategoryNav)) {
+            return subCategoryDiv;
+        }
+
+        let ul = document.createElement('ul');
+        ul.classList.add('sub-category-list');      
+
+        for(let i=0, len = subCategoryNav.length; i < len; i++) {
+            let subCategoryNavItem = subCategoryNav[i];
+            let li = document.createElement('li');
+            li.classList.add('sub-category-li');
+
+            let articleIcon = document.createElement('i');
+            articleIcon.classList = 'material-icons align-middle';
+            articleIcon.innerText = 'assignment';
+            li.appendChild(articleIcon);
+    
+            let anchorArticle = document.createElement('a');
+            anchorArticle.classList.add('sub-category-link');
+            anchorArticle.classList.add('help-center-result');
+            anchorArticle.href = window._config.help.invokeUrl + category.dataUrl + subCategoryNavItem.url.slice(1);
+            anchorArticle.innerText = subCategoryNavItem.title;
+            li.appendChild(anchorArticle);
+            ul.appendChild(li);
+        }
+
+        subCategoryDiv.appendChild(ul);
+        return subCategoryDiv;
+    }
+
+    // Populate Article Information
+    function populateArticleInfo(result) {
+        // Update body
+        document.getElementById('article-title').innerText = result.title;
+        document.getElementById('article-description').innerText = '';
+        let bcEl = document.getElementById('breadcrumb');
+        while(bcEl.firstChild) {
+            bcEl.removeChild(bcEl.firstChild);
+        }
+        bcEl.appendChild(populateBreadcrumb(result));
+        // Remove article body
+        let articleBody = document.getElementById('article-body');
+        while(articleBody.firstChild) {
+            articleBody.removeChild(articleBody.firstChild);
+        }
+        
+        articleBody.appendChild(populateArticle(result.content));
+
+    }
+
+    // Populate Article
+    function populateArticle(content) {
+        let articleDiv = document.createDocumentFragment();
+
+        if(isEmpty(content)) {
+            return articleDiv;
+        }
+
+        for(let i=0, len = content.length; i < len; i++) {
+            let contentItem = content[i];
+            let tag = document.createElement(contentItem.tag);
+            
+            // Populate innerHTML
+            if(isNotEmpty(contentItem.html)) {          
+                tag.innerHTML = contentItem.html;
+            }
+
+            // Add class list
+            if(isNotEmpty(contentItem.classInfo)) {
+                tag.classList = contentItem.classInfo;
+            }
+
+            // Add src
+            if(isNotEmpty(contentItem.srcUrl)) {
+                tag.src = contentItem.srcUrl;
+            }
+
+            articleDiv.appendChild(tag);
+        }
+        return articleDiv;
+    }
+
 
 }(jQuery));

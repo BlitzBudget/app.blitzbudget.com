@@ -9,5 +9,8 @@ window._config = {
     },
     home: {
     	invokeUrl: 'https://www.blitzbudget.com'
+    },
+    help: {
+        invokeUrl: 'https://help.blitzbudget.com'
     }
 };
