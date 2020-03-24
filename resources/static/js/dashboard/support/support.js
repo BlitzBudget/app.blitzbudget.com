@@ -1,6 +1,7 @@
 "use strict";
 (function scopeWrapper($) {	
-    
+    // Forward slash regex
+    const reForwardSlash = /\//g;
     // Load the auto complete module
     loadAutoCompleteModuleOnSwal();
     // Focus the search article
