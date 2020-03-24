@@ -213,6 +213,7 @@
         // Switch to category nav
         document.getElementsByClassName('Hero')[0].classList.add('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.remove('d-none');
+        document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
         let articleTitle = document.getElementById('article-title');
         while(articleTitle.firstChild) {
             articleTitle.removeChild(articleTitle.firstChild);
@@ -324,6 +325,8 @@
 
     // Populate Article Information
     function populateArticleInfo(result) {
+        // Remove the article ratings display none property
+        document.getElementsByClassName('article-ratings')[0].classList.remove('d-none');
         // Update body
         document.getElementById('article-title').innerText = result.title;
         document.getElementById('article-description').innerText = '';
@@ -426,6 +429,7 @@
         // This is needed if the user scrolls down during page load and you want to make sure the page is scrolled to the top once it's fully loaded.Cross-browser supported.
         document.getElementsByClassName('Hero')[0].classList.remove('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.add('d-none');
+        document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
     }
 
     // Build Material Spinner
