@@ -205,12 +205,6 @@
 
         // If home page is selected then change classList
         if(((anchorHref || '').match(reForwardSlash) || []).length == 3) {
-            // Detect if pushState is available
-            if (window.history.pushState) {
-                window.history.pushState("", 'BlitzBudget Help Center', anchorHref);
-            }
-            // Document Title for browser
-            document.title = 'BlitzBudget Help Center';
             loadHomePage();
 
             return false;

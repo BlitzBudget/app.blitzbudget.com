@@ -283,3 +283,37 @@
     height: 18rem;
 }
 
+
+.crumbAnchor,
+.nextCrumb {
+    color: #5d5353;
+    margin-right: 0.35rem;
+    text-decoration: none;
+}
+
+.crumbAnchor:hover,
+#category-nav .category-item a:hover,
+.sub-category-li .sub-category-link:hover {
+    text-decoration: underline;
+}
+
+.support-dialog {
+  position: fixed;
+  top: auto;
+  right: 0;
+  bottom: 0;
+}
+
+@media (max-width: 576px) {
+
+    .article-image {
+        width: 15rem;
+    }
+}
+
+@media (min-width: 768px) {  
+
+    .article-image {
+        width: 20rem;
+    }
+}

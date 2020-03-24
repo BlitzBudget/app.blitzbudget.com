@@ -832,15 +832,14 @@ window.onload = function () {
 		**/
 		// Show help center
 		$('.main-panel').on('click', '.helpCenter' , function(e) {
-			// Show Information
+			// Support Modal
+	        $('#supportModal').modal('show');
 	        // Call the actual page which was requested to be loaded
 	        $.ajax({
 	            type: "GET",
 	            url: window._config.help.html,
 	            dataType: 'html',
 	            success: function(data){
-	                // Support Modal
-	                $('#supportModal').modal('show');
 	                // Load the new HTML
 	                $('#supportContent').html(data);
 	                // Fetch the script
