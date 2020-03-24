@@ -434,4 +434,16 @@
         document.getElementsByClassName('CategoryResult')[0].classList.add('d-none');
     }
 
+    // Build Material Spinner
+    function buildMaterialSpinner() {
+        let divContainer = document.createElement('div');
+        divContainer.classList = 'm-auto h-eighteen-rem position-relative';
+
+        // Add Material Spinner
+        let divMaterialSpinner = document.createElement('div');
+        divMaterialSpinner.classList = 'material-spinner m-auto position-absolute position-absolute-center';
+        divContainer.appendChild(divMaterialSpinner);
+        return divContainer;
+    }
+
 }(jQuery));
