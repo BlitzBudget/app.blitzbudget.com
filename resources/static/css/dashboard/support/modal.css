@@ -404,6 +404,184 @@
     text-decoration: underline;
 }
 
+.article-ratings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #E9E5E5;
+    border-radius: 4px;
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,.05);
+    font-size: 14px;
+    color: #858585;
+}
+
+.article-ratings-question {
+    margin-right: 12px;
+}
+
+.article-ratings-actions {
+    width: 65px;
+    flex-shrink: 0;
+}
+
+.rate-action-positive {
+    margin-right: 3px;
+    padding: 0;
+    margin: 0;
+    width: 28px;
+    height: 28px;
+    position: relative;
+    background: #E3E8EB;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px 0 rgba(193,203,212,.5);
+    transition: all .2s ease-in-out;
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.rating-face {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    fill: #A5B2BD;
+    transition: fill .2s ease-in-out;
+}
+
+
+.rate-action:hover:not([disabled=disabled]) .rating-face,
+.rate-action:focus:not([disabled=disabled]) .rating-face,
+.rate-action.selected .rating-face {
+    fill: #d79400
+}
+
+.rate-action--positive:not([disabled=disabled]):hover .rating-face {
+    animation: yep 1.5s steps(5,start) .15s forwards
+}
+
+.rate-action-negative:not([disabled=disabled]):hover .rating-face {
+    animation: not-really 1.5s steps(5,start) .15s forwards
+}
+
+
+@-webkit-keyframes yep {
+    0%,100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    10%,30%,50%,70% {
+        -webkit-transform: translateY(-3.5px);
+        transform: translateY(-3.5px)
+    }
+
+    20%,40%,60% {
+        -webkit-transform: translateY(3.5px);
+        transform: translateY(3.5px)
+    }
+
+    80% {
+        -webkit-transform: translateY(2.6px);
+        transform: translateY(2.6px)
+    }
+
+    90% {
+        -webkit-transform: translateY(-2.6px);
+        transform: translateY(-2.6px)
+    }
+}
+
+@keyframes yep {
+    0%,100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0)
+    }
+
+    10%,30%,50%,70% {
+        -webkit-transform: translateY(-3.5px);
+        transform: translateY(-3.5px)
+    }
+
+    20%,40%,60% {
+        -webkit-transform: translateY(3.5px);
+        transform: translateY(3.5px)
+    }
+
+    80% {
+        -webkit-transform: translateY(2.6px);
+        transform: translateY(2.6px)
+    }
+
+    90% {
+        -webkit-transform: translateY(-2.6px);
+        transform: translateY(-2.6px)
+    }
+}
+
+@-webkit-keyframes not-really {
+    0%,100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    10%,30%,50%,70% {
+        -webkit-transform: translateX(-3.5px);
+        transform: translateX(-3.5px)
+    }
+
+    20%,40%,60% {
+        -webkit-transform: translateX(3.5px);
+        transform: translateX(3.5px)
+    }
+
+    80% {
+        -webkit-transform: translateX(2.6px);
+        transform: translateX(2.6px)
+    }
+
+    90% {
+        -webkit-transform: translateX(-2.6px);
+        transform: translateX(-2.6px)
+    }
+}
+
+@keyframes not-really {
+    0%,100% {
+        -webkit-transform: translateX(0);
+        transform: translateX(0)
+    }
+
+    10%,30%,50%,70% {
+        -webkit-transform: translateX(-3.5px);
+        transform: translateX(-3.5px)
+    }
+
+    20%,40%,60% {
+        -webkit-transform: translateX(3.5px);
+        transform: translateX(3.5px)
+    }
+
+    80% {
+        -webkit-transform: translateX(2.6px);
+        transform: translateX(2.6px)
+    }
+
+    90% {
+        -webkit-transform: translateX(-2.6px);
+        transform: translateX(-2.6px)
+    }
+}
+
 @media (max-width: 576px) {
 
     .article-image {
