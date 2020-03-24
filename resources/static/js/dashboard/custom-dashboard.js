@@ -825,6 +825,44 @@ window.onload = function () {
 		  	}
 		});
 
+		/**
+		*
+		* Support module On Click
+		*
+		**/
+		// Show help center
+		$('.main-panel').on('click', '.helpCenter' , function(e) {
+			// Show Information
+	        // Call the actual page which was requested to be loaded
+	        $.ajax({
+	            type: "GET",
+	            url: window._config.help.html,
+	            dataType: 'html',
+	            success: function(data){
+	                // Support Modal
+	                $('#supportModal').modal('show');
+	                // Load the new HTML
+	                $('#supportContent').html(data);
+	                // Fetch the script
+		            if(window._config.help.js) {
+			            $.getScript( window._config.help.js )
+						  .fail(function( jqxhr, settings, exception ) {
+						  	showNotification('Unable to fetch dependencies for the page. Please refresh the page!',window._constants.notification.error);
+						  });
+					}
+	            },
+	            error: function(){
+	                Swal.fire({
+	                    title: "Redirecting Not Possible",
+	                    text: 'Please try again later',
+	                    icon: 'warning',
+	                    timer: 1000,
+	                    showConfirmButton: false
+	                }).catch(swal.noop);
+	            }
+	        });
+		});
+
 	});
 }
 
