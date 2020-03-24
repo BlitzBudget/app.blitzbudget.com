@@ -196,7 +196,7 @@
     }
 
     // On click a tag then
-    $( "#supportModal" ).on( "click", ".help-center-result" ,function() {
+    $( "#supportModal" ).on( "click", "a" ,function() {
         let anchorHref = this.href;
         // Add trailing slash at the end if not present
         if(anchorHref.charAt(anchorHref.length - 1) !== "/") {
