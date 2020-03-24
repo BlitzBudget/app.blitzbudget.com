@@ -465,7 +465,7 @@
     fill: #d79400
 }
 
-.rate-action--positive:not([disabled=disabled]):hover .rating-face {
+.rate-action-positive:not([disabled=disabled]):hover .rating-face {
     animation: yep 1.5s steps(5,start) .15s forwards
 }
 
@@ -473,6 +473,16 @@
     animation: not-really 1.5s steps(5,start) .15s forwards
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
 
 @-webkit-keyframes yep {
     0%,100% {
