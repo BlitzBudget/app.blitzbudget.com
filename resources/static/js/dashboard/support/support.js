@@ -196,7 +196,7 @@
     }
 
     // On click a tag then
-    $( "#supportModal" ).on( "click", ".help-center-result" ,function() {
+    $( "#supportModal" ).on( "click", "a" ,function() {
         let anchorHref = this.href;
         // Add trailing slash at the end if not present
         if(anchorHref.charAt(anchorHref.length - 1) !== "/") {
@@ -205,12 +205,6 @@
 
         // If home page is selected then change classList
         if(((anchorHref || '').match(reForwardSlash) || []).length == 3) {
-            // Detect if pushState is available
-            if (window.history.pushState) {
-                window.history.pushState("", 'BlitzBudget Help Center', anchorHref);
-            }
-            // Document Title for browser
-            document.title = 'BlitzBudget Help Center';
             loadHomePage();
 
             return false;
@@ -219,6 +213,7 @@
         // Switch to category nav
         document.getElementsByClassName('Hero')[0].classList.add('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.remove('d-none');
+        document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
         let articleTitle = document.getElementById('article-title');
         while(articleTitle.firstChild) {
             articleTitle.removeChild(articleTitle.firstChild);
@@ -330,6 +325,8 @@
 
     // Populate Article Information
     function populateArticleInfo(result) {
+        // Remove the article ratings display none property
+        document.getElementsByClassName('article-ratings')[0].classList.remove('d-none');
         // Update body
         document.getElementById('article-title').innerText = result.title;
         document.getElementById('article-description').innerText = '';
@@ -432,6 +429,7 @@
         // This is needed if the user scrolls down during page load and you want to make sure the page is scrolled to the top once it's fully loaded.Cross-browser supported.
         document.getElementsByClassName('Hero')[0].classList.remove('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.add('d-none');
+        document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
     }
 
     // Build Material Spinner
