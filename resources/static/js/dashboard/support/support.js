@@ -1,35 +1,10 @@
 "use strict";
 (function scopeWrapper($) {	
-
-	// Show help center
-	$('.main-panel').on('click', '.helpCenter' , function(e) {
-		// Show Information
-        // Call the actual page which was requested to be loaded
-        $.ajax({
-            type: "GET",
-            url: '/support/modal',
-            dataType: 'html',
-            success: function(data){
-                // Support Modal
-                $('#supportModal').modal('show');
-                // Load the new HTML
-                $('#supportContent').html(data);
-                // Load the auto complete module
-                loadAutoCompleteModuleOnSwal();
-                // Focus the search article
-                document.getElementById('searchArticle').focus();
-            },
-            error: function(){
-                Swal.fire({
-                    title: "Redirecting Not Possible",
-                    text: 'Please try again later',
-                    icon: 'warning',
-                    timer: 1000,
-                    showConfirmButton: false
-                }).catch(swal.noop);
-            }
-        });
-	});
+    
+    // Load the auto complete module
+    loadAutoCompleteModuleOnSwal();
+    // Focus the search article
+    document.getElementById('searchArticle').focus();
 
     /**
     * Autocomplete Module
@@ -361,7 +336,7 @@
 
             // Add src
             if(isNotEmpty(contentItem.srcUrl)) {
-                tag.src = contentItem.srcUrl;
+                tag.src = window._config.help.invokeUrl + contentItem.srcUrl;
             }
 
             articleDiv.appendChild(tag);
@@ -369,5 +344,51 @@
         return articleDiv;
     }
 
+        // Populate the breadcrumb
+    function populateBreadcrumb(result) {
+        let breadcrumbDiv = document.createDocumentFragment();
+        let breadcrumbSC = result.breadcrumb;
+
+        if(isEmpty(breadcrumbSC)) {
+            return breadcrumbDiv;
+        }
+
+        // Bread crumb 0
+        let breadcrumbAnchor = breadcrumbSC[0];
+        let anchorZero = document.createElement('a');
+        anchorZero.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
+        anchorZero.classList.add('crumbAnchor');
+        anchorZero.innerText = breadcrumbAnchor.crumbTitle;
+        breadcrumbDiv.appendChild(anchorZero);  
+
+        for(let i=1, len = breadcrumbSC.length; i < len; i++) {
+            let span = document.createElement('span');
+            span.classList.add('nextCrumb');
+            span.innerText = '>';
+            breadcrumbDiv.appendChild(span);
+
+            let breadcrumbAnchor = breadcrumbSC[i];
+            let anchorOther = document.createElement('a');
+            anchorOther.classList.add('crumbAnchor');
+            anchorOther.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
+            anchorOther.innerText = breadcrumbAnchor.crumbTitle;
+            breadcrumbDiv.appendChild(anchorOther);
+        }
+
+        // Upload the category
+        let span = document.createElement('span');
+        span.classList.add('nextCrumb');
+        span.innerText = '>';
+        breadcrumbDiv.appendChild(span);
+
+        // Bread crumb last
+        let anchorLast = document.createElement('a');
+        anchorLast.href = window._config.help.invokeUrl + result.url;
+        anchorLast.classList.add('crumbAnchor');
+        anchorLast.innerText = result.title;
+        breadcrumbDiv.appendChild(anchorLast);
+
+        return breadcrumbDiv;
+    }
 
 }(jQuery));

@@ -38,8 +38,7 @@
                 "/plugins/chartist.min.js",
                 "/dashboard/module/account.js",
                 "/dashboard/configuration/commonConfiguration.js",
-                "/plugins/libraries.js",
-                "/dashboard/support/support.js"
+                "/plugins/libraries.js"
             ]
         },
         {
