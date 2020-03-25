@@ -1,7 +1,7 @@
 "use strict";
 (function scopeWrapper($) {	
 	// Ask Us Directly
-	document.getElementById("askUsDirectly").addEventListener("click",function(e){
+	$( 'body' ).on( "click", ".askUsDirectly" ,function() {
 		// Show Sweet Alert
         Swal.fire({
         	position: 'bottom-right',
@@ -20,7 +20,8 @@
                 // send Email
                 let email =  document.getElementById('emailIdAUD').value; 
                 let message =  document.getElementById('askUsDirectlyText').value;
-				sendEmailToSupport(email, message);
+                let subject = "Customer Support: Requesting More Information 24 hours";
+				sendEmailToSupport(email, message, subject);
             }
 
         });
@@ -173,16 +174,17 @@
 
 	});
 
-	 // Send Email to BlitzBudget Support
-    function sendEmailToSupport(email, message) {
+	// Send Email to BlitzBudget Support
+    function sendEmailToSupport(email, message,subject) {
 
     	let values = JSON.stringify({
     		"email" : email,
-    		"message" : message
+    		"message" : message,
+    		"subject" : subject
     	});
 
 	 	jQuery.ajax({
-			url:  api.invokeUrl + api.sendEmailUrl,			
+			url: window._config.api.invokeUrl + window._config.api.sendEmailUrl,		
 	        type: 'POST',
 	        contentType:"application/json;charset=UTF-8",
 	        data : values,
