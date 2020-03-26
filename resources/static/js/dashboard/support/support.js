@@ -209,6 +209,13 @@
             anchorHref = anchorHref + '/';
         }
 
+        // Hide Article Ratings
+        document.getElementById('article-ratings-success').classList.add('d-none');
+        document.getElementById('article-ratings-failure').classList.add('d-none');
+        document.getElementsByClassName('article-ratings-question')[0].classList.remove('d-none');
+        document.getElementsByClassName('article-ratings-actions')[0].classList.remove('d-none');
+        document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
+
         // If home page is selected then change classList
         if(((anchorHref || '').match(reForwardSlash) || []).length == 3) {
             loadHomePage();
@@ -216,13 +223,8 @@
         }
 
         // Switch to category nav
-        document.getElementById('article-ratings-success').classList.add('d-none');
-        document.getElementById('article-ratings-failure').classList.add('d-none');
-        document.getElementsByClassName('article-ratings-question')[0].classList.remove('d-none');
-        document.getElementsByClassName('article-ratings-actions')[0].classList.remove('d-none');
         document.getElementsByClassName('Hero')[0].classList.add('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.remove('d-none');
-        document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
         let articleTitle = document.getElementById('article-title');
         while(articleTitle.firstChild) {
             articleTitle.removeChild(articleTitle.firstChild);
