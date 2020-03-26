@@ -1,7 +1,7 @@
 "use strict";
 (function scopeWrapper($) {	
 	// Ask Us Directly
-	document.getElementById("askUsDirectly").addEventListener("click",function(e){
+	$( 'body' ).on( "click", ".askUsDirectly" ,function() {
 		// Show Sweet Alert
         Swal.fire({
         	position: 'bottom-right',
@@ -10,7 +10,7 @@
             inputAttributes: {
                 autocapitalize: 'on'
             },
-            confirmButtonClass: 'btn btn-info btn-lg',
+            confirmButtonClass: 'btn btn-info btn-large',
             confirmButtonText: 'Send',
             showCloseButton: true,
             buttonsStyling: false
@@ -18,9 +18,10 @@
             // If confirm button is clicked
             if (result.value) {
                 // send Email
-                let email =  document.getElementById('emailIdAUD').value; 
+                let email =  window.currentUser.email;
                 let message =  document.getElementById('askUsDirectlyText').value;
-				sendEmailToSupport(email, message);
+                let subject = "Customer Support: Requesting More Information in 24 hours";
+				sendEmailToSupport(email, message, subject);
             }
 
         });
@@ -32,27 +33,13 @@
         }
 
         // CHange Focus to Confirm Password
-        document.getElementById('emailIdAUD').focus();
+        document.getElementById('askUsDirectlyText').focus();
 	});
 
 	// HTML for ask us directly
 	function askUsDirectly() {
 		let askUsDirectlyDiv = document.createElement('div');
 		askUsDirectlyDiv.classList = 'text-center';
-
-		let labelEmail = document.createElement('label');
-		labelEmail.classList = 'labelEmail text-left ml-5';
-		labelEmail.innerText = 'Email';
-		askUsDirectlyDiv.appendChild(labelEmail);
-
-		let emailinput = document.createElement('input');
-		emailinput.id = 'emailIdAUD';
-		emailinput.setAttribute('type','email');
-		emailinput.setAttribute('autocapitalize','off');
-		emailinput.setAttribute('spellcheck','false');
-		emailinput.setAttribute('autocorrect','off');
-		emailinput.setAttribute('autocomplete','off');
-		askUsDirectlyDiv.appendChild(emailinput);
 
 		// Error Text
 		let errorCPOld = document.createElement('div');
@@ -79,59 +66,11 @@
 		return askUsDirectlyDiv;
 	}
 
-	// Email Id Key Up
-	$(document).on('keyup', "#emailIdAUD", function(e) {
-	
-		let sendEmailBtn = document.getElementsByClassName('swal2-confirm')[0];
-		let cpErrorDispUA = document.getElementById('cpErrorDispUA');
-		let askUsDirectlyText = document.getElementById('askUsDirectlyText');
-		let emailEnt = this.value;
-
-		let keyCode = e.keyCode || e.which;
-		if (keyCode === 13) { 
-			document.activeElement.blur();
-		    e.preventDefault();
-		    e.stopPropagation();
-		    // Focus the message Text Area
-		    askUsDirectlyText.focus();
-		    return false;
-		}
-
-		if(isEmpty(emailEnt) || !emailValidation.test(emailEnt)) {
-			sendEmailBtn.setAttribute('disabled','disabled');
-			return;
-		}
-
-		cpErrorDispUA.innerText = '';
-		// Only after text area minimum validation is passed remove disbaled for button
-		if(isNotEmpty(askUsDirectlyText.value) && askUsDirectlyText.value.length > 40) {
-			sendEmailBtn.removeAttribute('disabled');
-		}
-	});
-
-	// Email Id Focus Out
-	$(document).on('focusout', "#emailIdAUD", function() {
-	
-		let sendEmailBtn = document.getElementsByClassName('swal2-confirm')[0];
-		let cpErrorDispUA = document.getElementById('cpErrorDispUA');
-		let emailEnt = this.value;
-
-		if(isEmpty(emailEnt) || !emailValidation.test(emailEnt)) {
-			cpErrorDispUA.innerText = 'Please enter a valid email address.';
-			sendEmailBtn.setAttribute('disabled','disabled');
-			return;
-		}
-
-		cpErrorDispUA.innerText = '';
-
-	});
-
 	// ASk Us Directly test Key Up Listener
 	$(document).on('keyup', "#askUsDirectlyText", function(e) {
 	
 		let sendEmailBtn = document.getElementsByClassName('swal2-confirm')[0];
 		let textErrorDispUA = document.getElementById('textErrorDispUA');
-		let emailEnt = document.getElementById('emailIdAUD').value;
 		let textAreaEnt = this.value;
 
 		let keyCode = e.keyCode || e.which;
@@ -150,10 +89,7 @@
 		}
 
 		textErrorDispUA.innerText = '';
-		// Only after email is vaidated remove disabled
-		if(emailValidation.test(emailEnt)) {
-			sendEmailBtn.removeAttribute('disabled');
-		}
+		sendEmailBtn.removeAttribute('disabled');	
 	});
 
 	// Ask Us Directly test Focus Out Listener
@@ -173,16 +109,17 @@
 
 	});
 
-	 // Send Email to BlitzBudget Support
-    function sendEmailToSupport(email, message) {
+	// Send Email to BlitzBudget Support
+    function sendEmailToSupport(email, message,subject) {
 
     	let values = JSON.stringify({
     		"email" : email,
-    		"message" : message
+    		"message" : message,
+    		"subject" : subject
     	});
 
 	 	jQuery.ajax({
-			url:  api.invokeUrl + api.sendEmailUrl,			
+			url: window._config.api.invokeUrl + window._config.api.sendEmailUrl,		
 	        type: 'POST',
 	        contentType:"application/json;charset=UTF-8",
 	        data : values,

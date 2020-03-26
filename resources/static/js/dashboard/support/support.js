@@ -6,6 +6,12 @@
     loadAutoCompleteModuleOnSwal();
     // Focus the search article
     document.getElementById('searchArticle').focus();
+    // SUPPORT CONSTANTS
+    const SUPPORT_CONSTANTS = {};
+    // SECURITY: Defining Immutable properties as constants
+    Object.defineProperties(SUPPORT_CONSTANTS, {
+        'ratingLS': { value: 'articleRating', writable: false, configurable: false }
+    });
 
     /**
     * Autocomplete Module
@@ -206,11 +212,14 @@
         // If home page is selected then change classList
         if(((anchorHref || '').match(reForwardSlash) || []).length == 3) {
             loadHomePage();
-
             return false;
         }
 
         // Switch to category nav
+        document.getElementById('article-ratings-success').classList.add('d-none');
+        document.getElementById('article-ratings-failure').classList.add('d-none');
+        document.getElementsByClassName('article-ratings-question')[0].classList.remove('d-none');
+        document.getElementsByClassName('article-ratings-actions')[0].classList.remove('d-none');
         document.getElementsByClassName('Hero')[0].classList.add('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.remove('d-none');
         document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
@@ -248,6 +257,8 @@
     });
 
     function loadPage(result) {
+        // Set the data attribute to url
+        $('.rate-action').attr('data-url', result.url);
         // Check if subcategory
         if(result.subcategoryPresent) {
             // Populate article information
@@ -325,8 +336,11 @@
 
     // Populate Article Information
     function populateArticleInfo(result) {
-        // Remove the article ratings display none property
-        document.getElementsByClassName('article-ratings')[0].classList.remove('d-none');
+        // Check if it exists in the database
+        if(!checkRatingInLS(result.url)) {
+            // Remove the article ratings display none property
+            document.getElementsByClassName('article-ratings')[0].classList.remove('d-none');
+        }
         // Update body
         document.getElementById('article-title').innerText = result.title;
         document.getElementById('article-description').innerText = '';
@@ -430,6 +444,8 @@
         document.getElementsByClassName('Hero')[0].classList.remove('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.add('d-none');
         document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
+        // Set the data attribute to home
+        $('.rate-action').attr('data-ratingurl','/');
     }
 
     // Build Material Spinner
@@ -442,6 +458,145 @@
         divMaterialSpinner.classList = 'material-spinner m-auto position-absolute position-absolute-center';
         divContainer.appendChild(divMaterialSpinner);
         return divContainer;
+    }
+
+    // On click ratings
+    $(".rate-action").click(function () {
+        let rating = this.getAttribute("data-rating");
+        let message = ''; 
+        let subject = '';
+        if(isEqual(rating, 'positive')) {
+            message = 'The article in this URL ' + this.getAttribute("url") + ' was helpful';
+            subject = 'Article Rating: I like your article';
+            showSuccessMessage();
+        } else {
+            message = 'Improve the article in this URL ' + this.getAttribute("url");
+            subject = 'Article Rating: You need to improve';
+            needMoreInformation();
+        }
+        sendEmailToSupport(message, subject);
+        updateToLocalStorage(this.getAttribute("data-url"), rating);
+    });
+
+    // Need More information
+    function needMoreInformation() {
+        document.getElementById('article-ratings-failure').classList.remove('d-none');
+        document.getElementsByClassName('article-ratings-question')[0].classList.add('d-none');
+        document.getElementsByClassName('article-ratings-actions')[0].classList.add('d-none');   
+    }
+
+    // Show Success Message
+    function showSuccessMessage() {
+        let articleSuccess = document.getElementById('article-ratings-success');
+        while(articleSuccess.firstChild) {
+            articleSuccess.removeChild(articleSuccess.firstChild);
+        } 
+        articleSuccess.classList.remove('d-none');
+        articleSuccess.appendChild(successSvgMessage());
+        document.getElementsByClassName('article-ratings-question')[0].classList.add('d-none');
+        document.getElementsByClassName('article-ratings-actions')[0].classList.add('d-none');
+    }
+
+    // Update Local storage with rating
+    function updateToLocalStorage(url, rating) {
+        let ratingLS = JSON.parse(localStorage.getItem(SUPPORT_CONSTANTS.ratingLS));
+        if(isEmpty(ratingLS)) {
+            // Create the first rating
+            ratingLS = [];
+        }
+
+        let articleRating = {
+            'url' :  url,
+            'rating' : rating
+        }
+        ratingLS.push(articleRating);
+        // Set ratings to the local storage
+        localStorage.setItem(SUPPORT_CONSTANTS.ratingLS, JSON.stringify(ratingLS));
+    }
+
+    // Check if ratings is present
+    function checkRatingInLS(url) {
+        let ratingLS = JSON.parse(localStorage.getItem(SUPPORT_CONSTANTS.ratingLS));
+        if(isEmpty(ratingLS)) {
+            return false;
+        }
+
+        // if rating is present then return true
+        for(let i = 0, len = ratingLS.length; i < len; i++) {
+            let articleRating = ratingLS[i];
+            if(isEqual(articleRating.url, url)) {
+                return true;
+            }
+        }
+    }
+
+    // Send Ratings to support
+    function sendEmailToSupport(message, subject) {
+
+        let values = JSON.stringify({
+            "email" : window.currentUser.email,
+            "message" : message,
+            "subject" : subject
+        });
+
+        jQuery.ajax({
+            url:  window._config.api.invokeUrl + window._config.api.sendEmailUrl,         
+            type: 'POST',
+            contentType:"application/json;charset=UTF-8",
+            data : values
+        });
+    }
+
+    // Generate SVG Tick Element and success element
+    function successSvgMessage() {
+        let alignmentDiv = document.createElement('div');
+        alignmentDiv.className = 'row justify-content-center mx-2';
+        
+        // Parent Div Svg container
+        let divSvgContainer = document.createElement('div');
+        divSvgContainer.className = 'svg-container';
+        
+        // SVG element
+        let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+        svgElement.setAttribute('class','ft-green-tick');
+        svgElement.setAttribute('height','20');
+        svgElement.setAttribute('width','20');
+        svgElement.setAttribute('viewBox','0 0 48 48');
+        svgElement.setAttribute('aria-hidden',true);
+        
+        let circleElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circleElement.setAttribute('class','circle');
+        circleElement.setAttribute('fill','#5bb543');
+        circleElement.setAttribute('cx','24');
+        circleElement.setAttribute('cy','24');
+        circleElement.setAttribute('r','22');
+        
+        let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+        pathElement.setAttribute('class','tick');
+        pathElement.setAttribute('fill','none');
+        pathElement.setAttribute('stroke','#FFF');
+        pathElement.setAttribute('stroke-width','6');
+        pathElement.setAttribute('stroke-linecap','round');
+        pathElement.setAttribute('stroke-linejoin','round');
+        pathElement.setAttribute('stroke-miterlimit','10');
+        pathElement.setAttribute('d','M14 27l5.917 4.917L34 17');
+        
+        svgElement.appendChild(circleElement);
+        svgElement.appendChild(pathElement);
+        divSvgContainer.appendChild(svgElement);
+        
+        let messageParagraphElement = document.createElement('p');
+        messageParagraphElement.className = 'article-success margin-bottom-zero margin-left-five';
+        messageParagraphElement.innerHTML = 'Thanks for the feedback.';
+        
+        var br = document.createElement('br');
+        
+        alignmentDiv.appendChild(divSvgContainer);
+        alignmentDiv.appendChild(messageParagraphElement);
+        alignmentDiv.appendChild(br);
+        
+        
+        return alignmentDiv;
     }
 
 }(jQuery));

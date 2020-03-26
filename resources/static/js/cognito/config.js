@@ -5,7 +5,8 @@ window._config = {
         region: 'eu-west-1' // e.g. us-east-2
     },
     api: {
-        invokeUrl: 'https://api.blitzbudget.com' // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod,
+        invokeUrl: 'https://api.blitzbudget.com', // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod,
+        sendEmailUrl : '/send-email'
     },
     home: {
     	invokeUrl: 'https://www.blitzbudget.com'
