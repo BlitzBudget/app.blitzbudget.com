@@ -57,7 +57,7 @@
 		textArea.classList = 'askUsDirectlyText';
 
 		if(isNotEmpty(url)) {
-			textArea.innerText = 'The article with the url ' + url + ' could have more information to be most useful. I would appreciate if the article contained.. ';
+			textArea.value = 'The article with the url ' + url + ' could have more information to be most useful. I would appreciate if the article contained.. ';
 		}
 
 		askUsDirectlyDiv.appendChild(textArea);
