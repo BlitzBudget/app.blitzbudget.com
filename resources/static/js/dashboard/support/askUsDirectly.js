@@ -6,7 +6,7 @@
         Swal.fire({
         	position: 'bottom-right',
             title: 'Ask Us Directly',
-            html: askUsDirectly(),
+            html: askUsDirectly(this.getAttribute('data-url')),
             inputAttributes: {
                 autocapitalize: 'on'
             },
@@ -37,7 +37,7 @@
 	});
 
 	// HTML for ask us directly
-	function askUsDirectly() {
+	function askUsDirectly(url) {
 		let askUsDirectlyDiv = document.createElement('div');
 		askUsDirectlyDiv.classList = 'text-center';
 
@@ -55,6 +55,11 @@
 		let textArea = document.createElement('textarea');
 		textArea.id = "askUsDirectlyText";
 		textArea.classList = 'askUsDirectlyText';
+
+		if(isNotEmpty(url)) {
+			textArea.innerText = 'The article with the url ' + url + ' could have more information to be most useful. I would appreciate if the article contained.. ';
+		}
+
 		askUsDirectlyDiv.appendChild(textArea);
 
 		// Error Text
@@ -73,17 +78,7 @@
 		let textErrorDispUA = document.getElementById('textErrorDispUA');
 		let textAreaEnt = this.value;
 
-		let keyCode = e.keyCode || e.which;
-		if (keyCode === 13) { 
-			document.activeElement.blur();
-		    e.preventDefault();
-		    e.stopPropagation();
-		    // Focus the message Text Area
-		    sendEmailBtn.click();
-		    return false;
-		}
-
-		if(isEmpty(textAreaEnt) || textAreaEnt.length < 40) {
+		if(isEmpty(textAreaEnt) || textAreaEnt.length < 80) {
 			sendEmailBtn.setAttribute('disabled','disabled');
 			return;
 		}
@@ -99,8 +94,8 @@
 		let textErrorDispUA = document.getElementById('textErrorDispUA');
 		let textAreaEnt = this.value;
 
-		if(isEmpty(textAreaEnt) || textAreaEnt.length < 40) {
-			textErrorDispUA.innerText = 'Please enter a minimum of 40 characters.';
+		if(isEmpty(textAreaEnt) || textAreaEnt.length < 80) {
+			textErrorDispUA.innerText = 'Please enter a minimum of 80 characters.';
 			sendEmailBtn.setAttribute('disabled','disabled');
 			return;
 		}

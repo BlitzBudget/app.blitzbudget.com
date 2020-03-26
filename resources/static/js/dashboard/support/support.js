@@ -466,21 +466,23 @@
         let message = ''; 
         let subject = '';
         if(isEqual(rating, 'positive')) {
-            message = 'The article in this URL ' + this.getAttribute("url") + ' was helpful';
+            message = 'The article in this URL ' + this.getAttribute("data-url") + ' was helpful';
             subject = 'Article Rating: I like your article';
             showSuccessMessage();
         } else {
-            message = 'Improve the article in this URL ' + this.getAttribute("url");
+            message = 'Improve the article in this URL ' + this.getAttribute("data-url");
             subject = 'Article Rating: You need to improve';
-            needMoreInformation();
+            needMoreInformation(this.getAttribute("data-url"));
         }
         sendEmailToSupport(message, subject);
         updateToLocalStorage(this.getAttribute("data-url"), rating);
     });
 
     // Need More information
-    function needMoreInformation() {
-        document.getElementById('article-ratings-failure').classList.remove('d-none');
+    function needMoreInformation(url) {
+        let articleFailure = document.getElementById('article-ratings-failure');
+        articleFailure.setAttribute('data-url', url);
+        articleFailure.classList.remove('d-none');
         document.getElementsByClassName('article-ratings-question')[0].classList.add('d-none');
         document.getElementsByClassName('article-ratings-actions')[0].classList.add('d-none');   
     }
