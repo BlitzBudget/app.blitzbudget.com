@@ -294,7 +294,15 @@
 .crumbAnchor:hover,
 #category-nav .category-item a:hover,
 .sub-category-li .sub-category-link:hover {
+    color: #5d5353;
     text-decoration: underline;
+}
+
+.btn-large {
+    padding:.825rem 5.25rem;
+    font-size:.875rem;
+    line-height:1.333333;
+    border-radius:.2rem;
 }
 
 .modal.fade:not(.in).right .modal-dialog {
@@ -495,6 +503,10 @@
 
 .article-success {
     color: #3c4858;
+}
+
+.askUsDirectly:hover {
+    text-decoration: underline;
 }
 
 @-webkit-keyframes yep {
