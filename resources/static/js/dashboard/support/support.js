@@ -481,7 +481,7 @@
     // Need More information
     function needMoreInformation(url) {
         let articleFailure = document.getElementById('article-ratings-failure');
-        articleFailure.setAttribute('data-url', url);
+        articleFailure.lastElementChild.setAttribute('data-url', url);
         articleFailure.classList.remove('d-none');
         document.getElementsByClassName('article-ratings-question')[0].classList.add('d-none');
         document.getElementsByClassName('article-ratings-actions')[0].classList.add('d-none');   
