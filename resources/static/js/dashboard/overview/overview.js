@@ -56,13 +56,13 @@
         	
         	if(isEmpty(userTransactionsList)) {
         		let imageTransactionEmptyWrapper = document.createElement('div');
-        		imageTransactionEmptyWrapper.classList = 'text-center d-lg-table-row';
+        		imageTransactionEmptyWrapper.classList = 'text-center d-table-row';
         		
         		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
         		
         		
         		let emptyMessageRow = document.createElement('div');
-        		emptyMessageRow.classList = 'text-center d-lg-table-row tripleNineColor font-weight-bold';
+        		emptyMessageRow.classList = 'text-center d-table-row tripleNineColor font-weight-bold';
         		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
         		recentTransactionsFragment.appendChild(emptyMessageRow);
         	} else {
@@ -106,10 +106,10 @@
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = 'recentTransaction-' + userTransaction.transactionId;
-		tableRowTransaction.classList = 'd-lg-table-row recentTransactionEntry';
+		tableRowTransaction.classList = 'd-table-row recentTransactionEntry';
 		
 		let tableCellImagesWrapper = document.createElement('div');
-		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
+		tableCellImagesWrapper.classList = 'd-table-cell align-middle imageWrapperCell text-center';
 		
 		let circleWrapperDiv = document.createElement('div');
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT';
@@ -125,7 +125,7 @@
 		tableRowTransaction.appendChild(tableCellImagesWrapper);
 		
 		let tableCellTransactionDescription = document.createElement('div');
-		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
+		tableCellTransactionDescription.classList = 'descriptionCellRT d-table-cell';
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
@@ -142,10 +142,10 @@
 		
 		// Append a - sign if it is an expense
 		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
-			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
+			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
 			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		}
 		   
@@ -382,12 +382,12 @@
 		// Budget Optimization Row
 		let tableBudgetOptimization = document.createElement('div');
 		tableBudgetOptimization.id = 'budgetOptimization-' + userBudget.categoryId;
-		tableBudgetOptimization.classList = 'budgetOptimization d-lg-table-row';
+		tableBudgetOptimization.classList = 'budgetOptimization d-table-row';
 		
 		// Table Cell 1
 		let checkboxCell = document.createElement('div');
 		checkboxCell.tabIndex = -1;
-		checkboxCell.className = 'd-lg-table-cell text-center checkListBO';
+		checkboxCell.className = 'd-table-cell text-center checkListBO';
 		
 		let formCheckDiv = document.createElement('div');
 		formCheckDiv.className = 'form-check';
@@ -418,13 +418,13 @@
 		
 		// Table Cell 2 
 		let userBudgetNameDiv = document.createElement('div');
-		userBudgetNameDiv.classList = 'font-weight-bold categoryNameBO d-lg-table-cell';
+		userBudgetNameDiv.classList = 'font-weight-bold categoryNameBO d-table-cell';
 		userBudgetNameDiv.innerText = categoryMap[userBudget.categoryId].categoryName;
 		tableBudgetOptimization.appendChild(userBudgetNameDiv);
 		
 		// Table Cell 3 
 		let overspentAmountDiv = document.createElement('div');
-		overspentAmountDiv.classList = 'budgetAmountBO expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+		overspentAmountDiv.classList = 'budgetAmountBO expenseCategory font-weight-bold d-table-cell text-right align-middle';
 		overspentAmountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(overSpentBudget, currentUser.locale);
 		tableBudgetOptimization.appendChild(overspentAmountDiv);
 		

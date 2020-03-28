@@ -354,7 +354,7 @@ let tickIconSVG = tickIcon();
 		
 		// Table
 		let tableInfo = document.createElement('div');
-		tableInfo.classList = 'table table-fixed d-lg-table';
+		tableInfo.classList = 'table table-fixed d-table';
 		
 		// Table Heading
 		let tableHeading = document.createElement('div');
@@ -362,137 +362,137 @@ let tickIconSVG = tickIcon();
 		
 		// First Empty HEad
 		let firstTableHead = document.createElement('div');
-		firstTableHead.classList = 'w-60 d-lg-table-cell';
+		firstTableHead.classList = 'w-60 d-table-cell';
 		tableHeading.appendChild(firstTableHead);
 		
 		// Second Table Head
 		let secTableHead = document.createElement('div');
-		secTableHead.classList = 'w-20 d-lg-table-cell';
+		secTableHead.classList = 'w-20 d-table-cell';
 		syncSVG = cloneElementAndAppend(secTableHead, syncSVG);
 		tableHeading.appendChild(secTableHead);
 		
 		// Third Table Head
 		let thirdTableHead = document.createElement('div');
-		thirdTableHead.classList = 'w-20 d-lg-table-cell';
+		thirdTableHead.classList = 'w-20 d-table-cell';
 		unsyncSVG = cloneElementAndAppend(thirdTableHead, unsyncSVG);
 		tableHeading.appendChild(thirdTableHead);
 		tableInfo.appendChild(tableHeading);
 		
 		// Table First Row
 		let firstTableRow = document.createElement('div');
-		firstTableRow.classList = 'd-lg-table-row';
+		firstTableRow.classList = 'd-table-row';
 		
 		let emptyFC1 = document.createElement('div');
-		emptyFC1.classList = 'd-lg-table-cell';
+		emptyFC1.classList = 'd-table-cell';
 		firstTableRow.appendChild(emptyFC1);
 		
 		let titleSC1 = document.createElement('div');
-		titleSC1.classList = 'd-lg-table-cell';
+		titleSC1.classList = 'd-table-cell';
 		titleSC1.innerText = 'Sync';
 		firstTableRow.appendChild(titleSC1);
 		
 		let titlsTC1 = document.createElement('div');
-		titlsTC1.classList = 'd-lg-table-cell';
+		titlsTC1.classList = 'd-table-cell';
 		titlsTC1.innerText = 'Unsync';
 		firstTableRow.appendChild(titlsTC1);
 		tableInfo.appendChild(firstTableRow);
 		
 		// Table Six Row
 		let SixthTableRow = document.createElement('div');
-		SixthTableRow.classList = 'd-lg-table-row';
+		SixthTableRow.classList = 'd-table-row';
 		
 		let emptyFC6 = document.createElement('div');
 		emptyFC6.innerText = 'Connect to your Financial Institution';
-		emptyFC6.classList = 'd-lg-table-cell pt-2 text-left align-middle';
+		emptyFC6.classList = 'd-table-cell pt-2 text-left align-middle';
 		SixthTableRow.appendChild(emptyFC6);
 		
 		let titleSC6 = document.createElement('div');
-		titleSC6.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titleSC6.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titleSC6, tickIconSVG);
 		SixthTableRow.appendChild(titleSC6);
 		
 		let titlsTC6 = document.createElement('div');
-		titlsTC6.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titlsTC6.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		titlsTC6.appendChild(xMark());
 		SixthTableRow.appendChild(titlsTC6);
 		tableInfo.appendChild(SixthTableRow);
 		
 		// Table Second Row 
 		let secondTableRow = document.createElement('div');
-		secondTableRow.classList = 'd-lg-table-row';
+		secondTableRow.classList = 'd-table-row';
 		
 		let emptyFC2 = document.createElement('div');
 		emptyFC2.innerText = 'Import from a file *';
-		emptyFC2.classList = 'd-lg-table-cell pt-2 text-left align-middle';
+		emptyFC2.classList = 'd-table-cell pt-2 text-left align-middle';
 		secondTableRow.appendChild(emptyFC2);
 		
 		let titleSC2 = document.createElement('div');
-		titleSC2.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titleSC2.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titleSC2, tickIconSVG);
 		secondTableRow.appendChild(titleSC2);
 		
 		let titlsTC2 = document.createElement('div');
-		titlsTC2.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titlsTC2.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titlsTC2, tickIconSVG);
 		secondTableRow.appendChild(titlsTC2);
 		tableInfo.appendChild(secondTableRow);
 		
 		// Table Third Row
 		let ThirdTableRow = document.createElement('div');
-		ThirdTableRow.classList = 'd-lg-table-row';
+		ThirdTableRow.classList = 'd-table-row';
 		
 		let emptyFC3 = document.createElement('div');
 		emptyFC3.innerText = 'Manually Enter Transactions';
-		emptyFC3.classList = 'd-lg-table-cell pt-2 text-left align-middle';
+		emptyFC3.classList = 'd-table-cell pt-2 text-left align-middle';
 		ThirdTableRow.appendChild(emptyFC3);
 		
 		let titleSC3 = document.createElement('div');
-		titleSC3.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titleSC3.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titleSC3, tickIconSVG);
 		ThirdTableRow.appendChild(titleSC3);
 		
 		let titlsTC3 = document.createElement('div');
-		titlsTC3.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titlsTC3.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titlsTC3, tickIconSVG);
 		ThirdTableRow.appendChild(titlsTC3);
 		tableInfo.appendChild(ThirdTableRow);
 		
 		// Table Fourth Row
 		let FourthTableRow = document.createElement('div');
-		FourthTableRow.classList = 'd-lg-table-row';
+		FourthTableRow.classList = 'd-table-row';
 		
 		let emptyFC4 = document.createElement('div');
 		emptyFC4.innerText = 'International Availability *';
-		emptyFC4.classList = 'd-lg-table-cell pt-2 text-left align-middle';
+		emptyFC4.classList = 'd-table-cell pt-2 text-left align-middle';
 		FourthTableRow.appendChild(emptyFC4);
 		
 		let titleSC4 = document.createElement('div');
-		titleSC4.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titleSC4.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titleSC4, tickIconSVG);
 		FourthTableRow.appendChild(titleSC4);
 		
 		let titlsTC4 = document.createElement('div');
-		titlsTC4.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titlsTC4.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titlsTC4, tickIconSVG);
 		FourthTableRow.appendChild(titlsTC4);
 		tableInfo.appendChild(FourthTableRow);
 		
 		// Table Fifth Row
 		let FifthTableRow = document.createElement('div');
-		FifthTableRow.classList = 'd-lg-table-row';
+		FifthTableRow.classList = 'd-table-row';
 		
 		let emptyFC5 = document.createElement('div');
 		emptyFC5.innerText = 'Mobile Apps Availability';
-		emptyFC5.classList = 'd-lg-table-cell pt-2 text-left align-middle';
+		emptyFC5.classList = 'd-table-cell pt-2 text-left align-middle';
 		FifthTableRow.appendChild(emptyFC5);
 		
 		let titleSC5 = document.createElement('div');
-		titleSC5.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titleSC5.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titleSC5, tickIconSVG);
 		FifthTableRow.appendChild(titleSC5);
 		
 		let titlsTC5 = document.createElement('div');
-		titlsTC5.classList = 'd-lg-table-cell pt-2 f6x3BckGrd align-middle';
+		titlsTC5.classList = 'd-table-cell pt-2 f6x3BckGrd align-middle';
 		tickIconSVG = cloneElementAndAppend(titlsTC5, tickIconSVG);
 		FifthTableRow.appendChild(titlsTC5);
 		tableInfo.appendChild(FifthTableRow);
@@ -898,7 +898,7 @@ function unSyncedAccount() {
 	
 	
 	let dropdownGroup = document.createElement('div');
-	dropdownGroup.classList = 'btn-group d-md-block d-lg-block';
+	dropdownGroup.classList = 'btn-group d-md-block d-block';
 	
 	let displaySelected = document.createElement('button');
 	displaySelected.classList = 'btn btn-secondary w-85 accountChosen';

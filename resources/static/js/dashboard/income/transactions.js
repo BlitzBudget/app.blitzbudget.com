@@ -414,7 +414,7 @@
 		
 		// Cell 1
 		let indexTableCell = document.createElement('div');
-		indexTableCell.className = 'text-center d-lg-table-cell draggable-handle-wrapper';
+		indexTableCell.className = 'text-center d-table-cell draggable-handle-wrapper';
 		indexTableCell.tabIndex = -1;
 		indexTableCell.draggable = true;
 		
@@ -450,13 +450,13 @@
 		
 		let checkboxCell = document.createElement('div');
 		checkboxCell.tabIndex = -1;
-		checkboxCell.className = 'd-lg-table-cell text-center';
+		checkboxCell.className = 'd-table-cell text-center';
 		checkboxCell.appendChild(formCheckDiv);
 		tableRows.appendChild(checkboxCell);
 		
 		// Table Cell 3
 		let selectCategoryRow = document.createElement('div');
-		selectCategoryRow.className = 'd-lg-table-cell';
+		selectCategoryRow.className = 'd-table-cell';
 		
 		// Build Select
 		let selectCategory = document.createElement('select');
@@ -484,7 +484,7 @@
 		// Table Cell 4
 		let descriptionTableRow = document.createElement('div');
 		descriptionTableRow.setAttribute('id', 'descriptionTransactionsRow-' + userTransactionData.transactionId);
-		descriptionTableRow.className = 'transactionsTableDescription d-lg-table-cell';
+		descriptionTableRow.className = 'transactionsTableDescription d-table-cell';
 		descriptionTableRow.setAttribute('data-gramm_editor' , false);
 		descriptionTableRow.tabIndex = -1;
 		
@@ -500,7 +500,7 @@
 		// Table Cell 5
 		let amountTransactionsRow = document.createElement('div');
 		amountTransactionsRow.setAttribute('id', 'amountTransactionsRow-' + userTransactionData.transactionId);
-		amountTransactionsRow.className = 'text-right amountTransactionsRow d-lg-table-cell';
+		amountTransactionsRow.className = 'text-right amountTransactionsRow d-table-cell';
 		amountTransactionsRow.setAttribute('data-gramm_editor', false);
 		amountTransactionsRow.tabIndex = -1;
 		
@@ -523,7 +523,7 @@
 	   // Table Cell 6
 	   let budgetTransactionRow = document.createElement('div');
 	   budgetTransactionRow.setAttribute('id', 'budgetTransactionsRow-' + userTransactionData.transactionId);
-	   budgetTransactionRow.className = 'text-right d-lg-table-cell categoryIdForBudget-' + categoryId;
+	   budgetTransactionRow.className = 'text-right d-table-cell categoryIdForBudget-' + categoryId;
 	   budgetTransactionRow.tabIndex = -1;
 	   
 	    // append button to remove the transaction if the amount is zero
@@ -546,35 +546,35 @@
 		
 		// Change the table color if for expense vs income
 		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			tableRow.className = 'toggle d-lg-table-row expenseCategory categoryTableRow-' + categoryId;
+			tableRow.className = 'toggle d-table-row expenseCategory categoryTableRow-' + categoryId;
 		} else {
-			tableRow.className = 'toggle d-lg-table-row incomeCategory categoryTableRow-' + categoryId;
+			tableRow.className = 'toggle d-table-row incomeCategory categoryTableRow-' + categoryId;
 		}
 		
 		// Row 1
 		let indexTableCell = document.createElement('div');
-		indexTableCell.className = 'text-center d-lg-table-cell dropdown-toggle-right font-17';
+		indexTableCell.className = 'text-center d-table-cell dropdown-toggle-right font-17';
 		tableRow.appendChild(indexTableCell);
 		
 		// Table Row 2
 		let checkboxCell = document.createElement('div');
 		checkboxCell.tabIndex = -1;
-		checkboxCell.className = 'd-lg-table-cell';
+		checkboxCell.className = 'd-table-cell';
 		tableRow.appendChild(checkboxCell);
 		
 		
 		// Table Row 3
 		let selectCategoryRow = document.createElement('div');
-		selectCategoryRow.className = 'font-weight-bold d-lg-table-cell';
+		selectCategoryRow.className = 'font-weight-bold d-table-cell';
 		
 		let categoryNameWrapper = document.createElement('div');
-		categoryNameWrapper.className = 'd-lg-inline';
+		categoryNameWrapper.className = 'd-inline';
 		categoryNameWrapper.innerHTML = categoryMap[categoryId].categoryName;
 		
 		let linkElementWrapper = document.createElement('a');
 		linkElementWrapper.href = '#';
 		linkElementWrapper.id = 'addTableRow-' + categoryId;
-		linkElementWrapper.className = 'd-lg-inline addTableRowListener align-self-center';
+		linkElementWrapper.className = 'd-inline addTableRowListener align-self-center';
 		
 		let addIconElement = document.createElement('i');
 		addIconElement.className = 'material-icons displayCategoryAddIcon';
@@ -587,7 +587,7 @@
 		
 		// Table Row 4
 		let descriptionTableRow = document.createElement('div');
-		descriptionTableRow.className = 'd-lg-table-cell';
+		descriptionTableRow.className = 'd-table-cell';
 		tableRow.appendChild(descriptionTableRow);
 		
 		// Table Row 5
@@ -595,9 +595,9 @@
 		amountTransactionsRow.setAttribute('id', 'amountCategory-' + categoryId);
 		
 		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-lg-table-cell spendingTrans amountCategoryId-' + categoryId;
+			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-table-cell spendingTrans amountCategoryId-' + categoryId;
 		} else {
-			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-lg-table-cell incomeTrans amountCategoryId-' + categoryId;
+			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-table-cell incomeTrans amountCategoryId-' + categoryId;
 		}
 		
 		// Append a - sign for the category if it is an expense
@@ -611,7 +611,7 @@
 	   // Table Row 6
 	   let budgetTransactionsRow = document.createElement('div');
 	   budgetTransactionsRow.setAttribute('id', 'budgetCategory-' + categoryId);
-	   budgetTransactionsRow.className = 'text-right d-lg-table-cell font-weight-bold';
+	   budgetTransactionsRow.className = 'text-right d-table-cell font-weight-bold';
 	   tableRow.appendChild(budgetTransactionsRow);
 	   
 	   return tableRow;
@@ -856,7 +856,7 @@
 		let childCategories = $(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
 	  	// Hide all child categories
-		childCategories.toggleClass('d-none').toggleClass('d-lg-table-row');
+		childCategories.toggleClass('d-none').toggleClass('d-table-row');
 	  	// Toggle the drop down arrow
 	  	dropdownArrowDiv.toggle('rotateNinty');
 	  	closestTrElement.classList.toggle('categoryShown');
@@ -1390,27 +1390,27 @@
 	// Build empty table message as document
 	function fetchEmptyTableMessage() {
 		let emptyTableRow = document.createElement("div");
-		emptyTableRow.className = 'd-lg-table-row';
+		emptyTableRow.className = 'd-table-row';
 		
 		// Row 1
 		let indexTableCell = document.createElement('div');
-		indexTableCell.className = 'd-lg-table-cell';
+		indexTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(indexTableCell);
 		
 		// Row 2
 		let selectAllTableCell = document.createElement('div');
-		selectAllTableCell.className = 'd-lg-table-cell';
+		selectAllTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(selectAllTableCell);
 		
 		// Row 3
 		let categoryTableCell = document.createElement('div');
-		categoryTableCell.className = 'd-lg-table-cell text-center align-middle';
+		categoryTableCell.className = 'd-table-cell text-center align-middle';
 		categoryTableCell.appendChild(buildEmptyTransactionsSvg());
 		emptyTableRow.appendChild(categoryTableCell);
 		
 		// Row 4
 		let descriptionTableCell = document.createElement('div');
-		descriptionTableCell.className = 'd-lg-table-cell';
+		descriptionTableCell.className = 'd-table-cell';
 		
 		let paragraphElement = document.createElement('p');
 		paragraphElement.className = 'text-secondary mb-0';
@@ -1421,12 +1421,12 @@
 		
 		// Row 5
 		let amountTableCell = document.createElement('div');
-		amountTableCell.className = 'd-lg-table-cell';
+		amountTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(amountTableCell);
 		
 		// Row 6
 		let budgetTableCell = document.createElement('div');
-		budgetTableCell.className = 'd-lg-table-cell';
+		budgetTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(budgetTableCell);
 		
 		return emptyTableRow;
@@ -1611,8 +1611,8 @@
 	$( "#transactionsTable" ).on( "click", ".addTableRowListener" ,function(event) {
 		// Add small Material Spinner
 		 let divMaterialSpinner = document.createElement('div');
-		 divMaterialSpinner.classList = 'material-spinner-small d-lg-inline-block';
-		 this.classList.remove('d-lg-inline');
+		 divMaterialSpinner.classList = 'material-spinner-small d-inline-block';
+		 this.classList.remove('d-inline');
 		 this.classList.add('d-none');
 		 this.parentNode.appendChild(divMaterialSpinner);
 		 let currentElement = this;
@@ -1649,11 +1649,11 @@
     		  }
     		  
     		  // Add the new row to the category
-        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-lg-table-row', userTransaction.categoryId), closestSibling);
+        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-table-row', userTransaction.categoryId), closestSibling);
         	  
         	  // Remove material spinner and remove d none
         	  currentElement.parentNode.removeChild(currentElement.parentNode.lastChild);
-        	  currentElement.classList.add('d-lg-inline');
+        	  currentElement.classList.add('d-inline');
         	  currentElement.classList.remove('d-none');
         	  
         	  // Updates total transactions in category Modal
@@ -2175,22 +2175,22 @@
 		let materialSpinnerFrag = document.createDocumentFragment();
 		
 		let tableRow = document.createElement('div');
-		tableRow.classList = 'd-lg-table-row';
+		tableRow.classList = 'd-table-row';
 		
 		let firstCell = document.createElement('div');
-		firstCell.classList = 'd-lg-table-cell';
+		firstCell.classList = 'd-table-cell';
 		tableRow.appendChild(firstCell);
 		
 		let secCell = document.createElement('div');
-		secCell.classList = 'd-lg-table-cell';
+		secCell.classList = 'd-table-cell';
 		tableRow.appendChild(secCell);
 		
 		let thirdCell = document.createElement('div');
-		thirdCell.classList = 'd-lg-table-cell';
+		thirdCell.classList = 'd-table-cell';
 		tableRow.appendChild(thirdCell);
 		
 		let fourthCell = document.createElement('div');
-		fourthCell.classList = 'd-lg-table-cell';
+		fourthCell.classList = 'd-table-cell';
 		let mSpinnerDiv = document.createElement('div');
 		mSpinnerDiv.classList = 'material-spinner';
 		fourthCell.appendChild(mSpinnerDiv);
@@ -2389,14 +2389,14 @@
 	function buildEmptyTransactionsTab() {
 
 		let rowEmpty = document.createElement('div');
-		rowEmpty.classList = 'd-lg-table-row';
+		rowEmpty.classList = 'd-table-row';
 
 		let cell1 = document.createElement('div');
-		cell1.classList = 'd-lg-table-cell';
+		cell1.classList = 'd-table-cell';
 		rowEmpty.appendChild(cell1);
 
 		let cell2 = document.createElement('div');
-		cell2.classList = 'd-lg-table-cell text-center';
+		cell2.classList = 'd-table-cell text-center';
 		cell2.appendChild(buildEmptyTransactionsSvg());
 
 		let emptyMessageRow = document.createElement('div');
@@ -2406,7 +2406,7 @@
 		rowEmpty.appendChild(cell2);
 
 		let cell3 = document.createElement('div');
-		cell3.classList = 'd-lg-table-cell';
+		cell3.classList = 'd-table-cell';
 		rowEmpty.appendChild(cell3);
 		
 		return rowEmpty;
@@ -2421,7 +2421,7 @@
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
-		tableRowTransaction.classList = 'recentTransactionEntry d-lg-table-row';
+		tableRowTransaction.classList = 'recentTransactionEntry d-table-row';
 
 		// Make the account section draggable
 		if(isEqual(idName,'accountAggre')) {
@@ -2431,7 +2431,7 @@
 		
 		// Cell 1
 		let tableCellImagesWrapper = document.createElement('div');
-		tableCellImagesWrapper.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
+		tableCellImagesWrapper.classList = 'd-table-cell align-middle imageWrapperCell text-center';
 		
 		let circleWrapperDiv = document.createElement('div');
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
@@ -2448,7 +2448,7 @@
 		
 		// Cell 2
 		let tableCellTransactionDescription = document.createElement('div');
-		tableCellTransactionDescription.classList = 'descriptionCellRT d-lg-table-cell';
+		tableCellTransactionDescription.classList = 'descriptionCellRT d-table-cell';
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
@@ -2467,17 +2467,17 @@
 		
 			// Append a - sign if it is an expense
 			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-lg-table-cell text-right align-middle';
+				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
-				transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-lg-table-cell text-right align-middle';
+				transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
 				transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			}
 			   
 			tableRowTransaction.appendChild(transactionAmount);
 		} else {
 			let surCell = document.createElement('div');
-			surCell.classList = 'd-lg-table-cell';
+			surCell.classList = 'd-table-cell';
 
 			let transactionAmount = document.createElement('div');
 			
@@ -2618,7 +2618,7 @@
 		$('.number:checked').click();
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
-		transactionsTable.classList.remove('d-lg-table');
+		transactionsTable.classList.remove('d-table');
 		transactionsTable.classList.add('d-none');
 		// hide the accountTable
 		document.getElementById('accountTable').classList.add('d-none');
@@ -2667,7 +2667,7 @@
 		$('.accountInfoTable').addClass('d-none');
 		// show the category view
 		let transactionsTable = document.getElementById('transactionsTable');
-		transactionsTable.classList.add('d-lg-table');
+		transactionsTable.classList.add('d-table');
 		transactionsTable.classList.remove('d-none');
 		// Open Account Modal
 		document.getElementById('accountInformationMdl').classList.add('d-none');
@@ -2697,7 +2697,7 @@
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the transactions table
 		let transactionsTable = document.getElementById('transactionsTable');
-		transactionsTable.classList.remove('d-lg-table');
+		transactionsTable.classList.remove('d-table');
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
 		let popAccInfoTab = $('.accountInfoTable')
@@ -2705,7 +2705,7 @@
 		// Show all the account table entries
 		let allAccountRows = popAccInfoTab.find('.recentTransactionEntry')
 		allAccountRows.removeClass('d-none');
-		allAccountRows.addClass('d-lg-table-row');
+		allAccountRows.addClass('d-table-row');
 		// Find all misaligned arrows and align them
 		popAccInfoTab.find('.rotateZero').removeClass('rotateZero').addClass('rotateNinty');
 		
@@ -2768,11 +2768,11 @@
 		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
-		accountTit.classList = 'recentTransactionDateGrp d-lg-table-row ml-3 font-weight-bold';
+		accountTit.classList = 'recentTransactionDateGrp d-table-row ml-3 font-weight-bold';
 
 		// Title Wrapper
 		let titleWrapper = document.createElement('div');
-		titleWrapper.classList = 'd-lg-table-cell text-nowrap';
+		titleWrapper.classList = 'd-table-cell text-nowrap';
 		
 		// Right Arrow
 		let rightArrow = document.createElement('div');
@@ -2790,12 +2790,12 @@
 
 		// Empty Cell
 		let emptyCell = document.createElement('div');
-		emptyCell.classList = 'd-lg-table-cell';
+		emptyCell.classList = 'd-table-cell';
 		accountTit.appendChild(emptyCell);
 
 		// Account Balance
 		let accountBalance = document.createElement('div');
-		accountBalance.classList = 'd-lg-table-cell text-right text-nowrap pr-3';
+		accountBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
 		accountBalance.id = 'accountBalance-' + accountId;
 		accountTit.appendChild(accountBalance);
 
@@ -2908,11 +2908,11 @@
 	// Populate Empty account entry
 	function buildEmptyAccountEntry(accId) {
 		let rowEmpty = document.createElement('div');
-		rowEmpty.classList = 'd-lg-table-row recentTransactionDateGrp';
+		rowEmpty.classList = 'd-table-row recentTransactionDateGrp';
 		rowEmpty.id = 'emptyAccountEntry-' + accId;
 
 		let cell1 = document.createElement('div');
-		cell1.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
+		cell1.classList = 'd-table-cell align-middle imageWrapperCell text-center';
 
 		let roundedCircle = document.createElement('div');
 		roundedCircle.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
@@ -2921,7 +2921,7 @@
 		rowEmpty.appendChild(cell1);
 
 		let cell2 = document.createElement('div');
-		cell2.classList = 'descriptionCellRT align-middle d-lg-table-cell text-center';
+		cell2.classList = 'descriptionCellRT align-middle d-table-cell text-center';
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
@@ -2930,7 +2930,7 @@
 		rowEmpty.appendChild(cell2);
 
 		let cell3 = document.createElement('div');
-		cell3.classList = 'descriptionCellRT d-lg-table-cell';
+		cell3.classList = 'descriptionCellRT d-table-cell';
 		rowEmpty.appendChild(cell3);
 			
 		return rowEmpty;

@@ -26,7 +26,7 @@
 		let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
 		for(let i = 0, l = accTransEntry.length; i < l; i++) {
 			accTransEntry[i].classList.toggle('d-none');
-			accTransEntry[i].classList.toggle('d-lg-table-row');
+			accTransEntry[i].classList.toggle('d-table-row');
 		}
 		// Open Account Modal
 		document.getElementById('accountInformationMdl').classList.remove('d-none');
@@ -347,7 +347,7 @@
 
 
 		let dropdownGroupOP = document.createElement('div');
-		dropdownGroupOP.classList = 'btn-group d-md-block d-lg-block';
+		dropdownGroupOP.classList = 'btn-group d-md-block d-block';
 		
 		let oldPassInput = document.createElement('input');
 		oldPassInput.id='oldPasswordDA';
@@ -440,14 +440,14 @@
 	function buildEmptyTransactionsTab() {
 
 		let rowEmpty = document.createElement('div');
-		rowEmpty.classList = 'd-lg-table-row';
+		rowEmpty.classList = 'd-table-row';
 
 		let cell1 = document.createElement('div');
-		cell1.classList = 'd-lg-table-cell';
+		cell1.classList = 'd-table-cell';
 		rowEmpty.appendChild(cell1);
 
 		let cell2 = document.createElement('div');
-		cell2.classList = 'd-lg-table-cell text-center';
+		cell2.classList = 'd-table-cell text-center';
 		cell2.appendChild(buildEmptyTransactionsSvg());
 
 		let emptyMessageRow = document.createElement('div');
@@ -457,7 +457,7 @@
 		rowEmpty.appendChild(cell2);
 
 		let cell3 = document.createElement('div');
-		cell3.classList = 'd-lg-table-cell';
+		cell3.classList = 'd-table-cell';
 		rowEmpty.appendChild(cell3);
 		
 		return rowEmpty;
@@ -523,27 +523,27 @@
 	// Build empty table message as document
 	function fetchEmptyTableMessage() {
 		let emptyTableRow = document.createElement("div");
-		emptyTableRow.className = 'd-lg-table-row';
+		emptyTableRow.className = 'd-table-row';
 		
 		// Row 1
 		let indexTableCell = document.createElement('div');
-		indexTableCell.className = 'd-lg-table-cell';
+		indexTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(indexTableCell);
 		
 		// Row 2
 		let selectAllTableCell = document.createElement('div');
-		selectAllTableCell.className = 'd-lg-table-cell';
+		selectAllTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(selectAllTableCell);
 		
 		// Row 3
 		let categoryTableCell = document.createElement('div');
-		categoryTableCell.className = 'd-lg-table-cell text-center align-middle';
+		categoryTableCell.className = 'd-table-cell text-center align-middle';
 		categoryTableCell.appendChild(buildEmptyTransactionsSvg());
 		emptyTableRow.appendChild(categoryTableCell);
 		
 		// Row 4
 		let descriptionTableCell = document.createElement('div');
-		descriptionTableCell.className = 'd-lg-table-cell';
+		descriptionTableCell.className = 'd-table-cell';
 		
 		let paragraphElement = document.createElement('p');
 		paragraphElement.className = 'text-secondary mb-0';
@@ -554,12 +554,12 @@
 		
 		// Row 5
 		let amountTableCell = document.createElement('div');
-		amountTableCell.className = 'd-lg-table-cell';
+		amountTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(amountTableCell);
 		
 		// Row 6
 		let budgetTableCell = document.createElement('div');
-		budgetTableCell.className = 'd-lg-table-cell';
+		budgetTableCell.className = 'd-table-cell';
 		emptyTableRow.appendChild(budgetTableCell);
 		
 		return emptyTableRow;

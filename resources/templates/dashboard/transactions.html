@@ -59,10 +59,10 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <div id="transactionsTable" class="table table-fixed d-lg-table">
+                <div id="transactionsTable" class="table table-fixed d-table">
                     <div class="tableHeadingDiv">
-                      <div class="text-center width-3 d-lg-table-cell">#</div>
-                      <div class="text-center width-7 d-lg-table-cell">
+                      <div class="text-center width-3 d-table-cell">#</div>
+                      <div class="text-center width-7 d-table-cell">
                         	<div class="form-check">
                             		<label class="form-check-label">
                             		<input type="checkbox" class="form-check-input" id="checkAll">
@@ -73,21 +73,21 @@
             								</label>
             							</div>
         						  </div>
-        						  <div class="width-30 d-lg-table-cell" title="Category assigned to the transactions">Category</div>
-                      <div class="width-30 d-lg-table-cell" title="Description for the transaction">Notes</div>
-                      <div class="text-right width-15 d-lg-table-cell" title="The amount spent or received">Transaction</div>
-                      <div class="text-right width-15 d-lg-table-cell" title="Budget assigned for this category">Planned</div>
+        						  <div class="width-30 d-table-cell" title="Category assigned to the transactions">Category</div>
+                      <div class="width-30 d-table-cell" title="Description for the transaction">Notes</div>
+                      <div class="text-right width-15 d-table-cell" title="The amount spent or received">Transaction</div>
+                      <div class="text-right width-15 d-table-cell" title="Budget assigned for this category">Planned</div>
                     </div>
                     <div id="productsJson" class="tableBodyDiv">
                     	<div class="d-table-row"><div class='d-table-cell'></div><div class='d-table-cell'></div><div class='d-table-cell'></div><div class='d-table-cell'><div class="material-spinner"></div></div></div>
                       <!-- Filled with Javascript dynamically -->
                     </div>
                 </div>
-                <div id="recTransAndAccTable" class="table table-fixed d-lg-table">
+                <div id="recTransAndAccTable" class="table table-fixed d-table">
                   <div class="tableHeadingDiv">
-                    <div class="w-15 d-lg-table-cell" title=""></div>
-                    <div class="w-65 d-lg-table-cell" title=""></div>
-                    <div class="text-right d-lg-table-cell" title=""></div>
+                    <div class="w-15 d-table-cell" title=""></div>
+                    <div class="w-65 d-table-cell" title=""></div>
+                    <div class="text-right d-table-cell" title=""></div>
                   </div>
                   <div id="recentTransactions" class=" tableBodyDiv d-none">
                     <div class="d-table-row"><div class='d-table-cell'></div><div class='d-table-cell'><div class="material-spinner mx-auto"></div></div><div class='d-table-cell'></div></div>
@@ -168,7 +168,7 @@
             	</div>
             	<hr>
             	<div class="row budgetAmountDiv">
-            		<div class="col-lg-3 d-lg-inline-block h-100">
+            		<div class="col-lg-3 d-inline-block h-100">
             			<img id="budgetImage" src="" data-toggle="tooltip" title="Budget">
             		</div> 
             		<span id="plannedAmountCategoryModal" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
@@ -219,7 +219,7 @@
               </div>
               <hr>
               <div class="row accountAmountDiv">
-                <div class="col-lg-3 d-lg-inline-block h-100">
+                <div class="col-lg-3 d-inline-block h-100">
                   <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Account Balance">account_balance</i>
                 </div> 
                 <span id="accountAmountEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
@@ -231,7 +231,7 @@
                 <span id="numberOfTransInAcc"></span> Transactions
               </div>
               <div class="pr-0 col-lg-6 text-right">
-                <div class="svg-container deleteIconAccountWrapper d-lg-inline-block" data-toggle="tooltip" data-placement="bottom" title="Delete account">
+                <div class="svg-container deleteIconAccountWrapper d-inline-block" data-toggle="tooltip" data-placement="bottom" title="Delete account">
                   <svg id="deleteSvgAccount" class="deleteAccount" height="16" width="16" viewBox="0 0 14 18">
                     <path fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" d="M4.273 3.727V2a1 1 0 0 1 1-1h3.454a1 1 0 0 1 1 1v1.727M13 5.91v10.455a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5.909m6 2.727v5.455M4.273 8.636v5.455m5.454-5.455v5.455M13 3.727H1"></path>
                   </svg>
