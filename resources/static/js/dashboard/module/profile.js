@@ -162,7 +162,7 @@
 
 
 		let dropdownGroupOP = document.createElement('div');
-		dropdownGroupOP.classList = 'btn-group d-md-block d-lg-block';
+		dropdownGroupOP.classList = 'btn-group d-md-block d-block';
 		
 		let oldPassInput = document.createElement('input');
 		oldPassInput.id='oldPasswordCP';
@@ -204,7 +204,7 @@
 		newPassInput.appendChild(newPassLabel);
 
 		let dropdownGroupNP = document.createElement('div');
-		dropdownGroupNP.classList = 'btn-group d-md-block d-lg-block';
+		dropdownGroupNP.classList = 'btn-group d-md-block d-block';
 		
 		let newPassNameInput = document.createElement('input');
 		newPassNameInput.id='newPassCP';
@@ -595,7 +595,7 @@
 
 
 		let dropdownGroupOP = document.createElement('div');
-		dropdownGroupOP.classList = 'btn-group d-md-block d-lg-block';
+		dropdownGroupOP.classList = 'btn-group d-md-block d-block';
 		
 		let oldPassInput = document.createElement('input');
 		oldPassInput.id='oldPasswordRP';
@@ -716,7 +716,7 @@
 
 
 		let dropdownGroupOP = document.createElement('div');
-		dropdownGroupOP.classList = 'btn-group d-md-block d-lg-block';
+		dropdownGroupOP.classList = 'btn-group d-md-block d-block';
 		
 		let oldPassInput = document.createElement('input');
 		oldPassInput.id='oldPasswordDA';
@@ -893,7 +893,7 @@
 
 
 		let dropdownGroupOP = document.createElement('div');
-		dropdownGroupOP.classList = 'btn-group d-md-block d-lg-block';
+		dropdownGroupOP.classList = 'btn-group d-md-block d-block';
 		
 		let oldPassInput = document.createElement('input');
 		oldPassInput.id='confPasswordUA';

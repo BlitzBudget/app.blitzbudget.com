@@ -42,7 +42,7 @@
 			for(let i = 0, l = recentTransactionEntry.length; i < l; i++) {
 				let recTransEntry = recentTransactionEntry[i];
 				recTransEntry.classList.remove('d-none');
-				recTransEntry.classList.add('d-lg-table-row');
+				recTransEntry.classList.add('d-table-row');
 			}
 		}
 		// Set the parent event as the account table
@@ -103,21 +103,21 @@
 
 	function populateHrElement() {
 		let hrDiv = document.createElement('div');
-		hrDiv.classList = 'positionOfDrag d-lg-table-row';
+		hrDiv.classList = 'positionOfDrag d-table-row';
 
 		// Cell1 
 		let cell1 = document.createElement('div');
-		cell1.classList = 'd-lg-table-cell';
+		cell1.classList = 'd-table-cell';
 		hrDiv.appendChild(cell1);
 
 		// Cell 2 
 		let cell2 = document.createElement('div');
-		cell2.classList = 'd-lg-table-cell';
+		cell2.classList = 'd-table-cell';
 		hrDiv.appendChild(cell2);
 
 		// Cell 3
 		let cell3 = document.createElement('div');
-		cell3.classList = 'd-lg-table-cell';
+		cell3.classList = 'd-table-cell';
 		hrDiv.appendChild(cell3);
 
 		return hrDiv;
@@ -291,11 +291,11 @@
 	// Populate Empty account entry
 	function buildEmptyAccountEntry(accId) {
 		let rowEmpty = document.createElement('div');
-		rowEmpty.classList = 'd-lg-table-row recentTransactionDateGrp';
+		rowEmpty.classList = 'd-table-row recentTransactionDateGrp';
 		rowEmpty.id = 'emptyAccountEntry-' + accId;
 
 		let cell1 = document.createElement('div');
-		cell1.classList = 'd-lg-table-cell align-middle imageWrapperCell text-center';
+		cell1.classList = 'd-table-cell align-middle imageWrapperCell text-center';
 
 		let roundedCircle = document.createElement('div');
 		roundedCircle.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
@@ -304,7 +304,7 @@
 		rowEmpty.appendChild(cell1);
 
 		let cell2 = document.createElement('div');
-		cell2.classList = 'descriptionCellRT align-middle d-lg-table-cell text-center';
+		cell2.classList = 'descriptionCellRT align-middle d-table-cell text-center';
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
@@ -313,7 +313,7 @@
 		rowEmpty.appendChild(cell2);
 
 		let cell3 = document.createElement('div');
-		cell3.classList = 'descriptionCellRT d-lg-table-cell';
+		cell3.classList = 'descriptionCellRT d-table-cell';
 		rowEmpty.appendChild(cell3);
 			
 		return rowEmpty;

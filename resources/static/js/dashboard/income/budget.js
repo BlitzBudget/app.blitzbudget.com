@@ -177,7 +177,7 @@
 		
 		// Build a delete icon Div
 		let deleteIconDiv = document.createElement('div');
-		deleteIconDiv.classList = 'svg-container deleteIconWrapper d-lg-inline-block';
+		deleteIconDiv.classList = 'svg-container deleteIconWrapper d-inline-block';
 		deleteIconDiv.setAttribute('data-toggle','tooltip');
 		deleteIconDiv.setAttribute('data-placement','bottom');
 		deleteIconDiv.setAttribute('title','Delete budget');
@@ -869,7 +869,7 @@
           	  	
           	  	// Container for inlining the select form
           	  	let containerForSelect = document.createElement('div');
-          	  	containerForSelect.classList = 'd-lg-inline-block';
+          	  	containerForSelect.classList = 'd-inline-block';
           	  	
           	  	// Append the select group to the category Name. Enabling use to change the category
           	  	let selectCategoryElement = document.createElement('select');
@@ -1629,7 +1629,7 @@
 		
 		let remainingAmountMock = document.createElement('div');
 		remainingAmountMock.id = 'remainingAmountMock';
-		remainingAmountMock.classList = 'd-lg-inline-block animationBudget';
+		remainingAmountMock.classList = 'd-inline-block animationBudget';
 		elevenColumnRow.appendChild(remainingAmountMock);
 		emptyRowFour.appendChild(elevenColumnRow);
 		cardBody.appendChild(emptyRowFour);
