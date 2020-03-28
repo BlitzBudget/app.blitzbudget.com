@@ -39,7 +39,8 @@
                 "/dashboard/module/account.js",
                 "/dashboard/configuration/commonConfiguration.js",
                 "/plugins/libraries.js",
-                "/dashboard/support/askUsDirectly.js"
+                "/dashboard/support/askUsDirectly.js",
+                "/dashboard/support/categoryInformation.min.js"
             ]
         },
         {
