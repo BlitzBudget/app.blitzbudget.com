@@ -211,7 +211,7 @@
       svgElement.setAttribute('y','0px');
       svgElement.setAttribute('width','30');
       svgElement.setAttribute('height','30');
-      svgElement.setAttribute('viewBox','0 0 80 85');
+      svgElement.setAttribute('viewBox','0 0 80 90');
       svgElement.setAttribute('fill','#000000');
       
       let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
