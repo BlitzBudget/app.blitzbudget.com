@@ -972,8 +972,8 @@ progress {
     top: 5.3rem;
     right: -1.2rem;
     left: 1.2rem;
-    min-width: 60rem;
-    height: 8rem;
+    min-width: 40rem;
+    height: 15rem;
     min-height: 8rem;
     text-align: center;
     display: inline-block;
@@ -1001,7 +1001,7 @@ progress {
 .monthPicker {
 	position: relative;
     width: 100%;
-    height: 8rem;
+    height: 12rem;
     overflow: hidden;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -1043,6 +1043,7 @@ progress {
     -ms-flex: 1 0 auto;
     flex: 1 0 auto;
     padding: 0 3.5rem;
+    height: 11rem;
 }
 
 .monthPickerMonth {
@@ -1067,6 +1068,7 @@ progress {
     font-size: 2rem;
     text-align: center;
     cursor: pointer;
+    margin-bottom: 1rem;
 }
 
 .monthPickerLabel {
@@ -1099,7 +1101,7 @@ progress {
 
 #dateControl {
 	top: 2.9rem;
-	left: -25rem;
+	left: -19rem;
 }
 
 .transformUpwardArrow {

@@ -484,7 +484,7 @@
 		// Table Cell 4
 		let descriptionTableRow = document.createElement('div');
 		descriptionTableRow.setAttribute('id', 'descriptionTransactionsRow-' + userTransactionData.transactionId);
-		descriptionTableRow.className = 'transactionsTableDescription d-table-cell';
+		descriptionTableRow.className = 'transactionsTableDescription d-md-table-cell d-none';
 		descriptionTableRow.setAttribute('data-gramm_editor' , false);
 		descriptionTableRow.tabIndex = -1;
 		
@@ -523,7 +523,7 @@
 	   // Table Cell 6
 	   let budgetTransactionRow = document.createElement('div');
 	   budgetTransactionRow.setAttribute('id', 'budgetTransactionsRow-' + userTransactionData.transactionId);
-	   budgetTransactionRow.className = 'text-right d-table-cell categoryIdForBudget-' + categoryId;
+	   budgetTransactionRow.className = 'text-right d-md-table-cell d-none categoryIdForBudget-' + categoryId;
 	   budgetTransactionRow.tabIndex = -1;
 	   
 	    // append button to remove the transaction if the amount is zero
