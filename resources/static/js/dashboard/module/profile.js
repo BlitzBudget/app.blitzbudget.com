@@ -243,7 +243,7 @@
 		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 		svgElement.setAttribute('width','20');
 		svgElement.setAttribute('height','20');
-    	svgElement.setAttribute('viewBox','0 0 24 24');
+    	svgElement.setAttribute('viewBox','0 0 25 29');
     	svgElement.setAttribute('class','align-middle fill-info ml-1');
     	svgElement.setAttribute('id', 'input-pass-cp');
     	svgElement.setAttribute('data-original-title', '<div class="text-left"><span>Your password must:</span> <br> <ul class="text-left tooltip-color mt-2"><li>Be at least 8 characters</li><li>Have at least one number</li><li>Have at least one symbol</li><li>Have at least one upper case letter</li><li>Have at least one lower case letter</li></ul></div>');
