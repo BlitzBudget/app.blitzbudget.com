@@ -33,6 +33,10 @@
 
 	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
+	// Href pointing to send Feature request with appropriate parameters
+	let featureRequest = document.getElementById('sendFeatureRequest');
+	featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
+
 	/**
 	*	Display User Created Date
 	**/
