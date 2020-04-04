@@ -23,6 +23,13 @@
             ]
         },
         {
+            "type": "css",
+            "name": "wallet.all.css",
+            "files": [
+                "/dashboard/module/wallet.css"
+            ]
+        },
+        {
             "type": "js",
             "name": "core.js",
             "files": [
