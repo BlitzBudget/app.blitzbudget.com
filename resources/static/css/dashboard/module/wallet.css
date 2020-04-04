@@ -10,8 +10,12 @@
 * All the Custom CSS for EveryRupee gos in here
 */
 
+body,
 .expandedNavigationBar {
-    background-color: rgb(255, 255, 255);
+    background-color: #fafafa;
+}
+
+.expandedNavigationBar {    
     height: 64px;
 }
 
@@ -537,6 +541,10 @@ a.text-success:focus {
 a.text-danger:hover,
 a.text-danger:focus {
   color: #ea1c0d !important;
+}
+
+.text-center {
+  text-align: center !important;
 }
 
 @-webkit-keyframes FadeInRight {
