@@ -96,6 +96,21 @@
             "files": [
                 "/dashboard/module/profile.js"
             ]
+        },
+        {
+            "type": "js",
+            "name": "wallet.all.js",
+            "files": [
+                "/core/jquery.min.js",
+                "/core/popper.min.js",
+                "/core/bootstrap-material-design.min.js",
+                "/plugins/sweetalert2.all.min.js",
+                "/plugins/libraries.js",
+                "/dashboard/configuration/commonConfiguration.js",
+                "/cognito/config.js",
+                "/dashboard/data/currency-name-symbol.js",
+                "/dashboard/module/wallet.js"
+            ]
         }
     ]
 }

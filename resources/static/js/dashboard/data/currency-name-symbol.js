@@ -678,4 +678,4 @@ window.currencyNameToSymbol = {
       symbol: 'Z$'
     }
   ]
-}
+};
