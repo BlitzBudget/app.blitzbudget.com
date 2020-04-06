@@ -1744,6 +1744,10 @@ select.form-control:focus::-ms-value {
     width: 8rem;
 }
 
+#chosenCurrency {
+    margin-right: -0.1rem;
+}
+
 @media (max-width: 576px) {
 	.footerInternal {
         padding-top:1rem;
