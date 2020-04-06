@@ -12,118 +12,46 @@
 	}
 
 	document.getElementById('genericAddFnc').addEventListener("click",function(e){
-		// Show Sweet Alert
-        Swal.fire({
-            title: 'Add Wallet',
-            html: addWallet(),
-            inputAttributes: {
-                autocapitalize: 'on'
-            },
-            confirmButtonClass: 'btn btn-info btn-large',
-            confirmButtonText: 'Continue',
-            showCloseButton: true,
-            buttonsStyling: false
-        }).then(function(result) {
-            // If confirm button is clicked
-            if (result.value) {
-                //
-            }
-
-        });
-
-        /*
-		*	Currency Dropdown Populate
-		*/
-
-		/*An array containing all the currency names in the world:*/
-		let currencies = [];
-		let cToS = {};
-		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
-		for(let i = 0, l = curToSym.length; i < l; i++) {
-			cToS[curToSym[i].currency] = curToSym[i].symbol;
-			/* Update the default currency in Settings */
-			if(isEqual(currentUser.currency,curToSym[i].symbol)) {
-				document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
-			} else {
-				currencies.push(curToSym[i].currency);
-			}
-		}
-
-		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-		autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
-
-
+		document.getElementById('addWallet').classList.remove('d-none');
+		document.getElementById('whichWallet').classList.add('d-none');
+		document.getElementById('genericAddFnc').classList.add('d-none');
+		document.body.classList.add('darker');
 	});
 
-	// Add wallet html
-	function addWallet() {
-		let unsyncedDocumentFragment = document.createDocumentFragment();
-	
-		let unsyncFormWrapper = document.createElement('div');
-		unsyncFormWrapper.classList = 'text-left mb-4 mt-2';
-		
-		// Choose Type
-		let chooseTypeWrapper = document.createElement('div');
-		chooseTypeWrapper.classList = "chooseTypeWrapper text-left";
-		
-		let chooseTypeLabel = document.createElement('label');
-		chooseTypeLabel.innerText = 'What is the type of your account?';
-		chooseTypeWrapper.appendChild(chooseTypeLabel);
-		
-		let dropdownGroup = document.createElement('div');
-		dropdownGroup.id = "chosenCurrencyDropdown";
-		dropdownGroup.classList = 'btn-group d-md-block d-block';
-		
-		let displaySelected = document.createElement('button');
-		displaySelected.id = "chosenCurrency";
-		displaySelected.classList = 'chosenCurrency btn btn-secondary w-85 accountChosen';
-		displaySelected.setAttribute('disabled', 'disabled');
-		displaySelected.innerText = 'Euro';
-		dropdownGroup.appendChild(displaySelected);
-		
-		let dropdownTrigger = document.createElement('button');
-		dropdownTrigger.classList = 'changeBtnClr btn btn-info dropdown-toggle dropdown-toggle-split';
-		dropdownTrigger.setAttribute('data-toggle' , 'dropdown');
-		dropdownTrigger.setAttribute('aria-haspopup' , 'true');
-		dropdownTrigger.setAttribute('aria-expanded' , 'false');
-		
-		let toggleSpan = document.createElement('span');
-		toggleSpan.classList = 'sr-only';
-		toggleSpan.innerText = 'Toggle Dropdown';
-		dropdownTrigger.appendChild(toggleSpan);
-		dropdownGroup.appendChild(dropdownTrigger);
+	document.getElementById('cancelWallet').addEventListener("click",function(e){
+		document.getElementById('addWallet').classList.add('d-none');
+		document.getElementById('whichWallet').classList.remove('d-none');
+		document.getElementById('genericAddFnc').classList.remove('d-none');		
+		document.body.classList.remove('darker');
+	});
 
-		let dropdownMenu = document.createElement('div');
-		dropdownMenu.id = "chooseCurrencyDD";
-		dropdownMenu.classList = 'dropdown-menu';
+	document.getElementById('confirmWallet').addEventListener("click",function(e){
+		document.getElementById('addWallet').classList.add('d-none');
+		document.getElementById('whichWallet').classList.remove('d-none');
+		document.getElementById('genericAddFnc').classList.remove('d-none');		
+		document.body.classList.remove('darker');
+	});
+    /*
+	*	Currency Dropdown Populate
+	*/
 
-		let inputGroup = document.createElement('div');
-		inputGroup.classList = 'input-group';
-
-        let spanSearch = document.createElement('span');
-        spanSearch.classList = 'm-1 tripleNineColor';
-
-        let searchIcon = document.createElement('i');
-        searchIcon.classList = 'material-icons';
-        searchIcon.innerText = 'search';
-        spanSearch.appendChild(searchIcon);
-        inputGroup.appendChild(spanSearch);
-
-         let chosenCurrencyInp = document.createElement('input');
-         chosenCurrencyInp.id = "chosenCurrencyInp";
-         chosenCurrencyInp.classList = 'form-control w-75';
-         chosenCurrencyInp.type = 'text';
-         chosenCurrencyInp.placeholder = 'Search...';
-         inputGroup.appendChild(chosenCurrencyInp);
-         dropdownMenu.appendChild(inputGroup);
-		
-		dropdownGroup.appendChild(dropdownMenu);
-		chooseTypeWrapper.appendChild(dropdownGroup);
-		unsyncedDocumentFragment.appendChild(chooseTypeWrapper);
-		
-	    return unsyncedDocumentFragment;
-
+	/*An array containing all the currency names in the world:*/
+	let currencies = [];
+	let cToS = {};
+	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+	for(let i = 0, l = curToSym.length; i < l; i++) {
+		cToS[curToSym[i].currency] = curToSym[i].symbol;
+		/* Update the default currency in Settings */
+		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+		} else {
+			currencies.push(curToSym[i].currency);
+		}
 	}
+
+	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+	autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
 
 	/**
 	* Autocomplete Module
@@ -322,6 +250,20 @@
 	// Update user attributes
 	function updateUserAttr(param, paramVal, event, valObj) {
 		console.log('clicked here');
+	}
+
+	// Create the dropdown item with wallet
+	function dropdownItemsWithWallet(withWalletItem) {
+		let dpItem = document.createElement('div');
+		dpItem.classList = 'dropdown-item';
+		dpItem.innerText = withWalletItem;
+
+		let inpHi = document.createElement('input');
+		inpHi.setAttribute('type', 'hidden');
+		inpHi.setAttribute('value', withWalletItem);
+		dpItem.appendChild(inpHi);
+
+		return dpItem;
 	}
 
 }(jQuery));	

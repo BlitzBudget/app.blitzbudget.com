@@ -85,8 +85,8 @@
 	 </div>
 	 <div id="root">
 	 	<section class="Cards">
-	 		<div class="row m-auto features-body text-center">
-	 			<h1 class="heading-wallet my-4">
+	 		<div id="whichWallet" class="row m-auto features-body text-center">
+	 			<h1 class="heading-wallet my-4 text-animation fadeIn">
 			                    Which wallet?
 			    </h1>
 	 			<div class="col-12 col-md-6 col-lg-4 text-animation fadeIn suggested-card">
@@ -102,6 +102,32 @@
 	 				</a>
 	 			</div>
 	 		</div>
+	 		<div id="addWallet" class="row m-auto features-body text-center d-none">
+	 			<h1 class="heading-wallet my-4 text-animation fadeIn">
+			                    Add wallet
+			    </h1>
+			 	<div id="chosenCurrencyDropdown" class="btn-group btnGroup-1 m-auto text-animation fadeIn">
+		            <button id="chosenCurrency" class="chosenCurrency btn btn-secondary w-md-15 w-8" disabled="">American Dollars</button>
+		            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		              <span class="sr-only">Toggle Dropdown</span>
+		            </button>
+		            <div id="chooseCurrencyDD" class="dropdown-menu">
+		              <!-- Drop down dynamic load -->
+		              <div class="input-group">
+		                <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+		                <input id="chosenCurrencyInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+		                <h6 class="dropdown-header">Currencies with wallet</h6>
+		                <div id="currentCurrencies"></div>
+		                <div class="dropdown-divider"></div>
+		                <h6 class="dropdown-header">Currencies without wallet</h6>
+		              </div>
+		            </div>
+		        </div>
+		        <div class="swal2-actions text-animation fadeIn">
+		        	<button type="button" id="confirmWallet" class="btn btn-info btn-large mr-4" aria-label="">Continue</button>
+		        	<button type="button" id="cancelWallet" class="btn btn-secondary btn-large" aria-label="">Cancel</button>
+		        </div>
+			 </div>
 	 		<!-- Generic Add Functionality -->
 		    <button class="btn btn-round btn-info btn-just-icon bottomFixed float-right"  id="genericAddFnc">
 		      <i class="material-icons" id="addFncTT" data-toggle="tooltip" data-original-title="Add Wallet" data-placement="top">add</i>

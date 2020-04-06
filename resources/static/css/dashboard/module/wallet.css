@@ -13,6 +13,14 @@
 body,
 .expandedNavigationBar {
     background-color: #fafafa;
+    -webkit-transition: background-color 400ms ease-out;
+    -o-transition: background-color 400ms ease-out;
+    -moz-transition: background-color 400ms ease-out;
+    transition: background-color 400ms ease-out;
+}
+
+body.darker {
+    background-color: #ecebea;
 }
 
 .expandedNavigationBar {    
@@ -1632,6 +1640,110 @@ select.form-control:focus::-ms-value {
     width: 100%;
 }
 
+.dropdown-header, .autocomplete-items, #currentCountries, #currentCurrencies {
+    width: 100%;
+}
+
+.dropdown-header {
+    display: block;
+    padding: .5rem 1.25rem;
+    margin-bottom: 0;
+    font-size: .875rem;
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+.dropdown-header {
+    font-size: .75rem;
+    padding-top: .625rem;
+    padding-bottom: .625rem;
+    text-transform: none;
+    color: #777;
+    line-height: 1.428571;
+    font-weight: inherit;
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: .625rem 1.25rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}
+
+.dropdown-menu .dropdown-item, .dropdown-menu li>a {
+    position: relative;
+    width: auto;
+    display: flex;
+    flex-flow: nowrap;
+    align-items: center;
+    color: #333;
+    font-weight: normal;
+    text-decoration: none;
+    font-size: .8125rem;
+    border-radius: .125rem;
+    margin: 0 .3125rem;
+    -webkit-transition: all 150ms linear;
+    -moz-transition: all 150ms linear;
+    -o-transition: all 150ms linear;
+    -ms-transition: all 150ms linear;
+    transition: all 150ms linear;
+    min-width: 7rem;
+    padding: .625rem 1.25rem;
+    overflow: hidden;
+    line-height: 1.428571;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+}
+
+
+.dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus, .dropdown-menu a:hover, .dropdown-menu a:focus, .dropdown-menu a:active, .autocomplete-active {
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
+    background-color: #00bcd4;
+    color: #fff;
+}
+
+.autocomplete-items .dropdown-item, #currentCountries .dropdown-item, #currentCurrencies .dropdown-item {
+    width: 100%;
+    cursor: pointer;
+    white-space: pre-wrap;
+}
+
+.dropdown-divider {
+    height: 0;
+    margin: .5rem 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
+}
+
+.mr-4,
+.mx-4 {
+  margin-right: 1.5rem !important;
+}
+
+#addWallet {
+    opacity: 1;
+    -webkit-transition: opacity 400ms ease-out;
+    -o-transition: opacity 400ms ease-out;
+    -moz-transition: opacity 400ms ease-out;
+    transition: opacity 400ms ease-out;
+}
+
+.w-8 {
+    width: 8rem;
+}
+
 @media (max-width: 576px) {
 	.footerInternal {
         padding-top:1rem;
@@ -1663,6 +1775,15 @@ select.form-control:focus::-ms-value {
 
     .d-md-block {
         display: block !important;
+    }
+
+    .dropdown-menu .dropdown-item, .dropdown-menu li>a {
+        padding-right: 1.5rem;
+        padding-left: 1.5rem;
+    }
+
+    .w-md-15 {
+        width: 15rem;
     }
      
 }
