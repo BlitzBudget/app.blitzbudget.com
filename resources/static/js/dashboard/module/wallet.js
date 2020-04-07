@@ -51,7 +51,7 @@
 		values = JSON.stringify(values);
 
 		jQuery.ajax({
-			url: config.api.invokeUrl + WALLET_CONSTANTS.walletUrl;,
+			url: config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'POST',
 	        contentType: "application/json;charset=UTF-8",
