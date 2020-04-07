@@ -5,4 +5,4 @@ window._constants = {
 		positionY: 'top',
 		positionX: 'end'
 	}
-}
+};
