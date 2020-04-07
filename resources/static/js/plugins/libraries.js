@@ -256,17 +256,6 @@ function showNotification(message, colorCode){
 			icon: colorCode,
 			title: message
 		});
-		//$.notify({
-	    //	icon: "notifications",
-	    //	message: message
-		//},{
-		//    type: 'danger',
-		//    timer: 2000,
-		//    placement: {
-		//        from: 'top',
-		//        align: 'center'
-		//    }
-		//});
 	} else {
 		Toast.fire({
 			customClass: {

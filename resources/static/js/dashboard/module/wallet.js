@@ -1,6 +1,15 @@
 // Account Information display
 (function scopeWrapper($) {
 
+	// SECURITY: Defining Immutable properties as constants
+	Object.defineProperties(WALLET_CONSTANTS, {
+		'walletUrl': { value: '/wallet', writable: false, configurable: false },
+	});
+
+	// Add wallet
+	let chosenCurrency = '';
+	window.authHeader = window.authHeader || localStorage.getItem('idToken');
+
 	// store in session storage
     let currentUserSI = localStorage.getItem("currentUserSI");
     if(isNotEmpty(currentUserSI)) {
@@ -8,7 +17,7 @@
 		window.currentUser = JSON.parse(currentUserSI);
 	} else {
 		// If the user is not authorized then redirect to application
-		window.location.href = 'https://app.blitzbudget.com/';
+		window.location.href = '/';
 	}
 
 	document.getElementById('genericAddFnc').addEventListener("click",function(e){
@@ -30,7 +39,39 @@
 		document.getElementById('whichWallet').classList.remove('d-none');
 		document.getElementById('genericAddFnc').classList.remove('d-none');		
 		document.body.classList.remove('darker');
+		// Add new wallet
+		addNewWallet();
 	});
+
+	// Add new wallet
+	function addNewWallet() {
+		// Set Param Val combination
+		let values = {};
+		values['currency'] = chosenCurrency;
+		values = JSON.stringify(values);
+
+		jQuery.ajax({
+			url: config.api.invokeUrl + WALLET_CONSTANTS.walletUrl;,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
+	        type: 'POST',
+	        contentType: "application/json;charset=UTF-8",
+	        data : values,
+	        error: function(thrownError) {
+	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+					showNotification(message,window._constants.notification.error);
+				} else if(isNotEmpty(thrownError.message)) {
+					showNotification(thrownError.message,window._constants.notification.error);
+				} else {
+					let responseError = JSON.parse(thrownError.responseText);
+			   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+			    		// If the user is not authorized then redirect to application
+						window.location.href = '/';
+			    	}	
+				}
+	        }
+    	});
+	}
+
     /*
 	*	Currency Dropdown Populate
 	*/
@@ -242,15 +283,10 @@
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
-			let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
-			updateUserAttr('currency', cToS[this.lastChild.value], this, valObj);
+			document.getElementById('chosenCurrency').innerText = this.lastChild.value;
+			chosenCurrency = cToS[this.lastChild.value];
 		}
 	});
-
-	// Update user attributes
-	function updateUserAttr(param, paramVal, event, valObj) {
-		console.log('clicked here');
-	}
 
 	// Create the dropdown item with wallet
 	function dropdownItemsWithWallet(withWalletItem) {
