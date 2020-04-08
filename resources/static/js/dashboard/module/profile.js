@@ -12,6 +12,7 @@
 		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
+		'userNameParam': { value: '&userName=', writable: false, configurable: false }
 	});
 
 	displayUserDetailsProfile();
@@ -517,7 +518,7 @@
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
 					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true; 
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true + PROFILE_CONSTANTS.userNameParam + currentUser.email; 
 					ajaxData.onSuccess = function(jsonObj) {
 				        localStorage.clear();
 				        window.location.href = window._config.home.invokeUrl;
