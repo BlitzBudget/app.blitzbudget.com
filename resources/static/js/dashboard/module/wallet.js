@@ -1,9 +1,12 @@
 // Account Information display
 (function scopeWrapper($) {
 
+	// WALLET CONSTANTS
+	const WALLET_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(WALLET_CONSTANTS, {
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
+		'firstFinancialPortfolioIdParams': { value: '?financialPortfolioId=', writable: false, configurable: false },
 	});
 
 	// Add wallet
@@ -19,6 +22,9 @@
 		// If the user is not authorized then redirect to application
 		window.location.href = '/';
 	}
+
+	// Primary Wallet Name of customer
+	document.getElementById('primaryName').innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
 
 	document.getElementById('genericAddFnc').addEventListener("click",function(e){
 		document.getElementById('addWallet').classList.remove('d-none');
@@ -48,10 +54,12 @@
 		// Set Param Val combination
 		let values = {};
 		values['currency'] = chosenCurrency;
+		values['financialPortfolioId'] = parseInt(currentUser.financialPortfolioId);
+		values['readOnly'] = false;
 		values = JSON.stringify(values);
 
 		jQuery.ajax({
-			url: config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'POST',
 	        contentType: "application/json;charset=UTF-8",
@@ -86,6 +94,7 @@
 		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
 			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+			document.getElementById('walletCurrency').innerText = currentUser.currency;
 		} else {
 			currencies.push(curToSym[i].currency);
 		}
@@ -300,6 +309,36 @@
 		dpItem.appendChild(inpHi);
 
 		return dpItem;
+	}
+
+	/*
+	* Get Wallet
+	*/
+	getWallets();
+
+	function getWallets() {
+		jQuery.ajax({
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstFinancialPortfolioIdParams + currentUser.financialPortfolioId,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
+	        type: 'GET',
+	        contentType: "application/json;charset=UTF-8",
+	        success: function(wallets) {
+	        	console.log('wallet ' + wallets);
+	        },
+	        error: function(thrownError) {
+	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+					showNotification(message,window._constants.notification.error);
+				} else if(isNotEmpty(thrownError.message)) {
+					showNotification(thrownError.message,window._constants.notification.error);
+				} else {
+					let responseError = JSON.parse(thrownError.responseText);
+			   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+			    		// If the user is not authorized then redirect to application
+						window.location.href = '/';
+			    	}	
+				}
+	        }
+    	});
 	}
 
 }(jQuery));	
