@@ -49,7 +49,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
    		ajaxData.onSuccess = function(userTransactionsList) {
         	let recentTransactionsDiv = document.getElementById('recentTransactions');
         	let recentTransactionsFragment = document.createDocumentFragment();
@@ -270,7 +270,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetFalseParam;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetFalseParam;
    		ajaxData.onSuccess = function(categoryTotalMap) {
         	// Store the result in a cache
         	categoryTotalMapCache = categoryTotalMap;
@@ -303,7 +303,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
    		ajaxData.onSuccess = function(userBudgetList) {
         	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
         	let populateOptimizationFragment = document.createDocumentFragment();
@@ -639,7 +639,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = "POST";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.walletId;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
    		ajaxData.values = values;
@@ -766,7 +766,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
    		ajaxData.onSuccess = function(averageIncome) {
         	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
         	if(isEmpty(averageIncome)) {
@@ -798,7 +798,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET'
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
    		ajaxData.onSuccess = function(averageExpense) {
         	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
         	if(isEmpty(avExpenseAm)) {
@@ -834,7 +834,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
    		ajaxData.onSuccess = function(dateAndAmountAsList) {
         	
         	calcAndBuildLineChart(dateAndAmountAsList);

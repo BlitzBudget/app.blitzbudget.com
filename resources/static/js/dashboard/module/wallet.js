@@ -25,6 +25,7 @@
 
 	// Primary Wallet Name of customer
 	document.getElementById('primaryName').innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
+	document.getElementById('primaryWallet').setAttribute('data-target',currentUser.financialPortfolioId);
 
 	document.getElementById('genericAddFnc').addEventListener("click",function(e){
 		document.getElementById('addWallet').classList.remove('d-none');
@@ -51,6 +52,9 @@
 
 	// Add new wallet
 	function addNewWallet() {
+		// Loading option
+		document.getElementById('whichWallet').appendChild(buildLoadingWallet());
+		
 		// Set Param Val combination
 		let values = {};
 		values['currency'] = chosenCurrency;
@@ -64,6 +68,19 @@
 	        type: 'POST',
 	        contentType: "application/json;charset=UTF-8",
 	        data : values,
+	        success: function(result) {
+	        	let wallet = {};
+	        	wallet['currency'] = result['body-json'].currency;
+	        	wallet['id'] = result['body-json'].id;
+	        	if(isEmpty(result['body-json'].name)) {
+	        		wallet['name'] = result['body-json'].name;
+	        	}
+	        	// Remove Loader
+	        	let removeLoader = document.getElementById('loading-wallet');
+	        	removeLoader.parentNode.removeChild(removeLoader);
+	        	// Load wallet
+	        	document.getElementById('whichWallet').appendChild(buildWalletDiv(wallet));
+	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
 					showNotification(message,window._constants.notification.error);
@@ -317,13 +334,38 @@
 	getWallets();
 
 	function getWallets() {
+		let walletDiv = document.getElementById('whichWallet');
+		walletDiv.appendChild(buildLoadingWallet());
+
 		jQuery.ajax({
-			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstFinancialPortfolioIdParams + currentUser.financialPortfolioId,
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstFinancialPortfolioIdParams + parseInt(currentUser.financialPortfolioId),
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'GET',
 	        contentType: "application/json;charset=UTF-8",
 	        success: function(wallets) {
-	        	console.log('wallet ' + wallets);
+	        	window.globalWallet = wallets;
+
+	        	if(isEmpty(wallets)) {
+	        		return;
+	        	}
+
+	        	// Remove Loader
+	        	let removeLoader = document.getElementById('loading-wallet');
+	        	removeLoader.parentNode.removeChild(removeLoader);
+
+	        	let walletDiv = document.getElementById('whichWallet');
+	        	let walletFrag = document.createDocumentFragment();
+	        	for(let i = 0, l = wallets.length; i < l; i++) {
+	        		let wallet = wallets[i];
+
+	        		if(i < 2) {
+	        			walletFrag.appendChild(buildWalletDiv(wallet, false));
+	        		} else {
+	        			walletFrag.appendChild(buildWalletDiv(wallet, true));
+	        		}
+
+	        	}
+	        	walletDiv.appendChild(walletFrag);
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
@@ -340,5 +382,81 @@
 	        }
     	});
 	}
+
+	// Wallet Div
+	function buildWalletDiv(wallet, marginBool) {
+		let walletDiv = document.createElement('div');
+		walletDiv.classList = 'col-4 col-md-4 col-lg-4 text-animation fadeIn suggested-card';
+		if(marginBool) {
+			walletDiv.classList.add('margin-cards');
+		}
+		walletDiv.setAttribute('data-target', wallet.id);
+		
+		let suggestedAnchor = document.createElement('a');
+		suggestedAnchor.classList = 'suggested-anchor p-4';
+		suggestedAnchor.href="#";
+
+		let h2 = document.createElement('h2');
+		h2.classList = 'suggested-heading';
+		h2.innerText = isEmpty(wallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet.name;
+		suggestedAnchor.appendChild(h2);
+
+		let p = document.createElement('p');
+		p.innerText = wallet.currency;
+		p.classList = 'text-danger';
+		suggestedAnchor.appendChild(p);
+		walletDiv.appendChild(suggestedAnchor);
+
+		return walletDiv;
+	}
+
+	// Wallet Div
+	function buildLoadingWallet() {
+		let walletDiv = document.createElement('div');
+		walletDiv.id = 'loading-wallet';				
+		walletDiv.classList = 'col-4 col-md-4 col-lg-4 text-animation fadeIn suggested-card';
+		
+		let suggestedAnchor = document.createElement('div');
+		suggestedAnchor.classList = 'suggested-anchor p-4';
+
+		let wSeventy = document.createElement('div');
+		wSeventy.classList = 'w-70 animationCard';
+		suggestedAnchor.appendChild(wSeventy);
+
+		let wFifty = document.createElement('div');
+		wFifty.classList = 'w-50 animationCard';
+		suggestedAnchor.appendChild(wFifty);
+
+		let wThrity = document.createElement('p');
+		wThrity.classList = 'w-30 animationCard';
+		suggestedAnchor.appendChild(wThrity);
+		walletDiv.appendChild(suggestedAnchor);
+
+		let wTen = document.createElement('p');
+		wTen.classList = 'w-10 animationCard';
+		suggestedAnchor.appendChild(wTen);
+		walletDiv.appendChild(suggestedAnchor);
+
+		return walletDiv;
+	}
+
+	// Suggested Cards
+	$( "body" ).on( "click", ".suggested-anchor" ,function() {
+		window.currentUser.walletId = this.parentNode.getAttribute('data-target');
+		
+		// Calculate currency
+		let wallets = window.globalWallet;
+		for(let i = 0, len = window.globalWallet.length; i < len; i++) {
+			let currentWallet = window.globalWallet[i];
+			if(window.currentUser.walletId, currentWallet.id) {
+				window.currentUser.walletCurrency = currentWallet.currency;
+			}
+		}
+
+		localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
+		// Go to Home Page
+		window.location.href = '/';
+	});
+
 
 }(jQuery));	
