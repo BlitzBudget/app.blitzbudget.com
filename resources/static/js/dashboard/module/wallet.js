@@ -104,14 +104,16 @@
 	/*An array containing all the currency names in the world:*/
 	let currencies = [];
 	let cToS = {};
+	let sToC = {};
 	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 	for(let i = 0, l = curToSym.length; i < l; i++) {
 		cToS[curToSym[i].currency] = curToSym[i].symbol;
+		sToC[curToSym[i].symbol] = curToSym[i].currency;
 		/* Update the default currency in Settings */
 		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
 			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-			document.getElementById('walletCurrency').innerText = currentUser.currency;
+			document.getElementById('walletCurrency').innerText = curToSym[i].currency;
 		} else {
 			currencies.push(curToSym[i].currency);
 		}
@@ -401,9 +403,9 @@
 		h2.innerText = isEmpty(wallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet.name;
 		suggestedAnchor.appendChild(h2);
 
-		let p = document.createElement('p');
-		p.innerText = wallet.currency;
-		p.classList = 'text-danger';
+		let p = document.createElement('h3');
+		p.innerText = sToC[wallet.currency];
+		p.classList = 'currency-desc';
 		suggestedAnchor.appendChild(p);
 		walletDiv.appendChild(suggestedAnchor);
 

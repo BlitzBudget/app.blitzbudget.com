@@ -564,6 +564,14 @@ a.text-danger:focus {
   margin-bottom: 1.5rem !important;
 }
 
+.mt-4 {
+  margin-top: 1.5rem !important;
+}
+
+.mb--3 {
+  margin-bottom: -3rem !important;
+}
+
 .heading-wallet {
     width: 100%;
     font-size: 3.5vw;
@@ -1813,6 +1821,17 @@ select.form-control:focus::-ms-value {
     z-index: 2;
 }
 
+.currency-desc {
+    font-size: 0.895rem;
+    font-weight: 300;
+    font-style: italic;
+}
+
+h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
+    color: #244564;
+}
+
+
 @media (max-width: 576px) {
 	.footerInternal {
         padding-top:1rem;
@@ -1840,6 +1859,11 @@ select.form-control:focus::-ms-value {
     .Cards {
         margin: 1rem;
         overflow: hidden;
+    }
+
+    #whichWallet {
+        overflow-y: auto;
+        height: 90%;
     }
 }
 
@@ -1912,5 +1936,14 @@ select.form-control:focus::-ms-value {
     .col-lg-4 {
         flex: 0 0 33.333333%;
         max-width: 33.333333%;
+    }
+
+    .mt-lg-4,
+    .my-lg-4 {
+        margin-top: 1.5rem !important;
+    }
+    .mb-lg-4,
+    .my-lg-4 {
+        margin-bottom: 1.5rem !important;
     }
 }
