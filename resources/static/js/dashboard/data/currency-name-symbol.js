@@ -10,10 +10,6 @@ window.currencyNameToSymbol = {
       symbol: '؋'
     },
     {
-      currency: 'Euro',
-      symbol: '€'
-    },
-    {
       currency: 'Albanian Lek',
       symbol: 'L'
     },
@@ -208,6 +204,10 @@ window.currencyNameToSymbol = {
     {
       currency: 'Egyptian Pound',
       symbol: 'E£'
+    },
+    {
+      currency: 'Euro',
+      symbol: '€'
     },
     {
       currency: 'Nakfa',

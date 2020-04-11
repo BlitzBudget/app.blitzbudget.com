@@ -459,7 +459,6 @@ h4, h6 {
     box-sizing: border-box;
     text-align: left;
     width: 15rem;
-    height: 2.5rem;
     max-width: 15rem;
     min-width: 15rem;
 }
@@ -958,7 +957,7 @@ a.text-danger:focus {
 }
 
 .Cards {
-    z-index: 100;
+    z-index: 1100;
     position: absolute;
     top: 0;
     left: 0;

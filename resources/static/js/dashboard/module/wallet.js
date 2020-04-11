@@ -69,12 +69,21 @@
 	        contentType: "application/json;charset=UTF-8",
 	        data : values,
 	        success: function(result) {
+	        	// Generate the wallet object
 	        	let wallet = {};
 	        	wallet['currency'] = result['body-json'].currency;
 	        	wallet['id'] = result['body-json'].id;
 	        	if(isEmpty(result['body-json'].name)) {
 	        		wallet['name'] = result['body-json'].name;
 	        	}
+
+	        	// Global Wallet is empty remove margin auto
+	        	if(isEmpty(window.globalWallet)) {
+	        		document.getElementById('primaryWallet').classList.remove('m-auto');
+	        	}
+	        	// Add the newly added wallet to global wallets
+	        	window.globalWallet.push(wallet);
+
 	        	// Remove Loader
 	        	let removeLoader = document.getElementById('loading-wallet');
 	        	removeLoader.parentNode.removeChild(removeLoader);
@@ -96,31 +105,6 @@
 	        }
     	});
 	}
-
-    /*
-	*	Currency Dropdown Populate
-	*/
-
-	/*An array containing all the currency names in the world:*/
-	let currencies = [];
-	let cToS = {};
-	let sToC = {};
-	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
-	for(let i = 0, l = curToSym.length; i < l; i++) {
-		cToS[curToSym[i].currency] = curToSym[i].symbol;
-		sToC[curToSym[i].symbol] = curToSym[i].currency;
-		/* Update the default currency in Settings */
-		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
-			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
-			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-			document.getElementById('walletCurrency').innerText = curToSym[i].currency;
-		} else {
-			currencies.push(curToSym[i].currency);
-		}
-	}
-
-	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-	autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
 
 	/**
 	* Autocomplete Module
@@ -312,7 +296,7 @@
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
 			document.getElementById('chosenCurrency').innerText = this.lastChild.value;
-			chosenCurrency = cToS[this.lastChild.value];
+			chosenCurrency = this.lastChild.value;
 		}
 	});
 
@@ -346,15 +330,49 @@
 	        contentType: "application/json;charset=UTF-8",
 	        success: function(wallets) {
 	        	window.globalWallet = wallets;
+	        	let walletCur = [];
 
+	        	// Center the only div if it is the only wallet
 	        	if(isEmpty(wallets)) {
-	        		return;
+	        		document.getElementById('primaryWallet').classList.add('m-auto');
 	        	}
+
+	        	// Collect wallet information
+	        	for(let i = 0, l = wallets.length; i < l; i++) {
+	        		let wallet = wallets[i];
+	        		walletCur.push(wallet.currency);
+	        	}
+
+	        	/*
+				*	Currency Dropdown Populate
+				*/
+
+				/*An array containing all the currency names in the world:*/
+				let currencies = [];
+				window.cToS = {};
+				let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+				for(let i = 0, l = curToSym.length; i < l; i++) {
+					cToS[curToSym[i].currency] = curToSym[i].symbol;
+					/* Update the default currency in Settings */
+					if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+						document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+						document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+						document.getElementById('walletCurrency').innerText = curToSym[i].currency;
+					} else if(includesStr(walletCur,curToSym[i].currency)) {
+						document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+					} else {
+						currencies.push(curToSym[i].currency);
+					}
+				}
+
+				/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
 
 	        	// Remove Loader
 	        	let removeLoader = document.getElementById('loading-wallet');
 	        	removeLoader.parentNode.removeChild(removeLoader);
 
+	        	// Build wallet div
 	        	let walletDiv = document.getElementById('whichWallet');
 	        	let walletFrag = document.createDocumentFragment();
 	        	for(let i = 0, l = wallets.length; i < l; i++) {
@@ -371,7 +389,7 @@
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-					showNotification(message,window._constants.notification.error);
+					showNotification("Unexpected expected occured while fetching the wallets",window._constants.notification.error);
 				} else if(isNotEmpty(thrownError.message)) {
 					showNotification(thrownError.message,window._constants.notification.error);
 				} else {
@@ -404,7 +422,7 @@
 		suggestedAnchor.appendChild(h2);
 
 		let p = document.createElement('h3');
-		p.innerText = sToC[wallet.currency];
+		p.innerText = wallet.currency;
 		p.classList = 'currency-desc';
 		suggestedAnchor.appendChild(p);
 		walletDiv.appendChild(suggestedAnchor);
@@ -451,7 +469,7 @@
 		for(let i = 0, len = window.globalWallet.length; i < len; i++) {
 			let currentWallet = window.globalWallet[i];
 			if(isEqual(window.currentUser.walletId, currentWallet.id)) {
-				window.currentUser.walletCurrency = currentWallet.currency;
+				window.currentUser.walletCurrency = cToS[currentWallet.currency];
 			}
 		}
 
