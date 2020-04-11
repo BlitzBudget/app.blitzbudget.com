@@ -1825,6 +1825,7 @@ select.form-control:focus::-ms-value {
     font-size: 0.895rem;
     font-weight: 300;
     font-style: italic;
+    color: #676363;
 }
 
 h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {

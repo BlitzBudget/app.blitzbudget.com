@@ -450,7 +450,7 @@
 		let wallets = window.globalWallet;
 		for(let i = 0, len = window.globalWallet.length; i < len; i++) {
 			let currentWallet = window.globalWallet[i];
-			if(window.currentUser.walletId, currentWallet.id) {
+			if(isEqual(window.currentUser.walletId, currentWallet.id)) {
 				window.currentUser.walletCurrency = currentWallet.currency;
 			}
 		}

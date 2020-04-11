@@ -23,7 +23,7 @@
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.networthTotalUrl + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.networthTotalUrl + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
    		ajaxData.onSuccess = function(totalAssetAndLiab) {
    			
    			// Liability Population

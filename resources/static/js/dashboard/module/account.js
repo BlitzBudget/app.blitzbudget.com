@@ -155,7 +155,7 @@ let tickIconSVG = tickIcon();
 				values['bankAccountName'] = document.getElementById('accountName').value;
 				values['accountBalance'] = document.getElementById('accountBal').value;
 				values['accountType'] = document.getElementsByClassName('accountChosen')[0].innerText;
-				values['financialPortfolioId'] = currentUser.financialPortfolioId;
+				values['financialPortfolioId'] = currentUser.walletId;
 				
 				// Check if the account type is valid (Upper Case)
 				if(!includesStr(accountTypeUCConst,values['accountType'])) {
@@ -216,7 +216,7 @@ let tickIconSVG = tickIcon();
     	var values = {};
 		values['id'] = bankAccountPreview[Number(position)-1].id;
 		values['selectedAccount'] = 'true';
-		values['financialPortfolioId'] = currentUser.financialPortfolioId;
+		values['financialPortfolioId'] = currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -590,7 +590,7 @@ er_a = {
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
    		ajaxData.dataType = "json";
    		ajaxData.onSuccess = function(bankAccountList) {
         	  // Assign value to constant
@@ -626,7 +626,7 @@ er_a = {
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
    		ajaxData.dataType = "json";
    		ajaxData.onSuccess = successCall;
         ajaxData.onFailure = function(thrownError) {
