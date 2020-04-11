@@ -463,6 +463,32 @@ h4, h6 {
     min-width: 15rem;
 }
 
+.share-icon {
+    float: right;
+    margin-top: -2rem;
+    margin-right: 0.8rem;
+    fill: #999;
+    opacity: 0;
+    cursor: pointer;
+    -webkit-transition: opacity 400ms ease-out;
+    -o-transition: opacity 400ms ease-out;
+    -moz-transition: opacity 400ms ease-out;
+    transition: opacity 400ms ease-out;
+}
+
+.delete-icon-wrapper {
+    float: right;
+    margin-top: -2rem;
+    margin-right: 0.8rem;
+    fill: #999;
+    opacity: 0;
+    cursor: pointer;
+    -webkit-transition: opacity 400ms ease-out;
+    -o-transition: opacity 400ms ease-out;
+    -moz-transition: opacity 400ms ease-out;
+    transition: opacity 400ms ease-out;
+}
+
 .suggested-card.margin-cards {
     margin-top: 5rem;
 }
@@ -509,6 +535,11 @@ h4, h6 {
 .suggested-anchor:hover .suggested-heading,
 .suggested-anchor:focus .suggested-heading {
     color: #00bcd4;
+}
+
+.suggested-card:hover .share-icon,
+.suggested-card:focus .share-icon {
+    opacity: 1;
 }
 
 .logoName {
