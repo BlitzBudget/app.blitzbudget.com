@@ -463,7 +463,8 @@ h4, h6 {
     min-width: 15rem;
 }
 
-.share-icon {
+.share-icon,
+.edit-wallet {
     float: right;
     margin-top: -2rem;
     margin-right: 0.8rem;
@@ -476,17 +477,26 @@ h4, h6 {
     transition: opacity 400ms ease-out;
 }
 
-.delete-icon-wrapper {
+.edit-wallet {
+    opacity: 1;
+}
+
+.favourite-icon {
     float: right;
-    margin-top: -2rem;
-    margin-right: 0.8rem;
-    fill: #999;
+    margin-top: -1.79rem;
+    margin-right: 2rem;
+    font-size: 1.1rem;
+    color: #999;
     opacity: 0;
     cursor: pointer;
     -webkit-transition: opacity 400ms ease-out;
     -o-transition: opacity 400ms ease-out;
     -moz-transition: opacity 400ms ease-out;
     transition: opacity 400ms ease-out;
+}
+
+.favourite-icon .material-icons {
+    font-size: 1.1rem;
 }
 
 .suggested-card.margin-cards {
@@ -538,7 +548,9 @@ h4, h6 {
 }
 
 .suggested-card:hover .share-icon,
-.suggested-card:focus .share-icon {
+.suggested-card:focus .share-icon,
+.suggested-card:hover .favourite-icon,
+.suggested-card:focus .favourite-icon {
     opacity: 1;
 }
 
@@ -628,11 +640,11 @@ a.text-danger:focus {
   border: 0;
   border-radius: 0.2rem;
   outline: 0;
-  -webkit-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  -moz-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  -ms-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  -o-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -moz-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -ms-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -o-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: box-shadow, transform;
 }
 
@@ -650,6 +662,11 @@ a.text-danger:focus {
   background-color: #00bcd4;
   border-color: #00bcd4;
   box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+  -webkit-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -o-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+
 }
 
 .btn.btn-info:hover {
@@ -726,6 +743,10 @@ a.text-danger:focus {
   background-color: transparent;
   color: #00bcd4;
   box-shadow: none;
+  -webkit-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -o-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
 }
 
 .btn.btn-info.btn-link:hover,
@@ -988,7 +1009,7 @@ a.text-danger:focus {
 }
 
 .Cards {
-    z-index: 1100;
+    z-index: 100;
     position: absolute;
     top: 0;
     left: 0;
@@ -1094,6 +1115,10 @@ h1,
   background-color: #fafafa;
   border-color: #ccc;
   box-shadow: 0 2px 2px 0 rgba(250, 250, 250, 0.14), 0 3px 1px -2px rgba(250, 250, 250, 0.2), 0 1px 5px 0 rgba(250, 250, 250, 0.12);
+  -webkit-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -o-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
 }
 
 .btn.btn-secondary:hover {
@@ -1170,6 +1195,10 @@ h1,
   background-color: transparent;
   color: #fafafa;
   box-shadow: none;
+  -webkit-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -o-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  -moz-transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
+  transition: background-color 400ms ease-out, border-color 400ms ease-out, color 400ms ease-out, box-shadow 400ms ease-out;
 }
 
 .btn.btn-secondary.btn-link:hover,
@@ -1862,6 +1891,245 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
     color: #244564;
 }
 
+.btn-outline-info {
+  color: #00bcd4;
+  background-color: transparent;
+  background-image: none;
+  border-color: #00bcd4;
+}
+
+.btn-outline-info:hover {
+  color: #ffffff;
+  background-color: #00bcd4;
+  border-color: #00bcd4;
+}
+
+.btn-outline-info:focus,
+.btn-outline-info.focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.5);
+}
+
+.btn-outline-info.disabled,
+.btn-outline-info:disabled {
+  color: #00bcd4;
+  background-color: transparent;
+}
+
+.btn-outline-info:not(:disabled):not(.disabled):active,
+.btn-outline-info:not(:disabled):not(.disabled).active,
+.show>.btn-outline-info.dropdown-toggle {
+  color: #ffffff;
+  background-color: #00bcd4;
+  border-color: #00bcd4;
+}
+
+.btn-outline-info:not(:disabled):not(.disabled):active:focus,
+.btn-outline-info:not(:disabled):not(.disabled).active:focus,
+.show>.btn-outline-info.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 188, 212, 0.5);
+}
+
+.mr-5 {
+    margin-right: 3rem !important;
+}
+
+.important {
+    z-index: 1100;
+}
+
+/*
+* Tooltip
+*/
+.tooltip {
+  position: absolute;
+  z-index: 1070;
+  display: block;
+  margin: 0;
+  font-family: "Didact Gothic","Roboto", "Helvetica", "Arial", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  text-align: start;
+  text-decoration: none;
+  text-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  word-break: normal;
+  word-spacing: normal;
+  white-space: normal;
+  line-break: auto;
+  font-size: 0.875rem;
+  word-wrap: break-word;
+  opacity: 0;
+}
+
+.tooltip.show {
+  opacity: 0.9;
+}
+
+.tooltip .arrow {
+  position: absolute;
+  display: block;
+  width: 0.8rem;
+  height: 0.4rem;
+}
+
+.tooltip .arrow::before {
+  position: absolute;
+  content: "";
+  border-color: transparent;
+  border-style: solid;
+}
+
+.bs-tooltip-top,
+.bs-tooltip-auto[x-placement^="top"] {
+  padding: 0.4rem 0;
+}
+
+.bs-tooltip-top .arrow,
+.bs-tooltip-auto[x-placement^="top"] .arrow {
+  bottom: 0;
+}
+
+.bs-tooltip-top .arrow::before,
+.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  top: 0;
+  border-width: 0.4rem 0.4rem 0;
+  border-top-color: rgba(97, 97, 97, 0.9);
+}
+
+.bs-tooltip-right,
+.bs-tooltip-auto[x-placement^="right"] {
+  padding: 0 0.4rem;
+}
+
+.bs-tooltip-right .arrow,
+.bs-tooltip-auto[x-placement^="right"] .arrow {
+  left: 0;
+  width: 0.4rem;
+  height: 0.8rem;
+}
+
+.bs-tooltip-right .arrow::before,
+.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  right: 0;
+  border-width: 0.4rem 0.4rem 0.4rem 0;
+  border-right-color: rgba(97, 97, 97, 0.9);
+}
+
+.bs-tooltip-bottom,
+.bs-tooltip-auto[x-placement^="bottom"] {
+  padding: 0.4rem 0;
+}
+
+.bs-tooltip-bottom .arrow,
+.bs-tooltip-auto[x-placement^="bottom"] .arrow {
+  top: 0;
+}
+
+.bs-tooltip-bottom .arrow::before,
+.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  bottom: 0;
+  border-width: 0 0.4rem 0.4rem;
+  border-bottom-color: rgba(97, 97, 97, 0.9);
+}
+
+.bs-tooltip-left,
+.bs-tooltip-auto[x-placement^="left"] {
+  padding: 0 0.4rem;
+}
+
+.bs-tooltip-left .arrow,
+.bs-tooltip-auto[x-placement^="left"] .arrow {
+  right: 0;
+  width: 0.4rem;
+  height: 0.8rem;
+}
+
+.bs-tooltip-left .arrow::before,
+.bs-tooltip-auto[x-placement^="left"] .arrow::before {
+  left: 0;
+  border-width: 0.4rem 0 0.4rem 0.4rem;
+  border-left-color: rgba(97, 97, 97, 0.9);
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #ffffff;
+  text-align: center;
+  background-color: rgba(97, 97, 97, 0.9);
+  border-radius: 0.25rem;
+}
+
+.tooltip-arrow {
+  display: none;
+}
+
+.tooltip.show {
+  opacity: 1;
+  -webkit-transform: translate3d(0, 0px, 0);
+  -moz-transform: translate3d(0, 0px, 0);
+  -o-transform: translate3d(0, 0px, 0);
+  -ms-transform: translate3d(0, 0px, 0);
+  transform: translate3d(0, 0px, 0);
+}
+
+.tooltip {
+  opacity: 0;
+  transition: opacity, transform .2s ease;
+  -webkit-transform: translate3d(0, 5px, 0);
+  -moz-transform: translate3d(0, 5px, 0);
+  -o-transform: translate3d(0, 5px, 0);
+  -ms-transform: translate3d(0, 5px, 0);
+  transform: translate3d(0, 5px, 0);
+  font-size: 0.875rem;
+}
+
+.tooltip.bs-tooltip-top .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="top"] .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="top"] .arrow::before {
+  border-top-color: #fff;
+}
+
+.tooltip.bs-tooltip-right .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="right"] .arrow::before {
+  border-right-color: #fff;
+}
+
+.tooltip.bs-tooltip-left .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="left"] .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="left"] .arrow::before {
+  border-left-color: #fff;
+}
+
+.tooltip.bs-tooltip-bottom .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="bottom"] .arrow::before,
+.tooltip.bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: #fff;
+}
+
+.tooltip-inner {
+  padding: 10px 15px;
+  min-width: 130px;
+}
+
+.popover,
+.tooltip-inner {
+  line-height: 1.5em;
+  background: #fff;
+  border: none;
+  border-radius: 3px;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+  color: #555;
+  -webkit-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -moz-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -ms-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -o-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 @media (max-width: 576px) {
 	.footerInternal {
@@ -1879,8 +2147,7 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
     .suggested-card {
         border-left: none;
         margin-left: auto;
-        margin-right: auto;
-        margin-top: 5rem;
+        margin-right: auto;        
     }
 
     .heading-wallet {
@@ -1895,6 +2162,10 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
     #whichWallet {
         overflow-y: auto;
         height: 90%;
+    }
+
+    .d-sm-none {
+        display: none !important;
     }
 }
 

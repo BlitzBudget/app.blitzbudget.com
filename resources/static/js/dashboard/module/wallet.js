@@ -1,12 +1,16 @@
 // Account Information display
 (function scopeWrapper($) {
 
+	// Manage Wallets Trigger
+	window.manageWalletsTriggered = false;
+
 	// WALLET CONSTANTS
 	const WALLET_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(WALLET_CONSTANTS, {
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
 		'firstFinancialPortfolioIdParams': { value: '?financialPortfolioId=', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
 	});
 
 	// Add wallet
@@ -31,20 +35,26 @@
 		document.getElementById('addWallet').classList.remove('d-none');
 		document.getElementById('whichWallet').classList.add('d-none');
 		document.getElementById('genericAddFnc').classList.add('d-none');
+		document.getElementById('manageWallets').classList.add('d-none');
+		document.getElementsByClassName('Cards')[0].classList.add('important');
 		document.body.classList.add('darker');
 	});
 
 	document.getElementById('cancelWallet').addEventListener("click",function(e){
 		document.getElementById('addWallet').classList.add('d-none');
 		document.getElementById('whichWallet').classList.remove('d-none');
-		document.getElementById('genericAddFnc').classList.remove('d-none');		
+		document.getElementById('genericAddFnc').classList.remove('d-none');
+		document.getElementById('manageWallets').classList.remove('d-none');		
+		document.getElementsByClassName('Cards')[0].classList.remove('important');
 		document.body.classList.remove('darker');
 	});
 
 	document.getElementById('confirmWallet').addEventListener("click",function(e){
 		document.getElementById('addWallet').classList.add('d-none');
 		document.getElementById('whichWallet').classList.remove('d-none');
-		document.getElementById('genericAddFnc').classList.remove('d-none');		
+		document.getElementById('genericAddFnc').classList.remove('d-none');
+		document.getElementById('manageWallets').classList.remove('d-none');		
+		document.getElementsByClassName('Cards')[0].classList.remove('important');
 		document.body.classList.remove('darker');
 		// Add new wallet
 		addNewWallet();
@@ -88,7 +98,13 @@
 	        	let removeLoader = document.getElementById('loading-wallet');
 	        	removeLoader.parentNode.removeChild(removeLoader);
 	        	// Load wallet
-	        	document.getElementById('whichWallet').appendChild(buildWalletDiv(wallet));
+	        	let walletWrapper = buildWalletDiv(wallet);
+	        	document.getElementById('whichWallet').appendChild(walletWrapper);
+
+	        	// Initialize tooltip
+	        	walletWrapper.tooltip({
+					delay: { "show": 300, "hide": 100 }
+			    });
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
@@ -379,17 +395,26 @@
 	        		let wallet = wallets[i];
 
 	        		if(i < 2) {
-	        			walletFrag.appendChild(buildWalletDiv(wallet, false));
+	        			walletFrag.appendChild(buildWalletDiv(wallet));
 	        		} else {
-	        			walletFrag.appendChild(buildWalletDiv(wallet, true));
+	        			walletFrag.appendChild(buildWalletDiv(wallet));
 	        		}
 
 	        	}
 	        	walletDiv.appendChild(walletFrag);
+
+	        	// Initialize Tooltip
+	        	let shareWalletDivs = document.getElementsByClassName('share-wallet-wrapper');
+	        	for(let i = 0, len = shareWalletDivs.length; i < len; i++) {
+	        		let shareWallet = shareWalletDivs[i];
+	        		$(shareWallet).tooltip({
+						delay: { "show": 300, "hide": 100 }
+				    });
+	        	}
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-					showNotification("Unexpected expected occured while fetching the wallets",window._constants.notification.error);
+					showNotification("Unexpected error occured while fetching the wallets",window._constants.notification.error);
 				} else if(isNotEmpty(thrownError.message)) {
 					showNotification(thrownError.message,window._constants.notification.error);
 				} else {
@@ -404,12 +429,10 @@
 	}
 
 	// Wallet Div
-	function buildWalletDiv(wallet, marginBool) {
+	function buildWalletDiv(wallet) {
+
 		let walletDiv = document.createElement('div');
 		walletDiv.classList = 'col-4 col-md-4 col-lg-4 text-animation fadeIn suggested-card';
-		if(marginBool) {
-			walletDiv.classList.add('margin-cards');
-		}
 		walletDiv.setAttribute('data-target', wallet.id);
 		
 		let suggestedAnchor = document.createElement('a');
@@ -427,23 +450,51 @@
 		suggestedAnchor.appendChild(p);
 		walletDiv.appendChild(suggestedAnchor);
 
+		// Load share svg
 		walletDiv.appendChild(loadShareSvg());
+
+		// Load Edit Icon
+		walletDiv.appendChild(loadEditIcon());
 
 		return walletDiv;
 	}
 
+	// Load Share Svg
 	function loadShareSvg() {
+		let shareWalletWrap = document.createElement('div');
+		shareWalletWrap.setAttribute('data-toggle','tooltip');
+		shareWalletWrap.setAttribute('data-placement','bottom');
+		shareWalletWrap.setAttribute('data-original-title','Share Wallet');
+		shareWalletWrap.classList = 'share-wallet-wrapper share-icon';
+
 		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 		svgElement.setAttribute('width','15');
 		svgElement.setAttribute('height','24');
     	svgElement.setAttribute('viewBox','0 0 24 24');
-    	svgElement.setAttribute('class','share-icon');
     	
     	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
     	pathElement1.setAttribute('d','M 18 2 C 16.35499 2 15 3.3549904 15 5 C 15 5.1909529 15.021791 5.3771224 15.056641 5.5585938 L 7.921875 9.7207031 C 7.3985399 9.2778539 6.7320771 9 6 9 C 4.3549904 9 3 10.35499 3 12 C 3 13.64501 4.3549904 15 6 15 C 6.7320771 15 7.3985399 14.722146 7.921875 14.279297 L 15.056641 18.439453 C 15.021555 18.621514 15 18.808386 15 19 C 15 20.64501 16.35499 22 18 22 C 19.64501 22 21 20.64501 21 19 C 21 17.35499 19.64501 16 18 16 C 17.26748 16 16.601593 16.279328 16.078125 16.722656 L 8.9433594 12.558594 C 8.9782095 12.377122 9 12.190953 9 12 C 9 11.809047 8.9782095 11.622878 8.9433594 11.441406 L 16.078125 7.2792969 C 16.60146 7.7221461 17.267923 8 18 8 C 19.64501 8 21 6.6450096 21 5 C 21 3.3549904 19.64501 2 18 2 z M 18 4 C 18.564129 4 19 4.4358706 19 5 C 19 5.5641294 18.564129 6 18 6 C 17.435871 6 17 5.5641294 17 5 C 17 4.4358706 17.435871 4 18 4 z M 6 11 C 6.5641294 11 7 11.435871 7 12 C 7 12.564129 6.5641294 13 6 13 C 5.4358706 13 5 12.564129 5 12 C 5 11.435871 5.4358706 11 6 11 z M 18 18 C 18.564129 18 19 18.435871 19 19 C 19 19.564129 18.564129 20 18 20 C 17.435871 20 17 19.564129 17 19 C 17 18.435871 17.435871 18 18 18 z'); 
     	svgElement.appendChild(pathElement1);
+
+    	shareWalletWrap.appendChild(svgElement);
     	
-    	return svgElement;
+    	return shareWalletWrap;
+	}
+
+	// Load Edit Icon
+	function loadEditIcon() {
+		let editIconWrap = document.createElement('div');
+		editIconWrap.classList = 'd-none edit-wallet';
+		editIconWrap.setAttribute('data-toggle', 'tooltip');
+		editIconWrap.setAttribute('data-placement', 'bottom');
+		editIconWrap.setAttribute('title', 'Edit wallet');
+
+		let editIcon = document.createElement('span');
+		editIcon.classList = 'material-icons';
+		editIcon.innerText = 'edit';
+		editIconWrap.appendChild(editIcon);
+
+		return editIconWrap;
 	}
 
 	// Wallet Div
@@ -478,7 +529,15 @@
 
 	// Suggested Cards
 	$( "body" ).on( "click", ".suggested-anchor" ,function() {
-		window.currentUser.walletId = this.parentNode.getAttribute('data-target');
+		let chosenWalletId = this.parentNode.getAttribute('data-target');
+
+		// If Manage Wallet Button is enabled then 
+		if(window.manageWalletsTriggered) {
+			editManageWallets(chosenWalletId);
+			return;
+		}
+
+		window.currentUser.walletId = chosenWalletId;
 
 		if(isEqual(window.currentUser.financialPortfolioId, window.currentUser.walletId)) {
 			window.currentUser.walletCurrency = window.currentUser.currency;
@@ -498,5 +557,61 @@
 		window.location.href = '/';
 	});
 
+	// Manage Wallets
+	document.getElementById('manageWallets').addEventListener("click",function(e){
+		document.getElementById('doneManage').classList.remove('d-none');
+		$('.edit-wallet').removeClass('d-none');
+		$('.share-icon').addClass('d-none');
+		this.classList.add('d-none');
+		window.manageWalletsTriggered = true;
+	});
+
+	// Done Manage
+	document.getElementById('doneManage').addEventListener("click",function(e){
+		document.getElementById('manageWallets').classList.remove('d-none');
+		$('.edit-wallet').addClass('d-none');
+		$('.share-icon').removeClass('d-none');
+		this.classList.add('d-none');
+		window.manageWalletsTriggered = false;
+	});
+
+	$( "body" ).on( "click", ".edit-wallet" ,function() {
+		let dataTarget = this.parentNode.getAttribute('data-target');
+		if(window.manageWalletsTriggered) {
+			editManageWallets(dataTarget);
+		}
+	});
+
+	// Edit Manage Wallets
+	function editManageWallets(dataTarget) {
+		document.getElementById('manageWallet').classList.remove('d-none');
+		document.getElementById('whichWallet').classList.add('d-none');
+		document.getElementById('genericAddFnc').classList.add('d-none');
+
+		/*
+		*	Currency Dropdown Populate
+		*/
+
+		/*An array containing all the currency names in the world:*/
+		let currencies = [];
+		window.cToS = {};
+		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+		for(let i = 0, l = curToSym.length; i < l; i++) {
+			cToS[curToSym[i].currency] = curToSym[i].symbol;
+			/* Update the default currency in Settings */
+			if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+				document.getElementById('chosenCurrencyMW').innerText = curToSym[i].currency;
+				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+			} else if(includesStr(walletCur,curToSym[i].currency)) {
+				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+			} else {
+				currencies.push(curToSym[i].currency);
+			}
+		}
+
+		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+		autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
+
+	}
 
 }(jQuery));	
