@@ -104,6 +104,7 @@
                 "/core/jquery.min.js",
                 "/core/popper.min.js",
                 "/core/bootstrap-material-design.min.js",
+                "/plugins/sweetalert2.all.min.js",
                 "/plugins/libraries.js",
                 "/dashboard/configuration/commonConfiguration.js",
                 "/cognito/config.js",
