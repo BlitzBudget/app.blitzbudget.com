@@ -11,9 +11,11 @@
 	const WALLET_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(WALLET_CONSTANTS, {
+		'resetAccountUrl': { value: '/cognito/reset-account', writable: false, configurable: false },
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
 		'firstFinancialPortfolioIdParams': { value: '?financialPortfolioId=', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
+		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false }
 	});
 
 	// Add wallet
@@ -581,13 +583,18 @@
 
 	// Done Manage
 	document.getElementById('doneManage').addEventListener("click",function(e){
+		doneManage();
+		this.classList.add('d-none');
+		window.manageWalletsTriggered = false;
+	});
+
+	// Done Manage
+	function doneManage() {
 		document.getElementById('manageWallets').classList.remove('d-none');
 		$('.edit-wallet').addClass('d-none');
 		$('.share-icon').removeClass('d-none');
 		document.getElementById('starredWallet').classList.remove('d-none');
-		this.classList.add('d-none');
-		window.manageWalletsTriggered = false;
-	});
+	}
 
 	$( "body" ).on( "click", ".edit-wallet" ,function() {
 		let dataTarget = this.parentNode.getAttribute('data-target');
@@ -666,21 +673,22 @@
 
 	// Modify Wallet
 	document.getElementById('modifyWallet').addEventListener("click",function(e){
-		document.getElementById('manageWallet').classList.add('d-none');
-		document.getElementById('whichWallet').classList.remove('d-none');
-		document.getElementById('genericAddFnc').classList.remove('d-none');
-		document.getElementById('deleteWallet').classList.add('d-none');
-		document.getElementById('doneManage').classList.remove('d-none');
+		showAllWallets();
 	});
 
 	// Cancel modification
 	document.getElementById('cancelModification').addEventListener("click",function(e){
+		showAllWallets();
+	});
+
+	// Show Which Wallets
+	function showAllWallets() {
 		document.getElementById('manageWallet').classList.add('d-none');
 		document.getElementById('whichWallet').classList.remove('d-none');
 		document.getElementById('genericAddFnc').classList.remove('d-none');
 		document.getElementById('deleteWallet').classList.add('d-none');
 		document.getElementById('doneManage').classList.remove('d-none');
-	});
+	}
 
 	// On click drop down btn of country search
 	$("#chosenCurrencyDropdownMW").on("shown.bs.dropdown", function(event){
@@ -713,15 +721,15 @@
 
 	// Define Cognito User Pool adn Pool data
 	let poolData = {
-        UserPoolId: _config.cognito.userPoolId,
-        ClientId: _config.cognito.userPoolClientId
+        UserPoolId: window._config.cognito.userPoolId,
+        ClientId: window._config.cognito.userPoolClientId
     };
 
     let userPool;
 
-    if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
+    if (!(window._config.cognito.userPoolId &&
+          window._config.cognito.userPoolClientId &&
+          window._config.cognito.region)) {
     	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
         return;
     }
@@ -788,23 +796,26 @@
     		Swal.resetValidationMessage()
         	// If the Reset Button is pressed
         	if (result.value) {
-				// Ajax Requests on Error
-				let ajaxData = {};
-				ajaxData.isAjaxReq = true;
-				ajaxData.type = 'DELETE';
-				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + chosenWallet  + PROFILE_CONSTANTS.deleteAccountParam + false;
-				ajaxData.onSuccess = function(jsonObj) {
-		        	showNotification("Successfully deleted your wallet!",window._constants.notification.success);
-		        }
-			    ajaxData.onFailure = function (thrownError) {
-			    	manageErrors(thrownError, "There was an error while deleteing your wallet. Please try again later!",ajaxData);
-	            }
+				// Show all Wallets
+				showAllWallets();
+				// Click on the done button
+				doneManage();
+
+				// Find Item with data target attribute
+				let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
+				chosenDiv.addClass('d-none');
+
         	 	jQuery.ajax({
-					url: ajaxData.url,
+					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstFinancialPortfolioParam + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-			        type: ajaxData.type,
-			        success: ajaxData.onSuccess,
-			        error: ajaxData.onFailure
+			        type: 'DELETE',
+			        success: function(result) {
+			        	chosenDiv.remove();
+			        },
+			        error: function (thrownError) {
+				    	manageErrors(thrownError, "There was an error while deleteing your wallet. Please try again later!",'');
+				    	chosenDiv.removeClass('d-none');
+		            }
 	        	});
         	}
 
