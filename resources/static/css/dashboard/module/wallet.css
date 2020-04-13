@@ -516,13 +516,13 @@ ul {
     opacity: 1;
 }
 
-.edit-wallet .material-icons {
-    color: #999;
+.edit-wallet svg {
+    fill: #999;
 }
 
-.edit-wallet:hover .material-icons,
-.edit-wallet:focus .material-icons {
-    color: #00bcd4;
+.edit-wallet:hover svg,
+.edit-wallet:focus svg {
+    fill: #00bcd4;
 }
 
 .share-icon:hover, 
