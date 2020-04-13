@@ -4,6 +4,9 @@
 	// Manage Wallets Trigger
 	window.manageWalletsTriggered = false;
 
+	// Current Chosen Wallet 
+	let chosenWallet = '';
+
 	// WALLET CONSTANTS
 	const WALLET_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
@@ -308,11 +311,14 @@
 		// On click drop down btn of country search
 	$(document).on("click", ".dropdown-item" , function(event){
 		let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
+		let chooseCrncyMWId = 'chosenCurrencyInpMWautocomplete-list';
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
 			document.getElementById('chosenCurrency').innerText = this.lastChild.value;
 			chosenCurrency = this.lastChild.value;
+		} else if(isEqual(id, chooseCrncyMWId)) {
+			document.getElementById('chosenCurrencyMW').innerText = this.lastChild.value;
 		}
 	});
 
@@ -346,7 +352,7 @@
 	        contentType: "application/json;charset=UTF-8",
 	        success: function(wallets) {
 	        	window.globalWallet = wallets;
-	        	let walletCur = [];
+	        	window.walletCur = [];
 
 	        	// Center the only div if it is the only wallet
 	        	if(isEmpty(wallets)) {
@@ -557,11 +563,18 @@
 		window.location.href = '/';
 	});
 
+	/**
+	*
+	* Modify Wallet
+	*
+	**/
+
 	// Manage Wallets
 	document.getElementById('manageWallets').addEventListener("click",function(e){
 		document.getElementById('doneManage').classList.remove('d-none');
 		$('.edit-wallet').removeClass('d-none');
 		$('.share-icon').addClass('d-none');
+		document.getElementById('starredWallet').classList.add('d-none');
 		this.classList.add('d-none');
 		window.manageWalletsTriggered = true;
 	});
@@ -571,6 +584,7 @@
 		document.getElementById('manageWallets').classList.remove('d-none');
 		$('.edit-wallet').addClass('d-none');
 		$('.share-icon').removeClass('d-none');
+		document.getElementById('starredWallet').classList.remove('d-none');
 		this.classList.add('d-none');
 		window.manageWalletsTriggered = false;
 	});
@@ -584,9 +598,42 @@
 
 	// Edit Manage Wallets
 	function editManageWallets(dataTarget) {
+		// Delete Functionality associate walletId
+		chosenWallet = dataTarget;
+
 		document.getElementById('manageWallet').classList.remove('d-none');
 		document.getElementById('whichWallet').classList.add('d-none');
 		document.getElementById('genericAddFnc').classList.add('d-none');
+		document.getElementById('doneManage').classList.add('d-none');
+
+		// Update data target
+		document.getElementById('manageWallet').setAttribute('data-target', dataTarget);
+		
+		// Collect wallet information
+		let currentWallet = {};
+		if(isEqual(window.currentUser.financialPortfolioId, dataTarget)) {
+			currentWallet.id = window.currentUser.financialPortfolioId;
+			currentWallet.currency = window.currentUser.currency;
+			// If primary wallet then hide the name feature
+			document.getElementsByClassName('manageNameWrapper')[0].classList.add('d-none');
+		} else {
+			// If others then show name field
+			document.getElementsByClassName('manageNameWrapper')[0].classList.remove('d-none');
+			// Show delete wallet option only for non primary wallets
+			document.getElementById('deleteWallet').classList.remove('d-none');
+			for(let i = 0, l = window.globalWallet.length; i < l; i++) {
+	    		let wallet = window.globalWallet[i];
+	    		if(isEqual(dataTarget, wallet.id)) {
+	    			currentWallet = wallet;
+	    			break;
+	    		}
+	    	}
+
+	    	// Write the manage wallet name if empty shw the current user name
+	    	let manageWalletName = document.getElementById('manageWalletName');
+	    	manageWalletName.value = isEmpty(currentWallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : currentWallet.name; 	
+	    	manageWalletName.focus();
+		}
 
 		/*
 		*	Currency Dropdown Populate
@@ -600,18 +647,306 @@
 			cToS[curToSym[i].currency] = curToSym[i].symbol;
 			/* Update the default currency in Settings */
 			if(isEqual(currentUser.currency,curToSym[i].symbol)) {
-				document.getElementById('chosenCurrencyMW').innerText = curToSym[i].currency;
 				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 			} else if(includesStr(walletCur,curToSym[i].currency)) {
 				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 			} else {
 				currencies.push(curToSym[i].currency);
 			}
+
+			// Update Button Text
+			if(isEqual(currentWallet.currency, curToSym[i].currency)) {
+				document.getElementById('chosenCurrencyMW').innerText = curToSym[i].currency;
+			}
 		}
 
 		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
-
 	}
+
+	// Modify Wallet
+	document.getElementById('modifyWallet').addEventListener("click",function(e){
+		document.getElementById('manageWallet').classList.add('d-none');
+		document.getElementById('whichWallet').classList.remove('d-none');
+		document.getElementById('genericAddFnc').classList.remove('d-none');
+		document.getElementById('deleteWallet').classList.add('d-none');
+		document.getElementById('doneManage').classList.remove('d-none');
+	});
+
+	// Cancel modification
+	document.getElementById('cancelModification').addEventListener("click",function(e){
+		document.getElementById('manageWallet').classList.add('d-none');
+		document.getElementById('whichWallet').classList.remove('d-none');
+		document.getElementById('genericAddFnc').classList.remove('d-none');
+		document.getElementById('deleteWallet').classList.add('d-none');
+		document.getElementById('doneManage').classList.remove('d-none');
+	});
+
+	// On click drop down btn of country search
+	$("#chosenCurrencyDropdownMW").on("shown.bs.dropdown", function(event){
+		let currencyInp = document.getElementById('chosenCurrencyInpMW');
+		// Input change focus to the country search bar 
+		currencyInp.focus();
+		// Trigger input event
+		let eventInp = new Event('input', {
+		    bubbles: true,
+		    cancelable: true,
+		});
+
+		currencyInp.dispatchEvent(eventInp);
+	});
+
+	// On click drop down btn of country search
+	$("#chosenCurrencyDropdownMW").on("hidden.bs.dropdown", function(event){
+		// Input clear value for the country search bar 
+		document.getElementById('chosenCurrencyInpMW').value = '';
+		// Close all list
+		closeAllDDLists(this);
+	});
+
+
+	/**
+	*
+	* Delete Wallet
+	*
+	**/
+
+	// Define Cognito User Pool adn Pool data
+	let poolData = {
+        UserPoolId: _config.cognito.userPoolId,
+        ClientId: _config.cognito.userPoolClientId
+    };
+
+    let userPool;
+
+    if (!(_config.cognito.userPoolId &&
+          _config.cognito.userPoolClientId &&
+          _config.cognito.region)) {
+    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
+        return;
+    }
+
+	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+	// Reset Account
+	document.getElementById('deleteWallet').addEventListener("click",function(e){
+		// If the manage wallets is not triggered then do not trigger popup
+		if(!window.manageWalletsTriggered) {
+			return;
+		}
+
+		let cognitoUser = userPool.getCurrentUser();
+		Swal.fire({
+            title: 'Delete wallet',
+            html: resetBBAccount(),
+            inputAttributes: {
+                autocapitalize: 'on'
+            },
+            icon: 'info',
+            showCancelButton: true,
+            showCloseButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it',
+            confirmButtonClass: "btn btn-info",
+            cancelButtonClass: "btn btn-secondary",
+            buttonsStyling: false,
+            showLoaderOnConfirm: true,
+  			preConfirm: () => {
+  				return new Promise(function(resolve) {
+  					let confPasswordUA = document.getElementById('oldPasswordRP');
+  					 // Authentication Details
+				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+			            Username: currentUser.email,
+			            Password: confPasswordUA.value
+			        });
+
+	  				// Authenticate Before cahnging password
+			        cognitoUser.authenticateUser(authenticationDetails, {
+			            onSuccess: function signinSuccess(result) {
+			            	// Hide loading 
+			               Swal.hideLoading();
+			               // Resolve the promise
+			               resolve();
+			            },
+			            onFailure: function signinError(err) {
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${err.message}`
+					        );
+					        // Change Focus to password field
+					        confPasswordUA.focus();
+			            }
+			        });
+  				});
+  			},
+  			allowOutsideClick: () => !Swal.isLoading(),
+  			closeOnClickOutside: () => !Swal.isLoading()
+        }).then(function(result) {
+        	// Hide the validation message if present
+    		Swal.resetValidationMessage()
+        	// If the Reset Button is pressed
+        	if (result.value) {
+				// Ajax Requests on Error
+				let ajaxData = {};
+				ajaxData.isAjaxReq = true;
+				ajaxData.type = 'DELETE';
+				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + chosenWallet  + PROFILE_CONSTANTS.deleteAccountParam + false;
+				ajaxData.onSuccess = function(jsonObj) {
+		        	showNotification("Successfully deleted your wallet!",window._constants.notification.success);
+		        }
+			    ajaxData.onFailure = function (thrownError) {
+			    	manageErrors(thrownError, "There was an error while deleteing your wallet. Please try again later!",ajaxData);
+	            }
+        	 	jQuery.ajax({
+					url: ajaxData.url,
+					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+			        type: ajaxData.type,
+			        success: ajaxData.onSuccess,
+			        error: ajaxData.onFailure
+	        	});
+        	}
+
+        });
+
+		// Disable Change Password button 
+        let resetBBBtn = document.getElementsByClassName('swal2-confirm')[0];
+        if(!resetBBBtn.disabled) {
+            resetBBBtn.setAttribute('disabled','disabled');
+        }
+
+        // Change Focus to Confirm Password
+        document.getElementById('oldPasswordRP').focus();            
+	});
+
+	// Reset BB Account
+	function resetBBAccount() {
+		let resetPassFrag = document.createDocumentFragment();
+
+		// Warning Text
+		let warnDiv = document.createElement('div');
+		warnDiv.classList = 'noselect text-left mb-3 fs-90';
+		warnDiv.innerHTML = 'Do you want to delete your wallet associated with <strong>' + currentUser.email + '</strong> and <strong>delete all entries</strong> associated with this wallet from Blitz Budget?';
+		resetPassFrag.appendChild(warnDiv);
+
+		// UL tag
+		let ulWarn = document.createElement('ul');
+		ulWarn.classList = 'noselect text-left mb-3 fs-90';
+
+		let liOne = document.createElement('li');
+		liOne.innerText = 'all transactions from this wallet will be deleted';
+		ulWarn.appendChild(liOne);
+
+		let liTwo = document.createElement('li');
+		liTwo.innerText = 'all the budgets from this wallet will be deleted';
+		ulWarn.appendChild(liTwo);
+
+		let liThree = document.createElement('li');
+		liThree.innerText = 'all goals within this wallet will be deleted';
+		ulWarn.appendChild(liThree);
+
+		let liFour = document.createElement('li');
+		liFour.innerText = 'all financial accounts associated with this wallet will be deleted';
+		ulWarn.appendChild(liFour);
+
+		let liSix = document.createElement('li');
+		liSix.innerText = 'all investments associated with this wallet will be deleted';
+		ulWarn.appendChild(liSix);
+		resetPassFrag.appendChild(ulWarn);
+
+		// Subscription
+		let subsText = document.createElement('div');
+		subsText.classList = 'noselect text-left mb-3 fs-90';
+		subsText.innerText = 'Premium subscription will remain intact after the reset.';
+		resetPassFrag.appendChild(subsText);
+
+		// Old Password
+		let oldPassWrapper = document.createElement('div');
+		oldPassWrapper.setAttribute('data-gramm_editor',"false");
+		oldPassWrapper.classList = 'oldPassWrapper text-left';
+		
+		let oldPassLabel = document.createElement('label');
+		oldPassLabel.innerText = 'Confirm Password';
+		oldPassWrapper.appendChild(oldPassLabel);
+
+
+		let dropdownGroupOP = document.createElement('div');
+		dropdownGroupOP.classList = 'btn-group d-md-block d-block';
+		
+		let oldPassInput = document.createElement('input');
+		oldPassInput.id='oldPasswordRP';
+		oldPassInput.setAttribute('type','password');
+		oldPassInput.setAttribute('autocapitalize','off');
+		oldPassInput.setAttribute('spellcheck','false');
+		oldPassInput.setAttribute('autocorrect','off');
+		dropdownGroupOP.appendChild(oldPassInput);
+
+		let dropdownTriggerOP = document.createElement('button');
+		dropdownTriggerOP.classList = 'changeDpt btn btn-info';
+		dropdownTriggerOP.setAttribute('data-toggle' , 'dropdown');
+		dropdownTriggerOP.setAttribute('aria-haspopup' , 'true');
+		dropdownTriggerOP.setAttribute('aria-expanded' , 'false');
+
+		let miEye = document.createElement('i');
+		miEye.classList = 'material-icons';
+		miEye.innerText = 'remove_red_eye';
+		dropdownTriggerOP.appendChild(miEye);
+		dropdownGroupOP.appendChild(dropdownTriggerOP);
+		oldPassWrapper.appendChild(dropdownGroupOP);
+
+		// Error Text
+		let errorCPOld = document.createElement('div');
+		errorCPOld.id = 'cpErrorDispOldRA';
+		errorCPOld.classList = 'text-danger text-left small mb-2 noselect';
+		oldPassWrapper.appendChild(errorCPOld);		
+		resetPassFrag.appendChild(oldPassWrapper);
+
+		return resetPassFrag;
+	}
+
+	// New Password Key Up listener For Reset Password
+	$(document).on('keyup', "#oldPasswordRP", function(e) {
+	
+		let resetAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
+		let errorDispRA = document.getElementById('cpErrorDispOldRA');
+		let passwordEnt = this.value;
+
+		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
+			resetAccountBtn.setAttribute('disabled','disabled');			
+			return;
+		}
+
+		errorDispRA.innerText = '';
+		resetAccountBtn.removeAttribute('disabled');
+
+		let keyCode = e.keyCode || e.which;
+		if (keyCode === 13) { 
+			document.activeElement.blur();
+		    e.preventDefault();
+		    e.stopPropagation();
+		    // Click the confirm button of SWAL
+		    resetAccountBtn.click();
+		    return false;
+		}
+
+	});
+
+	// On focus out Listener for Reset password
+	$(document).on('focusout', "#oldPasswordRP", function() {
+	
+		let resetAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
+		let errorDispRA = document.getElementById('cpErrorDispOldRA');
+		let passwordEnt = this.value;
+
+		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
+			errorDispRA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
+			resetAccountBtn.setAttribute('disabled','disabled');
+			return;
+		}
+
+		errorDispRA.innerText = '';
+
+	});
 
 }(jQuery));	

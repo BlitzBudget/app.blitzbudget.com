@@ -9,20 +9,6 @@
 * 
 * All the Custom CSS for EveryRupee gos in here
 */
-
-body,
-.expandedNavigationBar {
-    background-color: #fafafa;
-    -webkit-transition: background-color 400ms ease-out;
-    -o-transition: background-color 400ms ease-out;
-    -moz-transition: background-color 400ms ease-out;
-    transition: background-color 400ms ease-out;
-}
-
-body.darker {
-    background-color: #ecebea;
-}
-
 .expandedNavigationBar {    
     height: 64px;
 }
@@ -277,6 +263,55 @@ h4, h6 {
     font-weight: 700;
 }
 
+body,
+.expandedNavigationBar {
+    background-color: #fafafa;
+    -webkit-transition: background-color 400ms ease-out;
+    -o-transition: background-color 400ms ease-out;
+    -moz-transition: background-color 400ms ease-out;
+    transition: background-color 400ms ease-out;
+}
+
+body.darker {
+    background-color: #ecebea;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+body {
+    font-family: "Didact Gothic","Roboto","Helvetica","Arial",sans-serif;
+    font-weight: 300;
+    line-height: 1.5em;
+}
+
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 40px
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+html * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+    list-style-type: disc;
+}
+
 .productHero {
     position: relative;
     overflow: hidden;
@@ -484,6 +519,16 @@ h4, h6 {
 .edit-wallet .material-icons {
     color: #999;
 }
+
+.edit-wallet:hover .material-icons,
+.edit-wallet:focus .material-icons {
+    color: #00bcd4;
+}
+
+.share-icon:hover, 
+.share-icon:focus {
+    fill: #00bcd4;
+} 
 
 .favourite-icon {
     float: right;
@@ -1233,7 +1278,8 @@ h1,
     color:#999;
 }
 
-#chooseCurrencyDD {
+#chooseCurrencyDD,
+#chooseCurrencyDDMW {
     height: auto;
     max-height: 20rem;
     overflow-x: hidden;
@@ -1544,6 +1590,14 @@ small,
   margin-bottom: 0.5rem !important;
 }
 
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+.fs-90 {
+    font-size: 90%;
+}
+
 @keyframes FadeIn {
     from {
         opacity: 0
@@ -1597,7 +1651,9 @@ small,
     border-left: .3em solid transparent;
 }
 
-.autocomplete-items .dropdown-item, #currentCountries .dropdown-item, #currentCurrencies .dropdown-item {
+.autocomplete-items .dropdown-item, 
+#currentCurrencies .dropdown-item,
+#currentCurrenciesMW .dropdown-item {
     width: 100%;
     cursor: pointer;
     white-space: pre-wrap;
@@ -1614,7 +1670,10 @@ small,
     color: #fff;
 }
 
-.dropdown-header, .autocomplete-items, #currentCountries, #currentCurrencies {
+.dropdown-header, 
+.autocomplete-items,
+#currentCurrencies,
+#currentCurrenciesMW {
     width: 100%;
 }
 
@@ -1752,7 +1811,10 @@ select.form-control:focus::-ms-value {
     width: 100%;
 }
 
-.dropdown-header, .autocomplete-items, #currentCountries, #currentCurrencies {
+.dropdown-header, 
+.autocomplete-items, 
+#currentCurrencies,
+#currentCurrenciesMW {
     width: 100%;
 }
 
@@ -1833,7 +1895,8 @@ select.form-control:focus::-ms-value {
 
 .autocomplete-items .dropdown-item, 
 #currentCountries .dropdown-item, 
-#currentCurrencies .dropdown-item {
+#currentCurrencies .dropdown-item,
+#currentCurrenciesMW .dropdown-item {
     width: 100%;
     cursor: pointer;
     white-space: pre-wrap;
@@ -2133,6 +2196,96 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
   -ms-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   -o-transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.manageNameWrapper,
+.manageCurrencyWrapper {
+    z-index: 1;
+    -webkit-box-pack: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    color: #545454;
+    font-size: 1.125em;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.manageNameWrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#manageWallet {
+    width: 35rem;
+    overflow-y: auto;
+}
+
+#manageWalletName {
+    border: 2px solid #88979d;
+    font-size: 1em;
+    margin-bottom: .5em;
+    padding: .5em;
+    width: 100%;
+    border-radius: .3em;
+    -webkit-transition: border 0.2s cubic-bezier(0.4, 0, 1, 1);
+    -moz-transition: border 0.2s cubic-bezier(0.4, 0, 1, 1);
+    -ms-transition: border 0.2s cubic-bezier(0.4, 0, 1, 1);
+    -o-transition: border 0.2s cubic-bezier(0.4, 0, 1, 1);
+    transition: border 0.2s cubic-bezier(0.4, 0, 1, 1);
+    margin-bottom: 2rem;
+}
+
+#manageWalletName:focus {
+    border: 2px solid #009cc2;
+}
+
+.manageNameWrapper label,
+.manageCurrencyWrapper label {
+    display: block;
+    font-weight: 700;
+    padding: .3em 0 .1em;
+    width: 100%;
+    color: #383e41;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+
+#chosenCurrencyMW.btn.btn-secondary {
+    color: #333;
+    background-color: #fff;
+    border-color: #fff;
+    margin-bottom: 2rem;
+}
+
+.oldPassWrapper label {
+    display: block;
+    font-weight: 700;
+    padding: .3em 0 .1em;
+    width: 100%;
+    color: #383e41;
+}
+
+#oldPasswordRP, #userNameModInp, #confPasswordUA, #emailModInp {
+    border: 2px solid #88979d;
+    font-size: 1em;
+    margin-bottom: .5em;
+    padding: .4rem;
+    padding-bottom: 0.65rem;
+    width: 80%;
+}
+
+#oldPasswordRP:focus {
+    border: 2px solid #00bcd4;
+}
+
+.changeDpt.btn.btn-info {
+    margin-bottom: 0.25rem;
+    border: 0.062rem solid #00bcd4;
+    padding-bottom: 0.7rem;
+    padding-top: 0.7rem;
 }
 
 @media (max-width: 576px) {
