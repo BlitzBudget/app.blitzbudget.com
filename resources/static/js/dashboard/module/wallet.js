@@ -611,6 +611,34 @@
 		}
 	});
 
+	/*
+	*	Currency Dropdown Populate (EDIT)
+	*/
+
+	/*An array containing all the currency names in the world:*/
+	let currencies = [];
+	window.cToS = {};
+	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+	for(let i = 0, l = curToSym.length; i < l; i++) {
+		cToS[curToSym[i].currency] = curToSym[i].symbol;
+		/* Update the default currency in Settings */
+		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+			document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+		} else if(includesStr(walletCur,curToSym[i].currency)) {
+			document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+		} else {
+			currencies.push(curToSym[i].currency);
+		}
+
+		// Update Button Text
+		if(isEqual(currentWallet.currency, curToSym[i].currency)) {
+			document.getElementById('chosenCurrencyMW').innerText = curToSym[i].currency;
+		}
+	}
+
+	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+	autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
+
 	// Edit Manage Wallets
 	function editManageWallets(dataTarget) {
 		// Delete Functionality associate walletId
@@ -651,38 +679,12 @@
 	    	manageWalletName.focus();
 		}
 
-		/*
-		*	Currency Dropdown Populate
-		*/
-
-		/*An array containing all the currency names in the world:*/
-		let currencies = [];
-		window.cToS = {};
-		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
-		for(let i = 0, l = curToSym.length; i < l; i++) {
-			cToS[curToSym[i].currency] = curToSym[i].symbol;
-			/* Update the default currency in Settings */
-			if(isEqual(currentUser.currency,curToSym[i].symbol)) {
-				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-			} else if(includesStr(walletCur,curToSym[i].currency)) {
-				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-			} else {
-				currencies.push(curToSym[i].currency);
-			}
-
-			// Update Button Text
-			if(isEqual(currentWallet.currency, curToSym[i].currency)) {
-				document.getElementById('chosenCurrencyMW').innerText = curToSym[i].currency;
-			}
-		}
-
-		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-		autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
 	}
 
 	// Modify Wallet
 	document.getElementById('modifyWallet').addEventListener("click",function(e){
 		showAllWallets();
+		patchWallets();
 	});
 
 	// Cancel modification
@@ -992,6 +994,16 @@
 		}
 		values['walletId'] = chosenWallet;
 		values['financialPortfolioId'] = parseInt(currentUser.financialPortfolioId);
+
+
+		// Find Item with data target attribute
+		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
+		// Change name
+		chosenDiv.find(".suggested-heading").text(values.name);
+		// Change Currency
+		chosenDiv.find(".currency-desc").text(values.currency);
+
+		// Stringify JSON
 		values = JSON.stringify(values);
 
 		jQuery.ajax({
@@ -999,11 +1011,7 @@
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'PATCH',
 	        contentType: "application/json;charset=UTF-8",
-	        success: function(wallets) {
-				// Find Item with data target attribute
-				let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
-				chosenDiv
-	        },
+	        data : values,
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
 					showNotification("Unexpected error occured while updating the wallet." ,window._constants.notification.error);

@@ -2349,7 +2349,17 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
     .w-md-15 {
         width: 15rem;
     }
-     
+}
+
+@media (max-width: 768px) {
+
+    #manageWallet {
+        width: 20rem;
+    }
+
+    #chosenCurrencyMW {
+        width: 15rem;
+    }
 }
 
 @media (min-width: 769px) {
