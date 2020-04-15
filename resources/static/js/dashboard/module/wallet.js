@@ -385,8 +385,10 @@
 						document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 						document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 						document.getElementById('walletCurrency').innerText = curToSym[i].currency;
+						document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 					} else if(includesStr(walletCur,curToSym[i].currency)) {
 						document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+						document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 					} else {
 						currencies.push(curToSym[i].currency);
 					}
@@ -394,6 +396,10 @@
 
 				/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
 				autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
+
+				/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
+
 
 	        	// Remove Loader
 	        	let removeLoader = document.getElementById('loading-wallet');
@@ -611,34 +617,7 @@
 		}
 	});
 
-	/*
-	*	Currency Dropdown Populate (EDIT)
-	*/
-
-	/*An array containing all the currency names in the world:*/
-	let currencies = [];
-	window.cToS = {};
-	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
-	for(let i = 0, l = curToSym.length; i < l; i++) {
-		cToS[curToSym[i].currency] = curToSym[i].symbol;
-		/* Update the default currency in Settings */
-		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
-			document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-		} else if(includesStr(walletCur,curToSym[i].currency)) {
-			document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-		} else {
-			currencies.push(curToSym[i].currency);
-		}
-
-		// Update Button Text
-		if(isEqual(currentWallet.currency, curToSym[i].currency)) {
-			document.getElementById('chosenCurrencyMW').innerText = curToSym[i].currency;
-		}
-	}
-
-	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-	autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
-
+	
 	// Edit Manage Wallets
 	function editManageWallets(dataTarget) {
 		// Delete Functionality associate walletId
@@ -678,6 +657,12 @@
 	    	manageWalletName.value = isEmpty(currentWallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : currentWallet.name; 	
 	    	manageWalletName.focus();
 		}
+
+		/*
+		*	Currency Dropdown Populate (EDIT)
+		*/
+		// Update Button Text
+		document.getElementById('chosenCurrencyMW').innerText = currentWallet.currency;
 
 	}
 
