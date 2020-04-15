@@ -15,7 +15,8 @@
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
 		'firstFinancialPortfolioIdParams': { value: '?financialPortfolioId=', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
-		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false }
+		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },
+		'referenceNumberParam': { value: '&referenceNumber=', writable: false, configurable: false },
 	});
 
 	// Add wallet
@@ -812,7 +813,7 @@
 				chosenDiv.addClass('d-none');
 
         	 	jQuery.ajax({
-					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstFinancialPortfolioParam + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false,
+					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstFinancialPortfolioParam + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false + WALLET_CONSTANTS.referenceNumberParam + currentUser.financialPortfolioId,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			        type: 'DELETE',
 			        success: function(result) {
@@ -999,7 +1000,9 @@
 	        type: 'PATCH',
 	        contentType: "application/json;charset=UTF-8",
 	        success: function(wallets) {
-				
+				// Find Item with data target attribute
+				let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
+				chosenDiv
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
