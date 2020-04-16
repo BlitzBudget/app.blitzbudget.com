@@ -1155,7 +1155,7 @@ function toggleVerify(email, verifyCode) {
 function calculateWalletAttributes() {	
 	// Check if wallet id is present, if not set financial portfolio id
 	if(isEmpty(window.currentUser.walletId)) {
-		window.currentUser.walletId = window.currentUser.walletId;
+		window.currentUser.walletId = window.currentUser.financialPortfolioId;
 	}
 
 	if(isEmpty(window.currentUser.walletCurrency)) {
