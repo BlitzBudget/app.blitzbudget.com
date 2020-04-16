@@ -106,9 +106,11 @@
                 "/core/bootstrap-material-design.min.js",
                 "/plugins/sweetalert2.all.min.js",
                 "/plugins/libraries.js",
-                "/dashboard/configuration/commonConfiguration.js",
                 "/cognito/config.js",
+                "/dashboard/configuration/commonConfiguration.js",
                 "/dashboard/data/currency-name-symbol.js",
+                "/cognito/vendor/amazon-cognito-identity.min.js",
+                "/cognito/vendor/aws-cognito-sdk.min.js",
                 "/dashboard/module/wallet.js"
             ]
         }

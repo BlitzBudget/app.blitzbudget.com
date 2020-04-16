@@ -226,7 +226,7 @@
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = "POST";
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.financialPortfolioId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'accountId';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'accountId';
 		ajaxData.dataType = "json"; 
 		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
 		ajaxData.data = values;

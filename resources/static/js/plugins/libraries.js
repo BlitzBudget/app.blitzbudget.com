@@ -150,12 +150,16 @@ function calcPage() {
 
 // Replace currentCurrencySymbol with currency
 function replaceWithCurrency() {
-	if(currentUser.currency) {
-		let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
+	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
+	let chosenCurrency = currentUser.currency;
 
-		for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
-			currencySymbolDivs[i].innerText = currentUser.currency;
-		}
+	// Wallet Currency has first preference
+	if(currentUser.walletCurrency) {
+		chosenCurrency = currentUser.walletCurrency;
+	}
+
+	for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
+		currencySymbolDivs[i].innerText = chosenCurrency;
 	}
 }
 

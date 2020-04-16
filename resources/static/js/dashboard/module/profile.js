@@ -10,7 +10,9 @@
 		'resetAccountUrl': { value: '/cognito/reset-account', writable: false, configurable: false },
 		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
-		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },
+		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
+		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
+		'userNameParam': { value: '&userName=', writable: false, configurable: false }
 	});
 
 	displayUserDetailsProfile();
@@ -47,7 +49,7 @@
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = 'GET';
-		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl;
+		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl + PROFILE_CONSTANTS.firstUserNameParam + currentUser.email;
 		ajaxData.onSuccess = function(result) {
 			let userCreationDate = result.UserCreateDate;
 	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
@@ -516,7 +518,7 @@
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
 					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true; 
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true + PROFILE_CONSTANTS.userNameParam + currentUser.email; 
 					ajaxData.onSuccess = function(jsonObj) {
 				        localStorage.clear();
 				        window.location.href = window._config.home.invokeUrl;

@@ -19,6 +19,11 @@
 	// Display Email for devices
 	document.getElementById('currentUserEmail').innerText = currentUser.email;
 
+	// Hide the currency option if the chosen is different
+	if(isEqual(window.currentUser.currency, window.currentUser.walletCurrency) || isEmpty(window.currentUser.walletCurrency)) {
+		document.getElementById('primaryCurrency').classList.remove('d-none');
+	}
+
 	// List Devices on click tab
 	document.getElementById('devicesTabLink').addEventListener("click",function(e){
 		listRegisteredDevices(this);
@@ -314,6 +319,7 @@
 		// Set Param Val combination
 		let values = {};
 		values[param] = paramVal;
+		values['userName'] = currentUser.email;
 		values = JSON.stringify(values);
 
 		// Ajax Requests on Error

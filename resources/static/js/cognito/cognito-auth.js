@@ -123,7 +123,10 @@ var AWSCogUser = window.AWSCogUser || {};
             Object.seal(window.currentCurrencyPreference);
 
             // Set the name of the user
-            document.getElementById('userName').innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
+            let userName = document.getElementById('userName');
+            if(userName) {
+                userName.innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
+            }
             // Replace with currency
             replaceWithCurrency();
         }

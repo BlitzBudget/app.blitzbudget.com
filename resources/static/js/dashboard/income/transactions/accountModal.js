@@ -88,7 +88,7 @@
 			
 			let values = {};
 			values['accountBalance'] = enteredText;
-			values['financialPortfolioId'] = currentUser.financialPortfolioId;
+			values['financialPortfolioId'] = currentUser.walletId;
 			values = JSON.stringify(values);
 
 			// Ajax Requests on Error
@@ -223,7 +223,7 @@
 				let ajaxData = {};
 				ajaxData.isAjaxReq = true;
 				ajaxData.type = 'DELETE';
-				ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.financialPortfolioId;
+				ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
 				ajaxData.onSuccess = function(jsonObj) {
 		        	$('#accountSB-' + currentAccountId).fadeOut('slow', function(){ 
 	                    this.remove();

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -23,7 +24,7 @@
     <link rel="stylesheet preload" href="/css/wallet.all.min.css"/>
     <!--   Core JS Files   -->
     <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-    <script defer  nonce="2726d7e26r" src="/js/wallet.all.min.js" type="text/javascript"></script>
+    <script defer  nonce="2726d7e26esd" src="/js/wallet.all.min.js" type="text/javascript"></script>
 </head>
 
 <body class="landing-page sidebar-collapse noselect">
@@ -80,26 +81,35 @@
 			        </svg>
 	 			</a>
 	 			<div class="spacer"></div>
+	 			<button id="manageWallets" class="btn btn-outline-info mr-4 d-sm-none">Manage wallets</button>
+	 			<button id="doneManage" class="btn btn-outline-info mr-5 d-none">Done</button>
+	 			<button id="deleteWallet" class="btn btn-outline-info mr-5 d-none">Delete wallet</button>
 	 		</div>
 	 	</nav>
 	 </div>
 	 <div id="root">
 	 	<section class="Cards">
-	 		<div id="whichWallet" class="row m-auto features-body text-center">
-	 			<h1 class="heading-wallet my-4 text-animation fadeIn">
+	 		<div id="whichWallet" class="row m-lg-auto mt-5 mb-0 features-body text-center">
+	 			<h1 class="heading-wallet my-lg-4 mt-4 text-animation fadeIn">
 			                    Which wallet?
 			    </h1>
-	 			<div class="col-12 col-md-6 col-lg-4 text-animation fadeIn suggested-card">
+	 			<div id="primaryWallet" class="col-6 col-md-6 col-lg-4 text-animation fadeIn suggested-card">
 	 				<a href="#" class="suggested-anchor p-4">
-					    <h2 class="suggested-heading">Nagarjun Nagesh's Wallet</h2>
-					    <p class="text-success">$20</p>
+					    <h2 id="primaryName" class="suggested-heading">John Doe</h2>
+					    <h3 id="walletCurrency" class="currency-desc">Dollar</h3>
 	 				</a>
-	 			</div>
-	 			<div class="col-12 col-md-6 col-lg-4 text-animation fadeIn suggested-card">
-	 				<a href="#" class="suggested-anchor p-4">
-					    <h2 class="suggested-heading">Minnu's Wallet</h2>
-					    <p class="text-danger">-$35</p>
-	 				</a>
+	 				<div data-toggle="tooltip" data-placement="bottom" data-original-title="Share Wallet" class="share-wallet-wrapper share-icon">
+	 					<svg width="15" height="24" viewBox="0 0 24 24">
+	 						<path d="M 18 2 C 16.35499 2 15 3.3549904 15 5 C 15 5.1909529 15.021791 5.3771224 15.056641 5.5585938 L 7.921875 9.7207031 C 7.3985399 9.2778539 6.7320771 9 6 9 C 4.3549904 9 3 10.35499 3 12 C 3 13.64501 4.3549904 15 6 15 C 6.7320771 15 7.3985399 14.722146 7.921875 14.279297 L 15.056641 18.439453 C 15.021555 18.621514 15 18.808386 15 19 C 15 20.64501 16.35499 22 18 22 C 19.64501 22 21 20.64501 21 19 C 21 17.35499 19.64501 16 18 16 C 17.26748 16 16.601593 16.279328 16.078125 16.722656 L 8.9433594 12.558594 C 8.9782095 12.377122 9 12.190953 9 12 C 9 11.809047 8.9782095 11.622878 8.9433594 11.441406 L 16.078125 7.2792969 C 16.60146 7.7221461 17.267923 8 18 8 C 19.64501 8 21 6.6450096 21 5 C 21 3.3549904 19.64501 2 18 2 z M 18 4 C 18.564129 4 19 4.4358706 19 5 C 19 5.5641294 18.564129 6 18 6 C 17.435871 6 17 5.5641294 17 5 C 17 4.4358706 17.435871 4 18 4 z M 6 11 C 6.5641294 11 7 11.435871 7 12 C 7 12.564129 6.5641294 13 6 13 C 5.4358706 13 5 12.564129 5 12 C 5 11.435871 5.4358706 11 6 11 z M 18 18 C 18.564129 18 19 18.435871 19 19 C 19 19.564129 18.564129 20 18 20 C 17.435871 20 17 19.564129 17 19 C 17 18.435871 17.435871 18 18 18 z"></path>
+	 					</svg>
+	 				</div>
+	 				<div id="starredWallet" data-toggle="tooltip" data-placement="bottom" title="Primary wallet">
+	 					<span class="material-icons favourite-icon">star</span>
+	 				</div>
+	 				<div class="edit-wallet d-none" data-toggle="tooltip" data-placement="bottom" title="Edit wallet">
+	 					<svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px">	<path d="M14.06 9.02l.92.92L5.92 19H5v-.92l9.06-9.06M17.66 3c-.25 0-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29zm-3.6 3.19L3 17.25V21h3.75L17.81 9.94l-3.75-3.75z"/>
+	 					</svg>
+	 				</div>
 	 			</div>
 	 		</div>
 	 		<div id="addWallet" class="row m-auto features-body text-center d-none">
@@ -126,6 +136,39 @@
 		        <div class="wrapper-button text-animation fadeIn">
 		        	<button type="button" id="confirmWallet" class="btn btn-info btn-large mr-4" aria-label="">Continue</button>
 		        	<button type="button" id="cancelWallet" class="btn btn-secondary btn-large" aria-label="">Cancel</button>
+		        </div>
+			 </div>
+			 <div id="manageWallet" class="row m-auto features-body text-center d-none">
+	 			<h1 class="heading-wallet my-4 text-animation fadeIn">
+			                    Manage wallet
+			    </h1>
+			    <div data-gramm_editor="false" class="manageNameWrapper text-left m-auto">
+					<label>Give it a name</label>
+					<input id="manageWalletName" type="text" autocapitalize="off" spellcheck="false" autocorrect="off">
+				</div>
+				<div data-gramm_editor="false" class="manageCurrencyWrapper text-left m-auto">
+					<label>What is your currency preference?</label>
+				 	<div id="chosenCurrencyDropdownMW" class="btn-group btnGroup-1 m-auto text-animation fadeIn">
+			            <button id="chosenCurrencyMW" class="chosenCurrency btn btn-secondary w-md-15 w-8" disabled="">American Dollars</button>
+			            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			              <span class="sr-only">Toggle Dropdown</span>
+			            </button>
+			            <div id="chooseCurrencyDDMW" class="dropdown-menu">
+			              <!-- Drop down dynamic load -->
+			              <div class="input-group">
+			                <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+			                <input id="chosenCurrencyInpMW" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+			                <h6 class="dropdown-header">Currencies with wallet</h6>
+			                <div id="currentCurrenciesMW"></div>
+			                <div class="dropdown-divider"></div>
+			                <h6 class="dropdown-header">Currencies without wallet</h6>
+			              </div>
+			            </div>
+			        </div>
+		    	</div>
+		        <div class="wrapper-button text-animation fadeIn">
+		        	<button type="button" id="modifyWallet" class="btn btn-info btn-large mr-4" aria-label="">Save</button>
+		        	<button type="button" id="cancelModification" class="btn btn-secondary btn-large" aria-label="">Cancel</button>
 		        </div>
 			 </div>
 	 		<!-- Generic Add Functionality -->
