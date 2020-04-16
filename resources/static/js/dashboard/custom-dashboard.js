@@ -229,7 +229,7 @@ window.onload = function () {
 					chosenJs = 'js/transactions.all.min.js';
 				    break;
 				case 'budgetPage':
-					url = '/budget';
+					url = '/budgets';
 					color = 'rose';
 					currentPage = 'Budget';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
