@@ -229,7 +229,7 @@ window.onload = function () {
 					chosenJs = 'js/transactions.all.min.js';
 				    break;
 				case 'budgetPage':
-					url = '/budget';
+					url = '/budgets';
 					color = 'rose';
 					currentPage = 'Budget';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
@@ -1155,7 +1155,7 @@ function toggleVerify(email, verifyCode) {
 function calculateWalletAttributes() {	
 	// Check if wallet id is present, if not set financial portfolio id
 	if(isEmpty(window.currentUser.walletId)) {
-		window.currentUser.walletId = window.currentUser.walletId;
+		window.currentUser.walletId = window.currentUser.financialPortfolioId;
 	}
 
 	if(isEmpty(window.currentUser.walletCurrency)) {

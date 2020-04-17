@@ -2211,6 +2211,7 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
     line-height: normal;
     text-align: center;
     word-wrap: break-word;
+    width: 20rem;
 }
 
 .manageNameWrapper {
@@ -2279,6 +2280,22 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
 
 #oldPasswordRP:focus {
     border: 2px solid #00bcd4;
+}
+
+.noResultsDD {
+    color: #999;
+    display: block;
+    width: 100%;
+    padding: .625rem 1.25rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    font-size: 0.8rem;
+    margin: 0 .3125rem;
 }
 
 .changeDpt.btn.btn-info {

@@ -251,8 +251,6 @@ function round(value, decimals) {
 }
 
 function showNotification(message, colorCode){
-
-	if(isEqual(colorCode,'error')) {
 		Toast.fire({
 			customClass: {
   				container: 'mixinSuccess',
@@ -260,15 +258,6 @@ function showNotification(message, colorCode){
 			icon: colorCode,
 			title: message
 		});
-	} else {
-		Toast.fire({
-			customClass: {
-  				container: 'mixinSuccess',
-  			},
-			icon: colorCode,
-			title: message
-		});
-	}
 }
 
 function replaceHTML(el, html) {

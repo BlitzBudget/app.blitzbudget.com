@@ -176,7 +176,7 @@
 	  * Auto Complete Input Trigger function 
 	  */
 	  function inputTriggerAutoFill(e) {
-	      let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal;
+	      	      let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal, populatedAtleastOnce = false;
 	      /*close any already open lists of autocompleted values*/
 	      closeAllLists();
 	      if (!val) {
@@ -189,8 +189,6 @@
 	      a = document.createElement("DIV");
 	      a.setAttribute("id", this.id + "autocomplete-list");
 	      a.setAttribute("class", "autocomplete-items");
-	      /*append the DIV element as a child of the autocomplete container:*/
-	      this.parentNode.appendChild(a);
 	      /*for each item in the array...*/
 	      for (let i = 0; i < len; i++) {
 	      	let autoFilEl = false;
@@ -236,7 +234,20 @@
 	              closeAllLists();
 	        });
 	        a.appendChild(b);
+	        /* Populated the data flag */
+	        populatedAtleastOnce = true;
 	      }
+
+	      if(!populatedAtleastOnce) {
+	      	/*create a DIV element for each matching element:*/
+	          b = document.createElement("DIV");
+	          b.classList = "noResultsDD";
+	          b.innerText = 'No Results';
+	          a.appendChild(b);
+	      }  
+
+	      /*append the DIV element as a child of the autocomplete container:*/
+	      this.parentNode.appendChild(a);
 	  }
 
 	  /*
@@ -377,9 +388,11 @@
 				/*An array containing all the currency names in the world:*/
 				let currencies = [];
 				window.cToS = {};
+				window.sToC = {};
 				let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 				for(let i = 0, l = curToSym.length; i < l; i++) {
 					cToS[curToSym[i].currency] = curToSym[i].symbol;
+					sToC[curToSym[i].symbol] = curToSym[i].currency;
 					/* Update the default currency in Settings */
 					if(isEqual(currentUser.currency,curToSym[i].symbol)) {
 						document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
@@ -639,6 +652,10 @@
 			currentWallet.currency = window.currentUser.currency;
 			// If primary wallet then hide the name feature
 			document.getElementsByClassName('manageNameWrapper')[0].classList.add('d-none');
+			/*
+			*	Currency Dropdown Populate (EDIT)
+			*/
+			document.getElementById('chosenCurrencyMW').innerText = sToC[currentWallet.currency];
 		} else {
 			// If others then show name field
 			document.getElementsByClassName('manageNameWrapper')[0].classList.remove('d-none');
@@ -656,20 +673,23 @@
 	    	let manageWalletName = document.getElementById('manageWalletName');
 	    	manageWalletName.value = isEmpty(currentWallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : currentWallet.name; 	
 	    	manageWalletName.focus();
-		}
 
-		/*
-		*	Currency Dropdown Populate (EDIT)
-		*/
-		// Update Button Text
-		document.getElementById('chosenCurrencyMW').innerText = currentWallet.currency;
+	    	/*
+			*	Currency Dropdown Populate (EDIT)
+			*/
+			document.getElementById('chosenCurrencyMW').innerText = currentWallet.currency;
+		}
 
 	}
 
 	// Modify Wallet
 	document.getElementById('modifyWallet').addEventListener("click",function(e){
 		showAllWallets();
-		patchWallets();
+		if(isEqual(window.currentUser.financialPortfolioId, chosenWallet)) {
+			updateCurrencyForDefaultWallet();
+		} else {
+			patchWallets();
+		}
 	});
 
 	// Cancel modification
@@ -800,7 +820,7 @@
 				chosenDiv.addClass('d-none');
 
         	 	jQuery.ajax({
-					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstFinancialPortfolioParam + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false + WALLET_CONSTANTS.referenceNumberParam + currentUser.financialPortfolioId,
+					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstFinancialPortfolioIdParams + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false + WALLET_CONSTANTS.referenceNumberParam + currentUser.financialPortfolioId,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			        type: 'DELETE',
 			        success: function(result) {
@@ -919,6 +939,18 @@
 		return resetPassFrag;
 	}
 
+	// Change Input to Text
+	$(document).on('mouseover', ".changeDpt", function() {		
+		let firstChild = this.parentElement.firstChild;
+		firstChild.setAttribute('type', 'text');
+	});
+
+	// Change it back to password 
+	$(document).on('mouseout', ".changeDpt", function() {
+		let firstChild = this.parentElement.firstChild;
+		firstChild.setAttribute('type', 'password');
+	});
+
 	// New Password Key Up listener For Reset Password
 	$(document).on('keyup', "#oldPasswordRP", function(e) {
 	
@@ -981,13 +1013,7 @@
 		values['financialPortfolioId'] = parseInt(currentUser.financialPortfolioId);
 
 
-		// Find Item with data target attribute
-		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
-		// Change name
-		chosenDiv.find(".suggested-heading").text(values.name);
-		// Change Currency
-		chosenDiv.find(".currency-desc").text(values.currency);
-
+		updateRelevantTextInCard(values);
 		// Stringify JSON
 		values = JSON.stringify(values);
 
@@ -995,6 +1021,60 @@
 			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'PATCH',
+	        contentType: "application/json;charset=UTF-8",
+	        data : values,
+	        error: function(thrownError) {
+	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+					showNotification("Unexpected error occured while updating the wallet." ,window._constants.notification.error);
+				} else if(isNotEmpty(thrownError.message)) {
+					showNotification(thrownError.message,window._constants.notification.error);
+				} else {
+					let responseError = JSON.parse(thrownError.responseText);
+			   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+			    		// If the user is not authorized then redirect to application
+						window.location.href = '/';
+			    	}	
+				}
+	        }
+	    });
+	}
+
+	// Update Relevant
+	function updateRelevantTextInCard(values) {
+		// Find Item with data target attribute
+		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
+		if(isEmpty(values.name)) {
+			// Change name
+			chosenDiv.find(".suggested-heading").text(values.name);
+		}
+
+		if(isEmpty(values.currency)) {
+			// Change Currency
+			chosenDiv.find(".currency-desc").text(values.currency);
+		} 
+	}
+
+	/*
+	* Default Wallet
+	*/
+	function updateCurrencyForDefaultWallet() {
+
+		// Set Param Val combination
+		let values = {};
+		if(isNotEmpty(chosenCurrencyMW)) {
+			values['currency'] = chosenCurrencyMW;
+		}
+		values['userName'] = window.currentUser.email;
+
+		// Update relevant text in card
+		updateRelevantTextInCard(values);
+
+		values = JSON.stringify(values);
+
+	    jQuery.ajax({
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.userAttributeUrl,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
+	        type: 'POST',
 	        contentType: "application/json;charset=UTF-8",
 	        data : values,
 	        error: function(thrownError) {

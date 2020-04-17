@@ -108,6 +108,8 @@ var AWSCogUser = window.AWSCogUser || {};
                 localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
                 // Fill currency and Name
                 fillCurrencyAndName();
+                // Populate wallet information
+                calculateWalletAttributes();
                 // Hide Modal
                 if(loginModal) loginModal.modal('hide');
             });

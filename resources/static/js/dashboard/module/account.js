@@ -114,6 +114,12 @@ let tickIconSVG = tickIcon();
 		}
 		
 	});
+
+
+	// Synchronized accounts
+	$(document).on('click', "#syncAccountWrap", function() {
+		showNotification("This feature is coming soon!",  "info");
+	});
 	
 	
 	// Click on Add unsynced account 
@@ -755,6 +761,7 @@ function populateEmptyAccountInfo() {
 	
 	// First Row
 	let firstRow = document.createElement('div');
+	firstRow.id = "syncAccountWrap"
 	firstRow.classList = 'px-3 py-3 account-box account-info-color mt-2';
 	
 	let svgWrapper = document.createElement('div');
