@@ -388,9 +388,11 @@
 				/*An array containing all the currency names in the world:*/
 				let currencies = [];
 				window.cToS = {};
+				window.sToC = {};
 				let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 				for(let i = 0, l = curToSym.length; i < l; i++) {
 					cToS[curToSym[i].currency] = curToSym[i].symbol;
+					sToC[curToSym[i].symbol] = curToSym[i].currency;
 					/* Update the default currency in Settings */
 					if(isEqual(currentUser.currency,curToSym[i].symbol)) {
 						document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
@@ -650,6 +652,10 @@
 			currentWallet.currency = window.currentUser.currency;
 			// If primary wallet then hide the name feature
 			document.getElementsByClassName('manageNameWrapper')[0].classList.add('d-none');
+			/*
+			*	Currency Dropdown Populate (EDIT)
+			*/
+			document.getElementById('chosenCurrencyMW').innerText = sToC[currentWallet.currency];
 		} else {
 			// If others then show name field
 			document.getElementsByClassName('manageNameWrapper')[0].classList.remove('d-none');
@@ -667,20 +673,23 @@
 	    	let manageWalletName = document.getElementById('manageWalletName');
 	    	manageWalletName.value = isEmpty(currentWallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : currentWallet.name; 	
 	    	manageWalletName.focus();
-		}
 
-		/*
-		*	Currency Dropdown Populate (EDIT)
-		*/
-		// Update Button Text
-		document.getElementById('chosenCurrencyMW').innerText = currentWallet.currency;
+	    	/*
+			*	Currency Dropdown Populate (EDIT)
+			*/
+			document.getElementById('chosenCurrencyMW').innerText = currentWallet.currency;
+		}
 
 	}
 
 	// Modify Wallet
 	document.getElementById('modifyWallet').addEventListener("click",function(e){
 		showAllWallets();
-		patchWallets();
+		if(isEqual(window.currentUser.financialPortfolioId, chosenWallet)) {
+			updateCurrencyForDefaultWallet();
+		} else {
+			patchWallets();
+		}
 	});
 
 	// Cancel modification
@@ -1004,13 +1013,7 @@
 		values['financialPortfolioId'] = parseInt(currentUser.financialPortfolioId);
 
 
-		// Find Item with data target attribute
-		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
-		// Change name
-		chosenDiv.find(".suggested-heading").text(values.name);
-		// Change Currency
-		chosenDiv.find(".currency-desc").text(values.currency);
-
+		updateRelevantTextInCard(values);
 		// Stringify JSON
 		values = JSON.stringify(values);
 
@@ -1018,6 +1021,60 @@
 			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'PATCH',
+	        contentType: "application/json;charset=UTF-8",
+	        data : values,
+	        error: function(thrownError) {
+	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+					showNotification("Unexpected error occured while updating the wallet." ,window._constants.notification.error);
+				} else if(isNotEmpty(thrownError.message)) {
+					showNotification(thrownError.message,window._constants.notification.error);
+				} else {
+					let responseError = JSON.parse(thrownError.responseText);
+			   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+			    		// If the user is not authorized then redirect to application
+						window.location.href = '/';
+			    	}	
+				}
+	        }
+	    });
+	}
+
+	// Update Relevant
+	function updateRelevantTextInCard(values) {
+		// Find Item with data target attribute
+		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
+		if(isEmpty(values.name)) {
+			// Change name
+			chosenDiv.find(".suggested-heading").text(values.name);
+		}
+
+		if(isEmpty(values.currency)) {
+			// Change Currency
+			chosenDiv.find(".currency-desc").text(values.currency);
+		} 
+	}
+
+	/*
+	* Default Wallet
+	*/
+	function updateCurrencyForDefaultWallet() {
+
+		// Set Param Val combination
+		let values = {};
+		if(isNotEmpty(chosenCurrencyMW)) {
+			values['currency'] = chosenCurrencyMW;
+		}
+		values['userName'] = window.currentUser.email;
+
+		// Update relevant text in card
+		updateRelevantTextInCard(values);
+
+		values = JSON.stringify(values);
+
+	    jQuery.ajax({
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.userAttributeUrl,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
+	        type: 'POST',
 	        contentType: "application/json;charset=UTF-8",
 	        data : values,
 	        error: function(thrownError) {

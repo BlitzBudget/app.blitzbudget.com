@@ -5,7 +5,7 @@
 	// Build export file format object
 	let exportFileFormatObj = {};
 	exportFileFormatObj['XLS'] = 'Excel (XLS)';
-	exportFileFormatObj['PDF'] = 'Adobe (PDF)';
+	//exportFileFormatObj['PDF'] = 'Adobe (PDF)';
 	exportFileFormatObj['DOC'] = 'Word Document (DOC)';
 	exportFileFormatObj['CSV'] = 'Comma Separated Values (CSV)';
 
