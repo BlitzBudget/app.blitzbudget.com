@@ -176,7 +176,7 @@
 	  * Auto Complete Input Trigger function 
 	  */
 	  function inputTriggerAutoFill(e) {
-	      let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal;
+	      	      let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal, populatedAtleastOnce = false;
 	      /*close any already open lists of autocompleted values*/
 	      closeAllLists();
 	      if (!val) {
@@ -189,8 +189,6 @@
 	      a = document.createElement("DIV");
 	      a.setAttribute("id", this.id + "autocomplete-list");
 	      a.setAttribute("class", "autocomplete-items");
-	      /*append the DIV element as a child of the autocomplete container:*/
-	      this.parentNode.appendChild(a);
 	      /*for each item in the array...*/
 	      for (let i = 0; i < len; i++) {
 	      	let autoFilEl = false;
@@ -236,7 +234,20 @@
 	              closeAllLists();
 	        });
 	        a.appendChild(b);
+	        /* Populated the data flag */
+	        populatedAtleastOnce = true;
 	      }
+
+	      if(!populatedAtleastOnce) {
+	      	/*create a DIV element for each matching element:*/
+	          b = document.createElement("DIV");
+	          b.classList = "noResultsDD";
+	          b.innerText = 'No Results';
+	          a.appendChild(b);
+	      }  
+
+	      /*append the DIV element as a child of the autocomplete container:*/
+	      this.parentNode.appendChild(a);
 	  }
 
 	  /*
@@ -918,6 +929,18 @@
 
 		return resetPassFrag;
 	}
+
+	// Change Input to Text
+	$(document).on('mouseover', ".changeDpt", function() {		
+		let firstChild = this.parentElement.firstChild;
+		firstChild.setAttribute('type', 'text');
+	});
+
+	// Change it back to password 
+	$(document).on('mouseout', ".changeDpt", function() {
+		let firstChild = this.parentElement.firstChild;
+		firstChild.setAttribute('type', 'password');
+	});
 
 	// New Password Key Up listener For Reset Password
 	$(document).on('keyup', "#oldPasswordRP", function(e) {
