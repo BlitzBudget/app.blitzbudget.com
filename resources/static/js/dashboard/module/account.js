@@ -119,7 +119,7 @@ let tickIconSVG = tickIcon();
 	// Synchronized accounts
 	$(document).on('click', "#syncAccountWrap", function() {
 		showNotification("This feature is coming soon!",  "info");
-	}
+	});
 	
 	
 	// Click on Add unsynced account 
