@@ -972,9 +972,7 @@ progress {
     top: 5.3rem;
     right: -1.2rem;
     left: 1.2rem;
-    min-width: 40rem;
-    height: 15rem;
-    min-height: 8rem;
+    min-width: 35rem;
     text-align: center;
     display: inline-block;
     box-shadow: 0 4px 10px rgba(0,0,0,.3);
@@ -1001,7 +999,7 @@ progress {
 .monthPicker {
 	position: relative;
     width: 100%;
-    height: 12rem;
+    height: inherit;
     overflow: hidden;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -1028,22 +1026,7 @@ progress {
 }
 
 .monthPickerMonths {
-	position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-transition: all .5s ease-in;
-    -moz-transition: all .5s ease-in;
-    -ms-transition: all .5s ease-in;
-    -o-transition: all .5s ease-in;
-    transition: all .5s ease-in;
-    width: 100%;
-    height: 5rem;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex: 1 0 auto;
-    flex: 1 0 auto;
-    padding: 0 3.5rem;
-    height: 11rem;
+    padding: 1rem 3.5rem;
 }
 
 .monthPickerMonth {
@@ -1069,6 +1052,8 @@ progress {
     text-align: center;
     cursor: pointer;
     margin-bottom: 1rem;
+    flex: 0 0 30%;
+    max-width: 30%;
 }
 
 .monthPickerLabel {
@@ -1092,7 +1077,7 @@ progress {
 .monthPickerMonthCurrent:after {
   	display: block;
     position: absolute;
-    top: 5rem;
+    top: 4.7rem;
     width: 100%;
     color: #b6bec2;
     font-size: 0.7rem;
@@ -1101,7 +1086,7 @@ progress {
 
 #dateControl {
 	top: 2.9rem;
-	left: -19rem;
+	left: -15rem;
 }
 
 .transformUpwardArrow {
@@ -1626,4 +1611,14 @@ button:disabled, fieldset:disabled, input:disabled, optgroup:disabled, option:di
     border-image: initial;
     border-radius: 4px;
     background: rgb(250, 250, 250);
+}
+
+@media (max-width: 991px) {
+    .overviewNavigationControl {
+        min-width: 20rem;
+    }
+
+    #dateControl {
+        left: -7rem;
+    }
 }
