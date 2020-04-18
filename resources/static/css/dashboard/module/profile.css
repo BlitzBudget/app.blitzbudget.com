@@ -168,3 +168,8 @@
     top: 50%;
     left: 50%;
 }
+
+#showAccounts,
+#show-accounts-nav-item {
+    display: none;
+}

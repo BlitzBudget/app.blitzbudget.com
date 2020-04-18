@@ -176,10 +176,7 @@
 }
 
 .manageBA {
-	position: absolute;
-    bottom: 15.3rem;
-    right: 0.4rem;
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .arrowWrapBA {

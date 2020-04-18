@@ -179,6 +179,11 @@
     margin: 0 .3125rem;
 }
 
+#showAccounts,
+#show-accounts-nav-item {
+    display: none;
+}
+
 @media (min-width: 768px) {
     .w-md-15 {
         width: 15rem;
