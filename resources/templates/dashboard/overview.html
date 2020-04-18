@@ -4,80 +4,80 @@
 <title>Overview</title>
 <link rel="stylesheet preload" href="/css/dashboard/overview/overview.min.css" as="style">
 </head>
-<body class="overview-dashboard" >
+<body class="overview-dashboard noselect" >
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-lg-4">
+				<div class="col-md-4 d-none d-md-block">
 					<div class="card overviewAverageHeaderCard">
 						<div class="card-header overviewHeadingWrapper pt-3">
 							<h4 class="overviewHeadingTab noselect">Overview</h4>
 						</div>
 						<div id="portfolioOverview" class="card-body noselect">
 							<div class="row py-3 overviewEntryRow">	
-								<div class="col-lg-3 incomeImage image-center">
+								<div class="col-md-3 incomeImage image-center">
 									<div class="image-center"></div>
 								</div>
-								<div class="col-lg-8 namdAndDescription">
+								<div class="col-md-8 namdAndDescription">
 									<h4 class="font-weight-bold overviewHeading">Income </h4>
 									<div class="descriptionAverages text-nowrap"><span>You earn an average of </span><span id="averageIncomeAmount" class="font-weight-bold"><span class="currentCurrencySymbol"></span>0.00</span><span class="font-weight-bold"> per month</span></div>
 								</div>
-								<div class="col-lg-1 icon-center">
+								<div class="col-md-1 icon-center">
 									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
 								</div>
 							</div>
 							<div class="row py-3 overviewEntryRow">	
-								<div class="col-lg-3 expenseImage image-center" >
+								<div class="col-md-3 expenseImage image-center" >
 									<div class="image-center"></div>
 								</div>
-								<div class="col-lg-8 namdAndDescription">
+								<div class="col-md-8 namdAndDescription">
 									<h4 class="font-weight-bold overviewHeading">Expense </h4>
 									<div class="descriptionAverages text-nowrap"><span>You spend an average of </span><span id="averageExpenseAmount" class="font-weight-bold"><span class="currentCurrencySymbol"></span>0.00</span><span class="font-weight-bold"> per month</span></div>
 								</div>
-								<div class="col-lg-1 icon-center">
+								<div class="col-md-1 icon-center">
 									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
 								</div>
 							</div>
 							<div class="row py-3 overviewEntryRow">	
-								<div class="col-lg-3 assetsImage image-center" >
+								<div class="col-md-3 assetsImage image-center" >
 									<div class="image-center"></div>
 								</div>
-								<div class="col-lg-8 namdAndDescription">
+								<div class="col-md-8 namdAndDescription">
 									<h4 class="font-weight-bold overviewHeading">Assets </h4>
 									<div class="descriptionAverages text-nowrap"><span>You accumulated </span><span id="assetAccumuluatedAmount" class="font-weight-bold"><span class="currentCurrencySymbol"></span>0.00</span><span class="font-weight-bold"></span></div>
 								</div>
-								<div class="col-lg-1 icon-center">
+								<div class="col-md-1 icon-center">
 									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
 								</div>
 							</div>
 							<div class="row py-3 overviewEntryRow">	
-								<div class="col-lg-3 debtImage image-center" >
+								<div class="col-md-3 debtImage image-center" >
 									<div class="image-center"></div>
 								</div>
-								<div class="col-lg-8 namdAndDescription">
+								<div class="col-md-8 namdAndDescription">
 									<h4 class="font-weight-bold overviewHeading">Debts </h4>
 									<div class="descriptionAverages text-nowrap"><span>You owe </span><span id="debtAccumulatedAmount" class="font-weight-bold"><span class="currentCurrencySymbol"></span>0.00</span><span class="font-weight-bold"></span></div>
 								</div>
-								<div class="col-lg-1 icon-center">
+								<div class="col-md-1 icon-center">
 									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
 								</div>
 							</div>
 							<div class="row py-3 overviewEntryRow">	
-								<div class="col-lg-3 networthImage image-center" >
+								<div class="col-md-3 networthImage image-center" >
 									<div class="image-center"></div>
 								</div>
-								<div class="col-lg-8 namdAndDescription">
+								<div class="col-md-8 namdAndDescription">
 									<h4 class="font-weight-bold overviewHeading">Networth</h4>
 									<div class="descriptionAverages text-nowrap"><span>Your Networth is </span><span id="networthAmount" class="font-weight-bold"><span class="currentCurrencySymbol"></span>0.00</span><span class="font-weight-bold"></span></div>
 								</div>
-								<div class="col-lg-1 icon-center">
+								<div class="col-md-1 icon-center">
 									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-8 noselect">
+				<div class="col-md-8 col-sm-12 noselect">
 					<div class="card chartDisplayCard">
 	                  <div class="card-header card-header-icon card-header-info">
 	                    <div class="card-icon">
@@ -124,11 +124,11 @@
 				</div>
 			</div>
         	<div class="row">
-				<div class="col-lg-6">
+				<div class="col-md-6 col-sm-12">
 					<div class="card recentTransactionCard">
 						<div class="card-header pb-0">
 							<div class="row">
-								<div class="col-lg-8">
+								<div class="col-12">
 									<h4 class="recentTransactionTitle">Recent Transactions</h4>
 								</div>
 							</div>
@@ -145,16 +145,16 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-md-6 col-sm-12">
 					<div class="card optimizationBudgetAndGoal">
 						<div class="card-header pb-0">
 							<div class="row">
-								<div class="col-lg-8">
+								<div class="col-12">
 									<h4 class="optimizationTitle">Optimizations</h4>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-lg-12">
+								<div class="col-12">
 									<div id="budgetOrGoals" class="">
 			                			<fieldset class="choose align-center pb-3">
 										    <label><input type="radio" value="Overspent Budget" name="budgetOrGoals" checked><span class="disable-select">Overspent Budget</span></label>
@@ -196,8 +196,8 @@
 							</div>
 						</div>
 						<div id="optimizationFooter" class="row card-footer">
-							<div id="selectedOptimizations" class="col-lg-6 pl-2 font-weight-bold tripleNineColor">None Selected</div>
-							<div class="col-lg-6 pr-0">
+							<div id="selectedOptimizations" class="col-6 pl-2 font-weight-bold tripleNineColor">None Selected</div>
+							<div class="col-6 pr-0">
 								<button id="optimizeButton" class="btn btn-info ml-auto float-right" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Select atleast one optimization">Optimize</button>
 								<div id="optimizationSpinner" class="material-spinner float-right d-none mr-5"></div>
 							</div>

@@ -102,14 +102,15 @@ var AWSCogUser = window.AWSCogUser || {};
                     }
                 }
 
+                // Set wallet information
+                currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
+                currentUserLocal.walletCurrency = currentUserLocal.currency;
                 // Current User to global variable
                 window.currentUser = currentUserLocal;
                 // We save the item in the localStorage.
                 localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
                 // Fill currency and Name
                 fillCurrencyAndName();
-                // Populate wallet information
-                calculateWalletAttributes();
                 // Hide Modal
                 if(loginModal) loginModal.modal('hide');
             });
@@ -120,7 +121,7 @@ var AWSCogUser = window.AWSCogUser || {};
     function fillCurrencyAndName() {
         // Set Currency If empty
         if(currentUser.currency && currentUser.name) {
-            window.currentCurrencyPreference = window.currentUser.currency;
+            window.currentCurrencyPreference = window.currentUser.walletCurrency;
             Object.freeze(window.currentCurrencyPreference);
             Object.seal(window.currentCurrencyPreference);
 
