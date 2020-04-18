@@ -771,8 +771,9 @@
         	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
         	if(isEmpty(averageIncome)) {
         		avIncomeAm = 0.00;
-        	} 
-        	document.getElementById('averageIncomeAmount').innerText = currentCurrencyPreference + avIncomeAm;
+        	}
+        	// Animate Value from 0 to value 
+        	animateValue(document.getElementById('averageIncomeAmount'), 0, avIncomeAm, currentCurrencyPreference ,200);
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!',ajaxData);
@@ -804,7 +805,8 @@
         	if(isEmpty(avExpenseAm)) {
         		avExpenseAm = 0.00;
         	}
-        	document.getElementById('averageExpenseAmount').innerText = currentCurrencyPreference + avExpenseAm;
+        	// Animate Value from 0 to value 
+        	animateValue(document.getElementById('averageExpenseAmount'), 0, avExpenseAm, currentCurrencyPreference ,200);
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!',ajaxData);

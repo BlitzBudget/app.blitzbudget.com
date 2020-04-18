@@ -40,7 +40,7 @@
    			}
    			// Asset Accumulated
         // Animate Value from 0 to value 
-        animateValue(document.getElementById('assetAccumuluatedAmount'), 0, Math.abs(asset), minusSign + currentCurrencyPreference ,2000);
+        animateValue(document.getElementById('assetAccumuluatedAmount'), 0, Math.abs(asset), minusSign + currentCurrencyPreference ,200);
 
         // Minus sign for LIABILITY
    			minusSign = '';
@@ -50,7 +50,7 @@
    			}
         // Debt Accumulated
         // Animate Value from 0 to value 
-        animateValue(document.getElementById('debtAccumulatedAmount'), 0, Math.abs(liability), minusSign + currentCurrencyPreference ,2000);
+        animateValue(document.getElementById('debtAccumulatedAmount'), 0, Math.abs(liability), minusSign + currentCurrencyPreference ,200);
 
    			// Minus sign for Nteworth
    			minusSign = '';
@@ -60,7 +60,7 @@
    			}
         // Networth Accumulated
         // Animate Value from 0 to value 
-        animateValue(document.getElementById('networthAmount'), 0, Math.abs(networth), minusSign + currentCurrencyPreference ,2000);
+        animateValue(document.getElementById('networthAmount'), 0, Math.abs(networth), minusSign + currentCurrencyPreference ,200);
       
       }
       ajaxData.onFailure = function (thrownError) {
