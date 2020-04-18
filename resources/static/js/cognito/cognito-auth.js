@@ -121,7 +121,7 @@ var AWSCogUser = window.AWSCogUser || {};
     function fillCurrencyAndName() {
         // Set Currency If empty
         if(currentUser.currency && currentUser.name) {
-            window.currentCurrencyPreference = window.currentUser.currency;
+            window.currentCurrencyPreference = window.currentUser.walletCurrency;
             Object.freeze(window.currentCurrencyPreference);
             Object.seal(window.currentCurrencyPreference);
 
