@@ -1086,6 +1086,7 @@ a.text-danger:focus {
     -moz-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    margin: 2rem;
 }
 
 .Cards .row {

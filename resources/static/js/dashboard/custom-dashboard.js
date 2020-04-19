@@ -1163,5 +1163,5 @@ function calculateWalletAttributes() {
 	}
 
 	// update currency
-	window.currentCurrencyPreference = window.currentUser.walletCurrency;
+	window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
 }
