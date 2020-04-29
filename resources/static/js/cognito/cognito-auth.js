@@ -179,7 +179,7 @@ var AWSCogUser = window.AWSCogUser || {};
         
         // Set Financial Portfolio Id
         let today = new Date().toISOString();
-        let randomValue = "PrimaryWallet#" + today; 
+        let randomValue = "User#" + today; 
         let attributeFPI = createAttribute('custom:financialPortfolioId', randomValue);
         // Set Default Locale
         let attributeLocale = createAttribute('locale', 'en-US');
