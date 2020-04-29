@@ -113,7 +113,7 @@
 		let values = {};
 		values['amount'] = amount;
 		values['description'] = description;
-		values['categoryOptions'] = categoryOptions;
+		values['category'] = categoryOptions;
 		values['dateMeantFor'] = chosenDate;
 		values['recurrence'] = recurrenceValue;
 
@@ -121,10 +121,10 @@
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
    		ajaxData.type = "POST";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.walletId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId;
    		ajaxData.dataType = "json"; 
-   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-   		ajaxData.data = values;
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.data = JSON.stringify(values);
 		ajaxData.onSuccess = function(data) {
 
         	let successMessageDocument = document.getElementById('successMessage');
@@ -907,8 +907,8 @@
 			ajaxData.type = "POST";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'category';
 			ajaxData.dataType = "json"; 
-			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-			ajaxData.data = values;
+			ajaxData.contentType = "application/json;charset=UTF-8";
+			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(userTransaction){
 	        	  let previousCategoryId ='';
 	        	  
@@ -1005,8 +1005,8 @@
 		ajaxData.type = "POST";
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'description';
 		ajaxData.dataType = "json"; 
-		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-		ajaxData.data = values;
+		ajaxData.contentType = "application/json;charset=UTF-8";
+		ajaxData.data = JSON.stringify(values);
 		ajaxData.onSuccess = function(result) {
         	// Set the description to empty as the data need not be stored.
       		descriptionTextEdited = '';
@@ -1094,8 +1094,8 @@
 			ajaxData.type = "POST";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'transaction';
 			ajaxData.dataType = "json"; 
-			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-			ajaxData.data = values;
+			ajaxData.contentType = "application/json;charset=UTF-8";
+			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(userTransaction){
 	        	  // Set the amount to empty as the data need not be stored.
 	        	  amountEditedTransaction = '';
@@ -1632,10 +1632,10 @@
 		 let ajaxData = {};
 		 ajaxData.isAjaxReq = true;
 		 ajaxData.type = "POST";
-		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.saveTransactionsUrl + currentUser.walletId; 
+		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId; 
 		 ajaxData.dataType = "json"; 
-		 ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-		 ajaxData.data = values;
+		 ajaxData.contentType = "application/json;charset=UTF-8";
+		 ajaxData.data = JSON.stringify(values);
 		 ajaxData.onSuccess = function(userTransaction){
         	  let categoryParent = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
         	  let closestSibling = categoryParent.nextSibling;
@@ -2083,8 +2083,8 @@
 			ajaxData.type = "POST";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.walletId;
 			ajaxData.dataType = "json"; 
-			ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-			ajaxData.data = values;
+			ajaxData.contentType = "application/json;charset=UTF-8";
+			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(userBudget){
 	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userBudget.categoryId);
 	        	  // Update the budget amount in the category row

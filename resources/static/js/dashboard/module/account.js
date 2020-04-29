@@ -175,8 +175,8 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.type = "POST";
 		   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl;
 		   		ajaxData.dataType = "json"; 
-		   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-		   		ajaxData.data = values;
+		   		ajaxData.contentType = "application/json;charset=UTF-8";
+		   		ajaxData.data = JSON.stringify(values);
 		   		ajaxData.onSuccess = function(result){
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully',window._constants.notification.success);
 		        	 // Add Accounts to the preview mode if < 4
@@ -230,8 +230,8 @@ let tickIconSVG = tickIcon();
    		ajaxData.type = "POST";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl;
    		ajaxData.dataType = "json"; 
-   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-   		ajaxData.data = values;
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
 	    	  // Append as Selected Account
 	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {

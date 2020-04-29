@@ -98,7 +98,7 @@
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json; charset=UTF-8";
-			ajaxData.data = values;
+			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(bankAccount){
 	        	// Update the budget amount in the category row
 	        	let formattedBudgetAmount = 0;

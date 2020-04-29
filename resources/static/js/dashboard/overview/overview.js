@@ -641,7 +641,7 @@
    		ajaxData.type = "POST";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.walletId;
    		ajaxData.dataType = "json";
-   		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
 	        	  
