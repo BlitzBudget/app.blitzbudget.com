@@ -339,7 +339,7 @@
 		ajaxData.type = 'POST';
 		ajaxData.url = _config.api.invokeUrl + SETTINGS_CONSTANTS.userAttributeUrl;
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.data = values;
+   		ajaxData.data = JSON.stringify(values);
 		ajaxData.onSuccess = function(result) {
 	        // After a successful updation of parameters to cache
 	        currentUser[param] = paramVal;

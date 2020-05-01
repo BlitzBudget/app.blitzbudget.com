@@ -178,8 +178,8 @@ var AWSCogUser = window.AWSCogUser || {};
         var attributeEmail = createAttribute('email', email);
         
         // Set Financial Portfolio Id
-        let today = new Date();
-        let randomValue = today.getUTCDate().toString() + today.getUTCMonth().toString() + today.getUTCFullYear().toString() + today.getUTCHours().toString() + today.getUTCMinutes().toString() + today.getUTCSeconds().toString() + today.getUTCMilliseconds().toString(); 
+        let today = new Date().toISOString();
+        let randomValue = "User#" + today; 
         let attributeFPI = createAttribute('custom:financialPortfolioId', randomValue);
         // Set Default Locale
         let attributeLocale = createAttribute('locale', 'en-US');

@@ -228,8 +228,8 @@
 		ajaxData.type = "POST";
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'accountId';
 		ajaxData.dataType = "json"; 
-		ajaxData.contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-		ajaxData.data = values;
+		ajaxData.contentType = "application/json;charset=UTF-8";
+		ajaxData.data = JSON.stringify(values);
 		ajaxData.onSuccess = function(userTransaction){
 			// Fetch the current account balance
 			let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
