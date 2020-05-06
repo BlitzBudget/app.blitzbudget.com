@@ -7,6 +7,7 @@ window.currentUser = window.currentUser || localStorage.getItem("currentUserSI")
 calculateWalletAttributes();
 
 window.authHeader = window.authHeader || localStorage.getItem('idToken');
+window.refreshToken = window.refreshToken || localStorage.getItem('refreshToken');
 
 // Custom Javascript for dashboard
 const CUSTOM_DASHBOARD_CONSTANTS = {};

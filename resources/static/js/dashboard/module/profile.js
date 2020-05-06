@@ -13,28 +13,11 @@
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
 		'userNameParam': { value: '&userName=', writable: false, configurable: false },
-		'signinUrl': { value: '/profile/sign-in', writable: false, configurable: false }
+		'signinUrl': { value: window._config.api.invokeUrl + '/profile/sign-in', writable: false, configurable: false }
 	});
 
 	displayUserDetailsProfile();
 	displayCreatedDate();
-
-	// Define Cognito User Pool adn Pool data
-	let poolData = {
-        UserPoolId: _config.cognito.userPoolId,
-        ClientId: _config.cognito.userPoolClientId
-    };
-
-    let userPool;
-
-    if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-        return;
-    }
-
-	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 	// Href pointing to send Feature request with appropriate parameters
 	let featureRequest = document.getElementById('sendFeatureRequest');
@@ -310,18 +293,17 @@
 	  				$.ajax({
 				          type: 'POST',
 				          url: PROFILE_CONSTANTS.signinUrl,
-				          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
 				          data : JSON.stringify(values);,
-				          success: function signinSuccess(result) {
+				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();
 			                // Resolve the promise
 			                resolve();
 
 			              },
-				  	      error: function signinError(err) {
+				  	      error: function(err) {
 				            	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
@@ -410,18 +392,17 @@
 	  				$.ajax({
 				          type: 'POST',
 				          url: PROFILE_CONSTANTS.signinUrl,
-				          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
 				          data : JSON.stringify(values);,
-				          success: function signinSuccess(result) {
+				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();
 			                // Resolve the promise
 			                resolve();
 
 			              },
-				  	      error: function signinError(err) {
+				  	      error: function(err) {
 				            	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
@@ -505,18 +486,17 @@
 		  				$.ajax({
 					          type: 'POST',
 					          url: PROFILE_CONSTANTS.signinUrl,
-					          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 					          dataType: 'json',
 					          contentType: "application/json;charset=UTF-8",
 					          data : JSON.stringify(values);,
-					          success: function signinSuccess(result) {
+					          success: function(result) {
 				            	// Hide loading 
 				                Swal.hideLoading();
 				                // Resolve the promise
 				                resolve();
 
 				              },
-					  	      error: function signinError(err) {
+					  	      error: function(err) {
 					            	// Hide loading 
 					               	Swal.hideLoading();
 					            	// Show error message
@@ -1154,18 +1134,17 @@
 	  				$.ajax({
 				          type: 'POST',
 				          url: PROFILE_CONSTANTS.signinUrl,
-				          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
 				          data : JSON.stringify(values);,
-				          success: function signinSuccess(result) {
+				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();
 			                // Resolve the promise
 			                resolve(true);
 
 			              },
-				  	      error: function signinError(err) {
+				  	      error: function(err) {
 				            	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
@@ -1368,14 +1347,13 @@
 	  				$.ajax({
 				          type: 'POST',
 				          url: PROFILE_CONSTANTS.signinUrl,
-				          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
 				          data : JSON.stringify(values);,
-				          success: function signinSuccess(result) {
+				          success: function(result) {
 			            	showNotification('Successfully changed the email!',window._constants.notification.success);
 			              },
-				  	      error: function signinError(err) {
+				  	      error: function(err) {
 				               // Login Modal
 				               er.sessionExpiredSwal(true);
 				               // Notification

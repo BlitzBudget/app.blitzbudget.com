@@ -6,54 +6,12 @@ var AWSCogUser = window.AWSCogUser || {};
     let signinUrl = 'login';
     let successfulSigninUrl = 'https://app.blitzbudget.com/home';
 
-    let poolData = {
-        UserPoolId: _config.cognito.userPoolId,
-        ClientId: _config.cognito.userPoolClientId
-    };
-
-    let userPool;
-
-    if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-        return;
-    }
-
-    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-    if (typeof AWSCognito !== 'undefined') {
-        AWSCognito.config.region = _config.cognito.region;
-    }
-
-    AWSCogUser.signOut = function signOut() {
-        userPool.getCurrentUser().signOut();
-    };
-
-    AWSCogUser.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-        let cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser) {
-            cognitoUser.getSession(function sessionCallback(err, session) {
-                if (err) {
-                    reject(err);
-                } else if (!session.isValid()) {
-                    resolve(null);
-                } else {
-                    resolve(session.getIdToken().getJwtToken());
-                }
-            });
-        } else {
-            resolve(null);
-        }
-    });
-
     retrieveAttributes('','');
 
     /**
     * Retrieve Attributes
     **/
-    function retrieveAttributes(email,loginModal) {
+    function retrieveAttributes(result,loginModal) {
         // We retrieve the object again, but in a string form.
         let currentCogUser = localStorage.getItem("currentUserSI");
         window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
@@ -63,58 +21,38 @@ var AWSCogUser = window.AWSCogUser || {};
             fillCurrencyAndName();           
             return;
         }
-        // Fetch user from local storage
-        let userPool = fetchUserFromLocalStorage();
-        let cognitoUser = userPool.getCurrentUser();
 
-        // If User is null
-        if (!cognitoUser) {
-            er.showLoginPopup();
+        let currentUserLocal = {};
+
+        // ERROR scenarios
+        if (err) {
+            handleSessionErrors(err,"","",'errorLoginPopup');
             return;
         }
+        // SUCCESS Scenarios
+        for (i = 0; i < result.length; i++) {
+            let name = result[i].getName();
 
-        // User Attribute retrieved from cognito
-        cognitoUser.getSession(function(err, session) {
-            // Error Session
-            if (err) {
-                er.showLoginPopup();
-                return;
+            if(name.includes('custom:')) {
+                // if custom values then remove custom: 
+                let elemName = lastElement(splitElement(name,':'));
+                currentUserLocal[elemName] = result[i].getValue();
+            } else {
+                currentUserLocal[name] = result[i].getValue();
             }
+        }
 
-            cognitoUser.getUserAttributes(function(err, result) {
-                let currentUserLocal = {};
-
-                // ERROR scenarios
-                if (err) {
-                    handleSessionErrors(err,"","",'errorLoginPopup');
-                    return;
-                }
-                // SUCCESS Scenarios
-                for (i = 0; i < result.length; i++) {
-                    let name = result[i].getName();
-
-                    if(name.includes('custom:')) {
-                        // if custom values then remove custom: 
-                        let elemName = lastElement(splitElement(name,':'));
-                        currentUserLocal[elemName] = result[i].getValue();
-                    } else {
-                        currentUserLocal[name] = result[i].getValue();
-                    }
-                }
-
-                // Set wallet information
-                currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
-                currentUserLocal.walletCurrency = currentUserLocal.currency;
-                // Current User to global variable
-                window.currentUser = currentUserLocal;
-                // We save the item in the localStorage.
-                localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-                // Fill currency and Name
-                fillCurrencyAndName();
-                // Hide Modal
-                if(loginModal) loginModal.modal('hide');
-            });
-        });
+        // Set wallet information
+        currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
+        currentUserLocal.walletCurrency = currentUserLocal.currency;
+        // Current User to global variable
+        window.currentUser = currentUserLocal;
+        // We save the item in the localStorage.
+        localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+        // Fill currency and Name
+        fillCurrencyAndName();
+        // Hide Modal
+        if(loginModal) loginModal.modal('hide');
     }
 
     // Fill currency and name
@@ -269,8 +207,7 @@ var AWSCogUser = window.AWSCogUser || {};
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
-              url: PROFILE_CONSTANTS.signinUrl,
-              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+              url: window._config.api.invokeUrl + window._config.api.signin,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values);,
@@ -279,23 +216,26 @@ var AWSCogUser = window.AWSCogUser || {};
         });
     }
 
-    function verify(email, code, onSuccess, onFailure) {
-        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
-            if (!err) {
-                onSuccess(result);
-            } else {
-                onFailure(err);
-            }
+    function verify(email, code, password, onSuccess, onFailure) {
+         // Authentication Details
+        let values = {};
+        values.username = email;
+        values.password = password;
+        values.confirmationCode = code;
+
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.signin,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values);,
+              success: onSuccess(result),
+              error: onFailure(err)
         });
     }
 
-    function createCognitoUser(email) {
-        return new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Pool: userPool
-        });
-    }
-
+    
     /*
      *  Event Handlers
      */
@@ -398,7 +338,7 @@ var AWSCogUser = window.AWSCogUser || {};
                 loginButton.classList.remove('d-none');
 
                 // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.idToken.jwtToken);
+                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
                 idToken = idToken.substring(1, idToken.length -1);
                 localStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
@@ -525,51 +465,28 @@ var AWSCogUser = window.AWSCogUser || {};
                     return;
                 }
                 // Sign in
-                signin(email, password,
-                    function signinSuccess(result) {
-                        // Loads the current Logged in User Attributes
-                        retrieveAttributes(email,'');
-                       
-                        // Set JWT Token For authentication
-                        let idToken = JSON.stringify(result.idToken.jwtToken);
-                        idToken = idToken.substring(1, idToken.length -1);
-                        localStorage.setItem('idToken' , idToken) ;
-                        window.authHeader = idToken;
+                
+                // Loads the current Logged in User Attributes
+                retrieveAttributes(email,'');
+               
+                // Set JWT Token For authentication
+                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+                idToken = idToken.substring(1, idToken.length -1);
+                localStorage.setItem('idToken' , idToken) ;
+                window.authHeader = idToken;
 
-                        // Update currency (API Gateway)
-                        let xhr = new XMLHttpRequest();
-                        xhr.open("POST", _config.api.invokeUrl + "/cognito/user-attribute/update-currency");
-                        xhr.setRequestHeader("Authorization", idToken);
-                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                        xhr.send(JSON.stringify({ "userName" : email}));
-                        xhr.onreadystatechange = function () {
-                          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            let respBody = JSON.parse(xhr.responseText)['body-json'];
-                            // Assign current currency and locale based on IP
-                            window.currentUser.currency = respBody.currency;
-                            window.currentUser.locale = respBody.locale;
-                            // We save the item in the localStorage.
-                            localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
-                          }
-                          // Hide Modal
-                          loginModal.modal('hide');
+                 // Hide Modal
+                loginModal.modal('hide');
 
-                          // Show verification btn
-                          verifyLoader.classList.add('d-none');
-                          verifyButton.classList.remove('d-none');
-                        };
-                    },
-                    function signinError(err) {
-                        // Show verification btn
-                        verifyLoader.classList.add('d-none');
-                        verifyButton.classList.remove('d-none');
+                // Show verification btn
+                verifyLoader.classList.add('d-none');
+                verifyButton.classList.remove('d-none');
 
-                        // Toggle Sign In
-                        toggleLogin(email);
-
-                        handleSessionErrors(err,email,password,'errorLoginPopup');
-                    }
-                );
+                // Assign current currency and locale based on IP
+                window.currentUser.currency = respBody.currency;
+                window.currentUser.locale = respBody.locale;
+                // We save the item in the localStorage.
+                localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
             },
             function verifyError(err) {
                 document.getElementById('errorLoginPopup').innerText = err.message;
