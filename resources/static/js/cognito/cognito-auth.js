@@ -259,38 +259,23 @@ var AWSCogUser = window.AWSCogUser || {};
     }
 
     function signin(email, password, onSuccess, onFailure) {
-        let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Username: email,
-            Password: password
-        });
 
-        // Set Universal Cognito User
-        createCognitoUser(email).authenticateUser(authenticationDetails, {
-            onSuccess: onSuccess,
-            onFailure: onFailure,
-            mfaSetup: function(challengeName, challengeParameters) {
-                cognitoUser.associateSoftwareToken(this);
-            },
+        // Authentication Details
+        let values = {};
+        values.username = email;
+        values.password = password;
+        values.checkPassword = false;
 
-            associateSecretCode: function(secretCode) {
-                let challengeAnswer = prompt('Please input the TOTP code.', '');
-                cognitoUser.verifySoftwareToken(challengeAnswer, 'My TOTP device', this);
-            },
-
-            selectMFAType: function(challengeName, challengeParameters) {
-                let mfaType = prompt('Please select the MFA method.', ''); // valid values for mfaType is "SMS_MFA", "SOFTWARE_TOKEN_MFA"
-                cognitoUser.sendMFASelectionAnswer(mfaType, this);
-            },
-
-            totpRequired: function(secretCode) {
-                let challengeAnswer = prompt('Please input the TOTP code.', '');
-                cognitoUser.sendMFACode(challengeAnswer, this, 'SOFTWARE_TOKEN_MFA');
-            },
-
-            mfaRequired: function(codeDeliveryDetails) {
-                let verificationCode = prompt('Please input verification code', '');
-                cognitoUser.sendMFACode(verificationCode, this);
-            },
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: PROFILE_CONSTANTS.signinUrl,
+              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values);,
+              success: onSuccess,
+              error: onFailure
         });
     }
 
@@ -618,6 +603,7 @@ var AWSCogUser = window.AWSCogUser || {};
             }
         	currenElem.classList.remove('d-none');
         }, 60000);
+
 
         createCognitoUser(email).resendConfirmationCode(function(err, result) {
             if (err) {
