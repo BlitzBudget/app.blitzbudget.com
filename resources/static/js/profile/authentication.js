@@ -133,7 +133,7 @@
               url: window._config.api.invokeUrl + window._config.api.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: onSuccess,
               error: onFailure
         });
@@ -188,7 +188,7 @@
               url: window._config.api.invokeUrl + window._config.api.profile.signin,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: onSuccess,
               error: onFailure
         });
@@ -207,7 +207,7 @@
               url: window._config.api.invokeUrl + window._config.api.profile.confirmSignup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: onSuccess(result),
               error: onFailure(err)
         });
@@ -493,7 +493,7 @@
               url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: function(result) {
                 // Hide Loader
                 resendLoader.classList.add('d-none');
@@ -648,7 +648,7 @@
               url: window._config.api.invokeUrl + window._config.api.profile.forgotPassword,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: function(result) {
                 fireConfirmForgotPasswordSwal(emailInputSignin, newPassword);
               },
@@ -725,7 +725,7 @@
                       url: window._config.api.invokeUrl + window._config.api.profile.confirmForgotPassword,
                       dataType: 'json',
                       contentType: "application/json;charset=UTF-8",
-                      data : JSON.Stringify(values),
+                      data : JSON.stringify(values),
                       success: function(result) {
                         // Loads the current Logged in User Attributes
                         retrieveAttributes(result, loginModal);
@@ -905,7 +905,7 @@ uh = {
               url: window._config.api.invokeUrl + window._config.api.profile.refreshToken,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: function(result) {
                 // Session Refreshed
                 window.sessionInvalidated++;

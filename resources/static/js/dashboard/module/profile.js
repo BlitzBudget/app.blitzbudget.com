@@ -294,7 +294,7 @@
 				          url: PROFILE_CONSTANTS.signinUrl,
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
-				          data : JSON.Stringify(values),
+				          data : JSON.stringify(values),
 				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();
@@ -392,7 +392,7 @@
 				          url: PROFILE_CONSTANTS.signinUrl,
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
-				          data : JSON.Stringify(values),
+				          data : JSON.stringify(values),
 				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();
@@ -485,7 +485,7 @@
 					          url: PROFILE_CONSTANTS.signinUrl,
 					          dataType: 'json',
 					          contentType: "application/json;charset=UTF-8",
-					          data : JSON.Stringify(values),
+					          data : JSON.stringify(values),
 					          success: function(result) {
 				            	// Hide loading 
 				                Swal.hideLoading();
@@ -1132,7 +1132,7 @@
 				          url: PROFILE_CONSTANTS.signinUrl,
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
-				          data : JSON.Stringify(values),
+				          data : JSON.stringify(values),
 				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();
@@ -1195,7 +1195,7 @@
               url: window._config.api.invokeUrl + window._config.api.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.Stringify(values),
+              data : JSON.stringify(values),
               success: function(result) {
               		signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
               		
@@ -1291,7 +1291,7 @@
 				              url: window._config.api.invokeUrl + window._config.api.profile.confirmSignup,
 				              dataType: 'json',
 				              contentType: "application/json;charset=UTF-8",
-				              data : JSON.Stringify(values),
+				              data : JSON.stringify(values),
 				              success: function(result){
 				              		// Successfully deleted the user
 	        					    currentUser.email = emailModInp;
@@ -1344,7 +1344,7 @@
 					          url: PROFILE_CONSTANTS.signinUrl,
 					          dataType: 'json',
 					          contentType: "application/json;charset=UTF-8",
-					          data : JSON.Stringify(values),
+					          data : JSON.stringify(values),
 					          success: function(result) {
 				            	showNotification('Successfully changed the email!',window._constants.notification.success);
 				              },
