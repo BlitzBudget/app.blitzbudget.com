@@ -54,6 +54,11 @@
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
 			// Replace currentCurrencySymbol with currency symbol
 			replaceWithCurrency();	
+			/**
+			 * Populate total Asset, Liability & Networth
+			 */
+			
+			populateTotalAssetLiabilityAndNetworth();
 		},
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
@@ -67,6 +72,46 @@
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
+	}
+	
+	// Populate Income Average
+	function populateTotalAssetLiabilityAndNetworth() {
+			
+		// Liability Population
+		let liability = totalAssetAndLiab.liability;
+		// Asset Population
+		let asset = totalAssetAndLiab.asset;
+		// Net worth population
+		let networth = asset + liability;
+		// Minus sign for asset
+		let minusSign = '';
+		// Asset less than 0
+		if(asset < 0) {
+			minusSign = '-';
+		}
+		// Asset Accumulated
+        // Animate Value from 0 to value 
+        animateValue(document.getElementById('assetAccumuluatedAmount'), 0, Math.abs(asset), minusSign + currentCurrencyPreference ,200);
+
+        // Minus sign for LIABILITY
+   			minusSign = '';
+   			// Liability less than 0
+   			if(liability < 0) {
+   				minusSign = '-';
+   			}
+        // Debt Accumulated
+        // Animate Value from 0 to value 
+        animateValue(document.getElementById('debtAccumulatedAmount'), 0, Math.abs(liability), minusSign + currentCurrencyPreference ,200);
+
+   			// Minus sign for Nteworth
+   			minusSign = '';
+   			// Networth less than 0
+   			if(networth < 0) {
+   				minusSign = '-';
+   			}
+        // Networth Accumulated
+        // Animate Value from 0 to value 
+        animateValue(document.getElementById('networthAmount'), 0, Math.abs(networth), minusSign + currentCurrencyPreference ,200);
 	}
 	
 	// Populate Recent Transactions

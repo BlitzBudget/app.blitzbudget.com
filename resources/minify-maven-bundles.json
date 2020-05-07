@@ -77,7 +77,6 @@
             "name": "overview.all.js",
             "files": [
                 "/dashboard/overview/overview.js",
-                "/dashboard/overview/assetAndLiability.js",
                 "/dashboard/data/bankAccountCategories.js"
             ]
         },
