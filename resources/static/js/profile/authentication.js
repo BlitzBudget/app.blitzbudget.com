@@ -491,7 +491,7 @@ var AWSCogUser = window.AWSCogUser || {};
         let values = {};
         values.username = email;
 
-        // Authenticate Before cahnging password
+        // Resend Confirmation code
         $.ajax({
               type: 'POST',
               url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,

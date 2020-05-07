@@ -46,16 +46,9 @@
                 "/dashboard/module/account.js",
                 "/dashboard/configuration/commonConfiguration.js",
                 "/plugins/libraries.js",
-                "/dashboard/support/askUsDirectly.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "cognito.js",
-            "files": [
-                "/cognito/config.js",
-                "/cognito/cognito-auth.js",
-                "/cognito/cognito-helper.js"
+                "/dashboard/support/askUsDirectly.js",
+                "/profile/config.js",
+                "/profile/authentication.js"
             ]
         },
         {
