@@ -7,8 +7,15 @@ window._config = {
     api: {
         invokeUrl: 'https://api.blitzbudget.com', // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod,
         sendEmailUrl : '/send-email',
-        refreshToken : '/profile/refresh-token',
-        signin : '/profile/sign-in'
+        profile: {
+            refreshToken : '/profile/refresh-token',
+            signin : '/profile/sign-in',
+            signup : '/profile/sign-up',
+            confirmSignup : '/profile/confirm-sign-up',
+            resendConfirmationCode : '/profile/resend-confirmation-code',
+            forgotPassword: '/profile/forgot-password',
+            confirmForgotPassword: '/profile/confirm-forgot-password'
+        }
     },
     home: {
     	invokeUrl: 'https://www.blitzbudget.com'
