@@ -148,25 +148,7 @@
 
 	// Delete Account functionality
 	document.getElementById('deleteSvgAccount').addEventListener("click",function(e){
-		// Define Cognito User Pool adn Pool data
-		let poolData = {
-	        UserPoolId: _config.cognito.userPoolId,
-	        ClientId: _config.cognito.userPoolClientId
-	    };
-
-	    let userPool;
-
-	    if (!(_config.cognito.userPoolId &&
-	          _config.cognito.userPoolClientId &&
-	          _config.cognito.region)) {
-	    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-	        return;
-	    }
-
-		userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-		let cognitoUser = userPool.getCurrentUser();
-
+		
 		Swal.fire({
             title: 'Delete financial account',
             html: deleteBBAccount(),
@@ -185,31 +167,38 @@
   			preConfirm: () => {
   				return new Promise(function(resolve) {
   					let confPasswordUA = document.getElementById('oldPasswordDA');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+
+  					// Authentication Details
+			        let values = {};
+			        values.username = currentUser.email;
+			        values.password = confPasswordUA.value;
+			        values.checkPassword = true;
 
 	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
+	  				$.ajax({
+				          type: 'POST',
+				          url: PROFILE_CONSTANTS.signinUrl,
+				          dataType: 'json',
+				          contentType: "application/json;charset=UTF-8",
+				          data : JSON.stringify(values);,
+				          success: function(result) {
 			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change focus to Password Field
-					        confPasswordUA.focus();
-			            }
-			        });
+			                Swal.hideLoading();
+			                // Resolve the promise
+			                resolve();
+
+			              },
+				  	      error: function(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+					});
   				});
   			},
   			allowOutsideClick: () => !Swal.isLoading(),

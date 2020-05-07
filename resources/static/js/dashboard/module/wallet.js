@@ -779,31 +779,37 @@
   			preConfirm: () => {
   				return new Promise(function(resolve) {
   					let confPasswordUA = document.getElementById('oldPasswordRP');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+  					// Authentication Details
+			        let values = {};
+			        values.username = currentUser.email;
+			        values.password = confPasswordUA.value;
+			        values.checkPassword = true;
 
 	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
+	  				$.ajax({
+				          type: 'POST',
+				          url: PROFILE_CONSTANTS.signinUrl,
+				          dataType: 'json',
+				          contentType: "application/json;charset=UTF-8",
+				          data : JSON.stringify(values);,
+				          success: function(result) {
 			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-					        confPasswordUA.focus();
-			            }
-			        });
+			                Swal.hideLoading();
+			                // Resolve the promise
+			                resolve();
+
+			              },
+				  	      error: function(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+					});
   				});
   			},
   			allowOutsideClick: () => !Swal.isLoading(),

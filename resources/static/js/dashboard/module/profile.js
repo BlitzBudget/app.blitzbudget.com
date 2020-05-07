@@ -266,7 +266,6 @@
     *  Change Password Flow (Profile)
     **/
     document.getElementById('changePasswordProfile').addEventListener("click",function(e){
-    	let cognitoUser = userPool.getCurrentUser();
         // Show Sweet Alert
         Swal.fire({
             title: 'Change Password',
@@ -363,7 +362,6 @@
 
 	// Reset Account
 	document.getElementById('resetBBAccount').addEventListener("click",function(e){
-		let cognitoUser = userPool.getCurrentUser();
 		Swal.fire({
             title: 'Reset your Blitz Budget user account',
             html: resetBBAccount(),
@@ -456,7 +454,6 @@
 
 	// Delete button
 	document.getElementById('deleteBBAccount').addEventListener("click",function(e){
-		let cognitoUser = userPool.getCurrentUser();
 
 		Swal.fire({
                 title: 'Delete your Blitz Budget user account',
@@ -1105,7 +1102,6 @@
 			return;
 		}
 
-		let cognitoUser = userPool.getCurrentUser();
 
 		// Show Sweet Alert
         Swal.fire({
@@ -1180,14 +1176,6 @@
         // CHange Focus to Confirm Password
         document.getElementById('confPasswordUA').focus();
 	}
-
-	// Create Cognito User
-	function createCognitoUser(email) {
-        return new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Pool: userPool
-        });
-    }
 
 	// Update User Attribute Email
     function updateEmail(emailModInp, confPasswordUA, cognitoUser) {
