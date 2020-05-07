@@ -25,76 +25,46 @@
 	let fetchIncomeLineChartCache = true;
 	// selected year in year picker
 	let selectedYearIYPCache = 0;
-	
-	// SECURITY: Defining Immutable properties as constants
-	Object.defineProperties(OVERVIEW_CONSTANTS, {
-		'recentTransactionUrl': { value: 'recentTransactions/', writable: false, configurable: false },
-		'lifetimeUrl': { value:'lifetime/', writable: false, configurable: false },
-		'incomeAverageParam': { value:'?type=INCOME&average=true', writable: false, configurable: false },
-		'expenseAverageParam': { value:'?type=EXPENSE&average=true', writable: false, configurable: false },
-		'incomeTotalParam': { value:'?type=INCOME&average=false', writable: false, configurable: false },
-		'expenseTotalParam': { value:'?type=EXPENSE&average=false', writable: false, configurable: false },
-		'yearlyOverview': { value : 'One Year Overview', writable: false, configurable: false},
-		'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false}
-	});
 
 	/*
-	 * Populate Recent transactions
+	 * Populate Overview
 	 */ 
-	populateRecentTransactions();
+	populateRecentTransactions(userTransactionsList);
 	
 	// Populate Recent Transactions
-	function populateRecentTransactions() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
-   		ajaxData.onSuccess = function(userTransactionsList) {
-        	let recentTransactionsDiv = document.getElementById('recentTransactions');
-        	let recentTransactionsFragment = document.createDocumentFragment();
-        	
-        	if(isEmpty(userTransactionsList)) {
-        		let imageTransactionEmptyWrapper = document.createElement('div');
-        		imageTransactionEmptyWrapper.classList = 'text-center d-table-row';
-        		
-        		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
-        		
-        		
-        		let emptyMessageRow = document.createElement('div');
-        		emptyMessageRow.classList = 'text-center d-table-row tripleNineColor font-weight-bold';
-        		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
-        		recentTransactionsFragment.appendChild(emptyMessageRow);
-        	} else {
-        		let resultKeySet = Object.keys(userTransactionsList);
-	        	// Print only the first 20 records
-	        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
-             	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
-             	   let key = resultKeySet[countGrouped];
-             	   let userTransaction = userTransactionsList[key];
-             	   
-             	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
-             	}
-        	}
-        	
-        	// Empty HTML
-        	while (recentTransactionsDiv.firstChild) {
-        		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
-    		}
-        	recentTransactionsDiv.appendChild(recentTransactionsFragment);
+	function populateRecentTransactions(userTransactionsList) {
+	
+    	let recentTransactionsDiv = document.getElementById('recentTransactions');
+    	let recentTransactionsFragment = document.createDocumentFragment();
+    	
+    	if(isEmpty(userTransactionsList)) {
+    		let imageTransactionEmptyWrapper = document.createElement('div');
+    		imageTransactionEmptyWrapper.classList = 'text-center d-table-row';
+    		
+    		recentTransactionsFragment.appendChild(buildEmptyTransactionsSvg());
+    		
+    		
+    		let emptyMessageRow = document.createElement('div');
+    		emptyMessageRow.classList = 'text-center d-table-row tripleNineColor font-weight-bold';
+    		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+    		recentTransactionsFragment.appendChild(emptyMessageRow);
+    	} else {
+    		let resultKeySet = Object.keys(userTransactionsList);
+        	// Print only the first 20 records
+        	let userBudgetLength = resultKeySet.length > 20 ? 20 : resultKeySet.length;
+         	for(let countGrouped = 0; countGrouped < userBudgetLength; countGrouped++) {
+         	   let key = resultKeySet[countGrouped];
+         	   let userTransaction = userTransactionsList[key];
          	   
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate recent transactions. Please refresh the page & try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: ajaxData.type,
-	        success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+         	   recentTransactionsFragment.appendChild(buildTransactionRow(userTransaction));
+         	}
+    	}
+    	
+    	// Empty HTML
+    	while (recentTransactionsDiv.firstChild) {
+    		recentTransactionsDiv.removeChild(recentTransactionsDiv.firstChild);
+		}
+    	recentTransactionsDiv.appendChild(recentTransactionsFragment);
 	}
 	
 	// Builds the rows for recent transactions
@@ -265,99 +235,61 @@
 	// Fetch transaction total 
 	fetchCategoryTotalForTransactions();
 	
-	function fetchCategoryTotalForTransactions() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetFalseParam;
-   		ajaxData.onSuccess = function(categoryTotalMap) {
-        	// Store the result in a cache
-        	categoryTotalMapCache = categoryTotalMap;
-        	
-        	// Populate Category Break down Chart if present
-        	if(doughnutBreakdownOpen) {
-        		populateCategoryBreakdown(fetchIncomeBreakDownCache);
-        	}
-        	
-        	// Populate Optimization of budgets
-        	populateOptimizationOfBudget();
-        	
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: ajaxData.type,
-            success: ajaxData.onSuccess,
-            error: ajaxData.onFailure
-		});
+	function fetchCategoryTotalForTransactions(categoryTotalMap) {
+    	// Store the result in a cache
+    	categoryTotalMapCache = categoryTotalMap;
+    	
+    	// Populate Category Break down Chart if present
+    	if(doughnutBreakdownOpen) {
+    		populateCategoryBreakdown(fetchIncomeBreakDownCache);
+    	}
+    	
+    	// Populate Optimization of budgets
+    	populateOptimizationOfBudget(userBudgetList);
 	}
 	
 	// Populate optimization of budgets
-	function populateOptimizationOfBudget() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-   		ajaxData.onSuccess = function(userBudgetList) {
-        	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
-        	let populateOptimizationFragment = document.createDocumentFragment();
-        	let dataKeySet = Object.keys(userBudgetList);
-        	for(let count = 0, length = dataKeySet.length; count < length; count++){
-            	let key = dataKeySet[count];
-          	  	let userBudgetValue = userBudgetList[key];
-          	  
-          	  	if(isEmpty(userBudgetValue)) {
-          	  		continue;
-          	  	}
-          	  	
-          	  	// Store the values in a cache
-          	  	userBudgetCache[userBudgetValue.categoryId] = userBudgetValue;
-          	  	
-          	    let categoryTotal = categoryTotalMapCache[userBudgetValue.categoryId];
-          	    // Check for Overspent budget
-          	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
-          	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
-          	    } else if (categoryTotal < userBudgetValue.planned) {
-          	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
-          	    } else if (isEmpty(categoryTotal)) {
-          	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
-          	    }
-         	}
-        	
-        	// Empty the div optimizations
-        	while (populateOptimizationBudgetDiv.firstChild) {
-        		populateOptimizationBudgetDiv.removeChild(populateOptimizationBudgetDiv.firstChild);
-    		}
-        	if(populateOptimizationFragment.childElementCount === 0) {
-        		populateOptimizationFragment.appendChild(buildSvgFullyOptimized());
-        		
-        		populateFullyOptimizedDesc(populateOptimizationFragment);
-        		
-        	} else {
-        		let checkAllInput = document.getElementById('checkAll');
-        		checkAllInput.removeAttribute('disabled');
-        	}
-        		
-        	populateOptimizationBudgetDiv.appendChild(populateOptimizationFragment);
-        	
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to calculate the budget optimization. Please refresh the page & try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: ajaxData.type,
-            success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+	function populateOptimizationOfBudget(userBudgetList) {
+    	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
+    	let populateOptimizationFragment = document.createDocumentFragment();
+    	let dataKeySet = Object.keys(userBudgetList);
+    	for(let count = 0, length = dataKeySet.length; count < length; count++){
+        	let key = dataKeySet[count];
+      	  	let userBudgetValue = userBudgetList[key];
+      	  
+      	  	if(isEmpty(userBudgetValue)) {
+      	  		continue;
+      	  	}
+      	  	
+      	  	// Store the values in a cache
+      	  	userBudgetCache[userBudgetValue.categoryId] = userBudgetValue;
+      	  	
+      	    let categoryTotal = categoryTotalMapCache[userBudgetValue.categoryId];
+      	    // Check for Overspent budget
+      	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
+      	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
+      	    } else if (categoryTotal < userBudgetValue.planned) {
+      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+      	    } else if (isEmpty(categoryTotal)) {
+      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+      	    }
+     	}
+    	
+    	// Empty the div optimizations
+    	while (populateOptimizationBudgetDiv.firstChild) {
+    		populateOptimizationBudgetDiv.removeChild(populateOptimizationBudgetDiv.firstChild);
+		}
+    	if(populateOptimizationFragment.childElementCount === 0) {
+    		populateOptimizationFragment.appendChild(buildSvgFullyOptimized());
+    		
+    		populateFullyOptimizedDesc(populateOptimizationFragment);
+    		
+    	} else {
+    		let checkAllInput = document.getElementById('checkAll');
+    		checkAllInput.removeAttribute('disabled');
+    	}
+    		
+    	populateOptimizationBudgetDiv.appendChild(populateOptimizationFragment);
 	}
 	
 	// Populate the fully optimized description 
@@ -569,7 +501,9 @@
         			  // Call budget amount (param2 and param3 has to be false and 0 respectively) for entries not present in optimization 
         			  if(totalOptimizationValue != 0) {
         				  values['planned'] = userBudgetCache[categoryIdKey].planned - totalOptimizationValue;
-        				  values['category_id'] =  categoryIdKey;
+        				  values['categoryId'] =  categoryIdKey;
+        				  values['walletId'] =  currentUser.walletId;
+        				  values['budgetId'] =  currentUser.budgetId; // TODO
         				  callBudgetAmountChange(values, false, 0);
         			  }
     				 
@@ -591,6 +525,8 @@
         		  // Update the amount of budget that needs optimization at the end
             	  values['planned'] = amountToUpdateForBudget;
     			  values['category_id'] =  categoryId;
+    			  values['walletId'] =  currentUser.walletId;
+        		  values['budgetId'] =  currentUser.budgetId; // TODO
     			  callBudgetAmountChange(values, fullyOptimized, optimizedAmountForBudget);
         	  }
         	  
@@ -638,11 +574,11 @@
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.walletId;
+   		ajaxData.type = "PATCH";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
+   		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudget){
 	        	  
 	    	  // Update the cache
@@ -758,67 +694,32 @@
 	 * Populate Income Average
 	 */
 	
-	populateIncomeAverage();
+	populateIncomeAverage(averageIncome);
 	
 	// Populate Income Average
-	function populateIncomeAverage() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.incomeAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
-   		ajaxData.onSuccess = function(averageIncome) {
-        	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
-        	if(isEmpty(averageIncome)) {
-        		avIncomeAm = 0.00;
-        	}
-        	// Animate Value from 0 to value 
-        	animateValue(document.getElementById('averageIncomeAmount'), 0, avIncomeAm, currentCurrencyPreference ,200);
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate income average. Please refresh the page and try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: ajaxData.type,
-	        success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+	function populateIncomeAverage(averageIncome) {
+    	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
+    	if(isEmpty(averageIncome)) {
+    		avIncomeAm = 0.00;
+    	}
+    	// Animate Value from 0 to value 
+    	animateValue(document.getElementById('averageIncomeAmount'), 0, avIncomeAm, currentCurrencyPreference ,200);
 	}
 	
 	/**
 	 *  Populate Expense Average
 	 */
-	populateExpenseAverage();
+	populateExpenseAverage(averageExpense);
 	
 	// Populate Expense Average
-	function  populateExpenseAverage() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET'
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + OVERVIEW_CONSTANTS.expenseAverageParam + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
-   		ajaxData.onSuccess = function(averageExpense) {
-        	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
-        	if(isEmpty(avExpenseAm)) {
-        		avExpenseAm = 0.00;
-        	}
-        	// Animate Value from 0 to value 
-        	animateValue(document.getElementById('averageExpenseAmount'), 0, avExpenseAm, currentCurrencyPreference ,200);
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate expense average. Please refresh the page and try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: ajaxData.type,
-	        success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+	function  populateExpenseAverage(averageExpense) {
+		
+    	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
+    	if(isEmpty(avExpenseAm)) {
+    		avExpenseAm = 0.00;
+    	}
+    	// Animate Value from 0 to value 
+    	animateValue(document.getElementById('averageExpenseAmount'), 0, avExpenseAm, currentCurrencyPreference ,200);
 	}
 	
 	/**
@@ -832,50 +733,32 @@
 	document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + OVERVIEW_CONSTANTS.lifetimeUrl + incomeTotalParameter + OVERVIEW_CONSTANTS.financialPortfolioId + currentUser.walletId;
-   		ajaxData.onSuccess = function(dateAndAmountAsList) {
         	
-        	calcAndBuildLineChart(dateAndAmountAsList);
-   		 	
-   		 	// Income or Expense Chart Options
-   		 	let incomeOrExpense = '';
-   		 	
-		 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
-		 			// Store it in a cache
-		        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
-		        	// Make it reasonably immutable
-		        	Object.freeze(liftimeIncomeTransactionsCache);
-		        	Object.seal(liftimeIncomeTransactionsCache);
-		        	
-		        	incomeOrExpense ='Income';
-		        	
-		 		}  else {
-		 			// Store it in a cache
-		        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
-		        	// Make it reasonably immutable
-		        	Object.freeze(liftimeExpenseTransactionsCache);
-		        	Object.seal(liftimeExpenseTransactionsCache);
-		        	
-		 			incomeOrExpense = 'Expense';
-		 		}
-   		 	
-   		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
-        }
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate the chart at this moment. Please try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: ajaxData.type,
-	        success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
+    	calcAndBuildLineChart(dateAndAmountAsList);
+		 	
+		 	// Income or Expense Chart Options
+		 	let incomeOrExpense = '';
+		 	
+	 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
+	 			// Store it in a cache
+	        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
+	        	// Make it reasonably immutable
+	        	Object.freeze(liftimeIncomeTransactionsCache);
+	        	Object.seal(liftimeIncomeTransactionsCache);
+	        	
+	        	incomeOrExpense ='Income';
+	        	
+	 		}  else {
+	 			// Store it in a cache
+	        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
+	        	// Make it reasonably immutable
+	        	Object.freeze(liftimeExpenseTransactionsCache);
+	        	Object.seal(liftimeExpenseTransactionsCache);
+	        	
+	 			incomeOrExpense = 'Expense';
+	 		}
+		 	
+		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
 	}
 	
 	// Calculate and build line chart for income / expense
