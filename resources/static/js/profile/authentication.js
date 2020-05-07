@@ -119,6 +119,10 @@ var AWSCogUser = window.AWSCogUser || {};
 
     function register(email, password, onSuccess, onFailure) {
 
+        // Set Name
+        let fullName = fetchFirstElement(splitElement(email, '@'));
+        let nameObj = fetchFirstAndFamilyName(fullName);
+
         // Authentication Details
         let values = {};
         values.username = email;
@@ -779,15 +783,6 @@ var AWSCogUser = window.AWSCogUser || {};
 
     // Signout the user and redirect to home page
     function signoutUser() {
-            
-        // Fetch user from local storage
-        let userPool = fetchUserFromLocalStorage();
-        let cognitoUser = userPool.getCurrentUser();
-        
-        if(cognitoUser != null) {
-            // Signout user from cognito
-            cognitoUser.signOut();
-        }
 
         // Clear all local stroage
         localStorage.clear();

@@ -736,23 +736,6 @@
 	*
 	**/
 
-	// Define Cognito User Pool adn Pool data
-	let poolData = {
-        UserPoolId: window._config.cognito.userPoolId,
-        ClientId: window._config.cognito.userPoolClientId
-    };
-
-    let userPool;
-
-    if (!(window._config.cognito.userPoolId &&
-          window._config.cognito.userPoolClientId &&
-          window._config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-        return;
-    }
-
-	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
 	// Reset Account
 	document.getElementById('deleteWallet').addEventListener("click",function(e){
 		// If the manage wallets is not triggered then do not trigger popup
@@ -760,7 +743,6 @@
 			return;
 		}
 
-		let cognitoUser = userPool.getCurrentUser();
 		Swal.fire({
             title: 'Delete wallet',
             html: resetBBAccount(),
