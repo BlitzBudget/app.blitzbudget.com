@@ -959,11 +959,12 @@
 		values['transactionId'] = changedDescription[changedDescription.length - 1];
 		values['dateMeantFor'] = chosenDate;
 		values['walletId'] = currentUser.walletId;
+		values['transactionId'] = currentUser.transactionId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
-		ajaxData.type = "POST";
+		ajaxData.type = "PATCH";
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 		ajaxData.dataType = "json"; 
 		ajaxData.contentType = "application/json;charset=UTF-8";
