@@ -180,7 +180,7 @@
 				          url: PROFILE_CONSTANTS.signinUrl,
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
-				          data : JSON.stringify(values);,
+				          data : JSON.Stringify(values),
 				          success: function(result) {
 			            	// Hide loading 
 			                Swal.hideLoading();

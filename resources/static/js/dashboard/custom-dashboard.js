@@ -653,57 +653,33 @@ window.onload = function () {
 
 		// Start up application
 		function startupApplication() {
-			// Fetch Category 
-			fetchJSONForCategories();
-			// Fetch Bank Account Information and populate
-			er_a.fetchBankAccountInfo();
 			// Read Cookies
 	        readCookie();
 		}
 
 		// Load all categories from API (Call synchronously to set global variable)
-		function fetchJSONForCategories() {
-			// Ajax Requests on Error
-			let ajaxData = {};
-			ajaxData.isAjaxReq = true;
-			ajaxData.type = "GET";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.fetchCategoriesUrl;
-			ajaxData.dataType = "json";
-			ajaxData.onSuccess = function(data) {
-				for(let count = 0, length = Object.keys(data).length; count < length; count++){
-	        		  let key = Object.keys(data)[count];
-	            	  let value = data[key];
+		function fetchJSONForCategories(data) {
+			
+			for(let count = 0, length = Object.keys(data).length; count < length; count++){
+        		  let key = Object.keys(data)[count];
+            	  let value = data[key];
 
-	            	  // Freeze the object so it cannot be mutable
-		        	  Object.freeze(value);
-	        		  window.categoryMap[value.categoryId] = value;
-	        		  let option = document.createElement('option');
-	    			  option.className = 'categoryOption-' + value.categoryId;
-	    			  option.value = value.categoryId;
-	    			  option.text = value.categoryName;
-	        		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-	        			  window.expenseSelectionOptGroup.appendChild(option);
-	        		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-	        			  window.incomeSelectionOptGroup.appendChild(option);
-	        		  }
-	    		   
-	        	  	}
-	        	  // Sealing the object so new objects or properties cannot be added
-	        	  Object.seal(window.categoryMap);
-			}
-			ajaxData.onFailure = function(thrownError) {
-			  manageErrors(thrownError, "Unable to fetch categories at this moment",ajaxData);
-	        }
-
-			jQuery.ajax({
-				url: ajaxData.url,
-				beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	            type: ajaxData.type,
-	            dataType: ajaxData.dataType,
-	            success: ajaxData.onSuccess,
-	            error: ajaxData.onFailure,
-	            async: true
-			});
+            	  // Freeze the object so it cannot be mutable
+	        	  Object.freeze(value);
+        		  window.categoryMap[value.categoryId] = value;
+        		  let option = document.createElement('option');
+    			  option.className = 'categoryOption-' + value.categoryId;
+    			  option.value = value.categoryId;
+    			  option.text = value.categoryName;
+        		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+        			  window.expenseSelectionOptGroup.appendChild(option);
+        		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+        			  window.incomeSelectionOptGroup.appendChild(option);
+        		  }
+    		   
+        	  	}
+        	  // Sealing the object so new objects or properties cannot be added
+        	  Object.seal(window.categoryMap);
 		}
 
 		/* When the toggleFullscreen() function is executed, open the video in fullscreen.

@@ -26,10 +26,48 @@
 	// selected year in year picker
 	let selectedYearIYPCache = 0;
 
-	/*
-	 * Populate Overview
-	 */ 
-	populateRecentTransactions(userTransactionsList);
+	/**
+	* Get Overview
+	**/
+	function fetchOverview() {
+		// Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+		ajaxData.type = 'GET';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + TRANSACTIONS_CONSTANTS.firstWalletIdParam + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+		ajaxData.onSuccess = function(result) {
+        	  
+			er_a.populateBankInfo(result.BankAccount);
+
+	        fetchJSONForCategories(result.Category);
+
+	         /*
+			 * Populate Overview
+			 */ 
+			populateRecentTransactions();
+			// Fetch transaction total 
+			fetchCategoryTotalForTransactions();
+			populateIncomeAverage();
+			overviewChartMonthDisplay();
+			populateExpenseAverage(averageExpense);
+			// Upon refresh call the income overview chart
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
+			// Replace currentCurrencySymbol with currency symbol
+			replaceWithCurrency();	
+		},
+		ajaxData.onFailure = function(thrownError) {
+			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
+        }
+
+		// Load all user transaction from API
+		jQuery.ajax({
+			url: ajaxData.url,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+            type: ajaxData.type,
+            success: ajaxData.onSuccess, 
+            error: ajaxData.onFailure
+		});
+	}
 	
 	// Populate Recent Transactions
 	function populateRecentTransactions(userTransactionsList) {
@@ -232,9 +270,6 @@
 	/**
 	 * Optimizations Functionality
 	 */
-	// Fetch transaction total 
-	fetchCategoryTotalForTransactions();
-	
 	function fetchCategoryTotalForTransactions(categoryTotalMap) {
     	// Store the result in a cache
     	categoryTotalMapCache = categoryTotalMap;
@@ -245,7 +280,7 @@
     	}
     	
     	// Populate Optimization of budgets
-    	populateOptimizationOfBudget(userBudgetList);
+    	populateOptimizationOfBudget();
 	}
 	
 	// Populate optimization of budgets
@@ -694,7 +729,6 @@
 	 * Populate Income Average
 	 */
 	
-	populateIncomeAverage(averageIncome);
 	
 	// Populate Income Average
 	function populateIncomeAverage(averageIncome) {
@@ -709,7 +743,6 @@
 	/**
 	 *  Populate Expense Average
 	 */
-	populateExpenseAverage(averageExpense);
 	
 	// Populate Expense Average
 	function  populateExpenseAverage(averageExpense) {
@@ -727,8 +760,6 @@
 	 * 
 	 */ 
 	
-	// Upon refresh call the income overview chart
-	incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
 	// Add highlighted element to the income
 	document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
 	
@@ -1374,7 +1405,6 @@
 	/**
 	 * Overview Chart Month Display
 	 */
-	overviewChartMonthDisplay();
 	
 	// Display Month Chart Display
 	function overviewChartMonthDisplay() {
@@ -1580,9 +1610,6 @@
 			}
 		}
 	}
-
-	// Replace currentCurrencySymbol with currency symbol
-	replaceWithCurrency();	
 
 	/**
 	*  Add Functionality Generic + Btn

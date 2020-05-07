@@ -1,12 +1,8 @@
 "use strict";
-/*global AWSCogUser _config AmazonCognitoIdentity AWSCognito*/
-var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
     let signinUrl = 'login';
     let successfulSigninUrl = 'https://app.blitzbudget.com/home';
-
-    retrieveAttributes('','');
 
     /**
     * Retrieve Attributes
@@ -137,7 +133,7 @@ var AWSCogUser = window.AWSCogUser || {};
               url: window._config.api.invokeUrl + window._config.api.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values);,
+              data : JSON.Stringify(values),
               success: onSuccess,
               error: onFailure
         });
@@ -192,7 +188,7 @@ var AWSCogUser = window.AWSCogUser || {};
               url: window._config.api.invokeUrl + window._config.api.profile.signin,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values);,
+              data : JSON.Stringify(values),
               success: onSuccess,
               error: onFailure
         });
@@ -211,7 +207,7 @@ var AWSCogUser = window.AWSCogUser || {};
               url: window._config.api.invokeUrl + window._config.api.profile.confirmSignup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values);,
+              data : JSON.Stringify(values),
               success: onSuccess(result),
               error: onFailure(err)
         });
@@ -497,7 +493,7 @@ var AWSCogUser = window.AWSCogUser || {};
               url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values);,
+              data : JSON.Stringify(values),
               success: function(result) {
                 // Hide Loader
                 resendLoader.classList.add('d-none');
@@ -652,7 +648,7 @@ var AWSCogUser = window.AWSCogUser || {};
               url: window._config.api.invokeUrl + window._config.api.profile.forgotPassword,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values);,
+              data : JSON.Stringify(values),
               success: function(result) {
                 fireConfirmForgotPasswordSwal(emailInputSignin, newPassword);
               },
@@ -729,7 +725,7 @@ var AWSCogUser = window.AWSCogUser || {};
                       url: window._config.api.invokeUrl + window._config.api.profile.confirmForgotPassword,
                       dataType: 'json',
                       contentType: "application/json;charset=UTF-8",
-                      data : JSON.stringify(values);,
+                      data : JSON.Stringify(values),
                       success: function(result) {
                         // Loads the current Logged in User Attributes
                         retrieveAttributes(result, loginModal);
@@ -909,7 +905,7 @@ uh = {
               url: window._config.api.invokeUrl + window._config.api.profile.refreshToken,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values);,
+              data : JSON.Stringify(values),
               success: function(result) {
                 // Session Refreshed
                 window.sessionInvalidated++;
