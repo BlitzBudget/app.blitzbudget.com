@@ -605,7 +605,6 @@
     function forgotPassword(forgotPass, resendloader) {
         
         let emailInputSignin = document.getElementById('emailInputSignin').value;
-        let loginModal = $('#loginModal');
         let newPassword = document.getElementById('passwordInputSignin').value;
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
@@ -659,6 +658,8 @@
 
     function fireConfirmForgotPasswordSwal(email, password) {
         let confirmationCode;
+        let loginModal = $('#loginModal');
+        
         // Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
