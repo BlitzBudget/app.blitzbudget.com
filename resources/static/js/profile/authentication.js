@@ -20,6 +20,8 @@
         storeAuthToken(result);
         // Store Refresh token
         storeRefreshToken(result);
+        // Store Access Token
+        storeAccessToken(result);
 
         let currentUserLocal = {};
         currentUserLocal.email = result.Username;
