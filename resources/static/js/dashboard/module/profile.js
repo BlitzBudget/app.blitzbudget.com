@@ -7,9 +7,9 @@
 
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(PROFILE_CONSTANTS, {
-		'resetAccountUrl': { value: '/cognito/reset-account', writable: false, configurable: false },
+		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
 		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
 		'userNameParam': { value: '&userName=', writable: false, configurable: false },

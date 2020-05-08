@@ -76,14 +76,10 @@
     // Handle Session Errors
     function handleSessionErrors(err,email,pass,errM) {
 
-        console.log("The user error ", err)
-        console.log("The user error ", JSON.parse(err));
-        console.log("The user error ", JSON.parse(err.errorMessage));
-
         /*
          * User Does not Exist
          */
-        if(stringIncludes(err.code,"UserNotFoundException")) {
+        if(stringIncludes(err.responseJSON.errorMessage,"UserNotFoundException")) {
             toggleSignUp(email,pass);
             return;
         }
@@ -91,7 +87,7 @@
         /*
          * User Not Confirmed
          */
-        if(stringIncludes(err.code,"UserNotConfirmedException")) {
+        if(stringIncludes(err.responseJSON.errorMessage,"UserNotConfirmedException")) {
             // Verify Account
             toggleVerification(email);
             return;
@@ -100,14 +96,14 @@
         /*
          * PasswordResetRequiredException
          */
-        if(stringIncludes(err.code,"PasswordResetRequiredException")) {
+        if(stringIncludes(err.responseJSON.errorMessage,"PasswordResetRequiredException")) {
             // TODO
         }
 
         /**
         *   Other Errors
         **/
-        document.getElementById(errM).innerText = lastElement(err.errorMessage);
+        document.getElementById(errM).innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
     }
 
 
@@ -132,7 +128,7 @@
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
-              url: window._config.api.invokeUrl + window._config.api.signup,
+              url: window._config.api.invokeUrl + window._config.api.profile.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
@@ -210,8 +206,8 @@
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
-              success: onSuccess(result),
-              error: onFailure(err)
+              success: onSuccess,
+              error: onFailure
         });
     }
 

@@ -11,9 +11,9 @@
 
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(SETTINGS_CONSTANTS, {
-		'devicesUrl': { value: '/cognito/devices', writable: false, configurable: false },
+		'devicesUrl': { value: '/profile/devices', writable: false, configurable: false },
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false }
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false }
 	});
 
 	// Display Email for devices

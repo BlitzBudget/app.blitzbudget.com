@@ -35,7 +35,7 @@
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + TRANSACTIONS_CONSTANTS.firstWalletIdParam + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.walletId + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 		ajaxData.onSuccess = function(result) {
         	  
 			er_a.populateBankInfo(result.BankAccount);

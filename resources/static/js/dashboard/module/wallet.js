@@ -11,10 +11,10 @@
 	const WALLET_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(WALLET_CONSTANTS, {
-		'resetAccountUrl': { value: '/cognito/reset-account', writable: false, configurable: false },
+		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
 		'firstFinancialPortfolioIdParams': { value: '?financialPortfolioId=', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },
 		'referenceNumberParam': { value: '&referenceNumber=', writable: false, configurable: false },
 	});
