@@ -13,7 +13,7 @@
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
 		'userNameParam': { value: '&userName=', writable: false, configurable: false },
-		'signinUrl': { value: window._config.api.invokeUrl + '/profile/sign-in', writable: false, configurable: false }
+		'signinUrl': { value: window._config.api.invokeUrl + window._config.api.profile.signin, writable: false, configurable: false }
 	});
 
 	displayUserDetailsProfile();
@@ -253,14 +253,14 @@
 
     	// Authentication Details
         let values = {};
-        values.previousPassword = currentUser.email;
-        values.newPassword = confPasswordUA.value;
+        values.previousPassword = oldPassword;
+        values.newPassword = newPassword;
         values.accessToken = window.accessToken;
 
 		// Authenticate Before cahnging password
 		$.ajax({
           type: 'POST',
-          url: PROFILE_CONSTANTS.signinUrl,
+          url: window._config.api.invokeUrl + window._config.api.profile.changePassword,
           dataType: 'json',
           contentType: "application/json;charset=UTF-8",
           data : JSON.stringify(values),
