@@ -419,7 +419,7 @@
         verifyLoader.classList.remove('d-none');
         verifyButton.classList.add('d-none');
         let loginModal = $('#loginModal');
-        verify(email, code,
+        verify(email, code, password,
             function verifySuccess(result) {
                 // Remove session storage verify email (EMAIL CLICK FUNC)
                 localStorage.removeItem('verifyEmail');
@@ -440,7 +440,7 @@
                 // Sign in
                 
                 // Loads the current Logged in User Attributes
-                retrieveAttributes(email, loginModal);
+                retrieveAttributes(result, loginModal);
 
                 // Show verification btn
                 verifyLoader.classList.add('d-none');
@@ -658,6 +658,7 @@
     }
 
     function fireConfirmForgotPasswordSwal(email, password) {
+        let confirmationCode;
         // Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
@@ -696,6 +697,9 @@
                 if(isNaN(value)) {
                     return 'Verification code can only contain numbers';
                 }
+
+                // Set Confirmation code
+                confirmationCode = value;
             },
             showClass: {
                popup: 'animated fadeInDown faster'
@@ -708,13 +712,12 @@
             }
         }).then(function(result) {
             if(result.value) {
-                let verificationCode = document.getElementsByClassName("swal2-input" )[0];
 
                 // Authentication Details
                 let values = {};
                 values.username = email;
                 values.password = password;
-                values.confirmationCode = verificationCode;
+                values.confirmationCode = confirmationCode;
 
                 // Authenticate Before cahnging password
                 $.ajax({
