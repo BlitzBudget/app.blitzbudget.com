@@ -29,6 +29,7 @@
 	/**
 	* Get Overview
 	**/
+	fetchOverview();
 	function fetchOverview() {
 		// Ajax Requests on Error
 		let ajaxData = {};

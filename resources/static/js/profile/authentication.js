@@ -20,6 +20,7 @@
 
         // Set JWT Token For authentication
         let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        console.log("id token %j", idToken);
         localStorage.setItem('idToken' , idToken) ;
         window.authHeader = idToken;
 
@@ -33,14 +34,14 @@
         result = result.UserAttributes;
         // SUCCESS Scenarios
         for (i = 0; i < result.length; i++) {
-            let name = result[i].getName();
+            let name = result[i].Name;
 
             if(name.includes('custom:')) {
                 // if custom values then remove custom: 
                 let elemName = lastElement(splitElement(name,':'));
-                currentUserLocal[elemName] = result[i].getValue();
+                currentUserLocal[elemName] = result[i].Value;
             } else {
-                currentUserLocal[name] = result[i].getValue();
+                currentUserLocal[name] = result[i].Value;
             }
         }
 
@@ -77,35 +78,11 @@
 
     // Handle Session Errors
     function handleSessionErrors(err,email,pass,errM) {
-        
-        /*
-         * User Does not Exist
-         */
-        if(stringIncludes(err.code,"UserNotFoundException")) {
-            toggleSignUp(email,pass);
-            return;
-        }
-        
-        /*
-         * User Not Confirmed
-         */
-        if(stringIncludes(err.code,"UserNotConfirmedException")) {
-            // Verify Account
-            toggleVerification(email);
-            return;
-        }
-        
-        /*
-         * PasswordResetRequiredException
-         */
-        if(stringIncludes(err.code,"PasswordResetRequiredException")) {
-            // TODO
-        }
 
         /**
         *   Other Errors
         **/
-        document.getElementById(errM).innerText = err.message;
+        document.getElementById(errM).innerText = lastElement(err.errorMessage);
     }
 
 
@@ -315,7 +292,6 @@
                 retrieveAttributes(result,loginModal);
 
                 // Post success message
-                document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
 
@@ -664,7 +640,7 @@
         // Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
-            html: 'Verification code has been sent to <strong>' + emailInputSignin + '</strong>', 
+            html: 'Verification code has been sent to <strong>' + email + '</strong>', 
             input: 'text',
             confirmButtonClass: 'btn btn-dynamic-color',
             confirmButtonText: 'Verify Email',
