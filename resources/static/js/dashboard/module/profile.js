@@ -1385,6 +1385,30 @@
         });
     }
 
+    function storeAuthToken(result) {
+	    // Set JWT Token For authentication
+	    let idToken = JSON.stringify(result.AuthenticationResult.IdToken);
+	    idToken = idToken.substring(1,idToken.length - 1);
+	    localStorage.setItem('idToken' , idToken) ;
+	    window.authHeader = idToken;
+	}
+
+	function storeRefreshToken(result) {
+        // Set JWT Token For authentication
+        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+        refreshToken = refreshToken.substring(1,refreshToken.length - 1);
+        localStorage.setItem('refreshToken' , refreshToken) ;
+        window.refreshToken = refreshToken;
+    }
+
+    function storeAccessToken(result) {
+        // Set JWT Token For authentication
+        let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        accessToken = accessToken.substring(1,accessToken.length - 1);
+        localStorage.setItem('accessToken' , accessToken) ;
+        window.accessToken = accessToken;
+    }
+
     /**
 	*  Add Functionality Generic + Btn
 	**/
