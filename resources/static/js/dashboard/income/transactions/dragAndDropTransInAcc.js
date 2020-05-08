@@ -221,12 +221,13 @@
 		values['accountId'] = accountId;
 		values['transactionId'] = transactionId;
 		values['dateMeantFor'] = chosenDate;
+		values['walletId'] = currentUser.walletId;
 		
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = "POST";
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'accountId';
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 		ajaxData.dataType = "json"; 
 		ajaxData.contentType = "application/json;charset=UTF-8";
 		ajaxData.data = JSON.stringify(values);

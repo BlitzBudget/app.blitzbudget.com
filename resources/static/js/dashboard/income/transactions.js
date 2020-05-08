@@ -5,8 +5,7 @@
 	const TRANSACTIONS_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(TRANSACTIONS_CONSTANTS, {
-		'recentTransactionUrl': { value: 'recentTransactions/', writable: false, configurable: false },
-		'financialPortfolioId': { value : '&financialPortfolioId=', writable: false, configurable: false}
+		'firstWalletIdParam': { value : '?walletId=', writable: false, configurable: false},
 	});
 
 	// Description Text
@@ -116,12 +115,13 @@
 		values['category'] = categoryOptions;
 		values['dateMeantFor'] = chosenDate;
 		values['recurrence'] = recurrenceValue;
+		values['walletId'] = walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
    		ajaxData.type = "POST";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId;
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
@@ -227,43 +227,46 @@
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
 		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + TRANSACTIONS_CONSTANTS.firstWalletIdParam + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
 		ajaxData.onSuccess = function(result) {
-			let totalExpensesTransactions = 0.00;
-			let totalIncomeTransactions = 0.00;
+        	  
+        	er_a.populateBankInfo(result.BankAccount);
+
+        	fetchJSONForCategories(result.Category);
+
+			/*
+			* replace With Currency
+			*/
+			replaceWithCurrency();
+
+			let totalExpensesTransactions = result.expenseTotal;
+			let totalIncomeTransactions = result.incomeTotal;
+			let totalAvailableBalance = result.balance;
 			let transactionsTableDiv = document.createDocumentFragment();
 			let documentTbody = document.getElementById(replaceTransactionsId);
 			// uncheck the select all checkbox if checked
 			let checkAllBox = document.getElementById('checkAll');
 			// Fetch all the key set for the result
-			let resultKeySet = Object.keys(result)
+			let resultKeySet = Object.keys(result.Category);
          	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
          	   let key = resultKeySet[countGrouped];
-         	   let value = result[key];
- 			   let transactionsRowDocumentFragment = document.createDocumentFragment();
- 			   let totalCategoryAmount = 0;
- 			   let valueElementKeySet = Object.keys(value)
- 			   for(let count = 0, length = valueElementKeySet.length; count < length; count++) {
- 				  let subKey = valueElementKeySet[count];
- 				  let subValue = value[subKey];
- 				  // Cache the value for exportation
- 				  window.transactionsCache[subValue.transactionId] = subValue;
- 				  // Create transactions table row
- 				  transactionsRowDocumentFragment.appendChild(createTableRows(subValue, 'd-none', key));
- 				  totalCategoryAmount += subValue.amount;
- 			   }
+         	   let category = result[key];
+ 			   
  			   // Load all the total category amount in the category section
- 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(totalCategoryAmount, currentUser.locale);
+ 			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(category['category_total'], currentUser.locale);
  			   // Create category label table row
- 			   transactionsTableDiv.appendChild(createTableCategoryRows(key, countGrouped, categoryAmountTotal));
- 			   transactionsTableDiv.appendChild(transactionsRowDocumentFragment);
- 			   // Total Expenses and Total Income
- 			   if(categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
- 				   totalExpensesTransactions += totalCategoryAmount;
- 			   } else if (categoryMap[key].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
- 				   totalIncomeTransactions += totalCategoryAmount;
- 			   }
+ 			   transactionsTableDiv.appendChild(createTableCategoryRows(category, countGrouped, categoryAmountTotal));
          	}
+
+         	let transaction = Object.keys(result.Transaction);
+         	for(let count = 0, length = transaction.length; count < length; count++) {
+			  let subKey = transaction[count];
+			  let transactionObj = transaction[subKey];
+			  // Cache the value for exportation
+			  window.transactionsCache[transactionObj.transactionId] = transactionObj;
+			  // Create transactions table row
+			  transactionsTableDiv.appendChild(createTableRows(transactionObj, 'd-none', key));
+		    }
 			   
 		    // Update table with empty message if the transactions are empty
 		    if(result.length == 0) {
@@ -288,9 +291,9 @@
 			// Disable delete Transactions button on refreshing the transactions
 	        manageDeleteTransactionsButton();
 			// update the Total Available Section
-			updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
+			updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions, totalAvailableBalance);
 			// Update Budget from API
-			updateBudgetForIncome();
+			updateBudgetForIncome(result.Budget);
 			// Change the table sorting on page load
 			er.tableSortMechanism();
         }
@@ -308,49 +311,32 @@
 	}
 	
 	// Fetches the budget for all the category rows if present and updates the category row
-	function updateBudgetForIncome() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-		ajaxData.onSuccess = function(data) {
-        	let dataKeySet = Object.keys(data)
-        	for(let count = 0, length = dataKeySet.length; count < length; count++){
-        		let key = dataKeySet[count];
-            	let value = data[key];
-            	// Update user budget to global map (Exportation)
-				window.userBudgetMap[value.categoryId] = value;
-            	  
-            	if(isEmpty(value)) {
-            		continue;
-            	}
-            	  
-            	let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
-            	  
-            	if(categoryRowToUpdate == null) {
-            		continue;
-            	}
-            	  
-            	categoryRowToUpdate.innerHTML = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
+	function updateBudgetForIncome(data) {
+    	let dataKeySet = Object.keys(data)
+    	for(let count = 0, length = dataKeySet.length; count < length; count++){
+    		let key = dataKeySet[count];
+        	let value = data[key];
+        	// Update user budget to global map (Exportation)
+			window.userBudgetMap[value.categoryId] = value;
+        	  
+        	if(isEmpty(value)) {
+        		continue;
         	}
-        }
-		ajaxData.onFailure = function(thrownError) {
-		  manageErrors(thrownError, "Unable to fetch budget for the selected month. Please try again later!",ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: ajaxData.type,
-            success: ajaxData.onSuccess, 
-            error: ajaxData.onFailure
-		});
+        	  
+        	let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
+        	  
+        	if(categoryRowToUpdate == null) {
+        		continue;
+        	}
+        	  
+        	categoryRowToUpdate.innerText = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
+    	}
+		
 	}
 	
 	// Updates the total income and total expenses
-	function updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions) {
-			let totalAvailableTransactions = totalIncomeTransactions - totalExpensesTransactions;
+	function updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions, totalAvailableTransactions) {
+
 		   if(totalAvailableTransactions < 0) {
 		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, Math.abs(totalAvailableTransactions),  '-' + currentCurrencyPreference ,200);
 		   } else {
@@ -538,17 +524,17 @@
 	}
 	
 	// Building a HTML table for category header for transactions
-	function createTableCategoryRows(categoryId, countGrouped, categoryAmountTotal){
+	function createTableCategoryRows(category, countGrouped, categoryAmountTotal){
 		let tableRow = document.createElement("div");
-		tableRow.setAttribute('id', 'categoryTableRow-' + categoryId);
+		tableRow.setAttribute('id', 'categoryTableRow-' + category.categoryId);
 		tableRow.setAttribute('data-toggle', 'collapse');
 		tableRow.setAttribute('role' , 'button');
 		
 		// Change the table color if for expense vs income
-		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			tableRow.className = 'toggle d-table-row expenseCategory categoryTableRow-' + categoryId;
+		if(category['category_type'] == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			tableRow.className = 'toggle d-table-row expenseCategory categoryTableRow-' + category.categoryId;
 		} else {
-			tableRow.className = 'toggle d-table-row incomeCategory categoryTableRow-' + categoryId;
+			tableRow.className = 'toggle d-table-row incomeCategory categoryTableRow-' + category.categoryId;
 		}
 		
 		// Row 1
@@ -569,11 +555,11 @@
 		
 		let categoryNameWrapper = document.createElement('div');
 		categoryNameWrapper.className = 'd-inline';
-		categoryNameWrapper.innerHTML = categoryMap[categoryId].categoryName;
+		categoryNameWrapper.innerHTML = category['category_name'];
 		
 		let linkElementWrapper = document.createElement('a');
 		linkElementWrapper.href = '#';
-		linkElementWrapper.id = 'addTableRow-' + categoryId;
+		linkElementWrapper.id = 'addTableRow-' + category.categoryId;
 		linkElementWrapper.className = 'd-inline addTableRowListener align-self-center';
 		
 		let addIconElement = document.createElement('i');
@@ -592,16 +578,16 @@
 		
 		// Table Row 5
 		let amountTransactionsRow = document.createElement('div');
-		amountTransactionsRow.setAttribute('id', 'amountCategory-' + categoryId);
+		amountTransactionsRow.setAttribute('id', 'amountCategory-' + category.categoryId);
 		
-		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-table-cell spendingTrans amountCategoryId-' + categoryId;
+		if(category['category_type'] == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			amountTransactionsRow.className = 'text-right category-text-danger font-weight-bold d-table-cell spendingTrans amountCategoryId-' + category.categoryId;
 		} else {
-			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-table-cell incomeTrans amountCategoryId-' + categoryId;
+			amountTransactionsRow.className = 'text-right category-text-success font-weight-bold d-table-cell incomeTrans amountCategoryId-' + category.categoryId;
 		}
 		
 		// Append a - sign for the category if it is an expense
-	   if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	   if(category['category_type'] == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 		   amountTransactionsRow.innerHTML = '-' + categoryAmountTotal;
 	   } else {
 		   amountTransactionsRow.innerHTML = categoryAmountTotal;
@@ -610,7 +596,7 @@
 	   
 	   // Table Row 6
 	   let budgetTransactionsRow = document.createElement('div');
-	   budgetTransactionsRow.setAttribute('id', 'budgetCategory-' + categoryId);
+	   budgetTransactionsRow.setAttribute('id', 'budgetCategory-' + category.categoryId);
 	   budgetTransactionsRow.className = 'text-right d-table-cell font-weight-bold';
 	   tableRow.appendChild(budgetTransactionsRow);
 	   
@@ -680,27 +666,6 @@
 			sortOptionsWrapper.add('d-inline-block');
 		}  
 	}
-
-	// Deletes all auto generated user budget
-	function deleteAllAutoGeneratedUserBudget() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'DELETE';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.autoGeneratedBudgetParam;
-		ajaxData.dataType = "json";
-		ajaxData.onFailure = function(thrownError) {
-		  manageErrors(thrownError, "Unable to delete the budget associated with the transaction.",ajaxData);
-        }
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: ajaxData.type,
-            dataType: ajaxData.dataType,
-            error: ajaxData.onFailure,
-            async: true
-		});
-	}
 	
 	// Swal Sweetalerts
 	popup = {
@@ -767,11 +732,9 @@
                  			   	// Remove other table data
                  			   	removeAllTableData();
                  			   	// update the Total Available Section with 0
-                 	    		updateTotalAvailableSection(0 , 0);
+                 	    		updateTotalAvailableSection(0 , 0, 0);
                  	    		// Disable delete Transactions button on refreshing the transactions
 	                         	manageDeleteTransactionsButton();
-	                         	// Delete The auto generated user budget
-	                         	deleteAllAutoGeneratedUserBudget();
 	                         	// Close category modal
 	                         	closeCategoryModal();
                         	} else {
@@ -790,7 +753,7 @@
 			                         	manageDeleteTransactionsButton();
 			                         	
 			                         	// To recalculate the category total amount and to reduce user budget for the category appropriately
-			                         	recalculateCategoryTotalAmount();
+			                         	//TODO
 	                        		}
 		                         	
 	                        	});
@@ -900,12 +863,14 @@
 			values['categoryId'] = this.value;
 			values['transactionId'] = selectedTransactionId[selectedTransactionId.length - 1];
 			values['dateMeantFor'] = chosenDate;
+			values['walletId'] = currentUser.walletId;
+			values['transactionId'] = transactionId; //TODO
 
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
-			ajaxData.type = "POST";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'category';
+			ajaxData.type = "PATCH";
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json;charset=UTF-8";
 			ajaxData.data = JSON.stringify(values);
@@ -998,12 +963,14 @@
 		values['description'] = enteredText;
 		values['transactionId'] = changedDescription[changedDescription.length - 1];
 		values['dateMeantFor'] = chosenDate;
+		values['walletId'] = currentUser.walletId;
+		values['transactionId'] = currentUser.transactionId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
-		ajaxData.type = "POST";
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'description';
+		ajaxData.type = "PATCH";
+		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 		ajaxData.dataType = "json"; 
 		ajaxData.contentType = "application/json;charset=UTF-8";
 		ajaxData.data = JSON.stringify(values);
@@ -1087,12 +1054,13 @@
 			values['amount'] = enteredText;
 			values['transactionId'] = changedAmount[changedAmount.length - 1];
 			values['dateMeantFor'] = chosenDate;
+			values['walletId'] = currentUser.walletId;
 			let totalAddedOrRemovedFromAmount = round(parseFloat(enteredText - previousText),2);
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
 			ajaxData.type = "POST";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.transactionsUpdateUrl + 'transaction';
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json;charset=UTF-8";
 			ajaxData.data = JSON.stringify(values);
@@ -1101,7 +1069,6 @@
 	        	  amountEditedTransaction = '';
 	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
 	        	  updateCategoryAmount(userTransaction.categoryId, totalAddedOrRemovedFromAmount, true);
-	        	  autoCreateBudget(userTransaction.categoryId, totalAddedOrRemovedFromAmount);
 	        	  handleCategoryModalToggle(userTransaction.categoryId, categoryRowElement, '');
 	        }
 			ajaxData.onFailure = function (thrownError) {
@@ -1124,18 +1091,6 @@
 		
 		// Prevent repeated enter button press from calling the server
   	  	amountEditedTransaction = enteredText;
-	}
-	
-	// Automatically create a budget for the category if it is an income category
-	function autoCreateBudget(categoryId, totalAddedOrRemovedFromAmount) {
-		if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-			if(isEmpty(updateBudgetMap[categoryId])) {
-				updateBudgetMap[categoryId] = totalAddedOrRemovedFromAmount;
-			} else {
-				let oldValue = updateBudgetMap[categoryId];
-				updateBudgetMap[categoryId] = oldValue + totalAddedOrRemovedFromAmount;
-			}
-		}
 	}
 	
 	// Append appropriate buttons when the amount is edited
@@ -1723,141 +1678,6 @@
     	return svgElement;
 	}
 	
-	// Before navigating away from page update the budget (Synchronous to avoid loss of transfer to server)
-	window.onbeforeunload = function() {
-		if(!window.isRefresh) {
-			er.updateBudget(false);
-		}
-		window.isRefresh = false;
-	}
-	
-	// Do not update the budget if the value is old (Safari)
-	window.onpageshow = function(event) {
-	    if (event.persisted) {
-	        window.isRefresh = true;
-	    }
-	}
-
-	// Delete the auto generated category Ids
-	function deleteAutoGeneratedUserBudgets(categoryIdArray) {
-		if (isEmpty(categoryIdArray)) {
-			return;
-		}
-		
-		// If it is an array then join the array
-		if(categoryIdArray instanceof Array) {
-			for(let count = 0, length = categoryIdArray.length; count < length; count++){
-				let categoryId = categoryIdArray[count];
-				
-				if (categoryIdArray in updateBudgetMap) {
-					// Delete the entry from the map if it is pending to be updated
-					delete updateBudgetMap[categoryId];
-				}
-			}
-			// Join the categories with a comma to end it to delete
-			categoryIdArray.join(",");
-		} else if (categoryIdArray in updateBudgetMap) {
-			// Delete the entry from the map if it is pending to be updated
-			delete updateBudgetMap[categoryIdArray];
-		}
-         
-        // Ajax Requests on Error
-		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'DELETE';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + '/' + categoryIdArray + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.deleteAutoGeneratedParam;
-		ajaxData.contentType = "application/json; charset=utf-8";
-		ajaxData.onFailure = function (thrownError) {
-			 manageErrors(thrownError, 'Unable to add a new transaction.',ajaxData);
-	    }
-		// Send the AJAX request to delete the user budgets
-        jQuery.ajax({
-             url: ajaxData.url,
-             beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-             type: ajaxData.type,
-             contentType: ajaxData.contentType, 
-             error: ajaxData.onFailure,
-             async: true
-        });
-	}
-	
-	// Recalculate category amount and append them to the table While updating auto generated user budget 
-	function recalculateCategoryTotalAmount() {
-    	
-    	// Ajax Requests on Error
-		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.transactionFetchCategoryTotal + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + CUSTOM_DASHBOARD_CONSTANTS.updateBudgetTrueParam;
-		ajaxData.onSuccess = function(categoryTotalMap) {
-        	// Category open in Modal
-        	let categoryIdOpenInModal = document.getElementById('categoryIdCachedForUserBudget').innerText;
-        	// Get all the category id's
-    		let categoryTotalKeys = Object.keys(categoryTotalMap);
-        	let categoryDivs = document.querySelectorAll('*[id^="categoryTableRow"]');
-        	// Category Total
-        	let totalExpensesTransactions = 0;
-        	let totalIncomeTransactions = 0;
-        	
-        	// Find the categories that are visible to the user but are not present in the database
-        	for(let count = 0, lengthArray = categoryDivs.length; count < lengthArray; count++){
-        		let categoryDiv = categoryDivs[count];
-        		let categoryId = lastElement(splitElement(categoryDiv.id,'-'));
-        		// Check if the elements are present inside the keys
-        		if(!includesStr(categoryTotalKeys, categoryId)) {
-        			// Mark those elements to be deleted
-        			$(categoryDiv).fadeOut('slow', function(){
-        				categoryDiv.remove();
-        				
-        				// Toggle Category Modal 
-                    	toggleCategoryModal('');
-                    	
-                		// Delete category ids which are autogenerated
-                		deleteAutoGeneratedUserBudgets(categoryId);
-        			});
-        		} else {
-               	    let value = categoryTotalMap[categoryId];
-               	    let categoryIt = categoryMap[categoryId];
-               	    let categoryAmountDiv = document.getElementById('amountCategory-'+categoryId);
-            	    categoryAmountDiv.innerHTML = currentCurrencyPreference + formatNumber(value, currentUser.locale);
-
-            	    // Total Expenses and Total Income
-	     			if(categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-	     				totalExpensesTransactions += value;
-	     			} else if (categoryIt.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-	     				totalIncomeTransactions += value;
-	     			}
-            	    
-            	    // Check if the modal is open
-               	    if(categoryIdOpenInModal == categoryId) {
-                 		// Handle category Modal
-                     	let categoryRowElement = document.getElementById('categoryTableRow-' + categoryId);
-                     	// Fetch all the categories child transactions
-                     	let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
-                     	// Edit Category Modal
-                     	handleCategoryModalToggle(categoryId, categoryRowElement, hideableRowElement.length);
-               	    }
-        		}
-        	}
-
-        	// Build Category Modal
-		  	updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions);
-
-        }
-		ajaxData.onFailure = function(thrownError) {
-			manageErrors(thrownError, 'Unable to fetch transaction total.',ajaxData);
-	    }
-		// Load all user transaction from API
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-            type: ajaxData.type,
-            async: true,
-            success: ajaxData.onSuccess, 
-            error: ajaxData.onFailure
-		});
-	}
-	
 	/**
 	 * Logic for Category Modal
 	 * 
@@ -2076,12 +1896,13 @@
 			values['category_id'] = categoryIdForBudget;
 			values['autoGenerated'] = 'false';
 			values['dateMeantFor'] = chosenDate;
+			values['walletId'] = currentUser.walletId;
 
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
 			ajaxData.type = "POST";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + CUSTOM_DASHBOARD_CONSTANTS.budgetSaveUrl + currentUser.walletId;
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json;charset=UTF-8";
 			ajaxData.data = JSON.stringify(values);
@@ -2252,10 +2073,8 @@
 	// Populate Recent Transactions
 	function populateRecentTransactions(recentTrans, popBothInfo) {
 		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + TRANSACTIONS_CONSTANTS.recentTransactionUrl + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate + TRANSACTIONS_CONSTANTS.financialPortfolioId + currentUser.walletId;
+		//TODO
+		
    		if(popBothInfo) {
    			ajaxData.onSuccess = function(userTransactionsList) {
 	   			populateRecentTransInfo(userTransactionsList);
@@ -2270,17 +2089,6 @@
    				populateAccountTableInformation(userTransactionsList);
    			}
    		}
-        ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to populate recent transactions. Please refresh the page & try again!',ajaxData);
-        }
-
-		jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: ajaxData.type,
-	        success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
 	}
 
 	// Populate Account table information

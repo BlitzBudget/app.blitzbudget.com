@@ -12,28 +12,12 @@
 		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
-		'userNameParam': { value: '&userName=', writable: false, configurable: false }
+		'userNameParam': { value: '&userName=', writable: false, configurable: false },
+		'signinUrl': { value: window._config.api.invokeUrl + '/profile/sign-in', writable: false, configurable: false }
 	});
 
 	displayUserDetailsProfile();
 	displayCreatedDate();
-
-	// Define Cognito User Pool adn Pool data
-	let poolData = {
-        UserPoolId: _config.cognito.userPoolId,
-        ClientId: _config.cognito.userPoolClientId
-    };
-
-    let userPool;
-
-    if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-        return;
-    }
-
-	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 	// Href pointing to send Feature request with appropriate parameters
 	let featureRequest = document.getElementById('sendFeatureRequest');
@@ -282,7 +266,6 @@
     *  Change Password Flow (Profile)
     **/
     document.getElementById('changePasswordProfile').addEventListener("click",function(e){
-    	let cognitoUser = userPool.getCurrentUser();
         // Show Sweet Alert
         Swal.fire({
             title: 'Change Password',
@@ -298,32 +281,38 @@
   			preConfirm: () => {
   				return new Promise(function(resolve) {
   					let confPasswordUA = document.getElementById('oldPasswordCP');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+  					
+  					// Authentication Details
+			        let values = {};
+			        values.username = currentUser.email;
+			        values.password = confPasswordUA.value;
+			        values.checkPassword = true;
 
 	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
+	  				$.ajax({
+				          type: 'POST',
+				          url: PROFILE_CONSTANTS.signinUrl,
+				          dataType: 'json',
+				          contentType: "application/json;charset=UTF-8",
+				          data : JSON.stringify(values),
+				          success: function(result) {
 			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
+			                Swal.hideLoading();
+			                // Resolve the promise
+			                resolve();
 
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-						    confPasswordUA.focus();
-			            }
-			        });
+			              },
+				  	      error: function(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+					});
   				});
   			},
   			allowOutsideClick: () => !Swal.isLoading(),
@@ -373,7 +362,6 @@
 
 	// Reset Account
 	document.getElementById('resetBBAccount').addEventListener("click",function(e){
-		let cognitoUser = userPool.getCurrentUser();
 		Swal.fire({
             title: 'Reset your Blitz Budget user account',
             html: resetBBAccount(),
@@ -392,31 +380,37 @@
   			preConfirm: () => {
   				return new Promise(function(resolve) {
   					let confPasswordUA = document.getElementById('oldPasswordRP');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+  					// Authentication Details
+			        let values = {};
+			        values.username = currentUser.email;
+			        values.password = confPasswordUA.value;
+			        values.checkPassword = true;
 
 	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
+	  				$.ajax({
+				          type: 'POST',
+				          url: PROFILE_CONSTANTS.signinUrl,
+				          dataType: 'json',
+				          contentType: "application/json;charset=UTF-8",
+				          data : JSON.stringify(values),
+				          success: function(result) {
 			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-					        confPasswordUA.focus();
-			            }
-			        });
+			                Swal.hideLoading();
+			                // Resolve the promise
+			                resolve();
+
+			              },
+				  	      error: function(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+					});
   				});
   			},
   			allowOutsideClick: () => !Swal.isLoading(),
@@ -460,7 +454,6 @@
 
 	// Delete button
 	document.getElementById('deleteBBAccount').addEventListener("click",function(e){
-		let cognitoUser = userPool.getCurrentUser();
 
 		Swal.fire({
                 title: 'Delete your Blitz Budget user account',
@@ -480,31 +473,37 @@
 	  			preConfirm: () => {
 	  				return new Promise(function(resolve) {
 	  					let confPasswordUA = document.getElementById('oldPasswordDA');
-	  					 // Authentication Details
-					    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-				            Username: currentUser.email,
-				            Password: confPasswordUA.value
-				        });
+	  					// Authentication Details
+				        let values = {};
+				        values.username = currentUser.email;
+				        values.password = confPasswordUA.value;
+				        values.checkPassword = true;
 
 		  				// Authenticate Before cahnging password
-				        cognitoUser.authenticateUser(authenticationDetails, {
-				            onSuccess: function signinSuccess(result) {
+		  				$.ajax({
+					          type: 'POST',
+					          url: PROFILE_CONSTANTS.signinUrl,
+					          dataType: 'json',
+					          contentType: "application/json;charset=UTF-8",
+					          data : JSON.stringify(values),
+					          success: function(result) {
 				            	// Hide loading 
-				               Swal.hideLoading();
-				               // Resolve the promise
-				               resolve();
-				            },
-				            onFailure: function signinError(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change focus to Password Field
-						        confPasswordUA.focus();
-				            }
-				        });
+				                Swal.hideLoading();
+				                // Resolve the promise
+				                resolve();
+
+				              },
+					  	      error: function(err) {
+					            	// Hide loading 
+					               	Swal.hideLoading();
+					            	// Show error message
+					                Swal.showValidationMessage(
+							          `${err.message}`
+							        );
+							        // Change Focus to password field
+								    confPasswordUA.focus();
+					            }
+						});
 	  				});
 	  			},
 	  			allowOutsideClick: () => !Swal.isLoading(),
@@ -1103,7 +1102,6 @@
 			return;
 		}
 
-		let cognitoUser = userPool.getCurrentUser();
 
 		// Show Sweet Alert
         Swal.fire({
@@ -1122,31 +1120,37 @@
   					// Hide the validation message if present
         			Swal.resetValidationMessage();
   					let confPasswordUA = document.getElementById('confPasswordUA');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+  					// Authentication Details
+			        let values = {};
+			        values.username = currentUser.email;
+			        values.password = confPasswordUA.value;
+			        values.checkPassword = true;
 
 	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
+	  				$.ajax({
+				          type: 'POST',
+				          url: PROFILE_CONSTANTS.signinUrl,
+				          dataType: 'json',
+				          contentType: "application/json;charset=UTF-8",
+				          data : JSON.stringify(values),
+				          success: function(result) {
 			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve(true);
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-						    confPasswordUA.focus();
-			            }
-			        });
+			                Swal.hideLoading();
+			                // Resolve the promise
+			                resolve(true);
+
+			              },
+				  	      error: function(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+					});
   				});
   			},
   			allowOutsideClick: () => !Swal.isLoading(),
@@ -1173,43 +1177,31 @@
         document.getElementById('confPasswordUA').focus();
 	}
 
-	// Create Cognito User
-	function createCognitoUser(email) {
-        return new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Pool: userPool
-        });
-    }
-
 	// Update User Attribute Email
     function updateEmail(emailModInp, confPasswordUA, cognitoUser) {
 
-        // Email
-		let attributeList = [];
-		let attributeEmail = createAttribute('email', emailModInp);
-		let attributeFPI = createAttribute('custom:financialPortfolioId', currentUser.financialPortfolioId);
-        // Set Default Locale
-        let attributeLocale = createAttribute('locale', currentUser.locale);
-        // Set Default Currency
-        let attributeCurrency = createAttribute('custom:currency', currentUser.currency);
-        // Set Name
-        let attributeName = createAttribute('name', currentUser.name);
-        // Set Family Name
-        let attributeFamilyName = createAttribute('family_name', currentUser.family_name);
-	    attributeList.push(attributeEmail);
-	    attributeList.push(attributeFPI);
-	    attributeList.push(attributeLocale);
-	    attributeList.push(attributeCurrency);
-	    attributeList.push(attributeName);
-	    attributeList.push(attributeFamilyName);
 
-	    // Sign up user
-        userPool.signUp(emailModInp, confPasswordUA, attributeList, null,
-            function signUpCallback(err, result) {
-                if (!err) {
-                    signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
-                } else {
-                    showNotification(err.message,window._constants.notification.error);
+	      // Authentication Details
+        let values = {};
+        values.username = emailModInp;
+        values.password = confPasswordUA;
+        values.firstname = window.currentUser.name;
+        values.lastname = window.currentUser.family_name;
+        values.checkPassword = false;
+
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.signup,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: function(result) {
+              		signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
+              		
+              },
+              error: function(err) {
+              		showNotification(err.message,window._constants.notification.error);
 
 			        // Hide the Element
 					document.getElementById('emailEdit').classList.add('d-none');
@@ -1226,9 +1218,8 @@
 
 					// Change Focus to element
 					document.getElementById('emailModInp').focus();
-                }
-            }
-        );
+              }
+        });
     }
 
     /**
@@ -1288,22 +1279,32 @@
   					let verificationCode = document.getElementsByClassName("swal2-input" )[0];
 
 		        	if(verificationCode.value) {
+		        		// Authentication Details
+				        let values = {};
+				        values.username = emailModInp;
+				        values.password = confPasswordUA;
+				        values.confirmationCode = verificationCode.value;
 
-				        // Verify User Email
-				        createCognitoUser(emailModInp).confirmRegistration(verificationCode.value, true, function confirmCallback(err, result) {
-				            if (!err) {
-							    // Successfully deleted the user
-        					    currentUser.email = emailModInp;
-        					    // store in session storage
-        					    localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+				        // Authenticate Before cahnging password
+				        $.ajax({
+				              type: 'POST',
+				              url: window._config.api.invokeUrl + window._config.api.profile.confirmSignup,
+				              dataType: 'json',
+				              contentType: "application/json;charset=UTF-8",
+				              data : JSON.stringify(values),
+				              success: function(result){
+				              		// Successfully deleted the user
+	        					    currentUser.email = emailModInp;
+	        					    // store in session storage
+	        					    localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 
-        					    // Hide loading 
-				                Swal.hideLoading();
-				                // Resolve the promise
-				                resolve();
-				  				
-				            } else {
-				            	// Hide loading 
+	        					    // Hide loading 
+					                Swal.hideLoading();
+					                // Resolve the promise
+					                resolve();
+				              },
+				              error: function(err) {
+				              	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
@@ -1311,7 +1312,7 @@
 						        );
 						        // Change Focus to password field
 							    verificationCode.focus();
-				            }
+				              }
 				        });
 				    }
   				});
@@ -1320,34 +1321,45 @@
         	if(result.value) {
         		// Hide the validation message if present
 	        	Swal.resetValidationMessage();
-	        	 // Delete the registered user 
-				cognitoUser.deleteUser(function(err, result) {
-			        if (err) {
-			            showNotification(err.message,window._constants.notification.error);
-			            return;
-			        }
-			        // Update email
-			        document.getElementById('emailProfileDisplay').innerText = emailModInp;
+	       		// Delete the registered user 
+		        $.ajax({
+		              type: 'POST',
+		              url: window._config.api.invokeUrl + window._config.api.profile.deleteUser,
+		              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+		              dataType: 'json',
+		              contentType: "application/json;charset=UTF-8",
+		              success: function(result){
+		              	// Update email
+				        document.getElementById('emailProfileDisplay').innerText = emailModInp;
 
-			        // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: emailModInp,
-			            Password: confPasswordUA
-			        });
+				        // Authentication Details
+				        let values = {};
+				        values.username = emailModInp;
+				        values.password = confPasswordUA;
+				        values.checkPassword = true;
 
-			        // Authenticate Before cahnging email (SIGN IN User)
-			        createCognitoUser(emailModInp).authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
-			               showNotification('Successfully changed the email!',window._constants.notification.success);
-			            },
-			            onFailure: function signinError(err) {
-			               // Login Modal
-			               er.sessionExpiredSwal(true);
-			               // Notification
-			               showNotification('Password entered is invalid',window._constants.notification.error);
-			            }
-			        });
-			    });
+		  				// Authenticate Before cahnging password
+		  				$.ajax({
+					          type: 'POST',
+					          url: PROFILE_CONSTANTS.signinUrl,
+					          dataType: 'json',
+					          contentType: "application/json;charset=UTF-8",
+					          data : JSON.stringify(values),
+					          success: function(result) {
+				            	showNotification('Successfully changed the email!',window._constants.notification.success);
+				              },
+					  	      error: function(err) {
+					               // Login Modal
+					               er.sessionExpiredSwal(true);
+					               // Notification
+					               showNotification('Password entered is invalid',window._constants.notification.error);
+					          }
+						});
+		              },
+		              error: function(err) {
+		              	showNotification(err.message,window._constants.notification.error);
+		              }
+		          });
         	}
         });
     }

@@ -1,59 +1,13 @@
 "use strict";
-/*global AWSCogUser _config AmazonCognitoIdentity AWSCognito*/
-var AWSCogUser = window.AWSCogUser || {};
 
 (function scopeWrapper($) {
     let signinUrl = 'login';
     let successfulSigninUrl = 'https://app.blitzbudget.com/home';
 
-    let poolData = {
-        UserPoolId: _config.cognito.userPoolId,
-        ClientId: _config.cognito.userPoolClientId
-    };
-
-    let userPool;
-
-    if (!(_config.cognito.userPoolId &&
-          _config.cognito.userPoolClientId &&
-          _config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-        return;
-    }
-
-    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-    if (typeof AWSCognito !== 'undefined') {
-        AWSCognito.config.region = _config.cognito.region;
-    }
-
-    AWSCogUser.signOut = function signOut() {
-        userPool.getCurrentUser().signOut();
-    };
-
-    AWSCogUser.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
-        let cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser) {
-            cognitoUser.getSession(function sessionCallback(err, session) {
-                if (err) {
-                    reject(err);
-                } else if (!session.isValid()) {
-                    resolve(null);
-                } else {
-                    resolve(session.getIdToken().getJwtToken());
-                }
-            });
-        } else {
-            resolve(null);
-        }
-    });
-
-    retrieveAttributes('','');
-
     /**
     * Retrieve Attributes
     **/
-    function retrieveAttributes(email,loginModal) {
+    function retrieveAttributes(result,loginModal) {
         // We retrieve the object again, but in a string form.
         let currentCogUser = localStorage.getItem("currentUserSI");
         window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
@@ -63,58 +17,44 @@ var AWSCogUser = window.AWSCogUser || {};
             fillCurrencyAndName();           
             return;
         }
-        // Fetch user from local storage
-        let userPool = fetchUserFromLocalStorage();
-        let cognitoUser = userPool.getCurrentUser();
 
-        // If User is null
-        if (!cognitoUser) {
-            er.showLoginPopup();
-            return;
+        // Set JWT Token For authentication
+        let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        localStorage.setItem('idToken' , idToken) ;
+        window.authHeader = idToken;
+
+        // Set JWT Token For authentication
+        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+        localStorage.setItem('refreshToken' , refreshToken) ;
+        window.refreshToken = refreshToken;
+
+        let currentUserLocal = {};
+        currentUserLocal.email = result.Username;
+        result = result.UserAttributes;
+        // SUCCESS Scenarios
+        for (i = 0; i < result.length; i++) {
+            let name = result[i].getName();
+
+            if(name.includes('custom:')) {
+                // if custom values then remove custom: 
+                let elemName = lastElement(splitElement(name,':'));
+                currentUserLocal[elemName] = result[i].getValue();
+            } else {
+                currentUserLocal[name] = result[i].getValue();
+            }
         }
 
-        // User Attribute retrieved from cognito
-        cognitoUser.getSession(function(err, session) {
-            // Error Session
-            if (err) {
-                er.showLoginPopup();
-                return;
-            }
-
-            cognitoUser.getUserAttributes(function(err, result) {
-                let currentUserLocal = {};
-
-                // ERROR scenarios
-                if (err) {
-                    handleSessionErrors(err,"","",'errorLoginPopup');
-                    return;
-                }
-                // SUCCESS Scenarios
-                for (i = 0; i < result.length; i++) {
-                    let name = result[i].getName();
-
-                    if(name.includes('custom:')) {
-                        // if custom values then remove custom: 
-                        let elemName = lastElement(splitElement(name,':'));
-                        currentUserLocal[elemName] = result[i].getValue();
-                    } else {
-                        currentUserLocal[name] = result[i].getValue();
-                    }
-                }
-
-                // Set wallet information
-                currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
-                currentUserLocal.walletCurrency = currentUserLocal.currency;
-                // Current User to global variable
-                window.currentUser = currentUserLocal;
-                // We save the item in the localStorage.
-                localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
-                // Fill currency and Name
-                fillCurrencyAndName();
-                // Hide Modal
-                if(loginModal) loginModal.modal('hide');
-            });
-        });
+        // Set wallet information
+        currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
+        currentUserLocal.walletCurrency = currentUserLocal.currency;
+        // Current User to global variable
+        window.currentUser = currentUserLocal;
+        // We save the item in the localStorage.
+        localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+        // Fill currency and Name
+        fillCurrencyAndName();
+        // Hide Modal
+        if(loginModal) loginModal.modal('hide');
     }
 
     // Fill currency and name
@@ -174,42 +114,29 @@ var AWSCogUser = window.AWSCogUser || {};
      */
 
     function register(email, password, onSuccess, onFailure) {
-    	// Set Email
-        var attributeEmail = createAttribute('email', email);
-        
-        // Set Financial Portfolio Id
-        let today = new Date().toISOString();
-        let randomValue = "User#" + today; 
-        let attributeFPI = createAttribute('custom:financialPortfolioId', randomValue);
-        // Set Default Locale
-        let attributeLocale = createAttribute('locale', 'en-US');
-        // Set Default Currency
-        let attributeCurrency = createAttribute('custom:currency', '$');
+
         // Set Name
         let fullName = fetchFirstElement(splitElement(email, '@'));
         let nameObj = fetchFirstAndFamilyName(fullName);
-        let attributeName = createAttribute('name', nameObj.firstName);
-        // Set Family Name
-        let attributeFamilyName = createAttribute('family_name', nameObj.familyName);
-        
-        // Append Attributes to list
-        var attributeList = [];
-        attributeList.push(attributeEmail);
-        attributeList.push(attributeFPI);
-        attributeList.push(attributeLocale);
-        attributeList.push(attributeCurrency);
-        attributeList.push(attributeName);
-        attributeList.push(attributeFamilyName);
 
-        userPool.signUp(email, password, attributeList, null,
-            function signUpCallback(err, result) {
-                if (!err) {
-                    onSuccess(result);
-                } else {
-                    onFailure(err);
-                }
-            }
-        );
+        // Authentication Details
+        let values = {};
+        values.username = email;
+        values.password = password;
+        values.firstname = nameObj.firstName;
+        values.lastname = nameObj.familyName;
+        values.checkPassword = false;
+
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.signup,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: onSuccess,
+              error: onFailure
+        });
     }
     
     // Calculate First Name and Last Name
@@ -246,71 +173,47 @@ var AWSCogUser = window.AWSCogUser || {};
     	return name;
     }
     
-    /* 
-     * Create Attribute for user
-     */
-    function createAttribute(nameAttr, valAttr) {
-    	let dataAttribute = {
-                Name: nameAttr,
-                Value: valAttr
-        };
-    	
-        return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
-    }
 
     function signin(email, password, onSuccess, onFailure) {
-        let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Username: email,
-            Password: password
-        });
 
-        // Set Universal Cognito User
-        createCognitoUser(email).authenticateUser(authenticationDetails, {
-            onSuccess: onSuccess,
-            onFailure: onFailure,
-            mfaSetup: function(challengeName, challengeParameters) {
-                cognitoUser.associateSoftwareToken(this);
-            },
+        // Authentication Details
+        let values = {};
+        values.username = email;
+        values.password = password;
+        values.checkPassword = false;
 
-            associateSecretCode: function(secretCode) {
-                let challengeAnswer = prompt('Please input the TOTP code.', '');
-                cognitoUser.verifySoftwareToken(challengeAnswer, 'My TOTP device', this);
-            },
-
-            selectMFAType: function(challengeName, challengeParameters) {
-                let mfaType = prompt('Please select the MFA method.', ''); // valid values for mfaType is "SMS_MFA", "SOFTWARE_TOKEN_MFA"
-                cognitoUser.sendMFASelectionAnswer(mfaType, this);
-            },
-
-            totpRequired: function(secretCode) {
-                let challengeAnswer = prompt('Please input the TOTP code.', '');
-                cognitoUser.sendMFACode(challengeAnswer, this, 'SOFTWARE_TOKEN_MFA');
-            },
-
-            mfaRequired: function(codeDeliveryDetails) {
-                let verificationCode = prompt('Please input verification code', '');
-                cognitoUser.sendMFACode(verificationCode, this);
-            },
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.profile.signin,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: onSuccess,
+              error: onFailure
         });
     }
 
-    function verify(email, code, onSuccess, onFailure) {
-        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
-            if (!err) {
-                onSuccess(result);
-            } else {
-                onFailure(err);
-            }
+    function verify(email, code, password, onSuccess, onFailure) {
+        // Authentication Details
+        let values = {};
+        values.username = email;
+        values.password = password;
+        values.confirmationCode = code;
+
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.profile.confirmSignup,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: onSuccess(result),
+              error: onFailure(err)
         });
     }
 
-    function createCognitoUser(email) {
-        return new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Pool: userPool
-        });
-    }
-
+    
     /*
      *  Event Handlers
      */
@@ -342,10 +245,14 @@ var AWSCogUser = window.AWSCogUser || {};
                 unlockApplication.classList.remove('d-none');
 
                 // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.idToken.jwtToken);
-                idToken = idToken.substring(1, idToken.length -1);
+                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
                 localStorage.setItem('idToken' , idToken) ;
                 window.authHeader = idToken;
+
+                // Set JWT Token For authentication
+                let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+                localStorage.setItem('refreshToken' , refreshToken) ;
+                window.refreshToken = refreshToken;
 
                 // Session invalidated as 0 on start up
                 window.sessionInvalidated = 0;
@@ -405,18 +312,12 @@ var AWSCogUser = window.AWSCogUser || {};
         signin(email, password,
             function signinSuccess(result) {
                 // Loads the current Logged in User Attributes
-                retrieveAttributes(email,loginModal);
+                retrieveAttributes(result,loginModal);
 
                 // Post success message
                 document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
-
-                // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.idToken.jwtToken);
-                idToken = idToken.substring(1, idToken.length -1);
-                localStorage.setItem('idToken' , idToken) ;
-                window.authHeader = idToken;
 
                 // Remove loggedout user
                 localStorage.removeItem('loggedOutUser');
@@ -540,51 +441,13 @@ var AWSCogUser = window.AWSCogUser || {};
                     return;
                 }
                 // Sign in
-                signin(email, password,
-                    function signinSuccess(result) {
-                        // Loads the current Logged in User Attributes
-                        retrieveAttributes(email,'');
-                       
-                        // Set JWT Token For authentication
-                        let idToken = JSON.stringify(result.idToken.jwtToken);
-                        idToken = idToken.substring(1, idToken.length -1);
-                        localStorage.setItem('idToken' , idToken) ;
-                        window.authHeader = idToken;
+                
+                // Loads the current Logged in User Attributes
+                retrieveAttributes(email, loginModal);
 
-                        // Update currency (API Gateway)
-                        let xhr = new XMLHttpRequest();
-                        xhr.open("POST", _config.api.invokeUrl + "/cognito/user-attribute/update-currency");
-                        xhr.setRequestHeader("Authorization", idToken);
-                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                        xhr.send(JSON.stringify({ "userName" : email}));
-                        xhr.onreadystatechange = function () {
-                          if(xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                            let respBody = JSON.parse(xhr.responseText)['body-json'];
-                            // Assign current currency and locale based on IP
-                            window.currentUser.currency = respBody.currency;
-                            window.currentUser.locale = respBody.locale;
-                            // We save the item in the localStorage.
-                            localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
-                          }
-                          // Hide Modal
-                          loginModal.modal('hide');
-
-                          // Show verification btn
-                          verifyLoader.classList.add('d-none');
-                          verifyButton.classList.remove('d-none');
-                        };
-                    },
-                    function signinError(err) {
-                        // Show verification btn
-                        verifyLoader.classList.add('d-none');
-                        verifyButton.classList.remove('d-none');
-
-                        // Toggle Sign In
-                        toggleLogin(email);
-
-                        handleSessionErrors(err,email,password,'errorLoginPopup');
-                    }
-                );
+                // Show verification btn
+                verifyLoader.classList.add('d-none');
+                verifyButton.classList.remove('d-none');
             },
             function verifyError(err) {
                 document.getElementById('errorLoginPopup').innerText = err.message;
@@ -619,14 +482,26 @@ var AWSCogUser = window.AWSCogUser || {};
         	currenElem.classList.remove('d-none');
         }, 60000);
 
-        createCognitoUser(email).resendConfirmationCode(function(err, result) {
-            if (err) {
+
+        // Authentication Details
+        let values = {};
+        values.username = email;
+
+        // Resend Confirmation code
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: function(result) {
+                // Hide Loader
+                resendLoader.classList.add('d-none');
+                successLP.appendChild(successSvgMessage());
+              },
+              error: function(err) {
                 errorLP.appendChild(err.message);
-                return;
-            } 
-            // Hide Loader
-            resendLoader.classList.add('d-none');
-            successLP.appendChild(successSvgMessage());
+              }
         });
 
         // Change focus to code
@@ -733,7 +608,6 @@ var AWSCogUser = window.AWSCogUser || {};
     function forgotPassword(forgotPass, resendloader) {
         
         let emailInputSignin = document.getElementById('emailInputSignin').value;
-        let cognitoUser = createCognitoUser(emailInputSignin);
         let loginModal = $('#loginModal');
         let newPassword = document.getElementById('passwordInputSignin').value;
 
@@ -762,99 +636,116 @@ var AWSCogUser = window.AWSCogUser || {};
         // Turn on Loader
         forgotPass.classList.add('d-none');
         resendLoader.classList.remove('d-none');
-        
-        cognitoUser.forgotPassword({
-            onSuccess: function (result) {
-                signin(emailInputSignin, newPassword,
-                    function signinSuccess(result) {
+
+
+        // Authentication Details
+        let values = {};
+        values.username = emailInputSignin;
+
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.profile.forgotPassword,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: function(result) {
+                fireConfirmForgotPasswordSwal(emailInputSignin, newPassword);
+              },
+              error: function(err) {
+                document.getElementById('errorLoginPopup').innerText = err.message;
+                resendloader.classList.add('d-none');
+                forgotPass.classList.remove('d-none');
+              }
+        });
+    }
+
+    function fireConfirmForgotPasswordSwal(email, password) {
+        // Show Sweet Alert
+        Swal.fire({
+            title: 'Verification Code',
+            html: 'Verification code has been sent to <strong>' + emailInputSignin + '</strong>', 
+            input: 'text',
+            confirmButtonClass: 'btn btn-dynamic-color',
+            confirmButtonText: 'Verify Email',
+            showCloseButton: true,
+            showCancelButton: false,
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false,
+            customClass: {
+                input: 'vcClassLP'
+            },
+            onOpen: (docVC) => {
+                $( ".swal2-input" ).keyup(function() {
+                    // Input Key Up listener
+                    let inputVal = this.value;
+
+                    if(inputVal.length == 6) {
+                        Swal.clickConfirm();
+                    }
+
+                });
+            },
+            inputValidator: (value) => {
+                if (!value) {
+                  return 'Verification code cannot be empty'
+                }
+
+                if(value.length < 6) {
+                    return 'Verification code should be 6 characters in length';
+                }
+
+                if(isNaN(value)) {
+                    return 'Verification code can only contain numbers';
+                }
+            },
+            showClass: {
+               popup: 'animated fadeInDown faster'
+            },
+            hideClass: {
+               popup: 'animated fadeOutUp faster'
+            },
+            onClose: () => {
+                $( ".swal2-input" ).off('keyup');
+            }
+        }).then(function(result) {
+            if(result.value) {
+                let verificationCode = document.getElementsByClassName("swal2-input" )[0];
+
+                // Authentication Details
+                let values = {};
+                values.username = email;
+                values.password = password;
+                values.confirmationCode = verificationCode;
+
+                // Authenticate Before cahnging password
+                $.ajax({
+                      type: 'POST',
+                      url: window._config.api.invokeUrl + window._config.api.profile.confirmForgotPassword,
+                      dataType: 'json',
+                      contentType: "application/json;charset=UTF-8",
+                      data : JSON.stringify(values),
+                      success: function(result) {
                         // Loads the current Logged in User Attributes
-                        retrieveAttributes(emailInputSignin, loginModal);
+                        retrieveAttributes(result, loginModal);
 
                         // Post success message
                         document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
 
-                        // Set JWT Token For authentication
-                        let idToken = JSON.stringify(result.idToken.jwtToken);
-                        idToken = idToken.substring(1, idToken.length -1);
-                        localStorage.setItem('idToken' , idToken) ;
-                        window.authHeader = idToken;
-                        
-                    },
-                    function signinError(err) {
+                      },
+                      error: function(err) {
                         handleSessionErrors(err,email,password,'errorLoginPopup');
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
-                    }
-                );
-            },
-            onFailure: function(err) {
-                document.getElementById('errorLoginPopup').innerText = err.message;
-                resendloader.classList.add('d-none');
-                forgotPass.classList.remove('d-none');
-            },
-            inputVerificationCode() {
-                // Element inputVerifcicationCode
-                let inputVC = this;
-
-                // Show Sweet Alert
-                Swal.fire({
-                    title: 'Verification Code',
-                    html: 'Verification code has been sent to <strong>' + emailInputSignin + '</strong>', 
-                    input: 'text',
-                    confirmButtonClass: 'btn btn-dynamic-color',
-                    confirmButtonText: 'Verify Email',
-                    showCloseButton: true,
-                    showCancelButton: false,
-                    allowEscapeKey: false,
-                    allowOutsideClick: false,
-                    closeOnClickOutside: false,
-                    customClass: {
-                        input: 'vcClassLP'
-                    },
-                    onOpen: (docVC) => {
-                        $( ".swal2-input" ).keyup(function() {
-                            // Input Key Up listener
-                            let inputVal = this.value;
-
-                            if(inputVal.length == 6) {
-                                Swal.clickConfirm();
-                            }
-
-                        });
-                    },
-                    inputValidator: (value) => {
-                        if (!value) {
-                          return 'Verification code cannot be empty'
-                        }
-
-                        if(value.length < 6) {
-                            return 'Verification code should be 6 characters in length';
-                        }
-
-                        if(isNaN(value)) {
-                            return 'Verification code can only contain numbers';
-                        }
-                    },
-                    showClass: {
-                       popup: 'animated fadeInDown faster'
-                    },
-                    hideClass: {
-                       popup: 'animated fadeOutUp faster'
-                    },
-                    onClose: () => {
-                        $( ".swal2-input" ).off('keyup');
-                    }
-                }).then(function(result) {
-                    if(result.value) {
-                        let verificationCode = document.getElementsByClassName("swal2-input" )[0];
-                        cognitoUser.confirmPassword(verificationCode.value, newPassword, inputVC);
-                    }
+                      }
                 });
                 
             }
-         });
+        });
+        
     }
 
     // call this before showing SweetAlert:
@@ -888,15 +779,6 @@ var AWSCogUser = window.AWSCogUser || {};
 
     // Signout the user and redirect to home page
     function signoutUser() {
-            
-        // Fetch user from local storage
-        let userPool = fetchUserFromLocalStorage();
-        let cognitoUser = userPool.getCurrentUser();
-        
-        if(cognitoUser != null) {
-            // Signout user from cognito
-            cognitoUser.signOut();
-        }
 
         // Clear all local stroage
         localStorage.clear();
@@ -984,34 +866,142 @@ var AWSCogUser = window.AWSCogUser || {};
         document.getElementById('password2InputRegister').focus();
     }
 
-    // Fetch User From Local Storage 
-    function fetchUserFromLocalStorage() {
-        
-        // Configure the pool data from the config.js
-        let poolData = {
-            UserPoolId: _config.cognito.userPoolId,
-            ClientId: _config.cognito.userPoolClientId
-        };
-
-        let userPool;
-
-        // If the config for the cognito is missing
-        if (!(_config.cognito.userPoolId &&
-              _config.cognito.userPoolClientId &&
-              _config.cognito.region)) {
-            showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-            return;
-        }
-        
-        // Get the user pool from Cognito
-        userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        if (typeof AWSCognito !== 'undefined') {
-            AWSCognito.config.region = _config.cognito.region;
-        }
-        
-        return userPool;
-    }
-
 
 }(jQuery));
+
+/*global AWSCogUser _config*/
+
+// Session invalidated as 0 on start up
+window.sessionInvalidated = 0;
+// Already requested refresh to false
+window.alreadyRequestedRefresh = false;
+// Reset the window.afterRefreshAjaxRequests token
+window.afterRefreshAjaxRequests = [];
+
+uh = {
+    
+    refreshToken(ajaxData) {
+        
+        // If window.afterRefreshAjaxRequests is empty then reinitialize it
+        if(isEmpty(window.afterRefreshAjaxRequests)) {
+            window.afterRefreshAjaxRequests = [];
+        }
+
+        window.afterRefreshAjaxRequests.push(ajaxData);
+
+        // If a refresh was already requested (DO NOTHING)
+        if(window.alreadyRequestedRefresh) {
+            return;
+        }
+        window.alreadyRequestedRefresh = true;
+        
+        // Authentication Details
+        let values = {};
+        values.refreshToken = window.refreshToken;
+
+        // Authenticate Before cahnging password
+        $.ajax({
+              type: 'POST',
+              url: window._config.api.invokeUrl + window._config.api.profile.refreshToken,
+              dataType: 'json',
+              contentType: "application/json;charset=UTF-8",
+              data : JSON.stringify(values),
+              success: function(result) {
+                // Session Refreshed
+                window.sessionInvalidated++;
+                window.alreadyRequestedRefresh = false;
+                // Set JWT Token For authentication
+                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+                localStorage.setItem('idToken' , idToken) ;
+                window.authHeader = idToken;
+
+                // If ajax Data is empty then don't do anything
+                if(isEmpty(window.afterRefreshAjaxRequests)) {
+                    return;
+                }
+                let af = window.afterRefreshAjaxRequests;
+
+                for(let i = 0, l = af.length; i < l; i++) {
+                    let ajData = af[i];
+                    
+                    // Do the Ajax Call that failed
+                    if(ajData.isAjaxReq) {
+                        let ajaxParams = {
+                              type: ajData.type,
+                              url: ajData.url,
+                              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
+                              error: ajData.onFailure
+                        };
+
+                        if(isNotEmpty(ajData.dataType)) {
+                            ajaxParams.dataType =  ajData.dataType;
+                        } 
+
+                        if(isNotEmpty(ajData.data)) {
+                            ajaxParams.data = ajData.data;
+                        }
+
+                        if(isNotEmpty(ajData.contentType)) {
+                            ajaxParams.contentType = ajData.contentType;
+                        }
+
+                        if(isNotEmpty(ajData.onSuccess)) {
+                            ajaxParams.success = ajData.onSuccess;
+                        }
+
+                        // AJAX request
+                        $.ajax(ajaxParams);
+                    }
+                }
+                // Reset the window.afterRefreshAjaxRequests token
+                window.afterRefreshAjaxRequests = [];
+              },
+              error: function(err) {
+                // Session Refreshed
+                window.sessionInvalidated++;
+                window.alreadyRequestedRefresh = false;
+                showNotification(err.message,window._constants.notification.error);
+                er.showLoginPopup();
+              }
+        });
+    }
+}
+
+// Toggle login
+function toggleLogin(email) {
+    document.getElementById('google').classList.remove('d-none');
+    document.getElementById('facebook').classList.remove('d-none');
+    document.getElementById('twitter').classList.remove('d-none');
+    document.getElementById('gmail').classList.add('d-none');
+    document.getElementById('outlook').classList.add('d-none');
+
+    document.getElementById('loginModalTitle').innerText = 'Login';
+
+    document.getElementById('signinForm').classList.remove('d-none');
+
+    document.getElementById('verifyForm').classList.add('d-none');
+
+    if(isNotEmpty(email)) {
+        document.getElementById('emailInputVerify').value = email;
+    }
+
+    document.getElementById('emailDisplayVE').innerText = '';
+
+    document.getElementById('forgotPassLogin').classList.remove('d-none');
+
+    document.getElementById('resendCodeLogin').classList.add('d-none');
+    
+    // hide Signup
+    document.getElementById('registrationForm').classList.add('d-none');
+    
+    document.getElementById('emailInputRegister').value = '';
+    document.getElementById('passwordInputRegister').value = '';
+    
+    document.getElementById('successLoginPopup').innerText = '';
+    document.getElementById('errorLoginPopup').innerText = '';
+
+    document.getElementById('haveAnAccount').classList.add('d-none');
+
+    // Focus to email
+    document.getElementById('emailInputSignin').focus();
+}

@@ -4,7 +4,6 @@ const BANK_ACCOUNT_CONSTANTS = {};
 Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
 	'backslash': { value: '/', writable: false, configurable: false },
 	'bankAccountAddUrl' : { value: '/add', writable: false, configurable: false },
-	'bankAccountPreviewUrl' : { value: '/preview', writable: false, configurable: false },
 	'bankAccountSelectUrl' : { value: '/select', writable: false, configurable: false },
 	'bankAccountCategorizeUrl' : { value: '/categorize', writable: false, configurable: false },
 	'firstfinancialPortfolioId': { value : '?financialPortfolioId=', writable: false, configurable: false}
@@ -591,33 +590,10 @@ let tickIconSVG = tickIcon();
 
 // Custom Functions to fetch all accounts
 er_a = {
-	fetchBankAccountInfo() {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountPreviewUrl + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
-   		ajaxData.dataType = "json";
-   		ajaxData.onSuccess = function(bankAccountList) {
-        	  // Assign value to constant
-        	  bankAccountPreview = bankAccountList;
-        	  
-        	  er_a.populateBankInfo(bankAccountList);
-        }
-        ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-        }
-
-		$.ajax({
-	          type: ajaxData.type,
-	          url: ajaxData.url,
-	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: ajaxData.dataType,
-	          success : ajaxData.onSuccess,
-	          error: ajaxData.onFailure
-		});
-	},
+	
 	populateBankInfo(bankAccountsInfo) {
+		// Assign value to constant
+        window.bankAccountPreview = bankAccountsInfo;
 		// Populate empty bank account info
 		if(isEmpty(bankAccountsInfo)) {
 			populateEmptyAccountInfo();

@@ -736,23 +736,6 @@
 	*
 	**/
 
-	// Define Cognito User Pool adn Pool data
-	let poolData = {
-        UserPoolId: window._config.cognito.userPoolId,
-        ClientId: window._config.cognito.userPoolClientId
-    };
-
-    let userPool;
-
-    if (!(window._config.cognito.userPoolId &&
-          window._config.cognito.userPoolClientId &&
-          window._config.cognito.region)) {
-    	showNotification('There is an error configuring the user access. Please contact support!',window._constants.notification.error);
-        return;
-    }
-
-	userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
 	// Reset Account
 	document.getElementById('deleteWallet').addEventListener("click",function(e){
 		// If the manage wallets is not triggered then do not trigger popup
@@ -760,7 +743,6 @@
 			return;
 		}
 
-		let cognitoUser = userPool.getCurrentUser();
 		Swal.fire({
             title: 'Delete wallet',
             html: resetBBAccount(),
@@ -779,31 +761,37 @@
   			preConfirm: () => {
   				return new Promise(function(resolve) {
   					let confPasswordUA = document.getElementById('oldPasswordRP');
-  					 // Authentication Details
-				    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-			            Username: currentUser.email,
-			            Password: confPasswordUA.value
-			        });
+  					// Authentication Details
+			        let values = {};
+			        values.username = currentUser.email;
+			        values.password = confPasswordUA.value;
+			        values.checkPassword = true;
 
 	  				// Authenticate Before cahnging password
-			        cognitoUser.authenticateUser(authenticationDetails, {
-			            onSuccess: function signinSuccess(result) {
+	  				$.ajax({
+				          type: 'POST',
+				          url: PROFILE_CONSTANTS.signinUrl,
+				          dataType: 'json',
+				          contentType: "application/json;charset=UTF-8",
+				          data : JSON.stringify(values),
+				          success: function(result) {
 			            	// Hide loading 
-			               Swal.hideLoading();
-			               // Resolve the promise
-			               resolve();
-			            },
-			            onFailure: function signinError(err) {
-			            	// Hide loading 
-			               	Swal.hideLoading();
-			            	// Show error message
-			                Swal.showValidationMessage(
-					          `${err.message}`
-					        );
-					        // Change Focus to password field
-					        confPasswordUA.focus();
-			            }
-			        });
+			                Swal.hideLoading();
+			                // Resolve the promise
+			                resolve();
+
+			              },
+				  	      error: function(err) {
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${err.message}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
+				            }
+					});
   				});
   			},
   			allowOutsideClick: () => !Swal.isLoading(),

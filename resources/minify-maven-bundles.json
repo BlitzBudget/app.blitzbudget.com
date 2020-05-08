@@ -39,6 +39,7 @@
                 "/plugins/perfect-scrollbar.jquery.min.js",
                 "/plugins/moment.min.js",
                 "/dashboard/material-dashboard/material-dashboard.js",
+                "/profile/config.js",
                 "/dashboard/custom-dashboard.js",
                 "/dashboard/sidebar/sidebar.js",
                 "/plugins/sweetalert2.all.min.js",
@@ -46,18 +47,8 @@
                 "/dashboard/module/account.js",
                 "/dashboard/configuration/commonConfiguration.js",
                 "/plugins/libraries.js",
-                "/dashboard/support/askUsDirectly.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "cognito.js",
-            "files": [
-                "/cognito/config.js",
-                "/cognito/vendor/amazon-cognito-identity.min.js",
-            	"/cognito/vendor/aws-cognito-sdk.min.js",
-                "/cognito/cognito-auth.js",
-                "/cognito/cognito-helper.js"
+                "/dashboard/support/askUsDirectly.js",
+                "/profile/authentication.js"
             ]
         },
         {
@@ -86,7 +77,6 @@
             "name": "overview.all.js",
             "files": [
                 "/dashboard/overview/overview.js",
-                "/dashboard/overview/assetAndLiability.js",
                 "/dashboard/data/bankAccountCategories.js"
             ]
         },
@@ -106,11 +96,9 @@
                 "/core/bootstrap-material-design.min.js",
                 "/plugins/sweetalert2.all.min.js",
                 "/plugins/libraries.js",
-                "/cognito/config.js",
+                "/profile/config.js",
                 "/dashboard/configuration/commonConfiguration.js",
                 "/dashboard/data/currency-name-symbol.js",
-                "/cognito/vendor/amazon-cognito-identity.min.js",
-                "/cognito/vendor/aws-cognito-sdk.min.js",
                 "/dashboard/module/wallet.js"
             ]
         }
