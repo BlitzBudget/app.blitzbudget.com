@@ -211,6 +211,7 @@
         values.username = email;
         values.password = password;
         values.confirmationCode = code;
+        values.doNotCreateWallet = false;
 
         // Authenticate Before cahnging password
         $.ajax({

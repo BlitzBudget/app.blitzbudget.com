@@ -1308,6 +1308,7 @@
 				        values.username = emailModInp;
 				        values.password = confPasswordUA;
 				        values.confirmationCode = verificationCode.value;
+				        values.doNotCreateWallet = true;
 
 				        // Authenticate Before cahnging password
 				        $.ajax({
@@ -1321,6 +1322,13 @@
 	        					    currentUser.email = emailModInp;
 	        					    // store in session storage
 	        					    localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+
+	        					    // Store Auth Token
+								    storeAuthToken(result);
+								    // Store Refresh token
+								    storeRefreshToken(result);
+								    // Store Access Token
+								    storeAccessToken(result);
 
 	        					    // Hide loading 
 					                Swal.hideLoading();
@@ -1367,23 +1375,7 @@
 				        values.password = confPasswordUA;
 				        values.checkPassword = true;
 
-		  				// Authenticate Before cahnging password
-		  				$.ajax({
-					          type: 'POST',
-					          url: PROFILE_CONSTANTS.signinUrl,
-					          dataType: 'json',
-					          contentType: "application/json;charset=UTF-8",
-					          data : JSON.stringify(values),
-					          success: function(result) {
-				            	showNotification('Successfully changed the email!',window._constants.notification.success);
-				              },
-					  	      error: function(err) {
-					               // Login Modal
-					               er.sessionExpiredSwal(true);
-					               // Notification
-					               showNotification('Password entered is invalid',window._constants.notification.error);
-					          }
-						});
+				        showNotification('Successfully changed the email!',window._constants.notification.success);
 		              },
 		              error: function(err) {
 		              	showNotification(err.message,window._constants.notification.error);
