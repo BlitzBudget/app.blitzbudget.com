@@ -269,7 +269,7 @@
 			showNotification('Successfully changed the password!',window._constants.notification.success);
 		}
 	    ajaxData.onFailure = function(data) {
-	    	showNotification(err.message,window._constants.notification.error);
+	    	showNotification(data.message,window._constants.notification.error);
             return;
 	    }
 
@@ -1216,7 +1216,7 @@
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
-              url: window._config.api.invokeUrl + window._config.api.signup,
+              url: window._config.api.invokeUrl + window._config.api.profile.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
