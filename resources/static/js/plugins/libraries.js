@@ -232,10 +232,8 @@ function getAllUrlParams(url) {
 
 // Manage errors
 function manageErrors(thrownError, message, ajaxData) {
-	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+	if(isNotEmpty(thrownError.message)) {
 		showNotification(message,window._constants.notification.error);
-	} else if(isNotEmpty(thrownError.message)) {
-		showNotification(thrownError.message,window._constants.notification.error);
 	} else {
 		let responseError = JSON.parse(thrownError.responseText);
    	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
