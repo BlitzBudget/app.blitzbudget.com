@@ -10,7 +10,8 @@ window._config = {
             resendConfirmationCode : '/profile/resend-confirmation-code',
             forgotPassword: '/profile/forgot-password',
             confirmForgotPassword: '/profile/confirm-forgot-password',
-            deleteUser: '/profile/delete-user'
+            deleteUser: '/profile/delete-user',
+            changePassword: '/profile/change-password',
         }
     },
     home: {

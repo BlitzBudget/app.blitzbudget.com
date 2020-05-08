@@ -16,17 +16,10 @@
             return;
         }
 
-        // Set JWT Token For authentication
-        let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-        idToken = idToken.substring(1,idToken.length - 1);
-        localStorage.setItem('idToken' , idToken) ;
-        window.authHeader = idToken;
-
-        // Set JWT Token For authentication
-        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
-        refreshToken = refreshToken.substring(1,refreshToken.length - 1);
-        localStorage.setItem('refreshToken' , refreshToken) ;
-        window.refreshToken = refreshToken;
+        // Store Auth Token
+        storeAuthToken(result);
+        // Store Refresh token
+        storeRefreshToken(result);
 
         let currentUserLocal = {};
         currentUserLocal.email = result.Username;
@@ -55,6 +48,22 @@
         fillCurrencyAndName();
         // Hide Modal
         if(loginModal) loginModal.modal('hide');
+    }
+
+    function storeRefreshToken(result) {
+        // Set JWT Token For authentication
+        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+        refreshToken = refreshToken.substring(1,refreshToken.length - 1);
+        localStorage.setItem('refreshToken' , refreshToken) ;
+        window.refreshToken = refreshToken;
+    }
+
+    function storeAccessToken(result) {
+        // Set JWT Token For authentication
+        let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        accessToken = accessToken.substring(1,accessToken.length - 1);
+        localStorage.setItem('accessToken' , accessToken) ;
+        window.accessToken = accessToken;
     }
 
     // Fill currency and name
@@ -244,15 +253,9 @@
                 unlockLoader.classList.add('d-none');
                 unlockApplication.classList.remove('d-none');
 
-                // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-                localStorage.setItem('idToken' , idToken) ;
-                window.authHeader = idToken;
-
-                // Set JWT Token For authentication
-                let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
-                localStorage.setItem('refreshToken' , refreshToken) ;
-                window.refreshToken = refreshToken;
+                storeAuthToken(result);
+                storeRefreshToken(result);
+                storeAccessToken(result);
 
                 // Session invalidated as 0 on start up
                 window.sessionInvalidated = 0;
@@ -881,6 +884,14 @@ window.alreadyRequestedRefresh = false;
 // Reset the window.afterRefreshAjaxRequests token
 window.afterRefreshAjaxRequests = [];
 
+function storeAuthToken(result) {
+    // Set JWT Token For authentication
+    let idToken = JSON.stringify(result.AuthenticationResult.IdToken);
+    idToken = idToken.substring(1,idToken.length - 1);
+    localStorage.setItem('idToken' , idToken) ;
+    window.authHeader = idToken;
+}
+
 uh = {
     
     refreshToken(ajaxData) {
@@ -902,6 +913,15 @@ uh = {
         let values = {};
         values.refreshToken = window.refreshToken;
 
+        /*
+        * Max refresh token is 5
+        */
+        if(window.sessionInvalidated == 2) {
+            window.sessionInvalidated = 0;
+            er.showLoginPopup();
+            return;
+        }
+
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
@@ -913,10 +933,9 @@ uh = {
                 // Session Refreshed
                 window.sessionInvalidated++;
                 window.alreadyRequestedRefresh = false;
-                // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-                localStorage.setItem('idToken' , idToken) ;
-                window.authHeader = idToken;
+
+                storeAuthToken(result);
+                storeAccessToken(result);
 
                 // If ajax Data is empty then don't do anything
                 if(isEmpty(window.afterRefreshAjaxRequests)) {
@@ -932,7 +951,7 @@ uh = {
                         let ajaxParams = {
                               type: ajData.type,
                               url: ajData.url,
-                              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
+                              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
                               error: ajData.onFailure
                         };
 

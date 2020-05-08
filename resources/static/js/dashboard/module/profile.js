@@ -249,15 +249,28 @@
 	}
 
 	 // Change Password Flow
-    function changePassword(oldPassword, newPassword, cognitoUser) {
+    function changePassword(oldPassword, newPassword) {
 
-        // Loads the current Logged in User Attributes
-        cognitoUser.changePassword(oldPassword, newPassword, function(err, result) {
-            if (err) {
-                showNotification(err.message,window._constants.notification.error);
-                return;
-            }
-            showNotification('Successfully changed the password!',window._constants.notification.success);
+    	// Authentication Details
+        let values = {};
+        values.previousPassword = currentUser.email;
+        values.newPassword = confPasswordUA.value;
+        values.accessToken = window.accessToken;
+
+		// Authenticate Before cahnging password
+		$.ajax({
+          type: 'POST',
+          url: PROFILE_CONSTANTS.signinUrl,
+          dataType: 'json',
+          contentType: "application/json;charset=UTF-8",
+          data : JSON.stringify(values),
+          success: function(result) {
+          	showNotification('Successfully changed the password!',window._constants.notification.success);
+          },
+  	      error: function(err) {
+            showNotification(err.message,window._constants.notification.error);
+            return;
+          }
         });
                 
     }
@@ -326,7 +339,7 @@
             if (result.value) {
             	// dispose the tool tip once the swal is closed
             	$("#input-pass-cp").tooltip("dispose");
-                changePassword(oldPassword, newPassword, cognitoUser);
+                changePassword(oldPassword, newPassword);
             }
 
         });
@@ -1162,7 +1175,7 @@
             // If confirm button is clicked
             if (result.value) {
                 // Update User Email 
-				updateEmail(emailModInp, confPasswordUA, cognitoUser);
+				updateEmail(emailModInp, confPasswordUA);
             }
 
         });
@@ -1178,7 +1191,7 @@
 	}
 
 	// Update User Attribute Email
-    function updateEmail(emailModInp, confPasswordUA, cognitoUser) {
+    function updateEmail(emailModInp, confPasswordUA) {
 
 
 	      // Authentication Details
@@ -1197,7 +1210,7 @@
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
               success: function(result) {
-              		signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
+              		signUpSuccessCB(result, confPasswordUA, emailModInp);
               		
               },
               error: function(err) {
@@ -1225,7 +1238,7 @@
     /**
     *  Upon successful sign up call
     **/
-    function signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser) {
+    function signUpSuccessCB(result, confPasswordUA, emailModInp) {
 
     	// Show Sweet Alert
         Swal.fire({
@@ -1362,18 +1375,6 @@
 		          });
         	}
         });
-    }
-
-    /* 
-     * Create Attribute for user
-     */
-    function createAttribute(nameAttr, valAttr) {
-    	let dataAttribute = {
-                Name: nameAttr,
-                Value: valAttr
-        };
-    	
-        return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
     }
 
     /**
