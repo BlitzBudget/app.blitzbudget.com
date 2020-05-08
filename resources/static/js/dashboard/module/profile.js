@@ -1345,6 +1345,10 @@
         	if(result.value) {
         		// Hide the validation message if present
 	        	Swal.resetValidationMessage();
+	        	// Authentication Details
+		        let values = {};
+		        values.accessToken = window.accessToken;
+		        
 	       		// Delete the registered user 
 		        $.ajax({
 		              type: 'POST',
@@ -1352,6 +1356,7 @@
 		              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		              dataType: 'json',
 		              contentType: "application/json;charset=UTF-8",
+		              data : JSON.stringify(values),
 		              success: function(result){
 		              	// Update email
 				        document.getElementById('emailProfileDisplay').innerText = emailModInp;
