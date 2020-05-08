@@ -257,22 +257,32 @@
         values.newPassword = newPassword;
         values.accessToken = window.accessToken;
 
-		// Authenticate Before cahnging password
-		$.ajax({
-          type: 'POST',
-          url: window._config.api.invokeUrl + window._config.api.profile.changePassword,
-          dataType: 'json',
-          contentType: "application/json;charset=UTF-8",
-          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-          data : JSON.stringify(values),
-          success: function(result) {
-          	showNotification('Successfully changed the password!',window._constants.notification.success);
-          },
-  	      error: function(err) {
-            showNotification(err.message,window._constants.notification.error);
+        // Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = window._config.api.invokeUrl + window._config.api.profile.changePassword;
+   		ajaxData.dataType = "json"; 
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.data = JSON.stringify(values);
+		ajaxData.onSuccess = function(data) {
+			showNotification('Successfully changed the password!',window._constants.notification.success);
+		}
+	    ajaxData.onFailure = function(data) {
+	    	showNotification(err.message,window._constants.notification.error);
             return;
-          }
-        });
+	    }
+
+	    $.ajax({
+	          type: ajaxData.type,
+	          url: ajaxData.url,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType,
+	          data : ajaxData.data,
+	          success: ajaxData.onSuccess,
+	  	      error: ajaxData.onFailure
+		});
                 
     }
 
