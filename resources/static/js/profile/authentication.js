@@ -1,8 +1,6 @@
 "use strict";
 
 (function scopeWrapper($) {
-    let signinUrl = 'login';
-    let successfulSigninUrl = 'https://app.blitzbudget.com/home';
 
     /**
     * Retrieve Attributes
@@ -20,7 +18,6 @@
 
         // Set JWT Token For authentication
         let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-        console.log("id token %j", idToken);
         localStorage.setItem('idToken' , idToken) ;
         window.authHeader = idToken;
 
@@ -78,6 +75,34 @@
 
     // Handle Session Errors
     function handleSessionErrors(err,email,pass,errM) {
+
+        console.log("The user error ", err)
+        console.log("The user error ", JSON.parse(err));
+        console.log("The user error ", JSON.parse(err.errorMessage));
+
+        /*
+         * User Does not Exist
+         */
+        if(stringIncludes(err.code,"UserNotFoundException")) {
+            toggleSignUp(email,pass);
+            return;
+        }
+        
+        /*
+         * User Not Confirmed
+         */
+        if(stringIncludes(err.code,"UserNotConfirmedException")) {
+            // Verify Account
+            toggleVerification(email);
+            return;
+        }
+        
+        /*
+         * PasswordResetRequiredException
+         */
+        if(stringIncludes(err.code,"PasswordResetRequiredException")) {
+            // TODO
+        }
 
         /**
         *   Other Errors
