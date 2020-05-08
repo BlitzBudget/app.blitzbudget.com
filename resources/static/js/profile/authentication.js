@@ -18,11 +18,13 @@
 
         // Set JWT Token For authentication
         let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        idToken = idToken.substring(1,idToken.length - 1);
         localStorage.setItem('idToken' , idToken) ;
         window.authHeader = idToken;
 
         // Set JWT Token For authentication
         let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+        refreshToken = refreshToken.substring(1,refreshToken.length - 1);
         localStorage.setItem('refreshToken' , refreshToken) ;
         window.refreshToken = refreshToken;
 
@@ -659,7 +661,7 @@
     function fireConfirmForgotPasswordSwal(email, password) {
         let confirmationCode;
         let loginModal = $('#loginModal');
-        
+
         // Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
