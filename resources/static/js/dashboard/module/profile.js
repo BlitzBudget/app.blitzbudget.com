@@ -263,6 +263,7 @@
           url: window._config.api.invokeUrl + window._config.api.profile.changePassword,
           dataType: 'json',
           contentType: "application/json;charset=UTF-8",
+          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
           data : JSON.stringify(values),
           success: function(result) {
           	showNotification('Successfully changed the password!',window._constants.notification.success);
