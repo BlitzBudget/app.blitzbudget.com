@@ -75,7 +75,7 @@
 		// Set Param Val combination
 		let values = {};
 		values['currency'] = chosenCurrency;
-		values['userId'] = parseInt(currentUser.financialPortfolioId);
+		values['userId'] = window.currentUser.financialPortfolioId;
 		values['readOnly'] = false;
 		values = JSON.stringify(values);
 
@@ -362,7 +362,7 @@
 		walletDiv.appendChild(buildLoadingWallet());
 
 		jQuery.ajax({
-			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstuserIdParams + parseInt(currentUser.financialPortfolioId),
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstuserIdParams + window.currentUser.financialPortfolioId,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'GET',
 	        contentType: "application/json;charset=UTF-8",
@@ -992,7 +992,7 @@
 			values['currency'] = chosenCurrencyMW;
 		}
 		values['walletId'] = chosenWallet;
-		values['userId'] = parseInt(currentUser.financialPortfolioId);
+		values['userId'] = window.currentUser.financialPortfolioId;
 
 
 		updateRelevantTextInCard(values);

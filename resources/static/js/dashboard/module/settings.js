@@ -316,7 +316,7 @@
 		let values = {};
 		values['currency'] = chosenCurrencyMW;
 		values['walletId'] = currentUser.walletId;
-		values['userId'] = parseInt(currentUser.financialPortfolioId);
+		values['userId'] = currentUser.financialPortfolioId;
 
 		jQuery.ajax({
 			url: window._config.api.invokeUrl + SETTINGS_CONSTANTS.walletUrl,
