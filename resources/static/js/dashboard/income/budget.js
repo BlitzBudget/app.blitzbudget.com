@@ -95,6 +95,9 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
+            dataType: ajaxData.dataType,
+          	contentType: ajaxData.contentType,
+          	data : ajaxData.values,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});

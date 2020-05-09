@@ -49,7 +49,7 @@
 
         let currentUserLocal = {};
         currentUserLocal.email = result.Username;
-        let firstWallet = result.Wallet[0];
+        let firstWallet = result.Wallet;
         let userAttributes = result.UserAttributes;
         // SUCCESS Scenarios
         for (i = 0; i < userAttributes.length; i++) {
@@ -64,9 +64,11 @@
             }
         }
 
-        // Set wallet information
-        currentUserLocal.walletId = firstWallet.walletId;
-        currentUserLocal.walletCurrency = firstWallet.currency;
+        if(isNotEmpty(firstWallet)) {
+            // Set wallet information
+            currentUserLocal.walletId = firstWallet[0].walletId;
+            currentUserLocal.walletCurrency = firstWallet[0].currency;
+        }
         // Replace with currency
         replaceWithCurrency();
         // Current User to global variable
