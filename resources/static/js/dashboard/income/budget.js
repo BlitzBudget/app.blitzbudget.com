@@ -29,11 +29,18 @@
 	// Fetches all the user budget and displays them in the user budget
 	function fetchAllUserBudget() {
 		let budgetDivFragment = document.createDocumentFragment();
+
+		let values = {};
+		values.walletId = window.currentUser.walletId;
+
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
    		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate.toISOString();
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(data) {
         	let dataKeySet = Object.keys(data);
         	for(let count = 0, length = dataKeySet.length; count < length; count++){

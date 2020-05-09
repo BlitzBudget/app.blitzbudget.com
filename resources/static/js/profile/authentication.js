@@ -89,14 +89,6 @@
         window.refreshToken = refreshToken;
     }
 
-    function storeAccessToken(result) {
-        // Set JWT Token For authentication
-        let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-        accessToken = accessToken.substring(1,accessToken.length - 1);
-        localStorage.setItem('accessToken' , accessToken) ;
-        window.accessToken = accessToken;
-    }
-
     // Fill currency and name
     function fillName() {
         if(currentUser.name) {
@@ -915,6 +907,14 @@ function storeAuthToken(result) {
     idToken = idToken.substring(1,idToken.length - 1);
     localStorage.setItem('idToken' , idToken) ;
     window.authHeader = idToken;
+}
+
+function storeAccessToken(result) {
+    // Set JWT Token For authentication
+    let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+    accessToken = accessToken.substring(1,accessToken.length - 1);
+    localStorage.setItem('accessToken' , accessToken) ;
+    window.accessToken = accessToken;
 }
 
 uh = {
