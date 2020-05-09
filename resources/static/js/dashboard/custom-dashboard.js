@@ -1081,10 +1081,10 @@ function calculateWalletAttributes() {
 		window.currentUser.walletId = window.currentUser.financialPortfolioId;
 	}
 
-	if(isEmpty(window.currentUser.walletCurrency)) {
-		window.currentUser.walletCurrency = window.currentUser.currency;
+	if(isEmpty(window.currentUser.currency)) {
+		window.currentUser.currency = window.currentUser.walletCurrency;
 	}
 
 	// update currency
-	window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
+	window.currentCurrencyPreference = isEmpty(window.currentUser.currency) ? window.currentUser.walletCurrency : window.currentUser.currency;
 }
