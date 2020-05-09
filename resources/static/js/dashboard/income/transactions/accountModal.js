@@ -193,7 +193,7 @@
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${err.message}`
+						          `${lastElement(err.errorMessage.split(':')}`
 						        );
 						        // Change Focus to password field
 							    confPasswordUA.focus();

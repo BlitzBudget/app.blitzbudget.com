@@ -331,7 +331,7 @@
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${err.message}`
+						          `${lastElement(err.errorMessage.split(':')}`
 						        );
 						        // Change Focus to password field
 							    confPasswordUA.focus();
@@ -429,7 +429,7 @@
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${err.message}`
+						          `${lastElement(err.errorMessage.split(':')}`
 						        );
 						        // Change Focus to password field
 							    confPasswordUA.focus();
@@ -522,7 +522,7 @@
 					               	Swal.hideLoading();
 					            	// Show error message
 					                Swal.showValidationMessage(
-							          `${err.message}`
+							          `${lastElement(err.errorMessage.split(':')}`
 							        );
 							        // Change Focus to password field
 								    confPasswordUA.focus();
@@ -966,7 +966,8 @@
 
     	let values = JSON.stringify({
     		"name" : firstName,
-    		"family_name" : lastName
+    		"family_name" : lastName,
+    		"userName" : currentUser.email
     	});
 
     	// Ajax Requests on Error
@@ -1169,7 +1170,7 @@
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${err.message}`
+						          `${lastElement(err.errorMessage.split(':')}`
 						        );
 						        // Change Focus to password field
 							    confPasswordUA.focus();
@@ -1250,7 +1251,7 @@
     *  Upon successful sign up call
     **/
     function signUpSuccessCB(result, confPasswordUA, emailModInp) {
-
+    	let oldUserAcessToken = '';
     	// Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
@@ -1323,6 +1324,8 @@
 	        					    // store in session storage
 	        					    localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 
+	        					    // Accesstoken of previous user
+	        					    oldUserAcessToken = window.accessToken;
 	        					    // Store Auth Token
 								    storeAuthToken(result);
 								    // Store Refresh token
@@ -1340,7 +1343,7 @@
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${err.message}`
+						          `${lastElement(err.errorMessage.split(':')}`
 						        );
 						        // Change Focus to password field
 							    verificationCode.focus();
@@ -1355,7 +1358,7 @@
 	        	Swal.resetValidationMessage();
 	        	// Authentication Details
 		        let values = {};
-		        values.accessToken = window.accessToken;
+		        values.accessToken = oldUserAcessToken;
 		        
 	       		// Delete the registered user 
 		        $.ajax({
