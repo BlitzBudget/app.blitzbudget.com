@@ -13,7 +13,8 @@
 	Object.defineProperties(SETTINGS_CONSTANTS, {
 		'devicesUrl': { value: '/profile/devices', writable: false, configurable: false },
 		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false }
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
+		'walletUrl': { value: '/wallet', writable: false, configurable: false }
 	});
 
 	// Display Email for devices
@@ -277,7 +278,8 @@
 	    /*close all autocomplete lists in the document,
 	    except the one passed as an argument:*/
 	    let x = elmnt.getElementsByClassName("autocomplete-items");
-	    for (let i = 0, len = x.length; i < len; i++) {
+	    for (let i = 0,
+	     len = x.length; i < len; i++) {
 	      if (elmnt != x[i]) {
 	        x[i].parentNode.removeChild(x[i]);
 	      }
@@ -295,12 +297,75 @@
 			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, valObj);
 		} else if(isEqual(id, chooseCrncyId)) {
 			let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
-			updateUserAttr('currency', cToS[this.lastChild.value], this, valObj);
+			patchWallets(cToS[this.lastChild.value], this, valObj);
 		} else if(isEqual(id, "chosenExportFileFormatDD")) {
 			let valObj = { parentElId : "exportFileFormat", valueChosen : this.lastChild.value};
 			updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
 		}
 	});
+
+	/**
+	*
+	* Patch Wallets
+	*
+	**/
+	function patchWallets(chosenCurrencyMW, event, valObj) {
+		let oldValInTe = '';
+		let inpId = '';
+		// Fetch the display btn for auto complete
+		inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
+		oldValInTe = document.getElementById(inpId).innerText;
+		// Update the button to new value
+		document.getElementById(inpId).innerText = event.lastChild.value;
+		// Set Param Val combination
+		let values = {};
+		values['currency'] = chosenCurrencyMW;
+		values['walletId'] = currentUser.walletId;
+		values['userId'] = parseInt(currentUser.financialPortfolioId);
+
+		jQuery.ajax({
+			url: window._config.api.invokeUrl + SETTINGS_CONSTANTS.walletUrl,
+			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
+	        type: 'PATCH',
+	        contentType: "application/json;charset=UTF-8",
+	        data : JSON.stringify(values),
+	        success: function(result) {
+	        	// After a successful updation of parameters to cache
+		        currentUser['currency'] = chosenCurrencyMW;
+		        // We save the item in the localStorage.
+	            localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+	            // Input search element
+				let inpBtnSrch = event.parentElement.id.replace('autocomplete-list','');
+				let inpSearchEl = document.getElementById(inpBtnSrch);
+            	let itemWithWallet = document.getElementById(valObj.parentElId);
+	            // First Child Input value
+	            let oldValText = itemWithWallet.firstChild.lastChild.value;
+	            // Replace HTML with Empty
+		 		while (itemWithWallet.firstChild) {
+		 			itemWithWallet.removeChild(itemWithWallet.firstChild);
+		 		}
+	            // Set the dropdown item current selection
+	            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
+	            // Set current Curreny preference
+            	// For upadting the javascript cache for currency
+            	currentCurrencyPreference = currentUser.currency;
+            	// Remove from List
+            	const index = currencies.indexOf(valObj.valueChosen);
+				if (index > -1) {
+				  currencies.splice(index, 1);
+				}
+            	// To be used for Auto complete
+            	currencies.push(oldValText);
+            	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(inpSearchEl, currencies, "chooseCurrencyDD");
+	        },
+	        error: function(thrownError) {
+	        	// Change button text to the old Inp value
+				document.getElementById(inpId).innerText = oldValInTe;
+				manageErrors(thrownError, "There was an error while updating. Please try again later!",ajaxData);
+	        }
+	    });
+	}
 
 	// Update user attributes
 	function updateUserAttr(param, paramVal, event, valObj) {

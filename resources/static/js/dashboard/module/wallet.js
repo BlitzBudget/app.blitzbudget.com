@@ -13,7 +13,7 @@
 	Object.defineProperties(WALLET_CONSTANTS, {
 		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
-		'firstFinancialPortfolioIdParams': { value: '?financialPortfolioId=', writable: false, configurable: false },
+		'firstuserIdParams': { value: '?userId=', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
 		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },
 		'referenceNumberParam': { value: '&referenceNumber=', writable: false, configurable: false },
@@ -75,7 +75,7 @@
 		// Set Param Val combination
 		let values = {};
 		values['currency'] = chosenCurrency;
-		values['financialPortfolioId'] = parseInt(currentUser.financialPortfolioId);
+		values['userId'] = parseInt(currentUser.financialPortfolioId);
 		values['readOnly'] = false;
 		values = JSON.stringify(values);
 
@@ -362,7 +362,7 @@
 		walletDiv.appendChild(buildLoadingWallet());
 
 		jQuery.ajax({
-			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstFinancialPortfolioIdParams + parseInt(currentUser.financialPortfolioId),
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstuserIdParams + parseInt(currentUser.financialPortfolioId),
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
 	        type: 'GET',
 	        contentType: "application/json;charset=UTF-8",
@@ -685,11 +685,7 @@
 	// Modify Wallet
 	document.getElementById('modifyWallet').addEventListener("click",function(e){
 		showAllWallets();
-		if(isEqual(window.currentUser.financialPortfolioId, chosenWallet)) {
-			updateCurrencyForDefaultWallet();
-		} else {
-			patchWallets();
-		}
+		patchWallets();
 	});
 
 	// Cancel modification
@@ -810,7 +806,7 @@
 				chosenDiv.addClass('d-none');
 
         	 	jQuery.ajax({
-					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstFinancialPortfolioIdParams + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false + WALLET_CONSTANTS.referenceNumberParam + currentUser.financialPortfolioId,
+					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstuserIdParams + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false + WALLET_CONSTANTS.referenceNumberParam + currentUser.financialPortfolioId,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			        type: 'DELETE',
 			        success: function(result) {
@@ -1000,7 +996,7 @@
 			values['currency'] = chosenCurrencyMW;
 		}
 		values['walletId'] = chosenWallet;
-		values['financialPortfolioId'] = parseInt(currentUser.financialPortfolioId);
+		values['userId'] = parseInt(currentUser.financialPortfolioId);
 
 
 		updateRelevantTextInCard(values);
@@ -1042,45 +1038,6 @@
 			// Change Currency
 			chosenDiv.find(".currency-desc").text(values.currency);
 		} 
-	}
-
-	/*
-	* Default Wallet
-	*/
-	function updateCurrencyForDefaultWallet() {
-
-		// Set Param Val combination
-		let values = {};
-		if(isNotEmpty(chosenCurrencyMW)) {
-			values['currency'] = chosenCurrencyMW;
-		}
-		values['userName'] = window.currentUser.email;
-
-		// Update relevant text in card
-		updateRelevantTextInCard(values);
-
-		values = JSON.stringify(values);
-
-	    jQuery.ajax({
-			url: window._config.api.invokeUrl + WALLET_CONSTANTS.userAttributeUrl,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
-	        type: 'POST',
-	        contentType: "application/json;charset=UTF-8",
-	        data : values,
-	        error: function(thrownError) {
-	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-					showNotification("Unexpected error occured while updating the wallet." ,window._constants.notification.error);
-				} else if(isNotEmpty(thrownError.message)) {
-					showNotification(thrownError.message,window._constants.notification.error);
-				} else {
-					let responseError = JSON.parse(thrownError.responseText);
-			   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-			    		// If the user is not authorized then redirect to application
-						window.location.href = '/';
-			    	}	
-				}
-	        }
-	    });
-	}
+	}	
 
 }(jQuery));	
