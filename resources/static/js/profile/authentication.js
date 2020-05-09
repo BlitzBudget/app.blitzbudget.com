@@ -49,8 +49,8 @@
         }
 
         // Set wallet information
-        currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
-        currentUserLocal.walletCurrency = currentUserLocal.currency;
+        currentUserLocal.walletId = result.Wallet[0].walletId;
+        currentUserLocal.walletCurrency = result.Wallet[0].currency;
         // Current User to global variable
         window.currentUser = currentUserLocal;
         // We save the item in the localStorage.
