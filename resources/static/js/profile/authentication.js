@@ -34,23 +34,24 @@
 
         let currentUserLocal = {};
         currentUserLocal.email = result.Username;
-        result = result.UserAttributes;
+        let firstWallet = result.Wallet[0];
+        let userAttributes = result.UserAttributes;
         // SUCCESS Scenarios
-        for (i = 0; i < result.length; i++) {
-            let name = result[i].Name;
+        for (i = 0; i < userAttributes.length; i++) {
+            let name = userAttributes[i].Name;
 
             if(name.includes('custom:')) {
                 // if custom values then remove custom: 
                 let elemName = lastElement(splitElement(name,':'));
-                currentUserLocal[elemName] = result[i].Value;
+                currentUserLocal[elemName] = userAttributes[i].Value;
             } else {
-                currentUserLocal[name] = result[i].Value;
+                currentUserLocal[name] = userAttributes[i].Value;
             }
         }
 
         // Set wallet information
-        currentUserLocal.walletId = result.Wallet[0].walletId;
-        currentUserLocal.walletCurrency = result.Wallet[0].currency;
+        currentUserLocal.walletId = firstWallet.walletId;
+        currentUserLocal.walletCurrency = firstWallet.currency;
         // Current User to global variable
         window.currentUser = currentUserLocal;
         // We save the item in the localStorage.
