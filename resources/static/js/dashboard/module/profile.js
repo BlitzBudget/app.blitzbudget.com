@@ -327,14 +327,16 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${lastElement(err.errorMessage.split(':')}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
 				            }
 					});
   				});
@@ -425,14 +427,16 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${lastElement(err.errorMessage.split(':')}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
 				            }
 					});
   				});
@@ -518,14 +522,16 @@
 
 				              },
 					  	      error: function(err) {
-					            	// Hide loading 
-					               	Swal.hideLoading();
-					            	// Show error message
-					                Swal.showValidationMessage(
-							          `${lastElement(err.errorMessage.split(':')}`
-							        );
-							        // Change Focus to password field
-								    confPasswordUA.focus();
+					  	      	// Error Message
+					  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${errMessage}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
 					            }
 						});
 	  				});
@@ -1166,14 +1172,16 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${lastElement(err.errorMessage.split(':')}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
 				            }
 					});
   				});
@@ -1339,11 +1347,13 @@
 					                resolve();
 				              },
 				              error: function(err) {
+				              	// Error Message
+				              	let errMessage = lastElement(err.errorMessage.split(':'));
 				              	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${lastElement(err.errorMessage.split(':')}`
+						          `${errMessage}`
 						        );
 						        // Change Focus to password field
 							    verificationCode.focus();
