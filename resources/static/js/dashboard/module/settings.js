@@ -331,7 +331,6 @@
 		let values = {};
 		values[param] = paramVal;
 		values['userName'] = currentUser.email;
-		values = JSON.stringify(values);
 
 		// Ajax Requests on Error
 		let ajaxData = {};
