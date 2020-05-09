@@ -2,6 +2,15 @@
 
 (function scopeWrapper($) {
 
+    // We retrieve the current user, but in a string form.
+    let currentCogUser = localStorage.getItem("currentUserSI");
+    window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
+    // If the session storage is present then
+    if(isNotEmpty(currentCogUser)) {
+        // Fill currency and Name
+        fillCurrencyAndName();   
+    }
+
     /**
     * Retrieve Attributes
     **/
@@ -70,17 +79,18 @@
 
     // Fill currency and name
     function fillCurrencyAndName() {
-        // Set Currency If empty
-        if(currentUser.currency && currentUser.name) {
-            window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
-            Object.freeze(window.currentCurrencyPreference);
-            Object.seal(window.currentCurrencyPreference);
-
+        if(currentUser.name) {
             // Set the name of the user
             let userName = document.getElementById('userName');
             if(userName) {
                 userName.innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
             }
+        }
+        // Set Currency If empty
+        if(currentUser.currency) {
+            window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
+            Object.freeze(window.currentCurrencyPreference);
+            Object.seal(window.currentCurrencyPreference);
             // Replace with currency
             replaceWithCurrency();
         }
