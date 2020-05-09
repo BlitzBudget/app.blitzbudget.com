@@ -328,7 +328,7 @@
 			              },
 				  	      error: function(err) {
 				  	      	// Error Message
-				  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
 			            	// Hide loading 
 			               	Swal.hideLoading();
 			            	// Show error message
@@ -428,7 +428,7 @@
 			              },
 				  	      error: function(err) {
 				  	      	// Error Message
-				  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
 			            	// Hide loading 
 			               	Swal.hideLoading();
 			            	// Show error message
@@ -523,7 +523,7 @@
 				              },
 					  	      error: function(err) {
 					  	      	// Error Message
-					  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+					  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
 				            	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
@@ -1173,7 +1173,7 @@
 			              },
 				  	      error: function(err) {
 				  	      	// Error Message
-				  	      	let errMessage = lastElement(err.errorMessage.split(':'));
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
 			            	// Hide loading 
 			               	Swal.hideLoading();
 			            	// Show error message
@@ -1348,7 +1348,7 @@
 				              },
 				              error: function(err) {
 				              	// Error Message
-				              	let errMessage = lastElement(err.errorMessage.split(':'));
+				              	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
 				              	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
