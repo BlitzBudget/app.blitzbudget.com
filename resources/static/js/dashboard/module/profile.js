@@ -970,11 +970,11 @@
     	let userNameDispText = userNameProfileDisplay.innerText;
     	userNameProfileDisplay.innerText = firstName + ' ' + lastName;
 
-    	let values = JSON.stringify({
+    	let values = {
     		"name" : firstName,
     		"family_name" : lastName,
     		"userName" : currentUser.email
-    	});
+    	};
 
     	// Ajax Requests on Error
 		let ajaxData = {};
