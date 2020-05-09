@@ -32,6 +32,9 @@
 
 		let values = {};
 		values.walletId = window.currentUser.walletId;
+		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
+		values.startsWithDate = new Date(y, m, 1);
+		values.endsWithDate = new Date(y, m + 1, 0);
 
 		// Ajax Requests on Error
 		let ajaxData = {};
