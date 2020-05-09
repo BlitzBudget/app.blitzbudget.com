@@ -394,7 +394,7 @@
 					cToS[curToSym[i].currency] = curToSym[i].symbol;
 					sToC[curToSym[i].symbol] = curToSym[i].currency;
 					/* Update the default currency in Settings */
-					if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+					if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
 						document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 						document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 						document.getElementById('walletCurrency').innerText = curToSym[i].currency;
@@ -574,16 +574,12 @@
 
 		window.currentUser.walletId = chosenWalletId;
 
-		if(isEqual(window.currentUser.financialPortfolioId, window.currentUser.walletId)) {
-			window.currentUser.walletCurrency = window.currentUser.currency;
-		} else {
-			// Calculate currency
-			let wallets = window.globalWallet;
-			for(let i = 0, len = window.globalWallet.length; i < len; i++) {
-				let currentWallet = window.globalWallet[i];
-				if(isEqual(window.currentUser.walletId, currentWallet.id)) {
-					window.currentUser.walletCurrency = cToS[currentWallet.currency];
-				}
+		// Calculate currency
+		let wallets = window.globalWallet;
+		for(let i = 0, len = window.globalWallet.length; i < len; i++) {
+			let currentWallet = window.globalWallet[i];
+			if(isEqual(window.currentUser.walletId, currentWallet.id)) {
+				window.currentUser.walletCurrency = cToS[currentWallet.currency];
 			}
 		}
 
@@ -649,7 +645,7 @@
 		let currentWallet = {};
 		if(isEqual(window.currentUser.financialPortfolioId, dataTarget)) {
 			currentWallet.id = window.currentUser.financialPortfolioId;
-			currentWallet.currency = window.currentUser.currency;
+			currentWallet.currency = window.currentUser.walletCurrency;
 			// If primary wallet then hide the name feature
 			document.getElementsByClassName('manageNameWrapper')[0].classList.add('d-none');
 			/*

@@ -3,9 +3,6 @@
 
 window.currentUser = window.currentUser || localStorage.getItem("currentUserSI") || {};
 
-// Consider wallet into the equation
-calculateWalletAttributes();
-
 window.authHeader = window.authHeader || localStorage.getItem('idToken');
 window.refreshToken = window.refreshToken || localStorage.getItem('refreshToken');
 
@@ -1072,19 +1069,4 @@ function toggleVerify(email, verifyCode) {
     // CHange focus to verification code
     document.getElementById('codeInputVerify').focus();
 
-}
-
-// Consider wallet attributes into the equation
-function calculateWalletAttributes() {	
-	// Check if wallet id is present, if not set financial portfolio id
-	if(isEmpty(window.currentUser.walletId)) {
-		window.currentUser.walletId = window.currentUser.financialPortfolioId;
-	}
-
-	if(isEmpty(window.currentUser.currency)) {
-		window.currentUser.currency = window.currentUser.walletCurrency;
-	}
-
-	// update currency
-	window.currentCurrencyPreference = isEmpty(window.currentUser.currency) ? window.currentUser.walletCurrency : window.currentUser.currency;
 }

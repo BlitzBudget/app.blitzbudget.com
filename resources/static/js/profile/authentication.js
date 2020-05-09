@@ -8,7 +8,22 @@
     // If the session storage is present then
     if(isNotEmpty(currentCogUser)) {
         // Fill currency and Name
-        fillCurrencyAndName();   
+        fillName(); 
+        // Replace with currency
+        replaceWithCurrency();
+
+        calculateWalletAttributes();  
+    }
+
+    // Consider wallet attributes into the equation
+    function calculateWalletAttributes() {  
+        // Check if wallet id is present, if not set financial portfolio id
+        if(isEmpty(window.currentUser.walletId)) {
+            window.currentUser.walletId = window.currentUser.financialPortfolioId;
+        }
+
+        // update currency
+        window.currentCurrencyPreference = window.currentUser.walletCurrency;
     }
 
     /**
@@ -21,7 +36,7 @@
         // If the session storage is 
         if(isNotEmpty(currentCogUser)) {
             // Fill currency and Name
-            fillCurrencyAndName();           
+            fillName();           
             return;
         }
 
@@ -52,12 +67,16 @@
         // Set wallet information
         currentUserLocal.walletId = firstWallet.walletId;
         currentUserLocal.walletCurrency = firstWallet.currency;
+        // Replace with currency
+        replaceWithCurrency();
         // Current User to global variable
         window.currentUser = currentUserLocal;
         // We save the item in the localStorage.
         localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
         // Fill currency and Name
-        fillCurrencyAndName();
+        fillName();
+        // Calculate wallet attributes
+        calculateWalletAttributes();
         // Hide Modal
         if(loginModal) loginModal.modal('hide');
     }
@@ -79,21 +98,13 @@
     }
 
     // Fill currency and name
-    function fillCurrencyAndName() {
+    function fillName() {
         if(currentUser.name) {
             // Set the name of the user
             let userName = document.getElementById('userName');
             if(userName) {
                 userName.innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
             }
-        }
-        // Set Currency If empty
-        if(currentUser.currency) {
-            window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
-            Object.freeze(window.currentCurrencyPreference);
-            Object.seal(window.currentCurrencyPreference);
-            // Replace with currency
-            replaceWithCurrency();
         }
     }
 

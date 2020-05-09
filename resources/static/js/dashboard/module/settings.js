@@ -326,7 +326,7 @@
 	        data : JSON.stringify(values),
 	        success: function(result) {
 	        	// After a successful updation of parameters to cache
-		        currentUser['currency'] = chosenCurrencyMW;
+		        currentUser.walletCurrency = chosenCurrencyMW;
 		        // We save the item in the localStorage.
 	            localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 	            // Input search element
@@ -343,7 +343,7 @@
 	            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
 	            // Set current Curreny preference
             	// For upadting the javascript cache for currency
-            	currentCurrencyPreference = currentUser.currency;
+            	currentCurrencyPreference = currentUser.walletCurrency;
             	// Remove from List
             	const index = currencies.indexOf(valObj.valueChosen);
 				if (index > -1) {
@@ -367,7 +367,7 @@
 		let oldValInTe = '';
 		let inpId = '';
 		// Current countries and current currencies then do
-        if(isEqual(param, 'currency') || isEqual(param, 'locale')) {
+        if(isEqual(param, 'locale')) {
         	// Fetch the display btn for auto complete
 			inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
 			oldValInTe = document.getElementById(inpId).innerText;
@@ -405,7 +405,7 @@
 	        // We save the item in the localStorage.
             localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
             // Current countries and current currencies then do
-            if(isEqual(param, 'currency') || isEqual(param, 'locale')) {
+            if(isEqual(param, 'locale')) {
             	// Input search element
 				let inpBtnSrch = event.parentElement.id.replace('autocomplete-list','');
 				let inpSearchEl = document.getElementById(inpBtnSrch);
@@ -418,20 +418,7 @@
 		 		}
 	            // Set the dropdown item current selection
 	            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
-	            // Set current Curreny preference
-	            if(isEqual(param, "currency")) {
-	            	// For upadting the javascript cache for currency
-	            	currentCurrencyPreference = currentUser.currency;
-	            	// Remove from List
-	            	const index = currencies.indexOf(valObj.valueChosen);
-					if (index > -1) {
-					  currencies.splice(index, 1);
-					}
-	            	// To be used for Auto complete
-	            	currencies.push(oldValText);
-	            	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-					autocomplete(inpSearchEl, currencies, "chooseCurrencyDD");
-	            } else if(isEqual(param, 'locale')) {
+	            if(isEqual(param, 'locale')) {
 	            	// To be used for Auto complete
 					countries.push(oldValText);
 					// Remove from List
@@ -473,7 +460,7 @@
 	for(let i = 0, l = curToSym.length; i < l; i++) {
 		cToS[curToSym[i].currency] = curToSym[i].symbol;
 		/* Update the default currency in Settings */
-		if(isEqual(currentUser.currency,curToSym[i].symbol)) {
+		if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
 			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 			// To be used to display "with wallet" section
 			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));

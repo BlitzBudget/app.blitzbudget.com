@@ -151,7 +151,6 @@ function calcPage() {
 // Replace currentCurrencySymbol with currency
 function replaceWithCurrency() {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
-	let chosenCurrency = currentUser.currency;
 
 	// Wallet Currency has first preference
 	if(currentUser.walletCurrency) {
