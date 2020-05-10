@@ -45,10 +45,10 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(data) {
-        	let dataKeySet = Object.keys(data);
+        	let dataKeySet = Object.keys(data.Budget);
         	for(let count = 0, length = dataKeySet.length; count < length; count++){
             	let key = dataKeySet[count];
-          	  	let value = data[key];
+          	  	let value = data.Budget[key];
           	  
           	  	if(isEmpty(value)) {
           	  		continue;
