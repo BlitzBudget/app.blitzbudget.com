@@ -39,7 +39,7 @@
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
+   		ajaxData.type = 'POST';
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
