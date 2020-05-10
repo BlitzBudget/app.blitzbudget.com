@@ -48,7 +48,8 @@
                 "/dashboard/configuration/commonConfiguration.js",
                 "/plugins/libraries.js",
                 "/dashboard/support/askUsDirectly.js",
-                "/profile/authentication.js"
+                "/profile/authentication.js",
+                "/dashboard/data/defaultCategories.js",
             ]
         },
         {

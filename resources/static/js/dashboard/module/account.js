@@ -697,7 +697,7 @@ function populateBankAccountInfo(bankAccount, count) {
 	wrapperRow.id = 'bAR-' + count;
 	
 	// If Selected then highlight account
-	if(bankAccount.selectedAccount) {
+	if(bankAccount['selected_account']) {
 		wrapperRow.classList.add('selectedBA');
 	}
 	
@@ -715,16 +715,16 @@ function populateBankAccountInfo(bankAccount, count) {
 	// Bank Account Name
 	let bAName = document.createElement('div');
 	bAName.classList = 'col-lg-5 text-left bAName py-2';
-	bAName.innerText = bankAccount.bankAccountName;
+	bAName.innerText = bankAccount['bank_account_name'];
 	wrapperRow.appendChild(bAName);
 	
 	// Bank Account Balance
 	let bABalance = document.createElement('div');
 	bABalance.classList = 'col-lg-5 text-right font-weight-bold py-2 bAAmount';
-	if(bankAccount.accountBalance < 0) { 
-		bABalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount.accountBalance), currentUser.locale);
+	if(bankAccount['account_balance'] < 0) { 
+		bABalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount['account_balance']), currentUser.locale);
 	} else { 
-		bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+		bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount['account_balance'], currentUser.locale);
 	}
 	wrapperRow.appendChild(bABalance);
 	

@@ -23,9 +23,8 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 	'investmentDashboardId': { value: 'investment-dashboard-sidebar', writable: false, configurable: false },
 	'settingsDashboardId': { value: 'settingsPage', writable: false, configurable: false },
 	'dateMeantFor': { value: '&dateMeantFor=', writable: false, configurable: false },
-	'expenseCategory': { value: '1', writable: false, configurable: false },
-	'incomeCategory': { value: '2', writable: false, configurable: false },
-	'defaultCategory': { value: 4, writable: false, configurable: false },
+	'expenseCategory': { value: 'Expense', writable: false, configurable: false },
+	'incomeCategory': { value: 'Income', writable: false, configurable: false },
 	'walletId': { value : '?walletId=', writable: false, configurable: false},
 });
 
