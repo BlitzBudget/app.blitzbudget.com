@@ -90,14 +90,14 @@
         },
         {
             "type": "js",
-            "name": "budget.all.js",
+            "name": "budgets.all.js",
             "files": [
                 "/dashboard/income/budget.js"
             ]
         },
         {
             "type": "js",
-            "name": "wallet.all.js",
+            "name": "wallets.all.js",
             "files": [
                 "/core/jquery.min.js",
                 "/core/popper.min.js",
