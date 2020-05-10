@@ -8,11 +8,8 @@
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(PROFILE_CONSTANTS, {
 		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
-		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
-		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
-		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
-		'userNameParam': { value: '&userName=', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },		
+		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },		
 		'signinUrl': { value: window._config.api.invokeUrl + window._config.api.profile.signin, writable: false, configurable: false }
 	});
 
@@ -448,11 +445,18 @@
     		Swal.resetValidationMessage()
         	// If the Reset Button is pressed
         	if (result.value) {
+        		let values = {};
+        		values.walletId = currentUser.financialPortfolioId;
+        		values.deleteAccount = false;
+        		
 				// Ajax Requests on Error
 				let ajaxData = {};
 				ajaxData.isAjaxReq = true;
-				ajaxData.type = 'DELETE';
-				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId  + PROFILE_CONSTANTS.deleteAccountParam + false;
+				ajaxData.type = 'POST';
+				ajaxData.url = window._config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
+				ajaxData.dataType = "json";
+   				ajaxData.contentType = "application/json;charset=UTF-8";
+   				ajaxData.values = JSON.stringify(values);
 				ajaxData.onSuccess = function(jsonObj) {
 		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
 		        }
@@ -463,6 +467,9 @@
 					url: ajaxData.url,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			        type: ajaxData.type,
+			        dataType: ajaxData.dataType,
+          			contentType: ajaxData.contentType,
+          			data : ajaxData.values,
 			        success: ajaxData.onSuccess,
 			        error: ajaxData.onFailure
 	        	});
@@ -543,11 +550,19 @@
         		Swal.resetValidationMessage()
             	 // If the Delete Button is pressed
             	 if (result.value) {
+            	 	let values = {};
+            	 	values.userName = currentUser.email;
+            	 	values.walletId = currentUser.financialPortfolioId;
+            	 	values.deleteAccount = true;
+
             	 	// Ajax Requests on Error
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
-					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true + PROFILE_CONSTANTS.userNameParam + currentUser.email; 
+					ajaxData.type = 'POST';
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
+					ajaxData.dataType = "json";
+   					ajaxData.contentType = "application/json;charset=UTF-8";
+   					ajaxData.values = JSON.stringify(values);
 					ajaxData.onSuccess = function(jsonObj) {
 				        localStorage.clear();
 				        window.location.href = window._config.home.invokeUrl;
@@ -559,6 +574,9 @@
 						url: ajaxData.url,
 						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				        type: ajaxData.type,
+				        dataType: ajaxData.dataType,
+          				contentType: ajaxData.contentType,
+          				data : ajaxData.values,
 				        success: ajaxData.onSuccess,
 				        error: ajaxData.onFailure
 		        	});
