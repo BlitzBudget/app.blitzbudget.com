@@ -105,7 +105,6 @@
 		
 		let card = document.createElement("div");
 		card.id = 'cardBudgetId-' + userBudget.budgetId;
-		card['data-target'] = userBudget.budgetId;
 		card.classList = 'card';
 		
 		let cardBody = document.createElement("div");
@@ -206,7 +205,8 @@
 		// SVG for delete
 		let deleteSvgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
 		deleteSvgElement.id = 'deleteSvgElement-' + userBudget.budgetId;
-		deleteSvgElement.classList = 'deleteBudget'
+		deleteSvgElement.classList = 'deleteBudget';
+		deleteSvgElement.setAttribute('data-target',userBudget.budgetId);
 		deleteSvgElement.setAttribute('height','16');
 		deleteSvgElement.setAttribute('width','16');
 		deleteSvgElement.setAttribute('viewBox','0 0 14 18');
