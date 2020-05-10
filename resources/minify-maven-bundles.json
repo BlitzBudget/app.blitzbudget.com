@@ -80,7 +80,21 @@
                 "/dashboard/data/defaultCategories.js",
                 "/dashboard/data/currency-name-symbol.js",
                 "/dashboard/data/locale-country.js",
-                "/dashboard/module/settings.js",
+                "/dashboard/data/bankAccountCategories.js",
+                "/dashboard/support/support.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "settings.js",
+            "files": [
+                "/dashboard/module/settings.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "transactions.js",
+            "files": [
                 "/dashboard/income/transactions/accountModal.js",
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions.js",
@@ -88,12 +102,34 @@
                 "/dashboard/income/transactions/importTransactionsFromFile.js",
                 "/dashboard/income/transactions/export/exportSelectedToCSV.js",
                 "/dashboard/income/transactions/export/exportSelectedToDOC.js",
-                "/dashboard/income/transactions/export/exportSelectedToXLS.js",
-                "/dashboard/overview/overview.js",
-                "/dashboard/data/bankAccountCategories.js",
-                "/dashboard/module/profile.js",
-                "/dashboard/income/budget.js",
-                "/dashboard/support/support.js",
+                "/dashboard/income/transactions/export/exportSelectedToXLS.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "overview.js",
+            "files": [                
+                "/dashboard/overview/overview.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "profile.js",
+            "files": [                
+                "/dashboard/module/profile.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "budgets.js",
+            "files": [                
+                "/dashboard/income/budget.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "wallets.js",
+            "files": [                
                 "/dashboard/module/wallet.js"
             ]
         }
