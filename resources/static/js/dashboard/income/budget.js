@@ -105,6 +105,7 @@
 		
 		let card = document.createElement("div");
 		card.id = 'cardBudgetId-' + userBudget.budgetId;
+		card['data-target'] = userBudget.budgetId;
 		card.classList = 'card';
 		
 		let cardBody = document.createElement("div");
@@ -555,23 +556,27 @@
 	// Add click event listener to delete the budget
 	$('#budgetAmount').on('click', '.deleteBudget' , function(e) {
 		let deleteButtonElement = this;
-		let categoryId = lastElement(splitElement(this.id,'-'));
+		let budgetId = this.getAttribute('data-target');
 		
 		// Show the material spinner and hide the delete button
-		document.getElementById('deleteElementSpinner-' + categoryId).classList.toggle('d-none');
+		document.getElementById('deleteElementSpinner-' + budgetId).classList.toggle('d-none');
 		this.classList.toggle('d-none');
 		
 		// Hide the compensation image if present
-		compensateBudget = document.getElementById('compensateBudgetImage-' + categoryId);
+		compensateBudget = document.getElementById('compensateBudgetImage-' + budgetId);
 		if(compensateBudget != null) {
 			compensateBudget.classList.toggle('d-none');
 		}
 		
 		// Security check to ensure that the budget is present
-		if(isEmpty(userBudgetCache[categoryId])) {
+		if(isEmpty(userBudgetCache[budgetId])) {
 			showNotification('Unable to delete the budget. Please refresh and try again!',window._constants.notification.error);
 			return;
 		}
+
+		let values = {};
+		values.walletId = window.currentUser.walletId;
+		values.itemId = budgetId;
 		
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -583,12 +588,12 @@
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
         	  // Remove the budget modal
-        	  $('#cardBudgetId-' + categoryId).fadeOut('slow', function(){
+        	  $('#cardBudgetId-' + budgetId).fadeOut('slow', function(){
         		  this.remove();
         	  });
         	  	
         	  // Delete the entry from the map if it is pending to be updated
-			  delete userBudgetCache[categoryId];
+			  delete userBudgetCache[budgetId];
 				
         	  // Update budget visualization chart after deletion
         	  updateBudgetVisualization(false);
@@ -611,7 +616,7 @@
         	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!',ajaxData);
 	          	
 	          // Remove the material spinner and show the delete button again
-	          document.getElementById('deleteElementSpinner-' + categoryId).classList.toggle('d-none');
+	          document.getElementById('deleteElementSpinner-' + budgetId).classList.toggle('d-none');
 	          deleteButtonElement.classList.toggle('d-none');
         }
 		// Request to delete the user budget
@@ -696,8 +701,8 @@
       	  	genericAddFnc.classList.add('d-none');
       	  	
 			// Appends to a document fragment
-      	  	createAnEmptyBudgets(window.defaultCategories[0], budgetAmount);
-      	  	createAnEmptyBudgets(window.defaultCategories[1], budgetAmount);
+      	  	createAnEmptyBudget(window.defaultCategories[0], budgetAmount);
+      	  	createAnEmptyBudget(window.defaultCategories[1], budgetAmount);
 			return;
 		}
 		
@@ -814,7 +819,7 @@
 	}
 	
 	// Create two empty budgets on click Start Planning for .. button
-	function createAnEmptyBudgets(categoryId, budgetAmountDiv) {
+	function createAnEmptyBudget(categoryId, budgetAmountDiv) {
 		
 		var values = {};
 
@@ -1057,7 +1062,7 @@
 		event.classList.add('d-none');
 		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
-		createAnEmptyBudgets(categoryId, budgetAmountDiv);
+		createAnEmptyBudget(categoryId, budgetAmountDiv);
 	}
 	
 	// Find the unbudgeted category 
