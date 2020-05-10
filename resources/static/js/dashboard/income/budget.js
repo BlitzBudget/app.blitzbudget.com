@@ -48,7 +48,7 @@
    			let budgets = data.Budget;
    			let dates = data.Date;
    			er_a.populateBankInfo(data.BankAccount);
-
+   			debugger;
 
         	let dataKeySet = Object.keys(data.Budget);
         	for(let count = 0, length = dataKeySet.length; count < length; count++){
@@ -101,6 +101,7 @@
 		if(isEmpty(userBudget)) {
 			return;
 		}
+		let cardWrapper = document.createDocumentFragment();
 		
 		let card = document.createElement("div");
 		card.id = 'cardBudgetId-' + userBudget.budgetId;
@@ -228,9 +229,10 @@
     	cardBody.appendChild(actionDiv);
     	
 		card.appendChild(cardBody);
+		cardWrapper.appendChild(card);
 		// Handle the update of the progress bar modal
-        updateProgressBarAndRemaining(userBudget.budgetId, card);
-		return card;
+        updateProgressBarAndRemaining(userBudget, cardWrapper);
+		return cardWrapper;
 		
 	}
 	
