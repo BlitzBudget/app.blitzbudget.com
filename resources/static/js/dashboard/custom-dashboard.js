@@ -211,7 +211,7 @@ window.onload = function () {
 					color = 'rose';
 					currentPage = 'Budget';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
-					chosenJs = 'js/dashboard/income/budget.min.js';
+					chosenJs = 'js/budgets.all.min.js';
 				    break;
 				case 'goalsPage':
 					url = '/goals';

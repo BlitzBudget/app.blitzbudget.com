@@ -49,7 +49,7 @@
                 "/plugins/libraries.js",
                 "/dashboard/support/askUsDirectly.js",
                 "/profile/authentication.js",
-                "/dashboard/data/defaultCategories.js",
+                "/dashboard/data/defaultCategories.js"
             ]
         },
         {
@@ -86,6 +86,13 @@
             "name": "profile.all.js",
             "files": [
                 "/dashboard/module/profile.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "budget.all.js",
+            "files": [
+                "/dashboard/income/budget.js"
             ]
         },
         {
