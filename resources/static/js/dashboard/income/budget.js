@@ -97,14 +97,13 @@
 	
 	// Build the user budget div
 	function buildUserBudget(userBudget) {
-		let categoryObject = categoryMap[userBudget.categoryId];
 		
-		if(isEmpty(categoryObject)) {
+		if(isEmpty(userBudget)) {
 			return;
 		}
 		
 		let card = document.createElement("div");
-		card.id = 'cardCategoryId-' + categoryObject.categoryId;
+		card.id = 'cardBudgetId-' + userBudget.budgetId;
 		card.classList = 'card';
 		
 		let cardBody = document.createElement("div");
@@ -116,16 +115,16 @@
 		
 		// Card title with category name
 		let cardTitle = document.createElement('div');
-		cardTitle.id = 'categoryName-' + categoryObject.categoryId;
+		cardTitle.id = 'categoryName-' + userBudget.budgetId;
 		cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
-		cardTitle.innerText = categoryObject.categoryName;
+		cardTitle.innerText = userBudget.categoryName;
 		cardRowRemaining.appendChild(cardTitle);
 		
 		
 		// <div id="budgetInfoLabelInModal" class="col-lg-12 text-right headingDiv justify-content-center align-self-center">Remaining (%)</div> 
 		let cardRemainingText = document.createElement('div');
 		cardRemainingText.classList = 'col-lg-6 text-right headingDiv justify-content-center align-self-center mild-text';
-		cardRemainingText.id = 'budgetInfoLabelInModal-' + categoryObject.categoryId;
+		cardRemainingText.id = 'budgetInfoLabelInModal-' + userBudget.budgetId;
 		cardRemainingText.innerText = 'Remaining (%)';
 		cardRowRemaining.appendChild(cardRemainingText);
 		cardBody.appendChild(cardRowRemaining);
@@ -140,7 +139,7 @@
 		
 		// Budget Amount Div
 		let cardBudgetAmountDiv = document.createElement('div');
-		cardBudgetAmountDiv.id = 'budgetAmountEntered-' + categoryObject.categoryId;
+		cardBudgetAmountDiv.id = 'budgetAmountEntered-' + userBudget.budgetId;
 		cardBudgetAmountDiv.classList = 'text-left budgetAmountEntered font-weight-bold form-control';
 		cardBudgetAmountDiv.setAttribute('contenteditable', true);
 		cardBudgetAmountDiv.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
@@ -150,7 +149,7 @@
 		// <span id="percentageAvailable" class="col-lg-12 text-right">NA</span> 
 		let cardRemainingPercentage = document.createElement('div');
 		cardRemainingPercentage.classList = 'col-lg-9 text-right percentageAvailable';
-		cardRemainingPercentage.id = 'percentageAvailable-' + categoryObject.categoryId;
+		cardRemainingPercentage.id = 'percentageAvailable-' + userBudget.budgetId;
 		cardRemainingPercentage.innerText = 'NA';
 		cardRowPercentage.appendChild(cardRemainingPercentage);
 		cardBody.appendChild(cardRowPercentage);
@@ -164,7 +163,7 @@
 		
 		// progress bar
 		let progressBar = document.createElement('div');
-		progressBar.id='progress-budget-' + categoryObject.categoryId;
+		progressBar.id='progress-budget-' + userBudget.budgetId;
 		progressBar.classList = 'progress-bar progress-bar-budget-striped';
 		progressBar.setAttribute('role', 'progressbar');
 		progressBar.setAttribute('aria-valuenow', '0');
@@ -173,12 +172,10 @@
 		cardProgressClass.appendChild(progressBar);
 		cardProgressAndRemainingAmount.appendChild(cardProgressClass);
 
-		// Handle the update of the progress bar modal
-        updateProgressBarAndRemaining(categoryIdKey, document);
 		
 		// Remaining Amount Div
 		let remainingAmountDiv = document.createElement('span');
-		remainingAmountDiv.id = 'remainingAmount-' + categoryObject.categoryId;
+		remainingAmountDiv.id = 'remainingAmount-' + userBudget.budgetId;
 		remainingAmountDiv.classList = 'mild-text-budget';
 		
 		let currencyRemainingAmount = document.createElement('span');
@@ -194,7 +191,7 @@
 		
 		
 		let actionDiv = document.createElement('div');
-		actionDiv.id = 'actionIcons-' + categoryObject.categoryId;
+		actionDiv.id = 'actionIcons-' + userBudget.budgetId;
 		actionDiv.classList = 'text-right';
 		
 		// Build a delete icon Div
@@ -206,7 +203,7 @@
 		
 		// SVG for delete
 		let deleteSvgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-		deleteSvgElement.id = 'deleteSvgElement-' + categoryObject.categoryId;
+		deleteSvgElement.id = 'deleteSvgElement-' + userBudget.budgetId;
 		deleteSvgElement.classList = 'deleteBudget'
 		deleteSvgElement.setAttribute('height','16');
 		deleteSvgElement.setAttribute('width','16');
@@ -223,7 +220,7 @@
     	deleteIconDiv.appendChild(deleteSvgElement);
     	
     	let materialSpinnerElement = document.createElement('div');
-    	materialSpinnerElement.id= 'deleteElementSpinner-' + categoryObject.categoryId;
+    	materialSpinnerElement.id= 'deleteElementSpinner-' + userBudget.budgetId;
     	materialSpinnerElement.classList = 'material-spinner-small d-none';
     	deleteIconDiv.appendChild(materialSpinnerElement);
     	
@@ -231,6 +228,8 @@
     	cardBody.appendChild(actionDiv);
     	
 		card.appendChild(cardBody);
+		// Handle the update of the progress bar modal
+        updateProgressBarAndRemaining(userBudget.budgetId, card);
 		return card;
 		
 	}
@@ -456,15 +455,16 @@
 	}
 	
 	// Use user budget to update information in the modal
-	function updateProgressBarAndRemaining(categoryIdKey, documentOrFragment) {
-		let categoryTotalAmount = categoryTotalMapCache[categoryIdKey];
+	function updateProgressBarAndRemaining(budget, documentOrFragment) {
+		let categoryTotalAmount = budget.used;
 		
-		let userBudgetValue = userBudgetCache[categoryIdKey];
+		let userBudgetValue = budget.planned;
+		let budgetIdKey = budget.budgetId;
 		
-		let remainingAmountDiv = documentOrFragment.getElementById('remainingAmount-' + categoryIdKey);
-		let remainingAmountPercentageDiv = documentOrFragment.getElementById('percentageAvailable-' + categoryIdKey);
-		let budgetLabelDiv = documentOrFragment.getElementById('budgetInfoLabelInModal-' + categoryIdKey);
-		let progressBarCategoryModal = documentOrFragment.getElementById('progress-budget-' + categoryIdKey);
+		let remainingAmountDiv = documentOrFragment.getElementById('remainingAmount-' + budgetIdKey);
+		let remainingAmountPercentageDiv = documentOrFragment.getElementById('percentageAvailable-' + budgetIdKey);
+		let budgetLabelDiv = documentOrFragment.getElementById('budgetInfoLabelInModal-' + budgetIdKey);
+		let progressBarCategoryModal = documentOrFragment.getElementById('progress-budget-' + budgetIdKey);
 		// If the budget is not created for the particular category, make sure the budget is not equal to zero
 		if(isNotEmpty(userBudgetValue) && isNotEmpty(categoryTotalAmount)) {
 			// Calculate remaining budget
@@ -474,14 +474,14 @@
 			// Calculate the minus sign and appropriate class for the remaining amount 
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
-				if(categoryMap[categoryIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+				if(categoryMap[budgetIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 					budgetLabelDiv.innerText = 'Overspent (%)';
-				} else if(categoryMap[categoryIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+				} else if(categoryMap[budgetIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 					budgetLabelDiv.innerText = 'To Be Budgeted (%)';
 				}
 				
 				// Anchor Icons
-				createImageAnchor(categoryIdKey, documentOrFragment);
+				createImageAnchor(budgetIdKey, documentOrFragment);
 				
 				minusSign = '-';
 				budgetAvailableToSpendOrSave = Math.abs(budgetAvailableToSpendOrSave);
@@ -489,7 +489,7 @@
 				budgetLabelDiv.innerText = 'Remaining (%)';
 				
 				// Remove the compensation anchor if it is present
-				var compensateAnchor = document.getElementById('compensateAnchor-'+ categoryIdKey);
+				var compensateAnchor = document.getElementById('compensateAnchor-'+ budgetIdKey);
 				if(compensateAnchor != null) {
 					compensateAnchor.parentNode.removeChild(compensateAnchor);
 				}
@@ -525,22 +525,22 @@
 	}
 	
 	// Create image anchor for compensating budget icon
-	function createImageAnchor(categoryIdKey, documentOrFragment) {
-		let actionIconsDiv = documentOrFragment.getElementById('actionIcons-' + categoryIdKey);
-		let checkImageExistsDiv = document.getElementById('compensateBudgetImage-' + categoryIdKey);
+	function createImageAnchor(budgetIdKey, documentOrFragment) {
+		let actionIconsDiv = documentOrFragment.getElementById('actionIcons-' + budgetIdKey);
+		let checkImageExistsDiv = document.getElementById('compensateBudgetImage-' + budgetIdKey);
 		// If the compensation anchor exists do not create it
 		if(checkImageExistsDiv == null) {
 			// Document Fragment for compensation
 			let compensationDocumentFragment = document.createDocumentFragment();
 			let compensationIconsDiv = document.createElement('a');
 			compensationIconsDiv.classList = 'compensateAnchor';
-			compensationIconsDiv.id='compensateAnchor-' + categoryIdKey;
+			compensationIconsDiv.id='compensateAnchor-' + budgetIdKey;
 			compensationIconsDiv.setAttribute('data-toggle','tooltip');
 			compensationIconsDiv.setAttribute('data-placement','bottom');
 			compensationIconsDiv.setAttribute('title','Compensate overspending');
 			
 			let compensationImage = document.createElement('img');
-			compensationImage.id= 'compensateBudgetImage-' + categoryIdKey;
+			compensationImage.id= 'compensateBudgetImage-' + budgetIdKey;
 			compensationImage.classList = 'compensateBudgetImage';
 			compensationImage.src = '../img/dashboard/budget/icons8-merge-16.png'
 			compensationIconsDiv.appendChild(compensationImage);
@@ -579,7 +579,7 @@
    		ajaxData.contentType = "application/json; charset=utf-8";
    		ajaxData.onSuccess = function(result){
         	  // Remove the budget modal
-        	  $('#cardCategoryId-' + categoryId).fadeOut('slow', function(){
+        	  $('#cardBudgetId-' + categoryId).fadeOut('slow', function(){
         		  this.remove();
         	  });
         	  	
@@ -812,14 +812,14 @@
 		
 		var values = {};
 
-		if(includesStr(categoryId, 'Category#')) {
+		if(isEmpty(categoryId.name)) {
 			values['category'] = categoryId;
 		} else {
 			values['category'] = categoryId.name;
 			values['categoryType'] = categoryId.type;
 		}
 
-		if(includesStr(window.chosenDateId, 'Date#')) {
+		if(isNotEmpty(window.chosenDateId) && includesStr(window.chosenDateId, 'Date#')) {
 			values['dateMeantFor'] = window.chosenDateId;
 		} else {
 			values['dateMeantFor'] = chosenDate.toISOString();
@@ -842,7 +842,7 @@
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
 	        	
 	        	// Store the values in a cache
-          	  	userBudgetCache[userBudget.categoryId] = userBudget;
+          	  	userBudgetCache[userBudget.category] = userBudget;
 
           	  	// Enable the Add button
           	  	let genericAddFnc = document.getElementById('genericAddFnc');
@@ -974,8 +974,8 @@
   				 userBudgetCache[userBudget.categoryId] = userBudget;
   				  
 	        	 // Update all category IDs
-	        	 let catergoryIdCard = document.getElementById('cardCategoryId-' + categoryId);
-	        	 catergoryIdCard.id = 'cardCategoryId-' + userBudget.categoryId;
+	        	 let catergoryIdCard = document.getElementById('cardBudgetId-' + categoryId);
+	        	 catergoryIdCard.id = 'cardBudgetId-' + userBudget.categoryId;
 	        	 
 	        	 let categoryNameDiv = document.getElementById('categoryName-' + categoryId);
 	        	 categoryNameDiv.id = 'categoryName-' + userBudget.categoryId;
