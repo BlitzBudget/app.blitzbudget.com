@@ -12,7 +12,8 @@ window._config = {
             confirmForgotPassword: '/profile/confirm-forgot-password',
             deleteUser: '/profile/delete-user',
             changePassword: '/profile/change-password',
-        }
+        },
+        deleteItem: '/delete-item'
     },
     home: {
     	invokeUrl: 'https://www.blitzbudget.com'

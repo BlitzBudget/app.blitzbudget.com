@@ -576,9 +576,11 @@
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "DELETE";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
-   		ajaxData.contentType = "application/json; charset=utf-8";
+   		ajaxData.type = "POST";
+   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
         	  // Remove the budget modal
         	  $('#cardBudgetId-' + categoryId).fadeOut('slow', function(){
@@ -617,7 +619,9 @@
 	          type: ajaxData.type,
 	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          contentType: ajaxData.contentType, 
+	          dataType: ajaxData.dataType,
+		      contentType: ajaxData.contentType,
+		      data: ajaxData.values,
               success: ajaxData.onSuccess,
               error:  ajaxData.onFailure
 		});
