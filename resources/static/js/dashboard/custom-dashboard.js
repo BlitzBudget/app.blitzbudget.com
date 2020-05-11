@@ -1021,6 +1021,14 @@ function toggleVerify(email, verifyCode) {
 }
 
 function calculateWalletInformation(wallet) {
+	if(isEmpty(wallet)) {
+		return;
+	}
+
+	/*
+	* Fetch the first wallet and assign it as current
+	*/
+	wallet = wallet[0];
 	/*
 	* Calcualte wallet information
 	*/
@@ -1031,7 +1039,7 @@ function calculateWalletInformation(wallet) {
 
     // update currency
     if(isEmpty(window.currentUser.walletCurrency)) {
-    	window.currentUser.walletCurrency = wallet.walletCurrency;
-    	window.currentCurrencyPreference = wallet.walletCurrency;
+    	window.currentUser.walletCurrency = wallet.currency;
+    	window.currentCurrencyPreference = wallet.currency;
 	}	
 }

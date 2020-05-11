@@ -53,7 +53,7 @@
    			let dates = data.Date;
    			let wallet = data.Wallet;
 
-   			calculateWalletInformation(wallet[0]);
+   			calculateWalletInformation(wallet);
    			er_a.populateBankInfo(data.BankAccount);
    			debugger;
 
@@ -856,6 +856,9 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudget) {
+   				// Filter the body
+   				userBudget = userBudget['body-json'];
+   				
 	        	let budgetDivFragment = document.createDocumentFragment();
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
 	        	
