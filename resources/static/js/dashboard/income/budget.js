@@ -78,10 +78,8 @@
    			er_a.populateBankInfo(data.BankAccount);
    			debugger;
 
-        	let dataKeySet = Object.keys(data.Budget);
-        	for(let count = 0, length = dataKeySet.length; count < length; count++){
-            	let key = dataKeySet[count];
-          	  	let value = data.Budget[key];
+        	for(let count = 0, length = budgets.length; count < length; count++){
+            	let value = budgets[count];
           	  
           	  	if(isEmpty(value)) {
           	  		continue;
