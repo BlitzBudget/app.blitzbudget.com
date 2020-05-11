@@ -921,7 +921,7 @@ er = {
 	  return "";
 	},
 
-	fetchBudgetPage: function(url, onSuccess) {
+	fetchCurrentPage: function(url, onSuccess) {
 		// Call the actual page which was requested to be loaded
 		$.ajax({
 	        type: "GET",

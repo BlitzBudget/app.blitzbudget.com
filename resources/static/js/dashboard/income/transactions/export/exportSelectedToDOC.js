@@ -7,7 +7,7 @@
 
    let footer = "</body></html>";
 
-    document.getElementById('downloadTransactionsData').addEventListener("click",function(e){
+   $('body').on('click', '#downloadTransactionsData' , function(e) {
       // Export to word
       exportToWord();
     });

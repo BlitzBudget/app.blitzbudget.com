@@ -1,7 +1,7 @@
 "use strict";
 (function scopeWrapper($) {
 
-    document.getElementById('downloadTransactionsData').addEventListener("click",function(e){
+    $('body').on('click', '#downloadTransactionsData' , function(e) {    
         // Check all check boxes by default
         let transactionIds = [];
         

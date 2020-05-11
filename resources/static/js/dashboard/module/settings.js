@@ -36,13 +36,13 @@
 
 	function populateCurrentPage(page) {
 		er.refreshCookiePageExpiry(page);
-		er.fetchBudgetPage('/settings', function(data) {
-			/**
+		er.fetchCurrentPage('/settings', function(data) {
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            /**
 			* Get Overview
 			**/
 			populateSettings();
-			// Load the new HTML
-            $('#mutableDashboard').html(data);
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Settings';
 		});
@@ -249,28 +249,6 @@
 	  }
 	}
 
-	/*
-	*	Country Drop down Populate
-	*/
-
-	/*An array containing all the country names in the world:*/
-	let countries = [];
-	let lToC = {};
-	let locToCou = window.localeToCountry.localeToCountry;
-	for(let i = 0, l = locToCou.length; i < l; i++) {
-		// Map of country and locale to be used later
-		lToC[locToCou[i].name] = locToCou[i].country
-		/* Update the default locale in Settings */
-		if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) {
-			document.getElementById('chosenCountry').innerText = locToCou[i].name;	
-			// To be used to display "with wallet" section
-			document.getElementById('currentCountries').appendChild(dropdownItemsWithWallet(locToCou[i].name));
-		} else {
-			// To be used for Auto complete
-			countries.push(locToCou[i].name);
-		}
-	}
-
 	// On click drop down btn of country search
 	$("#chosenCountryDropdown").on("shown.bs.dropdown", function(event){
 		let countryInp = document.getElementById('chosenCountryInp');
@@ -473,27 +451,6 @@
     	});
 	}
 
-
-	/*
-	*	Currency Dropdown Populate
-	*/
-
-	/*An array containing all the currency names in the world:*/
-	let currencies = [];
-	let cToS = {};
-	let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
-	for(let i = 0, l = curToSym.length; i < l; i++) {
-		cToS[curToSym[i].currency] = curToSym[i].symbol;
-		/* Update the default currency in Settings */
-		if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
-			document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
-			// To be used to display "with wallet" section
-			document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-		} else {
-			currencies.push(curToSym[i].currency);
-		}
-	}
-
 	// On click drop down btn of country search
 	$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
 		let currencyInp = document.getElementById('chosenCurrencyInp');
@@ -548,9 +505,49 @@
 	    // Display Email for devices
 		document.getElementById('currentUserEmail').innerText = currentUser.email;
 
+		/*
+		*	Country Drop down Populate
+		*/
+
+		/*An array containing all the country names in the world:*/
+		let countries = [];
+		let lToC = {};
+		let locToCou = window.localeToCountry.localeToCountry;
+		for(let i = 0, l = locToCou.length; i < l; i++) {
+			// Map of country and locale to be used later
+			lToC[locToCou[i].name] = locToCou[i].country
+			/* Update the default locale in Settings */
+			if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) {
+				document.getElementById('chosenCountry').innerText = locToCou[i].name;	
+				// To be used to display "with wallet" section
+				document.getElementById('currentCountries').appendChild(dropdownItemsWithWallet(locToCou[i].name));
+			} else {
+				// To be used for Auto complete
+				countries.push(locToCou[i].name);
+			}
+		}
 		/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCountryInp"), countries, "chooseCountryDD");
 
+		/*
+		*	Currency Dropdown Populate
+		*/
+
+		/*An array containing all the currency names in the world:*/
+		let currencies = [];
+		let cToS = {};
+		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+		for(let i = 0, l = curToSym.length; i < l; i++) {
+			cToS[curToSym[i].currency] = curToSym[i].symbol;
+			/* Update the default currency in Settings */
+			if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
+				document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+				// To be used to display "with wallet" section
+				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+			} else {
+				currencies.push(curToSym[i].currency);
+			}
+		}
 		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
 	}

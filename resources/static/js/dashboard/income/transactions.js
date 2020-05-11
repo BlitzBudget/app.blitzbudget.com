@@ -48,11 +48,11 @@
 	 */
 	if(isEqual(er.getCookie('currentPage'),'transactionsPage')) {
 		er.refreshCookiePageExpiry('transactionsPage');
-	 	er.fetchBudgetPage('/transactions', function(data) {
-			// Call the transaction API to fetch information.
-			fetchJSONForTransactions();
+	 	er.fetchCurrentPage('/transactions', function(data) {
 			// Load the new HTML
             $('#mutableDashboard').html(data);
+            // Call the transaction API to fetch information.
+			initialLoadOfTransactions();
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Transactions';
 		});
@@ -60,30 +60,33 @@
 	
 	document.getElementById('transactionsPage').addEventListener("click",function(e){
 	 	er.refreshCookiePageExpiry('transactionsPage');
-		er.fetchBudgetPage('/transactions', function(data) {
-			// Call the transaction API to fetch information.
-			fetchJSONForTransactions();
+		er.fetchCurrentPage('/transactions', function(data) {
+			initialLoadOfTransactions();
 			// Load the new HTML
             $('#mutableDashboard').html(data);
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Transactions';
 		});
 	});
-	
-	
-	/**
-	 * START Load at the end of the javascript
-	 */
-	
-	// Load Expense category and income category
-	expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
-	incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
-	
-	// Success SVG Fragment
-	let successSVGFormed = successSvgMessage();
-	
-	// Load images in category modal
-	loadCategoryModalImages();
+
+	function initialLoadOfTransactions() {
+		/**
+		 * START Load at the end of the javascript
+		 */
+		
+		// Load Expense category and income category
+		expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
+		incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
+		
+		// Success SVG Fragment
+		let successSVGFormed = successSvgMessage();
+		
+		// Load images in category modal
+		loadCategoryModalImages();
+		// Call the transaction API to fetch information.
+		fetchJSONForTransactions();
+		
+	}
 	
 	// Save Transactions on form submit
 	$('#transactionsForm').submit(function(event) {

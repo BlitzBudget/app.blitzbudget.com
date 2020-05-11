@@ -2,7 +2,7 @@
 // that MS Excel will honor non-ASCII characters.
 "use strict";
 (function scopeWrapper($) {
-    document.getElementById('downloadTransactionsData').addEventListener("click",function(e){
+    $('body').on('click', '#downloadTransactionsData' , function(e) {
         // Define Transaction Obj
         let transJsonObj = {};
         // Check all check boxes by default

@@ -29,8 +29,39 @@
 	/**
 	* Get Overview
 	**/
-	fetchOverview();
+	/**
+	 * START loading the page
+	 * 
+	 */
+	let currentPageInCookie = er.getCookie('currentPage');
+	if(isEqual(currentPageInCookie,'overviewPage')) {
+		populateCurrentPage('overviewPage');
+	}
+	
+	document.getElementById('overviewPage').addEventListener("click",function(e){
+	 	populateCurrentPage('overviewPage');
+	});
+
+	function populateCurrentPage(page) {
+		er.refreshCookiePageExpiry(page);
+		er.fetchCurrentPage('/overview', function(data) {
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            /**
+			* Get Overview
+			**/
+			fetchOverview();
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Overview';
+		});
+	}
+
 	function fetchOverview() {
+		// Add highlighted element to the income
+		document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
+		// Dynamically generate year
+		dynamicYearGeneration();
+		
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
@@ -504,7 +535,7 @@
 	}
 	
 	// Click optimization Button functionality
-	document.getElementById("optimizeButton").addEventListener("click",function(){
+	$('body').on('click', '#optimizeButton' , function(e) {
 		// disable the button
 		this.setAttribute('disabled','disabled');
 		this.classList.toggle('d-none');
@@ -740,7 +771,7 @@
 	}
 	
 	// Select all check boxes for Transactions
-	document.getElementById("checkAll").addEventListener("click",function(){
+	$('.optimizationBudgetAndGoal').on('click', '#checkAll' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		let allCheckedOptimizations = $(".number:checked");
 		
@@ -805,9 +836,6 @@
 	 * Chart Functionality
 	 * 
 	 */ 
-	
-	// Add highlighted element to the income
-	document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
         	
@@ -1470,7 +1498,7 @@
 	/**
 	 * Year Picker
 	 */
-	document.getElementById("chartDisplayTitle").addEventListener("click",function(){
+	$('body').on('click', '#chartDisplayTitle' , function(e) {
 		// If the doughnut chart is open then return
 		if(doughnutBreakdownOpen) {
 			return;
@@ -1493,9 +1521,6 @@
 		// Convert SVG to upward arrow
 		elem.lastElementChild.classList.toggle('transformUpwardArrow');
 	}
-	
-	// Dynamically generate year
-	dynamicYearGeneration();
 	
 	function dynamicYearGeneration() {
 		let yearPickerParent = document.getElementsByClassName('yearPicker');
@@ -1548,7 +1573,7 @@
 	}
 	
 	// Click the up button for year picker
-	document.getElementById("monthPickerUp").addEventListener("click",function(){
+	$('body').on('click', '#monthPickerUp' , function(e) {
 		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
 		removeSelectedIYP();
 		let minusFourDateCache = previousDateYearPicker-5;
@@ -1567,7 +1592,7 @@
 	});
 	
 	// Click the down button for year picker
-	document.getElementById("monthPickerDown").addEventListener("click",function(){
+	$('body').on('click', '#monthPickerDown' , function(e) {
 		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
 		removeSelectedIYP();
 		let plusFourDateCache = nextDateYearPicker+4;

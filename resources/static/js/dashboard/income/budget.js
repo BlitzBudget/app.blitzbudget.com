@@ -25,7 +25,7 @@
 	 */
 	if(isEqual(er.getCookie('currentPage'),'budgetPage')) {
 		er.refreshCookiePageExpiry('budgetPage');
-	 	er.fetchBudgetPage('/budgets', function(data) {
+	 	er.fetchCurrentPage('/budgets', function(data) {
 			// Fetch user budget and build the div
 			fetchAllUserBudget();
 			// Load the new HTML
@@ -37,7 +37,7 @@
 	
 	document.getElementById('budgetPage').addEventListener("click",function(e){
 	 	er.refreshCookiePageExpiry('budgetPage');
-		er.fetchBudgetPage('/budgets', function(data) {
+		er.fetchCurrentPage('/budgets', function(data) {
 			// Fetch user budget and build the div
 			fetchAllUserBudget();
 			// Load the new HTML

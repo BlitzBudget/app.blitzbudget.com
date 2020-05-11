@@ -32,8 +32,10 @@
 
 	function populateCurrentPage(page) {
 		er.refreshCookiePageExpiry(page);
-		er.fetchBudgetPage('/profile', function(data) {
-			/**
+		er.fetchCurrentPage('/profile', function(data) {
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            /**
 			* populate Profile
 			**/
 			displayUserDetailsProfile();
@@ -43,8 +45,6 @@
 			if(!includesStr(featureRequest.href,'?email_id')) {
 				featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
 			}
-			// Load the new HTML
-            $('#mutableDashboard').html(data);
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Profile';
 		});
