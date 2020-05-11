@@ -81,20 +81,8 @@
                 "/dashboard/data/currency-name-symbol.js",
                 "/dashboard/data/locale-country.js",
                 "/dashboard/data/bankAccountCategories.js",
-                "/dashboard/support/support.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "settings.js",
-            "files": [
-                "/dashboard/module/settings.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "transactions.js",
-            "files": [
+                "/dashboard/support/support.js",
+                "/dashboard/income/budget.js",
                 "/dashboard/income/transactions/accountModal.js",
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions.js",
@@ -102,28 +90,11 @@
                 "/dashboard/income/transactions/importTransactionsFromFile.js",
                 "/dashboard/income/transactions/export/exportSelectedToCSV.js",
                 "/dashboard/income/transactions/export/exportSelectedToDOC.js",
-                "/dashboard/income/transactions/export/exportSelectedToXLS.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "overview.js",
-            "files": [                
-                "/dashboard/overview/overview.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "profile.js",
-            "files": [                
+                "/dashboard/income/transactions/export/exportSelectedToXLS.js",
+                "/dashboard/module/settings.js",
+                "/dashboard/overview/overview.js",
                 "/dashboard/module/profile.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "budgets.js",
-            "files": [                
-                "/dashboard/income/budget.js"
+
             ]
         },
         {

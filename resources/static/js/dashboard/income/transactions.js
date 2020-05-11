@@ -41,9 +41,34 @@
 	window.transactionsCache = {};
 	// Initialize user budget 
 	window.userBudgetMap = {};
-		
-	// Call the transaction API to fetch information.
-	fetchJSONForTransactions();
+
+	/**
+	 * START loading the page
+	 * 
+	 */
+	if(isEqual(er.getCookie('currentPage'),'transactionsPage')) {
+		er.refreshCookiePageExpiry('transactionsPage');
+	 	er.fetchBudgetPage('/transactions', function(data) {
+			// Call the transaction API to fetch information.
+			fetchJSONForTransactions();
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Transactions';
+		});
+	}
+	
+	document.getElementById('transactionsPage').addEventListener("click",function(e){
+	 	er.refreshCookiePageExpiry('transactionsPage');
+		er.fetchBudgetPage('/transactions', function(data) {
+			// Call the transaction API to fetch information.
+			fetchJSONForTransactions();
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Transactions';
+		});
+	});
 	
 	
 	/**
@@ -1837,21 +1862,20 @@
 	}
 	
 	// Close Button functionality for category Modal
-	document.getElementById("categoryHeaderClose").addEventListener("click",function(e){
+	$('body').on('click', '#categoryHeaderClose' , function(e) {
 		closeCategoryModal();
 	},false);
 	
-	const plannedAmountCategoryModal = document.getElementById('plannedAmountCategoryModal');
-	plannedAmountCategoryModal.addEventListener("focusin",function(){
+	$('body').on('focusin', '#plannedAmountCategoryModal' , function(e) {
 		userUpdateBudgetCached = trimElement(this.innerText);
 	},false);
 	
-	plannedAmountCategoryModal.addEventListener("focusout",function(){
+	$('body').on('focusout', '#plannedAmountCategoryModal' , function(e) {
 		userUpdatedBudget(this);
 	},false);
 	
 	// Budget Amount - disable enter key and submit request
-	plannedAmountCategoryModal.addEventListener('keyup', function(e) {
+	$('body').on('keyup', '#plannedAmountCategoryModal' , function(e) {
 		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) { 
 		    e.preventDefault();
@@ -2417,7 +2441,7 @@
 	*/
 
 	// Click on sort by creation date
-	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
+	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
 		// Close the category Modal
@@ -2464,7 +2488,7 @@
 	});
 
 	// Click on sort by creation date
-	document.getElementById('categorySortBy').addEventListener("click",function(e){
+	$('body').on('click', '#categorySortBy' , function(e) {
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Category';
 		// hide the recent transactions
@@ -2494,7 +2518,7 @@
 	});
 
 	// Sorts the table by aggregating transactions by account
-	document.getElementById('accountSortBy').addEventListener("click",function(e){
+	$('body').on('click', '#accountSortBy' , function(e) {
 		// Close the category Modal
 		closeCategoryModal();
 		// Uncheck all the checked rows

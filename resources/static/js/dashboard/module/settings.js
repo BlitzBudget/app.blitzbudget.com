@@ -17,11 +17,39 @@
 		'walletUrl': { value: '/wallet', writable: false, configurable: false }
 	});
 
-	// Display Email for devices
-	document.getElementById('currentUserEmail').innerText = currentUser.email;
+	/**
+	 * START loading the page
+	 * 
+	 */
+	let currentPageInCookie = er.getCookie('currentPage');
+	if(isEqual(currentPageInCookie,'settingsPage') || isEqual(currentPageInCookie,'settingsPgDD')) {
+		populateCurrentPage('settingsPage');
+	}
+	
+	document.getElementById('settingsPage').addEventListener("click",function(e){
+	 	populateCurrentPage('settingsPage');
+	});
+
+	document.getElementById('settingsPgDD').addEventListener("click",function(e){
+		populateCurrentPage('settingsPage');
+	});
+
+	function populateCurrentPage(page) {
+		er.refreshCookiePageExpiry(page);
+		er.fetchBudgetPage('/settings', function(data) {
+			/**
+			* Get Overview
+			**/
+			populateSettings();
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Settings';
+		});
+	}
 
 	// List Devices on click tab
-	document.getElementById('devicesTabLink').addEventListener("click",function(e){
+	$('body').on('click', '#devicesTabLink' , function(e) {
 		listRegisteredDevices(this);
 	});
 
@@ -242,9 +270,6 @@
 			countries.push(locToCou[i].name);
 		}
 	}
-
-	/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
-	autocomplete(document.getElementById("chosenCountryInp"), countries, "chooseCountryDD");
 
 	// On click drop down btn of country search
 	$("#chosenCountryDropdown").on("shown.bs.dropdown", function(event){
@@ -469,9 +494,6 @@
 		}
 	}
 
-	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-	autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
-
 	// On click drop down btn of country search
 	$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
 		let currencyInp = document.getElementById('chosenCurrencyInp');
@@ -508,19 +530,29 @@
 		return dpItem;
 	}
 
-	/**
-	*  Add Functionality Generic + Btn
-	**/
+	function populateSettings() {
+		/**
+		*  Add Functionality Generic + Btn
+		**/
 
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList.add('d-none');
+	    // Generic Add Functionality
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    genericAddFnc.classList.add('d-none');
 
-    /**
-    *	Add current preferrence of export file format
-    **/
-    let currentExportFileFormat = exportFileFormatObj[currentUser.exportFileFormat];
-    document.getElementById('chosenExportFileFormat').innerText = isNotEmpty(currentExportFileFormat) ? currentExportFileFormat : exportFileFormatObj['XLS'];
+	    /**
+	    *	Add current preferrence of export file format
+	    **/
+	    let currentExportFileFormat = exportFileFormatObj[currentUser.exportFileFormat];
+	    document.getElementById('chosenExportFileFormat').innerText = isNotEmpty(currentExportFileFormat) ? currentExportFileFormat : exportFileFormatObj['XLS'];
 
+	    // Display Email for devices
+		document.getElementById('currentUserEmail').innerText = currentUser.email;
+
+		/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
+		autocomplete(document.getElementById("chosenCountryInp"), countries, "chooseCountryDD");
+
+		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+		autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
+	}
 
 }(jQuery));

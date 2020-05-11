@@ -13,13 +13,41 @@
 		'signinUrl': { value: window._config.api.invokeUrl + window._config.api.profile.signin, writable: false, configurable: false }
 	});
 
-	displayUserDetailsProfile();
-	displayCreatedDate();
+	/**
+	 * START loading the page
+	 * 
+	 */
+	let currentPageInCookie = er.getCookie('currentPage');
+	if(isEqual(currentPageInCookie,'profilePage') || isEqual(currentPageInCookie,'profilePgDD')) {
+		populateCurrentPage('profilePage');
+	}
+	
+	document.getElementById('profilePage').addEventListener("click",function(e){
+	 	populateCurrentPage('profilePage');
+	});
 
-	// Href pointing to send Feature request with appropriate parameters
-	let featureRequest = document.getElementById('sendFeatureRequest');
-	if(!includesStr(featureRequest.href,'?email_id')) {
-		featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
+	document.getElementById('profilePgDD').addEventListener("click",function(e){
+		populateCurrentPage('profilePage');
+	});
+
+	function populateCurrentPage(page) {
+		er.refreshCookiePageExpiry(page);
+		er.fetchBudgetPage('/profile', function(data) {
+			/**
+			* populate Profile
+			**/
+			displayUserDetailsProfile();
+			displayCreatedDate();
+			// Href pointing to send Feature request with appropriate parameters
+			let featureRequest = document.getElementById('sendFeatureRequest');
+			if(!includesStr(featureRequest.href,'?email_id')) {
+				featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
+			}
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Profile';
+		});
 	}
 
 	/**
@@ -286,7 +314,7 @@
     /**
     *  Change Password Flow (Profile)
     **/
-    document.getElementById('changePasswordProfile').addEventListener("click",function(e){
+    $('body').on('click', '#changePasswordProfile' , function(e) {    
         // Show Sweet Alert
         Swal.fire({
             title: 'Change Password',
@@ -384,7 +412,7 @@
 	});
 
 	// Reset Account
-	document.getElementById('resetBBAccount').addEventListener("click",function(e){
+	$('body').on('click', '#resetBBAccount' , function(e) {
 		Swal.fire({
             title: 'Reset your Blitz Budget user account',
             html: resetBBAccount(),
@@ -488,7 +516,7 @@
 	});
 
 	// Delete button
-	document.getElementById('deleteBBAccount').addEventListener("click",function(e){
+	$('body').on('click', '#deleteBBAccount' , function(e) {
 
 		Swal.fire({
                 title: 'Delete your Blitz Budget user account',
@@ -849,7 +877,7 @@
 	});
 
 	// Change User Name
-	document.getElementById('userNameEdit').addEventListener("click",function(e){
+	$('body').on('click', '#userNameEdit' , function(e) {
 		// Hide the Element
 		this.classList.add('d-none');
 		// Name
@@ -868,7 +896,7 @@
 	});
 
 	// Click Enter to Change Name and Last Name
-	document.getElementById('userNameModInp').addEventListener("keyup",function(e){
+	$('body').on('keyup', '#userNameModInp' , function(e) {
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) {
 			// Enter key 
@@ -900,7 +928,7 @@
 	});
 
 	// User Edit Complete Btn
-	document.getElementById('userNameEdiBtn').addEventListener("click",function(e){
+	$('body').on('click', '#userNameEdiBtn' , function(e) {
 		editUserDetailsFNAndLN();
 	});
 
@@ -1071,7 +1099,7 @@
 	});
 
 	// Edit Email
-	document.getElementById('emailEdit').addEventListener("click",function(e){
+	$('body').on('click', '#emailEdit' , function(e) {
 		// Hide the Element
 		this.classList.add('d-none');
 		// Name
@@ -1091,12 +1119,12 @@
 
 
 	// User Edit Complete Btn
-	document.getElementById('emailEditBtn').addEventListener("click",function(e){
+	$('body').on('click', '#emailEditBtn' , function(e) {
 		editUserDetailsEmail();
 	});
 
 	// User Edit email key up listener
-	document.getElementById('emailModInp').addEventListener("keyup",function(e){
+	$('body').on('keyup', '#emailModInp' , function(e) {
 
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) { 

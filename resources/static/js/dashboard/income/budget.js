@@ -17,15 +17,36 @@
 	// Category modal user budget category id;
 	let categoryForModalOpened = '';
 	// Choose the current month from the user chosen date
-	let userChosenMonthName = months[chosenDate.getMonth()]; 
-	
+	let userChosenMonthName = months[chosenDate.getMonth()];
+
 	/**
 	 * START loading the page
 	 * 
 	 */
-	// Fetch user budget and build the div
-	fetchAllUserBudget();
+	if(isEqual(er.getCookie('currentPage'),'budgetPage')) {
+		er.refreshCookiePageExpiry('budgetPage');
+	 	er.fetchBudgetPage('/budgets', function(data) {
+			// Fetch user budget and build the div
+			fetchAllUserBudget();
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Budget';
+		});
+	}
 	
+	document.getElementById('budgetPage').addEventListener("click",function(e){
+	 	er.refreshCookiePageExpiry('budgetPage');
+		er.fetchBudgetPage('/budgets', function(data) {
+			// Fetch user budget and build the div
+			fetchAllUserBudget();
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Budget';
+		});
+	});
+
 	// Fetches all the user budget and displays them in the user budget
 	function fetchAllUserBudget() {
 		let budgetDivFragment = document.createDocumentFragment();
@@ -858,7 +879,7 @@
    		ajaxData.onSuccess = function(userBudget) {
    				// Filter the body
    				userBudget = userBudget['body-json'];
-   				
+
 	        	let budgetDivFragment = document.createDocumentFragment();
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
 	        	

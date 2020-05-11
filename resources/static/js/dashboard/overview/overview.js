@@ -1812,7 +1812,7 @@
 
 
         //start animation for the Emails Subscription Chart
-        md.startAnimationForBarChart(simpleBarChart);
+        er.startAnimationForBarChart(simpleBarChart);
 
     }
 

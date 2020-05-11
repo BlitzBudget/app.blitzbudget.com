@@ -6,7 +6,7 @@
 	const replaceTransactionsId = "productsJson";
 
 	// On Click Account Header display information
-	$('#recTransAndAccTable').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
+	$('body').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
 		// Account modal id
 		let accInfoTable = this.closest('.accountInfoTable');
 		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
@@ -44,7 +44,7 @@
 	});
 
 	// Close Accoount modal
-	document.getElementById('accountHeaderClose').addEventListener("click",function(e){
+	$('body').on('click', '#accountHeaderClose' , function(e) {
 		// Close Account Modal
 		document.getElementById('accountInformationMdl').classList.add('d-none');
 		// Open  Financial Position
@@ -52,12 +52,12 @@
 	});
 
 	// Focus in for the remaining account amount
-	document.getElementById('accountAmountEntry').addEventListener("focusin",function(e){
+	$('body').on('focusin', '#accountAmountEntry' , function(e) {
 		amountEditedAccount = trimElement(this.innerText);
 	});
 
 	// Change the remaining amount
-	document.getElementById('accountAmountEntry').addEventListener("keyup",function(e){
+	$('body').on('keyup', '#accountAmountEntry' , function(e) {
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) { 
 		    e.preventDefault();
@@ -147,7 +147,7 @@
 	}
 
 	// Delete Account functionality
-	document.getElementById('deleteSvgAccount').addEventListener("click",function(e){
+	$('body').on('keyup', '#deleteSvgAccount' , function(e) {
 		
 		Swal.fire({
             title: 'Delete financial account',

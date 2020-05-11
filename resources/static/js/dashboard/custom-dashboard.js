@@ -111,23 +111,16 @@ window.onload = function () {
 			// make sure that the cookies exists
 	        if (document.cookie != "") { 
         		//Get the value from the name=value pair
-                let sidebarActiveCookie = getCookie('sidebarMini');
+                let sidebarActiveCookie = er.getCookie('sidebarMini');
                 
                 if(includesStr(sidebarActiveCookie, 'active')) {
                 	 minimizeSidebar();
                 }
                 
                 // Get the value from the name=value pair
-                let cookieCurrentPage = getCookie('currentPage');
-                // Get parameters
-                const params = (new URL(document.location)).searchParams;
-
-                // First Priority to URL parameters
-                if(params != null && params.has('page')) {
-                	fetchCurrentPage(params.get('page'));
-                	// After fetching delete param
-                	params.delete('page');
-                } else if(!isEmpty(cookieCurrentPage)) {
+                let cookieCurrentPage = er.getCookie('currentPage');
+                
+                if(isNotEmpty(cookieCurrentPage)) {
                 	// Second Priority to cookies
                 	fetchCurrentPage(cookieCurrentPage);
                 } else {
@@ -140,22 +133,6 @@ window.onload = function () {
 	        }
 		}
 		
-		// Gets the cookie with the name
-		function getCookie(cname) {
-		  let name = cname + "=";
-		  let decodedCookie = decodeURIComponent(document.cookie);
-		  let ca = decodedCookie.split(';');
-		  for(let i = 0; i <ca.length; i++) {
-		    let c = ca[i];
-		    while (c.charAt(0) == ' ') {
-		      c = c.substring(1);
-		    }
-		    if (c.indexOf(name) == 0) {
-		      return c.substring(name.length, c.length);
-		    }
-		  }
-		  return "";
-		}
 		
 		// DO NOT load the html from request just refresh div if possible without downloading JS
 		$('.pageDynamicLoadForDashboard').click(function(e){
@@ -168,12 +145,6 @@ window.onload = function () {
         		return;
         	}
 			
-			/* Create a cookie to store user preference */
-		    let expirationDate = new Date;
-		    expirationDate.setMonth(expirationDate.getMonth()+2);
-		    
-		    /* Create a cookie to store user preference */
-		    document.cookie =  "currentPage=" + id + "; expires=" + expirationDate.toGMTString();
 			
 		    // Fetches Current date
 			fetchCurrentPage(id);
@@ -200,14 +171,10 @@ window.onload = function () {
 			switch(id) {
 			
 				case 'transactionsPage':
-					url = '/transactions';
 					color = 'green';
-					currentPage = 'Transactions';
 				    break;
 				case 'budgetPage':
-					url = '/budgets';
 					color = 'rose';
-					currentPage = 'Budget';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
 				    break;
 				case 'goalsPage':
@@ -217,9 +184,7 @@ window.onload = function () {
 					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
 				    break;
 				case 'overviewPage':
-					url = '/overview';
 					color = 'azure';
-					currentPage = 'Overview';
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 				    break;
 				case 'investmentsPage':
@@ -230,15 +195,11 @@ window.onload = function () {
 				    break;
 				case 'settingsPage':
 				case 'settingsPgDD':
-					url = '/settings';
 					color = ''; /* No Color */
-					currentPage = 'Settings';
 				    break;
 				case 'profilePage':
 				case 'profilePgDD':
-					url = '/profile';
 					color = ''; /* No Color */
-					currentPage = 'Profile';
 				    break;
 				default:
 					Swal.fire({
@@ -269,28 +230,6 @@ window.onload = function () {
         	resetMonthExistingPicker();
         	// reset Scroll position to header
     		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10;
-
-    		// Call the actual page which was requested to be loaded
-    		$.ajax({
-		        type: "GET",
-		        url: url,
-		        dataType: 'html',
-		        success: function(data){
-		        	// Load the new HTML
-		            $('#mutableDashboard').html(data);
-		            // Set Current Page
-		            document.getElementById('currentPage').innerText = currentPage;
-		        },
-		        error: function(){
-		        	Swal.fire({
-		                title: "Redirecting Not Possible",
-		                text: 'Please try again later',
-		                icon: 'warning',
-		                timer: 1000,
-		                showConfirmButton: false
-		            }).catch(swal.noop);
-		        }
-		    });
 		}
 		
 		function closeCategoryModalIfOpen() {
@@ -886,8 +825,7 @@ er = {
 	},
 	
 	setChosenDateWithSelected(elem) {
-		let positionId = lastElement(splitElement(elem.id,'-'));
-		positionId = Number(positionId) - 1;
+		let positionId = elem.getAttribute('data-target');
 		
 		// Set chosen date
 		chosenDate.setMonth(positionId);
@@ -954,6 +892,52 @@ er = {
 	      }))
 	    }),
 	    seq2 = 0
+	},
+
+	refreshCookiePageExpiry:  function (id) {
+		/* Create a cookie to store user preference */
+	    let expirationDate = new Date;
+	    expirationDate.setMonth(expirationDate.getMonth()+2);
+	    
+	    /* Create a cookie to store user preference */
+	    document.cookie =  "currentPage=" + id + "; expires=" + expirationDate.toGMTString();
+		
+	},
+
+	// Gets the cookie with the name
+	getCookie: function(cname) {
+	  let name = cname + "=";
+	  let decodedCookie = decodeURIComponent(document.cookie);
+	  let ca = decodedCookie.split(';');
+	  for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+	      c = c.substring(1);
+	    }
+	    if (c.indexOf(name) == 0) {
+	      return c.substring(name.length, c.length);
+	    }
+	  }
+	  return "";
+	},
+
+	fetchBudgetPage: function(url, onSuccess) {
+		// Call the actual page which was requested to be loaded
+		$.ajax({
+	        type: "GET",
+	        url: url,
+	        dataType: 'html',
+	        success: onSuccess,
+	        error: function(){
+	        	Swal.fire({
+	                title: "Redirecting Not Possible",
+	                text: 'Please try again later',
+	                icon: 'warning',
+	                timer: 1000,
+	                showConfirmButton: false
+	            }).catch(swal.noop);
+	        }
+	    });
 	}
 		
 }
