@@ -2,8 +2,6 @@
 (function scopeWrapper($) {	
     // Forward slash regex
     const reForwardSlash = /\//g;
-    // Focus the search article
-    document.getElementById('searchArticle').focus();
     // SUPPORT CONSTANTS
     const SUPPORT_CONSTANTS = {};
     // SECURITY: Defining Immutable properties as constants
@@ -30,6 +28,8 @@
                 $('#supportContent').html(data);
                 // Load the auto complete module
                 loadAutoCompleteModuleOnSwal();
+                // Focus the search article
+                document.getElementById('searchArticle').focus();
             },
             error: function(){
                 Swal.fire({
