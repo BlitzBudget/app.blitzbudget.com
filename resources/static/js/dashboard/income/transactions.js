@@ -61,9 +61,9 @@
 	document.getElementById('transactionsPage').addEventListener("click",function(e){
 	 	er.refreshCookiePageExpiry('transactionsPage');
 		er.fetchCurrentPage('/transactions', function(data) {
-			initialLoadOfTransactions();
 			// Load the new HTML
             $('#mutableDashboard').html(data);
+            initialLoadOfTransactions();
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Transactions';
 		});
@@ -85,6 +85,62 @@
 		//expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
 		//incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
 		
+			// Date Picker
+		// On click month (UNBIND other click events)
+		$('.monthPickerMonth').unbind('click').click(function() {
+			// Month picker is current selected then do nothing
+			if(this.classList.contains('monthPickerMonthSelected')) {
+				return;
+			}
+
+			let transactionTable = document.getElementById('transactionsTable');
+			
+			if(transactionTable == null) {
+				return;
+			}
+			
+			// Replace Transactions Table with empty spinner
+			replaceTransactionsWithMSpinner();
+			replacePieChartWithMSpinner();
+			
+			// Set chosen Date
+			er.setChosenDateWithSelected(this);
+			
+			// Call transactions
+			fetchJSONForTransactions();
+
+			// Call Account / Recent Transactions
+			populateAccountOrRecentTransactionInfo();
+			
+		});
+
+		// Replace currentCurrencySymbol with currency symbol
+		replaceWithCurrency();
+
+		/**
+		*  Add Functionality Generic + Btn
+		**/
+
+		// Register Tooltips
+		let ttinit = $("#addFncTT");
+		ttinit.attr('data-original-title', 'Add Transactions')
+		ttinit.tooltip({
+			delay: { "show": 300, "hide": 100 }
+	    });
+
+	    // Generic Add Functionalitys
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
+	    $(genericAddFnc).unbind('click').click(function () {
+	    	genericAddFnc.classList.toggle('d-none');
+			if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+				// If length > 0 then change the add button to add
+				popup.showSwal('warning-message-and-confirmation');
+			} else {
+				$('#GSCCModal').modal('toggle');
+			}  
+		});
+
 		
 	}
 	
@@ -633,7 +689,7 @@
 	}
 	
 	// Disable Button if no check box is clicked and vice versa
-	$( "#transactionsTable" ).on( "click", ".number" ,function() {
+	$( "body" ).on( "click", ".number" ,function() {
 		let checkAllElementChecked = $("#checkAll:checked");
 		if(checkAllElementChecked.length > 0) {
 			// uncheck the check all if a check is clicked and if the check all is already clicked
@@ -831,7 +887,7 @@
 	}
 
 	// Show or hide multiple rows in the transactions table
-	$( "#transactionsTable" ).on( "click", ".toggle" ,function() {
+	$( "body" ).on( "click", ".toggle" ,function() {
 		let categoryId = lastElement(splitElement(this.id,'-'));
 		
 		if(er.checkIfInvalidCategory(categoryId)) {
@@ -856,7 +912,7 @@
 	}
 	
 	// Catch the description when the user focuses on the description
-	$( "#transactionsTable" ).on( "focusin", ".tableRowForSelectCategory" ,function() {
+	$( "body" ).on( "focusin", ".tableRowForSelectCategory" ,function() {
 		let closestTableRow = $(this).parent().closest('div');
 		// Remove BR appended by mozilla
 		if(closestTableRow != null && closestTableRow.length > 0 && closestTableRow[0] != null) {
@@ -870,12 +926,12 @@
 	});
 	
 	// Process the description to find out if the user has changed the description
-	$( "#transactionsTable" ).on( "focusout", ".tableRowForSelectCategory" ,function() {
+	$( "body" ).on( "focusout", ".tableRowForSelectCategory" ,function() {
 		$(this).parent().closest('div')[0].classList.remove('tableRowTransactionHighlight');
 	});
 	
 	// Change trigger on select
-	$( "#transactionsTable" ).on( "change", ".tableRowForSelectCategory" ,function() {
+	$( "body" ).on( "change", ".tableRowForSelectCategory" ,function() {
 		let categoryId = this.id;
 		let selectedTransactionId = splitElement(categoryId,'-');
 		let classList = $('#' + categoryId).length > 0 ? $('#' + categoryId)[0].classList : null;
@@ -940,7 +996,7 @@
 	});
 	
 	// Catch the description when the user focuses on the description
-	$( "#transactionsTable" ).on( "focusin", ".transactionsTableDescription" ,function() {
+	$( "body" ).on( "focusin", ".transactionsTableDescription" ,function() {
 		// Remove BR appended by mozilla
 		$('.transactionsTableDescription br[type="_moz"]').remove();
 		descriptionTextEdited = trimElement(this.innerText);
@@ -948,14 +1004,14 @@
 	});
 	
 	// Process the description to find out if the user has changed the description
-	$( "#transactionsTable" ).on( "focusout", ".transactionsTableDescription" ,function() {
+	$( "body" ).on( "focusout", ".transactionsTableDescription" ,function() {
 		
 		postNewDescriptionToUserTransactions(this);
 		$(this).parent().closest('div').removeClass('tableRowTransactionHighlight');
 	});
 	
 	// Description - disable enter key and submit request (key press necessary for prevention of a new line)
-	$('#transactionsTable').on('keypress', '.transactionsTableDescription' , function(e) {
+	$('body').on('keypress', '.transactionsTableDescription' , function(e) {
 		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) {
 			document.activeElement.blur();
@@ -1027,19 +1083,19 @@
 	}
 	
 	// Catch the amount when the user focuses on the transaction
-	$( "#transactionsTable" ).on( "focusin", ".amountTransactionsRow" ,function() {
+	$( "body" ).on( "focusin", ".amountTransactionsRow" ,function() {
 		amountEditedTransaction = trimElement(this.innerText);
 		$(this).parent().closest('div').addClass('tableRowTransactionHighlight');
 	});
 	
 	// Process the amount to find out if the user has changed the transaction amount (Disable async to update total category amount)
-	$( "#transactionsTable" ).on( "focusout", ".amountTransactionsRow" ,function() {
+	$( "body" ).on( "focusout", ".amountTransactionsRow" ,function() {
 		postNewAmountToUserTransactions(this);
 		$(this).parent().closest('div').removeClass('tableRowTransactionHighlight');
 	});
 	
 	// Amount - disable enter key and submit request (Key up for making sure that the remove button is shown)
-	$('#transactionsTable').on('keypress', '.amountTransactionsRow' , function(e) {
+	$('body').on('keypress', '.amountTransactionsRow' , function(e) {
 		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) {
 		  	e.preventDefault();
@@ -1228,7 +1284,7 @@
 	
 	
 	// Dynamically generated button click event
-	$( "#transactionsTable" ).on( "click", ".removeRowTransaction" ,function() {
+	$( "body" ).on( "click", ".removeRowTransaction" ,function() {
 		// Prevents the add amount event listener focus out from being executed
 		let id = lastElement(splitElement($(this).parent().closest('div').attr('id'),'-'));
 		// Remove the button and append the loader with fade out
@@ -1591,7 +1647,7 @@
     }
     
     // Add button to add the table row to the corresponding category
-	$( "#transactionsTable" ).on( "click", ".addTableRowListener" ,function(event) {
+	$( "body" ).on( "click", ".addTableRowListener" ,function(event) {
 		// Add small Material Spinner
 		 let divMaterialSpinner = document.createElement('div');
 		 divMaterialSpinner.classList = 'material-spinner-small d-inline-block';
@@ -1988,35 +2044,6 @@
 		
 	}
 	
-	// Date Picker
-	// On click month (UNBIND other click events)
-	$('.monthPickerMonth').unbind('click').click(function() {
-		// Month picker is current selected then do nothing
-		if(this.classList.contains('monthPickerMonthSelected')) {
-			return;
-		}
-
-		let transactionTable = document.getElementById('transactionsTable');
-		
-		if(transactionTable == null) {
-			return;
-		}
-		
-		// Replace Transactions Table with empty spinner
-		replaceTransactionsWithMSpinner();
-		replacePieChartWithMSpinner();
-		
-		// Set chosen Date
-		er.setChosenDateWithSelected(this);
-		
-		// Call transactions
-		fetchJSONForTransactions();
-
-		// Call Account / Recent Transactions
-		populateAccountOrRecentTransactionInfo();
-		
-	});
-	
 	// Replace transactions table with empty spinner
 	function replaceTransactionsWithMSpinner() {
 		// Replace Transactions Table
@@ -2065,33 +2092,6 @@
 		let chartFinPosition = document.getElementById('chartFinancialPosition');
 		chartFinPosition.innerHTML = '<div class="material-spinner"></div>';
 	}
-
-	// Replace currentCurrencySymbol with currency symbol
-	replaceWithCurrency();
-
-	/**
-	*  Add Functionality Generic + Btn
-	**/
-
-	// Register Tooltips
-	let ttinit = $("#addFncTT");
-	ttinit.attr('data-original-title', 'Add Transactions')
-	ttinit.tooltip({
-		delay: { "show": 300, "hide": 100 }
-    });
-
-    // Generic Add Functionalitys
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
-    $(genericAddFnc).unbind('click').click(function () {
-    	genericAddFnc.classList.toggle('d-none');
-		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
-			// If length > 0 then change the add button to add
-			popup.showSwal('warning-message-and-confirmation');
-		} else {
-			$('#GSCCModal').modal('toggle');
-		}  
-	});
 
 	/*
 	 * Populate Recent transactions ()Aggregated by account)

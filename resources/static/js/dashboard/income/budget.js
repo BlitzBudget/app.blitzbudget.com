@@ -28,6 +28,7 @@
 	 	er.fetchCurrentPage('/budgets', function(data) {
 			// Fetch user budget and build the div
 			fetchAllUserBudget();
+			populateBudgetResource();
 			// Load the new HTML
             $('#mutableDashboard').html(data);
             // Set Current Page
@@ -40,12 +41,68 @@
 		er.fetchCurrentPage('/budgets', function(data) {
 			// Fetch user budget and build the div
 			fetchAllUserBudget();
+			populateBudgetResource();
 			// Load the new HTML
             $('#mutableDashboard').html(data);
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Budget';
 		});
 	});
+
+	function populateBudgetResource(){
+		/**
+		*  Add Functionality Generic + Btn
+		**/
+
+		// Register Tooltips
+		let ttinit = $("#addFncTT");
+		ttinit.attr('data-original-title', 'Add Budget');
+		ttinit.tooltip({
+			delay: { "show": 300, "hide": 100 }
+	    });
+
+	    // Generic Add Functionality
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    document.getElementById('addFncTT').innerText = 'add';
+	    genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
+	    $(genericAddFnc).unbind('click').click(function () {
+	    	if(!this.classList.contains('addNewBudget')) {
+	    		return;
+	    	}
+
+	    	// Create a new unbudgeted category
+			createUnbudgetedCat(this);
+	    });
+
+	    /**
+		 * Date Picker Module
+		 */
+		
+		// Date Picker On click month
+		$('.monthPickerMonth').unbind('click').click(function() {
+			// Month picker is current selected then do nothing
+			if(this.classList.contains('monthPickerMonthSelected')) {
+				return;
+			}
+			
+			let budgetAmountDiv = document.getElementById('budgetAmount');
+			
+			// If other pages are present then return this event
+			if(budgetAmountDiv == null) {
+				return;
+			}
+			
+			// Set chosen date
+			er.setChosenDateWithSelected(this);
+			
+			// Reset the User Budget with Loader
+			resetUserBudgetWithLoader();
+			
+			// Call the user budget
+			fetchAllUserBudget();
+			
+		});
+	}
 
 	// Fetches all the user budget and displays them in the user budget
 	function fetchAllUserBudget() {
@@ -497,7 +554,7 @@
 		// If the budget is not created for the particular category, make sure the budget is not equal to zero
 		if(isNotEmpty(userBudgetValue) && isNotEmpty(categoryTotalAmount)) {
 			// Calculate remaining budget
-			let budgetAvailableToSpendOrSave = userBudgetValue.planned - categoryTotalAmount;
+			let budgetAvailableToSpendOrSave = userBudgetValue - categoryTotalAmount;
 			let minusSign = '';
 			
 			// Calculate the minus sign and appropriate class for the remaining amount 
@@ -525,19 +582,20 @@
 			}
 			
 			// Change the remaining text appropriately
+			budgetAvailableToSpendOrSave = isNaN(budgetAvailableToSpendOrSave) ? 0 : budgetAvailableToSpendOrSave;
 			remainingAmountDiv.innerText = minusSign + currentCurrencyPreference + formatNumber(budgetAvailableToSpendOrSave, currentUser.locale);
 			
 			// Calculate percentage available to spend or save
-			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue.planned) * 100),0);
+			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue) * 100),0);
 			// If the user budget is 0 then the percentage calculation is not applicable
-			if(userBudgetValue.planned == 0 || isNaN(remainingAmountPercentage)) {
+			if(userBudgetValue == 0 || isNaN(remainingAmountPercentage)) {
 				remainingAmountPercentageDiv.innerText = 'NA';
 			} else {
 				remainingAmountPercentageDiv.innerText = remainingAmountPercentage + '%';
 			}
 			
 			// Assign progress bar value. If the category amount is higher then the progress is 100%
-			let progressBarPercentage = isNaN(remainingAmountPercentage) ? 0 : (categoryTotalAmount > userBudgetValue.planned) ? 100 : (100 - remainingAmountPercentage);
+			let progressBarPercentage = isNaN(remainingAmountPercentage) ? 0 : (categoryTotalAmount > userBudgetValue) ? 100 : (100 - remainingAmountPercentage);
 			// Set the value and percentage of the progress bar
 			progressBarCategoryModal.setAttribute('aria-valuenow', progressBarPercentage);
 			progressBarCategoryModal.style.width = progressBarPercentage + '%'; 
@@ -580,7 +638,7 @@
 	}
 	
 	// Add click event listener to delete the budget
-	$('#budgetAmount').on('click', '.deleteBudget' , function(e) {
+	$('body').on('click', '.deleteBudget' , function(e) {
 		let deleteButtonElement = this;
 		let budgetId = this.getAttribute('data-target');
 		
@@ -715,7 +773,7 @@
 	}
 	
 	// Clicking on copy budget
-	$('#budgetAmount').on('click', '#copyPreviousMonthsBudget' , function(e) {
+	$('body').on('click', '#copyPreviousMonthsBudget' , function(e) {
 		this.setAttribute("disabled", "disabled");
 		this.innerHTML = 'Creating budgets..';
 		let element = this;
@@ -1172,7 +1230,7 @@
 	/**
 	 *  Compensate Budget Module
 	 */
-	$('#budgetAmount').on('click', '.compensateAnchor' , function() {
+	$('body').on('click', '.compensateAnchor' , function() {
 		let categoryCompensationTitle = document.getElementById('categoryCompensationTitle');
 		let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
 		let anchorDropdownItemFragment = document.createDocumentFragment();
@@ -1421,7 +1479,7 @@
 	}
 	
 	// Click the delete budget compensated
-	$('#compensationModalBody').on('click', '.revertCompensationAnchor' , function() {
+	$('body').on('click', '.revertCompensationAnchor' , function() {
 		let toDeleteCategoryId = lastElement(splitElement(this.id,'-'));
 		document.getElementById('deleteCompensationSpinner-' + toDeleteCategoryId).classList.toggle('d-none');
 		this.firstChild.classList.toggle('d-none');
@@ -1541,35 +1599,6 @@
 		});
 	    
 	}
-	
-	/**
-	 * Date Picker Module
-	 */
-	
-	// Date Picker On click month
-	$('.monthPickerMonth').unbind('click').click(function() {
-		// Month picker is current selected then do nothing
-		if(this.classList.contains('monthPickerMonthSelected')) {
-			return;
-		}
-		
-		let budgetAmountDiv = document.getElementById('budgetAmount');
-		
-		// If other pages are present then return this event
-		if(budgetAmountDiv == null) {
-			return;
-		}
-		
-		// Set chosen date
-		er.setChosenDateWithSelected(this);
-		
-		// Reset the User Budget with Loader
-		resetUserBudgetWithLoader();
-		
-		// Call the user budget
-		fetchAllUserBudget();
-		
-	});
 	
 	// Reset the user budget with loader
 	function resetUserBudgetWithLoader() {
@@ -1702,29 +1731,5 @@
 		let chartVisualization = document.getElementById('chartBudgetVisualization');
 		chartVisualization.innerHTML = '<div class="material-spinner"></div>';
 	}
-
-	/**
-	*  Add Functionality Generic + Btn
-	**/
-
-	// Register Tooltips
-	let ttinit = $("#addFncTT");
-	ttinit.attr('data-original-title', 'Add Budget');
-	ttinit.tooltip({
-		delay: { "show": 300, "hide": 100 }
-    });
-
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    document.getElementById('addFncTT').innerText = 'add';
-    genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
-    $(genericAddFnc).unbind('click').click(function () {
-    	if(!this.classList.contains('addNewBudget')) {
-    		return;
-    	}
-
-    	// Create a new unbudgeted category
-		createUnbudgetedCat(this);
-    });
 
 }(jQuery));	

@@ -51,8 +51,47 @@
 			* Get Overview
 			**/
 			fetchOverview();
+			populateOverviewPage();
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Overview';
+		});
+	}
+
+	function populateOverviewPage() {
+		/**
+		 * Date Picker
+		 */
+		
+		// Date Picker on click month
+		$('.monthPickerMonth').unbind('click').click(function() {
+			// Month picker is current selected then do nothing
+			if(this.classList.contains('monthPickerMonthSelected')) {
+				return;
+			}
+			
+			let recentTransactionsDiv = document.getElementsByClassName('recentTransactionCard');
+
+			// If other pages are present then return this event
+			if(recentTransactionsDiv.length == 0) {
+				return;
+			}
+			
+			// Reset the optimizations and recent transactions tab
+			let optimizationsModule = document.getElementById('optimizations');
+			optimizationsModule.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			
+			let recentTransactionsTab = document.getElementById('recentTransactions');
+			recentTransactionsTab.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			
+			// Set chosen date
+			er.setChosenDateWithSelected(this);
+			
+			// Populate Recent transactions
+			populateRecentTransactions();
+			
+			// Fetch transaction total and Optimizations (Populate Category Breakdown chart if open)
+			fetchCategoryTotalForTransactions();
+			
 		});
 	}
 
@@ -771,7 +810,7 @@
 	}
 	
 	// Select all check boxes for Transactions
-	$('.optimizationBudgetAndGoal').on('click', '#checkAll' , function(e) {
+	$('body').on('click', '#checkAll' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		let allCheckedOptimizations = $(".number:checked");
 		
@@ -783,7 +822,7 @@
 	});
 	
 	// Click budget row
-	$('.optimizationBudgetAndGoal').on('click', '.budgetOptimization', function() {
+	$('body').on('click', '.budgetOptimization', function() {
 		// Check the row as selected / unselected
 		let checkboxInElem = this.getElementsByClassName('number');
 		checkboxInElem = $(checkboxInElem);
@@ -954,7 +993,7 @@
 	}
 	
 	// Click the overview card items
-	$('.overviewEntryRow').click(function(){
+	$('body').on('click', '.overviewEntryRow', function() {
 		// Append spinner
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 		let materialSpinnerDocumentFragment = document.createDocumentFragment();
@@ -1441,42 +1480,6 @@
 	}
 	
 	/**
-	 * Date Picker
-	 */
-	
-	// Date Picker on click month
-	$('.monthPickerMonth').unbind('click').click(function() {
-		// Month picker is current selected then do nothing
-		if(this.classList.contains('monthPickerMonthSelected')) {
-			return;
-		}
-		
-		let recentTransactionsDiv = document.getElementsByClassName('recentTransactionCard');
-
-		// If other pages are present then return this event
-		if(recentTransactionsDiv.length == 0) {
-			return;
-		}
-		
-		// Reset the optimizations and recent transactions tab
-		let optimizationsModule = document.getElementById('optimizations');
-		optimizationsModule.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-		
-		let recentTransactionsTab = document.getElementById('recentTransactions');
-		recentTransactionsTab.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-		
-		// Set chosen date
-		er.setChosenDateWithSelected(this);
-		
-		// Populate Recent transactions
-		populateRecentTransactions();
-		
-		// Fetch transaction total and Optimizations (Populate Category Breakdown chart if open)
-		fetchCategoryTotalForTransactions();
-		
-	});
-	
-	/**
 	 * Overview Chart Month Display
 	 */
 	
@@ -1634,7 +1637,7 @@
 	}
 	
 	// On click year in year picker
-	$('.yearPicker').on('click', '.yearPickerDisplay', function() {
+	$('body').on('click', '.yearPickerDisplay', function() {
 		// Remove the selected in year picker
 		removeSelectedIYP();
 		// Fetch the year and store in Cache
