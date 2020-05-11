@@ -73,11 +73,6 @@
 		/**
 		 * START Load at the end of the javascript
 		 */
-		
-		// Load Expense category and income category
-		expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
-		incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
-		
 		// Success SVG Fragment
 		let successSVGFormed = successSvgMessage();
 		
@@ -85,6 +80,11 @@
 		loadCategoryModalImages();
 		// Call the transaction API to fetch information.
 		fetchJSONForTransactions();
+
+		// Load Expense category and income category
+		//expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
+		//incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
+		
 		
 	}
 	
