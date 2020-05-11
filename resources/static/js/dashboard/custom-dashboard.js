@@ -628,31 +628,6 @@ window.onload = function () {
 	        readCookie();
 		}
 
-		// Load all categories from API (Call synchronously to set global variable)
-		function fetchJSONForCategories(data) {
-			
-			for(let count = 0, length = Object.keys(data).length; count < length; count++){
-        		  let key = Object.keys(data)[count];
-            	  let value = data[key];
-
-            	  // Freeze the object so it cannot be mutable
-	        	  Object.freeze(value);
-        		  window.categoryMap[value.categoryId] = value;
-        		  let option = document.createElement('option');
-    			  option.className = 'categoryOption-' + value.categoryId;
-    			  option.value = value.categoryId;
-    			  option.text = value.categoryName;
-        		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-        			  window.expenseSelectionOptGroup.appendChild(option);
-        		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-        			  window.incomeSelectionOptGroup.appendChild(option);
-        		  }
-    		   
-        	  	}
-        	  // Sealing the object so new objects or properties cannot be added
-        	  Object.seal(window.categoryMap);
-		}
-
 		/* When the toggleFullscreen() function is executed, open the video in fullscreen.
 		Note that we must include prefixes for different browsers, as they don't support the requestFullscreen method yet */
 		function toggleFullscreen() {
@@ -766,43 +741,6 @@ window.onload = function () {
 		  	 	er.showLoginPopup();
 		     	return false;
 		  	}
-		});
-
-		/**
-		*
-		* Support module On Click
-		*
-		**/
-		// Show help center
-		$('.main-panel').on('click', '.helpCenter' , function(e) {
-			// Support Modal
-	        $('#supportModal').modal('show');
-	        // Call the actual page which was requested to be loaded
-	        $.ajax({
-	            type: "GET",
-	            url: window._config.help.html,
-	            dataType: 'html',
-	            success: function(data){
-	                // Load the new HTML
-	                $('#supportContent').html(data);
-	                // Fetch the script
-		            if(window._config.help.js) {
-			            $.getScript( window._config.help.js )
-						  .fail(function( jqxhr, settings, exception ) {
-						  	showNotification('Unable to fetch dependencies for the page. Please refresh the page!',window._constants.notification.error);
-						  });
-					}
-	            },
-	            error: function(){
-	                Swal.fire({
-	                    title: "Redirecting Not Possible",
-	                    text: 'Please try again later',
-	                    icon: 'warning',
-	                    timer: 1000,
-	                    showConfirmButton: false
-	                }).catch(swal.noop);
-	            }
-	        });
 		});
 
 	});
@@ -1020,6 +958,31 @@ er = {
 		
 }
 
+// Load all categories from API (Call synchronously to set global variable)
+function fetchJSONForCategories(data) {
+	
+	for(let count = 0, length = Object.keys(data).length; count < length; count++){
+		  let key = Object.keys(data)[count];
+    	  let value = data[key];
+
+    	  // Freeze the object so it cannot be mutable
+    	  Object.freeze(value);
+		  window.categoryMap[value.categoryId] = value;
+		  let option = document.createElement('option');
+		  option.className = 'categoryOption-' + value.categoryId;
+		  option.value = value.categoryId;
+		  option.text = value.categoryName;
+		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+			  window.expenseSelectionOptGroup.appendChild(option);
+		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+			  window.incomeSelectionOptGroup.appendChild(option);
+		  }
+	   
+	  	}
+	  // Sealing the object so new objects or properties cannot be added
+	  Object.seal(window.categoryMap);
+}
+
 // Display Confirm Account Verification Code
 function toggleVerify(email, verifyCode) {
     document.getElementById('google').classList.add('d-none');
@@ -1055,4 +1018,20 @@ function toggleVerify(email, verifyCode) {
     // CHange focus to verification code
     document.getElementById('codeInputVerify').focus();
 
+}
+
+function calculateWalletInformation(wallet) {
+	/*
+	* Calcualte wallet information
+	*/
+	 // Check if wallet id is present, if not set financial portfolio id
+    if(isEmpty(window.currentUser.walletId)) {
+        window.currentUser.walletId = wallet.walletId;
+    }
+
+    // update currency
+    if(isEmpty(window.currentUser.walletCurrency)) {
+    	window.currentUser.walletCurrency = wallet.walletCurrency;
+    	window.currentCurrencyPreference = wallet.walletCurrency;
+	}	
 }

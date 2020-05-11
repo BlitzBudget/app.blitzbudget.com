@@ -31,9 +31,13 @@
 		let budgetDivFragment = document.createDocumentFragment();
 
 		let values = {};
-		values.walletId = window.currentUser.walletId;
+		if(isNotEmpty(window.currentUser.walletId)) {
+			values.walletId = window.currentUser.walletId;
+		} else {
+			values.userId = window.currentUser.financialPortfolioId;
+		}
 		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
-		values.startsWithDate = new Date(y, m, 1);
+		values.startsWithDate = new Date(y, m);
 		values.endsWithDate = new Date(y, m + 1, 0);
 
 		// Ajax Requests on Error
@@ -47,6 +51,9 @@
    		ajaxData.onSuccess = function(data) {
    			let budgets = data.Budget;
    			let dates = data.Date;
+   			let wallet = data.Wallet;
+
+   			calculateWalletInformation(wallet[0]);
    			er_a.populateBankInfo(data.BankAccount);
    			debugger;
 

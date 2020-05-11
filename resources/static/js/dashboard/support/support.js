@@ -2,8 +2,6 @@
 (function scopeWrapper($) {	
     // Forward slash regex
     const reForwardSlash = /\//g;
-    // Load the auto complete module
-    loadAutoCompleteModuleOnSwal();
     // Focus the search article
     document.getElementById('searchArticle').focus();
     // SUPPORT CONSTANTS
@@ -11,6 +9,38 @@
     // SECURITY: Defining Immutable properties as constants
     Object.defineProperties(SUPPORT_CONSTANTS, {
         'ratingLS': { value: 'articleRating', writable: false, configurable: false }
+    });
+
+    /**
+    *
+    * Support module On Click
+    *
+    **/
+    // Show help center
+    $('.main-panel').on('click', '.helpCenter' , function(e) {
+        // Support Modal
+        $('#supportModal').modal('show');
+        // Call the actual page which was requested to be loaded
+        $.ajax({
+            type: "GET",
+            url: window._config.help.html,
+            dataType: 'html',
+            success: function(data){
+                // Load the new HTML
+                $('#supportContent').html(data);
+                // Load the auto complete module
+                loadAutoCompleteModuleOnSwal();
+            },
+            error: function(){
+                Swal.fire({
+                    title: "Redirecting Not Possible",
+                    text: 'Please try again later',
+                    icon: 'warning',
+                    timer: 1000,
+                    showConfirmButton: false
+                }).catch(swal.noop);
+            }
+        });
     });
 
     /**
