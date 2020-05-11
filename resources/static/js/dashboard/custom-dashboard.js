@@ -887,7 +887,7 @@ er = {
 	
 	setChosenDateWithSelected(elem) {
 		let positionId = lastElement(splitElement(elem.id,'-'));
-		positionId = ("0" + Number(positionId)).slice(-2);
+		positionId = Number(positionId) - 1;
 		
 		// Set chosen date
 		chosenDate.setMonth(positionId);

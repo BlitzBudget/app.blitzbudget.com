@@ -9,7 +9,8 @@
                 "/fragments/login-popup.css",
                 "/dashboard/build/material-dashboard.css",
                 "/dashboard/build/bootstrap-select.css",
-                "/dashboard/module/account.css"
+                "/dashboard/module/account.css",
+                "/dashboard/support/modal.css"
             ]
         },
         {
@@ -30,8 +31,7 @@
             "type": "css",
             "name": "profile.css",
             "files": [
-                "/dashboard/module/profile.css",
-                "/dashboard/support/modal.css"
+                "/dashboard/module/profile.css"
             ]
         },
         {
