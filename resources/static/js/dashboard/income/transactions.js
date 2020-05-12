@@ -316,7 +316,7 @@
         	  
         	er_a.populateBankInfo(result.BankAccount);
 
-        	fetchJSONForCategories(result.Category);
+        	fetchJSONForCategories(window.defaultCategories, result.Category);
 
 			/*
 			* replace With Currency

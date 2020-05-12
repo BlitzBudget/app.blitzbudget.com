@@ -110,7 +110,7 @@
         	  
 			er_a.populateBankInfo(result.BankAccount);
 
-	        fetchJSONForCategories(result.Category);
+	        fetchJSONForCategories(window.defaultCategories, result.Category);
 
 	         /*
 			 * Populate Overview

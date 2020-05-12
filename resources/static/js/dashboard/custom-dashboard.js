@@ -951,14 +951,15 @@ function fetchJSONForCategories(data) {
 
     	  // Freeze the object so it cannot be mutable
     	  Object.freeze(value);
-		  window.categoryMap[value.categoryId] = value;
-		  let option = document.createElement('option');
-		  option.className = 'categoryOption-' + value.categoryId;
-		  option.value = value.categoryId;
+		  window.categoryMap[value.categoryName] = value;
+		  /*create a DIV element for each matching element:*/
+	      let option = document.createElement("DIV");
+	      option.classList.add("dropdown-item");
+		  option.className = 'categoryOption-' + value.categoryName;
 		  option.text = value.categoryName;
-		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);
-		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 			  window.incomeSelectionOptGroup.appendChild(option);
 		  }
 	   

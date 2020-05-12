@@ -131,9 +131,10 @@
    			let dates = data.Date;
    			let wallet = data.Wallet;
 
+   			fetchJSONForCategories(window.defaultCategories, data.Category);
+
    			calculateWalletInformation(wallet);
    			er_a.populateBankInfo(data.BankAccount);
-   			debugger;
 
         	for(let count = 0, length = budgets.length; count < length; count++){
             	let value = budgets[count];
@@ -159,7 +160,7 @@
       	  	    	
     		
     		// Update the Budget Visualization module
-    		updateBudgetVisualization(true);
+    		updateBudgetVisualization();
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to fetch you budget at this moment. Please try again!',ajaxData);
@@ -321,7 +322,7 @@
 	}
 	
 	// Update the budget visualization module
-	function updateBudgetVisualization(createNewChart) {
+	function updateBudgetVisualization() {
 		let categoryTotalKeys = Object.keys(categoryTotalMapCache);
 		
 		let userBudgetCacheKeys = Object.keys(userBudgetCache);
@@ -382,9 +383,7 @@
 			budgetAmountDiv.appendChild(emptyBudgetDocumentFragment);
 		}
 		
-		if(createNewChart) {
-			buildPieChart(dataPreferences , 'chartBudgetVisualization');
-		} else if(detachChart) {
+		if(detachChart) {
 			// Remove the donut chart from the DOM
 			let chartDonutSVG = document.getElementsByClassName('ct-chart-donut');
 			
@@ -393,8 +392,10 @@
 				// Detach the chart
 				budgetCategoryChart.detach();
 			}
-		} else  {
+		} else if(isNotEmpty(budgetCategoryChart)) {
 			budgetCategoryChart.update(dataPreferences);
+		} else {
+			buildPieChart(dataPreferences , 'chartBudgetVisualization');
 		}
 		
 		// Fetches all the dates for which user budget is present
@@ -444,18 +445,18 @@
 	}
 	
 	// Catch the amount when the user focuses on the budget
-	$( "#budgetAmount" ).on( "focusin", ".budgetAmountEntered" ,function() {
+	$( "body" ).on( "focusin", ".budgetAmountEntered" ,function() {
 		budgetAmountEditedPreviously = trimElement(this.innerText);
 	});
 	
 	// Catch the amount when the user focuses on the budget
-	$( "#budgetAmount" ).on( "focusout", ".budgetAmountEntered" ,function() {
+	$( "body" ).on( "focusout", ".budgetAmountEntered" ,function() {
 		postNewBudgetAmount(this);
 	});
 	
 
 	// Amount - disable enter key and submit request
-	$('#budgetAmount').on('keyup', '.budgetAmountEntered' , function(e) {
+	$('body').on('keyup', '.budgetAmountEntered' , function(e) {
 		  var keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) { 
 		    e.preventDefault();
@@ -672,7 +673,8 @@
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
         	  // Remove the budget modal
-        	  $('#cardBudgetId-' + budgetId).fadeOut('slow', function(){
+        	  let budgetDiv = document.getElementById('cardBudgetId-' + budgetId);
+        	  $(budgetDiv).fadeOut('slow', function(){
         		  this.remove();
         	  });
         	  	
@@ -680,7 +682,7 @@
 			  delete userBudgetCache[budgetId];
 				
         	  // Update budget visualization chart after deletion
-        	  updateBudgetVisualization(false);
+        	  updateBudgetVisualization();
         	  
         	  // reset the dates cache for the user budget
         	  if(isEmpty(userBudgetCache)) {
@@ -838,7 +840,7 @@
 
         	
     		// Update the Budget Visualization module
-    		updateBudgetVisualization(true);
+    		updateBudgetVisualization();
     		
           }
           ajaxData.onFailure = function(thrownError) {
@@ -993,7 +995,7 @@
         	  	categoryNameDiv.appendChild(containerForSelect);
         	  	
         	  	// Handle the update of the progress bar modal
-    			updateProgressBarAndRemaining(userBudget.categoryId, budgetDivFragment);
+    			updateProgressBarAndRemaining(userBudget, budgetDivFragment);
 
 	      		// paints them to the budget dashboard if the empty budget div is not null
 	      		if(document.getElementById('emptyBudgetCard') !== null) {
@@ -1009,7 +1011,7 @@
 	      		}
             	
             	// Update the Budget Visualization module
-        		updateBudgetVisualization(true);
+        		updateBudgetVisualization();
             	
 	    }
         ajaxData.onFailure = function (thrownError) {
@@ -1033,7 +1035,7 @@
 	}
 	
 	// Change trigger on select
-	$( "#budgetAmount" ).on( "change", ".categoryOptions" ,function() {
+	$( "body" ).on( "change", ".categoryOptions" ,function() {
 		let categoryId = lastElement(splitElement(this.id, '-'));
 
 		// Make sure that the category selected is not budgeted
