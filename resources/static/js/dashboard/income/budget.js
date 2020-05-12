@@ -1141,9 +1141,9 @@
 
 	// Create a new unbudgeted category
 	function createUnbudgetedCat(event) {
-		let categoryId = returnUnbudgetedCategory();
+		let categoryItem = returnUnbudgetedCategory();
 		
-		if(isEmpty(categoryId)) {
+		if(isEmpty(categoryItem)) {
 			showNotification('You have a budget for all the categories!',window._constants.notification.error);
 			return;
 		}
@@ -1151,16 +1151,16 @@
 		event.classList.add('d-none');
 		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
-		createAnEmptyBudget(categoryId, budgetAmountDiv);
+		createAnEmptyBudget(categoryItem, budgetAmountDiv);
 	}
 	
 	// Find the unbudgeted category 
 	function returnUnbudgetedCategory() {
-		let categoryId = '';
+		let categoryItem = '';
 		
 		// Iterate through all the available categories
 		if(isEmpty(userBudgetCache)) {
-			categoryId = CUSTOM_DASHBOARD_CONSTANTS.defaultCategory;
+			categoryItem = window.defaultCategory[0];
 		} else {
 			let allBudgetedCategories = [];
 			// Get all the budgeted categories
@@ -1179,14 +1179,14 @@
 	      	  	
 	      	  	// If a category that is not contained in the budget cache is found then assign and leave for loop
 	      	  	if(!includesStr(allBudgetedCategories,key) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.incomeCategory)) {
-	      	  		categoryId = key;
+	      	  		categoryItem = key;
 	      	  		break;
 	      	  	}
 	      	  	
 			}
 		}
 		
-		return categoryId;
+		return categoryItem;
 	}
 	
 	// Find the unbudgeted categories 

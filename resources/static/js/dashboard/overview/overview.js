@@ -34,7 +34,7 @@
 	 * 
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
-	if(isEqual(currentPageInCookie,'overviewPage')) {
+	if(isEqual(currentPageInCookie,'overviewPage') || isEmpty(currentPageInCookie)) {
 		populateCurrentPage('overviewPage');
 	}
 	
@@ -101,12 +101,27 @@
 		// Dynamically generate year
 		dynamicYearGeneration();
 		
+		let budgetDivFragment = document.createDocumentFragment();
+
+		let values = {};
+		if(isNotEmpty(window.currentUser.walletId)) {
+			values.walletId = window.currentUser.walletId;
+		} else {
+			values.userId = window.currentUser.financialPortfolioId;
+		}
+		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
+		values.startsWithDate = new Date(y, m);
+		values.endsWithDate = new Date(y, m + 1, 0);
+
 		// Ajax Requests on Error
 		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.walletId + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-		ajaxData.onSuccess = function(result) {
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'POST';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl ;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(result) {
         	  
 			er_a.populateBankInfo(result.BankAccount);
 
@@ -115,21 +130,21 @@
 	         /*
 			 * Populate Overview
 			 */ 
-			populateRecentTransactions();
-			// Fetch transaction total 
-			fetchCategoryTotalForTransactions();
-			populateIncomeAverage();
+			populateRecentTransactions(result.Transaction);
+			populateIncomeAverage(result.averageIncome);
 			overviewChartMonthDisplay();
-			populateExpenseAverage(averageExpense);
+			populateExpenseAverage(result.averageExpense);
 			// Upon refresh call the income overview chart
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
 			replaceWithCurrency();	
 			/**
 			 * Populate total Asset, Liability & Networth
 			 */
 			
-			populateTotalAssetLiabilityAndNetworth();
+			populateTotalAssetLiabilityAndNetworth(result.Wallet[0]);
+			// Fetch transaction total 
+			fetchCategoryTotalForTransactions(window.defaultCategories, result.Budget);
 		},
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
@@ -140,20 +155,23 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
-            success: ajaxData.onSuccess, 
+            dataType: ajaxData.dataType,
+          	contentType: ajaxData.contentType,
+          	data : ajaxData.values,
+            success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});
 	}
 	
 	// Populate Income Average
-	function populateTotalAssetLiabilityAndNetworth() {
+	function populateTotalAssetLiabilityAndNetworth(wallet) {
 			
 		// Liability Population
-		let liability = totalAssetAndLiab.liability;
+		let liability = wallet['total_debt_balance'];
 		// Asset Population
-		let asset = totalAssetAndLiab.asset;
+		let asset = wallet['total_asset_balance'];
 		// Net worth population
-		let networth = asset + liability;
+		let networth = wallet['wallet_balance'];
 		// Minus sign for asset
 		let minusSign = '';
 		// Asset less than 0
@@ -386,7 +404,7 @@
 	/**
 	 * Optimizations Functionality
 	 */
-	function fetchCategoryTotalForTransactions(categoryTotalMap) {
+	function fetchCategoryTotalForTransactions(categoryTotalMap, userBudgetList) {
     	// Store the result in a cache
     	categoryTotalMapCache = categoryTotalMap;
     	
@@ -396,17 +414,15 @@
     	}
     	
     	// Populate Optimization of budgets
-    	populateOptimizationOfBudget();
+    	populateOptimizationOfBudget(userBudgetList);
 	}
 	
 	// Populate optimization of budgets
 	function populateOptimizationOfBudget(userBudgetList) {
     	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
     	let populateOptimizationFragment = document.createDocumentFragment();
-    	let dataKeySet = Object.keys(userBudgetList);
-    	for(let count = 0, length = dataKeySet.length; count < length; count++){
-        	let key = dataKeySet[count];
-      	  	let userBudgetValue = userBudgetList[key];
+    	for(let count = 0, length = userBudgetList.length; count < length; count++){
+        	let userBudgetValue = userBudgetList[count];
       	  
       	  	if(isEmpty(userBudgetValue)) {
       	  		continue;
@@ -848,12 +864,11 @@
 	
 	// Populate Income Average
 	function populateIncomeAverage(averageIncome) {
-    	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
     	if(isEmpty(averageIncome)) {
-    		avIncomeAm = 0.00;
+    		averageIncome = 0.00;
     	}
     	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageIncomeAmount'), 0, avIncomeAm, currentCurrencyPreference ,200);
+    	animateValue(document.getElementById('averageIncomeAmount'), 0, averageIncome, currentCurrencyPreference ,200);
 	}
 	
 	/**
@@ -862,13 +877,11 @@
 	
 	// Populate Expense Average
 	function  populateExpenseAverage(averageExpense) {
-		
-    	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
-    	if(isEmpty(avExpenseAm)) {
-    		avExpenseAm = 0.00;
+    	if(isEmpty(averageExpense)) {
+    		averageExpense = 0.00;
     	}
     	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageExpenseAmount'), 0, avExpenseAm, currentCurrencyPreference ,200);
+    	animateValue(document.getElementById('averageExpenseAmount'), 0, averageExpense, currentCurrencyPreference ,200);
 	}
 	
 	/**
@@ -876,37 +889,39 @@
 	 * 
 	 */ 
 	
-	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
+	function incomeOrExpenseOverviewChart(incomeTotalParameter, dateAndAmountAsList) {
+		 	
+	 	// Income or Expense Chart Options
+	 	let incomeOrExpense = '';
+	 	
+ 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
+ 			// Store it in a cache
+        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
+        	// Make it reasonably immutable
+        	Object.freeze(liftimeIncomeTransactionsCache);
+        	Object.seal(liftimeIncomeTransactionsCache);
         	
-    	calcAndBuildLineChart(dateAndAmountAsList);
-		 	
-		 	// Income or Expense Chart Options
-		 	let incomeOrExpense = '';
-		 	
-	 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
-	 			// Store it in a cache
-	        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
-	        	// Make it reasonably immutable
-	        	Object.freeze(liftimeIncomeTransactionsCache);
-	        	Object.seal(liftimeIncomeTransactionsCache);
-	        	
-	        	incomeOrExpense ='Income';
-	        	
-	 		}  else {
-	 			// Store it in a cache
-	        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
-	        	// Make it reasonably immutable
-	        	Object.freeze(liftimeExpenseTransactionsCache);
-	        	Object.seal(liftimeExpenseTransactionsCache);
-	        	
-	 			incomeOrExpense = 'Expense';
-	 		}
-		 	
-		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
+        	incomeOrExpense ='Income';
+
+        	calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
+        	
+ 		}  else {
+ 			// Store it in a cache
+        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
+        	// Make it reasonably immutable
+        	Object.freeze(liftimeExpenseTransactionsCache);
+        	Object.seal(liftimeExpenseTransactionsCache);
+        	
+ 			incomeOrExpense = 'Expense';
+
+ 			calcAndBuildLineChart(dateAndAmountAsList, 'expense_total');
+ 		}
+	 	
+	 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
 	}
 	
 	// Calculate and build line chart for income / expense
-	function calcAndBuildLineChart(dateAndAmountAsList) {
+	function calcAndBuildLineChart(dateAndAmountAsList, totalAm) {
 		let labelsArray = [];
 		let seriesArray = [];
 		
@@ -923,20 +938,18 @@
     		return;
     	}
     	
-    	let resultKeySet = Object.keys(dateAndAmountAsList);
     	// If year selected in IYP then 
     	let countValue = 0;
     	if(!selectedYearIYPCache) {
     		// One year of data at a time;
-        	countValue = resultKeySet.length > 12 ? (resultKeySet.length - 12) : 0;
+        	countValue = dateAndAmountAsList.length > 12 ? (dateAndAmountAsList.length - 12) : 0;
     	}
     	
-    	for(let countGrouped = countValue, length = resultKeySet.length; countGrouped < length; countGrouped++) {
-    		let dateKey = resultKeySet[countGrouped];
-         	let userAmountAsListValue = dateAndAmountAsList[dateKey];
+    	for(let countGrouped = countValue, length = dateAndAmountAsList.length; countGrouped < length; countGrouped++) {
+    		let dateItem = dateAndAmountAsList[countGrouped];
 
          	// Convert the date key as date
-         	let dateAsDate = new Date(dateKey);
+         	let dateAsDate = new Date(lastElement(splitElement(dateItem.dateId,':')));
          	
          	// If selected year is present
          	if(selectedYearIYPCache) {
@@ -944,7 +957,7 @@
          			labelsArray.push(months[dateAsDate.getMonth()].slice(0,3) + " '" + dateAsDate.getFullYear().toString().slice(-2));
                  	
                  	// Build the series array with total amount for date
-                 	seriesArray.push(userAmountAsListValue);
+                 	seriesArray.push(dateItem[totalAm]);
          		}
          		// If year is valid then skip the next lines in for loop
          		continue;
@@ -953,7 +966,7 @@
          	labelsArray.push(months[dateAsDate.getMonth()].slice(0,3) + " '" + dateAsDate.getFullYear().toString().slice(-2));
          	
          	// Build the series array with total amount for date
-         	seriesArray.push(userAmountAsListValue);
+         	seriesArray.push(dateItem[totalAm]);
          	
     	}
     	
@@ -1462,13 +1475,11 @@
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-
-		if(isNotEmpty(dateAndTimeAsList)) {
-			calcAndBuildLineChart(dateAndTimeAsList);
-		} else if(incomeChart) {
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
+		
+		if(incomeChart) {
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, dateAndTimeAsList);
 		} else {
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.expenseTotalParam);
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.expenseTotalParam, dateAndTimeAsList);
 		}
 		
 	}
