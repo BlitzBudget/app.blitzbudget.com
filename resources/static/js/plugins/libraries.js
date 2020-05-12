@@ -155,10 +155,9 @@ function replaceWithCurrency() {
 	// Wallet Currency has first preference
 	if(currentUser.walletCurrency) {
 		chosenCurrency = currentUser.walletCurrency;
-	}
-
-	for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
-		currencySymbolDivs[i].innerText = chosenCurrency;
+		for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
+			currencySymbolDivs[i].innerText = chosenCurrency;
+		}
 	}
 }
 

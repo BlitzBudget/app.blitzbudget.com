@@ -6,6 +6,10 @@
 	let categoryTotalMapCache = {};
 	// OVERVIEW CONSTANTS
 	const OVERVIEW_CONSTANTS = {};
+	// SECURITY: Defining Immutable properties as constants
+	Object.defineProperties(OVERVIEW_CONSTANTS, {
+		'yearlyOverview': { value: 'One Year Overview', writable: false, configurable: false },
+	});
 	// Lifetime Income Transactions cache
 	let liftimeIncomeTransactionsCache = {};
 	// Lifetime Expense Transactions Cache
@@ -137,7 +141,7 @@
 			// Upon refresh call the income overview chart
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
-			replaceWithCurrency();	
+			replaceWithCurrency();
 			/**
 			 * Populate total Asset, Liability & Networth
 			 */
@@ -949,7 +953,7 @@
     		let dateItem = dateAndAmountAsList[countGrouped];
 
          	// Convert the date key as date
-         	let dateAsDate = new Date(lastElement(splitElement(dateItem.dateId,':')));
+         	let dateAsDate = new Date(lastElement(splitElement(dateItem.dateId,'#')));
          	
          	// If selected year is present
          	if(selectedYearIYPCache) {

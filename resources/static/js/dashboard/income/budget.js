@@ -391,6 +391,11 @@
 				chartDonutSVG[0].parentNode.removeChild(chartDonutSVG[0]);
 				// Detach the chart
 				budgetCategoryChart.detach();
+			} else {
+				let chartNode = document.getElementById('chartBudgetVisualization');
+				while (chartNode.firstChild) {
+				   chartNode.removeChild(chartNode.lastChild);
+				}
 			}
 		} else if(isNotEmpty(budgetCategoryChart)) {
 			budgetCategoryChart.update(dataPreferences);

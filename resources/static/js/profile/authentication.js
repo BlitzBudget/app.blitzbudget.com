@@ -64,9 +64,9 @@
             // Set wallet information
             currentUserLocal.walletId = firstWallet[0].walletId;
             currentUserLocal.walletCurrency = firstWallet[0].currency;
+            // Replace with currency
+            replaceWithCurrency();
         }
-        // Replace with currency
-        replaceWithCurrency();
         // Current User to global variable
         window.currentUser = currentUserLocal;
         // We save the item in the localStorage.
