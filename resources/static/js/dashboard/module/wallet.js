@@ -42,7 +42,9 @@
 		document.getElementById('addWallet').classList.remove('d-none');
 		document.getElementById('whichWallet').classList.add('d-none');
 		document.getElementById('genericAddFnc').classList.add('d-none');
-		document.getElementById('manageWallets').classList.add('d-none');
+		let manageWallets = document.getElementById('manageWallets');
+		manageWallets.classList.add('d-none');
+		manageWallets.classList.remove('d-block');
 		document.getElementsByClassName('Cards')[0].classList.add('important');
 		document.body.classList.add('darker');
 	});
@@ -51,7 +53,9 @@
 		document.getElementById('addWallet').classList.add('d-none');
 		document.getElementById('whichWallet').classList.remove('d-none');
 		document.getElementById('genericAddFnc').classList.remove('d-none');
-		document.getElementById('manageWallets').classList.remove('d-none');		
+		let manageWallets = document.getElementById('manageWallets');
+		manageWallets.classList.remove('d-none');
+		manageWallets.classList.add('d-block');		
 		document.getElementsByClassName('Cards')[0].classList.remove('important');
 		document.body.classList.remove('darker');
 	});
@@ -60,7 +64,9 @@
 		document.getElementById('addWallet').classList.add('d-none');
 		document.getElementById('whichWallet').classList.remove('d-none');
 		document.getElementById('genericAddFnc').classList.remove('d-none');
-		document.getElementById('manageWallets').classList.remove('d-none');		
+		let manageWallets = document.getElementById('manageWallets');
+		manageWallets.classList.remove('d-none');		
+		manageWallets.classList.add('d-block');
 		document.getElementsByClassName('Cards')[0].classList.remove('important');
 		document.body.classList.remove('darker');
 		// Add new wallet
@@ -109,7 +115,7 @@
 	        	document.getElementById('whichWallet').appendChild(walletWrapper);
 
 	        	// Initialize tooltip
-	        	walletWrapper.tooltip({
+	        	$(walletWrapper).tooltip({
 					delay: { "show": 300, "hide": 100 }
 			    });
 	        },
@@ -618,7 +624,9 @@
 
 	// Done Manage
 	function doneManage() {
-		document.getElementById('manageWallets').classList.remove('d-none');
+		let manageWallets = document.getElementById('manageWallets');
+		manageWallets.classList.remove('d-none');
+		manageWallets.classList.add('d-block');
 		$('.edit-wallet').addClass('d-none');
 		$('.share-icon').removeClass('d-none');
 		document.getElementById('starredWallet').classList.remove('d-none');
