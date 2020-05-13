@@ -82,7 +82,7 @@
 		jQuery.ajax({
 			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
-	        type: 'POST',
+	        type: 'PUT',
 	        contentType: "application/json;charset=UTF-8",
 	        data : values,
 	        success: function(result) {
@@ -361,11 +361,16 @@
 		let walletDiv = document.getElementById('whichWallet');
 		walletDiv.appendChild(buildLoadingWallet());
 
+		let values = {};
+		values.userId = window.currentUser.financialPortfolioId;
+
 		jQuery.ajax({
-			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl + WALLET_CONSTANTS.firstuserIdParams + window.currentUser.financialPortfolioId,
+			url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
-	        type: 'GET',
+	        type: 'POST',
 	        contentType: "application/json;charset=UTF-8",
+	        dataType: "json",
+	        data : JSON.stringify(values),
 	        success: function(wallets) {
 	        	window.globalWallet = wallets;
 	        	window.walletCur = [];

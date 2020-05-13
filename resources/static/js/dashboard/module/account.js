@@ -25,18 +25,21 @@ let tickIconSVG = tickIcon();
 	Object.freeze(accountTypeUCConst);
 	Object.seal(accountTypeUCConst);
 	// Toggle Account Information
-	document.getElementById("showAccounts").addEventListener("click",function(){
-		let accountPickerClass = document.getElementById('accountPickerWrapper').classList;
-		
-		// If the modal is open
-		if(accountPickerClass.contains('d-none')) {
-			// Add click outside event listener to close the modal
-			document.addEventListener('mouseup', closeShowAccountsModal, false);
-		}
-		// Toggle Account Picker
-		accountPickerClass.toggle('d-none');
-		
-	});
+	let showAccountsDiv = document.getElementById("showAccounts");
+	if(isNotEmpty(showAccountsDiv)) {
+		showAccountsDiv.addEventListener("click",function(){
+			let accountPickerClass = document.getElementById('accountPickerWrapper').classList;
+			
+			// If the modal is open
+			if(accountPickerClass.contains('d-none')) {
+				// Add click outside event listener to close the modal
+				document.addEventListener('mouseup', closeShowAccountsModal, false);
+			}
+			// Toggle Account Picker
+			accountPickerClass.toggle('d-none');
+			
+		});
+	}
 	
 	// Properly closes the accounts modal and performs show accounts actions.
 	function closeShowAccountsModal(event) {

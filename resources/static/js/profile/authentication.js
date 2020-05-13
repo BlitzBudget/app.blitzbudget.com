@@ -248,59 +248,65 @@
         $('#verifyForm').submit(handleVerify);
     });
 
-    document.getElementById('unlockApplication').addEventListener("click",function(e){
-        let unlockAppPass = document.getElementById('unlockAppPass');
-        let password  = unlockAppPass.value;
-        let email = currentUser.email;
-        let unlockModal = $('#unlockModal');
-        let unlockApplication = document.getElementById('unlockApplication');
-        let unlockLoader = document.getElementById('unlockLoader');
-        unlockLoader.classList.remove('d-none');
-        unlockApplication.classList.add('d-none');
-        document.getElementById('errorUnlockPopup').innerText = '';
-        event.preventDefault();
+    let unlockAppDiv = document.getElementById('unlockApplication');
+    if(isNotEmpty(unlockAppDiv)) {
+        unlockAppDiv.addEventListener("click",function(e){
+            let unlockAppPass = document.getElementById('unlockAppPass');
+            let password  = unlockAppPass.value;
+            let email = currentUser.email;
+            let unlockModal = $('#unlockModal');
+            let unlockApplication = document.getElementById('unlockApplication');
+            let unlockLoader = document.getElementById('unlockLoader');
+            unlockLoader.classList.remove('d-none');
+            unlockApplication.classList.add('d-none');
+            document.getElementById('errorUnlockPopup').innerText = '';
+            event.preventDefault();
 
-        signin(email, password,
-            function signinSuccess(result) {
-               
-                // Hide Modal
-                unlockModal.modal('hide');
-                unlockLoader.classList.add('d-none');
-                unlockApplication.classList.remove('d-none');
+            signin(email, password,
+                function signinSuccess(result) {
+                   
+                    // Hide Modal
+                    unlockModal.modal('hide');
+                    unlockLoader.classList.add('d-none');
+                    unlockApplication.classList.remove('d-none');
 
-                storeAuthToken(result);
-                storeRefreshToken(result);
-                storeAccessToken(result);
+                    storeAuthToken(result);
+                    storeRefreshToken(result);
+                    storeAccessToken(result);
 
-                // Session invalidated as 0 on start up
-                window.sessionInvalidated = 0;
-                // Already requested refresh to false
-                window.alreadyRequestedRefresh = false;
-                // Reset the window.afterRefreshAjaxRequests token
-                window.afterRefreshAjaxRequests = [];
-                
-            },
-            function signinError(err) {
-                unlockLoader.classList.add('d-none');
-                unlockApplication.classList.remove('d-none');
-                unlockAppPass.focus();
-                handleSessionErrors(err,email,password,'errorUnlockPopup');
+                    // Session invalidated as 0 on start up
+                    window.sessionInvalidated = 0;
+                    // Already requested refresh to false
+                    window.alreadyRequestedRefresh = false;
+                    // Reset the window.afterRefreshAjaxRequests token
+                    window.afterRefreshAjaxRequests = [];
+                    
+                },
+                function signinError(err) {
+                    unlockLoader.classList.add('d-none');
+                    unlockApplication.classList.remove('d-none');
+                    unlockAppPass.focus();
+                    handleSessionErrors(err,email,password,'errorUnlockPopup');
+                }
+            );
+        });
+    }
+
+    let unlockAppPass = document.getElementById('unlockAppPass');
+    if(isNotEmpty(unlockAppPass)) {
+         unlockAppPass.addEventListener("keyup",function(e){
+            let unlockAccountBtn = document.getElementById('unlockApplication');
+            let keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                document.activeElement.blur();
+                e.preventDefault();
+                e.stopPropagation();
+                // Click the confirm button to continue
+                unlockAccountBtn.click();
+                return false;
             }
-        );
-    });
-
-    document.getElementById('unlockAppPass').addEventListener("keyup",function(e){
-        let unlockAccountBtn = document.getElementById('unlockApplication');
-        let keyCode = e.keyCode || e.which;
-        if (keyCode === 13) { 
-            document.activeElement.blur();
-            e.preventDefault();
-            e.stopPropagation();
-            // Click the confirm button to continue
-            unlockAccountBtn.click();
-            return false;
-        }
-    });
+        });
+    }
 
     function handleSignin(event) {
         let email = document.getElementById('emailInputSignin').value;
@@ -475,69 +481,76 @@
     }
 
     // Resend Confirmation Code
-    document.getElementById('resendCodeLogin').addEventListener("click",function(e){
-        let email = document.getElementById('emailInputVerify').value;
-        let currenElem = this;
-        let successLP = document.getElementById('successLoginPopup');
-        let errorLP = document.getElementById('errorLoginPopup');
-        let resendLoader = document.getElementById('resendLoader');
+    let resendCodeLogin = document.getElementById('resendCodeLogin');
+    if(isNotEmpty(resendCodeLogin)) {
+        resendCodeLogin.addEventListener("click",function(e){
+            let email = document.getElementById('emailInputVerify').value;
+            let currenElem = this;
+            let successLP = document.getElementById('successLoginPopup');
+            let errorLP = document.getElementById('errorLoginPopup');
+            let resendLoader = document.getElementById('resendLoader');
 
-        // Fadeout for 60 seconds
-        currenElem.classList.add('d-none');
-        // Append Loader
-        resendLoader.classList.remove('d-none');
-        // After one minutes show the resend code
-        setTimeout(function() {
-            // Replace HTML with Empty
-            while (successLP.firstChild) {
-                successLP.removeChild(successLP.firstChild);
-            }
-            // Replace HTML with Empty
-            while (errorLP.firstChild) {
-                errorLP.removeChild(errorLP.firstChild);
-            }
-        	currenElem.classList.remove('d-none');
-        }, 60000);
+            // Fadeout for 60 seconds
+            currenElem.classList.add('d-none');
+            // Append Loader
+            resendLoader.classList.remove('d-none');
+            // After one minutes show the resend code
+            setTimeout(function() {
+                // Replace HTML with Empty
+                while (successLP.firstChild) {
+                    successLP.removeChild(successLP.firstChild);
+                }
+                // Replace HTML with Empty
+                while (errorLP.firstChild) {
+                    errorLP.removeChild(errorLP.firstChild);
+                }
+                currenElem.classList.remove('d-none');
+            }, 60000);
 
 
-        // Authentication Details
-        let values = {};
-        values.username = email;
+            // Authentication Details
+            let values = {};
+            values.username = email;
 
-        // Resend Confirmation code
-        $.ajax({
-              type: 'POST',
-              url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
-              dataType: 'json',
-              contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values),
-              success: function(result) {
-                // Hide Loader
-                resendLoader.classList.add('d-none');
-                successLP.appendChild(successSvgMessage());
-              },
-              error: function(err) {
-                errorLP.appendChild(err.message);
-              }
+            // Resend Confirmation code
+            $.ajax({
+                  type: 'POST',
+                  url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
+                  dataType: 'json',
+                  contentType: "application/json;charset=UTF-8",
+                  data : JSON.stringify(values),
+                  success: function(result) {
+                    // Hide Loader
+                    resendLoader.classList.add('d-none');
+                    successLP.appendChild(successSvgMessage());
+                  },
+                  error: function(err) {
+                    errorLP.appendChild(err.message);
+                  }
+            });
+
+            // Change focus to code
+            document.getElementById('codeInputVerify').focus();
         });
 
-        // Change focus to code
-        document.getElementById('codeInputVerify').focus();
-    });
-
+    }
+    
     // Auto submit verification code
-    document.getElementById('codeInputVerify').addEventListener("keyup", function(e){
-        let errorLogin = document.getElementById('errorLoginPopup');
-        // Replace HTML with Empty
-        while (errorLogin.firstChild) {
-            errorLogin.removeChild(errorLogin.firstChild);
-        }
+    let codeInputVerify = document.getElementById('codeInputVerify');
+    if(isNotEmpty(codeInputVerify)) {
+        codeInputVerify.addEventListener("keyup", function(e){
+            let errorLogin = document.getElementById('errorLoginPopup');
+            // Replace HTML with Empty
+            while (errorLogin.firstChild) {
+                errorLogin.removeChild(errorLogin.firstChild);
+            }
 
-        let vc = this.value;
-        if(vc.length == 6) {
-            verificationCode();
-        }
-    });
+            let vc = this.value;
+            if(vc.length == 6) {
+                verificationCode();
+            }
+        });
+    }
 
     // Generate SVG Tick Element and success element
     function successSvgMessage() {
@@ -584,28 +597,37 @@
     }
 
     // LOGIN POPUP Already have an accout
-    document.getElementById('haveAnAccount').addEventListener("click",function(e){
-        let email = document.getElementById('emailInputRegister').value;
-        resetErrorOrSuccessMessages();
-        toggleLogin(email);
-    });
+    let haveAnAccount = document.getElementById('haveAnAccount');
+    if(isNotEmpty(haveAnAccount)) {
+        haveAnAccount.addEventListener("click",function(e){
+            let email = document.getElementById('emailInputRegister').value;
+            resetErrorOrSuccessMessages();
+            toggleLogin(email);
+        });
+    }
 
     // LOGIN POPUP Forgot Password Text
-    document.getElementById('forgotPassLogin').addEventListener("click",function(e){
-        let resendLoader = document.getElementById('resendLoader');
-        resetErrorOrSuccessMessages();
-        forgotPassword(this, resendLoader);
-    });
+    let forgotPassLogin = document.getElementById('forgotPassLogin');
+    if(isNotEmpty(forgotPassLogin)) {
+        forgotPassLogin.addEventListener("click",function(e){
+            let resendLoader = document.getElementById('resendLoader');
+            resetErrorOrSuccessMessages();
+            forgotPassword(this, resendLoader);
+        });
+    }
 
     // Change enforece bootstrap focus to empty (Allow swal input to be focusable)
     $.fn.modal.Constructor.prototype._enforceFocus = function() {};
 
     // Not me link 
-    document.getElementById('shyAnchor').addEventListener("click",function(e){
-        let email = document.getElementById('emailInputRegister').value;
-        resetErrorOrSuccessMessages();
-        toggleLogin(email);
-    });
+    let shyAnchor = document.getElementById('shyAnchor');
+    if(isNotEmpty(shyAnchor)) {
+        shyAnchor.addEventListener("click",function(e){
+            let email = document.getElementById('emailInputRegister').value;
+            resetErrorOrSuccessMessages();
+            toggleLogin(email);
+        });
+    }
 
     // Reset Login Popup Error /  Success messages
     function resetErrorOrSuccessMessages() {
@@ -789,14 +811,20 @@
 
 
     // Log out User
-    document.getElementById('dashboard-util-logout').addEventListener('click', function() {
-        signoutUser();
-    });
+    let utilLogout = document.getElementById('dashboard-util-logout');
+    if(isNotEmpty(utilLogout)) {
+        utilLogout.addEventListener('click', function() {
+            signoutUser();
+        });
+    }
 
     // Log Out User
-    document.getElementById('logoutUser').addEventListener('click', function() {
-        signoutUser();
-    });
+    let logOutUser = document.getElementById('logoutUser');
+    if(isNotEmpty(logOutUser)) {
+        logOutUser.addEventListener('click', function() {
+            signoutUser();
+        });
+    }   
 
     // Signout the user and redirect to home page
     function signoutUser() {

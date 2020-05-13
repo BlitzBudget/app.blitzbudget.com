@@ -2682,7 +2682,7 @@
        				accHeading.removeChild(accHeading.firstChild);
        			}
 					accHeading.innerText = bankAcc['bank_account_name'];
-					if(bankAcc['account_balance']] < 0) { 
+					if(bankAcc['account_balance'] < 0) { 
 						accountBalance.classList.add('expenseCategory');
 						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
 					} else { 

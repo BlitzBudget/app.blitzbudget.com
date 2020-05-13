@@ -100,7 +100,7 @@
         {
             "type": "js",
             "name": "wallets.js",
-            "files": [                
+            "files": [        
                 "/dashboard/module/wallet.js"
             ]
         }

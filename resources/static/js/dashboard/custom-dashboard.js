@@ -229,7 +229,10 @@ window.onload = function () {
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
         	// reset Scroll position to header
-    		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10;
+        	let navBarDiv = document.getElementsByClassName('navbar');
+        	if(isNotEmpty(navBarDiv) && navBarDiv.length > 0) {
+        		document.getElementsByClassName('main-panel')[0].scrollTop = navBarDiv[0].offsetTop - 10;
+        	}
 		}
 		
 		function closeCategoryModalIfOpen() {
@@ -280,8 +283,8 @@ window.onload = function () {
 		function chooseCurrentMonth() {
 			
 			let currentMonth = Number(new Date().getMonth()) + 1;
-			
-			document.getElementById('monthPicker-' + currentMonth).classList.add('monthPickerMonthCurrent', 'monthPickerMonthSelected');
+			let monthPicker = document.getElementById('monthPicker-' + currentMonth);
+			if(isNotEmpty(monthPicker)) {monthPicker.classList.add('monthPickerMonthCurrent', 'monthPickerMonthSelected');}
 		}
 		
 		// Click event for month picker

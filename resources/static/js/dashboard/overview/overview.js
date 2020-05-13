@@ -118,6 +118,7 @@
 		let values = {};
 		if(isNotEmpty(window.currentUser.walletId)) {
 			values.walletId = window.currentUser.walletId;
+			values.userId = window.currentUser.financialPortfolioId;
 		} else {
 			values.userId = window.currentUser.financialPortfolioId;
 		}
@@ -154,7 +155,7 @@
 			 * Populate total Asset, Liability & Networth
 			 */
 			
-			populateTotalAssetLiabilityAndNetworth(result.Wallet[0]);
+			populateTotalAssetLiabilityAndNetworth(result.Wallet);
 			// Fetch transaction total 
 			fetchCategoryTotalForTransactions(window.defaultCategories, result.Budget);
 		},
@@ -1726,7 +1727,6 @@
     function buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat) {
     	let labelsArray = [];
 		let seriesArray = [];
-		window.allBankAccountInfoCache = bankAccountList;
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
@@ -1871,7 +1871,6 @@
     	let labelsArray = [];
 		let seriesArray = [];
 		let seriesArrayDebt = [];
-		window.allBankAccountInfoCache = bankAccountList;
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
