@@ -378,7 +378,8 @@
 	        dataType: "json",
 	        data : JSON.stringify(values),
 	        success: function(wallets) {
-	        	window.globalWallet = wallets.Wallet;
+	        	wallets = wallets.Wallet;
+	        	window.globalWallet = wallets;
 	        	window.walletCur = [];
 
 	        	// Center the only div if it is the only wallet
@@ -474,7 +475,7 @@
 
 		let walletDiv = document.createElement('div');
 		walletDiv.classList = 'col-4 col-md-4 col-lg-4 text-animation fadeIn suggested-card';
-		walletDiv.setAttribute('data-target', wallet.id);
+		walletDiv.setAttribute('data-target', wallet.walletId);
 		
 		let suggestedAnchor = document.createElement('a');
 		suggestedAnchor.classList = 'suggested-anchor p-4';
@@ -482,7 +483,7 @@
 
 		let h2 = document.createElement('h2');
 		h2.classList = 'suggested-heading';
-		h2.innerText = isEmpty(wallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet.name;
+		h2.innerText = isEmpty(wallet['wallet_name']) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet['wallet_name'];
 		suggestedAnchor.appendChild(h2);
 
 		let p = document.createElement('h3');
@@ -589,7 +590,7 @@
 		let wallets = window.globalWallet;
 		for(let i = 0, len = window.globalWallet.length; i < len; i++) {
 			let currentWallet = window.globalWallet[i];
-			if(isEqual(window.currentUser.walletId, currentWallet.id)) {
+			if(isEqual(window.currentUser.walletId, currentWallet.walletId)) {
 				window.currentUser.walletCurrency = cToS[currentWallet.currency];
 			}
 		}
@@ -656,38 +657,27 @@
 		
 		// Collect wallet information
 		let currentWallet = {};
-		if(isEqual(window.currentUser.financialPortfolioId, dataTarget)) {
-			currentWallet.id = window.currentUser.financialPortfolioId;
-			currentWallet.currency = window.currentUser.walletCurrency;
-			// If primary wallet then hide the name feature
-			document.getElementsByClassName('manageNameWrapper')[0].classList.add('d-none');
-			/*
-			*	Currency Dropdown Populate (EDIT)
-			*/
-			document.getElementById('chosenCurrencyWMW').innerText = sToC[currentWallet.currency];
-		} else {
-			// If others then show name field
-			document.getElementsByClassName('manageNameWrapper')[0].classList.remove('d-none');
-			// Show delete wallet option only for non primary wallets
-			document.getElementById('deleteWallet').classList.remove('d-none');
-			for(let i = 0, l = window.globalWallet.length; i < l; i++) {
-	    		let wallet = window.globalWallet[i];
-	    		if(isEqual(dataTarget, wallet.id)) {
-	    			currentWallet = wallet;
-	    			break;
-	    		}
-	    	}
+		// If others then show name field
+		document.getElementsByClassName('manageNameWrapper')[0].classList.remove('d-none');
+		// Show delete wallet option only for non primary wallets
+		document.getElementById('deleteWallet').classList.remove('d-none');
+		for(let i = 0, l = window.globalWallet.length; i < l; i++) {
+    		let wallet = window.globalWallet[i];
+    		if(isEqual(dataTarget, wallet.walletId)) {
+    			currentWallet = wallet;
+    			break;
+    		}
+    	}
 
-	    	// Write the manage wallet name if empty shw the current user name
-	    	let manageWalletName = document.getElementById('manageWalletName');
-	    	manageWalletName.value = isEmpty(currentWallet.name) ? window.currentUser.name + ' ' + window.currentUser.family_name : currentWallet.name; 	
-	    	manageWalletName.focus();
+    	// Write the manage wallet name if empty shw the current user name
+    	let manageWalletName = document.getElementById('manageWalletName');
+    	manageWalletName.value = isEmpty(currentWallet['wallet_name']) ? window.currentUser.name + ' ' + window.currentUser.family_name : currentWallet['wallet_name']; 	
+    	manageWalletName.focus();
 
-	    	/*
-			*	Currency Dropdown Populate (EDIT)
-			*/
-			document.getElementById('chosenCurrencyWMW').innerText = currentWallet.currency;
-		}
+    	/*
+		*	Currency Dropdown Populate (EDIT)
+		*/
+		document.getElementById('chosenCurrencyWMW').innerText = currentWallet.currency;
 
 	}
 
@@ -775,7 +765,7 @@
 	  				// Authenticate Before cahnging password
 	  				$.ajax({
 				          type: 'POST',
-				          url: PROFILE_CONSTANTS.signinUrl,
+				          url: window._config.api.invokeUrl + window._config.api.profile.signin,
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
 				          data : JSON.stringify(values),
