@@ -99,7 +99,7 @@
 	        		document.getElementById('primaryWallet').classList.remove('m-auto');
 	        	}
 	        	// Add the newly added wallet to global wallets
-	        	window.globalWallet.push(wallet);
+	        	window.globalWallet.push(wallet['body-json']);
 
 	        	// Remove Loader
 	        	let removeLoader = document.getElementById('loading-wallet');
