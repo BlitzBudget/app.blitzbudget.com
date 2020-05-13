@@ -432,12 +432,11 @@
 	        	let walletFrag = document.createDocumentFragment();
 	        	for(let i = 0, l = wallets.length; i < l; i++) {
 	        		let wallet = wallets[i];
-
-	        		if(i < 2) {
-	        			walletFrag.appendChild(buildWalletDiv(wallet));
-	        		} else {
-	        			walletFrag.appendChild(buildWalletDiv(wallet));
+	        		// If Wallet ID is equal to current user do not populate
+	        		if(isEqual(wallet.walletId, window.currentUser.walletId)){
+	        			continue;
 	        		}
+	        		walletFrag.appendChild(buildWalletDiv(wallet));
 
 	        	}
 	        	walletDiv.appendChild(walletFrag);
