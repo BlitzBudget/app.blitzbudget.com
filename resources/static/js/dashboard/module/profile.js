@@ -19,16 +19,24 @@
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
 	if(isEqual(currentPageInCookie,'profilePage') || isEqual(currentPageInCookie,'profilePgDD')) {
-		populateCurrentPage('profilePage');
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			populateCurrentPage('profilePage');
+		}
 	}
 	
-	document.getElementById('profilePage').addEventListener("click",function(e){
-	 	populateCurrentPage('profilePage');
-	});
+	let profilePage = document.getElementById('profilePage');
+	if(isNotEmpty(profilePage)) {
+		profilePage.addEventListener("click",function(e){
+		 	populateCurrentPage('profilePage');
+		});
+	}
 
-	document.getElementById('profilePgDD').addEventListener("click",function(e){
-		populateCurrentPage('profilePage');
-	});
+	let profilePgDD = document.getElementById('profilePgDD');
+	if(isNotEmpty(profilePgDD)) {
+		profilePgDD.addEventListener("click",function(e){
+			populateCurrentPage('profilePage');
+		});
+	}
 
 	function populateCurrentPage(page) {
 		er.refreshCookiePageExpiry(page);

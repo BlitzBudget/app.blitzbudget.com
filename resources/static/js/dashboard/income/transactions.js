@@ -47,27 +47,32 @@
 	 * 
 	 */
 	if(isEqual(er.getCookie('currentPage'),'transactionsPage')) {
-		er.refreshCookiePageExpiry('transactionsPage');
-	 	er.fetchCurrentPage('/transactions', function(data) {
-			// Load the new HTML
-            $('#mutableDashboard').html(data);
-            // Call the transaction API to fetch information.
-			initialLoadOfTransactions();
-            // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Transactions';
-		});
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			er.refreshCookiePageExpiry('transactionsPage');
+		 	er.fetchCurrentPage('/transactions', function(data) {
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            // Call the transaction API to fetch information.
+				initialLoadOfTransactions();
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Transactions';
+			});
+	 	}
 	}
 	
-	document.getElementById('transactionsPage').addEventListener("click",function(e){
-	 	er.refreshCookiePageExpiry('transactionsPage');
-		er.fetchCurrentPage('/transactions', function(data) {
-			// Load the new HTML
-            $('#mutableDashboard').html(data);
-            initialLoadOfTransactions();
-            // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Transactions';
+	let transactionsPage = document.getElementById('transactionsPage');
+	if(isNotEmpty(transactionsPage)) {
+		transactionsPage.addEventListener("click",function(e){
+	 		er.refreshCookiePageExpiry('transactionsPage');
+			er.fetchCurrentPage('/transactions', function(data) {
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            initialLoadOfTransactions();
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Transactions';
+			});
 		});
-	});
+	}
 
 	function initialLoadOfTransactions() {
 		/**

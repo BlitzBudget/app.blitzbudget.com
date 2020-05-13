@@ -39,12 +39,17 @@
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
 	if(isEqual(currentPageInCookie,'overviewPage') || isEmpty(currentPageInCookie)) {
-		populateCurrentPage('overviewPage');
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			populateCurrentPage('overviewPage');
+		}
 	}
 	
-	document.getElementById('overviewPage').addEventListener("click",function(e){
-	 	populateCurrentPage('overviewPage');
-	});
+	let overviewPage = document.getElementById('overviewPage');
+	if(isNotEmpty(overviewPage)) {
+		overviewPage.addEventListener("click",function(e){
+		 	populateCurrentPage('overviewPage');
+		});
+	}
 
 	function populateCurrentPage(page) {
 		er.refreshCookiePageExpiry(page);

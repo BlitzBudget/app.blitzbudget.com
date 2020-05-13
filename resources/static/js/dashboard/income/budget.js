@@ -24,30 +24,35 @@
 	 * 
 	 */
 	if(isEqual(er.getCookie('currentPage'),'budgetPage')) {
-		er.refreshCookiePageExpiry('budgetPage');
-	 	er.fetchCurrentPage('/budgets', function(data) {
-			// Fetch user budget and build the div
-			fetchAllUserBudget();
-			populateBudgetResource();
-			// Load the new HTML
-            $('#mutableDashboard').html(data);
-            // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Budget';
-		});
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			er.refreshCookiePageExpiry('budgetPage');
+		 	er.fetchCurrentPage('/budgets', function(data) {
+				// Fetch user budget and build the div
+				fetchAllUserBudget();
+				populateBudgetResource();
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Budget';
+			});
+	 	}
 	}
 	
-	document.getElementById('budgetPage').addEventListener("click",function(e){
-	 	er.refreshCookiePageExpiry('budgetPage');
-		er.fetchCurrentPage('/budgets', function(data) {
-			// Fetch user budget and build the div
-			fetchAllUserBudget();
-			populateBudgetResource();
-			// Load the new HTML
-            $('#mutableDashboard').html(data);
-            // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Budget';
+	let budgetPage = document.getElementById('budgetPage');
+	if(isNotEmpty(budgetPage)) {
+		budgetPage.addEventListener("click",function(e){
+		 	er.refreshCookiePageExpiry('budgetPage');
+			er.fetchCurrentPage('/budgets', function(data) {
+				// Fetch user budget and build the div
+				fetchAllUserBudget();
+				populateBudgetResource();
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Budget';
+			});
 		});
-	});
+	}
 
 	function populateBudgetResource(){
 		/**

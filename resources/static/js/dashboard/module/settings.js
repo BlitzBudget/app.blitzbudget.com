@@ -23,16 +23,24 @@
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
 	if(isEqual(currentPageInCookie,'settingsPage') || isEqual(currentPageInCookie,'settingsPgDD')) {
-		populateCurrentPage('settingsPage');
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			populateCurrentPage('settingsPage');
+		}
 	}
 	
-	document.getElementById('settingsPage').addEventListener("click",function(e){
-	 	populateCurrentPage('settingsPage');
-	});
+	let settingsPage = document.getElementById('settingsPage');
+	if(isNotEmpty(settingsPage)) {
+		settingsPage.addEventListener("click",function(e){
+		 	populateCurrentPage('settingsPage');
+		});
+	}
 
-	document.getElementById('settingsPgDD').addEventListener("click",function(e){
-		populateCurrentPage('settingsPage');
-	});
+	let settingsPgDD = document.getElementById('settingsPgDD');
+	if(isNotEmpty(settingsPgDD)) {
+		settingsPgDD.addEventListener("click",function(e){
+			populateCurrentPage('settingsPage');
+		});
+	}
 
 	function populateCurrentPage(page) {
 		er.refreshCookiePageExpiry(page);

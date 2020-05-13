@@ -288,66 +288,75 @@ window.onload = function () {
 		}
 		
 		// Click event for month picker
-		document.getElementById('monthPickerDisplay').addEventListener("click",function(e){
-			e.stopPropagation();
-			let dateControlClass = document.getElementById('dateControl').classList;
-			// Change the SVG to down arrow or up arrow
-			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
-			if(!dateControlClass.contains('d-none')) {
-				overvierDateArrow.remove('transformUpwardArrow');
-				// Remove event listener once the function performed its task
-				document.removeEventListener('mouseup', closeMonthPickerModal, false);
-			} else {
-				overvierDateArrow.add('transformUpwardArrow');
-				// Add click outside event listener to close the modal
-				document.addEventListener('mouseup', closeMonthPickerModal, false);
-				// Store in position cache if the month picker is displayed
-				let selectedMonthDiv = document.getElementsByClassName('monthPickerMonthSelected');
-				positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
+		let monthPickerDisplayDiv = document.getElementById('monthPickerDisplay');
+		if(isNotEmpty(monthPickerDisplayDiv)) {
+			monthPickerDisplayDiv.addEventListener("click",function(e){
+				e.stopPropagation();
+				let dateControlClass = document.getElementById('dateControl').classList;
+				// Change the SVG to down arrow or up arrow
+				let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
+				if(!dateControlClass.contains('d-none')) {
+					overvierDateArrow.remove('transformUpwardArrow');
+					// Remove event listener once the function performed its task
+					document.removeEventListener('mouseup', closeMonthPickerModal, false);
+				} else {
+					overvierDateArrow.add('transformUpwardArrow');
+					// Add click outside event listener to close the modal
+					document.addEventListener('mouseup', closeMonthPickerModal, false);
+					// Store in position cache if the month picker is displayed
+					let selectedMonthDiv = document.getElementsByClassName('monthPickerMonthSelected');
+					positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
+					
+					// Fetch the budget data if the tab is open
+					updateExistingBudgetInMonthPicker();
+					// Fetch the transactions data if the tab is open
+					updateExistingTransactionsInMonthPicker();
+				}
+
+
+				// Show the modal (Do not close)
+				dateControlClass.toggle('d-none');
 				
-				// Fetch the budget data if the tab is open
-				updateExistingBudgetInMonthPicker();
-				// Fetch the transactions data if the tab is open
-				updateExistingTransactionsInMonthPicker();
-			}
-
-
-			// Show the modal (Do not close)
-			dateControlClass.toggle('d-none');
-			
-		});
+			});
+		}
 		
 		// Previous Button Date Time Click
-		document.getElementById('monthPickerPrev').addEventListener("click",function(){
-			// Build year after calculating the current month 
-			buildYear(Number(popoverYear) - 1);
-			calcCurrentMonthInPopover();
-			// Calculate the month selected
-			calcCurrentMonthSelected();
-			// Reset the month picker existing budget / transactions / goals / investments
-			resetMonthExistingPicker();
-			// Update existing date in month picker
-			updateExistingBudgetInMonthPicker();
-			// Update existing date for Transactions
-			updateExistingTransactionsInMonthPicker();
-			
-		});
+		let monthPickerPrev = document.getElementById('monthPickerPrev');
+		if(isNotEmpty(monthPickerPrev)) {
+			monthPickerPrev.addEventListener("click",function(){
+				// Build year after calculating the current month 
+				buildYear(Number(popoverYear) - 1);
+				calcCurrentMonthInPopover();
+				// Calculate the month selected
+				calcCurrentMonthSelected();
+				// Reset the month picker existing budget / transactions / goals / investments
+				resetMonthExistingPicker();
+				// Update existing date in month picker
+				updateExistingBudgetInMonthPicker();
+				// Update existing date for Transactions
+				updateExistingTransactionsInMonthPicker();
+				
+			});
+		}
 		
 		// Next Button Date Time Click
-		document.getElementById('monthPickerNext').addEventListener("click",function(){
-			// Build year after calculating the current month 
-			buildYear(Number(popoverYear) + 1);
-			calcCurrentMonthInPopover();
-			// Calculate the month selected
-			calcCurrentMonthSelected();
-			// Reset the month picker existing budget / transactions / goals / investments
-			resetMonthExistingPicker();
-			// Update existing date in month picker
-			updateExistingBudgetInMonthPicker();
-			// Update existing date for Transactions
-			updateExistingTransactionsInMonthPicker();
-			
-		});
+		let monthPickerNext = document.getElementById('monthPickerNext');
+		if(isNotEmpty(monthPickerNext)) {
+			monthPickerNext.addEventListener("click",function(){
+				// Build year after calculating the current month 
+				buildYear(Number(popoverYear) + 1);
+				calcCurrentMonthInPopover();
+				// Calculate the month selected
+				calcCurrentMonthSelected();
+				// Reset the month picker existing budget / transactions / goals / investments
+				resetMonthExistingPicker();
+				// Update existing date in month picker
+				updateExistingBudgetInMonthPicker();
+				// Update existing date for Transactions
+				updateExistingTransactionsInMonthPicker();
+				
+			});
+		}
 		
 		// Function that appends today to current month
 		function calcCurrentMonthInPopover() {
@@ -507,62 +516,68 @@ window.onload = function () {
 			let overviewYearHeading = document.getElementsByClassName('overviewYearHeading')[0];
 			
 			let currentDate = new Date();
-			overviewHeading.innerText = months[currentDate.getMonth()];
-			overviewYearHeading.innerText = currentDate.getFullYear();
+			if(isNotEmpty(overviewHeading)) {overviewHeading.innerText = months[currentDate.getMonth()];}
+			if(isNotEmpty(overviewYearHeading)) {overviewYearHeading.innerText = currentDate.getFullYear();}
 		}
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
-		$('#loginModal').on('hidden.bs.modal', function (e) {
-			// Set loginPopup shown to false
-			loginPopupShown = false;
-			// If the current user data is still not loaded from Cognito (Refresh)
-			if(isEmpty(currentUser)) {
-			 	window.location.reload();
-			} else {
-			 	startupApplication();
-			}
-		});
+		let loginModal = $('#loginModal');
+		if(isNotEmpty(loginModal)) {
+			loginModal.on('hidden.bs.modal', function (e) {
+				// Set loginPopup shown to false
+				loginPopupShown = false;
+				// If the current user data is still not loaded from Cognito (Refresh)
+				if(isEmpty(currentUser)) {
+				 	window.location.reload();
+				} else {
+				 	startupApplication();
+				}
+			});
 
 
-		// Once the login modal is Shown then (focus to input)
-		$('#loginModal').on('shown.bs.modal', function (e) {
-			// store in session storage
-        	let currentUserSI = localStorage.getItem("currentUserSI");
-        	// Get the URL param
-		    const params = (new URL(document.location)).searchParams;
-        	// First Prority to URL parameter / Second to session storage 
-        	if(params != null && params.has('email')) {
-        		document.getElementById('emailInputSignin').value = params.get('email');
-        		document.getElementById('passwordInputSignin').focus();
-        		// Delete the email Param
-        		params.delete('email');
-        	} else if(isNotEmpty(currentUserSI)) {
-        		// Parse JSON back to Object
-        		currentUserSI = JSON.parse(currentUserSI);
-        		document.getElementById('emailInputSignin').value = currentUserSI.email;
-        		document.getElementById('passwordInputSignin').focus();
-        	} else if (params.has('verify')) {
-        		document.getElementById('emailInputVerify').focus();
-        		// After fetching delete param
-        		params.delete('verify');
-        	} else {
-        		// Change focus to input
-				document.getElementById('emailInputSignin').focus();
-        	}
-			 
-		});
+			// Once the login modal is Shown then (focus to input)
+			loginModal.on('shown.bs.modal', function (e) {
+				// store in session storage
+	        	let currentUserSI = localStorage.getItem("currentUserSI");
+	        	// Get the URL param
+			    const params = (new URL(document.location)).searchParams;
+	        	// First Prority to URL parameter / Second to session storage 
+	        	if(params != null && params.has('email')) {
+	        		document.getElementById('emailInputSignin').value = params.get('email');
+	        		document.getElementById('passwordInputSignin').focus();
+	        		// Delete the email Param
+	        		params.delete('email');
+	        	} else if(isNotEmpty(currentUserSI)) {
+	        		// Parse JSON back to Object
+	        		currentUserSI = JSON.parse(currentUserSI);
+	        		document.getElementById('emailInputSignin').value = currentUserSI.email;
+	        		document.getElementById('passwordInputSignin').focus();
+	        	} else if (params.has('verify')) {
+	        		document.getElementById('emailInputVerify').focus();
+	        		// After fetching delete param
+	        		params.delete('verify');
+	        	} else {
+	        		// Change focus to input
+					document.getElementById('emailInputSignin').focus();
+	        	}
+				 
+			});
+		}
 
 		// unlock modal on shown modal
-		$('#unlockModal').on('shown.bs.modal', function (e) {
-			// after the modal is shown focus on password
-			document.getElementById('unlockAppPass').focus();
-		});
+		let unlockModal = $('#unlockModal');
+		if(isNotEmpty(unlockModal)) {
+			unlockModal.on('shown.bs.modal', function (e) {
+				// after the modal is shown focus on password
+				document.getElementById('unlockAppPass').focus();
+			});
 
-		// unlock modal on hidden modal
-		$('#unlockModal').on('hide.bs.modal', function (e) {
-			// Set the login popup shown to false
-			loginPopupShown = false;
-		});
+			// unlock modal on hidden modal
+			unlockModal.on('hide.bs.modal', function (e) {
+				// Set the login popup shown to false
+				loginPopupShown = false;
+			});
+		}
 
 		// Start up application
 		function startupApplication() {
@@ -599,22 +614,29 @@ window.onload = function () {
 		}
 
 		/* Get the element you want displayed in fullscreen mode (a video in this example): */
-		document.getElementById('dashboard-util-fullscreen').addEventListener('click', function() {
-			  toggleFullscreen();
-		});
+		let dashboardFullScreen = document.getElementById('dashboard-util-fullscreen');
+		if(isNotEmpty(dashboardFullScreen)) {
+			dashboardFullScreen.addEventListener('click', function() {
+				  toggleFullscreen();
+			});
+		}
 
 		/* Minimize sidebar */
-		$('#minimizeSidebar').click(function () {
-		    minimizeSidebar();
-		    
-		    /* Create a cookie to store user preference */
-		    var expirationDate = new Date;
-		    expirationDate.setMonth(expirationDate.getMonth()+2);
-		    
-		    /* Create a cookie to store user preference */
-		    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
-		    
-		 });
+		let minimizeSidebarDiv = document.getElementById('minimizeSidebar');
+		if(isNotEmpty(minimizeSidebarDiv)) {
+			minimizeSidebarDiv.addEventListener('click', function() {
+			    minimizeSidebar();
+			    
+			    /* Create a cookie to store user preference */
+			    var expirationDate = new Date;
+			    expirationDate.setMonth(expirationDate.getMonth()+2);
+			    
+			    /* Create a cookie to store user preference */
+			    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
+			    
+			 });
+		}
+		
 
 		/* Minimise sidebar*/
 		function minimizeSidebar(){
@@ -651,9 +673,11 @@ window.onload = function () {
 		// While scrolling the + button disappears
 		let mutScrollable = document.getElementsByClassName('main-panel')[0];
 		let mutableScrollPos = 0;
-		mutScrollable.addEventListener("scroll", function() {
-		  transform('bottomFixed','scale-one','scale-zero', 'main-panel');
-		});
+		if(isNotEmpty(mutScrollable)) {
+			mutScrollable.addEventListener("scroll", function() {
+			  transform('bottomFixed','scale-one','scale-zero', 'main-panel');
+			});
+		}
 
 		// While scrolling the + button disappears / appears
 		function transform (selector,classOne,classTwo,scrollableElement) {
