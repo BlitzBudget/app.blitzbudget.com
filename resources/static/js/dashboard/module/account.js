@@ -11,7 +11,7 @@ Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
 let unsyncSVG = unsyncSVGFc();
 let syncSVG = syncSVGFc();
 // Constants for reference
-let bankAccountPreview = '';
+window.allBankAccountInfoCache = '';
 // Tick Icon
 let tickIconSVG = tickIcon();
 
@@ -219,7 +219,7 @@ let tickIconSVG = tickIcon();
 		
 		// Populate the JSON form data
     	var values = {};
-		values['id'] = bankAccountPreview[Number(position)-1].id;
+		values['id'] = allBankAccountInfoCache[Number(position)-1].id;
 		values['selectedAccount'] = 'true';
 		values['financialPortfolioId'] = currentUser.walletId;
 
@@ -233,9 +233,9 @@ let tickIconSVG = tickIcon();
    		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
 	    	  // Append as Selected Account
-	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-	    		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
-	    			  bankAccountPreview[i].selectedAccount = true;
+	    	  for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+	    		  if(allBankAccountInfoCache[i].id == allBankAccountInfoCache[Number(position)-1].id) {
+	    			  allBankAccountInfoCache[i]['selected_account'] = true;
 	    		  }
 	    	  }
 	    	  
@@ -245,7 +245,7 @@ let tickIconSVG = tickIcon();
 	    		  let rowElem = bARows[i];
 	    		  if(rowElem.classList.contains('selectedBA')) {
 	    			  rowElem.classList.remove('selectedBA');
-	    			  bankAccountPreview[i].selectedAccount = false;
+	    			  allBankAccountInfoCache[i]['selected_account'] = false;
 	    		  }
 	    	  }
 	    	  
@@ -308,7 +308,7 @@ let tickIconSVG = tickIcon();
 	// Click Back Button
 	$('#accountPickerWrapper').on('click', ".arrowWrapBA", function() {
 		// Bank Account Preview
-		er_a.populateBankInfo(bankAccountPreview);
+		er_a.populateBankInfo(allBankAccountInfoCache);
 	});
 	
 	// Click Know More
@@ -533,7 +533,7 @@ let tickIconSVG = tickIcon();
 		populateEmptyAccountInfo();
 		
 		// If bank account is present then display back button
-		if(isNotEmpty(bankAccountPreview)) {
+		if(isNotEmpty(allBankAccountInfoCache)) {
 			// Append Back Arrow
 			let arrowFrag = document.createDocumentFragment();
 			
@@ -593,7 +593,7 @@ er_a = {
 	
 	populateBankInfo(bankAccountsInfo) {
 		// Assign value to constant
-        window.bankAccountPreview = bankAccountsInfo;
+        window.allBankAccountInfoCache = bankAccountsInfo;
 		// Populate empty bank account info
 		if(isEmpty(bankAccountsInfo)) {
 			populateEmptyAccountInfo();
@@ -602,27 +602,6 @@ er_a = {
 		
 		// Populate the bank account info
 		populateAccountInfo(bankAccountsInfo);
-	},
-	fetchAllBankAccountInfo(successCall) {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
-   		ajaxData.dataType = "json";
-   		ajaxData.onSuccess = successCall;
-        ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-        }
-
-		$.ajax({
-	        type: ajaxData.type,
-	        url: ajaxData.url,
-	        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        dataType: ajaxData.dataType,
-	        success : ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
 	}
 }
 

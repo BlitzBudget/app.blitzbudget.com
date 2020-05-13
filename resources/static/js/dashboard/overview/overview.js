@@ -63,6 +63,14 @@
 
 	function populateOverviewPage() {
 		/**
+		*  Add Functionality Generic + Btn
+		**/
+
+	    // Generic Add Functionality
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    genericAddFnc.classList.add('d-none');
+
+		/**
 		 * Date Picker
 		 */
 		
@@ -1700,14 +1708,6 @@
 		}
 	}
 
-	/**
-	*  Add Functionality Generic + Btn
-	**/
-
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList.add('d-none');
-
     /**
     * Build Total Assets / liability
     **/
@@ -1719,14 +1719,7 @@
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
 
-		if(isNotEmpty(window.allBankAccountInfoCache)) {
-			buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, arrayOfAccCat);
-		} else {
-			// Fetch all bank account information
-			er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-				buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat);
-			});
-		}
+		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, arrayOfAccCat);
     }
 
     // Build Barchart For Asset Or Debt
@@ -1740,8 +1733,8 @@
 			let bankAcc = bankAccountList[i];
 			// Ensure if the asset type matches the bank account
 			if(includesStr(arrayOfAccCat, bankAcc.accountType)) {
-				labelsArray.push(bankAcc.bankAccountName);
-				seriesArray.push(bankAcc.accountBalance);	
+				labelsArray.push(bankAcc['bank_account_name']);
+				seriesArray.push(bankAcc['account_balance']);	
 			}
     	}
 
@@ -1869,14 +1862,7 @@
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
 
-		if(isNotEmpty(window.allBankAccountInfoCache)) {
-			buildchartForNetworth(window.allBankAccountInfoCache);
-		} else {
-			// Fetch all bank account information
-			er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-				buildchartForNetworth(bankAccountList);
-			});
-		}
+		buildchartForNetworth(window.allBankAccountInfoCache);
     }
 
 
@@ -1890,8 +1876,8 @@
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
 			let bankAcc = bankAccountList[i];
-			labelsArray.push(bankAcc.bankAccountName);
-			seriesArray.push(bankAcc.accountBalance);	
+			labelsArray.push(bankAcc['bank_account_name']);
+			seriesArray.push(bankAcc['account_balance']);	
     	}
 
     	let dataSimpleBarChart = {

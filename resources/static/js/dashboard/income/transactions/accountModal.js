@@ -88,7 +88,8 @@
 			
 			let values = {};
 			values['accountBalance'] = enteredText;
-			values['financialPortfolioId'] = currentUser.walletId;
+			values['walletId'] = currentUser.walletId;
+			values['accountId'] = currentUser.walletId; //TODO
 			values = JSON.stringify(values);
 
 			// Ajax Requests on Error
@@ -103,20 +104,20 @@
 	        	// Update the budget amount in the category row
 	        	let formattedBudgetAmount = 0;
 	        	if(bankAccount.accountBalance < 0) { 
-					formattedBudgetAmount = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount.accountBalance), currentUser.locale);
+					formattedBudgetAmount = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount['account_balance']), currentUser.locale);
 				} else { 
-					formattedBudgetAmount = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+					formattedBudgetAmount = currentCurrencyPreference + formatNumber(bankAccount['account_balance'], currentUser.locale);
 				}
 	        	element.innerText = formattedBudgetAmount;
 
 	        	// Account Balance for account Header
-	        	document.getElementById('accountBalance-' + bankAccount.id).innerText = formattedBudgetAmount;
+	        	document.getElementById('accountBalance-' + bankAccount.accountId).innerText = formattedBudgetAmount;
 
 	        	// Append as Selected Account
-		        for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-		    		if(bankAccountPreview[i].id == currentAccountId) {
+		        for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+		    		if(allBankAccountInfoCache[i].id == currentAccountId) {
 		    			// Account Balance update in preview
-		    			bankAccountPreview[i].accountBalance = bankAccount.accountBalance;
+		    			allBankAccountInfoCache[i]['account_balance'] = bankAccount.accountBalance;
 		    			// Position of the row
 		    			let position = i + 1;
 		    			// update the formatted button
@@ -253,8 +254,8 @@
 
 	                    // Remove from preivew if present
 	                    let posToRemove = null;
-				    	for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-				    		if(bankAccountPreview[i].id == currentAccountId) {
+				    	for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+				    		if(allBankAccountInfoCache[i].id == currentAccountId) {
 				    			let position = i + 1;
 				    			// Remove the preview banka count
 				    			let previewPos = document.getElementById('bAR-' + position);
@@ -269,7 +270,7 @@
 				    	// Position to remove
 				    	if(isNotEmpty(posToRemove)) {
 				    		// Remove the bank account preview
-				    		bankAccountPreview.splice(posToRemove , 1);
+				    		allBankAccountInfoCache.splice(posToRemove , 1);
 				    	}
 	                });
 		        }
