@@ -24,6 +24,6 @@ window._config = {
         js: '/js/dashboard/support/support.min.js'
     },
     app: {
-        invokeUrl: 'https://app.blitzbudget.com'
+        invokeUrl: 'https://app.blitzbudget.com/'
     }
 };

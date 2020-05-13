@@ -55,6 +55,14 @@
 			}
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Profile';
+	        
+		    /**
+			*  Add Functionality Generic + Btn
+			**/
+
+		    // Generic Add Functionality
+		    let genericAddFnc = document.getElementById('genericAddFnc');
+		    genericAddFnc.classList.add('d-none');
 		});
 	}
 
@@ -1475,13 +1483,5 @@
         localStorage.setItem('accessToken' , accessToken) ;
         window.accessToken = accessToken;
     }
-
-    /**
-	*  Add Functionality Generic + Btn
-	**/
-
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList.add('d-none');
 
 }(jQuery));	

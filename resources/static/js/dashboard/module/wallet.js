@@ -20,8 +20,8 @@
 	});
 
 	// Add wallet
-	let chosenCurrency = '';
-	let chosenCurrencyMW = '';
+	let chosenCurrencyW = '';
+	let chosenCurrencyWMW = '';
 	window.authHeader = window.authHeader || localStorage.getItem('idToken');
 
 	// store in session storage
@@ -74,7 +74,7 @@
 		
 		// Set Param Val combination
 		let values = {};
-		values['currency'] = chosenCurrency;
+		values['currency'] = chosenCurrencyW;
 		values['userId'] = window.currentUser.financialPortfolioId;
 		values['readOnly'] = false;
 		values = JSON.stringify(values);
@@ -290,8 +290,8 @@
 	}
 
 	// On click drop down btn of country search
-	$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
-		let currencyInp = document.getElementById('chosenCurrencyInp');
+	$("#chosenCurrencyWDropdown").on("shown.bs.dropdown", function(event){
+		let currencyInp = document.getElementById('chosenCurrencyWInp');
 		// Input change focus to the country search bar 
 		currencyInp.focus();
 		// Trigger input event
@@ -304,9 +304,9 @@
 	});
 
 	// On click drop down btn of country search
-	$("#chosenCurrencyDropdown").on("hidden.bs.dropdown", function(event){
+	$("#chosenCurrencyWDropdown").on("hidden.bs.dropdown", function(event){
 		// Input clear value for the country search bar 
-		document.getElementById('chosenCurrencyInp').value = '';
+		document.getElementById('chosenCurrencyWInp').value = '';
 		// Close all list
 		closeAllDDLists(this);
 	});
@@ -325,16 +325,16 @@
 
 		// On click drop down btn of country search
 	$(document).on("click", ".dropdown-item" , function(event){
-		let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
-		let chooseCrncyMWId = 'chosenCurrencyInpMWautocomplete-list';
+		let chooseCrncyId = 'chosenCurrencyWInpautocomplete-list';
+		let chooseCrncyMWId = 'chosenCurrencyWInpMWautocomplete-list';
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
-			document.getElementById('chosenCurrency').innerText = this.lastChild.value;
-			chosenCurrency = this.lastChild.value;
+			document.getElementById('chosenCurrencyW').innerText = this.lastChild.value;
+			chosenCurrencyW = this.lastChild.value;
 		} else if(isEqual(id, chooseCrncyMWId)) {
-			document.getElementById('chosenCurrencyMW').innerText = this.lastChild.value;
-			chosenCurrencyMW = this.lastChild.value;
+			document.getElementById('chosenCurrencyWMW').innerText = this.lastChild.value;
+			chosenCurrencyWMW = this.lastChild.value;
 		}
 	});
 
@@ -372,7 +372,7 @@
 	        dataType: "json",
 	        data : JSON.stringify(values),
 	        success: function(wallets) {
-	        	window.globalWallet = wallets;
+	        	window.globalWallet = wallets.Wallet;
 	        	window.walletCur = [];
 
 	        	// Center the only div if it is the only wallet
@@ -400,7 +400,7 @@
 					sToC[curToSym[i].symbol] = curToSym[i].currency;
 					/* Update the default currency in Settings */
 					if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
-						document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+						document.getElementById('chosenCurrencyW').innerText = curToSym[i].currency;
 						document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 						document.getElementById('walletCurrency').innerText = curToSym[i].currency;
 						document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
@@ -412,11 +412,11 @@
 					}
 				}
 
-				/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-				autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
+				/*initiate the autocomplete function on the "chosenCurrencyWInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(document.getElementById("chosenCurrencyWInp"), currencies, "chooseCurrencyDD");
 
-				/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-				autocomplete(document.getElementById("chosenCurrencyInpMW"), currencies, "chooseCurrencyDDMW");
+				/*initiate the autocomplete function on the "chosenCurrencyWInp" element, and pass along the countries array as possible autocomplete values:*/
+				autocomplete(document.getElementById("chosenCurrencyWInpMW"), currencies, "chooseCurrencyDDMW");
 
 
 	        	// Remove Loader
@@ -656,7 +656,7 @@
 			/*
 			*	Currency Dropdown Populate (EDIT)
 			*/
-			document.getElementById('chosenCurrencyMW').innerText = sToC[currentWallet.currency];
+			document.getElementById('chosenCurrencyWMW').innerText = sToC[currentWallet.currency];
 		} else {
 			// If others then show name field
 			document.getElementsByClassName('manageNameWrapper')[0].classList.remove('d-none');
@@ -678,7 +678,7 @@
 	    	/*
 			*	Currency Dropdown Populate (EDIT)
 			*/
-			document.getElementById('chosenCurrencyMW').innerText = currentWallet.currency;
+			document.getElementById('chosenCurrencyWMW').innerText = currentWallet.currency;
 		}
 
 	}
@@ -705,8 +705,8 @@
 	}
 
 	// On click drop down btn of country search
-	$("#chosenCurrencyDropdownMW").on("shown.bs.dropdown", function(event){
-		let currencyInp = document.getElementById('chosenCurrencyInpMW');
+	$("#chosenCurrencyWDropdownMW").on("shown.bs.dropdown", function(event){
+		let currencyInp = document.getElementById('chosenCurrencyWInpMW');
 		// Input change focus to the country search bar 
 		currencyInp.focus();
 		// Trigger input event
@@ -719,9 +719,9 @@
 	});
 
 	// On click drop down btn of country search
-	$("#chosenCurrencyDropdownMW").on("hidden.bs.dropdown", function(event){
+	$("#chosenCurrencyWDropdownMW").on("hidden.bs.dropdown", function(event){
 		// Input clear value for the country search bar 
-		document.getElementById('chosenCurrencyInpMW').value = '';
+		document.getElementById('chosenCurrencyWInpMW').value = '';
 		// Close all list
 		closeAllDDLists(this);
 	});
@@ -993,8 +993,8 @@
 		// Set Param Val combination
 		let values = {};
 		values['name'] = document.getElementById('manageWalletName').value;
-		if(isNotEmpty(chosenCurrencyMW)) {
-			values['currency'] = chosenCurrencyMW;
+		if(isNotEmpty(chosenCurrencyWMW)) {
+			values['currency'] = chosenCurrencyWMW;
 		}
 		values['walletId'] = chosenWallet;
 		values['userId'] = window.currentUser.financialPortfolioId;
