@@ -13,10 +13,7 @@
 	Object.defineProperties(WALLET_CONSTANTS, {
 		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
-		'firstuserIdParams': { value: '?userId=', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
-		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },
-		'referenceNumberParam': { value: '&referenceNumber=', writable: false, configurable: false },
 	});
 
 	// Add wallet
@@ -804,10 +801,18 @@
 				let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
 				chosenDiv.addClass('d-none');
 
+				let values = {};
+        		values.walletId = chosenWallet;
+        		values.deleteAccount = false;
+        		values.referenceNumber = currentUser.financialPortfolioId;
+
         	 	jQuery.ajax({
-					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl + WALLET_CONSTANTS.firstuserIdParams + chosenWallet  + WALLET_CONSTANTS.deleteAccountParam + false + WALLET_CONSTANTS.referenceNumberParam + currentUser.financialPortfolioId,
+					url: window._config.api.invokeUrl + WALLET_CONSTANTS.resetAccountUrl,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-			        type: 'DELETE',
+			        type: 'POST',
+			        dataType: "json",
+   					contentType: "application/json;charset=UTF-8",
+   					values: JSON.stringify(values),
 			        success: function(result) {
 			        	chosenDiv.remove();
 			        },
@@ -936,50 +941,6 @@
 		firstChild.setAttribute('type', 'password');
 	});
 
-	// New Password Key Up listener For Reset Password
-	$(document).on('keyup', "#oldPasswordRP", function(e) {
-	
-		let resetAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
-		let errorDispRA = document.getElementById('cpErrorDispOldRA');
-		let passwordEnt = this.value;
-
-		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			resetAccountBtn.setAttribute('disabled','disabled');			
-			return;
-		}
-
-		errorDispRA.innerText = '';
-		resetAccountBtn.removeAttribute('disabled');
-
-		let keyCode = e.keyCode || e.which;
-		if (keyCode === 13) { 
-			document.activeElement.blur();
-		    e.preventDefault();
-		    e.stopPropagation();
-		    // Click the confirm button of SWAL
-		    resetAccountBtn.click();
-		    return false;
-		}
-
-	});
-
-	// On focus out Listener for Reset password
-	$(document).on('focusout', "#oldPasswordRP", function() {
-	
-		let resetAccountBtn = document.getElementsByClassName('swal2-confirm')[0];
-		let errorDispRA = document.getElementById('cpErrorDispOldRA');
-		let passwordEnt = this.value;
-
-		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			errorDispRA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
-			resetAccountBtn.setAttribute('disabled','disabled');
-			return;
-		}
-
-		errorDispRA.innerText = '';
-
-	});
-
 
 	/**
 	*
@@ -1028,12 +989,12 @@
 	function updateRelevantTextInCard(values) {
 		// Find Item with data target attribute
 		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
-		if(isEmpty(values.name)) {
+		if(isNotEmpty(values.name)) {
 			// Change name
 			chosenDiv.find(".suggested-heading").text(values.name);
 		}
 
-		if(isEmpty(values.currency)) {
+		if(isNotEmpty(values.currency)) {
 			// Change Currency
 			chosenDiv.find(".currency-desc").text(values.currency);
 		} 
