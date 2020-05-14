@@ -924,6 +924,13 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 	color: #fff;
 }
 
+#categoryOptions,
+#categoryOptions .btn-secondary {
+	position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+}
+
 #categoryOptions .dropdown-toggle::after {
 	color: #fff;
 }
@@ -956,6 +963,11 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 #categoryOptions .dropdown-header,
 #categoryOptions .autocomplete-items {
     width: 100%;
+}
+
+#incomeSelection, 
+#expenseSelection {
+	cursor: pointer;
 }
 
 /** Change the size of the text if the width and height pf the screen are more **/

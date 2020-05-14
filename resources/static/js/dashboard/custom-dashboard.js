@@ -32,9 +32,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 window.currentCurrencyPreference = '$';
 
 window.currentActiveSideBar = '';
-//Load Expense category and income category
-window.expenseSelectionOptGroup = document.createDocumentFragment();
-window.incomeSelectionOptGroup = document.createDocumentFragment();
+
 window.categoryMap = {};
 //Regex to check if the entered value is a float
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
@@ -934,6 +932,9 @@ er = {
 
 // Load all categories from API (Call synchronously to set global variable)
 function fetchJSONForCategories(data) {
+	// Expense and Income Initialize
+	window.expenseSelectionOptGroup = document.createDocumentFragment();
+	window.incomeSelectionOptGroup = document.createDocumentFragment();
 	
 	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
 		  let value = window.defaultCategories[count];
@@ -944,8 +945,13 @@ function fetchJSONForCategories(data) {
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
-		  option.className = 'categoryOption-' + value.name;
 		  option.innerText = value.name;
+
+		  let inputValue = document.createElement('input');
+		  inputValue.type = 'hidden';
+		  inputValue.value = value.name;
+		  option.appendChild(inputValue);
+		  
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {

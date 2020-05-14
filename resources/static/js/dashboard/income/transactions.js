@@ -331,8 +331,16 @@
         	fetchJSONForCategories(window.defaultCategories, result.Category);
 
         	// Load Expense category and income category
-			expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
-			incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
+        	let expenseSelectionDiv = document.getElementById('expenseSelection');
+        	while (expenseSelectionDiv.firstChild) {
+			    expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
+			}
+        	let incomeSelectionDiv = document.getElementById('incomeSelection');
+        	while (incomeSelectionDiv.firstChild) {
+			    incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
+			}
+			expenseSelectionOptGroup = cloneElementAndAppend(expenseSelectionDiv, expenseSelectionOptGroup);
+			incomeSelectionOptGroup = cloneElementAndAppend(incomeSelectionDiv, incomeSelectionOptGroup);
 		
 
         	// Dates Cache
