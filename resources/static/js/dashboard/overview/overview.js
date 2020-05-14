@@ -265,7 +265,7 @@
 		// Convert date from UTC to user specific dates
 		let creationDateUserRelevant = new Date(userTransaction.createDate);
 		// Category Map 
-		let categoryMapForUT = categoryMap[userTransaction.categoryId];
+		let categoryMapForUT = categoryMap[userTransaction.category];
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = 'recentTransaction-' + userTransaction.transactionId;
@@ -278,7 +278,7 @@
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT';
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			circleWrapperDiv.appendChild(creditCardSvg());
 		} else {
 			circleWrapperDiv.appendChild(plusRawSvg());
@@ -304,7 +304,7 @@
 		let transactionAmount = document.createElement('div');
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
@@ -450,16 +450,13 @@
       	  	}
       	  	
       	  	// Store the values in a cache
-      	  	userBudgetCache[userBudgetValue.categoryId] = userBudgetValue;
+      	  	userBudgetCache[userBudgetValue.budgetId] = userBudgetValue;
       	  	
-      	    let categoryTotal = categoryTotalMapCache[userBudgetValue.categoryId];
       	    // Check for Overspent budget
-      	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
-      	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
-      	    } else if (categoryTotal < userBudgetValue.planned) {
-      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].type };
-      	    } else if (isEmpty(categoryTotal)) {
-      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].type };
+      	    if(userBudgetValue.used > userBudgetValue.planned) {
+      	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, userBudgetValue.used));
+      	    } else if (userBudgetValue.used <= userBudgetValue.planned) {
+      	    	userBudgetWithFund[userBudgetValue.category] = { 'amount' : userBudgetValue.planned - userBudgetValue.used , 'parentCategory' : categoryMap[userBudgetValue.category].type };
       	    }
      	}
     	
@@ -501,7 +498,7 @@
 		
 		// Budget Optimization Row
 		let tableBudgetOptimization = document.createElement('div');
-		tableBudgetOptimization.id = 'budgetOptimization-' + userBudget.categoryId;
+		tableBudgetOptimization.id = 'budgetOptimization-' + userBudget.budgetId;
 		tableBudgetOptimization.classList = 'budgetOptimization d-table-row';
 		
 		// Table Cell 1
@@ -520,7 +517,7 @@
 		let inputFormCheckInput = document.createElement('input');
 		inputFormCheckInput.className = 'number form-check-input';
 		inputFormCheckInput.type = 'checkbox';
-		inputFormCheckInput.innerHTML = userBudget.categoryId;
+		inputFormCheckInput.innerHTML = userBudget.budgetId;
 		inputFormCheckInput.tabIndex = -1;
 		
 		let formCheckSignSpan = document.createElement('span');
@@ -539,7 +536,7 @@
 		// Table Cell 2 
 		let userBudgetNameDiv = document.createElement('div');
 		userBudgetNameDiv.classList = 'font-weight-bold categoryNameBO d-table-cell';
-		userBudgetNameDiv.innerText = categoryMap[userBudget.categoryId].categoryName;
+		userBudgetNameDiv.innerText = categoryMap[userBudget.category].categoryName;
 		tableBudgetOptimization.appendChild(userBudgetNameDiv);
 		
 		// Table Cell 3 

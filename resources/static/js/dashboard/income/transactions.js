@@ -376,7 +376,7 @@
 			let resultKeySet = Object.keys(result.Category);
          	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
          	   let key = resultKeySet[countGrouped];
-         	   let category = result[key];
+         	   let category = result.Category[key];
  			   
  			   // Load all the total category amount in the category section
  			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(category['category_total'], currentUser.locale);

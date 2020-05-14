@@ -996,10 +996,8 @@ function assignCategoryId(data) {
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
-		  let categoryId = dataNameMap[value.name];
-		  if(isNotEmpty(categoryId)) {
+		  if(isNotEmpty(value.id)) {
 		  	inputValue.value = categoryId;
-		  	value.id = categoryId;
 		  } else {
 		  	inputValue.value = value.name;
 		  }
