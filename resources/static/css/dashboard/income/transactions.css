@@ -924,6 +924,40 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 	color: #fff;
 }
 
+#categoryOptions .dropdown-toggle::after {
+	color: #fff;
+}
+
+#categoryOptions .dropdown-menu {
+    height: auto;
+    max-height: 20rem;
+    overflow-x: hidden;
+    width: 20rem;
+}
+
+#categoryOptions .autocomplete-items .dropdown-item {
+    width: 100%;
+    cursor: pointer;
+    white-space: pre-wrap;
+}
+
+#categoryOptions .dropdown-menu .dropdown-item:hover, 
+#categoryOptions .dropdown-menu .dropdown-item:focus, 
+#categoryOptions .dropdown-menu a:hover, 
+#categoryOptions .dropdown-menu a:focus, 
+#categoryOptions .dropdown-menu a:active,
+#categoryOptions .autocomplete-active {
+    color: #fff;
+    background-color: #4caf50;
+    border-color: #4caf50;
+    box-shadow: 0 2px 2px 0 rgba(76,175,80,0.14), 0 3px 1px -2px rgba(76,175,80,0.2), 0 1px 5px 0 rgba(76,175,80,0.12);
+}
+
+#categoryOptions .dropdown-header,
+#categoryOptions .autocomplete-items {
+    width: 100%;
+}
+
 /** Change the size of the text if the width and height pf the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
 	

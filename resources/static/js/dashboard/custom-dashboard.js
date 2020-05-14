@@ -945,7 +945,7 @@ function fetchJSONForCategories(data) {
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
 		  option.className = 'categoryOption-' + value.name;
-		  option.text = value.name;
+		  option.innerText = value.name;
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
