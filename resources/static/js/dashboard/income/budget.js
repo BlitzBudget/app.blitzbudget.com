@@ -522,9 +522,9 @@
 	        	  // on success then replace the entered text 
 	        	  element.innerText = currentCurrencyPreference + formatNumber(enteredText, currentUser.locale);
 	        	  // Update the budget cache
-	        	  userBudgetCache[userBudget.categoryId] = userBudget;
+	        	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	        	  // Update the modal
-	        	  updateProgressBarAndRemaining(userBudget.categoryId, document);
+	        	  updateProgressBarAndRemaining(userBudget, document);
             }
             ajaxData.onFailure = function (thrownError) {
             	manageErrors(thrownError, 'Unable to change the budget. Please try again',ajaxData);
@@ -831,7 +831,7 @@
           	  	}
           	  	
           	  	// Store the values in a cache
-          	  	userBudgetCache[value.categoryId] = value;
+          	  	userBudgetCache[value.budgetId] = value;
 
           	  	// Appends to a document fragment
           	  	budgetDivFragment.appendChild(buildUserBudget(value));
@@ -951,7 +951,7 @@
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
 	        	
 	        	// Store the values in a cache
-          	  	userBudgetCache[userBudget.category] = userBudget;
+          	  	userBudgetCache[userBudget.budgetId] = userBudget;
 
           	  	// Enable the Add button
           	  	let genericAddFnc = document.getElementById('genericAddFnc');
@@ -1113,16 +1113,13 @@
 	        		 showNotification("Sorry, We couldn't change the budegt at the moment. Please refresh and try again",window._constants.notification.error);
 	        		 return;
 	        	 }
-	        	  
-	        	 // Delete the entry from the map if it is pending to be updated
-  				 delete userBudgetCache[budgetId];
   				 
   				 // Assign new category to the user budget cache
-  				 userBudgetCache[userBudget.budgetId] = userBudget;
+  				 userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
   				 	        	
 	        	 
 	        	// Handle the update of the progress bar modal
-     			updateProgressBarAndRemaining(userBudget.budgetId, document);
+     			updateProgressBarAndRemaining(userBudget, document);
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
@@ -1449,7 +1446,7 @@
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudget){
 	    	  // Update the cache containing user budgets
-	    	  userBudgetCache[userBudget.categoryId] = userBudget;
+	    	  userBudgetCache[userBudget.budgetId] = userBudget;
 	    	  
 	    	  // Update the modal
 	    	  updateProgressBarAndRemaining(userBudget.categoryId, document);
@@ -1511,7 +1508,7 @@
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
         	  // Update the Budget Cache
-        	  userBudgetCache[userBudget.categoryId] = userBudget;
+        	  userBudgetCache[userBudget.budgetId] = userBudget;
         	  
         	  let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
       		  let anchorDropdownItemFragment = document.createDocumentFragment();
@@ -1562,10 +1559,10 @@
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
         	// Update the Budget Cache
-        	userBudgetCache[userBudget.categoryId] = userBudget;
+        	userBudgetCache[userBudget.budgetId] = userBudget;
         	
         	// Get the user Budget overspending
-      		let userBudgetOverSpending = userBudgetCache[userBudget.categoryId].planned -  categoryTotalMapCache[userBudget.categoryId];
+      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  categoryTotalMapCache[userBudget.categoryId];
       		userBudgetOverSpending = currentCurrencyPreference + formatNumber(Math.abs(userBudgetOverSpending), currentUser.locale);
       		// Set the title of the modal
       		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.categoryId].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
