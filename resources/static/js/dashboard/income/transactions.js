@@ -330,7 +330,7 @@
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
-   		ajaxData.onSuccess = function(data) {
+   		ajaxData.onSuccess = function(result) {
         	er_a.populateBankInfo(result.BankAccount);
 
         	fetchJSONForCategories(window.defaultCategories, result.Category);
