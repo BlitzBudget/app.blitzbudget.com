@@ -1175,23 +1175,14 @@
 		if(isEmpty(userBudgetCache)) {
 			categoryItem = window.defaultCategory[0];
 		} else {
-			let allBudgetedCategories = [];
-			// Get all the budgeted categories
-			let budgetKeySet = Object.keys(userBudgetCache);
-			for(let count = 0, length = budgetKeySet.length; count < length; count++){
-				let key = budgetKeySet[count];
-	      	  	let budgetObject = userBudgetCache[key];
-	      	  	// Push the budgeted category to cache
-	      	  	isNotEmpty(budgetObject) && allBudgetedCategories.push(key);
-			}
-			
 			
 			let dataKeySet = Object.keys(categoryMap);
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
 				let key = dataKeySet[count];
+				let categoryObj = userBudgetCache[key];
 	      	  	
 	      	  	// If a category that is not contained in the budget cache is found then assign and leave for loop
-	      	  	if(!includesStr(allBudgetedCategories,key) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.incomeCategory)) {
+	      	  	if(isEmpty(categoryObj.id)) {
 	      	  		categoryItem = key;
 	      	  		break;
 	      	  	}

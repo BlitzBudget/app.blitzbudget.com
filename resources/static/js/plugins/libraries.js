@@ -77,6 +77,10 @@ function includesStr(arr, val){
 	return isEmpty(arr) ? null : arr.includes(val); 
 }
 
+function notIncludesStr(arr, val){
+	return isEmpty(arr) ? null : arr.includes(val); 
+}
+
 function fetchFirstElement(arr){
 	if(Array.isArray(arr)){
 		return isEmpty(arr) ? null : arr[0];

@@ -293,7 +293,7 @@
 	}
 
 	// On click drop down btn of country search
-	$(document).on("click", ".dropdown-item" , function(event){
+	$(document).on("click", ".settings-dashboard .dropdown-item" , function(event){
 		let chooseCtyId = 'chosenCountryInpautocomplete-list';
 		let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
 		let id = this.parentElement.id;

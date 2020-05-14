@@ -935,13 +935,17 @@ function fetchJSONForCategories(data) {
 	// Expense and Income Initialize
 	window.expenseSelectionOptGroup = document.createDocumentFragment();
 	window.incomeSelectionOptGroup = document.createDocumentFragment();
+	let dataNameMap = {};
+
+	if(isNotEmpty(data)) {
+		for(let i=0,len=data.length;i<len;i++) {
+			dataNameMap[data['category_name']] = data;
+		}
+	}
 	
 	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
 		  let value = window.defaultCategories[count];
 
-    	  // Freeze the object so it cannot be mutable
-    	  Object.freeze(value);
-		  window.categoryMap[value.name] = value;
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
@@ -949,9 +953,17 @@ function fetchJSONForCategories(data) {
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
-		  inputValue.value = value.name;
+		  let categoryId = dataNameMap[value.name];
+		  if(isNotEmpty(categoryId)) {
+		  	inputValue.value = categoryId;
+		  	value.id = categoryId;
+		  } else {
+		  	inputValue.value = value.name;
+		  }
 		  option.appendChild(inputValue);
-		  
+
+		  window.categoryMap[value.name] = value;
+
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {

@@ -192,8 +192,14 @@
 	    }
 	    
 	    let description = document.getElementById('description').value;
-	    let categoryOptions = document.getElementById('categoryOptions').value;
-		let values = {};
+	    let categoryOptions = document.getElementById('categoryOptions').getAttribute('data-chosen');
+
+	    let values = {};
+	    if(notIncludesStr(categoryOptions, 'Category#')) {
+	    	let chosenCategory = window.categoryMap[categoryOptions];
+	    	values['categoryType'] = chosenCategory.type;
+	    }
+
 		values['amount'] = amount;
 		values['description'] = description;
 		values['category'] = categoryOptions;
@@ -204,7 +210,7 @@
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
+   		ajaxData.type = "PUT";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
@@ -251,6 +257,14 @@
 		});
 	    
 	}
+
+	$(document).on("click", "#categoryOptions .dropdown-item" , function(event){
+
+		let inputValue = this.lastChild.value;
+		let categoryoptions = document.getElementById('categoryOptions');
+		categoryoptions.setAttribute('data-chosen', inputValue);
+
+	});
 	
 	
 	// Use this function to fade the message out
@@ -381,7 +395,7 @@
 		    }
 			   
 		    // Update table with empty message if the transactions are empty
-		    if(result.length == 0) {
+		    if(result.Transaction.length == 0) {
 			   checkAllBox.setAttribute('disabled', 'disabled');
    				// Replace HTML with Empty
        			while (documentTbody.firstChild) {
