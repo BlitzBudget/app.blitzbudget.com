@@ -939,13 +939,56 @@ function fetchJSONForCategories(data) {
 
 	if(isNotEmpty(data)) {
 		for(let i=0,len=data.length;i<len;i++) {
-			dataNameMap[data['category_name']] = data;
+			dataNameMap[data[i]['category_name']] = data[i];
 		}
 	}
 	
 	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
 		  let value = window.defaultCategories[count];
 
+		  /*create a DIV element for each matching element:*/
+	      let option = document.createElement("DIV");
+	      option.classList.add("dropdown-item");
+		  option.innerText = value.name;
+
+		  let inputValue = document.createElement('input');
+		  inputValue.type = 'hidden';
+		  let categoryId = dataNameMap[value.name];
+		  if(isNotEmpty(categoryId)) {
+		  	inputValue.value = categoryId;
+		  	value.id = categoryId;
+		  } else {
+		  	inputValue.value = value.name;
+		  }
+		  option.appendChild(inputValue);
+
+		  window.categoryMap[value.name] = value;
+
+		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+			  window.expenseSelectionOptGroup.appendChild(option);
+		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+			  window.incomeSelectionOptGroup.appendChild(option);
+		  }
+	   
+  	}
+   // Sealing the object so new objects or properties cannot be added
+   Object.seal(window.categoryMap);
+}
+
+function assignCategoryId(data) {
+	// Expense and Income Initialize
+	window.expenseSelectionOptGroup = document.createDocumentFragment();
+	window.incomeSelectionOptGroup = document.createDocumentFragment();
+	let categoryId = data.categoryId;
+	let categoryName = data.categoryName;
+	let categoryType = data.categoryType;
+
+	window.categoryMap[categoryName].id = categoryId;
+
+	let resultKeys = Object.keys(window.categoryMap);
+	for(let count = 0, length = resultKeys.length; count < length; count++){
+		  let key = resultKeys[count];
+		  let value = window.categoryMap[key];
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");

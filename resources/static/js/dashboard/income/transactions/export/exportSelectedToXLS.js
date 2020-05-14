@@ -45,7 +45,7 @@
                 // Fetch the transaction amount
                 let transactionAmount = '';
                 // Append a - sign if it is an expense
-                if(currentCategory.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+                if(currentCategory.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
                    transactionAmount = '-' + currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);
                 } else {
                    transactionAmount = currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);

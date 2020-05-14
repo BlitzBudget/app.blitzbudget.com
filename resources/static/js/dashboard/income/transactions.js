@@ -342,7 +342,7 @@
    		ajaxData.onSuccess = function(result) {
         	er_a.populateBankInfo(result.BankAccount);
 
-        	fetchJSONForCategories(window.defaultCategories, result.Category);
+        	fetchJSONForCategories(result.Category);
 
         	// Load Expense category and income category
         	let expenseSelectionDiv = document.getElementById('expenseSelection');
@@ -673,7 +673,7 @@
 		amountDiv.tabIndex = 0;
 		
 	   // Append a - sign if it is an expense
-	   if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	   if(categoryMap[categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 		   amountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
 	   } else {
 		   amountDiv.innerHTML = currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
@@ -2364,7 +2364,7 @@
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			circleWrapperDiv.appendChild(creditCardSvg());
 		} else {
 			circleWrapperDiv.appendChild(plusRawSvg());
@@ -2393,7 +2393,7 @@
 			let transactionAmount = document.createElement('div');
 		
 			// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
@@ -2409,7 +2409,7 @@
 			let transactionAmount = document.createElement('div');
 			
 			// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {

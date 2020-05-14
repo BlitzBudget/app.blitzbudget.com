@@ -139,7 +139,7 @@
    			// Dates Cache
         	window.datesCreated = result.Date;
 
-   			fetchJSONForCategories(window.defaultCategories, result.Category);
+   			fetchJSONForCategories(result.Category);
 
    			calculateWalletInformation(wallet);
    			er_a.populateBankInfo(result.BankAccount);
@@ -574,9 +574,9 @@
 			// Calculate the minus sign and appropriate class for the remaining amount 
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
-				if(categoryMap[budgetIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+				if(categoryMap[budgetIdKey].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 					budgetLabelDiv.innerText = 'Overspent (%)';
-				} else if(categoryMap[budgetIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+				} else if(categoryMap[budgetIdKey].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 					budgetLabelDiv.innerText = 'To Be Budgeted (%)';
 				}
 				
@@ -947,9 +947,10 @@
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
-   		ajaxData.onSuccess = function(userBudget) {
+   		ajaxData.onSuccess = function(result) {
    				// Filter the body
-   				userBudget = userBudget['body-json'];
+   				let userBudget = result['body-json'];
+   				assignCategoryId(userBudget);
 
 	        	let budgetDivFragment = document.createDocumentFragment();
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
@@ -1247,13 +1248,13 @@
 		}
 		
 		// Build a category available cache
-		let selectedCategoryParentCategory = categoryMap[categoryId].parentCategory;
+		let selectedCategoryParentCategory = categoryMap[categoryId].type;
 		let dataKeySet = Object.keys(userBudgetCache);
 		for(let count = 0, length = dataKeySet.length; count < length; count++) {
 			let key = dataKeySet[count];
       	  	let userBudgetValue = userBudgetCache[key];
       	  
-      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[key].parentCategory)) {
+      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[key].type)) {
       	  		continue;
       	  	}
       	  	

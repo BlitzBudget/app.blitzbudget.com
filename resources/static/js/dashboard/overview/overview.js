@@ -146,7 +146,7 @@
         	  
 			er_a.populateBankInfo(result.BankAccount);
 
-	        fetchJSONForCategories(window.defaultCategories, result.Category);
+	        fetchJSONForCategories(result.Category);
 
 	         /*
 			 * Populate Overview
@@ -278,7 +278,7 @@
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT';
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			circleWrapperDiv.appendChild(creditCardSvg());
 		} else {
 			circleWrapperDiv.appendChild(plusRawSvg());
@@ -304,7 +304,7 @@
 		let transactionAmount = document.createElement('div');
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
@@ -457,9 +457,9 @@
       	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
       	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
       	    } else if (categoryTotal < userBudgetValue.planned) {
-      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].type };
       	    } else if (isEmpty(categoryTotal)) {
-      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].type };
       	    }
      	}
     	
@@ -657,7 +657,7 @@
         	  for(let count = 0, length = dataKeys.length; count < length; count++) {
         		  let categoryIdKey = dataKeys[count];
         		  let budgetWithFund = userBudgetWithFund[categoryIdKey];
-        		  if(isNotEmpty(budgetWithFund) && categoryObject.parentCategory == budgetWithFund.parentCategory) {
+        		  if(isNotEmpty(budgetWithFund) && categoryObject.type == budgetWithFund.type) {
         			  let totalOptimizationValue = 0;
         			  
         			  if(budgetWithFund.amount == 0 || totalOptimization == 0) {
@@ -1369,7 +1369,7 @@
 			let categoryId = categoryKeys[count];
 			let categoryTotal = categoryTotalMapCache[categoryId];
 			let categoryObject = categoryMap[categoryId];
-			if(categoryObject.parentCategory == incomeCategory) {
+			if(categoryObject.type == incomeCategory) {
 				// Add the category total to absolute total
 				absoluteTotal += categoryTotal;
 			}
@@ -1381,7 +1381,7 @@
 			let categoryTotal = categoryTotalMapCache[categoryId];
 			
 			let categoryObject = categoryMap[categoryId];
-			if(categoryObject.parentCategory == incomeCategory) {
+			if(categoryObject.type == incomeCategory) {
 				let percentageOfTotal = (categoryTotal / absoluteTotal) * 100;
 				// If the total is greater than 5 % then print it separate else accumulate it with others
 				if(percentageOfTotal > 5) {
