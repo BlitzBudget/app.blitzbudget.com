@@ -608,6 +608,7 @@
 		$('.edit-wallet').removeClass('d-none');
 		$('.share-icon').addClass('d-none');
 		document.getElementById('starredWallet').classList.add('d-none');
+		document.getElementById('genericAddFnc').classList.add('d-none');
 		this.classList.add('d-none');
 		window.manageWalletsTriggered = true;
 	});
@@ -615,6 +616,7 @@
 	// Done Manage
 	document.getElementById('doneManage').addEventListener("click",function(e){
 		doneManage();
+		document.getElementById('genericAddFnc').classList.remove('d-none');
 		this.classList.add('d-none');
 		window.manageWalletsTriggered = false;
 	});

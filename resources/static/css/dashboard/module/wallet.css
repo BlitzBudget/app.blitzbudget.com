@@ -1927,7 +1927,7 @@ select.form-control:focus::-ms-value {
     width: 8rem;
 }
 
-#chosenCurrency {
+#chosenCurrencyW {
     margin-right: -0.2rem;
 }
 
@@ -1944,7 +1944,7 @@ select.form-control:focus::-ms-value {
     margin: 1.25em auto 0;
 }
 
-#chosenCurrencyDropdown {
+#chosenCurrencyWDropdown {
     z-index: 2;
 }
 
@@ -2255,7 +2255,7 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
     line-height: 1.42857;
 }
 
-#chosenCurrencyMW.btn.btn-secondary {
+#chosenCurrencyWMW.btn.btn-secondary {
     color: #333;
     background-color: #fff;
     border-color: #fff;
@@ -2375,7 +2375,7 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
         width: 20rem;
     }
 
-    #chosenCurrencyMW {
+    #chosenCurrencyWMW {
         width: 15rem;
     }
 }

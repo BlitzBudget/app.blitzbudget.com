@@ -52,6 +52,7 @@
             let name = userAttributes[i].Name;
 
             if(name.includes('custom:')) {
+                
                 // if custom values then remove custom: 
                 let elemName = lastElement(splitElement(name,':'));
                 currentUserLocal[elemName] = userAttributes[i].Value;
@@ -73,10 +74,41 @@
         localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
         // Fill currency and Name
         fillName();
+        // Read current cookie
+        readCurrentCookie();
         // Calculate wallet attributes
         calculateWalletAttributes();
         // Hide Modal
         if(loginModal) loginModal.modal('hide');
+    }
+
+    /**
+    * Read current page in cookie
+    **/
+    function readCurrentCookie() {
+        let currentPageInCookie = er.getCookie('currentPage');
+
+        switch(currentPageInCookie) {
+            case 'overviewPage':
+            default:
+                document.getElementById('overviewPage').click();
+                break;
+            case 'transactionsPage':  
+                document.getElementById(currentPageInCookie).click();
+                break;
+            case 'budgetPage':  
+                document.getElementById(currentPageInCookie).click();
+                break;  
+            case 'settingsPage':
+            case 'settingsPgDD':
+                document.getElementById('settingsPage').click();
+                break; 
+            case 'profilePage':
+            case 'profilePgDD':
+                document.getElementById('profilePage').click();
+                break;
+
+        }
     }
 
     function storeRefreshToken(result) {

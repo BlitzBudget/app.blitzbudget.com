@@ -38,7 +38,7 @@
 	 * 
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
-	if(isEqual(currentPageInCookie,'overviewPage') || isEmpty(currentPageInCookie)) {
+	if(isEqual(currentPageInCookie,'overviewPage')) {
 		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
 			populateCurrentPage('overviewPage');
 		}
