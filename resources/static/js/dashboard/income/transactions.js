@@ -583,6 +583,7 @@
 		let displayCategory = document.createElement('button');
 		displayCategory.classList = 'btn btn-secondary w-md-15 w-8';
 		displayCategory.disabled = true;
+		displayCategory.innerText = userTransactionData.category;
 		selectCategory.appendChild(displayCategory);
 
 
@@ -641,11 +642,6 @@
 		expenseSelectionOptGroup =  cloneElementAndAppend(expenseCategories, expenseSelectionOptGroup);
 		inputGroup.appendChild(expenseCategories);
 		dropdownMenu.appendChild(inputGroup);
-		
-		// Set the relevant category in the options to selected
-		let toSelectOption = selectCategoryRow.getElementsByClassName('categoryOption-' + categoryId);
-		toSelectOption[0].selected = 'selected';
-		tableRows.appendChild(selectCategoryRow);
 		
 		// Table Cell 4
 		let descriptionTableRow = document.createElement('div');
