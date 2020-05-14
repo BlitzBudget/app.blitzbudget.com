@@ -136,6 +136,9 @@
    			let dates = data.Date;
    			let wallet = data.Wallet;
 
+   			// Dates Cache
+        	window.datesCreated = result.Date;
+
    			fetchJSONForCategories(window.defaultCategories, data.Category);
 
    			calculateWalletInformation(wallet);

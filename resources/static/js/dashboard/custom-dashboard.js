@@ -62,9 +62,6 @@ window.onload = function () {
 		// Position for month selection
 		let positionMonthCache = 0;
 
-		// Transactions total income cache
-		let transactionsTotalIncomeOrExpenseCache = {};
-
 		
 		// Append "active" class name to toggle sidebar color change
 		if($('.overview-dashboard').length) {
@@ -449,52 +446,18 @@ window.onload = function () {
 				return;
 			}
 			
-			if(isEmpty(transactionsTotalIncomeOrExpenseCache)) {
-				fetchIncomeTotalOrExpeseTotal();
-				fetchIncomeTotalOrExpeseTotal();
-			} else {
-				updateMonthExistsWithTransactionData(transactionsTotalIncomeOrExpenseCache);
-			}
+			updateMonthExistsWithTransactionData();
 		}
 		
-		// Fetch income total or expense total
-		function fetchIncomeTotalOrExpeseTotal(incomeTotalParameter) {
-
-			// Ajax Requests on Error
-			let ajaxData = {};
-	   		ajaxData.isAjaxReq = true;
-	   		ajaxData.type = 'GET';
-	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.walletId + currentUser.walletId;
-	   		ajaxData.onSuccess = function(result){
-	        	updateMonthExistsWithTransactionData(result);
-	        }
-	        ajaxData.onFailure = function(thrownError) {
-	        	manageErrors(thrownError, "There was an error fetching total transactions.",ajaxData);
-	        }
-
-			// AJAX call for adding a new unlinked Account
-	    	$.ajax({
-		          type: ajaxData.type,
-		          url: ajaxData.url,
-		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          success: ajaxData.onSuccess,
-		          error: ajaxData.onFailure
-	    	});
-		}
 		
 		// Fetch the transactions data to update month exists in Month Picker
-		function updateMonthExistsWithTransactionData(dateAndAmountAsList) {
-			if(isNotEmpty(dateAndAmountAsList)) {
-        		let resultKeySet = Object.keys(dateAndAmountAsList);
-	        	for(let countGrouped = 0, length = resultKeySet.length; countGrouped < length; countGrouped++) {
-	        		let dateKey = resultKeySet[countGrouped];
-	        		let value = dateAndAmountAsList[dateKey];
-
-	        		// push values to cache
-		        	transactionsTotalIncomeOrExpenseCache[dateKey] = value;
+		function updateMonthExistsWithTransactionData() {
+			if(isNotEmpty(window.datesCreated)) {
+	        	for(let countGrouped = 0, length = window.datesCreated.length; countGrouped < length; countGrouped++) {
+	        		let date = window.datesCreated[countGrouped];
 		        	
 	        		// Convert the date key as date
-	             	let dateAsDate = new Date(dateKey);
+	             	let dateAsDate = new Date(date.dateId.substring(4, date.dateId.length));
 	             	
 	             	if(popoverYear != dateAsDate.getFullYear()) {
 	             		continue;
@@ -972,27 +935,26 @@ er = {
 // Load all categories from API (Call synchronously to set global variable)
 function fetchJSONForCategories(data) {
 	
-	for(let count = 0, length = Object.keys(data).length; count < length; count++){
-		  let key = Object.keys(data)[count];
-    	  let value = data[key];
+	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
+		  let value = window.defaultCategories[count];
 
     	  // Freeze the object so it cannot be mutable
     	  Object.freeze(value);
-		  window.categoryMap[value.categoryName] = value;
+		  window.categoryMap[value.name] = value;
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
-		  option.className = 'categoryOption-' + value.categoryName;
-		  option.text = value.categoryName;
+		  option.className = 'categoryOption-' + value.name;
+		  option.text = value.name;
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 			  window.incomeSelectionOptGroup.appendChild(option);
 		  }
 	   
-	  	}
-	  // Sealing the object so new objects or properties cannot be added
-	  Object.seal(window.categoryMap);
+  	}
+   // Sealing the object so new objects or properties cannot be added
+   Object.seal(window.categoryMap);
 }
 
 // Display Confirm Account Verification Code

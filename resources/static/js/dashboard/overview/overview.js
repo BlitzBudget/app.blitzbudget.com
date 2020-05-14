@@ -140,6 +140,9 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
+
+   			// Dates Cache
+        	window.datesCreated = result.Date;
         	  
 			er_a.populateBankInfo(result.BankAccount);
 

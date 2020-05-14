@@ -85,12 +85,7 @@
 		loadCategoryModalImages();
 		// Call the transaction API to fetch information.
 		fetchJSONForTransactions();
-
-		// Load Expense category and income category
-		//expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
-		//incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
-		
-			// Date Picker
+		// Date Picker
 		// On click month (UNBIND other click events)
 		$('.monthPickerMonth').unbind('click').click(function() {
 			// Month picker is current selected then do nothing
@@ -335,6 +330,14 @@
 
         	fetchJSONForCategories(window.defaultCategories, result.Category);
 
+        	// Load Expense category and income category
+			expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
+			incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
+		
+
+        	// Dates Cache
+        	window.datesCreated = result.Date;
+
 			/*
 			* replace With Currency
 			*/
@@ -549,22 +552,73 @@
 		selectCategoryRow.className = 'd-table-cell';
 		
 		// Build Select
-		let selectCategory = document.createElement('select');
+		let selectCategory = document.createElement('div');
 		selectCategory.setAttribute("id", 'selectCategoryRow-' + userTransactionData.transactionId);
-		selectCategory.className = 'tableRowForSelectCategory categoryIdForSelect-' + categoryId + ' tableRowSelectCategory';
+		selectCategory.className = 'tableRowForSelectCategory categoryIdForSelect-' + categoryId + ' tableRowSelectCategory btn-group btnGroup-1';
 		selectCategory.setAttribute('aria-haspopup', true);
 		selectCategory.setAttribute('aria-expanded', false);
-		
-		let optGroupExpense = document.createElement('optgroup');
-		optGroupExpense.label = 'Expenses';
-		expenseSelectionOptGroup = cloneElementAndAppend(optGroupExpense, expenseSelectionOptGroup);
-		selectCategory.appendChild(optGroupExpense);
-		
-		let optGroupIncome = document.createElement('optgroup');
-		optGroupIncome.label = 'Income';
-		incomeSelectionOptGroup =  cloneElementAndAppend(optGroupIncome, incomeSelectionOptGroup);
-		selectCategory.appendChild(optGroupIncome);
-		selectCategoryRow.appendChild(selectCategory);
+
+		let displayCategory = document.createElement('button');
+		displayCategory.classList = 'btn btn-secondary w-md-15 w-8';
+		displayCategory.disabled = true;
+		selectCategory.appendChild(displayCategory);
+
+
+		let dropdownArrow = document.createElement('div');
+		dropdownArrow.setAttribute('type', 'button');
+		dropdownArrow.classList = 'btn btn-info dropdown-toggle dropdown-toggle-split';
+		dropdownArrow.setAttribute('data-toggle', 'dropdown');
+		dropdownArrow.setAttribute('aria-haspopup', 'true');
+		dropdownArrow.setAttribute('aria-expanded', 'false');
+
+		let srOnly = document.createElement('span');
+		srOnly.classList = 'sr-only';
+		srOnly.innerText = 'Toggle Dropdown';
+		dropdownArrow.appendChild(srOnly);
+		selectCategory.appendChild(dropdownArrow);
+
+		let dropdownMenu = document.createElement('div');
+		dropdownMenu.classList = 'dropdown-menu';
+
+		let inputGroup = document.createElement('div');
+		inputGroup.classList = 'input-group';
+
+		let searchSpan = document.createElement('span');
+		searchSpan.classList = 'm-1 tripleNineColor';
+
+		let icons = document.createElement('i');
+		icons.classList = 'search';
+		searchSpan.appendChild(icons);
+		inputGroup.appendChild(searchSpan);
+
+		let inputType = document.createElement('input');
+		inputType.classList = 'form-control w-75 mr-2';
+		inputType.placeholder = 'Search...';
+		inputType.type = 'text';
+		inputGroup.appendChild(inputType);
+
+		let incomeCategoriesHSix = document.createElement('h6');
+		incomeCategoriesHSix.classList = 'dropdown-header';
+		incomeCategoriesHSix.innerText = 'Income';
+		inputGroup.appendChild(incomeCategoriesHSix);
+
+		let incomeCategories = document.createElement('div');
+		incomeSelectionOptGroup =  cloneElementAndAppend(incomeCategories, incomeSelectionOptGroup);
+		inputGroup.appendChild(incomeCategories);
+
+		let dividerDD = document.createElement('div');
+		dividerDD.classList = 'dropdown-divider';
+		inputGroup.appendChild(dividerDD);
+
+		let expenseCategoriesHSix = document.createElement('h6');
+		expenseCategoriesHSix.classList = 'dropdown-header';
+		expenseCategoriesHSix.innerText = 'Income';
+		inputGroup.appendChild(expenseCategoriesHSix);
+
+		let expenseCategories = document.createElement('div');
+		expenseSelectionOptGroup =  cloneElementAndAppend(expenseCategories, expenseSelectionOptGroup);
+		inputGroup.appendChild(expenseCategories);
+		dropdownMenu.appendChild(inputGroup);
 		
 		// Set the relevant category in the options to selected
 		let toSelectOption = selectCategoryRow.getElementsByClassName('categoryOption-' + categoryId);
