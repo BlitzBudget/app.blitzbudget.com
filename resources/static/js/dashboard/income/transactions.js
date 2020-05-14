@@ -312,13 +312,25 @@
 	
 	// Populates the transaction table
 	function fetchJSONForTransactions(){
+		let values = {};
+		if(isNotEmpty(window.currentUser.walletId)) {
+			values.walletId = window.currentUser.walletId;
+		} else {
+			values.userId = window.currentUser.financialPortfolioId;
+		}
+		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
+		values.startsWithDate = new Date(y, m);
+		values.endsWithDate = new Date(y, m + 1, 0);
+
 		// Ajax Requests on Error
 		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + TRANSACTIONS_CONSTANTS.firstWalletIdParam + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-		ajaxData.onSuccess = function(result) {
-        	  
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'POST';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(data) {
         	er_a.populateBankInfo(result.BankAccount);
 
         	fetchJSONForCategories(window.defaultCategories, result.Category);
@@ -1148,7 +1160,7 @@
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
-			ajaxData.type = "POST";
+			ajaxData.type = "PATCH";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json;charset=UTF-8";

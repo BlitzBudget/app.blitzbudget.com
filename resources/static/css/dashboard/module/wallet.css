@@ -1948,6 +1948,10 @@ select.form-control:focus::-ms-value {
     z-index: 2;
 }
 
+#chosenCurrencyWDropdownMW .dropdown-toggle {
+    margin-bottom: 2rem;
+}
+
 .currency-desc {
     font-size: 0.895rem;
     font-weight: 300;
