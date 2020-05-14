@@ -120,7 +120,7 @@
 			values.userId = window.currentUser.financialPortfolioId;
 		}
 		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
-		values.startsWithDate = new Date(y, m);
+		values.startsWithDate = new Date(y, m, 1);
 		values.endsWithDate = new Date(y, m + 1, 0);
 
 		// Ajax Requests on Error

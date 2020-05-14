@@ -319,7 +319,7 @@
 			values.userId = window.currentUser.financialPortfolioId;
 		}
 		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
-		values.startsWithDate = new Date(y, m);
+		values.startsWithDate = new Date(y, m, 1);
 		values.endsWithDate = new Date(y, m + 1, 0);
 
 		// Ajax Requests on Error
@@ -406,6 +406,9 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
+            dataType: ajaxData.dataType,
+          	contentType: ajaxData.contentType,
+          	data : ajaxData.values,
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
