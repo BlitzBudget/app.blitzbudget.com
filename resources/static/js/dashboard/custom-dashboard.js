@@ -939,7 +939,7 @@ function fetchJSONForCategories(data) {
 
 	if(isNotEmpty(data)) {
 		for(let i=0,len=data.length;i<len;i++) {
-			dataNameMap[data[i]['category_name']] = data[i];
+			dataNameMap[data[i]['category_name']] = data[i].categoryId;
 		}
 	}
 	
@@ -979,7 +979,7 @@ function assignCategoryId(data) {
 	// Expense and Income Initialize
 	window.expenseSelectionOptGroup = document.createDocumentFragment();
 	window.incomeSelectionOptGroup = document.createDocumentFragment();
-	let categoryId = data.categoryId;
+	let categoryId = data.category;
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
 
