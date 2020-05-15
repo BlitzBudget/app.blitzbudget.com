@@ -33,7 +33,6 @@ window.currentCurrencyPreference = '$';
 
 window.currentActiveSideBar = '';
 
-window.categoryMap = {};
 //Regex to check if the entered value is a float
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 
@@ -935,6 +934,7 @@ function fetchJSONForCategories(data) {
 	// Expense and Income Initialize
 	window.expenseSelectionOptGroup = document.createDocumentFragment();
 	window.incomeSelectionOptGroup = document.createDocumentFragment();
+	window.categoryMap = {};
 	let dataNameMap = {};
 
 	if(isNotEmpty(data)) {
@@ -957,12 +957,12 @@ function fetchJSONForCategories(data) {
 		  if(isNotEmpty(categoryId)) {
 		  	inputValue.value = categoryId;
 		  	value.id = categoryId;
+		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
+		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
-
-		  window.categoryMap[value.name] = value;
 
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);
@@ -983,7 +983,7 @@ function assignCategoryId(data) {
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
 
-	window.categoryMap[categoryName].id = categoryId;
+	if(isNotEmpty(window.categoryMap[categoryName])) {window.categoryMap[categoryName].id = categoryId;}
 
 	let resultKeys = Object.keys(window.categoryMap);
 	for(let count = 0, length = resultKeys.length; count < length; count++){
@@ -998,12 +998,12 @@ function assignCategoryId(data) {
 		  inputValue.type = 'hidden';
 		  if(isNotEmpty(value.id)) {
 		  	inputValue.value = categoryId;
+		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
+		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
-
-		  window.categoryMap[value.name] = value;
 
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
 			  window.expenseSelectionOptGroup.appendChild(option);

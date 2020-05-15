@@ -210,7 +210,7 @@
 		let cardTitle = document.createElement('div');
 		cardTitle.id = 'categoryName-' + userBudget.budgetId;
 		cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
-		cardTitle.innerText = userBudget.categoryName;
+		cardTitle.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
 		cardRowRemaining.appendChild(cardTitle);
 		
 		
@@ -518,13 +518,14 @@
        		ajaxData.dataType = "json";
        		ajaxData.contentType = "application/json;charset=UTF-8";
        		ajaxData.values = JSON.stringify(values);
-       		ajaxData.onSuccess = function registerSuccess(userBudget){
+       		ajaxData.onSuccess = function registerSuccess(result){
+       			  let userBudget = result['body-json'];
 	        	  // on success then replace the entered text 
 	        	  element.innerText = currentCurrencyPreference + formatNumber(enteredText, currentUser.locale);
 	        	  // Update the budget cache
 	        	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	        	  // Update the modal
-	        	  updateProgressBarAndRemaining(userBudget, document);
+	        	  updateProgressBarAndRemaining(userBudgetCache[userBudget.budgetId], document);
             }
             ajaxData.onFailure = function (thrownError) {
             	manageErrors(thrownError, 'Unable to change the budget. Please try again',ajaxData);
@@ -837,7 +838,7 @@
           	  	budgetDivFragment.appendChild(buildUserBudget(value));
           	  	
           	  	// Handle the update of the progress bar modal
-    			updateProgressBarAndRemaining(value.categoryId, budgetDivFragment);
+    			updateProgressBarAndRemaining(value, budgetDivFragment);
         	}
         	
         	// paints them to the budget dashboard
@@ -965,26 +966,21 @@
 
           	  	
           	  	// Container for inlining the select form
-          	  	let containerForSelect = document.createElement('div');
-          	  	containerForSelect.classList = 'd-inline-block';
-          	  	
-        	  	// Build Select
-				let selectCategory = document.createElement('div');
-				selectCategory.setAttribute("id", 'selectCategoryRow-' + userBudget.budgetId);
-				selectCategory.className = 'btn-group btnGroup-1';
-				selectCategory.setAttribute('aria-haspopup', true);
-				selectCategory.setAttribute('aria-expanded', false);
+				let containerForSelect = document.createElement('div');
+				containerForSelect.setAttribute("id", 'selectCategoryRow-' + userBudget.budgetId);
+				containerForSelect.className = 'btn-group btnGroup-1';
+				containerForSelect.setAttribute('aria-haspopup', true);
+				containerForSelect.setAttribute('aria-expanded', false);
 
-				let displayCategory = document.createElement('button');
-				displayCategory.classList = 'btn btn-secondary w-md-15 w-8';
+				let displayCategory = document.createElement('div');
+				displayCategory.classList = 'w-md-15 w-8';
 				displayCategory.disabled = true;
-				displayCategory.innerText = userBudget.category;
-				selectCategory.appendChild(displayCategory);
+				displayCategory.innerText = window.categoryMap[userBudget.category].name;
+				containerForSelect.appendChild(displayCategory);
 
 
 				let dropdownArrow = document.createElement('div');
-				dropdownArrow.setAttribute('type', 'button');
-				dropdownArrow.classList = 'btn btn-info dropdown-toggle dropdown-toggle-split';
+				dropdownArrow.classList = 'dropdown-toggle dropdown-toggle-split';
 				dropdownArrow.setAttribute('data-toggle', 'dropdown');
 				dropdownArrow.setAttribute('aria-haspopup', 'true');
 				dropdownArrow.setAttribute('aria-expanded', 'false');
@@ -993,7 +989,7 @@
 				srOnly.classList = 'sr-only';
 				srOnly.innerText = 'Toggle Dropdown';
 				dropdownArrow.appendChild(srOnly);
-				selectCategory.appendChild(dropdownArrow);
+				containerForSelect.appendChild(dropdownArrow);
 
 				let dropdownMenu = document.createElement('div');
 				dropdownMenu.classList = 'dropdown-menu';
@@ -1110,7 +1106,7 @@
    		ajaxData.onSuccess = function(userBudget){
 	        	  
 	        	 if(isEmpty(userBudget)) {
-	        		 showNotification("Sorry, We couldn't change the budegt at the moment. Please refresh and try again",window._constants.notification.error);
+	        		 showNotification("Sorry, We couldn't change the budget at the moment. Please refresh and try again",window._constants.notification.error);
 	        		 return;
 	        	 }
   				 
@@ -1119,7 +1115,7 @@
   				 	        	
 	        	 
 	        	// Handle the update of the progress bar modal
-     			updateProgressBarAndRemaining(userBudget, document);
+     			updateProgressBarAndRemaining(userBudgetCache, document);
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
@@ -1162,6 +1158,15 @@
 		if(isEmpty(userBudgetCache)) {
 			categoryItem = window.defaultCategories[0];
 		} else {
+			let allBudgetedCategories = {};
+			// Get all the budgeted categories
+			let budgetKeySet = Object.keys(userBudgetCache);
+			for(let count = 0, length = budgetKeySet.length; count < length; count++){
+				let key = budgetKeySet[count];
+	      	  	let budgetObject = userBudgetCache[key];
+	      	  	// Push the budgeted category to cache
+	      	  	if(isNotEmpty(budgetObject)) { allBudgetedCategories[budgetObject.category] = budgetObject;}
+			}
 			
 			let dataKeySet = Object.keys(categoryMap);
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
@@ -1169,7 +1174,9 @@
 				let categoryObj = categoryMap[key];
 	      	  	
 	      	  	// If a category that is not contained in the budget cache is found then assign and leave for loop
-	      	  	if(isEmpty(categoryObj) || isEmpty(categoryObj.id)) {
+	      	  	if(isEmpty(categoryObj) 
+	      	  		|| isEmpty(categoryObj.id) 
+	      	  		|| isEmpty(allBudgetedCategories[categoryObj.id])) {
 	      	  		categoryItem = categoryObj;
 	      	  		break;
 	      	  	}
@@ -1179,10 +1186,10 @@
 		
 		return categoryItem;
 	}
-	
+
 	// Find the unbudgeted categories 
 	function returnUnbudgetedCategories() {
-		let categoryIdArray = [];
+		let categoryArray = [];
 		
 		// Iterate through all the available categories
 		if(isEmpty(userBudgetCache)) {
@@ -1191,33 +1198,36 @@
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
 				let key = dataKeySet[count];
 	      	  	let categoryObject = categoryMap[key];
-	      	  	categoryIdArray.push(categoryObject.categoryId);
+	      	  	categoryArray.push(categoryObject);
 			}
 		} else {
-			let allBudgetedCategories = [];
+			let allBudgetedCategories = {};
 			// Get all the budgeted categories
 			let budgetKeySet = Object.keys(userBudgetCache);
 			for(let count = 0, length = budgetKeySet.length; count < length; count++){
 				let key = budgetKeySet[count];
 	      	  	let budgetObject = userBudgetCache[key];
 	      	  	// Push the budgeted category to cache
-	      	  	isNotEmpty(budgetObject) && allBudgetedCategories.push(key);
+	      	  	if(isNotEmpty(budgetObject)) { allBudgetedCategories[budgetObject.category] = budgetObject;}
 			}
 			
 			// Iterate through all the available categories and find the ones that does not have a budget yet
 			let dataKeySet = Object.keys(categoryMap);
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
 				let key = dataKeySet[count];
+				let categoryObj = categoryMap[key];
 	      	  	
 	      	  	// If a category that is not contained in the budget cache is found then assign and leave for loop
-	      	  	if(!includesStr(allBudgetedCategories,key) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.incomeCategory)) {
-	      	  		categoryIdArray.push(key);
+	      	  	if(isEmpty(categoryObj) 
+	      	  		|| isEmpty(categoryObj.id) 
+	      	  		|| isEmpty(allBudgetedCategories[categoryObj.id])) {
+	      	  		categoryArray.push(categoryObj);
 	      	  	}
 	      	  	
 			}
 		}
 		
-		return categoryIdArray;
+		return categoryArray;
 	}
 	
 	/**
@@ -1444,12 +1454,13 @@
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
-   		ajaxData.onSuccess = function(userBudget){
+   		ajaxData.onSuccess = function(result){
+   			  let userBudget = result['body-json'];
 	    	  // Update the cache containing user budgets
-	    	  userBudgetCache[userBudget.budgetId] = userBudget;
+	    	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	    	  
 	    	  // Update the modal
-	    	  updateProgressBarAndRemaining(userBudget.categoryId, document);
+	    	  updateProgressBarAndRemaining(userBudgetCache[userBudget.budgetId], document);
 	    	  
 	    	  // Update the budget amount
 	    	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.budgetId);
@@ -1521,7 +1532,7 @@
       		  anchorCompensatedBudget.remove();
       		  
       		  // Update the modal
-        	  updateProgressBarAndRemaining(userBudget.categoryId, document);
+        	  updateProgressBarAndRemaining(userBudget, document);
         	  
         	  // Update the budget amount
         	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.budgetId);
@@ -1568,7 +1579,7 @@
       		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.categoryId].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
       		
       		// Update the modal
-        	updateProgressBarAndRemaining(userBudget.categoryId, document);
+        	updateProgressBarAndRemaining(userBudget, document);
         	  
         	// Update the budget amount
         	let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.categoryId);
