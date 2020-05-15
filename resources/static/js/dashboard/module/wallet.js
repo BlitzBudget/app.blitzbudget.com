@@ -86,12 +86,7 @@
 	        data : values,
 	        success: function(result) {
 	        	// Generate the wallet object
-	        	let wallet = {};
-	        	wallet['currency'] = result['body-json'].currency;
-	        	wallet['id'] = result['body-json'].id;
-	        	if(isEmpty(result['body-json'].name)) {
-	        		wallet['name'] = result['body-json'].name;
-	        	}
+	        	let wallet = result['body-json'];
 
 	        	// Add the newly added wallet to global wallets
 	        	window.globalWallet.push(wallet);
