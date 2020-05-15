@@ -439,19 +439,20 @@
 		window.sToC = {};
 		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 		for(let i = 0, l = curToSym.length; i < l; i++) {
-			cToS[curToSym[i].currency] = curToSym[i].symbol;
-			sToC[curToSym[i].symbol] = curToSym[i].currency;
+			let currency = curToSym[i].currency;
+			let symbol = curToSym[i].symbol;
+			cToS[currency] = symbol;;
+			sToC[symbol] = currency;
 			/* Update the default currency in Settings */
-			if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
-				document.getElementById('chosenCurrencyW').innerText = curToSym[i].currency;
-				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-				document.getElementById('walletCurrency').innerText = curToSym[i].currency;
-				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+			if(isEqual(currentUser.walletCurrency, symbol)) {
+				document.getElementById('chosenCurrencyW').innerText = currency;
+				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(currency));
+				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(currency));
 			} else if(includesStr(walletCur,curToSym[i].currency)) {
-				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(currency));
+				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(currency));
 			} else {
-				currencies.push(curToSym[i].currency);
+				currencies.push(currency);
 			}
 		}
 
