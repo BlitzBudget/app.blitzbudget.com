@@ -1944,7 +1944,8 @@ select.form-control:focus::-ms-value {
     margin: 1.25em auto 0;
 }
 
-#chosenCurrencyWDropdown {
+#chosenCurrencyWDropdown,
+#chosenCurrencyWDropdownMW {
     z-index: 2;
 }
 
