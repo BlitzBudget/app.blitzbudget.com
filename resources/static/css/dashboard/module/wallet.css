@@ -2206,7 +2206,7 @@ h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
 
 .manageNameWrapper,
 .manageCurrencyWrapper {
-    z-index: 1;
+    z-index: 2;
     -webkit-box-pack: center;
     justify-content: center;
     margin: 0;
