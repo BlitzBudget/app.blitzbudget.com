@@ -393,6 +393,7 @@
 	        		let wallet = wallets[i];
 	        		// If Wallet ID is equal to current user do not populate
 	        		if(isEqual(wallet.walletId, window.currentUser.walletId)){
+	        			walletFrag.appendChild(buildWalletDiv(wallet, true));
 	        			continue;
 	        		}
 	        		walletFrag.appendChild(buildWalletDiv(wallet));
@@ -480,7 +481,7 @@
 	}
 
 	// Wallet Div
-	function buildWalletDiv(wallet) {
+	function buildWalletDiv(wallet, primaryWallet) {
 
 		let walletDiv = document.createElement('div');
 		walletDiv.classList = 'col-4 col-md-4 col-lg-4 text-animation fadeIn suggested-card';
@@ -501,6 +502,8 @@
 		suggestedAnchor.appendChild(p);
 		walletDiv.appendChild(suggestedAnchor);
 
+		// Load star icon
+		if(primaryWallet) {walletDiv.appendChild(loadStarIcon());}
 		// Load share svg
 		walletDiv.appendChild(loadShareSvg());
 
@@ -508,6 +511,22 @@
 		walletDiv.appendChild(loadEditIcon());
 
 		return walletDiv;
+	}
+
+	// Load Star ICON
+	function loadStarIcon() {
+		let currentWalletWrap = document.createElement('div');
+		currentWallet.id = 'starredWallet';
+		currentWalletWrap.setAttribute('data-toggle','tooltip');
+		currentWalletWrap.setAttribute('data-placement','bottom');
+		currentWalletWrap.setAttribute('data-original-title','Cuurent Wallet');
+		
+		let icons = document.createElement('span');
+		icons.classList = 'material-icons favourite-icon';
+		icons.innerText = 'star';
+		currentWalletWrap.appendChild(icons);
+
+		return currentWalletWrap;
 	}
 
 	// Load Share Svg
