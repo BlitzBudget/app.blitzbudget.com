@@ -75,7 +75,6 @@
 		let values = {};
 		values['currency'] = chosenCurrencyW;
 		values['userId'] = window.currentUser.financialPortfolioId;
-		values['readOnly'] = false;
 		values = JSON.stringify(values);
 
 		jQuery.ajax({
@@ -623,7 +622,10 @@
 		document.getElementById('doneManage').classList.remove('d-none');
 		$('.edit-wallet').removeClass('d-none');
 		$('.share-icon').addClass('d-none');
-		document.getElementById('starredWallet').classList.add('d-none');
+		let starredWallet = document.getElementById('starredWallet');
+		if(starredWallet) {
+			starredWallet.classList.add('d-none');
+		}
 		document.getElementById('genericAddFnc').classList.add('d-none');
 		this.classList.add('d-none');
 		window.manageWalletsTriggered = true;
@@ -644,7 +646,10 @@
 		manageWallets.classList.add('d-block');
 		$('.edit-wallet').addClass('d-none');
 		$('.share-icon').removeClass('d-none');
-		document.getElementById('starredWallet').classList.remove('d-none');
+		let starredWallet = document.getElementById('starredWallet');
+		if(starredWallet) {
+			starredWallet.classList.remove('d-none');
+		}
 	}
 
 	$( "body" ).on( "click", ".edit-wallet" ,function() {
@@ -841,7 +846,7 @@
 			        	for(let i=0, len=window.globalWallet.length; i < len; i++) {
 			        		let wallet = window.globalWallet[i];
 			        		if(isEqual(wallet.walletId, chosenWallet)) {
-			        			delete window.globalWallet[i];
+			        			window.globalWallet.splice(i, 1);
 			        			break;
 			        		}
 			        	}
