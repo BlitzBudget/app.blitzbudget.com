@@ -157,8 +157,13 @@ function replaceWithCurrency(wallet) {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
 
 	if(isNotEmpty(wallet) && isEmpty(currentUser.walletCurrency)) {
+		window.cToS = {};
+		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+		for(let i = 0, l = curToSym.length; i < l; i++) {
+			cToS[curToSym[i].currency] = curToSym[i].symbol;
+		}
 		window.currentUser.walletId = wallet[0].walletId;
-		window.currentUser.walletCurrency = wallet[0].currency;
+		window.currentUser.walletCurrency = cToS[wallet[0].currency];
         // We save the item in the localStorage.
         localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
 	}
@@ -170,6 +175,9 @@ function replaceWithCurrency(wallet) {
 			currencySymbolDivs[i].innerText = chosenCurrency;
 		}
 	}
+
+	// update currency
+    window.currentCurrencyPreference = window.currentUser.walletCurrency;
 }
 
 function getAllUrlParams(url) {

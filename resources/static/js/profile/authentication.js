@@ -11,15 +11,6 @@
         fillName(); 
         // Replace with currency
         replaceWithCurrency();
-
-        calculateWalletAttributes();  
-    }
-
-    // Consider wallet attributes into the equation
-    function calculateWalletAttributes() {  
-       
-        // update currency
-        window.currentCurrencyPreference = window.currentUser.walletCurrency;
     }
 
     /**
@@ -61,23 +52,18 @@
             }
         }
 
-        if(isNotEmpty(firstWallet)) {
-            // Set wallet information
-            currentUserLocal.walletId = firstWallet[0].walletId;
-            currentUserLocal.walletCurrency = firstWallet[0].currency;
-            // Replace with currency
-            replaceWithCurrency();
-        }
         // Current User to global variable
         window.currentUser = currentUserLocal;
         // We save the item in the localStorage.
         localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+        if(isNotEmpty(firstWallet)) {
+            // Replace with currency
+            replaceWithCurrency(firstWallet);
+        }
         // Fill currency and Name
         fillName();
         // Read current cookie
         readCurrentCookie();
-        // Calculate wallet attributes
-        calculateWalletAttributes();
         // Hide Modal
         if(loginModal) loginModal.modal('hide');
     }

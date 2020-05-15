@@ -1052,27 +1052,3 @@ function toggleVerify(email, verifyCode) {
     document.getElementById('codeInputVerify').focus();
 
 }
-
-function calculateWalletInformation(wallet) {
-	if(isEmpty(wallet)) {
-		return;
-	}
-
-	/*
-	* Fetch the first wallet and assign it as current
-	*/
-	wallet = wallet[0];
-	/*
-	* Calcualte wallet information
-	*/
-	 // Check if wallet id is present, if not set financial portfolio id
-    if(isEmpty(window.currentUser.walletId)) {
-        window.currentUser.walletId = wallet.walletId;
-    }
-
-    // update currency
-    if(isEmpty(window.currentUser.walletCurrency)) {
-    	window.currentUser.walletCurrency = wallet.currency;
-    	window.currentCurrencyPreference = wallet.currency;
-	}	
-}

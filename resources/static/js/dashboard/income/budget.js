@@ -141,9 +141,8 @@
 
    			fetchJSONForCategories(result.Category);
 
-   			calculateWalletInformation(wallet);
    			// Replace currentCurrencySymbol with currency symbol
-			replaceWithCurrency(result.Wallet);
+			replaceWithCurrency(wallet);
    			er_a.populateBankInfo(result.BankAccount);
 
         	for(let count = 0, length = budgets.length; count < length; count++){
