@@ -31,10 +31,6 @@
 		window.location.href = '/';
 	}
 
-	// Primary Wallet Name of customer
-	document.getElementById('primaryName').innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
-	document.getElementById('primaryWallet').setAttribute('data-target',currentUser.financialPortfolioId);
-
 	document.getElementById('genericAddFnc').addEventListener("click",function(e){
 		document.getElementById('addWallet').classList.remove('d-none');
 		document.getElementById('whichWallet').classList.add('d-none');
@@ -97,10 +93,6 @@
 	        		wallet['name'] = result['body-json'].name;
 	        	}
 
-	        	// Global Wallet is empty remove margin auto
-	        	if(isEmpty(window.globalWallet)) {
-	        		document.getElementById('primaryWallet').classList.remove('m-auto');
-	        	}
 	        	// Add the newly added wallet to global wallets
 	        	window.globalWallet.push(wallet);
 	        	// Populate Autocomplete currency
@@ -435,10 +427,6 @@
 		while(currentCurrenciesMWDiv.firstChild) {
 			currentCurrenciesMWDiv.removeChild(currentCurrenciesMWDiv.firstChild);
 		}
-		// Center the only div if it is the only wallet
-    	if(isEmpty(wallets)) {
-    		document.getElementById('primaryWallet').classList.add('m-auto');
-    	}
 
     	// Collect wallet information
     	for(let i = 0, l = wallets.length; i < l; i++) {
@@ -516,7 +504,7 @@
 	// Load Star ICON
 	function loadStarIcon() {
 		let currentWalletWrap = document.createElement('div');
-		currentWallet.id = 'starredWallet';
+		currentWalletWrap.id = 'starredWallet';
 		currentWalletWrap.setAttribute('data-toggle','tooltip');
 		currentWalletWrap.setAttribute('data-placement','bottom');
 		currentWalletWrap.setAttribute('data-original-title','Cuurent Wallet');
