@@ -975,7 +975,7 @@
 				let displayCategory = document.createElement('div');
 				displayCategory.classList = 'w-md-15 w-8';
 				displayCategory.disabled = true;
-				displayCategory.innerText = window.categoryMap[userBudget.category].name;
+				displayCategory.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
 				containerForSelect.appendChild(displayCategory);
 
 
