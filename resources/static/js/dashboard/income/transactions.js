@@ -361,9 +361,9 @@
         	window.datesCreated = result.Date;
 
 			/*
-			* replace With Currency
+			* Replace With Currency
 			*/
-			replaceWithCurrency();
+			replaceWithCurrency(result.Wallet);
 
 			let totalExpensesTransactions = result.expenseTotal;
 			let totalIncomeTransactions = result.incomeTotal;

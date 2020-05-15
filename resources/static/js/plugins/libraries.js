@@ -153,8 +153,15 @@ function calcPage() {
 }
 
 // Replace currentCurrencySymbol with currency
-function replaceWithCurrency() {
+function replaceWithCurrency(wallet) {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
+
+	if(isNotEmpty(wallet) && isEmpty(currentUser.walletCurrency)) {
+		window.currentUser.walletId = wallet[0].walletId;
+		window.currentUser.walletCurrency = wallet[0].currency;
+        // We save the item in the localStorage.
+        localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
+	}
 
 	// Wallet Currency has first preference
 	if(currentUser.walletCurrency) {

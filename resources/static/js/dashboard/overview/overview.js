@@ -158,7 +158,7 @@
 			// Upon refresh call the income overview chart
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
-			replaceWithCurrency();
+			replaceWithCurrency(result.Wallet);
 			/**
 			 * Populate total Asset, Liability & Networth
 			 */
