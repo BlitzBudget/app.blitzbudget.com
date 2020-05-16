@@ -365,7 +365,6 @@
 	        success: function(wallets) {
 	        	wallets = wallets.Wallet;
 	        	window.globalWallet = wallets;
-	        	window.walletCur = [];
 
 	        	populateAutocompleteCurrency(wallets);
 	        	// Remove Loader
@@ -423,6 +422,7 @@
 		}
 
     	// Collect wallet information
+    	window.walletCur = [];
     	for(let i = 0, l = wallets.length; i < l; i++) {
     		let wallet = wallets[i];
     		walletCur.push(wallet.currency);
@@ -1019,13 +1019,12 @@
 			   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
 			    		// If the user is not authorized then redirect to application
 						window.location.href = '/';
-			    	}	
+			    	}
 				}
 
 		    	values['currency'] = window.oldWalletCurrency;
 		    	values['wallet_name'] = window.oldWalletName;
 		    	updateRelevantTextInCard(values);
-
 	        }
 	    });
 	}
