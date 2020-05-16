@@ -943,21 +943,19 @@
    		ajaxData.onSuccess = function(result) {
    				// Filter the body
    				let userBudget = result['body-json'];
+   				// Assign Category Id
    				assignCategoryId(userBudget);
-
    				// Populate CurrentDateAsId if necessary
    				if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = userBudget.dateMeantFor }
-
+   				// Build the new budget
 	        	let budgetDivFragment = document.createDocumentFragment();
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
-	        	
 	        	// Store the values in a cache
           	  	userBudgetCache[userBudget.budgetId] = userBudget;
-
           	  	// Enable the Add button
           	  	let genericAddFnc = document.getElementById('genericAddFnc');
           	  	genericAddFnc.classList.remove('d-none');
-          	  	
+          	  	// Remove all category with name
           	  	let categoryNameDiv = budgetDivFragment.getElementById('categoryName-' + userBudget.budgetId);
     			// Replace HTML with Empty
         		while (categoryNameDiv.firstChild) {
