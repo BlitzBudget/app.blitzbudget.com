@@ -974,7 +974,7 @@
 				containerForSelect.setAttribute('aria-expanded', false);
 
 				let displayCategory = document.createElement('div');
-				displayCategory.classList = 'w-md-15 w-8';
+				displayCategory.classList = 'w-md-15 w-8 dd-display-wrapper';
 				displayCategory.disabled = true;
 				displayCategory.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
 				containerForSelect.appendChild(displayCategory);
@@ -1118,7 +1118,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
+   		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
    			let userBudget = result['body-json'];
         		 

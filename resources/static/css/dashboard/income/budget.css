@@ -543,6 +543,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     overflow: hidden;
     border-top: 1px solid #e9ecef;
 }
+
+.dd-display-wrapper {
+    white-space: nowrap;
+}
  
 /** Change the size of the text if the width and height of the screen are more **/
 @media (min-width:60em) and (min-height:43.75em) {
