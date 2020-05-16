@@ -1018,6 +1018,7 @@
 				inputGroup.appendChild(incomeCategoriesHSix);
 
 				let incomeCategories = document.createElement('div');
+				incomeCategories.classList = 'incomeCategories';
 				incomeSelectionOptGroup =  cloneElementAndAppend(incomeCategories, incomeSelectionOptGroup);
 				inputGroup.appendChild(incomeCategories);
 
@@ -1027,10 +1028,11 @@
 
 				let expenseCategoriesHSix = document.createElement('h6');
 				expenseCategoriesHSix.classList = 'dropdown-header';
-				expenseCategoriesHSix.innerText = 'Income';
+				expenseCategoriesHSix.innerText = 'Expense';
 				inputGroup.appendChild(expenseCategoriesHSix);
 
 				let expenseCategories = document.createElement('div');
+				expenseCategories.classList = 'expenseCategories';
 				expenseSelectionOptGroup =  cloneElementAndAppend(expenseCategories, expenseSelectionOptGroup);
 				inputGroup.appendChild(expenseCategories);
 				dropdownMenu.appendChild(inputGroup);
