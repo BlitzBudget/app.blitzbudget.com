@@ -1128,7 +1128,7 @@
    				category.type = userBudget.categoryType;
    				category.id = userBudget.category;
    				// Category Map
-   				window.categoryMap[userBudget.categoryName] = category;
+   				window.categoryMap[userBudget.category] = category;
    			}
         		 
 			// Assign new category to the user budget cache
