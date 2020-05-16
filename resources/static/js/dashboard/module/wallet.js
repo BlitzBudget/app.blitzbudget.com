@@ -1021,14 +1021,21 @@
 						window.location.href = '/';
 			    	}	
 				}
+
+		    	values['currency'] = window.oldWalletCurrency;
+		    	values['wallet_name'] = window.oldWalletName;
+		    	updateRelevantTextInCard(values);
+
 	        }
 	    });
 	}
 
 	// Update Relevant
 	function updateRelevantTextInCard(values) {
+		window.oldWalletCurrency = '';
+		window.oldWalletName = '';
 		// Find Item with data target attribute
-		let chosenDiv = $('#whichWallet').find('[data-target="' + chosenWallet + '"]');
+		let chosenDiv = $('#whichWallet').find('[data-target="' + values.walletId + '"]');
 		if(isNotEmpty(values.name)) {
 			// Change name
 			chosenDiv.find(".suggested-heading").text(values.name);
@@ -1038,6 +1045,18 @@
 			// Change Currency
 			chosenDiv.find(".currency-desc").text(values.currency);
 		} 
+
+		for(let i = 0, l = window.globalWallet.length; i < l; i++) {
+    		let wallet = window.globalWallet[i];
+    		// If Wallet ID is equal to current user do not populate
+    		if(isEqual(values.walletId, wallet.walletId)){
+    			window.oldWalletCurrency = wallet.currency;
+    			window.oldWalletName = isEmpty(wallet['wallet_name']) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet['wallet_name'];
+    			wallet.currency = values.currency;
+    			wallet['wallet_name'] = values.name;
+    			continue;
+    		}
+    	}
 	}	
 
 }(jQuery));	
