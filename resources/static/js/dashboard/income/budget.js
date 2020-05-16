@@ -1141,7 +1141,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType, 
-	          data : values,
+	          data : ajaxData.values,
 	          success: ajaxData.onSuccess,
 	          error:  ajaxData.onFailure
 		});
