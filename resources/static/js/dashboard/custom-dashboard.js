@@ -929,6 +929,19 @@ er = {
 		
 }
 
+// Populate current Date in the currentDateAsId global variable
+function populateCurrentDate(date) {
+	window.currentDateAsID = {};
+	for (var i = date.length - 1; i >= 0; i--) {
+		let presentDate = date[i];
+		let presentDateAsDate = new Date(presentDate.substring(5, presentDate.length));
+		if(window.chosenDate.getMonth() == presentDateAsDate.getMonth()
+			|| window.chosenDate.getFullYear() == window.chosenDate.getFullYear()) {
+			window.currentDateAsID = presentDate;
+		}
+	}
+}
+
 // Load all categories from API (Call synchronously to set global variable)
 function fetchJSONForCategories(data) {
 	// Expense and Income Initialize

@@ -138,6 +138,7 @@
 
    			// Dates Cache
         	window.datesCreated = result.Date;
+        	populateCurrentDate(result.Date);
 
    			fetchJSONForCategories(result.Category);
 
@@ -926,8 +927,8 @@
 			values['categoryType'] = categoryId.type;
 		}
 
-		if(isNotEmpty(window.chosenDateId) && includesStr(window.chosenDateId, 'Date#')) {
-			values['dateMeantFor'] = window.chosenDateId;
+		if(isNotEmpty(window.currentDateAsID) && includesStr(window.currentDateAsID, 'Date#')) {
+			values['dateMeantFor'] = window.currentDateAsID;
 		} else {
 			values['dateMeantFor'] = chosenDate.toISOString();
 		}
@@ -1105,6 +1106,7 @@
 		let oldCategoryName = document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText;
 		if(isEmpty(categoryItem.id)) {
 			values['categoryType'] = categoryItem.type;
+			values['dateMeantFor'] = window.currentDateAsID;
 			document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = categoryId;
 		} else {
 			document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = window.categoryMap[categoryId].name;
