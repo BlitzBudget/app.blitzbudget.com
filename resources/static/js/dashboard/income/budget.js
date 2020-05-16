@@ -1019,7 +1019,8 @@
 
 				let incomeCategories = document.createElement('div');
 				incomeCategories.classList = 'incomeCategories';
-				incomeSelectionOptGroup =  cloneElementAndAppend(incomeCategories, incomeSelectionOptGroup);
+				incomeCategories.setAttribute('data-target', userBudget.budgetId);
+				incomeDropdownItems =  cloneElementAndAppend(incomeCategories, incomeDropdownItems);
 				inputGroup.appendChild(incomeCategories);
 
 				let dividerDD = document.createElement('div');
@@ -1033,7 +1034,8 @@
 
 				let expenseCategories = document.createElement('div');
 				expenseCategories.classList = 'expenseCategories';
-				expenseSelectionOptGroup =  cloneElementAndAppend(expenseCategories, expenseSelectionOptGroup);
+				expenseCategories.setAttribute('data-target', userBudget.budgetId);
+				expenseDropdownItems =  cloneElementAndAppend(expenseCategories, expenseDropdownItems);
 				inputGroup.appendChild(expenseCategories);
 				dropdownMenu.appendChild(inputGroup);
 				
@@ -1056,6 +1058,7 @@
 	      		} else {
 	      			budgetAmountDiv.appendChild(budgetDivFragment);
 	      		}
+
             	
             	// Update the Budget Visualization module
         		updateBudgetVisualization();
@@ -1082,8 +1085,9 @@
 	}
 	
 	// Change trigger on select
-	$( "body" ).on( "change", ".categoryOptions" ,function() {
-		let budgetId = lastElement(splitElement(this.id, '-'));
+	$('body').on("click", "#budgetAmount .dropdown-item" , function(event){
+		let categoryId = this.lastChild.value;
+		let budgetId = this.parentNode.getAttribute('data-target');
 
 		// Make sure that the category selected is not budgeted
 		let allUnbudgetedCategories = returnUnbudgetedCategories();
@@ -1094,9 +1098,18 @@
 		
 		// Call the change of category services
 		let values = {};
-		values['budgetId'] = budgetId; 
+		values['budgetId'] = budgetId;
 		values['walletId'] = window.currentUser.walletId;
-
+		values['category'] = categoryId;
+		let categoryItem = window.categoryMap[categoryId];
+		let buttonCategory = document.getElementById('selectCategoryRow-' + categoryId).firstChild.innerText;
+		let oldCategoryName = buttonCategory;
+		if(isEmpty(categoryItem.id)) {
+			values['categoryType'] = categoryItem.type;
+			buttonCategory = categoryId;
+		} else {
+			buttonCategory = window.categoryMap[categoryId].name;
+		}
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -1106,23 +1119,20 @@
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = values;
-   		ajaxData.onSuccess = function(userBudget){
-	        	  
-	        	 if(isEmpty(userBudget)) {
-	        		 showNotification("Sorry, We couldn't change the budget at the moment. Please refresh and try again",window._constants.notification.error);
-	        		 return;
-	        	 }
-  				 
-  				 // Assign new category to the user budget cache
-  				 userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
-  				 	        	
-	        	 
-	        	// Handle the update of the progress bar modal
-     			updateProgressBarAndRemaining(userBudgetCache, document);
+   		ajaxData.onSuccess = function(result){
+   			let userBudget = result['body-json'];
+        		 
+			// Assign new category to the user budget cache
+			userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
+        	 
+        	// Handle the update of the progress bar modal
+ 			updateProgressBarAndRemaining(userBudgetCache, document);
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
         		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!',ajaxData);
+        		// Chacnge the button text to the old one if fails. 
+        		buttonCategory = oldCategoryName;
         }
 
 		$.ajax({

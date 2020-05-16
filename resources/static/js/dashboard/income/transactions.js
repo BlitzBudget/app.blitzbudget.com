@@ -306,10 +306,10 @@
 		let incomeOptgroup = document.getElementById('incomeSelection');
 		// If the Category items are not populate then populate them
 		if(!expenseOptGroup.firstElementChild) {
-			expenseSelectionOptGroup = cloneElementAndAppend(expenseOptGroup, expenseSelectionOptGroup);
+			expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
 		}
 		if(!incomeOptgroup.firstElementChild) {
-			incomeSelectionOptGroup = cloneElementAndAppend(incomeOptgroup, incomeSelectionOptGroup);
+			incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
 		}
 	});
 
@@ -353,8 +353,8 @@
         	while (incomeSelectionDiv.firstChild) {
 			    incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
 			}
-			expenseSelectionOptGroup = cloneElementAndAppend(expenseSelectionDiv, expenseSelectionOptGroup);
-			incomeSelectionOptGroup = cloneElementAndAppend(incomeSelectionDiv, incomeSelectionOptGroup);
+			expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
+			incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
 		
 
         	// Dates Cache
@@ -626,7 +626,7 @@
 		inputGroup.appendChild(incomeCategoriesHSix);
 
 		let incomeCategories = document.createElement('div');
-		incomeSelectionOptGroup =  cloneElementAndAppend(incomeCategories, incomeSelectionOptGroup);
+		incomeDropdownItems =  cloneElementAndAppend(incomeCategories, incomeDropdownItems);
 		inputGroup.appendChild(incomeCategories);
 
 		let dividerDD = document.createElement('div');
@@ -639,7 +639,7 @@
 		inputGroup.appendChild(expenseCategoriesHSix);
 
 		let expenseCategories = document.createElement('div');
-		expenseSelectionOptGroup =  cloneElementAndAppend(expenseCategories, expenseSelectionOptGroup);
+		expenseDropdownItems =  cloneElementAndAppend(expenseCategories, expenseDropdownItems);
 		inputGroup.appendChild(expenseCategories);
 		dropdownMenu.appendChild(inputGroup);
 		

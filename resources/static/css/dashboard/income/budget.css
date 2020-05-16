@@ -442,6 +442,7 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 }
 
 .dropdown-header {
+	width: 100%;
     font-size: .75rem;
     padding-top: .625rem;
     padding-bottom: .625rem;
@@ -464,13 +465,18 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     border: 0;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
+.expenseCategories .dropdown-item:hover,
+.expenseCategories .dropdown-item:focus,
+.incomeCategories .dropdown-item:hover,
+.incomeCategories .dropdown-item:focus {
     color: #16181b;
     text-decoration: none;
     background-color: #f8f9fa;
 }
 
-.dropdown-menu .dropdown-item, .dropdown-menu li>a {
+.dropdown-menu .expenseCategories .dropdown-item,
+.dropdown-menu .incomeCategories .dropdown-item,
+.dropdown-menu li>a {
     position: relative;
     width: auto;
     display: flex;
@@ -502,15 +508,20 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     width: 20rem;
 }
 
-.dropdown-menu .dropdown-item:hover, 
-.dropdown-menu .dropdown-item:focus, 
-.dropdown-menu a:hover, 
-.dropdown-menu a:focus, 
-.dropdown-menu a:active, 
-.dropdown-menu .dropdown-item.autocomplete-active {
-    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
-    background-color: #00bcd4;
+.dropdown-menu .expenseCategories .dropdown-item:hover, 
+.dropdown-menu .expenseCategories .dropdown-item:focus, 
+.dropdown-menu .expenseCategories a:hover, 
+.dropdown-menu .expenseCategories a:focus, 
+.dropdown-menu .expenseCategories a:active,
+.dropdown-menu .incomeCategories .dropdown-item:hover, 
+.dropdown-menu .incomeCategories .dropdown-item:focus, 
+.dropdown-menu .incomeCategories a:hover, 
+.dropdown-menu .incomeCategories a:focus, 
+.dropdown-menu .incomeCategories a:active  {
     color: #fff;
+    background-color: #e91e63;
+    border-color: #e91e63;
+    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(23   3, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
 }
 
 .incomeCategories,
@@ -519,7 +530,8 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 }
 
 .incomeCategories .dropdown-item, 
-.expenseCategories .dropdown-item {
+.expenseCategories .dropdown-item,
+.dropdown-toggle {
     width: 100%;
     cursor: pointer;
     white-space: pre-wrap;

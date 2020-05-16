@@ -932,8 +932,8 @@ er = {
 // Load all categories from API (Call synchronously to set global variable)
 function fetchJSONForCategories(data) {
 	// Expense and Income Initialize
-	window.expenseSelectionOptGroup = document.createDocumentFragment();
-	window.incomeSelectionOptGroup = document.createDocumentFragment();
+	window.expenseDropdownItems = document.createDocumentFragment();
+	window.incomeDropdownItems = document.createDocumentFragment();
 	window.categoryMap = {};
 	let dataNameMap = {};
 
@@ -965,9 +965,9 @@ function fetchJSONForCategories(data) {
 		  option.appendChild(inputValue);
 
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-			  window.expenseSelectionOptGroup.appendChild(option);
+			  window.expenseDropdownItems.appendChild(option);
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-			  window.incomeSelectionOptGroup.appendChild(option);
+			  window.incomeDropdownItems.appendChild(option);
 		  }
 	   
   	}
@@ -977,8 +977,8 @@ function fetchJSONForCategories(data) {
 
 function assignCategoryId(data) {
 	// Expense and Income Initialize
-	window.expenseSelectionOptGroup = document.createDocumentFragment();
-	window.incomeSelectionOptGroup = document.createDocumentFragment();
+	window.expenseDropdownItems = document.createDocumentFragment();
+	window.incomeDropdownItems = document.createDocumentFragment();
 	let categoryId = data.category;
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
@@ -1006,9 +1006,9 @@ function assignCategoryId(data) {
 		  option.appendChild(inputValue);
 
 		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-			  window.expenseSelectionOptGroup.appendChild(option);
+			  window.expenseDropdownItems.appendChild(option);
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-			  window.incomeSelectionOptGroup.appendChild(option);
+			  window.incomeDropdownItems.appendChild(option);
 		  }
 	   
   	}
