@@ -200,15 +200,10 @@
 	    	values['categoryType'] = chosenCategory.type;
 	    }
 
-	    if(isNotEmpty(window.currentDateAsID) && includesStr(window.currentDateAsID, 'Date#')) {
-			values['dateMeantFor'] = window.currentDateAsID;
-		} else {
-			values['dateMeantFor'] = chosenDate.toISOString();
-		}
-
 		values['amount'] = amount;
 		values['description'] = description;
 		values['category'] = categoryOptions;
+		values['dateMeantFor'] = window.currentDateAsID;
 		values['recurrence'] = recurrenceValue;
 		values['walletId'] = walletId;
 
