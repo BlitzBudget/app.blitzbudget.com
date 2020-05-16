@@ -1102,13 +1102,12 @@
 		values['walletId'] = window.currentUser.walletId;
 		values['category'] = categoryId;
 		let categoryItem = window.categoryMap[categoryId];
-		let buttonCategory = document.getElementById('selectCategoryRow-' + categoryId).firstChild.innerText;
-		let oldCategoryName = buttonCategory;
+		let oldCategoryName = document.getElementById('selectCategoryRow-' + categoryId).firstChild.innerText;
 		if(isEmpty(categoryItem.id)) {
 			values['categoryType'] = categoryItem.type;
-			buttonCategory = categoryId;
+			document.getElementById('selectCategoryRow-' + categoryId).firstChild.innerText = categoryId;
 		} else {
-			buttonCategory = window.categoryMap[categoryId].name;
+			document.getElementById('selectCategoryRow-' + categoryId).firstChild.innerText = window.categoryMap[categoryId].name;
 		}
 
 		// Ajax Requests on Error
@@ -1132,7 +1131,7 @@
         ajaxData.onFailure = function (thrownError) {
         		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!',ajaxData);
         		// Chacnge the button text to the old one if fails. 
-        		buttonCategory = oldCategoryName;
+        		document.getElementById('selectCategoryRow-' + categoryId).firstChild.innerText = oldCategoryName;
         }
 
 		$.ajax({
