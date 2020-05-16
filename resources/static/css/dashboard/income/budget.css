@@ -432,14 +432,6 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     border: 2px solid #e91e63;
 }
 
-.expenseCategories,
-.incomeCategories {
-	height: auto;
-    max-height: 20rem;
-    overflow-x: hidden;
-    width: 20rem;
-}
-
 .dropdown-header {
     display: block;
     padding: .5rem 1.25rem;
@@ -503,6 +495,12 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     word-wrap: break-word;
 }
 
+.dropdown-menu {
+	height: auto;
+    max-height: 20rem;
+    overflow-x: hidden;
+    width: 20rem;
+}
 
 .dropdown-menu .dropdown-item:hover, 
 .dropdown-menu .dropdown-item:focus, 
@@ -515,7 +513,11 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     color: #fff;
 }
 
-.autocomplete-items .dropdown-item, 
+.incomeCategories,
+.expenseCategories {
+	width: 100%;
+}
+
 .incomeCategories .dropdown-item, 
 .expenseCategories .dropdown-item {
     width: 100%;
