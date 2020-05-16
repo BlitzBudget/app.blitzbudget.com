@@ -933,7 +933,7 @@ er = {
 function populateCurrentDate(date) {
 	window.currentDateAsID = window.chosenDate.toISOString();
 	for (var i = date.length - 1; i >= 0; i--) {
-		let presentDate = date[i];
+		let presentDate = date[i].dateId;
 		let presentDateAsDate = new Date(presentDate.substring(5, presentDate.length));
 		if(window.chosenDate.getMonth() == presentDateAsDate.getMonth()
 			|| window.chosenDate.getFullYear() == window.chosenDate.getFullYear()) {

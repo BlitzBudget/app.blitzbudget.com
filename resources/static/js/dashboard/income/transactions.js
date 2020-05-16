@@ -215,8 +215,14 @@
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
-		ajaxData.onSuccess = function(data) {
-
+		ajaxData.onSuccess = function(result) {
+			// Convert result to transactions
+			let transaction = result['body-json'];
+			// Assign Category Id
+			assignCategoryId(transaction);
+			// Populate CurrentDateAsId if necessary
+   			if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = transaction.dateMeantFor }
+   			// Fetch success message DIV
         	let successMessageDocument = document.getElementById('successMessage');
         	// Clone and Append the success Message
         	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);

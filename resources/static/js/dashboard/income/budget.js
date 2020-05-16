@@ -945,6 +945,9 @@
    				let userBudget = result['body-json'];
    				assignCategoryId(userBudget);
 
+   				// Populate CurrentDateAsId if necessary
+   				if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = userBudget.dateMeantFor }
+
 	        	let budgetDivFragment = document.createDocumentFragment();
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
 	        	
