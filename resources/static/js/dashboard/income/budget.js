@@ -1120,6 +1120,16 @@
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
    			let userBudget = result['body-json'];
+
+   			if(isEmpty(categoryItem.id)) {
+   				delete window.categoryMap[categoryId];
+   				let category = {};
+   				category.name = userBudget.categoryName;
+   				category.type = userBudget.categoryType;
+   				category.id = userBudget.category;
+   				// Category Map
+   				window.categoryMap[userBudget.categoryName] = category;
+   			}
         		 
 			// Assign new category to the user budget cache
 			userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
