@@ -1,4 +1,7 @@
 // Default Categories
+/*
+* Can never have duplicate name between the expense and income
+*/
 window.defaultCategories = [
 	{
 		name: 'Beauty',
@@ -69,10 +72,6 @@ window.defaultCategories = [
 		type: 'Expense'
 	},
 	{
-		name: 'Work',
-		type: 'Income'
-	},
-	{
 		name: 'Business',
 		type: 'Income'
 	},
@@ -81,7 +80,7 @@ window.defaultCategories = [
 		type: 'Income'
 	},
 	{
-		name: 'Gifts',
+		name: 'Gift',
 		type: 'Income'
 	},
 	{
@@ -93,7 +92,7 @@ window.defaultCategories = [
 		type: 'Income'
 	},
 	{
-		name: 'Other',
+		name: 'Others',
 		type: 'Income'
 	},
 	{
