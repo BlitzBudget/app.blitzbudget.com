@@ -212,7 +212,7 @@
 		let cardTitle = document.createElement('div');
 		cardTitle.id = 'categoryName-' + userBudget.budgetId;
 		cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
-		cardTitle.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
+		cardTitle.innerText = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
 		cardRowRemaining.appendChild(cardTitle);
 		
 		
@@ -974,7 +974,7 @@
 				let displayCategory = document.createElement('div');
 				displayCategory.classList = 'w-md-15 w-8 dd-display-wrapper';
 				displayCategory.disabled = true;
-				displayCategory.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
+				displayCategory.innerText = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
 				containerForSelect.appendChild(displayCategory);
 
 
