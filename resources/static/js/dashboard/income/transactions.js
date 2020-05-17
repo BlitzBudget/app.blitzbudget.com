@@ -220,6 +220,8 @@
 			let transaction = result['body-json'];
 			// Assign Category Id
 			assignCategoryId(transaction);
+			// Set Current Date as ID (For First time)
+   			window.currentDateAsID = transaction.dateMeantFor;
 			// Populate CurrentDateAsId if necessary
    			if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = transaction.dateMeantFor }
    			// Fetch success message DIV

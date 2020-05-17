@@ -936,7 +936,7 @@ function populateCurrentDate(date) {
 		let presentDate = date[i].dateId;
 		let presentDateAsDate = new Date(presentDate.substring(5, presentDate.length));
 		if(window.chosenDate.getMonth() == presentDateAsDate.getMonth()
-			|| window.chosenDate.getFullYear() == window.chosenDate.getFullYear()) {
+			|| window.chosenDate.getFullYear() == presentDateAsDate.getFullYear()) {
 			window.currentDateAsID = presentDate;
 		}
 	}
@@ -988,6 +988,9 @@ function fetchJSONForCategories(data) {
    Object.seal(window.categoryMap);
 }
 
+/*
+* If one category has been assigned a Category then
+*/
 function assignCategoryId(data) {
 	// Expense and Income Initialize
 	window.expenseDropdownItems = document.createDocumentFragment();
@@ -996,7 +999,16 @@ function assignCategoryId(data) {
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
 
-	if(isNotEmpty(window.categoryMap[categoryName])) {window.categoryMap[categoryName].id = categoryId;}
+	if(isNotEmpty(window.categoryMap[categoryName])) {
+		// DO not delete the category map with name as it could be used for existing elements
+		// Create a new map for categorymap
+		let category = {};
+		category.name = categoryName;
+		category.type = categoryType;
+		category.id = categoryId;
+		// Category Map
+		window.categoryMap[categoryId] = category;
+	}
 
 	let resultKeys = Object.keys(window.categoryMap);
 	for(let count = 0, length = resultKeys.length; count < length; count++){
@@ -1011,10 +1023,8 @@ function assignCategoryId(data) {
 		  inputValue.type = 'hidden';
 		  if(isNotEmpty(value.id)) {
 		  	inputValue.value = categoryId;
-		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
-		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
 
