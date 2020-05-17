@@ -6,7 +6,7 @@
 	const replaceTransactionsId = "productsJson";
 
 	// On Click Account Header display information
-	$('#recTransAndAccTable').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
+	$('body').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
 		// Account modal id
 		let accInfoTable = this.closest('.accountInfoTable');
 		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
@@ -44,7 +44,7 @@
 	});
 
 	// Close Accoount modal
-	document.getElementById('accountHeaderClose').addEventListener("click",function(e){
+	$('body').on('click', '#accountHeaderClose' , function(e) {
 		// Close Account Modal
 		document.getElementById('accountInformationMdl').classList.add('d-none');
 		// Open  Financial Position
@@ -52,12 +52,12 @@
 	});
 
 	// Focus in for the remaining account amount
-	document.getElementById('accountAmountEntry').addEventListener("focusin",function(e){
+	$('body').on('focusin', '#accountAmountEntry' , function(e) {
 		amountEditedAccount = trimElement(this.innerText);
 	});
 
 	// Change the remaining amount
-	document.getElementById('accountAmountEntry').addEventListener("keyup",function(e){
+	$('body').on('keyup', '#accountAmountEntry' , function(e) {
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) { 
 		    e.preventDefault();
@@ -88,7 +88,8 @@
 			
 			let values = {};
 			values['accountBalance'] = enteredText;
-			values['financialPortfolioId'] = currentUser.walletId;
+			values['walletId'] = currentUser.walletId;
+			values['accountId'] = currentUser.walletId; //TODO
 			values = JSON.stringify(values);
 
 			// Ajax Requests on Error
@@ -103,20 +104,20 @@
 	        	// Update the budget amount in the category row
 	        	let formattedBudgetAmount = 0;
 	        	if(bankAccount.accountBalance < 0) { 
-					formattedBudgetAmount = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount.accountBalance), currentUser.locale);
+					formattedBudgetAmount = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount['account_balance']), currentUser.locale);
 				} else { 
-					formattedBudgetAmount = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+					formattedBudgetAmount = currentCurrencyPreference + formatNumber(bankAccount['account_balance'], currentUser.locale);
 				}
 	        	element.innerText = formattedBudgetAmount;
 
 	        	// Account Balance for account Header
-	        	document.getElementById('accountBalance-' + bankAccount.id).innerText = formattedBudgetAmount;
+	        	document.getElementById('accountBalance-' + bankAccount.accountId).innerText = formattedBudgetAmount;
 
 	        	// Append as Selected Account
-		        for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-		    		if(bankAccountPreview[i].id == currentAccountId) {
+		        for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+		    		if(allBankAccountInfoCache[i].id == currentAccountId) {
 		    			// Account Balance update in preview
-		    			bankAccountPreview[i].accountBalance = bankAccount.accountBalance;
+		    			allBankAccountInfoCache[i]['account_balance'] = bankAccount.accountBalance;
 		    			// Position of the row
 		    			let position = i + 1;
 		    			// update the formatted button
@@ -147,7 +148,7 @@
 	}
 
 	// Delete Account functionality
-	document.getElementById('deleteSvgAccount').addEventListener("click",function(e){
+	$('body').on('keyup', '#deleteSvgAccount' , function(e) {
 		
 		Swal.fire({
             title: 'Delete financial account',
@@ -189,15 +190,17 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
-				            }
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
+				          }
 					});
   				});
   			},
@@ -251,8 +254,8 @@
 
 	                    // Remove from preivew if present
 	                    let posToRemove = null;
-				    	for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-				    		if(bankAccountPreview[i].id == currentAccountId) {
+				    	for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+				    		if(allBankAccountInfoCache[i].id == currentAccountId) {
 				    			let position = i + 1;
 				    			// Remove the preview banka count
 				    			let previewPos = document.getElementById('bAR-' + position);
@@ -267,7 +270,7 @@
 				    	// Position to remove
 				    	if(isNotEmpty(posToRemove)) {
 				    		// Remove the bank account preview
-				    		bankAccountPreview.splice(posToRemove , 1);
+				    		allBankAccountInfoCache.splice(posToRemove , 1);
 				    	}
 	                });
 		        }

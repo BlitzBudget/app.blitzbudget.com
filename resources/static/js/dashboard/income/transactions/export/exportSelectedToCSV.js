@@ -1,7 +1,7 @@
 "use strict";
 (function scopeWrapper($) {
 
-    document.getElementById('downloadTransactionsData').addEventListener("click",function(e){
+    $('body').on('click', '#downloadTransactionsData' , function(e) {    
         // Check all check boxes by default
         let transactionIds = [];
         
@@ -76,7 +76,7 @@
             // Fetch the transaction amount
             let transactionAmount = '';
             // Append a - sign if it is an expense
-            if(currentCategory.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+            if(currentCategory.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
                transactionAmount = '-' + currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);
             } else {
                transactionAmount = currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);

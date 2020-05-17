@@ -1,8 +1,17 @@
 "use strict";
 
 (function scopeWrapper($) {
-    let signinUrl = 'login';
-    let successfulSigninUrl = 'https://app.blitzbudget.com/home';
+
+    // We retrieve the current user, but in a string form.
+    let currentCogUser = localStorage.getItem("currentUserSI");
+    window.currentUser = isEmpty(currentCogUser) ? {} : JSON.parse(currentCogUser);
+    // If the session storage is present then
+    if(isNotEmpty(currentCogUser)) {
+        // Fill currency and Name
+        fillName(); 
+        // Replace with currency
+        replaceWithCurrency();
+    }
 
     /**
     * Retrieve Attributes
@@ -14,74 +23,106 @@
         // If the session storage is 
         if(isNotEmpty(currentCogUser)) {
             // Fill currency and Name
-            fillCurrencyAndName();           
+            fillName();           
             return;
         }
 
-        // Set JWT Token For authentication
-        let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-        localStorage.setItem('idToken' , idToken) ;
-        window.authHeader = idToken;
-
-        // Set JWT Token For authentication
-        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
-        localStorage.setItem('refreshToken' , refreshToken) ;
-        window.refreshToken = refreshToken;
+        // Store Auth Token
+        storeAuthToken(result);
+        // Store Refresh token
+        storeRefreshToken(result);
+        // Store Access Token
+        storeAccessToken(result);
 
         let currentUserLocal = {};
         currentUserLocal.email = result.Username;
-        result = result.UserAttributes;
+        let firstWallet = result.Wallet;
+        let userAttributes = result.UserAttributes;
         // SUCCESS Scenarios
-        for (i = 0; i < result.length; i++) {
-            let name = result[i].getName();
+        for (i = 0; i < userAttributes.length; i++) {
+            let name = userAttributes[i].Name;
 
             if(name.includes('custom:')) {
+                
                 // if custom values then remove custom: 
                 let elemName = lastElement(splitElement(name,':'));
-                currentUserLocal[elemName] = result[i].getValue();
+                currentUserLocal[elemName] = userAttributes[i].Value;
             } else {
-                currentUserLocal[name] = result[i].getValue();
+                currentUserLocal[name] = userAttributes[i].Value;
             }
         }
 
-        // Set wallet information
-        currentUserLocal.walletId = currentUserLocal.financialPortfolioId;
-        currentUserLocal.walletCurrency = currentUserLocal.currency;
         // Current User to global variable
         window.currentUser = currentUserLocal;
         // We save the item in the localStorage.
         localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
+        if(isNotEmpty(firstWallet)) {
+            // Replace with currency
+            replaceWithCurrency(firstWallet);
+        }
         // Fill currency and Name
-        fillCurrencyAndName();
+        fillName();
+        // Read current cookie
+        readCurrentCookie();
         // Hide Modal
         if(loginModal) loginModal.modal('hide');
     }
 
-    // Fill currency and name
-    function fillCurrencyAndName() {
-        // Set Currency If empty
-        if(currentUser.currency && currentUser.name) {
-            window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
-            Object.freeze(window.currentCurrencyPreference);
-            Object.seal(window.currentCurrencyPreference);
+    /**
+    * Read current page in cookie
+    **/
+    function readCurrentCookie() {
+        let currentPageInCookie = er.getCookie('currentPage');
 
+        switch(currentPageInCookie) {
+            case 'overviewPage':
+            default:
+                document.getElementById('overviewPage').click();
+                break;
+            case 'transactionsPage':  
+                document.getElementById(currentPageInCookie).click();
+                break;
+            case 'budgetPage':  
+                document.getElementById(currentPageInCookie).click();
+                break;  
+            case 'settingsPage':
+            case 'settingsPgDD':
+                document.getElementById('settingsPage').click();
+                break; 
+            case 'profilePage':
+            case 'profilePgDD':
+                document.getElementById('profilePage').click();
+                break;
+
+        }
+    }
+
+    function storeRefreshToken(result) {
+        // Set JWT Token For authentication
+        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+        refreshToken = refreshToken.substring(1,refreshToken.length - 1);
+        localStorage.setItem('refreshToken' , refreshToken) ;
+        window.refreshToken = refreshToken;
+    }
+
+    // Fill currency and name
+    function fillName() {
+        if(currentUser.name) {
             // Set the name of the user
             let userName = document.getElementById('userName');
             if(userName) {
                 userName.innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
             }
-            // Replace with currency
-            replaceWithCurrency();
         }
     }
 
     // Handle Session Errors
     function handleSessionErrors(err,email,pass,errM) {
-        
+
         /*
          * User Does not Exist
          */
-        if(stringIncludes(err.code,"UserNotFoundException")) {
+        if(stringIncludes(err.responseJSON.errorMessage,"UserNotFoundException")) {
             toggleSignUp(email,pass);
             return;
         }
@@ -89,7 +130,7 @@
         /*
          * User Not Confirmed
          */
-        if(stringIncludes(err.code,"UserNotConfirmedException")) {
+        if(stringIncludes(err.responseJSON.errorMessage,"UserNotConfirmedException")) {
             // Verify Account
             toggleVerification(email);
             return;
@@ -98,14 +139,14 @@
         /*
          * PasswordResetRequiredException
          */
-        if(stringIncludes(err.code,"PasswordResetRequiredException")) {
+        if(stringIncludes(err.responseJSON.errorMessage,"PasswordResetRequiredException")) {
             // TODO
         }
 
         /**
         *   Other Errors
         **/
-        document.getElementById(errM).innerText = err.message;
+        document.getElementById(errM).innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
     }
 
 
@@ -130,7 +171,7 @@
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
-              url: window._config.api.invokeUrl + window._config.api.signup,
+              url: window._config.api.invokeUrl + window._config.api.profile.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
@@ -200,6 +241,7 @@
         values.username = email;
         values.password = password;
         values.confirmationCode = code;
+        values.doNotCreateWallet = false;
 
         // Authenticate Before cahnging password
         $.ajax({
@@ -208,8 +250,8 @@
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
-              success: onSuccess(result),
-              error: onFailure(err)
+              success: onSuccess,
+              error: onFailure
         });
     }
 
@@ -224,65 +266,65 @@
         $('#verifyForm').submit(handleVerify);
     });
 
-    document.getElementById('unlockApplication').addEventListener("click",function(e){
-        let unlockAppPass = document.getElementById('unlockAppPass');
-        let password  = unlockAppPass.value;
-        let email = currentUser.email;
-        let unlockModal = $('#unlockModal');
-        let unlockApplication = document.getElementById('unlockApplication');
-        let unlockLoader = document.getElementById('unlockLoader');
-        unlockLoader.classList.remove('d-none');
-        unlockApplication.classList.add('d-none');
-        document.getElementById('errorUnlockPopup').innerText = '';
-        event.preventDefault();
+    let unlockAppDiv = document.getElementById('unlockApplication');
+    if(isNotEmpty(unlockAppDiv)) {
+        unlockAppDiv.addEventListener("click",function(e){
+            let unlockAppPass = document.getElementById('unlockAppPass');
+            let password  = unlockAppPass.value;
+            let email = currentUser.email;
+            let unlockModal = $('#unlockModal');
+            let unlockApplication = document.getElementById('unlockApplication');
+            let unlockLoader = document.getElementById('unlockLoader');
+            unlockLoader.classList.remove('d-none');
+            unlockApplication.classList.add('d-none');
+            document.getElementById('errorUnlockPopup').innerText = '';
+            event.preventDefault();
 
-        signin(email, password,
-            function signinSuccess(result) {
-               
-                // Hide Modal
-                unlockModal.modal('hide');
-                unlockLoader.classList.add('d-none');
-                unlockApplication.classList.remove('d-none');
+            signin(email, password,
+                function signinSuccess(result) {
+                   
+                    // Hide Modal
+                    unlockModal.modal('hide');
+                    unlockLoader.classList.add('d-none');
+                    unlockApplication.classList.remove('d-none');
 
-                // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-                localStorage.setItem('idToken' , idToken) ;
-                window.authHeader = idToken;
+                    storeAuthToken(result);
+                    storeRefreshToken(result);
+                    storeAccessToken(result);
 
-                // Set JWT Token For authentication
-                let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
-                localStorage.setItem('refreshToken' , refreshToken) ;
-                window.refreshToken = refreshToken;
+                    // Session invalidated as 0 on start up
+                    window.sessionInvalidated = 0;
+                    // Already requested refresh to false
+                    window.alreadyRequestedRefresh = false;
+                    // Reset the window.afterRefreshAjaxRequests token
+                    window.afterRefreshAjaxRequests = [];
+                    
+                },
+                function signinError(err) {
+                    unlockLoader.classList.add('d-none');
+                    unlockApplication.classList.remove('d-none');
+                    unlockAppPass.focus();
+                    handleSessionErrors(err,email,password,'errorUnlockPopup');
+                }
+            );
+        });
+    }
 
-                // Session invalidated as 0 on start up
-                window.sessionInvalidated = 0;
-                // Already requested refresh to false
-                window.alreadyRequestedRefresh = false;
-                // Reset the window.afterRefreshAjaxRequests token
-                window.afterRefreshAjaxRequests = [];
-                
-            },
-            function signinError(err) {
-                unlockLoader.classList.add('d-none');
-                unlockApplication.classList.remove('d-none');
-                unlockAppPass.focus();
-                handleSessionErrors(err,email,password,'errorUnlockPopup');
+    let unlockAppPass = document.getElementById('unlockAppPass');
+    if(isNotEmpty(unlockAppPass)) {
+         unlockAppPass.addEventListener("keyup",function(e){
+            let unlockAccountBtn = document.getElementById('unlockApplication');
+            let keyCode = e.keyCode || e.which;
+            if (keyCode === 13) { 
+                document.activeElement.blur();
+                e.preventDefault();
+                e.stopPropagation();
+                // Click the confirm button to continue
+                unlockAccountBtn.click();
+                return false;
             }
-        );
-    });
-
-    document.getElementById('unlockAppPass').addEventListener("keyup",function(e){
-        let unlockAccountBtn = document.getElementById('unlockApplication');
-        let keyCode = e.keyCode || e.which;
-        if (keyCode === 13) { 
-            document.activeElement.blur();
-            e.preventDefault();
-            e.stopPropagation();
-            // Click the confirm button to continue
-            unlockAccountBtn.click();
-            return false;
-        }
-    });
+        });
+    }
 
     function handleSignin(event) {
         let email = document.getElementById('emailInputSignin').value;
@@ -315,7 +357,6 @@
                 retrieveAttributes(result,loginModal);
 
                 // Post success message
-                document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
                 loginLoader.classList.add('d-none');
                 loginButton.classList.remove('d-none');
 
@@ -422,7 +463,7 @@
         verifyLoader.classList.remove('d-none');
         verifyButton.classList.add('d-none');
         let loginModal = $('#loginModal');
-        verify(email, code,
+        verify(email, code, password,
             function verifySuccess(result) {
                 // Remove session storage verify email (EMAIL CLICK FUNC)
                 localStorage.removeItem('verifyEmail');
@@ -443,7 +484,7 @@
                 // Sign in
                 
                 // Loads the current Logged in User Attributes
-                retrieveAttributes(email, loginModal);
+                retrieveAttributes(result, loginModal);
 
                 // Show verification btn
                 verifyLoader.classList.add('d-none');
@@ -458,69 +499,76 @@
     }
 
     // Resend Confirmation Code
-    document.getElementById('resendCodeLogin').addEventListener("click",function(e){
-        let email = document.getElementById('emailInputVerify').value;
-        let currenElem = this;
-        let successLP = document.getElementById('successLoginPopup');
-        let errorLP = document.getElementById('errorLoginPopup');
-        let resendLoader = document.getElementById('resendLoader');
+    let resendCodeLogin = document.getElementById('resendCodeLogin');
+    if(isNotEmpty(resendCodeLogin)) {
+        resendCodeLogin.addEventListener("click",function(e){
+            let email = document.getElementById('emailInputVerify').value;
+            let currenElem = this;
+            let successLP = document.getElementById('successLoginPopup');
+            let errorLP = document.getElementById('errorLoginPopup');
+            let resendLoader = document.getElementById('resendLoader');
 
-        // Fadeout for 60 seconds
-        currenElem.classList.add('d-none');
-        // Append Loader
-        resendLoader.classList.remove('d-none');
-        // After one minutes show the resend code
-        setTimeout(function() {
-            // Replace HTML with Empty
-            while (successLP.firstChild) {
-                successLP.removeChild(successLP.firstChild);
-            }
-            // Replace HTML with Empty
-            while (errorLP.firstChild) {
-                errorLP.removeChild(errorLP.firstChild);
-            }
-        	currenElem.classList.remove('d-none');
-        }, 60000);
+            // Fadeout for 60 seconds
+            currenElem.classList.add('d-none');
+            // Append Loader
+            resendLoader.classList.remove('d-none');
+            // After one minutes show the resend code
+            setTimeout(function() {
+                // Replace HTML with Empty
+                while (successLP.firstChild) {
+                    successLP.removeChild(successLP.firstChild);
+                }
+                // Replace HTML with Empty
+                while (errorLP.firstChild) {
+                    errorLP.removeChild(errorLP.firstChild);
+                }
+                currenElem.classList.remove('d-none');
+            }, 60000);
 
 
-        // Authentication Details
-        let values = {};
-        values.username = email;
+            // Authentication Details
+            let values = {};
+            values.username = email;
 
-        // Resend Confirmation code
-        $.ajax({
-              type: 'POST',
-              url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
-              dataType: 'json',
-              contentType: "application/json;charset=UTF-8",
-              data : JSON.stringify(values),
-              success: function(result) {
-                // Hide Loader
-                resendLoader.classList.add('d-none');
-                successLP.appendChild(successSvgMessage());
-              },
-              error: function(err) {
-                errorLP.appendChild(err.message);
-              }
+            // Resend Confirmation code
+            $.ajax({
+                  type: 'POST',
+                  url: window._config.api.invokeUrl + window._config.api.profile.resendConfirmationCode,
+                  dataType: 'json',
+                  contentType: "application/json;charset=UTF-8",
+                  data : JSON.stringify(values),
+                  success: function(result) {
+                    // Hide Loader
+                    resendLoader.classList.add('d-none');
+                    successLP.appendChild(successSvgMessage());
+                  },
+                  error: function(err) {
+                    errorLP.appendChild(err.message);
+                  }
+            });
+
+            // Change focus to code
+            document.getElementById('codeInputVerify').focus();
         });
 
-        // Change focus to code
-        document.getElementById('codeInputVerify').focus();
-    });
-
+    }
+    
     // Auto submit verification code
-    document.getElementById('codeInputVerify').addEventListener("keyup", function(e){
-        let errorLogin = document.getElementById('errorLoginPopup');
-        // Replace HTML with Empty
-        while (errorLogin.firstChild) {
-            errorLogin.removeChild(errorLogin.firstChild);
-        }
+    let codeInputVerify = document.getElementById('codeInputVerify');
+    if(isNotEmpty(codeInputVerify)) {
+        codeInputVerify.addEventListener("keyup", function(e){
+            let errorLogin = document.getElementById('errorLoginPopup');
+            // Replace HTML with Empty
+            while (errorLogin.firstChild) {
+                errorLogin.removeChild(errorLogin.firstChild);
+            }
 
-        let vc = this.value;
-        if(vc.length == 6) {
-            verificationCode();
-        }
-    });
+            let vc = this.value;
+            if(vc.length == 6) {
+                verificationCode();
+            }
+        });
+    }
 
     // Generate SVG Tick Element and success element
     function successSvgMessage() {
@@ -567,28 +615,37 @@
     }
 
     // LOGIN POPUP Already have an accout
-    document.getElementById('haveAnAccount').addEventListener("click",function(e){
-        let email = document.getElementById('emailInputRegister').value;
-        resetErrorOrSuccessMessages();
-        toggleLogin(email);
-    });
+    let haveAnAccount = document.getElementById('haveAnAccount');
+    if(isNotEmpty(haveAnAccount)) {
+        haveAnAccount.addEventListener("click",function(e){
+            let email = document.getElementById('emailInputRegister').value;
+            resetErrorOrSuccessMessages();
+            toggleLogin(email);
+        });
+    }
 
     // LOGIN POPUP Forgot Password Text
-    document.getElementById('forgotPassLogin').addEventListener("click",function(e){
-        let resendLoader = document.getElementById('resendLoader');
-        resetErrorOrSuccessMessages();
-        forgotPassword(this, resendLoader);
-    });
+    let forgotPassLogin = document.getElementById('forgotPassLogin');
+    if(isNotEmpty(forgotPassLogin)) {
+        forgotPassLogin.addEventListener("click",function(e){
+            let resendLoader = document.getElementById('resendLoader');
+            resetErrorOrSuccessMessages();
+            forgotPassword(this, resendLoader);
+        });
+    }
 
     // Change enforece bootstrap focus to empty (Allow swal input to be focusable)
     $.fn.modal.Constructor.prototype._enforceFocus = function() {};
 
     // Not me link 
-    document.getElementById('shyAnchor').addEventListener("click",function(e){
-        let email = document.getElementById('emailInputRegister').value;
-        resetErrorOrSuccessMessages();
-        toggleLogin(email);
-    });
+    let shyAnchor = document.getElementById('shyAnchor');
+    if(isNotEmpty(shyAnchor)) {
+        shyAnchor.addEventListener("click",function(e){
+            let email = document.getElementById('emailInputRegister').value;
+            resetErrorOrSuccessMessages();
+            toggleLogin(email);
+        });
+    }
 
     // Reset Login Popup Error /  Success messages
     function resetErrorOrSuccessMessages() {
@@ -608,7 +665,6 @@
     function forgotPassword(forgotPass, resendloader) {
         
         let emailInputSignin = document.getElementById('emailInputSignin').value;
-        let loginModal = $('#loginModal');
         let newPassword = document.getElementById('passwordInputSignin').value;
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
@@ -661,10 +717,13 @@
     }
 
     function fireConfirmForgotPasswordSwal(email, password) {
+        let confirmationCode;
+        let loginModal = $('#loginModal');
+
         // Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
-            html: 'Verification code has been sent to <strong>' + emailInputSignin + '</strong>', 
+            html: 'Verification code has been sent to <strong>' + email + '</strong>', 
             input: 'text',
             confirmButtonClass: 'btn btn-dynamic-color',
             confirmButtonText: 'Verify Email',
@@ -699,6 +758,9 @@
                 if(isNaN(value)) {
                     return 'Verification code can only contain numbers';
                 }
+
+                // Set Confirmation code
+                confirmationCode = value;
             },
             showClass: {
                popup: 'animated fadeInDown faster'
@@ -711,13 +773,12 @@
             }
         }).then(function(result) {
             if(result.value) {
-                let verificationCode = document.getElementsByClassName("swal2-input" )[0];
 
                 // Authentication Details
                 let values = {};
                 values.username = email;
                 values.password = password;
-                values.confirmationCode = verificationCode;
+                values.confirmationCode = confirmationCode;
 
                 // Authenticate Before cahnging password
                 $.ajax({
@@ -768,14 +829,20 @@
 
 
     // Log out User
-    document.getElementById('dashboard-util-logout').addEventListener('click', function() {
-        signoutUser();
-    });
+    let utilLogout = document.getElementById('dashboard-util-logout');
+    if(isNotEmpty(utilLogout)) {
+        utilLogout.addEventListener('click', function() {
+            signoutUser();
+        });
+    }
 
     // Log Out User
-    document.getElementById('logoutUser').addEventListener('click', function() {
-        signoutUser();
-    });
+    let logOutUser = document.getElementById('logoutUser');
+    if(isNotEmpty(logOutUser)) {
+        logOutUser.addEventListener('click', function() {
+            signoutUser();
+        });
+    }   
 
     // Signout the user and redirect to home page
     function signoutUser() {
@@ -878,6 +945,22 @@ window.alreadyRequestedRefresh = false;
 // Reset the window.afterRefreshAjaxRequests token
 window.afterRefreshAjaxRequests = [];
 
+function storeAuthToken(result) {
+    // Set JWT Token For authentication
+    let idToken = JSON.stringify(result.AuthenticationResult.IdToken);
+    idToken = idToken.substring(1,idToken.length - 1);
+    localStorage.setItem('idToken' , idToken) ;
+    window.authHeader = idToken;
+}
+
+function storeAccessToken(result) {
+    // Set JWT Token For authentication
+    let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+    accessToken = accessToken.substring(1,accessToken.length - 1);
+    localStorage.setItem('accessToken' , accessToken) ;
+    window.accessToken = accessToken;
+}
+
 uh = {
     
     refreshToken(ajaxData) {
@@ -899,6 +982,15 @@ uh = {
         let values = {};
         values.refreshToken = window.refreshToken;
 
+        /*
+        * Max refresh token is 5
+        */
+        if(window.sessionInvalidated == 2) {
+            window.sessionInvalidated = 0;
+            er.showLoginPopup();
+            return;
+        }
+
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
@@ -910,10 +1002,9 @@ uh = {
                 // Session Refreshed
                 window.sessionInvalidated++;
                 window.alreadyRequestedRefresh = false;
-                // Set JWT Token For authentication
-                let idToken = JSON.stringify(result.AuthenticationResult.AccessToken);
-                localStorage.setItem('idToken' , idToken) ;
-                window.authHeader = idToken;
+
+                storeAuthToken(result);
+                storeAccessToken(result);
 
                 // If ajax Data is empty then don't do anything
                 if(isEmpty(window.afterRefreshAjaxRequests)) {
@@ -929,7 +1020,7 @@ uh = {
                         let ajaxParams = {
                               type: ajData.type,
                               url: ajData.url,
-                              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", idToken);},
+                              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
                               error: ajData.onFailure
                         };
 

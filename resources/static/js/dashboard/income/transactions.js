@@ -41,24 +41,108 @@
 	window.transactionsCache = {};
 	// Initialize user budget 
 	window.userBudgetMap = {};
-		
-	// Call the transaction API to fetch information.
-	fetchJSONForTransactions();
-	
-	
+
 	/**
-	 * START Load at the end of the javascript
+	 * START loading the page
+	 * 
 	 */
+	if(isEqual(er.getCookie('currentPage'),'transactionsPage')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			er.refreshCookiePageExpiry('transactionsPage');
+		 	er.fetchCurrentPage('/transactions', function(data) {
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            // Call the transaction API to fetch information.
+				initialLoadOfTransactions();
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Transactions';
+			});
+	 	}
+	}
 	
-	// Load Expense category and income category
-	expenseSelectionOptGroup = cloneElementAndAppend(document.getElementById('expenseSelection'), expenseSelectionOptGroup);
-	incomeSelectionOptGroup = cloneElementAndAppend(document.getElementById('incomeSelection'), incomeSelectionOptGroup);
-	
-	// Success SVG Fragment
-	let successSVGFormed = successSvgMessage();
-	
-	// Load images in category modal
-	loadCategoryModalImages();
+	let transactionsPage = document.getElementById('transactionsPage');
+	if(isNotEmpty(transactionsPage)) {
+		transactionsPage.addEventListener("click",function(e){
+	 		er.refreshCookiePageExpiry('transactionsPage');
+			er.fetchCurrentPage('/transactions', function(data) {
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            initialLoadOfTransactions();
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Transactions';
+			});
+		});
+	}
+
+	function initialLoadOfTransactions() {
+		/**
+		 * START Load at the end of the javascript
+		 */
+		// Success SVG Fragment
+		let successSVGFormed = successSvgMessage();
+		
+		// Load images in category modal
+		loadCategoryModalImages();
+		// Call the transaction API to fetch information.
+		fetchJSONForTransactions();
+		// Date Picker
+		// On click month (UNBIND other click events)
+		$('.monthPickerMonth').unbind('click').click(function() {
+			// Month picker is current selected then do nothing
+			if(this.classList.contains('monthPickerMonthSelected')) {
+				return;
+			}
+
+			let transactionTable = document.getElementById('transactionsTable');
+			
+			if(transactionTable == null) {
+				return;
+			}
+			
+			// Replace Transactions Table with empty spinner
+			replaceTransactionsWithMSpinner();
+			replacePieChartWithMSpinner();
+			
+			// Set chosen Date
+			er.setChosenDateWithSelected(this);
+			
+			// Call transactions
+			fetchJSONForTransactions();
+
+			// Call Account / Recent Transactions
+			populateAccountOrRecentTransactionInfo();
+			
+		});
+
+		// Replace currentCurrencySymbol with currency symbol
+		replaceWithCurrency();
+
+		/**
+		*  Add Functionality Generic + Btn
+		**/
+
+		// Register Tooltips
+		let ttinit = $("#addFncTT");
+		ttinit.attr('data-original-title', 'Add Transactions')
+		ttinit.tooltip({
+			delay: { "show": 300, "hide": 100 }
+	    });
+
+	    // Generic Add Functionalitys
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
+	    $(genericAddFnc).unbind('click').click(function () {
+	    	genericAddFnc.classList.toggle('d-none');
+			if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+				// If length > 0 then change the add button to add
+				popup.showSwal('warning-message-and-confirmation');
+			} else {
+				$('#GSCCModal').modal('toggle');
+			}  
+		});
+
+		
+	}
 	
 	// Save Transactions on form submit
 	$('#transactionsForm').submit(function(event) {
@@ -108,25 +192,37 @@
 	    }
 	    
 	    let description = document.getElementById('description').value;
-	    let categoryOptions = document.getElementById('categoryOptions').value;
-		let values = {};
+	    let categoryOptions = document.getElementById('categoryOptions').getAttribute('data-chosen');
+
+	    let values = {};
+	    if(notIncludesStr(categoryOptions, 'Category#')) {
+	    	let chosenCategory = window.categoryMap[categoryOptions];
+	    	values['categoryType'] = chosenCategory.type;
+	    }
+
 		values['amount'] = amount;
 		values['description'] = description;
 		values['category'] = categoryOptions;
-		values['dateMeantFor'] = chosenDate;
+		values['dateMeantFor'] = window.currentDateAsID;
 		values['recurrence'] = recurrenceValue;
 		values['walletId'] = walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
+   		ajaxData.type = "PUT";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
-		ajaxData.onSuccess = function(data) {
-
+		ajaxData.onSuccess = function(result) {
+			// Convert result to transactions
+			let transaction = result['body-json'];
+			// Assign Category Id
+			assignCategoryId(transaction);
+			// Populate CurrentDateAsId if necessary
+   			if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = transaction.dateMeantFor }
+   			// Fetch success message DIV
         	let successMessageDocument = document.getElementById('successMessage');
         	// Clone and Append the success Message
         	successSVGFormed = cloneElementAndAppend(successMessageDocument , successSVGFormed);
@@ -167,6 +263,14 @@
 		});
 	    
 	}
+
+	$(document).on("click", "#categoryOptions .dropdown-item" , function(event){
+
+		let inputValue = this.lastChild.value;
+		let categoryoptions = document.getElementById('categoryOptions');
+		categoryoptions.setAttribute('data-chosen', inputValue);
+
+	});
 	
 	
 	// Use this function to fade the message out
@@ -208,10 +312,10 @@
 		let incomeOptgroup = document.getElementById('incomeSelection');
 		// If the Category items are not populate then populate them
 		if(!expenseOptGroup.firstElementChild) {
-			expenseSelectionOptGroup = cloneElementAndAppend(expenseOptGroup, expenseSelectionOptGroup);
+			expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
 		}
 		if(!incomeOptgroup.firstElementChild) {
-			incomeSelectionOptGroup = cloneElementAndAppend(incomeOptgroup, incomeSelectionOptGroup);
+			incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
 		}
 	});
 
@@ -223,21 +327,49 @@
 	
 	// Populates the transaction table
 	function fetchJSONForTransactions(){
+		let values = {};
+		if(isNotEmpty(window.currentUser.walletId)) {
+			values.walletId = window.currentUser.walletId;
+		} else {
+			values.userId = window.currentUser.financialPortfolioId;
+		}
+		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
+		values.startsWithDate = new Date(y, m, 1);
+		values.endsWithDate = new Date(y, m + 1, 0);
+
 		// Ajax Requests on Error
 		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + TRANSACTIONS_CONSTANTS.firstWalletIdParam + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-		ajaxData.onSuccess = function(result) {
-        	  
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'POST';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(result) {
         	er_a.populateBankInfo(result.BankAccount);
 
         	fetchJSONForCategories(result.Category);
 
+        	// Load Expense category and income category
+        	let expenseSelectionDiv = document.getElementById('expenseSelection');
+        	while (expenseSelectionDiv.firstChild) {
+			    expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
+			}
+        	let incomeSelectionDiv = document.getElementById('incomeSelection');
+        	while (incomeSelectionDiv.firstChild) {
+			    incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
+			}
+			expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
+			incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
+		
+
+        	// Dates Cache
+        	window.datesCreated = result.Date;
+
 			/*
-			* replace With Currency
+			* Replace With Currency
 			*/
-			replaceWithCurrency();
+			replaceWithCurrency(result.Wallet);
 
 			let totalExpensesTransactions = result.expenseTotal;
 			let totalIncomeTransactions = result.incomeTotal;
@@ -250,7 +382,7 @@
 			let resultKeySet = Object.keys(result.Category);
          	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
          	   let key = resultKeySet[countGrouped];
-         	   let category = result[key];
+         	   let category = result.Category[key];
  			   
  			   // Load all the total category amount in the category section
  			   let categoryAmountTotal = currentCurrencyPreference + formatNumber(category['category_total'], currentUser.locale);
@@ -269,7 +401,7 @@
 		    }
 			   
 		    // Update table with empty message if the transactions are empty
-		    if(result.length == 0) {
+		    if(result.Transaction.length == 0) {
 			   checkAllBox.setAttribute('disabled', 'disabled');
    				// Replace HTML with Empty
        			while (documentTbody.firstChild) {
@@ -305,6 +437,9 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
+            dataType: ajaxData.dataType,
+          	contentType: ajaxData.contentType,
+          	data : ajaxData.values,
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
@@ -445,27 +580,74 @@
 		selectCategoryRow.className = 'd-table-cell';
 		
 		// Build Select
-		let selectCategory = document.createElement('select');
+		let selectCategory = document.createElement('div');
 		selectCategory.setAttribute("id", 'selectCategoryRow-' + userTransactionData.transactionId);
-		selectCategory.className = 'tableRowForSelectCategory categoryIdForSelect-' + categoryId + ' tableRowSelectCategory';
+		selectCategory.className = 'tableRowForSelectCategory categoryIdForSelect-' + categoryId + ' tableRowSelectCategory btn-group btnGroup-1';
 		selectCategory.setAttribute('aria-haspopup', true);
 		selectCategory.setAttribute('aria-expanded', false);
-		
-		let optGroupExpense = document.createElement('optgroup');
-		optGroupExpense.label = 'Expenses';
-		expenseSelectionOptGroup = cloneElementAndAppend(optGroupExpense, expenseSelectionOptGroup);
-		selectCategory.appendChild(optGroupExpense);
-		
-		let optGroupIncome = document.createElement('optgroup');
-		optGroupIncome.label = 'Income';
-		incomeSelectionOptGroup =  cloneElementAndAppend(optGroupIncome, incomeSelectionOptGroup);
-		selectCategory.appendChild(optGroupIncome);
-		selectCategoryRow.appendChild(selectCategory);
-		
-		// Set the relevant category in the options to selected
-		let toSelectOption = selectCategoryRow.getElementsByClassName('categoryOption-' + categoryId);
-		toSelectOption[0].selected = 'selected';
-		tableRows.appendChild(selectCategoryRow);
+
+		let displayCategory = document.createElement('button');
+		displayCategory.classList = 'btn btn-secondary w-md-15 w-8';
+		displayCategory.disabled = true;
+		displayCategory.innerText = userTransactionData.category;
+		selectCategory.appendChild(displayCategory);
+
+
+		let dropdownArrow = document.createElement('div');
+		dropdownArrow.setAttribute('type', 'button');
+		dropdownArrow.classList = 'btn btn-info dropdown-toggle dropdown-toggle-split';
+		dropdownArrow.setAttribute('data-toggle', 'dropdown');
+		dropdownArrow.setAttribute('aria-haspopup', 'true');
+		dropdownArrow.setAttribute('aria-expanded', 'false');
+
+		let srOnly = document.createElement('span');
+		srOnly.classList = 'sr-only';
+		srOnly.innerText = 'Toggle Dropdown';
+		dropdownArrow.appendChild(srOnly);
+		selectCategory.appendChild(dropdownArrow);
+
+		let dropdownMenu = document.createElement('div');
+		dropdownMenu.classList = 'dropdown-menu';
+
+		let inputGroup = document.createElement('div');
+		inputGroup.classList = 'input-group';
+
+		let searchSpan = document.createElement('span');
+		searchSpan.classList = 'm-1 tripleNineColor';
+
+		let icons = document.createElement('i');
+		icons.classList = 'search';
+		searchSpan.appendChild(icons);
+		inputGroup.appendChild(searchSpan);
+
+		let inputType = document.createElement('input');
+		inputType.classList = 'form-control w-75 mr-2';
+		inputType.placeholder = 'Search...';
+		inputType.type = 'text';
+		inputGroup.appendChild(inputType);
+
+		let incomeCategoriesHSix = document.createElement('h6');
+		incomeCategoriesHSix.classList = 'dropdown-header';
+		incomeCategoriesHSix.innerText = 'Income';
+		inputGroup.appendChild(incomeCategoriesHSix);
+
+		let incomeCategories = document.createElement('div');
+		incomeDropdownItems =  cloneElementAndAppend(incomeCategories, incomeDropdownItems);
+		inputGroup.appendChild(incomeCategories);
+
+		let dividerDD = document.createElement('div');
+		dividerDD.classList = 'dropdown-divider';
+		inputGroup.appendChild(dividerDD);
+
+		let expenseCategoriesHSix = document.createElement('h6');
+		expenseCategoriesHSix.classList = 'dropdown-header';
+		expenseCategoriesHSix.innerText = 'Income';
+		inputGroup.appendChild(expenseCategoriesHSix);
+
+		let expenseCategories = document.createElement('div');
+		expenseDropdownItems =  cloneElementAndAppend(expenseCategories, expenseDropdownItems);
+		inputGroup.appendChild(expenseCategories);
+		dropdownMenu.appendChild(inputGroup);
 		
 		// Table Cell 4
 		let descriptionTableRow = document.createElement('div');
@@ -497,7 +679,7 @@
 		amountDiv.tabIndex = 0;
 		
 	   // Append a - sign if it is an expense
-	   if(categoryMap[categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	   if(categoryMap[categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 		   amountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
 	   } else {
 		   amountDiv.innerHTML = currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
@@ -605,7 +787,7 @@
 	}
 	
 	// Disable Button if no check box is clicked and vice versa
-	$( "#transactionsTable" ).on( "click", ".number" ,function() {
+	$( "body" ).on( "click", ".number" ,function() {
 		let checkAllElementChecked = $("#checkAll:checked");
 		if(checkAllElementChecked.length > 0) {
 			// uncheck the check all if a check is clicked and if the check all is already clicked
@@ -803,7 +985,7 @@
 	}
 
 	// Show or hide multiple rows in the transactions table
-	$( "#transactionsTable" ).on( "click", ".toggle" ,function() {
+	$( "body" ).on( "click", ".toggle" ,function() {
 		let categoryId = lastElement(splitElement(this.id,'-'));
 		
 		if(er.checkIfInvalidCategory(categoryId)) {
@@ -828,7 +1010,7 @@
 	}
 	
 	// Catch the description when the user focuses on the description
-	$( "#transactionsTable" ).on( "focusin", ".tableRowForSelectCategory" ,function() {
+	$( "body" ).on( "focusin", ".tableRowForSelectCategory" ,function() {
 		let closestTableRow = $(this).parent().closest('div');
 		// Remove BR appended by mozilla
 		if(closestTableRow != null && closestTableRow.length > 0 && closestTableRow[0] != null) {
@@ -842,12 +1024,12 @@
 	});
 	
 	// Process the description to find out if the user has changed the description
-	$( "#transactionsTable" ).on( "focusout", ".tableRowForSelectCategory" ,function() {
+	$( "body" ).on( "focusout", ".tableRowForSelectCategory" ,function() {
 		$(this).parent().closest('div')[0].classList.remove('tableRowTransactionHighlight');
 	});
 	
 	// Change trigger on select
-	$( "#transactionsTable" ).on( "change", ".tableRowForSelectCategory" ,function() {
+	$( "body" ).on( "change", ".tableRowForSelectCategory" ,function() {
 		let categoryId = this.id;
 		let selectedTransactionId = splitElement(categoryId,'-');
 		let classList = $('#' + categoryId).length > 0 ? $('#' + categoryId)[0].classList : null;
@@ -912,7 +1094,7 @@
 	});
 	
 	// Catch the description when the user focuses on the description
-	$( "#transactionsTable" ).on( "focusin", ".transactionsTableDescription" ,function() {
+	$( "body" ).on( "focusin", ".transactionsTableDescription" ,function() {
 		// Remove BR appended by mozilla
 		$('.transactionsTableDescription br[type="_moz"]').remove();
 		descriptionTextEdited = trimElement(this.innerText);
@@ -920,14 +1102,14 @@
 	});
 	
 	// Process the description to find out if the user has changed the description
-	$( "#transactionsTable" ).on( "focusout", ".transactionsTableDescription" ,function() {
+	$( "body" ).on( "focusout", ".transactionsTableDescription" ,function() {
 		
 		postNewDescriptionToUserTransactions(this);
 		$(this).parent().closest('div').removeClass('tableRowTransactionHighlight');
 	});
 	
 	// Description - disable enter key and submit request (key press necessary for prevention of a new line)
-	$('#transactionsTable').on('keypress', '.transactionsTableDescription' , function(e) {
+	$('body').on('keypress', '.transactionsTableDescription' , function(e) {
 		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) {
 			document.activeElement.blur();
@@ -999,19 +1181,19 @@
 	}
 	
 	// Catch the amount when the user focuses on the transaction
-	$( "#transactionsTable" ).on( "focusin", ".amountTransactionsRow" ,function() {
+	$( "body" ).on( "focusin", ".amountTransactionsRow" ,function() {
 		amountEditedTransaction = trimElement(this.innerText);
 		$(this).parent().closest('div').addClass('tableRowTransactionHighlight');
 	});
 	
 	// Process the amount to find out if the user has changed the transaction amount (Disable async to update total category amount)
-	$( "#transactionsTable" ).on( "focusout", ".amountTransactionsRow" ,function() {
+	$( "body" ).on( "focusout", ".amountTransactionsRow" ,function() {
 		postNewAmountToUserTransactions(this);
 		$(this).parent().closest('div').removeClass('tableRowTransactionHighlight');
 	});
 	
 	// Amount - disable enter key and submit request (Key up for making sure that the remove button is shown)
-	$('#transactionsTable').on('keypress', '.amountTransactionsRow' , function(e) {
+	$('body').on('keypress', '.amountTransactionsRow' , function(e) {
 		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) {
 		  	e.preventDefault();
@@ -1059,7 +1241,7 @@
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
-			ajaxData.type = "POST";
+			ajaxData.type = "PATCH";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json;charset=UTF-8";
@@ -1200,7 +1382,7 @@
 	
 	
 	// Dynamically generated button click event
-	$( "#transactionsTable" ).on( "click", ".removeRowTransaction" ,function() {
+	$( "body" ).on( "click", ".removeRowTransaction" ,function() {
 		// Prevents the add amount event listener focus out from being executed
 		let id = lastElement(splitElement($(this).parent().closest('div').attr('id'),'-'));
 		// Remove the button and append the loader with fade out
@@ -1563,7 +1745,7 @@
     }
     
     // Add button to add the table row to the corresponding category
-	$( "#transactionsTable" ).on( "click", ".addTableRowListener" ,function(event) {
+	$( "body" ).on( "click", ".addTableRowListener" ,function(event) {
 		// Add small Material Spinner
 		 let divMaterialSpinner = document.createElement('div');
 		 divMaterialSpinner.classList = 'material-spinner-small d-inline-block';
@@ -1837,21 +2019,20 @@
 	}
 	
 	// Close Button functionality for category Modal
-	document.getElementById("categoryHeaderClose").addEventListener("click",function(e){
+	$('body').on('click', '#categoryHeaderClose' , function(e) {
 		closeCategoryModal();
 	},false);
 	
-	const plannedAmountCategoryModal = document.getElementById('plannedAmountCategoryModal');
-	plannedAmountCategoryModal.addEventListener("focusin",function(){
+	$('body').on('focusin', '#plannedAmountCategoryModal' , function(e) {
 		userUpdateBudgetCached = trimElement(this.innerText);
 	},false);
 	
-	plannedAmountCategoryModal.addEventListener("focusout",function(){
+	$('body').on('focusout', '#plannedAmountCategoryModal' , function(e) {
 		userUpdatedBudget(this);
 	},false);
 	
 	// Budget Amount - disable enter key and submit request
-	plannedAmountCategoryModal.addEventListener('keyup', function(e) {
+	$('body').on('keyup', '#plannedAmountCategoryModal' , function(e) {
 		  let keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) { 
 		    e.preventDefault();
@@ -1961,35 +2142,6 @@
 		
 	}
 	
-	// Date Picker
-	// On click month (UNBIND other click events)
-	$('.monthPickerMonth').unbind('click').click(function() {
-		// Month picker is current selected then do nothing
-		if(this.classList.contains('monthPickerMonthSelected')) {
-			return;
-		}
-
-		let transactionTable = document.getElementById('transactionsTable');
-		
-		if(transactionTable == null) {
-			return;
-		}
-		
-		// Replace Transactions Table with empty spinner
-		replaceTransactionsWithMSpinner();
-		replacePieChartWithMSpinner();
-		
-		// Set chosen Date
-		er.setChosenDateWithSelected(this);
-		
-		// Call transactions
-		fetchJSONForTransactions();
-
-		// Call Account / Recent Transactions
-		populateAccountOrRecentTransactionInfo();
-		
-	});
-	
 	// Replace transactions table with empty spinner
 	function replaceTransactionsWithMSpinner() {
 		// Replace Transactions Table
@@ -2038,33 +2190,6 @@
 		let chartFinPosition = document.getElementById('chartFinancialPosition');
 		chartFinPosition.innerHTML = '<div class="material-spinner"></div>';
 	}
-
-	// Replace currentCurrencySymbol with currency symbol
-	replaceWithCurrency();
-
-	/**
-	*  Add Functionality Generic + Btn
-	**/
-
-	// Register Tooltips
-	let ttinit = $("#addFncTT");
-	ttinit.attr('data-original-title', 'Add Transactions')
-	ttinit.tooltip({
-		delay: { "show": 300, "hide": 100 }
-    });
-
-    // Generic Add Functionalitys
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
-    $(genericAddFnc).unbind('click').click(function () {
-    	genericAddFnc.classList.toggle('d-none');
-		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
-			// If length > 0 then change the add button to add
-			popup.showSwal('warning-message-and-confirmation');
-		} else {
-			$('#GSCCModal').modal('toggle');
-		}  
-	});
 
 	/*
 	 * Populate Recent transactions ()Aggregated by account)
@@ -2245,7 +2370,7 @@
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			circleWrapperDiv.appendChild(creditCardSvg());
 		} else {
 			circleWrapperDiv.appendChild(plusRawSvg());
@@ -2274,7 +2399,7 @@
 			let transactionAmount = document.createElement('div');
 		
 			// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
@@ -2290,7 +2415,7 @@
 			let transactionAmount = document.createElement('div');
 			
 			// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
@@ -2417,7 +2542,7 @@
 	*/
 
 	// Click on sort by creation date
-	document.getElementById('creationDateSortBy').addEventListener("click",function(e){
+	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
 		// Close the category Modal
@@ -2464,7 +2589,7 @@
 	});
 
 	// Click on sort by creation date
-	document.getElementById('categorySortBy').addEventListener("click",function(e){
+	$('body').on('click', '#categorySortBy' , function(e) {
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Category';
 		// hide the recent transactions
@@ -2494,7 +2619,7 @@
 	});
 
 	// Sorts the table by aggregating transactions by account
-	document.getElementById('accountSortBy').addEventListener("click",function(e){
+	$('body').on('click', '#accountSortBy' , function(e) {
 		// Close the category Modal
 		closeCategoryModal();
 		// Uncheck all the checked rows
@@ -2641,51 +2766,50 @@
     	}
 		
 		// Fetch all bank account information
-		er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-			let accountAggreDiv = document.getElementById('recTransAndAccTable');
-			let accHeadFrag = document.createDocumentFragment();
-	  		// Iterate all bank accounts
-  			for(let i = 0, length = bankAccountList.length; i < length; i++) {
-  				let bankAcc = bankAccountList[i];
-  				// If the ID corresponding wiht the bank account is not populated then
-  				if(includesStr(accHeadersToReplace, bankAcc.id.toString())) {
-  					let accHeading = document.getElementById('accountTitle-' + bankAcc.id);
-  					let accountBalance = document.getElementById('accountBalance-' + bankAcc.id);
-  					// Replace HTML with Empty
-	       			while (accHeading.firstChild) {
-	       				accHeading.removeChild(accHeading.firstChild);
-	       			}
-  					accHeading.innerText = bankAcc.bankAccountName;
-  					if(bankAcc.accountBalance < 0) { 
-  						accountBalance.classList.add('expenseCategory');
-  						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc.accountBalance), currentUser.locale);
-  					} else { 
-  						accountBalance.classList.add('incomeCategory');
-  						accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
-  					}
-  				} else {
-  					// A new header for the rest
-  					let accountHeaderNew = buildAccountHeader(bankAcc.id);
-  					accountHeaderNew.getElementById('accountTitle-' + bankAcc.id).innerText = bankAcc.bankAccountName;
-  					let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.id);
-  					if(bankAcc.accountBalance < 0) { 
-  						accBal.classList.add('expenseCategory');
-  						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc.accountBalance), currentUser.locale);
-  					} else { 
-  						accBal.classList.add('incomeCategory');
-  						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc.accountBalance, currentUser.locale);
-  					} 
-  					// Append Empty Table to child
-  					accountHeaderNew.getElementById('accountSB-' + bankAcc.id).appendChild(buildEmptyAccountEntry(bankAcc.id));
-  					// Append to the transaction view
-  					accHeadFrag.appendChild(accountHeaderNew);
-  				}
-  			}
+		let accountAggreDiv = document.getElementById('recTransAndAccTable');
+		let accHeadFrag = document.createDocumentFragment();
+  		// Iterate all bank accounts
+			for(let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+				let bankAcc = window.allBankAccountInfoCache[i];
+				// If the ID corresponding wiht the bank account is not populated then
+				if(includesStr(accHeadersToReplace, bankAcc.accountId)) {
+					let accHeading = document.getElementById('accountTitle-' + bankAcc.accountId);
+					let accountBalance = document.getElementById('accountBalance-' + bankAcc.accountId);
+					// Replace HTML with Empty
+       			while (accHeading.firstChild) {
+       				accHeading.removeChild(accHeading.firstChild);
+       			}
+					accHeading.innerText = bankAcc['bank_account_name'];
+					if(bankAcc['account_balance'] < 0) { 
+						accountBalance.classList.add('expenseCategory');
+						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
+					} else { 
+						accountBalance.classList.add('incomeCategory');
+						accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
+					}
+				} else {
+					// A new header for the rest
+					let accountHeaderNew = buildAccountHeader(bankAcc.accountId);
+					accountHeaderNew.getElementById('accountTitle-' + bankAcc.accountId).innerText = bankAcc['bank_account_name'];
+					let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
+					if(bankAcc['account_balance'] < 0) { 
+						accBal.classList.add('expenseCategory');
+						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
+					} else { 
+						accBal.classList.add('incomeCategory');
+						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
+					} 
+					// Append Empty Table to child
+					accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyAccountEntry(bankAcc.accountId));
+					// Append to the transaction view
+					accHeadFrag.appendChild(accountHeaderNew);
+				}
+			}
 
-  			// If the document fragment contains a child
-  			if(accHeadFrag.firstElementChild) {
-  				let clickOnHeader = false;
-  				// If Account Table is hidden then add d-none
+			// If the document fragment contains a child
+			if(accHeadFrag.firstElementChild) {
+				let clickOnHeader = false;
+				// If Account Table is hidden then add d-none
 				if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
 					!document.getElementById('recentTransactions').classList.contains('d-none')) {
 					let accTableInfo = accHeadFrag.getElementsByClassName('accountInfoTable');
@@ -2701,16 +2825,14 @@
 				}
 
 				// Append the account transactions to the table
-  				accountAggreDiv.appendChild(accHeadFrag);
+					accountAggreDiv.appendChild(accHeadFrag);
 
-  				// Simulate a click on the first table heading (Show Account Modal)
+					// Simulate a click on the first table heading (Show Account Modal)
 				let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
 				if(accountTableHeaders.length > 0 && clickOnHeader) {
 					accountTableHeaders.get(0).click();
 				}
-  			}
-
-        });
+			}
 	}
 
 	// Populate Empty account entry

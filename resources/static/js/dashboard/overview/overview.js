@@ -6,6 +6,10 @@
 	let categoryTotalMapCache = {};
 	// OVERVIEW CONSTANTS
 	const OVERVIEW_CONSTANTS = {};
+	// SECURITY: Defining Immutable properties as constants
+	Object.defineProperties(OVERVIEW_CONSTANTS, {
+		'yearlyOverview': { value: 'One Year Overview', writable: false, configurable: false },
+	});
 	// Lifetime Income Transactions cache
 	let liftimeIncomeTransactionsCache = {};
 	// Lifetime Expense Transactions Cache
@@ -29,13 +33,116 @@
 	/**
 	* Get Overview
 	**/
+	/**
+	 * START loading the page
+	 * 
+	 */
+	let currentPageInCookie = er.getCookie('currentPage');
+	if(isEqual(currentPageInCookie,'overviewPage')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			populateCurrentPage('overviewPage');
+		}
+	}
+	
+	let overviewPage = document.getElementById('overviewPage');
+	if(isNotEmpty(overviewPage)) {
+		overviewPage.addEventListener("click",function(e){
+		 	populateCurrentPage('overviewPage');
+		});
+	}
+
+	function populateCurrentPage(page) {
+		er.refreshCookiePageExpiry(page);
+		er.fetchCurrentPage('/overview', function(data) {
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            /**
+			* Get Overview
+			**/
+			fetchOverview();
+			populateOverviewPage();
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Overview';
+		});
+	}
+
+	function populateOverviewPage() {
+		/**
+		*  Add Functionality Generic + Btn
+		**/
+
+	    // Generic Add Functionality
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    genericAddFnc.classList.add('d-none');
+
+		/**
+		 * Date Picker
+		 */
+		
+		// Date Picker on click month
+		$('.monthPickerMonth').unbind('click').click(function() {
+			// Month picker is current selected then do nothing
+			if(this.classList.contains('monthPickerMonthSelected')) {
+				return;
+			}
+			
+			let recentTransactionsDiv = document.getElementsByClassName('recentTransactionCard');
+
+			// If other pages are present then return this event
+			if(recentTransactionsDiv.length == 0) {
+				return;
+			}
+			
+			// Reset the optimizations and recent transactions tab
+			let optimizationsModule = document.getElementById('optimizations');
+			optimizationsModule.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			
+			let recentTransactionsTab = document.getElementById('recentTransactions');
+			recentTransactionsTab.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			
+			// Set chosen date
+			er.setChosenDateWithSelected(this);
+			
+			// Populate Recent transactions
+			populateRecentTransactions();
+			
+			// Fetch transaction total and Optimizations (Populate Category Breakdown chart if open)
+			fetchCategoryTotalForTransactions();
+			
+		});
+	}
+
 	function fetchOverview() {
+		// Add highlighted element to the income
+		document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
+		// Dynamically generate year
+		dynamicYearGeneration();
+		
+		let budgetDivFragment = document.createDocumentFragment();
+
+		let values = {};
+		if(isNotEmpty(window.currentUser.walletId)) {
+			values.walletId = window.currentUser.walletId;
+			values.userId = window.currentUser.financialPortfolioId;
+		} else {
+			values.userId = window.currentUser.financialPortfolioId;
+		}
+		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
+		values.startsWithDate = new Date(y, m);
+		values.endsWithDate = new Date(y, m + 1, 0);
+
 		// Ajax Requests on Error
 		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + TRANSACTIONS_CONSTANTS.firstWalletIdParam + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-		ajaxData.onSuccess = function(result) {
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = 'POST';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl ;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(result) {
+
+   			// Dates Cache
+        	window.datesCreated = result.Date;
         	  
 			er_a.populateBankInfo(result.BankAccount);
 
@@ -44,21 +151,21 @@
 	         /*
 			 * Populate Overview
 			 */ 
-			populateRecentTransactions();
-			// Fetch transaction total 
-			fetchCategoryTotalForTransactions();
-			populateIncomeAverage();
+			populateRecentTransactions(result.Transaction);
+			populateIncomeAverage(result.averageIncome);
 			overviewChartMonthDisplay();
-			populateExpenseAverage(averageExpense);
+			populateExpenseAverage(result.averageExpense);
 			// Upon refresh call the income overview chart
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
-			replaceWithCurrency();	
+			replaceWithCurrency(result.Wallet);
 			/**
 			 * Populate total Asset, Liability & Networth
 			 */
 			
-			populateTotalAssetLiabilityAndNetworth();
+			populateTotalAssetLiabilityAndNetworth(result.Wallet);
+			// Fetch transaction total 
+			fetchCategoryTotalForTransactions(window.defaultCategories, result.Budget);
 		},
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
@@ -69,20 +176,23 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
-            success: ajaxData.onSuccess, 
+            dataType: ajaxData.dataType,
+          	contentType: ajaxData.contentType,
+          	data : ajaxData.values,
+            success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});
 	}
 	
 	// Populate Income Average
-	function populateTotalAssetLiabilityAndNetworth() {
+	function populateTotalAssetLiabilityAndNetworth(wallet) {
 			
 		// Liability Population
-		let liability = totalAssetAndLiab.liability;
+		let liability = wallet['total_debt_balance'];
 		// Asset Population
-		let asset = totalAssetAndLiab.asset;
+		let asset = wallet['total_asset_balance'];
 		// Net worth population
-		let networth = asset + liability;
+		let networth = wallet['wallet_balance'];
 		// Minus sign for asset
 		let minusSign = '';
 		// Asset less than 0
@@ -155,7 +265,7 @@
 		// Convert date from UTC to user specific dates
 		let creationDateUserRelevant = new Date(userTransaction.createDate);
 		// Category Map 
-		let categoryMapForUT = categoryMap[userTransaction.categoryId];
+		let categoryMapForUT = categoryMap[userTransaction.category];
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = 'recentTransaction-' + userTransaction.transactionId;
@@ -168,7 +278,7 @@
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT';
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			circleWrapperDiv.appendChild(creditCardSvg());
 		} else {
 			circleWrapperDiv.appendChild(plusRawSvg());
@@ -194,7 +304,7 @@
 		let transactionAmount = document.createElement('div');
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
@@ -315,7 +425,7 @@
 	/**
 	 * Optimizations Functionality
 	 */
-	function fetchCategoryTotalForTransactions(categoryTotalMap) {
+	function fetchCategoryTotalForTransactions(categoryTotalMap, userBudgetList) {
     	// Store the result in a cache
     	categoryTotalMapCache = categoryTotalMap;
     	
@@ -325,33 +435,28 @@
     	}
     	
     	// Populate Optimization of budgets
-    	populateOptimizationOfBudget();
+    	populateOptimizationOfBudget(userBudgetList);
 	}
 	
 	// Populate optimization of budgets
 	function populateOptimizationOfBudget(userBudgetList) {
     	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
     	let populateOptimizationFragment = document.createDocumentFragment();
-    	let dataKeySet = Object.keys(userBudgetList);
-    	for(let count = 0, length = dataKeySet.length; count < length; count++){
-        	let key = dataKeySet[count];
-      	  	let userBudgetValue = userBudgetList[key];
+    	for(let count = 0, length = userBudgetList.length; count < length; count++){
+        	let userBudgetValue = userBudgetList[count];
       	  
       	  	if(isEmpty(userBudgetValue)) {
       	  		continue;
       	  	}
       	  	
       	  	// Store the values in a cache
-      	  	userBudgetCache[userBudgetValue.categoryId] = userBudgetValue;
+      	  	userBudgetCache[userBudgetValue.budgetId] = userBudgetValue;
       	  	
-      	    let categoryTotal = categoryTotalMapCache[userBudgetValue.categoryId];
       	    // Check for Overspent budget
-      	    if(isNotEmpty(categoryTotal) && categoryTotal > userBudgetValue.planned) {
-      	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, categoryTotal));
-      	    } else if (categoryTotal < userBudgetValue.planned) {
-      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned - categoryTotal , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
-      	    } else if (isEmpty(categoryTotal)) {
-      	    	userBudgetWithFund[userBudgetValue.categoryId] = { 'amount' : userBudgetValue.planned , 'parentCategory' : categoryMap[userBudgetValue.categoryId].parentCategory };
+      	    if(userBudgetValue.used > userBudgetValue.planned) {
+      	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, userBudgetValue.used));
+      	    } else if (userBudgetValue.used <= userBudgetValue.planned) {
+      	    	userBudgetWithFund[userBudgetValue.category] = { 'amount' : userBudgetValue.planned - userBudgetValue.used , 'parentCategory' : categoryMap[userBudgetValue.category].type };
       	    }
      	}
     	
@@ -393,7 +498,7 @@
 		
 		// Budget Optimization Row
 		let tableBudgetOptimization = document.createElement('div');
-		tableBudgetOptimization.id = 'budgetOptimization-' + userBudget.categoryId;
+		tableBudgetOptimization.id = 'budgetOptimization-' + userBudget.budgetId;
 		tableBudgetOptimization.classList = 'budgetOptimization d-table-row';
 		
 		// Table Cell 1
@@ -412,7 +517,7 @@
 		let inputFormCheckInput = document.createElement('input');
 		inputFormCheckInput.className = 'number form-check-input';
 		inputFormCheckInput.type = 'checkbox';
-		inputFormCheckInput.innerHTML = userBudget.categoryId;
+		inputFormCheckInput.innerHTML = userBudget.budgetId;
 		inputFormCheckInput.tabIndex = -1;
 		
 		let formCheckSignSpan = document.createElement('span');
@@ -431,7 +536,7 @@
 		// Table Cell 2 
 		let userBudgetNameDiv = document.createElement('div');
 		userBudgetNameDiv.classList = 'font-weight-bold categoryNameBO d-table-cell';
-		userBudgetNameDiv.innerText = categoryMap[userBudget.categoryId].categoryName;
+		userBudgetNameDiv.innerText = categoryMap[userBudget.category].categoryName;
 		tableBudgetOptimization.appendChild(userBudgetNameDiv);
 		
 		// Table Cell 3 
@@ -503,7 +608,7 @@
 	}
 	
 	// Click optimization Button functionality
-	document.getElementById("optimizeButton").addEventListener("click",function(){
+	$('body').on('click', '#optimizeButton' , function(e) {
 		// disable the button
 		this.setAttribute('disabled','disabled');
 		this.classList.toggle('d-none');
@@ -549,7 +654,7 @@
         	  for(let count = 0, length = dataKeys.length; count < length; count++) {
         		  let categoryIdKey = dataKeys[count];
         		  let budgetWithFund = userBudgetWithFund[categoryIdKey];
-        		  if(isNotEmpty(budgetWithFund) && categoryObject.parentCategory == budgetWithFund.parentCategory) {
+        		  if(isNotEmpty(budgetWithFund) && categoryObject.type == budgetWithFund.type) {
         			  let totalOptimizationValue = 0;
         			  
         			  if(budgetWithFund.amount == 0 || totalOptimization == 0) {
@@ -739,7 +844,7 @@
 	}
 	
 	// Select all check boxes for Transactions
-	document.getElementById("checkAll").addEventListener("click",function(){
+	$('body').on('click', '#checkAll' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		let allCheckedOptimizations = $(".number:checked");
 		
@@ -751,7 +856,7 @@
 	});
 	
 	// Click budget row
-	$('.optimizationBudgetAndGoal').on('click', '.budgetOptimization', function() {
+	$('body').on('click', '.budgetOptimization', function() {
 		// Check the row as selected / unselected
 		let checkboxInElem = this.getElementsByClassName('number');
 		checkboxInElem = $(checkboxInElem);
@@ -777,12 +882,11 @@
 	
 	// Populate Income Average
 	function populateIncomeAverage(averageIncome) {
-    	let avIncomeAm = formatNumber(averageIncome, currentUser.locale);
     	if(isEmpty(averageIncome)) {
-    		avIncomeAm = 0.00;
+    		averageIncome = 0.00;
     	}
     	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageIncomeAmount'), 0, avIncomeAm, currentCurrencyPreference ,200);
+    	animateValue(document.getElementById('averageIncomeAmount'), 0, averageIncome, currentCurrencyPreference ,200);
 	}
 	
 	/**
@@ -791,13 +895,11 @@
 	
 	// Populate Expense Average
 	function  populateExpenseAverage(averageExpense) {
-		
-    	let avExpenseAm = formatNumber(averageExpense, currentUser.locale);
-    	if(isEmpty(avExpenseAm)) {
-    		avExpenseAm = 0.00;
+    	if(isEmpty(averageExpense)) {
+    		averageExpense = 0.00;
     	}
     	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageExpenseAmount'), 0, avExpenseAm, currentCurrencyPreference ,200);
+    	animateValue(document.getElementById('averageExpenseAmount'), 0, averageExpense, currentCurrencyPreference ,200);
 	}
 	
 	/**
@@ -805,40 +907,39 @@
 	 * 
 	 */ 
 	
-	// Add highlighted element to the income
-	document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
-	
-	function incomeOrExpenseOverviewChart(incomeTotalParameter) {
+	function incomeOrExpenseOverviewChart(incomeTotalParameter, dateAndAmountAsList) {
+		 	
+	 	// Income or Expense Chart Options
+	 	let incomeOrExpense = '';
+	 	
+ 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
+ 			// Store it in a cache
+        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
+        	// Make it reasonably immutable
+        	Object.freeze(liftimeIncomeTransactionsCache);
+        	Object.seal(liftimeIncomeTransactionsCache);
         	
-    	calcAndBuildLineChart(dateAndAmountAsList);
-		 	
-		 	// Income or Expense Chart Options
-		 	let incomeOrExpense = '';
-		 	
-	 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
-	 			// Store it in a cache
-	        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
-	        	// Make it reasonably immutable
-	        	Object.freeze(liftimeIncomeTransactionsCache);
-	        	Object.seal(liftimeIncomeTransactionsCache);
-	        	
-	        	incomeOrExpense ='Income';
-	        	
-	 		}  else {
-	 			// Store it in a cache
-	        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
-	        	// Make it reasonably immutable
-	        	Object.freeze(liftimeExpenseTransactionsCache);
-	        	Object.seal(liftimeExpenseTransactionsCache);
-	        	
-	 			incomeOrExpense = 'Expense';
-	 		}
-		 	
-		 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
+        	incomeOrExpense ='Income';
+
+        	calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
+        	
+ 		}  else {
+ 			// Store it in a cache
+        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
+        	// Make it reasonably immutable
+        	Object.freeze(liftimeExpenseTransactionsCache);
+        	Object.seal(liftimeExpenseTransactionsCache);
+        	
+ 			incomeOrExpense = 'Expense';
+
+ 			calcAndBuildLineChart(dateAndAmountAsList, 'expense_total');
+ 		}
+	 	
+	 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
 	}
 	
 	// Calculate and build line chart for income / expense
-	function calcAndBuildLineChart(dateAndAmountAsList) {
+	function calcAndBuildLineChart(dateAndAmountAsList, totalAm) {
 		let labelsArray = [];
 		let seriesArray = [];
 		
@@ -855,20 +956,18 @@
     		return;
     	}
     	
-    	let resultKeySet = Object.keys(dateAndAmountAsList);
     	// If year selected in IYP then 
     	let countValue = 0;
     	if(!selectedYearIYPCache) {
     		// One year of data at a time;
-        	countValue = resultKeySet.length > 12 ? (resultKeySet.length - 12) : 0;
+        	countValue = dateAndAmountAsList.length > 12 ? (dateAndAmountAsList.length - 12) : 0;
     	}
     	
-    	for(let countGrouped = countValue, length = resultKeySet.length; countGrouped < length; countGrouped++) {
-    		let dateKey = resultKeySet[countGrouped];
-         	let userAmountAsListValue = dateAndAmountAsList[dateKey];
+    	for(let countGrouped = countValue, length = dateAndAmountAsList.length; countGrouped < length; countGrouped++) {
+    		let dateItem = dateAndAmountAsList[countGrouped];
 
          	// Convert the date key as date
-         	let dateAsDate = new Date(dateKey);
+         	let dateAsDate = new Date(lastElement(splitElement(dateItem.dateId,'#')));
          	
          	// If selected year is present
          	if(selectedYearIYPCache) {
@@ -876,7 +975,7 @@
          			labelsArray.push(months[dateAsDate.getMonth()].slice(0,3) + " '" + dateAsDate.getFullYear().toString().slice(-2));
                  	
                  	// Build the series array with total amount for date
-                 	seriesArray.push(userAmountAsListValue);
+                 	seriesArray.push(dateItem[totalAm]);
          		}
          		// If year is valid then skip the next lines in for loop
          		continue;
@@ -885,7 +984,7 @@
          	labelsArray.push(months[dateAsDate.getMonth()].slice(0,3) + " '" + dateAsDate.getFullYear().toString().slice(-2));
          	
          	// Build the series array with total amount for date
-         	seriesArray.push(userAmountAsListValue);
+         	seriesArray.push(dateItem[totalAm]);
          	
     	}
     	
@@ -925,7 +1024,7 @@
 	}
 	
 	// Click the overview card items
-	$('.overviewEntryRow').click(function(){
+	$('body').on('click', '.overviewEntryRow', function() {
 		// Append spinner
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 		let materialSpinnerDocumentFragment = document.createDocumentFragment();
@@ -1267,7 +1366,7 @@
 			let categoryId = categoryKeys[count];
 			let categoryTotal = categoryTotalMapCache[categoryId];
 			let categoryObject = categoryMap[categoryId];
-			if(categoryObject.parentCategory == incomeCategory) {
+			if(categoryObject.type == incomeCategory) {
 				// Add the category total to absolute total
 				absoluteTotal += categoryTotal;
 			}
@@ -1279,7 +1378,7 @@
 			let categoryTotal = categoryTotalMapCache[categoryId];
 			
 			let categoryObject = categoryMap[categoryId];
-			if(categoryObject.parentCategory == incomeCategory) {
+			if(categoryObject.type == incomeCategory) {
 				let percentageOfTotal = (categoryTotal / absoluteTotal) * 100;
 				// If the total is greater than 5 % then print it separate else accumulate it with others
 				if(percentageOfTotal > 5) {
@@ -1394,13 +1493,11 @@
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-
-		if(isNotEmpty(dateAndTimeAsList)) {
-			calcAndBuildLineChart(dateAndTimeAsList);
-		} else if(incomeChart) {
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam);
+		
+		if(incomeChart) {
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, dateAndTimeAsList);
 		} else {
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.expenseTotalParam);
+			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.expenseTotalParam, dateAndTimeAsList);
 		}
 		
 	}
@@ -1410,42 +1507,6 @@
 		let chosenChartLabel = document.getElementsByClassName('chosenChart');
 		chosenChartLabel[0].innerText = chosenChartText;
 	}
-	
-	/**
-	 * Date Picker
-	 */
-	
-	// Date Picker on click month
-	$('.monthPickerMonth').unbind('click').click(function() {
-		// Month picker is current selected then do nothing
-		if(this.classList.contains('monthPickerMonthSelected')) {
-			return;
-		}
-		
-		let recentTransactionsDiv = document.getElementsByClassName('recentTransactionCard');
-
-		// If other pages are present then return this event
-		if(recentTransactionsDiv.length == 0) {
-			return;
-		}
-		
-		// Reset the optimizations and recent transactions tab
-		let optimizationsModule = document.getElementById('optimizations');
-		optimizationsModule.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-		
-		let recentTransactionsTab = document.getElementById('recentTransactions');
-		recentTransactionsTab.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-		
-		// Set chosen date
-		er.setChosenDateWithSelected(this);
-		
-		// Populate Recent transactions
-		populateRecentTransactions();
-		
-		// Fetch transaction total and Optimizations (Populate Category Breakdown chart if open)
-		fetchCategoryTotalForTransactions();
-		
-	});
 	
 	/**
 	 * Overview Chart Month Display
@@ -1469,7 +1530,7 @@
 	/**
 	 * Year Picker
 	 */
-	document.getElementById("chartDisplayTitle").addEventListener("click",function(){
+	$('body').on('click', '#chartDisplayTitle' , function(e) {
 		// If the doughnut chart is open then return
 		if(doughnutBreakdownOpen) {
 			return;
@@ -1492,9 +1553,6 @@
 		// Convert SVG to upward arrow
 		elem.lastElementChild.classList.toggle('transformUpwardArrow');
 	}
-	
-	// Dynamically generate year
-	dynamicYearGeneration();
 	
 	function dynamicYearGeneration() {
 		let yearPickerParent = document.getElementsByClassName('yearPicker');
@@ -1547,7 +1605,7 @@
 	}
 	
 	// Click the up button for year picker
-	document.getElementById("monthPickerUp").addEventListener("click",function(){
+	$('body').on('click', '#monthPickerUp' , function(e) {
 		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
 		removeSelectedIYP();
 		let minusFourDateCache = previousDateYearPicker-5;
@@ -1566,7 +1624,7 @@
 	});
 	
 	// Click the down button for year picker
-	document.getElementById("monthPickerDown").addEventListener("click",function(){
+	$('body').on('click', '#monthPickerDown' , function(e) {
 		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
 		removeSelectedIYP();
 		let plusFourDateCache = nextDateYearPicker+4;
@@ -1608,7 +1666,7 @@
 	}
 	
 	// On click year in year picker
-	$('.yearPicker').on('click', '.yearPickerDisplay', function() {
+	$('body').on('click', '.yearPickerDisplay', function() {
 		// Remove the selected in year picker
 		removeSelectedIYP();
 		// Fetch the year and store in Cache
@@ -1656,14 +1714,6 @@
 		}
 	}
 
-	/**
-	*  Add Functionality Generic + Btn
-	**/
-
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList.add('d-none');
-
     /**
     * Build Total Assets / liability
     **/
@@ -1675,29 +1725,21 @@
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
 
-		if(isNotEmpty(window.allBankAccountInfoCache)) {
-			buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, arrayOfAccCat);
-		} else {
-			// Fetch all bank account information
-			er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-				buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat);
-			});
-		}
+		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, arrayOfAccCat);
     }
 
     // Build Barchart For Asset Or Debt
     function buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat) {
     	let labelsArray = [];
 		let seriesArray = [];
-		window.allBankAccountInfoCache = bankAccountList;
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
 			let bankAcc = bankAccountList[i];
 			// Ensure if the asset type matches the bank account
 			if(includesStr(arrayOfAccCat, bankAcc.accountType)) {
-				labelsArray.push(bankAcc.bankAccountName);
-				seriesArray.push(bankAcc.accountBalance);	
+				labelsArray.push(bankAcc['bank_account_name']);
+				seriesArray.push(bankAcc['account_balance']);	
 			}
     	}
 
@@ -1811,7 +1853,7 @@
 
 
         //start animation for the Emails Subscription Chart
-        md.startAnimationForBarChart(simpleBarChart);
+        er.startAnimationForBarChart(simpleBarChart);
 
     }
 
@@ -1825,14 +1867,7 @@
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
 
-		if(isNotEmpty(window.allBankAccountInfoCache)) {
-			buildchartForNetworth(window.allBankAccountInfoCache);
-		} else {
-			// Fetch all bank account information
-			er_a.fetchAllBankAccountInfo(function(bankAccountList) {
-				buildchartForNetworth(bankAccountList);
-			});
-		}
+		buildchartForNetworth(window.allBankAccountInfoCache);
     }
 
 
@@ -1841,13 +1876,12 @@
     	let labelsArray = [];
 		let seriesArray = [];
 		let seriesArrayDebt = [];
-		window.allBankAccountInfoCache = bankAccountList;
 		
 		// Iterate all bank accounts
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
 			let bankAcc = bankAccountList[i];
-			labelsArray.push(bankAcc.bankAccountName);
-			seriesArray.push(bankAcc.accountBalance);	
+			labelsArray.push(bankAcc['bank_account_name']);
+			seriesArray.push(bankAcc['account_balance']);	
     	}
 
     	let dataSimpleBarChart = {

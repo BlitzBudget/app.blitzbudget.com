@@ -4,7 +4,7 @@
 	<title>
 	    Income
 	  </title>
-	  <link href="/css/transactions.all.min.css" rel="stylesheet preload" as="style">
+    <link href="/css/transactions.min.css" rel="stylesheet preload" as="style">
 </head>
 <body class="income-dashboard">
   <div class="content">
@@ -322,12 +322,24 @@
                         <div class="input-group-prepend">
                           <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction category">category</i></div>
                         </div>
-                        <select id="categoryOptions" name="categoryOptions" class="form-control" data-toggle="dropdown" data-style="btn btn-primary" aria-haspopup="true" aria-expanded="false" data-width="auto" data-container="body" data-size="5">
-    				      				<optgroup id="expenseSelection" label="Expenses">
-    				      				</optgroup>
-    				      				<optgroup id="incomeSelection" label="Income">
-    				      				</optgroup>
-    				      			</select>
+                        <div id="categoryOptions" class="btn-group btnGroup-1">
+                          <button class="btn btn-secondary w-md-15 w-8" disabled="">Bills & Fees</button>
+                          <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div class="dropdown-menu">
+                            <!-- Drop down dynamic load -->
+                            <div class="input-group">
+                              <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+                              <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
+                              <h6 class="dropdown-header">Expense</h6>
+                              <div id="expenseSelection" class="w-100"></div>
+                              <div class="dropdown-divider"></div>
+                              <h6 class="dropdown-header">Income</h6>
+                              <div id="incomeSelection" class="w-100"></div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div class="form-group bmd-form-group">

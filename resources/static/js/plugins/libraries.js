@@ -77,6 +77,10 @@ function includesStr(arr, val){
 	return isEmpty(arr) ? null : arr.includes(val); 
 }
 
+function notIncludesStr(arr, val){
+	return isEmpty(arr) ? null : arr.includes(val); 
+}
+
 function fetchFirstElement(arr){
 	if(Array.isArray(arr)){
 		return isEmpty(arr) ? null : arr[0];
@@ -149,18 +153,31 @@ function calcPage() {
 }
 
 // Replace currentCurrencySymbol with currency
-function replaceWithCurrency() {
+function replaceWithCurrency(wallet) {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
-	let chosenCurrency = currentUser.currency;
+
+	if(isNotEmpty(wallet) && isEmpty(currentUser.walletCurrency)) {
+		window.cToS = {};
+		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+		for(let i = 0, l = curToSym.length; i < l; i++) {
+			cToS[curToSym[i].currency] = curToSym[i].symbol;
+		}
+		window.currentUser.walletId = wallet[0].walletId;
+		window.currentUser.walletCurrency = cToS[wallet[0].currency];
+        // We save the item in the localStorage.
+        localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
+	}
 
 	// Wallet Currency has first preference
 	if(currentUser.walletCurrency) {
 		chosenCurrency = currentUser.walletCurrency;
+		for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
+			currencySymbolDivs[i].innerText = chosenCurrency;
+		}
 	}
 
-	for(let i=0, len = currencySymbolDivs.length|0; i < len; i++) {
-		currencySymbolDivs[i].innerText = chosenCurrency;
-	}
+	// update currency
+    window.currentCurrencyPreference = window.currentUser.walletCurrency;
 }
 
 function getAllUrlParams(url) {
@@ -232,16 +249,11 @@ function getAllUrlParams(url) {
 
 // Manage errors
 function manageErrors(thrownError, message, ajaxData) {
-	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-		showNotification(message,window._constants.notification.error);
-	} else if(isNotEmpty(thrownError.message)) {
-		showNotification(thrownError.message,window._constants.notification.error);
-	} else {
-		let responseError = JSON.parse(thrownError.responseText);
-   	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
-    		er.sessionExpiredSwal(ajaxData);
-    	}	
-	}
+	showNotification(message,window._constants.notification.error);
+	let responseError = JSON.parse(thrownError.responseText);
+	 	if(isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")){
+		er.sessionExpiredSwal(ajaxData);
+	}	
 }
 
 

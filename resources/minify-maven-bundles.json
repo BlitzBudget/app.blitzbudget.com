@@ -8,25 +8,53 @@
                 "/dashboard/custom-dashboard.css",
                 "/fragments/login-popup.css",
                 "/dashboard/build/material-dashboard.css",
+                "/dashboard/build/bootstrap-select.css",
                 "/dashboard/module/account.css",
                 "/dashboard/support/modal.css"
             ]
         },
         {
             "type": "css",
-            "name": "transactions.all.css",
+            "name": "wallets.css",
+            "files": [
+                "/dashboard/module/wallet.css"
+            ]
+        },
+        {
+            "type": "css",
+            "name": "settings.css",
+            "files": [
+                "/dashboard/module/settings.css"
+            ]
+        },
+        {
+            "type": "css",
+            "name": "profile.css",
+            "files": [
+                "/dashboard/module/profile.css"
+            ]
+        },
+        {
+            "type": "css",
+            "name": "overview.css",
+            "files": [
+                "/dashboard/overview/overview.css"
+            ]
+        },
+        {
+            "type": "css",
+            "name": "transactions.css",
             "files": [
                 "/dashboard/income/transactions.css",
-                "/dashboard/build/bootstrap-select.css",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.css",
                 "/dashboard/income/transactions/accountModal.css"
             ]
         },
         {
             "type": "css",
-            "name": "wallet.all.css",
+            "name": "budgets.css",
             "files": [
-                "/dashboard/module/wallet.css"
+                "/dashboard/income/budget.css"
             ]
         },
         {
@@ -48,57 +76,31 @@
                 "/dashboard/configuration/commonConfiguration.js",
                 "/plugins/libraries.js",
                 "/dashboard/support/askUsDirectly.js",
-                "/profile/authentication.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "settings.all.js",
-            "files": [
+                "/profile/authentication.js",
+                "/dashboard/data/defaultCategories.js",
                 "/dashboard/data/currency-name-symbol.js",
                 "/dashboard/data/locale-country.js",
-                "/dashboard/module/settings.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "transactions.all.js",
-            "files": [
+                "/dashboard/data/bankAccountCategories.js",
+                "/dashboard/support/support.js",
+                "/dashboard/income/budget.js",
                 "/dashboard/income/transactions/accountModal.js",
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions.js",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
                 "/dashboard/income/transactions/importTransactionsFromFile.js",
-                "/dashboard/income/transactions/export/chooseExportFileType.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "overview.all.js",
-            "files": [
+                "/dashboard/income/transactions/export/exportSelectedToCSV.js",
+                "/dashboard/income/transactions/export/exportSelectedToDOC.js",
+                "/dashboard/income/transactions/export/exportSelectedToXLS.js",
+                "/dashboard/module/settings.js",
                 "/dashboard/overview/overview.js",
-                "/dashboard/data/bankAccountCategories.js"
-            ]
-        },
-        {
-            "type": "js",
-            "name": "profile.all.js",
-            "files": [
                 "/dashboard/module/profile.js"
+
             ]
         },
         {
             "type": "js",
-            "name": "wallet.all.js",
-            "files": [
-                "/core/jquery.min.js",
-                "/core/popper.min.js",
-                "/core/bootstrap-material-design.min.js",
-                "/plugins/sweetalert2.all.min.js",
-                "/plugins/libraries.js",
-                "/profile/config.js",
-                "/dashboard/configuration/commonConfiguration.js",
-                "/dashboard/data/currency-name-symbol.js",
+            "name": "wallets.js",
+            "files": [        
                 "/dashboard/module/wallet.js"
             ]
         }

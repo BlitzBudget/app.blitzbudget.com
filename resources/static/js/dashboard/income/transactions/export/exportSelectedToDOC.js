@@ -7,7 +7,7 @@
 
    let footer = "</body></html>";
 
-    document.getElementById('downloadTransactionsData').addEventListener("click",function(e){
+   $('body').on('click', '#downloadTransactionsData' , function(e) {
       // Export to word
       exportToWord();
     });
@@ -134,7 +134,7 @@
     circleWrapperDiv.style.marginLeft = 'auto';
     
     // Append a - sign if it is an expense
-    if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+    if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
       circleWrapperDiv.appendChild(creditCardSvg());
     } else {
       circleWrapperDiv.appendChild(plusRawSvg());
@@ -181,7 +181,7 @@
     transactionAmount.style.textAlign = 'right';
     
     // Append a - sign if it is an expense
-    if(categoryMap[userTransaction.categoryId].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+    if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
       transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
     } else {
       transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);

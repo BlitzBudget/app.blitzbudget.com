@@ -11,7 +11,7 @@ Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
 let unsyncSVG = unsyncSVGFc();
 let syncSVG = syncSVGFc();
 // Constants for reference
-let bankAccountPreview = '';
+window.allBankAccountInfoCache = '';
 // Tick Icon
 let tickIconSVG = tickIcon();
 
@@ -25,18 +25,21 @@ let tickIconSVG = tickIcon();
 	Object.freeze(accountTypeUCConst);
 	Object.seal(accountTypeUCConst);
 	// Toggle Account Information
-	document.getElementById("showAccounts").addEventListener("click",function(){
-		let accountPickerClass = document.getElementById('accountPickerWrapper').classList;
-		
-		// If the modal is open
-		if(accountPickerClass.contains('d-none')) {
-			// Add click outside event listener to close the modal
-			document.addEventListener('mouseup', closeShowAccountsModal, false);
-		}
-		// Toggle Account Picker
-		accountPickerClass.toggle('d-none');
-		
-	});
+	let showAccountsDiv = document.getElementById("showAccounts");
+	if(isNotEmpty(showAccountsDiv)) {
+		showAccountsDiv.addEventListener("click",function(){
+			let accountPickerClass = document.getElementById('accountPickerWrapper').classList;
+			
+			// If the modal is open
+			if(accountPickerClass.contains('d-none')) {
+				// Add click outside event listener to close the modal
+				document.addEventListener('mouseup', closeShowAccountsModal, false);
+			}
+			// Toggle Account Picker
+			accountPickerClass.toggle('d-none');
+			
+		});
+	}
 	
 	// Properly closes the accounts modal and performs show accounts actions.
 	function closeShowAccountsModal(event) {
@@ -219,7 +222,7 @@ let tickIconSVG = tickIcon();
 		
 		// Populate the JSON form data
     	var values = {};
-		values['id'] = bankAccountPreview[Number(position)-1].id;
+		values['id'] = allBankAccountInfoCache[Number(position)-1].id;
 		values['selectedAccount'] = 'true';
 		values['financialPortfolioId'] = currentUser.walletId;
 
@@ -233,9 +236,9 @@ let tickIconSVG = tickIcon();
    		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
 	    	  // Append as Selected Account
-	    	  for(let i = 0, length = bankAccountPreview.length; i < length; i++) {
-	    		  if(bankAccountPreview[i].id == bankAccountPreview[Number(position)-1].id) {
-	    			  bankAccountPreview[i].selectedAccount = true;
+	    	  for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+	    		  if(allBankAccountInfoCache[i].id == allBankAccountInfoCache[Number(position)-1].id) {
+	    			  allBankAccountInfoCache[i]['selected_account'] = true;
 	    		  }
 	    	  }
 	    	  
@@ -245,7 +248,7 @@ let tickIconSVG = tickIcon();
 	    		  let rowElem = bARows[i];
 	    		  if(rowElem.classList.contains('selectedBA')) {
 	    			  rowElem.classList.remove('selectedBA');
-	    			  bankAccountPreview[i].selectedAccount = false;
+	    			  allBankAccountInfoCache[i]['selected_account'] = false;
 	    		  }
 	    	  }
 	    	  
@@ -308,7 +311,7 @@ let tickIconSVG = tickIcon();
 	// Click Back Button
 	$('#accountPickerWrapper').on('click', ".arrowWrapBA", function() {
 		// Bank Account Preview
-		er_a.populateBankInfo(bankAccountPreview);
+		er_a.populateBankInfo(allBankAccountInfoCache);
 	});
 	
 	// Click Know More
@@ -533,7 +536,7 @@ let tickIconSVG = tickIcon();
 		populateEmptyAccountInfo();
 		
 		// If bank account is present then display back button
-		if(isNotEmpty(bankAccountPreview)) {
+		if(isNotEmpty(allBankAccountInfoCache)) {
 			// Append Back Arrow
 			let arrowFrag = document.createDocumentFragment();
 			
@@ -593,7 +596,7 @@ er_a = {
 	
 	populateBankInfo(bankAccountsInfo) {
 		// Assign value to constant
-        window.bankAccountPreview = bankAccountsInfo;
+        window.allBankAccountInfoCache = bankAccountsInfo;
 		// Populate empty bank account info
 		if(isEmpty(bankAccountsInfo)) {
 			populateEmptyAccountInfo();
@@ -602,27 +605,6 @@ er_a = {
 		
 		// Populate the bank account info
 		populateAccountInfo(bankAccountsInfo);
-	},
-	fetchAllBankAccountInfo(successCall) {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "GET";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
-   		ajaxData.dataType = "json";
-   		ajaxData.onSuccess = successCall;
-        ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to fetch the accounts linked with this profile. Please refresh to try again!',ajaxData);
-        }
-
-		$.ajax({
-	        type: ajaxData.type,
-	        url: ajaxData.url,
-	        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        dataType: ajaxData.dataType,
-	        success : ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-		});
 	}
 }
 
@@ -697,7 +679,7 @@ function populateBankAccountInfo(bankAccount, count) {
 	wrapperRow.id = 'bAR-' + count;
 	
 	// If Selected then highlight account
-	if(bankAccount.selectedAccount) {
+	if(bankAccount['selected_account']) {
 		wrapperRow.classList.add('selectedBA');
 	}
 	
@@ -715,16 +697,16 @@ function populateBankAccountInfo(bankAccount, count) {
 	// Bank Account Name
 	let bAName = document.createElement('div');
 	bAName.classList = 'col-lg-5 text-left bAName py-2';
-	bAName.innerText = bankAccount.bankAccountName;
+	bAName.innerText = bankAccount['bank_account_name'];
 	wrapperRow.appendChild(bAName);
 	
 	// Bank Account Balance
 	let bABalance = document.createElement('div');
 	bABalance.classList = 'col-lg-5 text-right font-weight-bold py-2 bAAmount';
-	if(bankAccount.accountBalance < 0) { 
-		bABalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount.accountBalance), currentUser.locale);
+	if(bankAccount['account_balance'] < 0) { 
+		bABalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount['account_balance']), currentUser.locale);
 	} else { 
-		bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount.accountBalance, currentUser.locale);
+		bABalance.innerText = currentCurrencyPreference + formatNumber(bankAccount['account_balance'], currentUser.locale);
 	}
 	wrapperRow.appendChild(bABalance);
 	

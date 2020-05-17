@@ -7,22 +7,63 @@
 
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(PROFILE_CONSTANTS, {
-		'resetAccountUrl': { value: '/cognito/reset-account', writable: false, configurable: false },
-		'firstFinancialPortfolioParam': { value: '?financialPortfolioId=', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/cognito/user-attribute', writable: false, configurable: false },
-		'deleteAccountParam': { value: '&deleteAccount=', writable: false, configurable: false },		
-		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },
-		'userNameParam': { value: '&userName=', writable: false, configurable: false },
-		'signinUrl': { value: window._config.api.invokeUrl + '/profile/sign-in', writable: false, configurable: false }
+		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },		
+		'firstUserNameParam': { value: '?userName=', writable: false, configurable: false },		
+		'signinUrl': { value: window._config.api.invokeUrl + window._config.api.profile.signin, writable: false, configurable: false }
 	});
 
-	displayUserDetailsProfile();
-	displayCreatedDate();
+	/**
+	 * START loading the page
+	 * 
+	 */
+	let currentPageInCookie = er.getCookie('currentPage');
+	if(isEqual(currentPageInCookie,'profilePage') || isEqual(currentPageInCookie,'profilePgDD')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			populateCurrentPage('profilePage');
+		}
+	}
+	
+	let profilePage = document.getElementById('profilePage');
+	if(isNotEmpty(profilePage)) {
+		profilePage.addEventListener("click",function(e){
+		 	populateCurrentPage('profilePage');
+		});
+	}
 
-	// Href pointing to send Feature request with appropriate parameters
-	let featureRequest = document.getElementById('sendFeatureRequest');
-	if(!includesStr(featureRequest.href,'?email_id')) {
-		featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
+	let profilePgDD = document.getElementById('profilePgDD');
+	if(isNotEmpty(profilePgDD)) {
+		profilePgDD.addEventListener("click",function(e){
+			populateCurrentPage('profilePage');
+		});
+	}
+
+	function populateCurrentPage(page) {
+		er.refreshCookiePageExpiry(page);
+		er.fetchCurrentPage('/profile', function(data) {
+			// Load the new HTML
+            $('#mutableDashboard').html(data);
+            /**
+			* populate Profile
+			**/
+			displayUserDetailsProfile();
+			displayCreatedDate();
+			// Href pointing to send Feature request with appropriate parameters
+			let featureRequest = document.getElementById('sendFeatureRequest');
+			if(!includesStr(featureRequest.href,'?email_id')) {
+				featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
+			}
+            // Set Current Page
+	        document.getElementById('currentPage').innerText = 'Profile';
+	        
+		    /**
+			*  Add Functionality Generic + Btn
+			**/
+
+		    // Generic Add Functionality
+		    let genericAddFnc = document.getElementById('genericAddFnc');
+		    genericAddFnc.classList.add('d-none');
+		});
 	}
 
 	/**
@@ -249,23 +290,47 @@
 	}
 
 	 // Change Password Flow
-    function changePassword(oldPassword, newPassword, cognitoUser) {
+    function changePassword(oldPassword, newPassword) {
 
-        // Loads the current Logged in User Attributes
-        cognitoUser.changePassword(oldPassword, newPassword, function(err, result) {
-            if (err) {
-                showNotification(err.message,window._constants.notification.error);
-                return;
-            }
-            showNotification('Successfully changed the password!',window._constants.notification.success);
-        });
+    	// Authentication Details
+        let values = {};
+        values.previousPassword = oldPassword;
+        values.newPassword = newPassword;
+        values.accessToken = window.accessToken;
+
+        // Ajax Requests on Error
+		let ajaxData = {};
+		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = window._config.api.invokeUrl + window._config.api.profile.changePassword;
+   		ajaxData.dataType = "json"; 
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.data = JSON.stringify(values);
+		ajaxData.onSuccess = function(data) {
+			showNotification('Successfully changed the password!',window._constants.notification.success);
+		}
+	    ajaxData.onFailure = function(data) {
+	    	showNotification(data.message,window._constants.notification.error);
+            return;
+	    }
+
+	    $.ajax({
+	          type: ajaxData.type,
+	          url: ajaxData.url,
+	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
+	          dataType: ajaxData.dataType,
+	          contentType: ajaxData.contentType,
+	          data : ajaxData.data,
+	          success: ajaxData.onSuccess,
+	  	      error: ajaxData.onFailure
+		});
                 
     }
 
     /**
     *  Change Password Flow (Profile)
     **/
-    document.getElementById('changePasswordProfile').addEventListener("click",function(e){
+    $('body').on('click', '#changePasswordProfile' , function(e) {    
         // Show Sweet Alert
         Swal.fire({
             title: 'Change Password',
@@ -303,14 +368,16 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
 				            }
 					});
   				});
@@ -326,7 +393,7 @@
             if (result.value) {
             	// dispose the tool tip once the swal is closed
             	$("#input-pass-cp").tooltip("dispose");
-                changePassword(oldPassword, newPassword, cognitoUser);
+                changePassword(oldPassword, newPassword);
             }
 
         });
@@ -361,7 +428,7 @@
 	});
 
 	// Reset Account
-	document.getElementById('resetBBAccount').addEventListener("click",function(e){
+	$('body').on('click', '#resetBBAccount' , function(e) {
 		Swal.fire({
             title: 'Reset your Blitz Budget user account',
             html: resetBBAccount(),
@@ -401,14 +468,16 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
 				            }
 					});
   				});
@@ -420,11 +489,18 @@
     		Swal.resetValidationMessage()
         	// If the Reset Button is pressed
         	if (result.value) {
+        		let values = {};
+        		values.walletId = currentUser.financialPortfolioId;
+        		values.deleteAccount = false;
+        		
 				// Ajax Requests on Error
 				let ajaxData = {};
 				ajaxData.isAjaxReq = true;
-				ajaxData.type = 'DELETE';
-				ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId  + PROFILE_CONSTANTS.deleteAccountParam + false;
+				ajaxData.type = 'POST';
+				ajaxData.url = window._config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
+				ajaxData.dataType = "json";
+   				ajaxData.contentType = "application/json;charset=UTF-8";
+   				ajaxData.values = JSON.stringify(values);
 				ajaxData.onSuccess = function(jsonObj) {
 		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
 		        }
@@ -435,6 +511,9 @@
 					url: ajaxData.url,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			        type: ajaxData.type,
+			        dataType: ajaxData.dataType,
+          			contentType: ajaxData.contentType,
+          			data : ajaxData.values,
 			        success: ajaxData.onSuccess,
 			        error: ajaxData.onFailure
 	        	});
@@ -453,7 +532,7 @@
 	});
 
 	// Delete button
-	document.getElementById('deleteBBAccount').addEventListener("click",function(e){
+	$('body').on('click', '#deleteBBAccount' , function(e) {
 
 		Swal.fire({
                 title: 'Delete your Blitz Budget user account',
@@ -494,14 +573,16 @@
 
 				              },
 					  	      error: function(err) {
-					            	// Hide loading 
-					               	Swal.hideLoading();
-					            	// Show error message
-					                Swal.showValidationMessage(
-							          `${err.message}`
-							        );
-							        // Change Focus to password field
-								    confPasswordUA.focus();
+					  	      	// Error Message
+					  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+				            	// Hide loading 
+				               	Swal.hideLoading();
+				            	// Show error message
+				                Swal.showValidationMessage(
+						          `${errMessage}`
+						        );
+						        // Change Focus to password field
+							    confPasswordUA.focus();
 					            }
 						});
 	  				});
@@ -513,11 +594,19 @@
         		Swal.resetValidationMessage()
             	 // If the Delete Button is pressed
             	 if (result.value) {
+            	 	let values = {};
+            	 	values.userName = currentUser.email;
+            	 	values.walletId = currentUser.financialPortfolioId;
+            	 	values.deleteAccount = true;
+
             	 	// Ajax Requests on Error
 					let ajaxData = {};
 					ajaxData.isAjaxReq = true;
-					ajaxData.type = 'DELETE';
-					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl + PROFILE_CONSTANTS.firstFinancialPortfolioParam + currentUser.financialPortfolioId + PROFILE_CONSTANTS.deleteAccountParam + true + PROFILE_CONSTANTS.userNameParam + currentUser.email; 
+					ajaxData.type = 'POST';
+					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
+					ajaxData.dataType = "json";
+   					ajaxData.contentType = "application/json;charset=UTF-8";
+   					ajaxData.values = JSON.stringify(values);
 					ajaxData.onSuccess = function(jsonObj) {
 				        localStorage.clear();
 				        window.location.href = window._config.home.invokeUrl;
@@ -529,6 +618,9 @@
 						url: ajaxData.url,
 						beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 				        type: ajaxData.type,
+				        dataType: ajaxData.dataType,
+          				contentType: ajaxData.contentType,
+          				data : ajaxData.values,
 				        success: ajaxData.onSuccess,
 				        error: ajaxData.onFailure
 		        	});
@@ -801,7 +893,7 @@
 	});
 
 	// Change User Name
-	document.getElementById('userNameEdit').addEventListener("click",function(e){
+	$('body').on('click', '#userNameEdit' , function(e) {
 		// Hide the Element
 		this.classList.add('d-none');
 		// Name
@@ -820,7 +912,7 @@
 	});
 
 	// Click Enter to Change Name and Last Name
-	document.getElementById('userNameModInp').addEventListener("keyup",function(e){
+	$('body').on('keyup', '#userNameModInp' , function(e) {
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) {
 			// Enter key 
@@ -852,7 +944,7 @@
 	});
 
 	// User Edit Complete Btn
-	document.getElementById('userNameEdiBtn').addEventListener("click",function(e){
+	$('body').on('click', '#userNameEdiBtn' , function(e) {
 		editUserDetailsFNAndLN();
 	});
 
@@ -940,10 +1032,11 @@
     	let userNameDispText = userNameProfileDisplay.innerText;
     	userNameProfileDisplay.innerText = firstName + ' ' + lastName;
 
-    	let values = JSON.stringify({
+    	let values = {
     		"name" : firstName,
-    		"family_name" : lastName
-    	});
+    		"family_name" : lastName,
+    		"userName" : currentUser.email
+    	};
 
     	// Ajax Requests on Error
 		let ajaxData = {};
@@ -1022,7 +1115,7 @@
 	});
 
 	// Edit Email
-	document.getElementById('emailEdit').addEventListener("click",function(e){
+	$('body').on('click', '#emailEdit' , function(e) {
 		// Hide the Element
 		this.classList.add('d-none');
 		// Name
@@ -1042,12 +1135,12 @@
 
 
 	// User Edit Complete Btn
-	document.getElementById('emailEditBtn').addEventListener("click",function(e){
+	$('body').on('click', '#emailEditBtn' , function(e) {
 		editUserDetailsEmail();
 	});
 
 	// User Edit email key up listener
-	document.getElementById('emailModInp').addEventListener("keyup",function(e){
+	$('body').on('keyup', '#emailModInp' , function(e) {
 
 		let keyCode = e.keyCode || e.which;
 		if (keyCode === 13) { 
@@ -1141,14 +1234,16 @@
 
 			              },
 				  	      error: function(err) {
-				            	// Hide loading 
-				               	Swal.hideLoading();
-				            	// Show error message
-				                Swal.showValidationMessage(
-						          `${err.message}`
-						        );
-						        // Change Focus to password field
-							    confPasswordUA.focus();
+				  	      	// Error Message
+				  	      	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+			            	// Hide loading 
+			               	Swal.hideLoading();
+			            	// Show error message
+			                Swal.showValidationMessage(
+					          `${errMessage}`
+					        );
+					        // Change Focus to password field
+						    confPasswordUA.focus();
 				            }
 					});
   				});
@@ -1162,7 +1257,7 @@
             // If confirm button is clicked
             if (result.value) {
                 // Update User Email 
-				updateEmail(emailModInp, confPasswordUA, cognitoUser);
+				updateEmail(emailModInp, confPasswordUA);
             }
 
         });
@@ -1178,7 +1273,7 @@
 	}
 
 	// Update User Attribute Email
-    function updateEmail(emailModInp, confPasswordUA, cognitoUser) {
+    function updateEmail(emailModInp, confPasswordUA) {
 
 
 	      // Authentication Details
@@ -1192,12 +1287,12 @@
         // Authenticate Before cahnging password
         $.ajax({
               type: 'POST',
-              url: window._config.api.invokeUrl + window._config.api.signup,
+              url: window._config.api.invokeUrl + window._config.api.profile.signup,
               dataType: 'json',
               contentType: "application/json;charset=UTF-8",
               data : JSON.stringify(values),
               success: function(result) {
-              		signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser);
+              		signUpSuccessCB(result, confPasswordUA, emailModInp);
               		
               },
               error: function(err) {
@@ -1225,8 +1320,8 @@
     /**
     *  Upon successful sign up call
     **/
-    function signUpSuccessCB(result, confPasswordUA, emailModInp, cognitoUser) {
-
+    function signUpSuccessCB(result, confPasswordUA, emailModInp) {
+    	let oldUserAcessToken = '';
     	// Show Sweet Alert
         Swal.fire({
             title: 'Verification Code',
@@ -1284,6 +1379,7 @@
 				        values.username = emailModInp;
 				        values.password = confPasswordUA;
 				        values.confirmationCode = verificationCode.value;
+				        values.doNotCreateWallet = true;
 
 				        // Authenticate Before cahnging password
 				        $.ajax({
@@ -1298,17 +1394,28 @@
 	        					    // store in session storage
 	        					    localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 
+	        					    // Accesstoken of previous user
+	        					    oldUserAcessToken = window.accessToken;
+	        					    // Store Auth Token
+								    storeAuthToken(result);
+								    // Store Refresh token
+								    storeRefreshToken(result);
+								    // Store Access Token
+								    storeAccessToken(result);
+
 	        					    // Hide loading 
 					                Swal.hideLoading();
 					                // Resolve the promise
 					                resolve();
 				              },
 				              error: function(err) {
+				              	// Error Message
+				              	let errMessage = lastElement(splitElement(err.responseJSON.errorMessage,':'));
 				              	// Hide loading 
 				               	Swal.hideLoading();
 				            	// Show error message
 				                Swal.showValidationMessage(
-						          `${err.message}`
+						          `${errMessage}`
 						        );
 						        // Change Focus to password field
 							    verificationCode.focus();
@@ -1321,6 +1428,10 @@
         	if(result.value) {
         		// Hide the validation message if present
 	        	Swal.resetValidationMessage();
+	        	// Authentication Details
+		        let values = {};
+		        values.accessToken = oldUserAcessToken;
+		        
 	       		// Delete the registered user 
 		        $.ajax({
 		              type: 'POST',
@@ -1328,6 +1439,7 @@
 		              beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		              dataType: 'json',
 		              contentType: "application/json;charset=UTF-8",
+		              data : JSON.stringify(values),
 		              success: function(result){
 		              	// Update email
 				        document.getElementById('emailProfileDisplay').innerText = emailModInp;
@@ -1338,23 +1450,7 @@
 				        values.password = confPasswordUA;
 				        values.checkPassword = true;
 
-		  				// Authenticate Before cahnging password
-		  				$.ajax({
-					          type: 'POST',
-					          url: PROFILE_CONSTANTS.signinUrl,
-					          dataType: 'json',
-					          contentType: "application/json;charset=UTF-8",
-					          data : JSON.stringify(values),
-					          success: function(result) {
-				            	showNotification('Successfully changed the email!',window._constants.notification.success);
-				              },
-					  	      error: function(err) {
-					               // Login Modal
-					               er.sessionExpiredSwal(true);
-					               // Notification
-					               showNotification('Password entered is invalid',window._constants.notification.error);
-					          }
-						});
+				        showNotification('Successfully changed the email!',window._constants.notification.success);
 		              },
 		              error: function(err) {
 		              	showNotification(err.message,window._constants.notification.error);
@@ -1364,24 +1460,28 @@
         });
     }
 
-    /* 
-     * Create Attribute for user
-     */
-    function createAttribute(nameAttr, valAttr) {
-    	let dataAttribute = {
-                Name: nameAttr,
-                Value: valAttr
-        };
-    	
-        return new AmazonCognitoIdentity.CognitoUserAttribute(dataAttribute);
+    function storeAuthToken(result) {
+	    // Set JWT Token For authentication
+	    let idToken = JSON.stringify(result.AuthenticationResult.IdToken);
+	    idToken = idToken.substring(1,idToken.length - 1);
+	    localStorage.setItem('idToken' , idToken) ;
+	    window.authHeader = idToken;
+	}
+
+	function storeRefreshToken(result) {
+        // Set JWT Token For authentication
+        let refreshToken = JSON.stringify(result.AuthenticationResult.RefreshToken);
+        refreshToken = refreshToken.substring(1,refreshToken.length - 1);
+        localStorage.setItem('refreshToken' , refreshToken) ;
+        window.refreshToken = refreshToken;
     }
 
-    /**
-	*  Add Functionality Generic + Btn
-	**/
-
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    genericAddFnc.classList.add('d-none');
+    function storeAccessToken(result) {
+        // Set JWT Token For authentication
+        let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        accessToken = accessToken.substring(1,accessToken.length - 1);
+        localStorage.setItem('accessToken' , accessToken) ;
+        window.accessToken = accessToken;
+    }
 
 }(jQuery));	

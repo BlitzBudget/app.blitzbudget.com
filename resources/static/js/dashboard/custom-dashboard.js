@@ -3,9 +3,6 @@
 
 window.currentUser = window.currentUser || localStorage.getItem("currentUserSI") || {};
 
-// Consider wallet into the equation
-calculateWalletAttributes();
-
 window.authHeader = window.authHeader || localStorage.getItem('idToken');
 window.refreshToken = window.refreshToken || localStorage.getItem('refreshToken');
 
@@ -26,9 +23,8 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 	'investmentDashboardId': { value: 'investment-dashboard-sidebar', writable: false, configurable: false },
 	'settingsDashboardId': { value: 'settingsPage', writable: false, configurable: false },
 	'dateMeantFor': { value: '&dateMeantFor=', writable: false, configurable: false },
-	'expenseCategory': { value: '1', writable: false, configurable: false },
-	'incomeCategory': { value: '2', writable: false, configurable: false },
-	'defaultCategory': { value: 4, writable: false, configurable: false },
+	'expenseCategory': { value: 'Expense', writable: false, configurable: false },
+	'incomeCategory': { value: 'Income', writable: false, configurable: false },
 	'walletId': { value : '?walletId=', writable: false, configurable: false},
 });
 
@@ -36,10 +32,7 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 window.currentCurrencyPreference = '$';
 
 window.currentActiveSideBar = '';
-//Load Expense category and income category
-window.expenseSelectionOptGroup = document.createDocumentFragment();
-window.incomeSelectionOptGroup = document.createDocumentFragment();
-window.categoryMap = {};
+
 //Regex to check if the entered value is a float
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 
@@ -65,9 +58,6 @@ window.onload = function () {
 
 		// Position for month selection
 		let positionMonthCache = 0;
-
-		// Transactions total income cache
-		let transactionsTotalIncomeOrExpenseCache = {};
 
 		
 		// Append "active" class name to toggle sidebar color change
@@ -115,23 +105,16 @@ window.onload = function () {
 			// make sure that the cookies exists
 	        if (document.cookie != "") { 
         		//Get the value from the name=value pair
-                let sidebarActiveCookie = getCookie('sidebarMini');
+                let sidebarActiveCookie = er.getCookie('sidebarMini');
                 
                 if(includesStr(sidebarActiveCookie, 'active')) {
                 	 minimizeSidebar();
                 }
                 
                 // Get the value from the name=value pair
-                let cookieCurrentPage = getCookie('currentPage');
-                // Get parameters
-                const params = (new URL(document.location)).searchParams;
-
-                // First Priority to URL parameters
-                if(params != null && params.has('page')) {
-                	fetchCurrentPage(params.get('page'));
-                	// After fetching delete param
-                	params.delete('page');
-                } else if(!isEmpty(cookieCurrentPage)) {
+                let cookieCurrentPage = er.getCookie('currentPage');
+                
+                if(isNotEmpty(cookieCurrentPage)) {
                 	// Second Priority to cookies
                 	fetchCurrentPage(cookieCurrentPage);
                 } else {
@@ -144,22 +127,6 @@ window.onload = function () {
 	        }
 		}
 		
-		// Gets the cookie with the name
-		function getCookie(cname) {
-		  let name = cname + "=";
-		  let decodedCookie = decodeURIComponent(document.cookie);
-		  let ca = decodedCookie.split(';');
-		  for(let i = 0; i <ca.length; i++) {
-		    let c = ca[i];
-		    while (c.charAt(0) == ' ') {
-		      c = c.substring(1);
-		    }
-		    if (c.indexOf(name) == 0) {
-		      return c.substring(name.length, c.length);
-		    }
-		  }
-		  return "";
-		}
 		
 		// DO NOT load the html from request just refresh div if possible without downloading JS
 		$('.pageDynamicLoadForDashboard').click(function(e){
@@ -172,12 +139,6 @@ window.onload = function () {
         		return;
         	}
 			
-			/* Create a cookie to store user preference */
-		    let expirationDate = new Date;
-		    expirationDate.setMonth(expirationDate.getMonth()+2);
-		    
-		    /* Create a cookie to store user preference */
-		    document.cookie =  "currentPage=" + id + "; expires=" + expirationDate.toGMTString();
 			
 		    // Fetches Current date
 			fetchCurrentPage(id);
@@ -189,7 +150,6 @@ window.onload = function () {
 			let color = '';
 			let imageUrl = '../img/dashboard/sidebar/sidebar-1.jpg';
 			let currentPage = '';
-			let chosenJs = '';
 			
 			if(isEmpty(id)){
 				Swal.fire({
@@ -205,17 +165,11 @@ window.onload = function () {
 			switch(id) {
 			
 				case 'transactionsPage':
-					url = '/transactions';
 					color = 'green';
-					currentPage = 'Transactions';
-					chosenJs = 'js/transactions.all.min.js';
 				    break;
 				case 'budgetPage':
-					url = '/budgets';
 					color = 'rose';
-					currentPage = 'Budget';
 					imageUrl = '../img/dashboard/sidebar/sidebar-2.jpg';
-					chosenJs = 'js/dashboard/income/budget.min.js';
 				    break;
 				case 'goalsPage':
 					url = '/goals';
@@ -224,11 +178,8 @@ window.onload = function () {
 					imageUrl = '../img/dashboard/sidebar/sidebar-3.jpg';
 				    break;
 				case 'overviewPage':
-					url = '/overview';
 					color = 'azure';
-					currentPage = 'Overview';
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
-					chosenJs = 'js/overview.all.min.js';
 				    break;
 				case 'investmentsPage':
 					url = '/investment';
@@ -238,17 +189,11 @@ window.onload = function () {
 				    break;
 				case 'settingsPage':
 				case 'settingsPgDD':
-					url = '/settings';
 					color = ''; /* No Color */
-					currentPage = 'Settings';
-					chosenJs = 'js/settings.all.min.js';
 				    break;
 				case 'profilePage':
 				case 'profilePgDD':
-					url = '/profile';
 					color = ''; /* No Color */
-					currentPage = 'Profile';
-					chosenJs = 'js/profile.all.min.js';
 				    break;
 				default:
 					Swal.fire({
@@ -278,36 +223,10 @@ window.onload = function () {
         	// Reset the month existing date picker
         	resetMonthExistingPicker();
         	// reset Scroll position to header
-    		document.getElementsByClassName('main-panel')[0].scrollTop = document.getElementsByClassName('navbar')[0].offsetTop - 10;
-
-    		// Call the actual page which was requested to be loaded
-    		$.ajax({
-		        type: "GET",
-		        url: url,
-		        dataType: 'html',
-		        success: function(data){
-		        	// Load the new HTML
-		            $('#mutableDashboard').html(data);
-		            // Set Current Page
-		            document.getElementById('currentPage').innerText = currentPage;
-		            // Fetch the script
-		            if(chosenJs) {
-			            $.getScript( chosenJs )
-						  .fail(function( jqxhr, settings, exception ) {
-						  	showNotification('Unable to fetch dependencies for the page. Please refresh the page!',window._constants.notification.error);
-						  });
-					}
-		        },
-		        error: function(){
-		        	Swal.fire({
-		                title: "Redirecting Not Possible",
-		                text: 'Please try again later',
-		                icon: 'warning',
-		                timer: 1000,
-		                showConfirmButton: false
-		            }).catch(swal.noop);
-		        }
-		    });
+        	let navBarDiv = document.getElementsByClassName('navbar');
+        	if(isNotEmpty(navBarDiv) && navBarDiv.length > 0) {
+        		document.getElementsByClassName('main-panel')[0].scrollTop = navBarDiv[0].offsetTop - 10;
+        	}
 		}
 		
 		function closeCategoryModalIfOpen() {
@@ -358,71 +277,80 @@ window.onload = function () {
 		function chooseCurrentMonth() {
 			
 			let currentMonth = Number(new Date().getMonth()) + 1;
-			
-			document.getElementById('monthPicker-' + currentMonth).classList.add('monthPickerMonthCurrent', 'monthPickerMonthSelected');
+			let monthPicker = document.getElementById('monthPicker-' + currentMonth);
+			if(isNotEmpty(monthPicker)) {monthPicker.classList.add('monthPickerMonthCurrent', 'monthPickerMonthSelected');}
 		}
 		
 		// Click event for month picker
-		document.getElementById('monthPickerDisplay').addEventListener("click",function(e){
-			e.stopPropagation();
-			let dateControlClass = document.getElementById('dateControl').classList;
-			// Change the SVG to down arrow or up arrow
-			let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
-			if(!dateControlClass.contains('d-none')) {
-				overvierDateArrow.remove('transformUpwardArrow');
-				// Remove event listener once the function performed its task
-				document.removeEventListener('mouseup', closeMonthPickerModal, false);
-			} else {
-				overvierDateArrow.add('transformUpwardArrow');
-				// Add click outside event listener to close the modal
-				document.addEventListener('mouseup', closeMonthPickerModal, false);
-				// Store in position cache if the month picker is displayed
-				let selectedMonthDiv = document.getElementsByClassName('monthPickerMonthSelected');
-				positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
+		let monthPickerDisplayDiv = document.getElementById('monthPickerDisplay');
+		if(isNotEmpty(monthPickerDisplayDiv)) {
+			monthPickerDisplayDiv.addEventListener("click",function(e){
+				e.stopPropagation();
+				let dateControlClass = document.getElementById('dateControl').classList;
+				// Change the SVG to down arrow or up arrow
+				let overvierDateArrow = document.getElementsByClassName('overviewDateArrow')[0].classList;
+				if(!dateControlClass.contains('d-none')) {
+					overvierDateArrow.remove('transformUpwardArrow');
+					// Remove event listener once the function performed its task
+					document.removeEventListener('mouseup', closeMonthPickerModal, false);
+				} else {
+					overvierDateArrow.add('transformUpwardArrow');
+					// Add click outside event listener to close the modal
+					document.addEventListener('mouseup', closeMonthPickerModal, false);
+					// Store in position cache if the month picker is displayed
+					let selectedMonthDiv = document.getElementsByClassName('monthPickerMonthSelected');
+					positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
+					
+					// Fetch the budget data if the tab is open
+					updateExistingBudgetInMonthPicker();
+					// Fetch the transactions data if the tab is open
+					updateExistingTransactionsInMonthPicker();
+				}
+
+
+				// Show the modal (Do not close)
+				dateControlClass.toggle('d-none');
 				
-				// Fetch the budget data if the tab is open
-				updateExistingBudgetInMonthPicker();
-				// Fetch the transactions data if the tab is open
-				updateExistingTransactionsInMonthPicker();
-			}
-
-
-			// Show the modal (Do not close)
-			dateControlClass.toggle('d-none');
-			
-		});
+			});
+		}
 		
 		// Previous Button Date Time Click
-		document.getElementById('monthPickerPrev').addEventListener("click",function(){
-			// Build year after calculating the current month 
-			buildYear(Number(popoverYear) - 1);
-			calcCurrentMonthInPopover();
-			// Calculate the month selected
-			calcCurrentMonthSelected();
-			// Reset the month picker existing budget / transactions / goals / investments
-			resetMonthExistingPicker();
-			// Update existing date in month picker
-			updateExistingBudgetInMonthPicker();
-			// Update existing date for Transactions
-			updateExistingTransactionsInMonthPicker();
-			
-		});
+		let monthPickerPrev = document.getElementById('monthPickerPrev');
+		if(isNotEmpty(monthPickerPrev)) {
+			monthPickerPrev.addEventListener("click",function(){
+				// Build year after calculating the current month 
+				buildYear(Number(popoverYear) - 1);
+				calcCurrentMonthInPopover();
+				// Calculate the month selected
+				calcCurrentMonthSelected();
+				// Reset the month picker existing budget / transactions / goals / investments
+				resetMonthExistingPicker();
+				// Update existing date in month picker
+				updateExistingBudgetInMonthPicker();
+				// Update existing date for Transactions
+				updateExistingTransactionsInMonthPicker();
+				
+			});
+		}
 		
 		// Next Button Date Time Click
-		document.getElementById('monthPickerNext').addEventListener("click",function(){
-			// Build year after calculating the current month 
-			buildYear(Number(popoverYear) + 1);
-			calcCurrentMonthInPopover();
-			// Calculate the month selected
-			calcCurrentMonthSelected();
-			// Reset the month picker existing budget / transactions / goals / investments
-			resetMonthExistingPicker();
-			// Update existing date in month picker
-			updateExistingBudgetInMonthPicker();
-			// Update existing date for Transactions
-			updateExistingTransactionsInMonthPicker();
-			
-		});
+		let monthPickerNext = document.getElementById('monthPickerNext');
+		if(isNotEmpty(monthPickerNext)) {
+			monthPickerNext.addEventListener("click",function(){
+				// Build year after calculating the current month 
+				buildYear(Number(popoverYear) + 1);
+				calcCurrentMonthInPopover();
+				// Calculate the month selected
+				calcCurrentMonthSelected();
+				// Reset the month picker existing budget / transactions / goals / investments
+				resetMonthExistingPicker();
+				// Update existing date in month picker
+				updateExistingBudgetInMonthPicker();
+				// Update existing date for Transactions
+				updateExistingTransactionsInMonthPicker();
+				
+			});
+		}
 		
 		// Function that appends today to current month
 		function calcCurrentMonthInPopover() {
@@ -515,52 +443,18 @@ window.onload = function () {
 				return;
 			}
 			
-			if(isEmpty(transactionsTotalIncomeOrExpenseCache)) {
-				fetchIncomeTotalOrExpeseTotal();
-				fetchIncomeTotalOrExpeseTotal();
-			} else {
-				updateMonthExistsWithTransactionData(transactionsTotalIncomeOrExpenseCache);
-			}
+			updateMonthExistsWithTransactionData();
 		}
 		
-		// Fetch income total or expense total
-		function fetchIncomeTotalOrExpeseTotal(incomeTotalParameter) {
-
-			// Ajax Requests on Error
-			let ajaxData = {};
-	   		ajaxData.isAjaxReq = true;
-	   		ajaxData.type = 'GET';
-	   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl + CUSTOM_DASHBOARD_CONSTANTS.walletId + currentUser.walletId;
-	   		ajaxData.onSuccess = function(result){
-	        	updateMonthExistsWithTransactionData(result);
-	        }
-	        ajaxData.onFailure = function(thrownError) {
-	        	manageErrors(thrownError, "There was an error fetching total transactions.",ajaxData);
-	        }
-
-			// AJAX call for adding a new unlinked Account
-	    	$.ajax({
-		          type: ajaxData.type,
-		          url: ajaxData.url,
-		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          success: ajaxData.onSuccess,
-		          error: ajaxData.onFailure
-	    	});
-		}
 		
 		// Fetch the transactions data to update month exists in Month Picker
-		function updateMonthExistsWithTransactionData(dateAndAmountAsList) {
-			if(isNotEmpty(dateAndAmountAsList)) {
-        		let resultKeySet = Object.keys(dateAndAmountAsList);
-	        	for(let countGrouped = 0, length = resultKeySet.length; countGrouped < length; countGrouped++) {
-	        		let dateKey = resultKeySet[countGrouped];
-	        		let value = dateAndAmountAsList[dateKey];
-
-	        		// push values to cache
-		        	transactionsTotalIncomeOrExpenseCache[dateKey] = value;
+		function updateMonthExistsWithTransactionData() {
+			if(isNotEmpty(window.datesCreated)) {
+	        	for(let countGrouped = 0, length = window.datesCreated.length; countGrouped < length; countGrouped++) {
+	        		let date = window.datesCreated[countGrouped];
 		        	
 	        		// Convert the date key as date
-	             	let dateAsDate = new Date(dateKey);
+	             	let dateAsDate = new Date(date.dateId.substring(4, date.dateId.length));
 	             	
 	             	if(popoverYear != dateAsDate.getFullYear()) {
 	             		continue;
@@ -582,92 +476,73 @@ window.onload = function () {
 			let overviewYearHeading = document.getElementsByClassName('overviewYearHeading')[0];
 			
 			let currentDate = new Date();
-			overviewHeading.innerText = months[currentDate.getMonth()];
-			overviewYearHeading.innerText = currentDate.getFullYear();
+			if(isNotEmpty(overviewHeading)) {overviewHeading.innerText = months[currentDate.getMonth()];}
+			if(isNotEmpty(overviewYearHeading)) {overviewYearHeading.innerText = currentDate.getFullYear();}
 		}
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
-		$('#loginModal').on('hidden.bs.modal', function (e) {
-			// Set loginPopup shown to false
-			loginPopupShown = false;
-			// If the current user data is still not loaded from Cognito (Refresh)
-			if(isEmpty(currentUser)) {
-			 	window.location.reload();
-			} else {
-			 	startupApplication();
-			}
-		});
+		let loginModal = $('#loginModal');
+		if(isNotEmpty(loginModal)) {
+			loginModal.on('hidden.bs.modal', function (e) {
+				// Set loginPopup shown to false
+				loginPopupShown = false;
+				// If the current user data is still not loaded from Cognito (Refresh)
+				if(isEmpty(currentUser)) {
+				 	window.location.reload();
+				} else {
+				 	startupApplication();
+				}
+			});
 
 
-		// Once the login modal is Shown then (focus to input)
-		$('#loginModal').on('shown.bs.modal', function (e) {
-			// store in session storage
-        	let currentUserSI = localStorage.getItem("currentUserSI");
-        	// Get the URL param
-		    const params = (new URL(document.location)).searchParams;
-        	// First Prority to URL parameter / Second to session storage 
-        	if(params != null && params.has('email')) {
-        		document.getElementById('emailInputSignin').value = params.get('email');
-        		document.getElementById('passwordInputSignin').focus();
-        		// Delete the email Param
-        		params.delete('email');
-        	} else if(isNotEmpty(currentUserSI)) {
-        		// Parse JSON back to Object
-        		currentUserSI = JSON.parse(currentUserSI);
-        		document.getElementById('emailInputSignin').value = currentUserSI.email;
-        		document.getElementById('passwordInputSignin').focus();
-        	} else if (params.has('verify')) {
-        		document.getElementById('emailInputVerify').focus();
-        		// After fetching delete param
-        		params.delete('verify');
-        	} else {
-        		// Change focus to input
-				document.getElementById('emailInputSignin').focus();
-        	}
-			 
-		});
+			// Once the login modal is Shown then (focus to input)
+			loginModal.on('shown.bs.modal', function (e) {
+				// store in session storage
+	        	let currentUserSI = localStorage.getItem("currentUserSI");
+	        	// Get the URL param
+			    const params = (new URL(document.location)).searchParams;
+	        	// First Prority to URL parameter / Second to session storage 
+	        	if(params != null && params.has('email')) {
+	        		document.getElementById('emailInputSignin').value = params.get('email');
+	        		document.getElementById('passwordInputSignin').focus();
+	        		// Delete the email Param
+	        		params.delete('email');
+	        	} else if(isNotEmpty(currentUserSI)) {
+	        		// Parse JSON back to Object
+	        		currentUserSI = JSON.parse(currentUserSI);
+	        		document.getElementById('emailInputSignin').value = currentUserSI.email;
+	        		document.getElementById('passwordInputSignin').focus();
+	        	} else if (params.has('verify')) {
+	        		document.getElementById('emailInputVerify').focus();
+	        		// After fetching delete param
+	        		params.delete('verify');
+	        	} else {
+	        		// Change focus to input
+					document.getElementById('emailInputSignin').focus();
+	        	}
+				 
+			});
+		}
 
 		// unlock modal on shown modal
-		$('#unlockModal').on('shown.bs.modal', function (e) {
-			// after the modal is shown focus on password
-			document.getElementById('unlockAppPass').focus();
-		});
+		let unlockModal = $('#unlockModal');
+		if(isNotEmpty(unlockModal)) {
+			unlockModal.on('shown.bs.modal', function (e) {
+				// after the modal is shown focus on password
+				document.getElementById('unlockAppPass').focus();
+			});
 
-		// unlock modal on hidden modal
-		$('#unlockModal').on('hide.bs.modal', function (e) {
-			// Set the login popup shown to false
-			loginPopupShown = false;
-		});
+			// unlock modal on hidden modal
+			unlockModal.on('hide.bs.modal', function (e) {
+				// Set the login popup shown to false
+				loginPopupShown = false;
+			});
+		}
 
 		// Start up application
 		function startupApplication() {
 			// Read Cookies
 	        readCookie();
-		}
-
-		// Load all categories from API (Call synchronously to set global variable)
-		function fetchJSONForCategories(data) {
-			
-			for(let count = 0, length = Object.keys(data).length; count < length; count++){
-        		  let key = Object.keys(data)[count];
-            	  let value = data[key];
-
-            	  // Freeze the object so it cannot be mutable
-	        	  Object.freeze(value);
-        		  window.categoryMap[value.categoryId] = value;
-        		  let option = document.createElement('option');
-    			  option.className = 'categoryOption-' + value.categoryId;
-    			  option.value = value.categoryId;
-    			  option.text = value.categoryName;
-        		  if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-        			  window.expenseSelectionOptGroup.appendChild(option);
-        		  } else if(value.parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-        			  window.incomeSelectionOptGroup.appendChild(option);
-        		  }
-    		   
-        	  	}
-        	  // Sealing the object so new objects or properties cannot be added
-        	  Object.seal(window.categoryMap);
 		}
 
 		/* When the toggleFullscreen() function is executed, open the video in fullscreen.
@@ -699,22 +574,29 @@ window.onload = function () {
 		}
 
 		/* Get the element you want displayed in fullscreen mode (a video in this example): */
-		document.getElementById('dashboard-util-fullscreen').addEventListener('click', function() {
-			  toggleFullscreen();
-		});
+		let dashboardFullScreen = document.getElementById('dashboard-util-fullscreen');
+		if(isNotEmpty(dashboardFullScreen)) {
+			dashboardFullScreen.addEventListener('click', function() {
+				  toggleFullscreen();
+			});
+		}
 
 		/* Minimize sidebar */
-		$('#minimizeSidebar').click(function () {
-		    minimizeSidebar();
-		    
-		    /* Create a cookie to store user preference */
-		    var expirationDate = new Date;
-		    expirationDate.setMonth(expirationDate.getMonth()+2);
-		    
-		    /* Create a cookie to store user preference */
-		    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
-		    
-		 });
+		let minimizeSidebarDiv = document.getElementById('minimizeSidebar');
+		if(isNotEmpty(minimizeSidebarDiv)) {
+			minimizeSidebarDiv.addEventListener('click', function() {
+			    minimizeSidebar();
+			    
+			    /* Create a cookie to store user preference */
+			    var expirationDate = new Date;
+			    expirationDate.setMonth(expirationDate.getMonth()+2);
+			    
+			    /* Create a cookie to store user preference */
+			    document.cookie =  (1 == md.misc.sidebar_mini_active ? "sidebarMini=active; expires=" + expirationDate.toGMTString() : "sidebarMini=inActive; expires=" + expirationDate.toGMTString() );
+			    
+			 });
+		}
+		
 
 		/* Minimise sidebar*/
 		function minimizeSidebar(){
@@ -751,9 +633,11 @@ window.onload = function () {
 		// While scrolling the + button disappears
 		let mutScrollable = document.getElementsByClassName('main-panel')[0];
 		let mutableScrollPos = 0;
-		mutScrollable.addEventListener("scroll", function() {
-		  transform('bottomFixed','scale-one','scale-zero', 'main-panel');
-		});
+		if(isNotEmpty(mutScrollable)) {
+			mutScrollable.addEventListener("scroll", function() {
+			  transform('bottomFixed','scale-one','scale-zero', 'main-panel');
+			});
+		}
 
 		// While scrolling the + button disappears / appears
 		function transform (selector,classOne,classTwo,scrollableElement) {
@@ -783,43 +667,6 @@ window.onload = function () {
 		  	 	er.showLoginPopup();
 		     	return false;
 		  	}
-		});
-
-		/**
-		*
-		* Support module On Click
-		*
-		**/
-		// Show help center
-		$('.main-panel').on('click', '.helpCenter' , function(e) {
-			// Support Modal
-	        $('#supportModal').modal('show');
-	        // Call the actual page which was requested to be loaded
-	        $.ajax({
-	            type: "GET",
-	            url: window._config.help.html,
-	            dataType: 'html',
-	            success: function(data){
-	                // Load the new HTML
-	                $('#supportContent').html(data);
-	                // Fetch the script
-		            if(window._config.help.js) {
-			            $.getScript( window._config.help.js )
-						  .fail(function( jqxhr, settings, exception ) {
-						  	showNotification('Unable to fetch dependencies for the page. Please refresh the page!',window._constants.notification.error);
-						  });
-					}
-	            },
-	            error: function(){
-	                Swal.fire({
-	                    title: "Redirecting Not Possible",
-	                    text: 'Please try again later',
-	                    icon: 'warning',
-	                    timer: 1000,
-	                    showConfirmButton: false
-	                }).catch(swal.noop);
-	            }
-	        });
 		});
 
 	});
@@ -965,8 +812,7 @@ er = {
 	},
 	
 	setChosenDateWithSelected(elem) {
-		let positionId = lastElement(splitElement(elem.id,'-'));
-		positionId = ("0" + Number(positionId)).slice(-2);
+		let positionId = elem.getAttribute('data-target');
 		
 		// Set chosen date
 		chosenDate.setMonth(positionId);
@@ -1033,8 +879,154 @@ er = {
 	      }))
 	    }),
 	    seq2 = 0
+	},
+
+	refreshCookiePageExpiry:  function (id) {
+		/* Create a cookie to store user preference */
+	    let expirationDate = new Date;
+	    expirationDate.setMonth(expirationDate.getMonth()+2);
+	    
+	    /* Create a cookie to store user preference */
+	    document.cookie =  "currentPage=" + id + "; expires=" + expirationDate.toGMTString();
+		
+	},
+
+	// Gets the cookie with the name
+	getCookie: function(cname) {
+	  let name = cname + "=";
+	  let decodedCookie = decodeURIComponent(document.cookie);
+	  let ca = decodedCookie.split(';');
+	  for(let i = 0; i <ca.length; i++) {
+	    let c = ca[i];
+	    while (c.charAt(0) == ' ') {
+	      c = c.substring(1);
+	    }
+	    if (c.indexOf(name) == 0) {
+	      return c.substring(name.length, c.length);
+	    }
+	  }
+	  return "";
+	},
+
+	fetchCurrentPage: function(url, onSuccess) {
+		// Call the actual page which was requested to be loaded
+		$.ajax({
+	        type: "GET",
+	        url: url,
+	        dataType: 'html',
+	        success: onSuccess,
+	        error: function(){
+	        	Swal.fire({
+	                title: "Redirecting Not Possible",
+	                text: 'Please try again later',
+	                icon: 'warning',
+	                timer: 1000,
+	                showConfirmButton: false
+	            }).catch(swal.noop);
+	        }
+	    });
 	}
 		
+}
+
+// Populate current Date in the currentDateAsId global variable
+function populateCurrentDate(date) {
+	window.currentDateAsID = window.chosenDate.toISOString();
+	for (var i = date.length - 1; i >= 0; i--) {
+		let presentDate = date[i].dateId;
+		let presentDateAsDate = new Date(presentDate.substring(5, presentDate.length));
+		if(window.chosenDate.getMonth() == presentDateAsDate.getMonth()
+			|| window.chosenDate.getFullYear() == window.chosenDate.getFullYear()) {
+			window.currentDateAsID = presentDate;
+		}
+	}
+}
+
+// Load all categories from API (Call synchronously to set global variable)
+function fetchJSONForCategories(data) {
+	// Expense and Income Initialize
+	window.expenseDropdownItems = document.createDocumentFragment();
+	window.incomeDropdownItems = document.createDocumentFragment();
+	window.categoryMap = {};
+	let dataNameMap = {};
+
+	if(isNotEmpty(data)) {
+		for(let i=0,len=data.length;i<len;i++) {
+			dataNameMap[data[i]['category_name']] = data[i].categoryId;
+		}
+	}
+	
+	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
+		  let value = window.defaultCategories[count];
+
+		  /*create a DIV element for each matching element:*/
+	      let option = document.createElement("DIV");
+	      option.classList.add("dropdown-item");
+		  option.innerText = value.name;
+
+		  let inputValue = document.createElement('input');
+		  inputValue.type = 'hidden';
+		  let categoryId = dataNameMap[value.name];
+		  if(isNotEmpty(categoryId)) {
+		  	inputValue.value = categoryId;
+		  	value.id = categoryId;
+		  	window.categoryMap[value.id] = value;
+		  } else {
+		  	inputValue.value = value.name;
+		  	window.categoryMap[value.name] = value;
+		  }
+		  option.appendChild(inputValue);
+
+		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+			  window.expenseDropdownItems.appendChild(option);
+		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+			  window.incomeDropdownItems.appendChild(option);
+		  }
+	   
+  	}
+   // Sealing the object so new objects or properties cannot be added
+   Object.seal(window.categoryMap);
+}
+
+function assignCategoryId(data) {
+	// Expense and Income Initialize
+	window.expenseDropdownItems = document.createDocumentFragment();
+	window.incomeDropdownItems = document.createDocumentFragment();
+	let categoryId = data.category;
+	let categoryName = data.categoryName;
+	let categoryType = data.categoryType;
+
+	if(isNotEmpty(window.categoryMap[categoryName])) {window.categoryMap[categoryName].id = categoryId;}
+
+	let resultKeys = Object.keys(window.categoryMap);
+	for(let count = 0, length = resultKeys.length; count < length; count++){
+		  let key = resultKeys[count];
+		  let value = window.categoryMap[key];
+		  /*create a DIV element for each matching element:*/
+	      let option = document.createElement("DIV");
+	      option.classList.add("dropdown-item");
+		  option.innerText = value.name;
+
+		  let inputValue = document.createElement('input');
+		  inputValue.type = 'hidden';
+		  if(isNotEmpty(value.id)) {
+		  	inputValue.value = categoryId;
+		  	window.categoryMap[value.id] = value;
+		  } else {
+		  	inputValue.value = value.name;
+		  	window.categoryMap[value.name] = value;
+		  }
+		  option.appendChild(inputValue);
+
+		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+			  window.expenseDropdownItems.appendChild(option);
+		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+			  window.incomeDropdownItems.appendChild(option);
+		  }
+	   
+  	}
+   // Sealing the object so new objects or properties cannot be added
+   Object.seal(window.categoryMap);
 }
 
 // Display Confirm Account Verification Code
@@ -1072,19 +1064,4 @@ function toggleVerify(email, verifyCode) {
     // CHange focus to verification code
     document.getElementById('codeInputVerify').focus();
 
-}
-
-// Consider wallet attributes into the equation
-function calculateWalletAttributes() {	
-	// Check if wallet id is present, if not set financial portfolio id
-	if(isEmpty(window.currentUser.walletId)) {
-		window.currentUser.walletId = window.currentUser.financialPortfolioId;
-	}
-
-	if(isEmpty(window.currentUser.walletCurrency)) {
-		window.currentUser.walletCurrency = window.currentUser.currency;
-	}
-
-	// update currency
-	window.currentCurrencyPreference = isNotEmpty(window.currentUser.walletCurrency) ? window.currentUser.walletCurrency : window.currentUser.currency;
 }

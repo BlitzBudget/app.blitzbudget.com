@@ -17,35 +17,144 @@
 	// Category modal user budget category id;
 	let categoryForModalOpened = '';
 	// Choose the current month from the user chosen date
-	let userChosenMonthName = months[chosenDate.getMonth()]; 
-	
+	let userChosenMonthName = months[chosenDate.getMonth()];
+
 	/**
 	 * START loading the page
 	 * 
 	 */
-	// Fetch user budget and build the div
-	fetchAllUserBudget();
+	if(isEqual(er.getCookie('currentPage'),'budgetPage')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+			er.refreshCookiePageExpiry('budgetPage');
+		 	er.fetchCurrentPage('/budgets', function(data) {
+				// Fetch user budget and build the div
+				fetchAllUserBudget();
+				populateBudgetResource();
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Budget';
+			});
+	 	}
+	}
 	
+	let budgetPage = document.getElementById('budgetPage');
+	if(isNotEmpty(budgetPage)) {
+		budgetPage.addEventListener("click",function(e){
+		 	er.refreshCookiePageExpiry('budgetPage');
+			er.fetchCurrentPage('/budgets', function(data) {
+				// Fetch user budget and build the div
+				fetchAllUserBudget();
+				populateBudgetResource();
+				// Load the new HTML
+	            $('#mutableDashboard').html(data);
+	            // Set Current Page
+		        document.getElementById('currentPage').innerText = 'Budget';
+			});
+		});
+	}
+
+	function populateBudgetResource(){
+		/**
+		*  Add Functionality Generic + Btn
+		**/
+
+		// Register Tooltips
+		let ttinit = $("#addFncTT");
+		ttinit.attr('data-original-title', 'Add Budget');
+		ttinit.tooltip({
+			delay: { "show": 300, "hide": 100 }
+	    });
+
+	    // Generic Add Functionality
+	    let genericAddFnc = document.getElementById('genericAddFnc');
+	    document.getElementById('addFncTT').innerText = 'add';
+	    genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
+	    $(genericAddFnc).unbind('click').click(function () {
+	    	if(!this.classList.contains('addNewBudget')) {
+	    		return;
+	    	}
+
+	    	// Create a new unbudgeted category
+			createUnbudgetedCat(this);
+	    });
+
+	    /**
+		 * Date Picker Module
+		 */
+		
+		// Date Picker On click month
+		$('.monthPickerMonth').unbind('click').click(function() {
+			// Month picker is current selected then do nothing
+			if(this.classList.contains('monthPickerMonthSelected')) {
+				return;
+			}
+			
+			let budgetAmountDiv = document.getElementById('budgetAmount');
+			
+			// If other pages are present then return this event
+			if(budgetAmountDiv == null) {
+				return;
+			}
+			
+			// Set chosen date
+			er.setChosenDateWithSelected(this);
+			
+			// Reset the User Budget with Loader
+			resetUserBudgetWithLoader();
+			
+			// Call the user budget
+			fetchAllUserBudget();
+			
+		});
+	}
+
 	// Fetches all the user budget and displays them in the user budget
 	function fetchAllUserBudget() {
 		let budgetDivFragment = document.createDocumentFragment();
+
+		let values = {};
+		if(isNotEmpty(window.currentUser.walletId)) {
+			values.walletId = window.currentUser.walletId;
+		} else {
+			values.userId = window.currentUser.financialPortfolioId;
+		}
+		let y = window.chosenDate.getFullYear(), m = window.chosenDate.getMonth();
+		values.startsWithDate = new Date(y, m, 1);
+		values.endsWithDate = new Date(y, m + 1, 0);
+
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = 'GET';
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl + currentUser.walletId + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate.toISOString();
-   		ajaxData.onSuccess = function(data) {
-        	let dataKeySet = Object.keys(data);
-        	for(let count = 0, length = dataKeySet.length; count < length; count++){
-            	let key = dataKeySet[count];
-          	  	let value = data[key];
+   		ajaxData.type = 'POST';
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(result) {
+   			let budgets = result.Budget;
+   			let dates = result.Date;
+   			let wallet = result.Wallet;
+
+   			// Dates Cache
+        	window.datesCreated = result.Date;
+        	populateCurrentDate(result.Date);
+
+   			fetchJSONForCategories(result.Category);
+
+   			// Replace currentCurrencySymbol with currency symbol
+			replaceWithCurrency(wallet);
+   			er_a.populateBankInfo(result.BankAccount);
+
+        	for(let count = 0, length = budgets.length; count < length; count++){
+            	let value = budgets[count];
           	  
           	  	if(isEmpty(value)) {
           	  		continue;
           	  	}
           	  	
           	  	// Store the values in a cache
-          	  	userBudgetCache[value.categoryId] = value;
+          	  	userBudgetCache[value.budgetId] = value;
 
           	  	// Appends to a document fragment
           	  	budgetDivFragment.appendChild(buildUserBudget(value));
@@ -58,24 +167,10 @@
     			budgetAmount.removeChild(budgetAmount.firstChild);
     		}
         	budgetAmount.appendChild(budgetDivFragment);
-      	  	
-      		// Store the result in a cache
-        	categoryTotalMapCache = categoryTotalMap;
-        	// Get all the category id's
-    		let categoryTotalKeys = Object.keys(categoryTotalMap);
-    		
-    		// Update only when the user budget cache is not empty
-    		if(isNotEmpty(userBudgetCache)) {
-    			for(let count = 0, length = categoryTotalKeys.length; count < length; count++){
-        			let categoryIdKey = categoryTotalKeys[count];
-        			
-        			// Handle the update of the progress bar modal
-        			updateProgressBarAndRemaining(categoryIdKey, document);
-        		}
-    		}
+      	  	    	
     		
     		// Update the Budget Visualization module
-    		updateBudgetVisualization(true);
+    		updateBudgetVisualization();
         }
         ajaxData.onFailure = function (thrownError) {
         	manageErrors(thrownError, 'Unable to fetch you budget at this moment. Please try again!',ajaxData);
@@ -85,6 +180,9 @@
 			url: ajaxData.url,
 			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
+            dataType: ajaxData.dataType,
+          	contentType: ajaxData.contentType,
+          	data : ajaxData.values,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});
@@ -93,14 +191,14 @@
 	
 	// Build the user budget div
 	function buildUserBudget(userBudget) {
-		let categoryObject = categoryMap[userBudget.categoryId];
 		
-		if(isEmpty(categoryObject)) {
+		if(isEmpty(userBudget)) {
 			return;
 		}
+		let cardWrapper = document.createDocumentFragment();
 		
 		let card = document.createElement("div");
-		card.id = 'cardCategoryId-' + categoryObject.categoryId;
+		card.id = 'cardBudgetId-' + userBudget.budgetId;
 		card.classList = 'card';
 		
 		let cardBody = document.createElement("div");
@@ -112,16 +210,16 @@
 		
 		// Card title with category name
 		let cardTitle = document.createElement('div');
-		cardTitle.id = 'categoryName-' + categoryObject.categoryId;
+		cardTitle.id = 'categoryName-' + userBudget.budgetId;
 		cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
-		cardTitle.innerText = categoryObject.categoryName;
+		cardTitle.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
 		cardRowRemaining.appendChild(cardTitle);
 		
 		
 		// <div id="budgetInfoLabelInModal" class="col-lg-12 text-right headingDiv justify-content-center align-self-center">Remaining (%)</div> 
 		let cardRemainingText = document.createElement('div');
 		cardRemainingText.classList = 'col-lg-6 text-right headingDiv justify-content-center align-self-center mild-text';
-		cardRemainingText.id = 'budgetInfoLabelInModal-' + categoryObject.categoryId;
+		cardRemainingText.id = 'budgetInfoLabelInModal-' + userBudget.budgetId;
 		cardRemainingText.innerText = 'Remaining (%)';
 		cardRowRemaining.appendChild(cardRemainingText);
 		cardBody.appendChild(cardRowRemaining);
@@ -136,9 +234,10 @@
 		
 		// Budget Amount Div
 		let cardBudgetAmountDiv = document.createElement('div');
-		cardBudgetAmountDiv.id = 'budgetAmountEntered-' + categoryObject.categoryId;
+		cardBudgetAmountDiv.id = 'budgetAmountEntered-' + userBudget.budgetId;
 		cardBudgetAmountDiv.classList = 'text-left budgetAmountEntered font-weight-bold form-control';
 		cardBudgetAmountDiv.setAttribute('contenteditable', true);
+		cardBudgetAmountDiv.setAttribute('data-target', userBudget.budgetId);
 		cardBudgetAmountDiv.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
 		cardAmountWrapperDiv.appendChild(cardBudgetAmountDiv);
 		cardRowPercentage.appendChild(cardAmountWrapperDiv);
@@ -146,7 +245,7 @@
 		// <span id="percentageAvailable" class="col-lg-12 text-right">NA</span> 
 		let cardRemainingPercentage = document.createElement('div');
 		cardRemainingPercentage.classList = 'col-lg-9 text-right percentageAvailable';
-		cardRemainingPercentage.id = 'percentageAvailable-' + categoryObject.categoryId;
+		cardRemainingPercentage.id = 'percentageAvailable-' + userBudget.budgetId;
 		cardRemainingPercentage.innerText = 'NA';
 		cardRowPercentage.appendChild(cardRemainingPercentage);
 		cardBody.appendChild(cardRowPercentage);
@@ -160,7 +259,7 @@
 		
 		// progress bar
 		let progressBar = document.createElement('div');
-		progressBar.id='progress-budget-' + categoryObject.categoryId;
+		progressBar.id='progress-budget-' + userBudget.budgetId;
 		progressBar.classList = 'progress-bar progress-bar-budget-striped';
 		progressBar.setAttribute('role', 'progressbar');
 		progressBar.setAttribute('aria-valuenow', '0');
@@ -168,11 +267,11 @@
 		progressBar.setAttribute('aria-valuemax', '100');
 		cardProgressClass.appendChild(progressBar);
 		cardProgressAndRemainingAmount.appendChild(cardProgressClass);
-		
+
 		
 		// Remaining Amount Div
 		let remainingAmountDiv = document.createElement('span');
-		remainingAmountDiv.id = 'remainingAmount-' + categoryObject.categoryId;
+		remainingAmountDiv.id = 'remainingAmount-' + userBudget.budgetId;
 		remainingAmountDiv.classList = 'mild-text-budget';
 		
 		let currencyRemainingAmount = document.createElement('span');
@@ -188,7 +287,7 @@
 		
 		
 		let actionDiv = document.createElement('div');
-		actionDiv.id = 'actionIcons-' + categoryObject.categoryId;
+		actionDiv.id = 'actionIcons-' + userBudget.budgetId;
 		actionDiv.classList = 'text-right';
 		
 		// Build a delete icon Div
@@ -200,8 +299,9 @@
 		
 		// SVG for delete
 		let deleteSvgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-		deleteSvgElement.id = 'deleteSvgElement-' + categoryObject.categoryId;
-		deleteSvgElement.classList = 'deleteBudget'
+		deleteSvgElement.id = 'deleteSvgElement-' + userBudget.budgetId;
+		deleteSvgElement.classList = 'deleteBudget';
+		deleteSvgElement.setAttribute('data-target',userBudget.budgetId);
 		deleteSvgElement.setAttribute('height','16');
 		deleteSvgElement.setAttribute('width','16');
 		deleteSvgElement.setAttribute('viewBox','0 0 14 18');
@@ -217,7 +317,7 @@
     	deleteIconDiv.appendChild(deleteSvgElement);
     	
     	let materialSpinnerElement = document.createElement('div');
-    	materialSpinnerElement.id= 'deleteElementSpinner-' + categoryObject.categoryId;
+    	materialSpinnerElement.id= 'deleteElementSpinner-' + userBudget.budgetId;
     	materialSpinnerElement.classList = 'material-spinner-small d-none';
     	deleteIconDiv.appendChild(materialSpinnerElement);
     	
@@ -225,12 +325,15 @@
     	cardBody.appendChild(actionDiv);
     	
 		card.appendChild(cardBody);
-		return card;
+		cardWrapper.appendChild(card);
+		// Handle the update of the progress bar modal
+        updateProgressBarAndRemaining(userBudget, cardWrapper);
+		return cardWrapper;
 		
 	}
 	
 	// Update the budget visualization module
-	function updateBudgetVisualization(createNewChart) {
+	function updateBudgetVisualization() {
 		let categoryTotalKeys = Object.keys(categoryTotalMapCache);
 		
 		let userBudgetCacheKeys = Object.keys(userBudgetCache);
@@ -291,9 +394,7 @@
 			budgetAmountDiv.appendChild(emptyBudgetDocumentFragment);
 		}
 		
-		if(createNewChart) {
-			buildPieChart(dataPreferences , 'chartBudgetVisualization');
-		} else if(detachChart) {
+		if(detachChart) {
 			// Remove the donut chart from the DOM
 			let chartDonutSVG = document.getElementsByClassName('ct-chart-donut');
 			
@@ -301,9 +402,16 @@
 				chartDonutSVG[0].parentNode.removeChild(chartDonutSVG[0]);
 				// Detach the chart
 				budgetCategoryChart.detach();
+			} else {
+				let chartNode = document.getElementById('chartBudgetVisualization');
+				while (chartNode.firstChild) {
+				   chartNode.removeChild(chartNode.lastChild);
+				}
 			}
-		} else  {
+		} else if(isNotEmpty(budgetCategoryChart)) {
 			budgetCategoryChart.update(dataPreferences);
+		} else {
+			buildPieChart(dataPreferences , 'chartBudgetVisualization');
 		}
 		
 		// Fetches all the dates for which user budget is present
@@ -353,18 +461,18 @@
 	}
 	
 	// Catch the amount when the user focuses on the budget
-	$( "#budgetAmount" ).on( "focusin", ".budgetAmountEntered" ,function() {
+	$( "body" ).on( "focusin", ".budgetAmountEntered" ,function() {
 		budgetAmountEditedPreviously = trimElement(this.innerText);
 	});
 	
 	// Catch the amount when the user focuses on the budget
-	$( "#budgetAmount" ).on( "focusout", ".budgetAmountEntered" ,function() {
+	$( "body" ).on( "focusout", ".budgetAmountEntered" ,function() {
 		postNewBudgetAmount(this);
 	});
 	
 
 	// Amount - disable enter key and submit request
-	$('#budgetAmount').on('keyup', '.budgetAmountEntered' , function(e) {
+	$('body').on('keyup', '.budgetAmountEntered' , function(e) {
 		  var keyCode = e.keyCode || e.which;
 		  if (keyCode === 13) { 
 		    e.preventDefault();
@@ -396,35 +504,30 @@
 		
 		if(previousText != enteredText){
 			// Fetch the id
-			let categoryIdForBudget = lastElement(splitElement(element.id,'-'));
-			// Security check to ensure that the category is present in the map
-			if(er.checkIfInvalidCategory(categoryIdForBudget)) {
-				return;
-			}
+			let budgetId = element.getAttribute('data-target');
 			
 			// Post a new budget to the user budget module and change to auto generated as false. 
 			var values = {};
 			values['planned'] = enteredText;
-			values['categoryId'] = categoryIdForBudget;
-			values['autoGenerated'] = false;
-			values['dateMeantFor'] = chosenDate.toISOString();
+			values['budgetId'] = budgetId;
 			values['walletId'] = currentUser.walletId;
 
 			// Ajax Requests on Error
 			let ajaxData = {};
        		ajaxData.isAjaxReq = true;
-       		ajaxData.type = "POST";
+       		ajaxData.type = "PATCH";
        		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
        		ajaxData.dataType = "json";
        		ajaxData.contentType = "application/json;charset=UTF-8";
-       		ajaxData.values = values;
-       		ajaxData.onSuccess = function registerSuccess(userBudget){
+       		ajaxData.values = JSON.stringify(values);
+       		ajaxData.onSuccess = function registerSuccess(result){
+       			  let userBudget = result['body-json'];
 	        	  // on success then replace the entered text 
 	        	  element.innerText = currentCurrencyPreference + formatNumber(enteredText, currentUser.locale);
 	        	  // Update the budget cache
-	        	  userBudgetCache[userBudget.categoryId] = userBudget;
+	        	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	        	  // Update the modal
-	        	  updateProgressBarAndRemaining(userBudget.categoryId, document);
+	        	  updateProgressBarAndRemaining(userBudgetCache[userBudget.budgetId], document);
             }
             ajaxData.onFailure = function (thrownError) {
             	manageErrors(thrownError, 'Unable to change the budget. Please try again',ajaxData);
@@ -450,32 +553,33 @@
 	}
 	
 	// Use user budget to update information in the modal
-	function updateProgressBarAndRemaining(categoryIdKey, documentOrFragment) {
-		let categoryTotalAmount = categoryTotalMapCache[categoryIdKey];
+	function updateProgressBarAndRemaining(budget, documentOrFragment) {
+		let categoryTotalAmount = budget.used;
 		
-		let userBudgetValue = userBudgetCache[categoryIdKey];
+		let userBudgetValue = budget.planned;
+		let budgetIdKey = budget.budgetId;
 		
-		let remainingAmountDiv = documentOrFragment.getElementById('remainingAmount-' + categoryIdKey);
-		let remainingAmountPercentageDiv = documentOrFragment.getElementById('percentageAvailable-' + categoryIdKey);
-		let budgetLabelDiv = documentOrFragment.getElementById('budgetInfoLabelInModal-' + categoryIdKey);
-		let progressBarCategoryModal = documentOrFragment.getElementById('progress-budget-' + categoryIdKey);
+		let remainingAmountDiv = documentOrFragment.getElementById('remainingAmount-' + budgetIdKey);
+		let remainingAmountPercentageDiv = documentOrFragment.getElementById('percentageAvailable-' + budgetIdKey);
+		let budgetLabelDiv = documentOrFragment.getElementById('budgetInfoLabelInModal-' + budgetIdKey);
+		let progressBarCategoryModal = documentOrFragment.getElementById('progress-budget-' + budgetIdKey);
 		// If the budget is not created for the particular category, make sure the budget is not equal to zero
 		if(isNotEmpty(userBudgetValue) && isNotEmpty(categoryTotalAmount)) {
 			// Calculate remaining budget
-			let budgetAvailableToSpendOrSave = userBudgetValue.planned - categoryTotalAmount;
+			let budgetAvailableToSpendOrSave = userBudgetValue - categoryTotalAmount;
 			let minusSign = '';
 			
 			// Calculate the minus sign and appropriate class for the remaining amount 
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
-				if(categoryMap[categoryIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+				if(categoryMap[budgetIdKey].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 					budgetLabelDiv.innerText = 'Overspent (%)';
-				} else if(categoryMap[categoryIdKey].parentCategory == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+				} else if(categoryMap[budgetIdKey].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 					budgetLabelDiv.innerText = 'To Be Budgeted (%)';
 				}
 				
 				// Anchor Icons
-				createImageAnchor(categoryIdKey, documentOrFragment);
+				createImageAnchor(budgetIdKey, documentOrFragment);
 				
 				minusSign = '-';
 				budgetAvailableToSpendOrSave = Math.abs(budgetAvailableToSpendOrSave);
@@ -483,26 +587,27 @@
 				budgetLabelDiv.innerText = 'Remaining (%)';
 				
 				// Remove the compensation anchor if it is present
-				var compensateAnchor = document.getElementById('compensateAnchor-'+ categoryIdKey);
+				var compensateAnchor = document.getElementById('compensateAnchor-'+ budgetIdKey);
 				if(compensateAnchor != null) {
 					compensateAnchor.parentNode.removeChild(compensateAnchor);
 				}
 			}
 			
 			// Change the remaining text appropriately
+			budgetAvailableToSpendOrSave = isNaN(budgetAvailableToSpendOrSave) ? 0 : budgetAvailableToSpendOrSave;
 			remainingAmountDiv.innerText = minusSign + currentCurrencyPreference + formatNumber(budgetAvailableToSpendOrSave, currentUser.locale);
 			
 			// Calculate percentage available to spend or save
-			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue.planned) * 100),0);
+			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue) * 100),0);
 			// If the user budget is 0 then the percentage calculation is not applicable
-			if(userBudgetValue.planned == 0 || isNaN(remainingAmountPercentage)) {
+			if(userBudgetValue == 0 || isNaN(remainingAmountPercentage)) {
 				remainingAmountPercentageDiv.innerText = 'NA';
 			} else {
 				remainingAmountPercentageDiv.innerText = remainingAmountPercentage + '%';
 			}
 			
 			// Assign progress bar value. If the category amount is higher then the progress is 100%
-			let progressBarPercentage = isNaN(remainingAmountPercentage) ? 0 : (categoryTotalAmount > userBudgetValue.planned) ? 100 : (100 - remainingAmountPercentage);
+			let progressBarPercentage = isNaN(remainingAmountPercentage) ? 0 : (categoryTotalAmount > userBudgetValue) ? 100 : (100 - remainingAmountPercentage);
 			// Set the value and percentage of the progress bar
 			progressBarCategoryModal.setAttribute('aria-valuenow', progressBarPercentage);
 			progressBarCategoryModal.style.width = progressBarPercentage + '%'; 
@@ -519,22 +624,22 @@
 	}
 	
 	// Create image anchor for compensating budget icon
-	function createImageAnchor(categoryIdKey, documentOrFragment) {
-		let actionIconsDiv = documentOrFragment.getElementById('actionIcons-' + categoryIdKey);
-		let checkImageExistsDiv = document.getElementById('compensateBudgetImage-' + categoryIdKey);
+	function createImageAnchor(budgetIdKey, documentOrFragment) {
+		let actionIconsDiv = documentOrFragment.getElementById('actionIcons-' + budgetIdKey);
+		let checkImageExistsDiv = document.getElementById('compensateBudgetImage-' + budgetIdKey);
 		// If the compensation anchor exists do not create it
 		if(checkImageExistsDiv == null) {
 			// Document Fragment for compensation
 			let compensationDocumentFragment = document.createDocumentFragment();
 			let compensationIconsDiv = document.createElement('a');
 			compensationIconsDiv.classList = 'compensateAnchor';
-			compensationIconsDiv.id='compensateAnchor-' + categoryIdKey;
+			compensationIconsDiv.id='compensateAnchor-' + budgetIdKey;
 			compensationIconsDiv.setAttribute('data-toggle','tooltip');
 			compensationIconsDiv.setAttribute('data-placement','bottom');
 			compensationIconsDiv.setAttribute('title','Compensate overspending');
 			
 			let compensationImage = document.createElement('img');
-			compensationImage.id= 'compensateBudgetImage-' + categoryIdKey;
+			compensationImage.id= 'compensateBudgetImage-' + budgetIdKey;
 			compensationImage.classList = 'compensateBudgetImage';
 			compensationImage.src = '../img/dashboard/budget/icons8-merge-16.png'
 			compensationIconsDiv.appendChild(compensationImage);
@@ -545,43 +650,50 @@
 	}
 	
 	// Add click event listener to delete the budget
-	$('#budgetAmount').on('click', '.deleteBudget' , function(e) {
+	$('body').on('click', '.deleteBudget' , function(e) {
 		let deleteButtonElement = this;
-		let categoryId = lastElement(splitElement(this.id,'-'));
+		let budgetId = this.getAttribute('data-target');
 		
 		// Show the material spinner and hide the delete button
-		document.getElementById('deleteElementSpinner-' + categoryId).classList.toggle('d-none');
+		document.getElementById('deleteElementSpinner-' + budgetId).classList.toggle('d-none');
 		this.classList.toggle('d-none');
 		
 		// Hide the compensation image if present
-		compensateBudget = document.getElementById('compensateBudgetImage-' + categoryId);
+		compensateBudget = document.getElementById('compensateBudgetImage-' + budgetId);
 		if(compensateBudget != null) {
 			compensateBudget.classList.toggle('d-none');
 		}
 		
 		// Security check to ensure that the budget is present
-		if(isEmpty(userBudgetCache[categoryId])) {
+		if(isEmpty(userBudgetCache[budgetId])) {
 			showNotification('Unable to delete the budget. Please refresh and try again!',window._constants.notification.error);
 			return;
 		}
+
+		let values = {};
+		values.walletId = window.currentUser.walletId;
+		values.itemId = budgetId;
 		
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "DELETE";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
-   		ajaxData.contentType = "application/json; charset=utf-8";
+   		ajaxData.type = "POST";
+   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
         	  // Remove the budget modal
-        	  $('#cardCategoryId-' + categoryId).fadeOut('slow', function(){
+        	  let budgetDiv = document.getElementById('cardBudgetId-' + budgetId);
+        	  $(budgetDiv).fadeOut('slow', function(){
         		  this.remove();
         	  });
         	  	
         	  // Delete the entry from the map if it is pending to be updated
-			  delete userBudgetCache[categoryId];
+			  delete userBudgetCache[budgetId];
 				
         	  // Update budget visualization chart after deletion
-        	  updateBudgetVisualization(false);
+        	  updateBudgetVisualization();
         	  
         	  // reset the dates cache for the user budget
         	  if(isEmpty(userBudgetCache)) {
@@ -601,7 +713,7 @@
         	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!',ajaxData);
 	          	
 	          // Remove the material spinner and show the delete button again
-	          document.getElementById('deleteElementSpinner-' + categoryId).classList.toggle('d-none');
+	          document.getElementById('deleteElementSpinner-' + budgetId).classList.toggle('d-none');
 	          deleteButtonElement.classList.toggle('d-none');
         }
 		// Request to delete the user budget
@@ -609,7 +721,9 @@
 	          type: ajaxData.type,
 	          url: ajaxData.url,
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          contentType: ajaxData.contentType, 
+	          dataType: ajaxData.dataType,
+		      contentType: ajaxData.contentType,
+		      data: ajaxData.values,
               success: ajaxData.onSuccess,
               error:  ajaxData.onFailure
 		});
@@ -672,7 +786,7 @@
 	}
 	
 	// Clicking on copy budget
-	$('#budgetAmount').on('click', '#copyPreviousMonthsBudget' , function(e) {
+	$('body').on('click', '#copyPreviousMonthsBudget' , function(e) {
 		this.setAttribute("disabled", "disabled");
 		this.innerHTML = 'Creating budgets..';
 		let element = this;
@@ -684,8 +798,8 @@
       	  	genericAddFnc.classList.add('d-none');
       	  	
 			// Appends to a document fragment
-      	  	createAnEmptyBudgets(CUSTOM_DASHBOARD_CONSTANTS.defaultCategory, budgetAmount);
-      	  	createAnEmptyBudgets(CUSTOM_DASHBOARD_CONSTANTS.defaultCategory+1, budgetAmount);
+      	  	createAnEmptyBudget(window.defaultCategories[0], budgetAmount);
+      	  	createAnEmptyBudget(window.defaultCategories[1], budgetAmount);
 			return;
 		}
 		
@@ -701,7 +815,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
+   		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudgets) {
 	        	
         	if(isEmpty(userBudgets)) {
@@ -720,13 +834,13 @@
           	  	}
           	  	
           	  	// Store the values in a cache
-          	  	userBudgetCache[value.categoryId] = value;
+          	  	userBudgetCache[value.budgetId] = value;
 
           	  	// Appends to a document fragment
           	  	budgetDivFragment.appendChild(buildUserBudget(value));
           	  	
           	  	// Handle the update of the progress bar modal
-    			updateProgressBarAndRemaining(value.categoryId, budgetDivFragment);
+    			updateProgressBarAndRemaining(value, budgetDivFragment);
         	}
         	
         	// paints them to the budget dashboard
@@ -737,7 +851,7 @@
 
         	
     		// Update the Budget Visualization module
-    		updateBudgetVisualization(true);
+    		updateBudgetVisualization();
     		
           }
           ajaxData.onFailure = function(thrownError) {
@@ -802,35 +916,47 @@
 	}
 	
 	// Create two empty budgets on click Start Planning for .. button
-	function createAnEmptyBudgets(categoryId, budgetAmountDiv) {
+	function createAnEmptyBudget(categoryId, budgetAmountDiv) {
 		
 		var values = {};
+
+		if(isEmpty(categoryId.name)) {
+			values['category'] = categoryId;
+		} else {
+			values['category'] = categoryId.name;
+			values['categoryType'] = categoryId.type;
+		}
+
 		values['planned'] = 0;
-		values['categoryId'] = categoryId;
 		values['autoGenerated'] = false;
-		values['dateMeantFor'] = chosenDate.toISOString();
+		values['dateMeantFor'] = window.currentDateAsID;
 		values['walletId'] = currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
+   		ajaxData.type = "PUT";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
-   		ajaxData.onSuccess = function(userBudget) {
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(result) {
+   				// Filter the body
+   				let userBudget = result['body-json'];
+   				// Assign Category Id
+   				assignCategoryId(userBudget);
+   				// Populate CurrentDateAsId if necessary
+   				if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = userBudget.dateMeantFor }
+   				// Build the new budget
 	        	let budgetDivFragment = document.createDocumentFragment();
 	        	budgetDivFragment.appendChild(buildUserBudget(userBudget));
-	        	
 	        	// Store the values in a cache
-          	  	userBudgetCache[userBudget.categoryId] = userBudget;
-
+          	  	userBudgetCache[userBudget.budgetId] = userBudget;
           	  	// Enable the Add button
           	  	let genericAddFnc = document.getElementById('genericAddFnc');
           	  	genericAddFnc.classList.remove('d-none');
-          	  	
-          	  	let categoryNameDiv = budgetDivFragment.getElementById('categoryName-' + userBudget.categoryId);
+          	  	// Remove all category with name
+          	  	let categoryNameDiv = budgetDivFragment.getElementById('categoryName-' + userBudget.budgetId);
     			// Replace HTML with Empty
         		while (categoryNameDiv.firstChild) {
         			categoryNameDiv.removeChild(categoryNameDiv.firstChild);
@@ -838,46 +964,84 @@
 
           	  	
           	  	// Container for inlining the select form
-          	  	let containerForSelect = document.createElement('div');
-          	  	containerForSelect.classList = 'd-inline-block';
-          	  	
-          	  	// Append the select group to the category Name. Enabling use to change the category
-          	  	let selectCategoryElement = document.createElement('select');
-          	  	selectCategoryElement.id = 'categoryOptions-' + userBudget.categoryId;
-          	  	selectCategoryElement.classList = 'categoryOptions form-control';
-          	  	selectCategoryElement.setAttribute('data-toggle', 'dropdown');
-          	  	selectCategoryElement.setAttribute('data-style', 'btn btn-primary');
-          	  	selectCategoryElement.setAttribute('aria-haspopup', true);
-          	  	selectCategoryElement.setAttribute('aria-expanded', false); 
-          	  	selectCategoryElement.setAttribute('data-width', 'auto');
-          	  	selectCategoryElement.setAttribute('data-container', 'body');
-          	  	selectCategoryElement.setAttribute('data-size', '5');
-          	  	
-          	  	let optGroupExpense = document.createElement('optgroup');
-          	  	optGroupExpense.id = 'expenseSelection-' + userBudget.categoryId;
-          	  	optGroupExpense.classList = 'expenseSelection form-control';
-          	  	optGroupExpense.label = 'Expenses';
-          	  	// Load Expense category
-	      		expenseSelectionOptGroup = cloneElementAndAppend(optGroupExpense, expenseSelectionOptGroup);
-          	  	selectCategoryElement.appendChild(optGroupExpense);
-          	  	
-          	  	let optGroupIncome = document.createElement('optgroup');
-        	  	optGroupIncome.id = 'incomeSelection-' + userBudget.categoryId;
-        	  	optGroupIncome.classList = 'incomeSelection form-control';
-        	  	optGroupIncome.label = 'Income';
-        	  	// Load income category
-        	  	incomeSelectionOptGroup = cloneElementAndAppend(optGroupIncome, incomeSelectionOptGroup);
-        	  	selectCategoryElement.appendChild(optGroupIncome);
-        	  	
-        	  	// Set the relevant category in the options to selected
-        		let toSelectOption = selectCategoryElement.getElementsByClassName('categoryOption-' + userBudget.categoryId);
-        		toSelectOption[0].selected = 'selected';
+				let containerForSelect = document.createElement('div');
+				containerForSelect.setAttribute("id", 'selectCategoryRow-' + userBudget.budgetId);
+				containerForSelect.className = 'btn-group btnGroup-1';
+				containerForSelect.setAttribute('aria-haspopup', true);
+				containerForSelect.setAttribute('aria-expanded', false);
+
+				let displayCategory = document.createElement('div');
+				displayCategory.classList = 'w-md-15 w-8 dd-display-wrapper';
+				displayCategory.disabled = true;
+				displayCategory.innerText = isEmpty(userBudget.categoryName) ? window.categoryMap[userBudget.category].name : userBudget.categoryName;
+				containerForSelect.appendChild(displayCategory);
+
+
+				let dropdownArrow = document.createElement('div');
+				dropdownArrow.classList = 'dropdown-toggle dropdown-toggle-split';
+				dropdownArrow.setAttribute('data-toggle', 'dropdown');
+				dropdownArrow.setAttribute('aria-haspopup', 'true');
+				dropdownArrow.setAttribute('aria-expanded', 'false');
+
+				let srOnly = document.createElement('span');
+				srOnly.classList = 'sr-only';
+				srOnly.innerText = 'Toggle Dropdown';
+				dropdownArrow.appendChild(srOnly);
+				containerForSelect.appendChild(dropdownArrow);
+
+				let dropdownMenu = document.createElement('div');
+				dropdownMenu.classList = 'dropdown-menu';
+
+				let inputGroup = document.createElement('div');
+				inputGroup.classList = 'input-group';
+
+				let searchSpan = document.createElement('span');
+				searchSpan.classList = 'm-1 tripleNineColor';
+
+				let icons = document.createElement('i');
+				icons.classList = 'search';
+				searchSpan.appendChild(icons);
+				inputGroup.appendChild(searchSpan);
+
+				let inputType = document.createElement('input');
+				inputType.classList = 'form-control w-75 mr-2';
+				inputType.placeholder = 'Search...';
+				inputType.type = 'text';
+				inputGroup.appendChild(inputType);
+
+				let incomeCategoriesHSix = document.createElement('h6');
+				incomeCategoriesHSix.classList = 'dropdown-header';
+				incomeCategoriesHSix.innerText = 'Income';
+				inputGroup.appendChild(incomeCategoriesHSix);
+
+				let incomeCategories = document.createElement('div');
+				incomeCategories.classList = 'incomeCategories';
+				incomeCategories.setAttribute('data-target', userBudget.budgetId);
+				incomeDropdownItems =  cloneElementAndAppend(incomeCategories, incomeDropdownItems);
+				inputGroup.appendChild(incomeCategories);
+
+				let dividerDD = document.createElement('div');
+				dividerDD.classList = 'dropdown-divider';
+				inputGroup.appendChild(dividerDD);
+
+				let expenseCategoriesHSix = document.createElement('h6');
+				expenseCategoriesHSix.classList = 'dropdown-header';
+				expenseCategoriesHSix.innerText = 'Expense';
+				inputGroup.appendChild(expenseCategoriesHSix);
+
+				let expenseCategories = document.createElement('div');
+				expenseCategories.classList = 'expenseCategories';
+				expenseCategories.setAttribute('data-target', userBudget.budgetId);
+				expenseDropdownItems =  cloneElementAndAppend(expenseCategories, expenseDropdownItems);
+				inputGroup.appendChild(expenseCategories);
+				dropdownMenu.appendChild(inputGroup);
+				
         		
-        		containerForSelect.appendChild(selectCategoryElement);
+        		containerForSelect.appendChild(dropdownMenu);
         	  	categoryNameDiv.appendChild(containerForSelect);
         	  	
         	  	// Handle the update of the progress bar modal
-    			updateProgressBarAndRemaining(userBudget.categoryId, budgetDivFragment);
+    			updateProgressBarAndRemaining(userBudget, budgetDivFragment);
 
 	      		// paints them to the budget dashboard if the empty budget div is not null
 	      		if(document.getElementById('emptyBudgetCard') !== null) {
@@ -891,9 +1055,10 @@
 	      		} else {
 	      			budgetAmountDiv.appendChild(budgetDivFragment);
 	      		}
+
             	
             	// Update the Budget Visualization module
-        		updateBudgetVisualization(true);
+        		updateBudgetVisualization();
             	
 	    }
         ajaxData.onFailure = function (thrownError) {
@@ -917,22 +1082,31 @@
 	}
 	
 	// Change trigger on select
-	$( "#budgetAmount" ).on( "change", ".categoryOptions" ,function() {
-		let categoryId = lastElement(splitElement(this.id, '-'));
+	$('body').on("click", "#budgetAmount .dropdown-item" , function(event){
+		let categoryId = this.lastChild.value;
+		let budgetId = this.parentNode.getAttribute('data-target');
 
 		// Make sure that the category selected is not budgeted
 		let allUnbudgetedCategories = returnUnbudgetedCategories();
-		if(!includesStr(allUnbudgetedCategories,this.value)) {
+		if(notIncludesStr(allUnbudgetedCategories,this.value)) {
 			showNotification('The selected category already has a budget. Please choose a different category!',window._constants.notification.error);
 			return;
 		}
 		
 		// Call the change of category services
 		let values = {};
-		values['categoryId'] = categoryId; 
-		values['newCategoryId'] = this.value;
-		values['dateMeantFor'] = chosenDate.toISOString();
-
+		values['budgetId'] = budgetId;
+		values['walletId'] = window.currentUser.walletId;
+		values['category'] = categoryId;
+		let categoryItem = window.categoryMap[categoryId];
+		let oldCategoryName = document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText;
+		if(isEmpty(categoryItem.id)) {
+			values['categoryType'] = categoryItem.type;
+			values['dateMeantFor'] = window.currentDateAsID;
+			document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = categoryId;
+		} else {
+			document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = window.categoryMap[categoryId].name;
+		}
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -941,71 +1115,31 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
-   		ajaxData.onSuccess = function(userBudget){
-	        	  
-	        	 if(isEmpty(userBudget)) {
-	        		 showNotification("Sorry, We couldn't change the budegt at the moment. Please refresh and try again",window._constants.notification.error);
-	        		 return;
-	        	 }
-	        	  
-	        	 // Delete the entry from the map if it is pending to be updated
-  				 delete userBudgetCache[categoryId];
-  				 
-  				 // Assign new category to the user budget cache
-  				 userBudgetCache[userBudget.categoryId] = userBudget;
-  				  
-	        	 // Update all category IDs
-	        	 let catergoryIdCard = document.getElementById('cardCategoryId-' + categoryId);
-	        	 catergoryIdCard.id = 'cardCategoryId-' + userBudget.categoryId;
-	        	 
-	        	 let categoryNameDiv = document.getElementById('categoryName-' + categoryId);
-	        	 categoryNameDiv.id = 'categoryName-' + userBudget.categoryId;
-	        	 
-	        	 let categoryOptionsDiv = document.getElementById('categoryOptions-' + categoryId);
-	        	 categoryOptionsDiv.id = 'categoryOptions-' + userBudget.categoryId;
-	        	 
-	        	 let expenseSelectionDiv = document.getElementById('expenseSelection-' + categoryId);
-	        	 expenseSelectionDiv.id = 'expenseSelection-' + userBudget.categoryId;
-	        	 
-	        	 let incomeSelectionDiv = document.getElementById('incomeSelection-' + categoryId);
-	        	 incomeSelectionDiv.id = 'incomeSelection-' + userBudget.categoryId;
-	        	 
-	        	 let budgetInfoLabelInModalDiv = document.getElementById('budgetInfoLabelInModal-' + categoryId);
-	        	 budgetInfoLabelInModalDiv.id = 'budgetInfoLabelInModal-' + userBudget.categoryId;
-	        	 
-	        	 let budgetAmountEnteredDiv = document.getElementById('budgetAmountEntered-' + categoryId);
-	        	 budgetAmountEnteredDiv.id = 'budgetAmountEntered-' + userBudget.categoryId;
-	        	 
-	        	 let percentageAvailableDiv = document.getElementById('percentageAvailable-' + categoryId);
-	        	 percentageAvailableDiv.id = 'percentageAvailable-' + userBudget.categoryId;
-	        	 
-	        	 let progressBudgetDiv = document.getElementById('progress-budget-' + categoryId);
-	        	 progressBudgetDiv.id = 'progress-budget-' + userBudget.categoryId;
-	        	 
-	        	 let remainingAmountDiv = document.getElementById('remainingAmount-' + categoryId);
-	        	 remainingAmountDiv.id = 'remainingAmount-' + userBudget.categoryId;
-	        	 
-	        	 let deleteSvgElementDiv = document.getElementById('deleteSvgElement-' + categoryId);
-	        	 deleteSvgElementDiv.id = 'deleteSvgElement-' + userBudget.categoryId;
-	        	 
-	        	 let deleteElementSpinnerDiv = document.getElementById('deleteElementSpinner-' + categoryId);
-	        	 deleteElementSpinnerDiv.id = 'deleteElementSpinner-' + userBudget.categoryId;
-	        	 
-	        	 let actionIconsDiv = document.getElementById('actionIcons-' + categoryId);
-	        	 actionIconsDiv.id = 'actionIcons-' + userBudget.categoryId;
-	        	 
-	        	 let compensateAnchorDiv = document.getElementById('compensateAnchor-' + categoryId);
-	        	 if(compensateAnchorDiv != null) {
-	        		 compensateAnchorDiv.parentNode.removeChild(compensateAnchorDiv);
-	        	 }
-	        	 
-	        	// Handle the update of the progress bar modal
-     			updateProgressBarAndRemaining(userBudget.categoryId, document);
+   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.onSuccess = function(result){
+   			let userBudget = result['body-json'];
+
+   			if(isEmpty(categoryItem.id)) {
+   				delete window.categoryMap[categoryId];
+   				let category = {};
+   				category.name = userBudget.categoryName;
+   				category.type = userBudget.categoryType;
+   				category.id = userBudget.category;
+   				// Category Map
+   				window.categoryMap[userBudget.category] = category;
+   			}
+        		 
+			// Assign new category to the user budget cache
+			userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
+        	 
+        	// Handle the update of the progress bar modal
+ 			updateProgressBarAndRemaining(userBudgetCache, document);
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
         		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!',ajaxData);
+        		// Chacnge the button text to the old one if fails. 
+        		document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = oldCategoryName;
         }
 
 		$.ajax({
@@ -1014,7 +1148,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType, 
-	          data : values,
+	          data : ajaxData.values,
 	          success: ajaxData.onSuccess,
 	          error:  ajaxData.onFailure
 		});
@@ -1023,9 +1157,9 @@
 
 	// Create a new unbudgeted category
 	function createUnbudgetedCat(event) {
-		let categoryId = returnUnbudgetedCategory();
+		let categoryItem = returnUnbudgetedCategory();
 		
-		if(isEmpty(categoryId)) {
+		if(isEmpty(categoryItem)) {
 			showNotification('You have a budget for all the categories!',window._constants.notification.error);
 			return;
 		}
@@ -1033,47 +1167,49 @@
 		event.classList.add('d-none');
 		
 		let budgetAmountDiv = document.getElementById('budgetAmount');
-		createAnEmptyBudgets(categoryId, budgetAmountDiv);
+		createAnEmptyBudget(categoryItem, budgetAmountDiv);
 	}
 	
 	// Find the unbudgeted category 
 	function returnUnbudgetedCategory() {
-		let categoryId = '';
+		let categoryItem = '';
 		
 		// Iterate through all the available categories
 		if(isEmpty(userBudgetCache)) {
-			categoryId = CUSTOM_DASHBOARD_CONSTANTS.defaultCategory;
+			categoryItem = window.defaultCategories[0];
 		} else {
-			let allBudgetedCategories = [];
+			let allBudgetedCategories = {};
 			// Get all the budgeted categories
 			let budgetKeySet = Object.keys(userBudgetCache);
 			for(let count = 0, length = budgetKeySet.length; count < length; count++){
 				let key = budgetKeySet[count];
 	      	  	let budgetObject = userBudgetCache[key];
 	      	  	// Push the budgeted category to cache
-	      	  	isNotEmpty(budgetObject) && allBudgetedCategories.push(key);
+	      	  	if(isNotEmpty(budgetObject)) { allBudgetedCategories[budgetObject.category] = budgetObject;}
 			}
-			
 			
 			let dataKeySet = Object.keys(categoryMap);
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
 				let key = dataKeySet[count];
+				let categoryObj = categoryMap[key];
 	      	  	
 	      	  	// If a category that is not contained in the budget cache is found then assign and leave for loop
-	      	  	if(!includesStr(allBudgetedCategories,key) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.incomeCategory)) {
-	      	  		categoryId = key;
+	      	  	if(isEmpty(categoryObj) 
+	      	  		|| isEmpty(categoryObj.id) 
+	      	  		|| isEmpty(allBudgetedCategories[categoryObj.id])) {
+	      	  		categoryItem = categoryObj;
 	      	  		break;
 	      	  	}
 	      	  	
 			}
 		}
 		
-		return categoryId;
+		return categoryItem;
 	}
-	
+
 	// Find the unbudgeted categories 
 	function returnUnbudgetedCategories() {
-		let categoryIdArray = [];
+		let categoryArray = [];
 		
 		// Iterate through all the available categories
 		if(isEmpty(userBudgetCache)) {
@@ -1082,39 +1218,42 @@
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
 				let key = dataKeySet[count];
 	      	  	let categoryObject = categoryMap[key];
-	      	  	categoryIdArray.push(categoryObject.categoryId);
+	      	  	categoryArray.push(categoryObject);
 			}
 		} else {
-			let allBudgetedCategories = [];
+			let allBudgetedCategories = {};
 			// Get all the budgeted categories
 			let budgetKeySet = Object.keys(userBudgetCache);
 			for(let count = 0, length = budgetKeySet.length; count < length; count++){
 				let key = budgetKeySet[count];
 	      	  	let budgetObject = userBudgetCache[key];
 	      	  	// Push the budgeted category to cache
-	      	  	isNotEmpty(budgetObject) && allBudgetedCategories.push(key);
+	      	  	if(isNotEmpty(budgetObject)) { allBudgetedCategories[budgetObject.category] = budgetObject;}
 			}
 			
 			// Iterate through all the available categories and find the ones that does not have a budget yet
 			let dataKeySet = Object.keys(categoryMap);
 			for(let count = 0, length = dataKeySet.length; count < length; count++){
 				let key = dataKeySet[count];
+				let categoryObj = categoryMap[key];
 	      	  	
 	      	  	// If a category that is not contained in the budget cache is found then assign and leave for loop
-	      	  	if(!includesStr(allBudgetedCategories,key) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) && isNotEqual(key,CUSTOM_DASHBOARD_CONSTANTS.incomeCategory)) {
-	      	  		categoryIdArray.push(key);
+	      	  	if(isEmpty(categoryObj) 
+	      	  		|| isEmpty(categoryObj.id) 
+	      	  		|| isEmpty(allBudgetedCategories[categoryObj.id])) {
+	      	  		categoryArray.push(categoryObj);
 	      	  	}
 	      	  	
 			}
 		}
 		
-		return categoryIdArray;
+		return categoryArray;
 	}
 	
 	/**
 	 *  Compensate Budget Module
 	 */
-	$('#budgetAmount').on('click', '.compensateAnchor' , function() {
+	$('body').on('click', '.compensateAnchor' , function() {
 		let categoryCompensationTitle = document.getElementById('categoryCompensationTitle');
 		let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
 		let anchorDropdownItemFragment = document.createDocumentFragment();
@@ -1131,13 +1270,13 @@
 		}
 		
 		// Build a category available cache
-		let selectedCategoryParentCategory = categoryMap[categoryId].parentCategory;
+		let selectedCategoryParentCategory = categoryMap[categoryId].type;
 		let dataKeySet = Object.keys(userBudgetCache);
 		for(let count = 0, length = dataKeySet.length; count < length; count++) {
 			let key = dataKeySet[count];
       	  	let userBudgetValue = userBudgetCache[key];
       	  
-      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[key].parentCategory)) {
+      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[key].type)) {
       	  		continue;
       	  	}
       	  	
@@ -1180,7 +1319,7 @@
 	function buildCategoryAvailableToCompensate(userBudgetTotalAvailable, userBudgetValue) {
 		let anchorDropdownItem = document.createElement('a');
 		anchorDropdownItem.classList = 'dropdown-item compensationDropdownMenu';
-		anchorDropdownItem.id = 'categoryItemAvailable1-' + userBudgetValue.categoryId;
+		anchorDropdownItem.id = 'categoryItemAvailable1-' + userBudgetValue.budgetId;
 		
 		let categoryLabelDiv = document.createElement('div');
 		categoryLabelDiv.classList = 'compensationCatSelectionName font-weight-bold';
@@ -1335,15 +1474,16 @@
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
-   		ajaxData.onSuccess = function(userBudget){
+   		ajaxData.onSuccess = function(result){
+   			  let userBudget = result['body-json'];
 	    	  // Update the cache containing user budgets
-	    	  userBudgetCache[userBudget.categoryId] = userBudget;
+	    	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	    	  
 	    	  // Update the modal
-	    	  updateProgressBarAndRemaining(userBudget.categoryId, document);
+	    	  updateProgressBarAndRemaining(userBudgetCache[userBudget.budgetId], document);
 	    	  
 	    	  // Update the budget amount
-	    	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.categoryId);
+	    	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.budgetId);
 	    	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
 	    }
         ajaxData.onFailure = function(thrownError) {
@@ -1363,7 +1503,7 @@
 	}
 	
 	// Click the delete budget compensated
-	$('#compensationModalBody').on('click', '.revertCompensationAnchor' , function() {
+	$('body').on('click', '.revertCompensationAnchor' , function() {
 		let toDeleteCategoryId = lastElement(splitElement(this.id,'-'));
 		document.getElementById('deleteCompensationSpinner-' + toDeleteCategoryId).classList.toggle('d-none');
 		this.firstChild.classList.toggle('d-none');
@@ -1399,7 +1539,7 @@
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
         	  // Update the Budget Cache
-        	  userBudgetCache[userBudget.categoryId] = userBudget;
+        	  userBudgetCache[userBudget.budgetId] = userBudget;
         	  
         	  let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
       		  let anchorDropdownItemFragment = document.createDocumentFragment();
@@ -1408,14 +1548,14 @@
       		  compensationDropdownMenu.appendChild(anchorDropdownItemFragment);
       		  
       		  // Remove the compensation Budget Added Display
-      		  let anchorCompensatedBudget = document.getElementById('categoryItemSelected-' + userBudget.categoryId);
+      		  let anchorCompensatedBudget = document.getElementById('categoryItemSelected-' + userBudget.budgetId);
       		  anchorCompensatedBudget.remove();
       		  
       		  // Update the modal
-        	  updateProgressBarAndRemaining(userBudget.categoryId, document);
+        	  updateProgressBarAndRemaining(userBudget, document);
         	  
         	  // Update the budget amount
-        	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.categoryId);
+        	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.budgetId);
         	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
         }
         ajaxData.onFailure = function(thrownError) {
@@ -1450,16 +1590,16 @@
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
         	// Update the Budget Cache
-        	userBudgetCache[userBudget.categoryId] = userBudget;
+        	userBudgetCache[userBudget.budgetId] = userBudget;
         	
         	// Get the user Budget overspending
-      		let userBudgetOverSpending = userBudgetCache[userBudget.categoryId].planned -  categoryTotalMapCache[userBudget.categoryId];
+      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  categoryTotalMapCache[userBudget.categoryId];
       		userBudgetOverSpending = currentCurrencyPreference + formatNumber(Math.abs(userBudgetOverSpending), currentUser.locale);
       		// Set the title of the modal
       		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.categoryId].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
       		
       		// Update the modal
-        	updateProgressBarAndRemaining(userBudget.categoryId, document);
+        	updateProgressBarAndRemaining(userBudget, document);
         	  
         	// Update the budget amount
         	let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.categoryId);
@@ -1483,35 +1623,6 @@
 		});
 	    
 	}
-	
-	/**
-	 * Date Picker Module
-	 */
-	
-	// Date Picker On click month
-	$('.monthPickerMonth').unbind('click').click(function() {
-		// Month picker is current selected then do nothing
-		if(this.classList.contains('monthPickerMonthSelected')) {
-			return;
-		}
-		
-		let budgetAmountDiv = document.getElementById('budgetAmount');
-		
-		// If other pages are present then return this event
-		if(budgetAmountDiv == null) {
-			return;
-		}
-		
-		// Set chosen date
-		er.setChosenDateWithSelected(this);
-		
-		// Reset the User Budget with Loader
-		resetUserBudgetWithLoader();
-		
-		// Call the user budget
-		fetchAllUserBudget();
-		
-	});
 	
 	// Reset the user budget with loader
 	function resetUserBudgetWithLoader() {
@@ -1644,29 +1755,5 @@
 		let chartVisualization = document.getElementById('chartBudgetVisualization');
 		chartVisualization.innerHTML = '<div class="material-spinner"></div>';
 	}
-
-	/**
-	*  Add Functionality Generic + Btn
-	**/
-
-	// Register Tooltips
-	let ttinit = $("#addFncTT");
-	ttinit.attr('data-original-title', 'Add Budget');
-	ttinit.tooltip({
-		delay: { "show": 300, "hide": 100 }
-    });
-
-    // Generic Add Functionality
-    let genericAddFnc = document.getElementById('genericAddFnc');
-    document.getElementById('addFncTT').innerText = 'add';
-    genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
-    $(genericAddFnc).unbind('click').click(function () {
-    	if(!this.classList.contains('addNewBudget')) {
-    		return;
-    	}
-
-    	// Create a new unbudgeted category
-		createUnbudgetedCat(this);
-    });
 
 }(jQuery));	
