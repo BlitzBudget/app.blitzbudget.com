@@ -839,6 +839,12 @@
    					data: JSON.stringify(values),
 			        success: function(result) {
 			        	chosenDiv.remove();
+			        	// Chosen Wallet is equal to wallet id
+			        	if(isEqual(chosenWallet, window.currentUser.walletId)) {
+			        		// Reset Current User Wallet ID and CUrreny
+				        	delete window.currentUser.walletId;
+				        	delete window.currentUser.walletCurrency;
+			        	}
 
 			        	/*
 			        	* Remove entry from global wallets
@@ -854,7 +860,7 @@
 			        	/*
 			        	* Repopulate the wallet 
 			        	*/
-			        	populateAutocompleteCurrency(window.globalWallet);
+			        	populateAutocompleteCurrency(window.globalWallet);			        	
 			        },
 			        error: function (thrownError) {
 				    	manageErrors(thrownError, "There was an error while deleteing your wallet. Please try again later!",'');
