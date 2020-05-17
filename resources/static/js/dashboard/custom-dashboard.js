@@ -939,7 +939,7 @@ function populateCurrentDate(date) {
 		let presentDate = date[i].dateId;
 		let presentDateAsDate = new Date(presentDate.substring(5, presentDate.length));
 		if(window.chosenDate.getMonth() == presentDateAsDate.getMonth()
-			|| window.chosenDate.getFullYear() == presentDateAsDate.getFullYear()) {
+			&& window.chosenDate.getFullYear() == presentDateAsDate.getFullYear()) {
 			window.currentDateAsID = presentDate;
 		}
 	}
