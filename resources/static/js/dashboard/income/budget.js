@@ -946,6 +946,8 @@
    				window.currentDateAsID = userBudget.dateMeantFor;
    				// Assign Category Id
    				assignCategoryId(userBudget);
+   				// Handle hide and unhide categories
+   				handleHideAndUnhideCategories();
    				// Populate CurrentDateAsId if necessary
    				if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = userBudget.dateMeantFor }
    				// Build the new budget

@@ -817,6 +817,9 @@ er = {
 		// Set chosen date
 		chosenDate.setMonth(positionId);
 		chosenDate.setFullYear(popoverYear);
+
+		// Change the selected date ID
+		populateCurrentDate(window.datesCreated);
 		
 		// Hide the modal
 		let dateControl = document.getElementById('dateControl');
@@ -958,6 +961,8 @@ function fetchJSONForCategories(data) {
 	
 	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
 		  let value = window.defaultCategories[count];
+		  // While Changing the dates delete the ID field.
+		  delete value.id;
 
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
@@ -982,10 +987,7 @@ function fetchJSONForCategories(data) {
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 			  window.incomeDropdownItems.appendChild(option);
 		  }
-	   
-  	}
-   // Sealing the object so new objects or properties cannot be added
-   Object.seal(window.categoryMap);
+  	}   
 }
 
 /*
@@ -1000,8 +1002,8 @@ function assignCategoryId(data) {
 	let categoryType = data.categoryType;
 
 	if(isNotEmpty(window.categoryMap[categoryName])) {
-		// DO not delete the category map with name as it could be used for existing elements
-		// Create a new map for categorymap
+		delete window.categoryMap[categoryName];
+		
 		let category = {};
 		category.name = categoryName;
 		category.type = categoryType;
@@ -1035,8 +1037,6 @@ function assignCategoryId(data) {
 		  }
 	   
   	}
-   // Sealing the object so new objects or properties cannot be added
-   Object.seal(window.categoryMap);
 }
 
 // Display Confirm Account Verification Code
