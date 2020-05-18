@@ -114,9 +114,6 @@
 			
 		});
 
-		// Replace currentCurrencySymbol with currency symbol
-		replaceWithCurrency();
-
 		/**
 		*  Add Functionality Generic + Btn
 		**/

@@ -884,6 +884,7 @@
 			        		// Reset Current User Wallet ID and CUrreny
 				        	delete window.currentUser.walletId;
 				        	delete window.currentUser.walletCurrency;
+				        	localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
 			        	}
 
 			        	/*

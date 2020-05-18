@@ -506,6 +506,7 @@
 		        	// Delete Wallet Id and Wallet Currency
 		        	delete window.currentUser.walletId;
 		        	delete window.currentUser.walletCurrency;
+		        	localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
 		        }
 			    ajaxData.onFailure = function (thrownError) {
 			    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);

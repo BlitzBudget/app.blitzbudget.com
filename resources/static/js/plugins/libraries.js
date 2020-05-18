@@ -156,7 +156,7 @@ function calcPage() {
 function replaceWithCurrency(wallet) {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
 
-	if(isEmpty(wallet)) {
+	if(isEmpty(wallet) && isEmpty(window.currentUser.walletId)) {
 		/*
 		* If Wallet is empty then redirect to add wallets page
 		*/
@@ -166,6 +166,11 @@ function replaceWithCurrency(wallet) {
 		  html: 'We will be redirecting you to add wallets in <b></b> milliseconds.',
 		  timer: 2000,
 		  timerProgressBar: true,
+		  showCloseButton: false,
+          showCancelButton: false,
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          closeOnClickOutside: false,
 		  onBeforeOpen: () => {
 		    Swal.showLoading()
 		    timerInterval = setInterval(() => {
