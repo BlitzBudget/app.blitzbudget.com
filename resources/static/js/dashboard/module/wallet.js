@@ -14,6 +14,7 @@
 		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
 		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
+		'chooseCurrencyDefault': { value: 'Choose Currency', writable: false, configurable: false },
 	});
 
 	// Add wallet
@@ -40,6 +41,7 @@
 		manageWallets.classList.remove('d-block');
 		document.getElementsByClassName('Cards')[0].classList.add('important');
 		document.body.classList.add('darker');
+		document.getElementById('confirmWallet').setAttribute('disabled','disabled');
 	});
 
 	document.getElementById('cancelWallet').addEventListener("click",function(e){
@@ -321,9 +323,11 @@
 		let id = this.parentElement.id;
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
+			document.getElementById('confirmWallet').removeAttribute('disabled');
 			document.getElementById('chosenCurrencyW').innerText = this.lastChild.value;
 			chosenCurrencyW = this.lastChild.value;
 		} else if(isEqual(id, chooseCrncyMWId)) {
+			document.getElementById('modifyWallet').removeAttribute('disabled');
 			document.getElementById('chosenCurrencyWMW').innerText = this.lastChild.value;
 			chosenCurrencyWMW = this.lastChild.value;
 		}
@@ -449,17 +453,18 @@
 			cToS[currency] = symbol;;
 			sToC[symbol] = currency;
 			/* Update the default currency in Settings */
-			if(isEqual(currentUser.walletCurrency, symbol)) {
-				document.getElementById('chosenCurrencyW').innerText = currency;
-				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(currency));
-				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(currency));
-			} else if(includesStr(walletCur,curToSym[i].currency)) {
+			if(includesStr(walletCur,curToSym[i].currency)) {
 				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(currency));
 				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(currency));
 			} else {
 				currencies.push(currency);
 			}
 		}
+
+		/*
+		* Add Wallet Currency Text
+		*/
+		let currentCurrenyW = document.getElementById('chosenCurrencyW').innerText = WALLET_CONSTANTS.chooseCurrencyDefault;
 
 		/*initiate the autocomplete function on the "chosenCurrencyWInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyWInp"), currencies, "chooseCurrencyDD");
@@ -705,8 +710,17 @@
 		*	Currency Dropdown Populate (EDIT)
 		*/
 		document.getElementById('chosenCurrencyWMW').innerText = currentWallet.currency;
+		/*
+		* Disable Manage Wallets
+		*/
+		document.getElementById('modifyWallet').setAttribute('disabled','disabled');
 
 	}
+
+	// Manage Wallet name
+	document.getElementById('manageWalletName').addEventListener("input",function(e){
+		document.getElementById('modifyWallet').removeAttribute('disabled');
+	});
 
 	// Modify Wallet
 	document.getElementById('modifyWallet').addEventListener("click",function(e){

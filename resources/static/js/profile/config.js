@@ -27,7 +27,7 @@ window._config = {
         invokeUrl: 'https://app.blitzbudget.com/'
     },
     wallet: {
-        invokeUrl: '/wallets'
+        invokeUrl: 'wallets'
     }
 };
 
