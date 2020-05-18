@@ -503,6 +503,9 @@
    				ajaxData.values = JSON.stringify(values);
 				ajaxData.onSuccess = function(jsonObj) {
 		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
+		        	// Delete Wallet Id and Wallet Currency
+		        	delete window.currentUser.walletId;
+		        	delete window.currentUser.walletCurrency;
 		        }
 			    ajaxData.onFailure = function (thrownError) {
 			    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);
