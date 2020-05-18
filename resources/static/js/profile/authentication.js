@@ -9,8 +9,6 @@
     if(isNotEmpty(currentCogUser)) {
         // Fill currency and Name
         fillName(); 
-        // Replace with currency
-        replaceWithCurrency();
     }
 
     /**
