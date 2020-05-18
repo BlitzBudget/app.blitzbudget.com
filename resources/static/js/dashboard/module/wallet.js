@@ -371,6 +371,12 @@
 	        	let removeLoader = document.getElementById('loading-wallet');
 	        	removeLoader.parentNode.removeChild(removeLoader);
 
+	        	// If there are no wallets then redirect to add wallets automatically.
+	        	if(isEmpty(wallets)) {
+	        		document.getElementById('genericAddFnc').click();
+					return;
+	        	}
+
 	        	// Build wallet div
 	        	let walletDiv = document.getElementById('whichWallet');
 	        	let walletFrag = document.createDocumentFragment();

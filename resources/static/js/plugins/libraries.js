@@ -156,6 +156,39 @@ function calcPage() {
 function replaceWithCurrency(wallet) {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
 
+	if(isEmpty(wallet)) {
+		/*
+		* If Wallet is empty then redirect to add wallets page
+		*/
+		let timerInterval;
+		Swal.fire({
+		  title: 'No Wallet Found',
+		  html: 'We will be redirecting you to add wallets in <b></b> milliseconds.',
+		  timer: 2000,
+		  timerProgressBar: true,
+		  onBeforeOpen: () => {
+		    Swal.showLoading()
+		    timerInterval = setInterval(() => {
+		      const content = Swal.getContent()
+		      if (content) {
+		        const b = content.querySelector('b')
+		        if (b) {
+		          b.textContent = Swal.getTimerLeft()
+		        }
+		      }
+		    }, 100)
+		  },
+		  onClose: () => {
+		    clearInterval(timerInterval)
+		  }
+		}).then((result) => {
+		  /* Read more about handling dismissals below */
+		  if (result.dismiss === Swal.DismissReason.timer) {
+		    window.location.href = window._config.app.invokeUrl + window._config.wallet.invokeUrl;
+		  }
+		})
+	}
+
 	if(isNotEmpty(wallet) && isEmpty(currentUser.walletCurrency)) {
 		window.cToS = {};
 		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
