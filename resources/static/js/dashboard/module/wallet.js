@@ -439,8 +439,17 @@
     	}
 
     	/*
+    	* If No currency is present then
+    	*/
+    	if(isEmpty(walletCur)) {
+    		currentCurrenciesDiv.appendChild(appendNoWallets());
+			currentCurrenciesMWDiv.appendChild(appendNoWallets());
+    	}
+
+    	/*
 		*	Currency Dropdown Populate
 		*/
+
 
 		/*An array containing all the currency names in the world:*/
 		let currencies = [];
@@ -454,8 +463,8 @@
 			sToC[symbol] = currency;
 			/* Update the default currency in Settings */
 			if(includesStr(walletCur,curToSym[i].currency)) {
-				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(currency));
-				document.getElementById('currentCurrenciesMW').appendChild(dropdownItemsWithWallet(currency));
+				currentCurrenciesDiv.appendChild(dropdownItemsWithWallet(currency));
+				currentCurrenciesMWDiv.appendChild(dropdownItemsWithWallet(currency));
 			} else {
 				currencies.push(currency);
 			}
@@ -472,6 +481,17 @@
 		/*initiate the autocomplete function on the "chosenCurrencyWInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyWInpMW"), currencies, "chooseCurrencyDDMW");
 
+	}
+
+	/*
+	* If there are no current wallets then show no results
+	*/
+	function appendNoWallets() {
+		/*create a DIV element for each matching element:*/
+        let b = document.createElement("DIV");
+        b.classList = "noResultsDD";
+        b.innerText = 'No Active Currency';
+        return b;
 	}
 
 	// Wallet Div
