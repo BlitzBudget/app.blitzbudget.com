@@ -699,7 +699,7 @@
 		amountDiv.tabIndex = 0;
 		
 	   // Append a - sign if it is an expense
-	   if(categoryMap[categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	   if(isNotEmpty(categoryMap) && categoryMap[categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 		   amountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
 	   } else {
 		   amountDiv.innerHTML = currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
@@ -1783,7 +1783,7 @@
 		 let values = {};
 		 values['amount'] = 0.00;
 		 values['description'] = '';
-		 values['categoryOptions'] = this.getAttribute('data-target');
+		 values['category'] = this.getAttribute('data-target');
 		 values['dateMeantFor'] = window.currentDateAsID;
 		 values['walletId'] = currentUser.walletId;
 
