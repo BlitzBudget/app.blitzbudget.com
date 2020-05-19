@@ -176,17 +176,16 @@
 	    
 	    amount = Math.abs(amount);
 	    // Get all the input radio buttons for recurrence to check which one is clicked
-	    let recurrence = document.getElementsByName('recurrence');
-	    let recurrenceValue = 'NEVER';
+	    let recurrence = document.querySelector('.register-recurrence.active');
+	    let recurrenceValues = ['NEVER', 'WEEKLY', 'BI-MONTHLY', 'MONTHLY'];
 	    
 	    // If the recurrence is not empty then assign the checked one
-	    if(isNotEmpty(recurrence)) {
-	    	for(let count = 0, length = recurrence.length; count < length; count++) {
-	    		if(recurrence[count].checked) {
-	    			recurrenceValue = recurrence[count].value;
-	    		}	
-	    	}
-	    }
+	    let recurrenceValue = recurrence[0].getAttribute('data-target');
+	    // Security to ensure data is not manipulated
+	    if(isEmpty(recurrenceValues[recurrenceValue])) {
+	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Recurrence value selected is invalid',2000);
+	    	return;
+	    } 
 	    
 	    let description = document.getElementById('description').value;
 	    let categoryOptions = document.getElementById('categoryOptions').getAttribute('data-chosen');
@@ -194,14 +193,20 @@
 	    let values = {};
 	    if(notIncludesStr(categoryOptions, 'Category#')) {
 	    	let chosenCategory = window.categoryMap[categoryOptions];
+	    	if(isEmpty(chosenCategory)) {
+	    		fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Chosen category is not valid. Please select a valid one.',2000);
+	    		return;
+	    	}
 	    	values['categoryType'] = chosenCategory.type;
+	    	values['category'] = chosenCategory.name;
+	    } else {
+	    	values['category'] = categoryOptions;
 	    }
 
 		values['amount'] = amount;
 		values['description'] = description;
-		values['category'] = categoryOptions;
 		values['dateMeantFor'] = window.currentDateAsID;
-		values['recurrence'] = recurrenceValue;
+		values['recurrence'] = recurrenceValues[recurrenceValue];
 		values['walletId'] = walletId;
 
 		// Ajax Requests on Error
@@ -262,6 +267,19 @@
 		});
 	    
 	}
+
+	// on click dropdown set the data chosen attribute
+	$('body').on("click", "#categoryOptions .dropdown-item" , function(event){
+		let dropdownValue = this.lastChild.value;
+		document.getElementById('categoryOptions').setAttribute('data-chosen', dropdownValue);
+	});
+
+	// Set Active Class on click button
+	$(document).on('click', ".register-recurrence", function() {
+		$('.register-recurrence').removeClass('active');
+		this.classList.add('active');
+
+	});
 
 	$(document).on("click", "#categoryOptions .dropdown-item" , function(event){
 
