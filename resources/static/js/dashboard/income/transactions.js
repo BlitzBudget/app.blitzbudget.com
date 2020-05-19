@@ -179,10 +179,12 @@
 	    let recurrenceValues = ['NEVER', 'WEEKLY', 'BI-MONTHLY', 'MONTHLY'];
 	    
 	    // If the recurrence is not empty then assign the checked one
-	    let recurrenceValue = recurrence[0].getAttribute('data-target');
+	    let recurrenceValue = recurrence.getAttribute('data-target');
 	    // Security to ensure data is not manipulated
-	    if(isEmpty(recurrenceValues[recurrenceValue])) {
+	    if(notIncludesStr(recurrenceValues,recurrenceValue)) {
 	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Recurrence value selected is invalid',2000);
+	    	// enable button after successful submission
+		    addTransactionsButton.removeAttribute("disabled");
 	    	return;
 	    } 
 	    
@@ -194,6 +196,8 @@
 	    	let chosenCategory = window.categoryMap[categoryOptions];
 	    	if(isEmpty(chosenCategory)) {
 	    		fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Chosen category is not valid. Please select a valid one.',2000);
+	    		// enable button after successful submission
+		    	addTransactionsButton.removeAttribute("disabled");
 	    		return;
 	    	}
 	    	values['categoryType'] = chosenCategory.type;
@@ -206,7 +210,7 @@
 		values['description'] = description;
 		values['dateMeantFor'] = window.currentDateAsID;
 		values['recurrence'] = recurrenceValues[recurrenceValue];
-		values['walletId'] = walletId;
+		values['walletId'] = window.currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -413,7 +417,7 @@
 			  // Cache the value for exportation
 			  window.transactionsCache[transactionObj.transactionId] = transactionObj;
 			  // Create transactions table row
-			  transactionsTableDiv.appendChild(createTableRows(transactionObj, 'd-none', key));
+			  transactionsTableDiv.appendChild(createTableRows(transactionObj, 'd-none', transactionObj.category));
 		    }
 			   
 		    // Update table with empty message if the transactions are empty
@@ -1784,7 +1788,7 @@
 		 // Ajax Requests on Error
 		 let ajaxData = {};
 		 ajaxData.isAjaxReq = true;
-		 ajaxData.type = "POST";
+		 ajaxData.type = "PUT";
 		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId; 
 		 ajaxData.dataType = "json"; 
 		 ajaxData.contentType = "application/json;charset=UTF-8";
@@ -1802,7 +1806,7 @@
     		  }
     		  
     		  // Add the new row to the category
-        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-table-row', userTransaction.categoryId), closestSibling);
+        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-table-row', userTransaction.category), closestSibling);
         	  
         	  // Remove material spinner and remove d none
         	  currentElement.parentNode.removeChild(currentElement.parentNode.lastChild);
