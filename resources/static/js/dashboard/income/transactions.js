@@ -410,10 +410,9 @@
  			   transactionsTableDiv.appendChild(createTableCategoryRows(category, countGrouped, categoryAmountTotal));
          	}
 
-         	let transaction = Object.keys(result.Transaction);
+         	let transaction = result.Transaction;
          	for(let count = 0, length = transaction.length; count < length; count++) {
-			  let subKey = transaction[count];
-			  let transactionObj = transaction[subKey];
+			  let transactionObj = transaction[count];
 			  // Cache the value for exportation
 			  window.transactionsCache[transactionObj.transactionId] = transactionObj;
 			  // Create transactions table row
@@ -2370,7 +2369,7 @@
 		// Convert date from UTC to user specific dates
 		let creationDateUserRelevant = new Date(userTransaction.createDate);
 		// Category Map 
-		let categoryMapForUT = categoryMap[userTransaction.categoryId];
+		let categoryMapForUT = categoryMap[userTransaction.category];
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
