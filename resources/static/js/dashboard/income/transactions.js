@@ -142,16 +142,15 @@
 	}
 	
 	// Save Transactions on form submit
-	$('#transactionsForm').submit(function(event) {
+	$('body').on("click", "#addNewTransactions" , function(event){
+		event.preventDefault();
+	   	event.stopImmediatePropagation(); // necessary to prevent submitting the form twice
 		// disable button after successful submission
-	   let transactionSubmissionButton = document.getElementById('transactionsFormButtonSubmission');
-	   transactionSubmissionButton.setAttribute("disabled", "disabled");
-	   registerTransaction(event, transactionSubmissionButton);
+	   this.setAttribute("disabled", "disabled");
+	   registerTransaction(event, this);
 	});
 	
-	function registerTransaction(event, transactionSubmissionButton){
-	   event.preventDefault();
-	   event.stopImmediatePropagation(); // necessary to prevent submitting the form twice
+	function registerTransaction(event, addTransactionsButton){
 	   replaceHTML('successMessage' , '');
 	   replaceHTML('errorMessage','');
 	   let formValidation = true;
@@ -170,7 +169,7 @@
 	   
 	   if(!formValidation){
 		   // enable button after successful submission
-		   transactionSubmissionButton.removeAttribute("disabled");
+		   addTransactionsButton.removeAttribute("disabled");
 		   return;
 	   }
 	    
@@ -237,12 +236,12 @@
   	    	// Update the transaction list to empty
 		    userTransSortedByDate = [];
 		    // Enable the Add Button
-  	    	transactionSubmissionButton.removeAttribute("disabled");
+  	    	addTransactionsButton.removeAttribute("disabled");
   	    }
 	    ajaxData.onFailure = function(data) {
   	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Unable to add this transaction.</p></div> <br/>',2000);
   	    	registeredNewTransaction=false;
-  	    	transactionSubmissionButton.removeAttribute("disabled");
+  	    	addTransactionsButton.removeAttribute("disabled");
 
   	    	if(isEmpty(data)) {
 				return;

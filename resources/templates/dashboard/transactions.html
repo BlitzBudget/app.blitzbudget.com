@@ -247,7 +247,7 @@
       
   
 	<!-- Vertically Centered Modal -->
-	<div class="modal" id="GSCCModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="GSCCModal">
+	<div class="modal" id="GSCCModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="GSCCModal">
     <div class="modal-dialog modal-signup" role="document">
       <div class="modal-content">
         <div class="card card-signup card-plain">
@@ -294,7 +294,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-5 mr-auto">
+              <div class="col-md-add-transactions mr-auto">
                 <div class="social text-center">
                   <button class="btn btn-just-icon btn-round btn-bank">
                     <i class="material-icons">account_balance</i>
@@ -307,7 +307,6 @@
                   </button>
                   <h4> or be classical </h4>
                 </div>
-                <form id="transactionsForm" action="#" method="post" role="form">
                   <div class="card-body">
                     <div class="form-group bmd-form-group">
                       <div class="input-group">
@@ -355,17 +354,16 @@
                       	<div class="input-group-prepend">
                             <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction Recurrence">repeat</i></div>
                         </div>
-                        <button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3" data-target="NEVER">Never</button>
-                        <button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 weeklyR" data-target="WEEKLY">Weekly</button>
-                        <button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 biMonthlyR" data-target="BI-MONTHLY">Bi-Monthly</button>
-                        <button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 monthlyR" data-target="MONTHLY">Monthly</button>
+                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3" data-target="NEVER">Never</div>
+                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 weeklyR" data-target="WEEKLY">Weekly</div>
+                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 biMonthlyR" data-target="BI-MONTHLY">Bi-Monthly</div>
+                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 monthlyR" data-target="MONTHLY">Monthly</div>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer justify-content-center">
-                    <button class="btn btn-success btn-round" id="transactionsFormButtonSubmission"  type="submit" form="transactionsForm">Add Transaction</button>
+                    <button class="btn btn-success btn-round" id="addNewTransactions"  type="submit">Add Transaction</button>
                   </div>
-                </form>
                 <span id="successMessage" class="justify-content-center"></span>
 			          <span id="errorMessage" class="justify-content-center"></span>
               </div>
