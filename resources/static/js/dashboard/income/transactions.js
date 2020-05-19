@@ -385,6 +385,7 @@
 
         	// Dates Cache
         	window.datesCreated = result.Date;
+        	populateCurrentDate(result.Date);
 
 			/*
 			* Replace With Currency
@@ -728,6 +729,7 @@
 	function createTableCategoryRows(category, countGrouped, categoryAmountTotal){
 		let tableRow = document.createElement("div");
 		tableRow.setAttribute('id', 'categoryTableRow-' + category.categoryId);
+		tableRow.setAttribute('data-target', category.categoryId);
 		tableRow.setAttribute('data-toggle', 'collapse');
 		tableRow.setAttribute('role' , 'button');
 		
@@ -761,6 +763,7 @@
 		let linkElementWrapper = document.createElement('a');
 		linkElementWrapper.href = '#';
 		linkElementWrapper.id = 'addTableRow-' + category.categoryId;
+		linkElementWrapper.setAttribute('data-target', category.categoryId);
 		linkElementWrapper.className = 'd-inline addTableRowListener align-self-center';
 		
 		let addIconElement = document.createElement('i');
@@ -1777,18 +1780,18 @@
 		 // stop the event from bubbling.
 		 event.stopPropagation();
 		 event.stopImmediatePropagation();
-		 let id = lastElement(splitElement(this.id,'-'));
 		 let values = {};
 		 values['amount'] = 0.00;
 		 values['description'] = '';
-		 values['categoryOptions'] = id;
-		 values['dateMeantFor'] = chosenDate;
+		 values['categoryOptions'] = this.getAttribute('data-target');
+		 values['dateMeantFor'] = window.currentDateAsID;
+		 values['walletId'] = currentUser.walletId;
 
 		 // Ajax Requests on Error
 		 let ajaxData = {};
 		 ajaxData.isAjaxReq = true;
 		 ajaxData.type = "PUT";
-		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId; 
+		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl; 
 		 ajaxData.dataType = "json"; 
 		 ajaxData.contentType = "application/json;charset=UTF-8";
 		 ajaxData.data = JSON.stringify(values);
