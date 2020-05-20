@@ -1019,14 +1019,14 @@
 	
 	// toggle dropdown
 	function toggleDropdown(categoryId, closestTrElement) {
-		let classToHide = '.hideableRow-' + categoryId;
-		let childTransactions = document.querySelectorAll(classToHide);
+		let classToHide = 'hideableRow-' + categoryId;
+		let childTransactions = document.getElementsByClassName(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
 	  	// Hide / show all child transactions
 	  	for(let i = 0, len = childTransactions.length; i < len; i++) {
 	  		let oneTransaction = childTransactions[i];
-	  		oneTransaction.toggle('d-none');
-	  		oneTransaction.toggle('d-table-row');
+	  		oneTransaction.classList.toggle('d-none');
+	  		oneTransaction.classList.toggle('d-table-row');
 
 	  	}
 	  	// Toggle the drop down arrow
@@ -2228,18 +2228,12 @@
 		//TODO
 		
    		if(popBothInfo) {
-   			ajaxData.onSuccess = function(userTransactionsList) {
-	   			populateRecentTransInfo(userTransactionsList);
-	   			populateAccountTableInformation(userTransactionsList);
-	        }
+	   		populateRecentTransInfo(userTransactionsList);
+	   		populateAccountTableInformation(userTransactionsList);
    		} else if(recentTrans) {
-   			ajaxData.onSuccess = function(userTransactionsList) {
-	   			populateRecentTransInfo(userTransactionsList);
-	        }
+	   		populateRecentTransInfo(userTransactionsList);
    		} else {
-   			ajaxData.onSuccess = function(userTransactionsList) {
-   				populateAccountTableInformation(userTransactionsList);
-   			}
+   			populateAccountTableInformation(userTransactionsList);
    		}
 	}
 
@@ -2852,7 +2846,7 @@
 				}
 
 				// Append the account transactions to the table
-					accountAggreDiv.appendChild(accHeadFrag);
+				accountAggreDiv.appendChild(accHeadFrag);
 
 					// Simulate a click on the first table heading (Show Account Modal)
 				let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
