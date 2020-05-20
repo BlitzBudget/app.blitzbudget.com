@@ -2713,7 +2713,6 @@
 		$('.accountInfoTable').remove();
 		let accountAggreDiv = document.getElementById('recTransAndAccTable');
         let recentTransactionsFragment = document.createDocumentFragment();
-		let resultKeySet = Object.keys(userTransSortedByDate);
 		let createdAccIds = [];
      	for(let countGrouped = 0; countGrouped < window.transactionsCache.length; countGrouped++) {
      	   let userTransaction = window.transactionsCache[countGrouped];
