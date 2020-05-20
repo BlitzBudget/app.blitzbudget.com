@@ -2572,23 +2572,16 @@
 		} else {
 			for(let i = 0, len = popAccInfoTab.length; i < len; i++) {
 				let elementInArray = popAccInfoTab[i];
-				elementInArray.classList.remove('d-none');
-			}
-		}
-		// Show all the account table entries
-		let allAccountRows = popAccInfoTab.querySelectorAll('.recentTransactionEntry')
-		if(isNotEmpty(allAccountRows)) {
-			for(let i = 0, len = allAccountRows.length; i < len; i++) {
-				allAccountRows.classList.remove('d-none');
-				allAccountRows.classList.add('d-table-row');
-			}
-		}
-		// Find all misaligned arrows and align them
-		let rotateZeros = popAccInfoTab.querySelectorAll('.rotateZero');
-		if(isNotEmpty(rotateZeros)) {
-			for(let i = 0, len = rotateZeros.length; i < len; i++) {
-				rotateZeros.classList.remove('rotateZero');
-				rotateZeros.classList.add('rotateNinty');
+
+				if(elementInArray.classList.contains('recentTransactionEntry')) {
+					elementInArray.classList.add('d-table-row');
+					elementInArray.classList.remove('d-none');
+				} else if(elementInArray.classList.contains('rotateZero')) {
+					elementInArray.classList.remove('rotateZero');
+					elementInArray.classList.add('rotateNinty');
+				} else {
+					elementInArray.classList.remove('d-none');
+				}
 			}
 		}
 
