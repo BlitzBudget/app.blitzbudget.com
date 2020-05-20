@@ -1618,16 +1618,16 @@
         	userBudgetCache[userBudget.budgetId] = userBudget;
         	
         	// Get the user Budget overspending
-      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  categoryTotalMapCache[userBudget.categoryId];
+      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  categoryTotalMapCache[userBudget.category];
       		userBudgetOverSpending = currentCurrencyPreference + formatNumber(Math.abs(userBudgetOverSpending), currentUser.locale);
       		// Set the title of the modal
-      		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.categoryId].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
+      		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.category].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
       		
       		// Update the modal
         	updateProgressBarAndRemaining(userBudget, document);
         	  
         	// Update the budget amount
-        	let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.categoryId);
+        	let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.category);
         	budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
         }
         ajaxData.onFailure = function(thrownError) {

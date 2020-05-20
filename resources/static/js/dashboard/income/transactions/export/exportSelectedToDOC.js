@@ -106,9 +106,9 @@
    // Builds the rows for recent transactions
    function buildTransactionRow(userTransaction, idName) {
     // Convert date from UTC to user specific dates
-    let creationDateUserRelevant = new Date(userTransaction.createDate);
+    let creationDateUserRelevant = new Date(userTransaction['creation_date']);
     // Category Map 
-    let categoryMapForUT = categoryMap[userTransaction.categoryId];
+    let categoryMapForUT = categoryMap[userTransaction.category];
     
     let tableRowTransaction = document.createElement('div');
     tableRowTransaction.style.letterSpacing = '0.016em';
