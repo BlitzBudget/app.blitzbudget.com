@@ -2198,6 +2198,8 @@
 				accountTable.classList.remove('d-none');
 			}
     	} else {
+    		// Populate Transaction 
+    		popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
 			fetchAllBankAccountInformation();
 			// If Account Table is hidden then add d-none
@@ -2670,9 +2672,9 @@
 				let accHeading = document.getElementById('accountTitle-' + bankAcc.accountId);
 				let accountBalance = document.getElementById('accountBalance-' + bankAcc.accountId);
 				// Replace HTML with Empty
-   			while (accHeading.firstChild) {
-   				accHeading.removeChild(accHeading.firstChild);
-   			}
+	   			while (accHeading.firstChild) {
+	   				accHeading.removeChild(accHeading.firstChild);
+	   			}
 				accHeading.innerText = bankAcc['bank_account_name'];
 				if(bankAcc['account_balance'] < 0) { 
 					accountBalance.classList.add('expenseCategory');
@@ -2703,6 +2705,30 @@
 		// Append the account transactions to the table
 		accountAggreDiv.appendChild(accHeadFrag);
 		
+	}
+
+	// Populate the account sort by section
+	function popTransByAccWOAJAX() {
+		// Remove all the transactions
+		$('.accountInfoTable').remove();
+		let accountAggreDiv = document.getElementById('recTransAndAccTable');
+        let recentTransactionsFragment = document.createDocumentFragment();
+		let resultKeySet = Object.keys(userTransSortedByDate);
+		let createdAccIds = [];
+     	for(let countGrouped = 0; countGrouped < window.transactionsCache.length; countGrouped++) {
+     	   let userTransaction = window.transactionsCache[countGrouped];
+     	   let accountId = userTransaction.accountId;
+
+     	   if(!includesStr(createdAccIds,accountId)) {
+     	   		recentTransactionsFragment.appendChild(buildAccountHeader(accountId));
+     	   		// Add Created Accounts ID to the array
+     	   		createdAccIds.push(accountId);
+     	   }
+     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+     	}
+
+		document.getElementById('accountTable').classList.add('d-none');
+    	accountAggreDiv.appendChild(recentTransactionsFragment);
 	}
 
 	// Populate Empty account entry
