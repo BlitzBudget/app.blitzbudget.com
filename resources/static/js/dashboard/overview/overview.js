@@ -263,7 +263,7 @@
 	// Builds the rows for recent transactions
 	function buildTransactionRow(userTransaction) {
 		// Convert date from UTC to user specific dates
-		let creationDateUserRelevant = new Date(userTransaction.createDate);
+		let creationDateUserRelevant = new Date(userTransaction['creation_date']);
 		// Category Map 
 		let categoryMapForUT = categoryMap[userTransaction.category];
 		
