@@ -1007,8 +1007,8 @@
 	}
 
 	// Show or hide multiple rows in the transactions table
-	$( "body" ).on( "click", ".toggle" ,function() {
-		let categoryId = lastElement(splitElement(this.id,'-'));
+	$( "body" ).on( "click", "#transactionsTable .toggle" ,function() {
+		let categoryId = this.getAttribute('data-target');
 		
 		if(er.checkIfInvalidCategory(categoryId)) {
 			return;
@@ -1020,10 +1020,15 @@
 	// toggle dropdown
 	function toggleDropdown(categoryId, closestTrElement) {
 		let classToHide = '.hideableRow-' + categoryId;
-		let childCategories = $(classToHide);
+		let childTransactions = document.querySelectorAll(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
-	  	// Hide all child categories
-		childCategories.toggleClass('d-none').toggleClass('d-table-row');
+	  	// Hide / show all child transactions
+	  	for(let i = 0, len = childTransactions.length; i < len; i++) {
+	  		let oneTransaction = childTransactions[i];
+	  		oneTransaction.toggle('d-none');
+	  		oneTransaction.toggle('d-table-row');
+
+	  	}
 	  	// Toggle the drop down arrow
 	  	dropdownArrowDiv.toggle('rotateNinty');
 	  	closestTrElement.classList.toggle('categoryShown');

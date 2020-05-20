@@ -748,8 +748,8 @@ er = {
 	// Security check to ensure that the category is present in the map
 	checkIfInvalidCategory(categoryIdForBudget) {
 		
-		if(isEmpty(categoryMap[Number(categoryIdForBudget)])) {
-			showNotification('Unable to the update budget at the moment. Please refresh the page and try again!',window._constants.notification.error);
+		if(isEmpty(window.categoryMap[categoryIdForBudget])) {
+			showNotification('The category chosen is invalid. Please refresh the page and try again!',window._constants.notification.error);
 			return true;
 		}
 		

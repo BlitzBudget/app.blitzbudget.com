@@ -572,9 +572,9 @@
 			// Calculate the minus sign and appropriate class for the remaining amount 
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
-				if(categoryMap[budgetIdKey].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+				if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 					budgetLabelDiv.innerText = 'Overspent (%)';
-				} else if(categoryMap[budgetIdKey].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+				} else if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 					budgetLabelDiv.innerText = 'To Be Budgeted (%)';
 				}
 				
@@ -1350,7 +1350,7 @@
 		
 		let categoryLabelDiv = document.createElement('div');
 		categoryLabelDiv.classList = 'compensationCatSelectionName font-weight-bold';
-		categoryLabelDiv.innerText = categoryMap[userBudgetValue.categoryId].categoryName;
+		categoryLabelDiv.innerText = categoryMap[userBudgetValue.category].categoryName;
 		anchorDropdownItem.appendChild(categoryLabelDiv);
 		
 		let categoryAmountAvailableDiv = document.createElement('div');
