@@ -921,7 +921,7 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 }
 
 .changeBtnClr.btn.btn-dynamic-color.dropdown-toggle {
-	color: #fff;
+	color: #333;
 }
 
 #categoryOptions,
@@ -932,7 +932,7 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 }
 
 #categoryOptions .dropdown-toggle::after {
-	color: #fff;
+	color: #333;
 }
 
 #categoryOptions .dropdown-menu {
@@ -994,6 +994,77 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
   	transform: scale(1) rotate(0deg);
 }
 
+.btn.register-recurrence {
+    color: #fff;
+    background: #d5dde3;
+    border: 1px solid #d5dde3;
+    border-top-color: rgb(213, 221, 227);
+    border-right-color: rgb(213, 221, 227);
+    border-bottom-color: rgb(213, 221, 227);
+    border-left-color: rgb(213, 221, 227);
+    display: inline-block;
+    vertical-align: top;
+    padding: 2px 10px;
+    border: 1px solid #bcc4cc;
+    background: #bcc4cc;
+    font-size: 0.7rem;
+    line-height: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: grayscale;
+    -webkit-transition: color .15s ease-out,background .15s ease-out,border-color .15s ease-out;
+    transition: color .15s ease-out,background .15s ease-out,border-color .15s ease-out;
+    white-space: nowrap;
+}
+
+.register-recurrence.active.btn-secondary,
+.register-recurrence.btn.btn-secondary:hover {
+    color: #fff;
+    background-color: #00bcd4;
+    border-color: #00bcd4;
+    box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+}
+
+.register-recurrence.weeklyR.active.btn-secondary,
+.register-recurrence.weeklyR.btn.btn-secondary:hover {
+    color: #fff;
+    background-color: #ff9800;
+    border-color: #ff9800;
+    box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12);
+}
+
+.register-recurrence.biMonthlyR.active.btn-secondary,
+.register-recurrence.biMonthlyR.btn.btn-secondary:hover {
+    color: #fff;
+    background-color: #e91e63;
+    border-color: #e91e63;
+    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+}
+
+.register-recurrence.monthlyR.active.btn-secondary,
+.register-recurrence.monthlyR.btn.btn-secondary:hover {
+    color: #ffffff;
+  	background-color: #409444;
+  	border-color: #3d8b40;
+    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);
+}
+
+.input-group-text .material-icons {
+	cursor: pointer;
+}
+
+.col-md-add-transactions {
+	position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 }
@@ -1002,5 +1073,12 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 @media (max-width:60em) and (max-height:43.75em) {
 	.card {
 		font-size: .7rem;
+	}
+}
+
+@media (min-width:768px) {
+	.col-md-add-transactions {
+		flex: 0 0 45%;
+    	max-width: 45%;
 	}
 }

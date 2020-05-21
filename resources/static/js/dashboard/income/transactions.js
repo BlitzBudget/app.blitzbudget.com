@@ -29,14 +29,8 @@
 	let transactionsChart = '';
 	// Fetch Drag Handle for transactions row table
 	let dragHandle = fetchDragHandle();
-	// recent transactions populated
-	let recentTransactionsPopulated = false;
 	// String Today
 	const TODAY = 'Today';
-	// Cache the recent transactions
-	userTransSortedByDate = [];
-	// Sort by Account is populated
-	let sortByAccountPopulated = false;
 	// Initialize transactions Cache
 	window.transactionsCache = {};
 	// Initialize user budget 
@@ -108,14 +102,8 @@
 			
 			// Call transactions
 			fetchJSONForTransactions();
-
-			// Call Account / Recent Transactions
-			populateAccountOrRecentTransactionInfo();
 			
 		});
-
-		// Replace currentCurrencySymbol with currency symbol
-		replaceWithCurrency();
 
 		/**
 		*  Add Functionality Generic + Btn
@@ -145,16 +133,15 @@
 	}
 	
 	// Save Transactions on form submit
-	$('#transactionsForm').submit(function(event) {
+	$('body').on("click", "#addNewTransactions" , function(event){
+		event.preventDefault();
+	   	event.stopImmediatePropagation(); // necessary to prevent submitting the form twice
 		// disable button after successful submission
-	   let transactionSubmissionButton = document.getElementById('transactionsFormButtonSubmission');
-	   transactionSubmissionButton.setAttribute("disabled", "disabled");
-	   registerTransaction(event, transactionSubmissionButton);
+	   this.setAttribute("disabled", "disabled");
+	   registerTransaction(event, this);
 	});
 	
-	function registerTransaction(event, transactionSubmissionButton){
-	   event.preventDefault();
-	   event.stopImmediatePropagation(); // necessary to prevent submitting the form twice
+	function registerTransaction(event, addTransactionsButton){
 	   replaceHTML('successMessage' , '');
 	   replaceHTML('errorMessage','');
 	   let formValidation = true;
@@ -173,23 +160,24 @@
 	   
 	   if(!formValidation){
 		   // enable button after successful submission
-		   transactionSubmissionButton.removeAttribute("disabled");
+		   addTransactionsButton.removeAttribute("disabled");
 		   return;
 	   }
 	    
 	    amount = Math.abs(amount);
 	    // Get all the input radio buttons for recurrence to check which one is clicked
-	    let recurrence = document.getElementsByName('recurrence');
-	    let recurrenceValue = 'NEVER';
+	    let recurrence = document.querySelector('.register-recurrence.active');
+	    let recurrenceValues = ['NEVER', 'WEEKLY', 'BI-MONTHLY', 'MONTHLY'];
 	    
 	    // If the recurrence is not empty then assign the checked one
-	    if(isNotEmpty(recurrence)) {
-	    	for(let count = 0, length = recurrence.length; count < length; count++) {
-	    		if(recurrence[count].checked) {
-	    			recurrenceValue = recurrence[count].value;
-	    		}	
-	    	}
-	    }
+	    let recurrenceValue = recurrence.getAttribute('data-target');
+	    // Security to ensure data is not manipulated
+	    if(notIncludesStr(recurrenceValues,recurrenceValue)) {
+	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Recurrence value selected is invalid',2000);
+	    	// enable button after successful submission
+		    addTransactionsButton.removeAttribute("disabled");
+	    	return;
+	    } 
 	    
 	    let description = document.getElementById('description').value;
 	    let categoryOptions = document.getElementById('categoryOptions').getAttribute('data-chosen');
@@ -197,15 +185,24 @@
 	    let values = {};
 	    if(notIncludesStr(categoryOptions, 'Category#')) {
 	    	let chosenCategory = window.categoryMap[categoryOptions];
+	    	if(isEmpty(chosenCategory)) {
+	    		fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Chosen category is not valid. Please select a valid one.',2000);
+	    		// enable button after successful submission
+		    	addTransactionsButton.removeAttribute("disabled");
+	    		return;
+	    	}
 	    	values['categoryType'] = chosenCategory.type;
+	    	values['category'] = chosenCategory.name;
+	    } else {
+	    	values['category'] = categoryOptions;
 	    }
 
 		values['amount'] = amount;
 		values['description'] = description;
-		values['category'] = categoryOptions;
 		values['dateMeantFor'] = window.currentDateAsID;
-		values['recurrence'] = recurrenceValue;
-		values['walletId'] = walletId;
+		values['recurrence'] = recurrenceValues[recurrenceValue];
+		values['account'] = window.selectedBankAccountId;
+		values['walletId'] = window.currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -220,6 +217,8 @@
 			let transaction = result['body-json'];
 			// Assign Category Id
 			assignCategoryId(transaction);
+			// Set Current Date as ID (For First time)
+   			window.currentDateAsID = transaction.dateMeantFor;
 			// Populate CurrentDateAsId if necessary
    			if(notIncludesStr(window.currentDateAsID, 'Date#')) { window.currentDateAsID = transaction.dateMeantFor }
    			// Fetch success message DIV
@@ -230,15 +229,13 @@
         	successMessageDocument.classList.add('messageFadeInAndOut');
         	// Set Registered new transactions as true
   	    	registeredNewTransaction=true;
-  	    	// Update the transaction list to empty
-		    userTransSortedByDate = [];
 		    // Enable the Add Button
-  	    	transactionSubmissionButton.removeAttribute("disabled");
+  	    	addTransactionsButton.removeAttribute("disabled");
   	    }
 	    ajaxData.onFailure = function(data) {
   	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Unable to add this transaction.</p></div> <br/>',2000);
   	    	registeredNewTransaction=false;
-  	    	transactionSubmissionButton.removeAttribute("disabled");
+  	    	addTransactionsButton.removeAttribute("disabled");
 
   	    	if(isEmpty(data)) {
 				return;
@@ -263,6 +260,19 @@
 		});
 	    
 	}
+
+	// on click dropdown set the data chosen attribute
+	$('body').on("click", "#categoryOptions .dropdown-item" , function(event){
+		let dropdownValue = this.lastChild.value;
+		document.getElementById('categoryOptions').setAttribute('data-chosen', dropdownValue);
+	});
+
+	// Set Active Class on click button
+	$(document).on('click', ".register-recurrence", function() {
+		$('.register-recurrence').removeClass('active');
+		this.classList.add('active');
+
+	});
 
 	$(document).on("click", "#categoryOptions .dropdown-item" , function(event){
 
@@ -299,9 +309,6 @@
 		
 			// Close category modal
          	closeCategoryModal();
-
-         	// populate recent transactions /  category modal
-			populateAccountOrRecentTransactionInfo();
 		}		
 	});
 
@@ -365,6 +372,7 @@
 
         	// Dates Cache
         	window.datesCreated = result.Date;
+        	populateCurrentDate(result.Date);
 
 			/*
 			* Replace With Currency
@@ -390,14 +398,13 @@
  			   transactionsTableDiv.appendChild(createTableCategoryRows(category, countGrouped, categoryAmountTotal));
          	}
 
-         	let transaction = Object.keys(result.Transaction);
+         	let transaction = result.Transaction;
          	for(let count = 0, length = transaction.length; count < length; count++) {
-			  let subKey = transaction[count];
-			  let transactionObj = transaction[subKey];
+			  let transactionObj = transaction[count];
 			  // Cache the value for exportation
 			  window.transactionsCache[transactionObj.transactionId] = transactionObj;
 			  // Create transactions table row
-			  transactionsTableDiv.appendChild(createTableRows(transactionObj, 'd-none', key));
+			  transactionsTableDiv.appendChild(createTableRows(transactionObj, 'd-none', transactionObj.category));
 		    }
 			   
 		    // Update table with empty message if the transactions are empty
@@ -428,6 +435,8 @@
 			updateBudgetForIncome(result.Budget);
 			// Change the table sorting on page load
 			er.tableSortMechanism();
+			// Call Account / Recent Transactions
+			populateRecentTransactions(result.Transaction);
         }
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "There was an error while fetching the transactions. Please try again later!",ajaxData);
@@ -447,18 +456,16 @@
 	
 	// Fetches the budget for all the category rows if present and updates the category row
 	function updateBudgetForIncome(data) {
-    	let dataKeySet = Object.keys(data)
-    	for(let count = 0, length = dataKeySet.length; count < length; count++){
-    		let key = dataKeySet[count];
-        	let value = data[key];
+    	for(let count = 0, length = data.length; count < length; count++){
+    		let value = data[count];
         	// Update user budget to global map (Exportation)
-			window.userBudgetMap[value.categoryId] = value;
+			window.userBudgetMap[value.category] = value;
         	  
         	if(isEmpty(value)) {
         		continue;
         	}
         	  
-        	let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.categoryId);
+        	let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.category);
         	  
         	if(categoryRowToUpdate == null) {
         		continue;
@@ -679,7 +686,7 @@
 		amountDiv.tabIndex = 0;
 		
 	   // Append a - sign if it is an expense
-	   if(categoryMap[categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	   if(isNotEmpty(categoryMap) && categoryMap[categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 		   amountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
 	   } else {
 		   amountDiv.innerHTML = currentCurrencyPreference + formatNumber(userTransactionData.amount, currentUser.locale);
@@ -709,6 +716,7 @@
 	function createTableCategoryRows(category, countGrouped, categoryAmountTotal){
 		let tableRow = document.createElement("div");
 		tableRow.setAttribute('id', 'categoryTableRow-' + category.categoryId);
+		tableRow.setAttribute('data-target', category.categoryId);
 		tableRow.setAttribute('data-toggle', 'collapse');
 		tableRow.setAttribute('role' , 'button');
 		
@@ -742,6 +750,7 @@
 		let linkElementWrapper = document.createElement('a');
 		linkElementWrapper.href = '#';
 		linkElementWrapper.id = 'addTableRow-' + category.categoryId;
+		linkElementWrapper.setAttribute('data-target', category.categoryId);
 		linkElementWrapper.className = 'd-inline addTableRowListener align-self-center';
 		
 		let addIconElement = document.createElement('i');
@@ -974,19 +983,13 @@
 	   		recentTransactionsTab.removeChild(recentTransactionsTab.firstChild);
 	   	}
 	   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
-	   	// CHange the recent transactions populated to false
-	   	recentTransactionsPopulated = false;
-	   	// Update the transaction list to empty
-	   	userTransSortedByDate = [];
-	   	// Change the Account populated to false
-	   	sortByAccountPopulated = false;
 	   	// Remove all Account Data Table
 	   	$('.accountInfoTable').remove();
 	}
 
 	// Show or hide multiple rows in the transactions table
-	$( "body" ).on( "click", ".toggle" ,function() {
-		let categoryId = lastElement(splitElement(this.id,'-'));
+	$( "body" ).on( "click", "#transactionsTable .toggle" ,function() {
+		let categoryId = this.getAttribute('data-target');
 		
 		if(er.checkIfInvalidCategory(categoryId)) {
 			return;
@@ -997,11 +1000,16 @@
 	
 	// toggle dropdown
 	function toggleDropdown(categoryId, closestTrElement) {
-		let classToHide = '.hideableRow-' + categoryId;
-		let childCategories = $(classToHide);
+		let classToHide = 'hideableRow-' + categoryId;
+		let childTransactions = document.getElementsByClassName(classToHide);
 		let dropdownArrowDiv = closestTrElement.firstElementChild.classList;
-	  	// Hide all child categories
-		childCategories.toggleClass('d-none').toggleClass('d-table-row');
+	  	// Hide / show all child transactions
+	  	for(let i = 0, len = childTransactions.length; i < len; i++) {
+	  		let oneTransaction = childTransactions[i];
+	  		oneTransaction.classList.toggle('d-none');
+	  		oneTransaction.classList.toggle('d-table-row');
+
+	  	}
 	  	// Toggle the drop down arrow
 	  	dropdownArrowDiv.toggle('rotateNinty');
 	  	closestTrElement.classList.toggle('categoryShown');
@@ -1072,9 +1080,9 @@
 	        	  // Remove previous class related to category id and add the new one
 	        	  let selectOption = document.getElementById(categoryId);
 	        	  selectOption.classList.remove('categoryIdForSelect-' + previousCategoryId);
-	        	  selectOption.classList.add('categoryIdForSelect-'+ userTransaction.categoryId);
+	        	  selectOption.classList.add('categoryIdForSelect-'+ userTransaction.category);
 	        	  // Add to the new category
-	        	  updateCategoryAmount(userTransaction.categoryId, userTransaction.amount, false);
+	        	  updateCategoryAmount(userTransaction.category, userTransaction.amount, false);
 	        }
 			ajaxData.onFailure = function (thrownError) {
 				manageErrors(thrownError, 'Unable to change the category.',ajaxData);
@@ -1249,9 +1257,9 @@
 			ajaxData.onSuccess = function(userTransaction){
 	        	  // Set the amount to empty as the data need not be stored.
 	        	  amountEditedTransaction = '';
-	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
-	        	  updateCategoryAmount(userTransaction.categoryId, totalAddedOrRemovedFromAmount, true);
-	        	  handleCategoryModalToggle(userTransaction.categoryId, categoryRowElement, '');
+	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userTransaction.category);
+	        	  updateCategoryAmount(userTransaction.category, totalAddedOrRemovedFromAmount, true);
+	        	  handleCategoryModalToggle(userTransaction.category, categoryRowElement, '');
 	        }
 			ajaxData.onFailure = function (thrownError) {
 				manageErrors(thrownError, 'Unable to change the transacition amount.',ajaxData);
@@ -1476,50 +1484,24 @@
 			let recentTransEl = document.getElementById('recentTransaction-' + transId);
 			if(recentTransEl) {
 				recentTransEl.remove();
-				// remove element from User transaction List
-				removeElementFromUserTransactionList(transId);
 			}
 			// Remove Account Sort by If exists
 			let accountAggre = document.getElementById('accountAggre-' + transId);
 			let parentNode = accountAggre.parentNode;
 			if(accountAggre) {
 				accountAggre.remove();
-				// remove element from User transaction List
-				removeElementFromUserTransactionList(transId);
 			}
 
 			// If the surrounding Parent does not have any child nodes then remove parent
 			if(!parentNode.firstElementChild) {
 				parentNode.remove();
-				// Check if all the account information has been removed
-				if(!document.getElementsByClassName('accountInfoTable')) { 
-					sortByAccountPopulated = false;
-					// Update the transaction list to empty
-	   				userTransSortedByDate = [];
-				}
 			}
 
 			// If all the recent transactions are removed
 			let recentTransactionsEl = document.getElementById(recentTransactionsId);
 			// Recent Transactions Exists
 			if(!recentTransactionsEl.firstElementChild) { 
-				recentTransactionsPopulated = false; 
 				recentTransactionsEl.appendChild(buildEmptyTransactionsTab());
-				// Update the transaction list to empty
-	   			userTransSortedByDate = [];
-			}
-		}
-	}
-
-	// Remove element from user transaction list
-	function removeElementFromUserTransactionList(transId) {
-		// Length of usertransaction
-		for(let i = 0, l = userTransSortedByDate.length; i < l; i++) {
-			let ut = userTransSortedByDate[i];
-			if(isEqual(ut.transactionId, transId)) {
-				// Remove user transaction from user transaction list
-				userTransSortedByDate.splice(i, 1);
-				return;
 			}
 		}
 	}
@@ -1758,23 +1740,24 @@
 		 // stop the event from bubbling.
 		 event.stopPropagation();
 		 event.stopImmediatePropagation();
-		 let id = lastElement(splitElement(this.id,'-'));
 		 let values = {};
 		 values['amount'] = 0.00;
+		 values['account'] = window.selectedBankAccountId;
 		 values['description'] = '';
-		 values['categoryOptions'] = id;
-		 values['dateMeantFor'] = chosenDate;
+		 values['category'] = this.getAttribute('data-target');
+		 values['dateMeantFor'] = window.currentDateAsID;
+		 values['walletId'] = window.currentUser.walletId;
 
 		 // Ajax Requests on Error
 		 let ajaxData = {};
 		 ajaxData.isAjaxReq = true;
-		 ajaxData.type = "POST";
-		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId; 
+		 ajaxData.type = "PUT";
+		 ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl; 
 		 ajaxData.dataType = "json"; 
 		 ajaxData.contentType = "application/json;charset=UTF-8";
 		 ajaxData.data = JSON.stringify(values);
 		 ajaxData.onSuccess = function(userTransaction){
-        	  let categoryParent = document.getElementById('categoryTableRow-' + userTransaction.categoryId);
+        	  let categoryParent = document.getElementById('categoryTableRow-' + userTransaction.category);
         	  let closestSibling = categoryParent.nextSibling;
         	  let lastClassName =  lastElement(splitElement(closestSibling.className, ' '));
         	  // Cache the value for exportation
@@ -1786,7 +1769,7 @@
     		  }
     		  
     		  // Add the new row to the category
-        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-table-row', userTransaction.categoryId), closestSibling);
+        	  categoryParent.parentNode.insertBefore(createTableRows(userTransaction,'d-table-row', userTransaction.category), closestSibling);
         	  
         	  // Remove material spinner and remove d none
         	  currentElement.parentNode.removeChild(currentElement.parentNode.lastChild);
@@ -1794,34 +1777,27 @@
         	  currentElement.classList.remove('d-none');
         	  
         	  // Updates total transactions in category Modal
-        	  updateTotalTransactionsInCategoryModal(userTransaction.categoryId);
+        	  updateTotalTransactionsInCategoryModal(userTransaction.category);
         	  
         	  // If recent transactions are populated then
-        	  if(recentTransactionsPopulated) {
-        	  	let recentTrans = document.getElementById(recentTransactionsId);
-        	  	if(isNotEqual(recentTrans.firstElementChild.innerText,TODAY)) {
-        	  		// Insert as a first child
-        	  		recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
-        	  	}
-        	  	recentTrans.insertBefore(buildTransactionRow(userTransaction, 'recentTransaction'),recentTrans.childNodes[1]);
+        	  let recentTrans = document.getElementById(recentTransactionsId);
+        	  if(isNotEqual(recentTrans.firstElementChild.innerText,TODAY)) {
+        	  	// Insert as a first child
+        	  	recentTrans.insertBefore(appendToday(),recentTrans.childNodes[0]);
         	  }
+        	  recentTrans.insertBefore(buildTransactionRow(userTransaction, 'recentTransaction'),recentTrans.childNodes[1]);
 
         	  // If the sort option is Account then
-        	  if(sortByAccountPopulated) {
-        	  	let accountAggTable = document.getElementById('accountSB-' + userTransaction.accountId);
-        	  	if(accountAggTable == null) {
-        	  		let recentTransactionsFragment = document.createDocumentFragment();
-        	  		let recTransAndAccTable = document.getElementById('recTransAndAccTable');
-        	  		recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.accountId));
-        	  		recentTransactionsFragment.getElementById('accountSB-' + userTransaction.accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
-        	  		recTransAndAccTable.appendChild(recentTransactionsFragment);
-        	  	} else {
-        	  		accountAggTable.insertBefore(buildTransactionRow(userTransaction, 'accountAggre'), accountAggTable.childNodes[1]);
-        	  	}
+        	  let accountAggTable = document.getElementById('accountSB-' + userTransaction.account);
+        	  if(accountAggTable == null) {
+        	  	let recentTransactionsFragment = document.createDocumentFragment();
+        	  	let recTransAndAccTable = document.getElementById('recTransAndAccTable');
+        	  	recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.account));
+        	  	recentTransactionsFragment.getElementById('accountSB-' + userTransaction.account).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  	recTransAndAccTable.appendChild(recentTransactionsFragment);
+        	  } else {
+        	  	accountAggTable.insertBefore(buildTransactionRow(userTransaction, 'accountAggre'), accountAggTable.childNodes[1]);
         	  }
-
-        	  // Add element to User transaction List
-        	  userTransSortedByDate.push(userTransaction);
 
          }
 		 ajaxData.onFailure = function (thrownError) {
@@ -1871,7 +1847,7 @@
 		// Populate the category label with the one selected
 		let categoryNameDiv = document.getElementById('categoryLabelInModal');
 		// If the category can be found then
-		if(isNotEmpty(categoryMap[categoryId])) categoryNameDiv.innerText = categoryMap[categoryId].categoryName;
+		if(isNotEmpty(categoryMap[categoryId])) categoryNameDiv.innerText = categoryMap[categoryId].name;
 		
 		// Set the number of transactions if present
 		if(isNotEmpty(totalTransactions)) {
@@ -1982,7 +1958,7 @@
 			financialPositionDiv[0].classList.add('d-none');
 			// If there are other drop down categories open then show the first one from the list
 			let categoryRowToShowInModal = closestTrElement.classList.contains('categoryShown') ? closestTrElement : categoriesShown[0];
-			let categoryId = lastElement(splitElement(categoryRowToShowInModal.id,'-'));
+			let categoryId = categoryRowToShowInModal.getAttribute('data-target');
 			// Fetch all the categories child transactions
 			let hideableRowElement = document.getElementsByClassName('hideableRow-' + categoryId);
 			handleCategoryModalToggle(categoryId, categoryRowToShowInModal, hideableRowElement.length);
@@ -2066,7 +2042,7 @@
 		// Test if the entered value is the same as the previous one
 		if(previousText != enteredText){
 			
-			let categoryIdForBudget = Number(categoryIdForUserBudget.innerText);
+			let categoryIdForBudget = categoryIdForUserBudget.innerText;
 			// Security check to ensure that the category is present in the map
 			if(er.checkIfInvalidCategory(categoryIdForBudget)) {
 				return;
@@ -2074,25 +2050,25 @@
 			
 			var values = {};
 			values['planned'] = enteredText;
-			values['category_id'] = categoryIdForBudget;
-			values['autoGenerated'] = 'false';
-			values['dateMeantFor'] = chosenDate;
+			values['category'] = categoryIdForBudget;
+			values['autoGenerated'] = false;
+			values['dateMeantFor'] = window.currentDateAsID;
 			values['walletId'] = currentUser.walletId;
 
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
-			ajaxData.type = "POST";
+			ajaxData.type = "PUT";
 			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json;charset=UTF-8";
 			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(userBudget){
-	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userBudget.categoryId);
+	        	  let categoryRowElement = document.getElementById('categoryTableRow-' + userBudget.category);
 	        	  // Update the budget amount in the category row
 	        	  let formattedBudgetAmount = currentCurrencyPreference + formatNumber(userBudget.planned , currentUser.locale);
 	        	  categoryRowElement.lastChild.innerText = formattedBudgetAmount;
-	        	  handleCategoryModalToggle(userBudget.categoryId, categoryRowElement, '');
+	        	  handleCategoryModalToggle(userBudget.category, categoryRowElement, '');
 	        }
 			ajaxData.onFailure = function (thrownError) {
 				manageErrors(thrownError, 'Unable to change the budget. Please try again!',ajaxData);
@@ -2196,34 +2172,16 @@
 	 */ 
 	
 	// Populate Recent Transactions
-	function populateRecentTransactions(recentTrans, popBothInfo) {
+	function populateRecentTransactions(userTransactionsList) {
 		// Ajax Requests on Error
-		//TODO
-		
-   		if(popBothInfo) {
-   			ajaxData.onSuccess = function(userTransactionsList) {
-	   			populateRecentTransInfo(userTransactionsList);
-	   			populateAccountTableInformation(userTransactionsList);
-	        }
-   		} else if(recentTrans) {
-   			ajaxData.onSuccess = function(userTransactionsList) {
-	   			populateRecentTransInfo(userTransactionsList);
-	        }
-   		} else {
-   			ajaxData.onSuccess = function(userTransactionsList) {
-   				populateAccountTableInformation(userTransactionsList);
-   			}
-   		}
+	   	populateRecentTransInfo(userTransactionsList);
+	   	populateAccountTableInformation(userTransactionsList);
 	}
 
 	// Populate Account table information
 	function populateAccountTableInformation(userTransactionsList) {
-		// cache the results
-   		userTransSortedByDate = userTransactionsList;
 
 		if(isEmpty(userTransactionsList)) {
-			// Sort by Account is populated
-    		sortByAccountPopulated = false;
 			let accountTable = document.getElementById('accountTable');
 			// Replace HTML with Empty
 			while (accountTable.firstChild) {
@@ -2242,10 +2200,8 @@
 				accountTable.classList.remove('d-none');
 			}
     	} else {
-    		// Sort by Account is populated
-    		sortByAccountPopulated = true;
-   			// Populate the transaction of account
-   			popTransByAccWOAJAX();
+    		// Populate Transaction 
+    		popTransByAccWOAJAX();
    			// If fetch all bank account flag is true then
 			fetchAllBankAccountInformation();
 			// If Account Table is hidden then add d-none
@@ -2258,8 +2214,6 @@
 
 	// POpulate Recent Transaction information
 	function populateRecentTransInfo(userTransactionsList) {
-		// cache the results
-   		userTransSortedByDate = userTransactionsList;
 
 		let latestCreationDateItr = new Date();
     	let recentTransactionsDiv = document.getElementById(recentTransactionsId);
@@ -2267,14 +2221,10 @@
     	
     	if(isEmpty(userTransactionsList)) {
     		recentTransactionsFragment.appendChild(buildEmptyTransactionsTab());
-    		// Update the recent transactions (FALSE for empty tables)
-   			recentTransactionsPopulated = false;
     	} else {
-    		// Update the recent transactions
-   			recentTransactionsPopulated = true;
 
    			// Check if it is the same day
-     	   if(isToday(new Date(userTransactionsList[0].createDate))) {
+     	   if(isToday(new Date(userTransactionsList[0]['creation_date']))) {
      	   		recentTransactionsFragment.appendChild(appendToday());
      	   }
 
@@ -2282,7 +2232,7 @@
          	for(let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
          	   let key = resultKeySet[countGrouped];
          	   let userTransaction = userTransactionsList[key];
-         	   let creationDate = new Date(userTransaction.createDate);
+         	   let creationDate = new Date(userTransaction['creation_date']);
          	   
          	   if(!sameDate(creationDate,latestCreationDateItr)) {
          	   		recentTransactionsFragment.appendChild(appendDateHeader(creationDate));
@@ -2348,9 +2298,9 @@
 	// Builds the rows for recent transactions
 	function buildTransactionRow(userTransaction, idName) {
 		// Convert date from UTC to user specific dates
-		let creationDateUserRelevant = new Date(userTransaction.createDate);
+		let creationDateUserRelevant = new Date(userTransaction['creation_date']);
 		// Category Map 
-		let categoryMapForUT = categoryMap[userTransaction.categoryId];
+		let categoryMapForUT = categoryMap[userTransaction.category];
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
@@ -2370,7 +2320,7 @@
 		circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
 		
 		// Append a - sign if it is an expense
-		if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+		if(categoryMapForUT.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			circleWrapperDiv.appendChild(creditCardSvg());
 		} else {
 			circleWrapperDiv.appendChild(plusRawSvg());
@@ -2390,7 +2340,7 @@
 		
 		let elementWithCategoryName = document.createElement('div');
 		elementWithCategoryName.classList = 'small categoryNameRT w-100';
-		elementWithCategoryName.innerText = (categoryMapForUT.categoryName.length < 25 ? categoryMapForUT.categoryName : (categoryMapForUT.categoryName.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+		elementWithCategoryName.innerText = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
 		tableCellTransactionDescription.appendChild(elementWithCategoryName);
 		tableRowTransaction.appendChild(tableCellTransactionDescription);
 		
@@ -2399,7 +2349,7 @@
 			let transactionAmount = document.createElement('div');
 		
 			// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
@@ -2415,7 +2365,7 @@
 			let transactionAmount = document.createElement('div');
 			
 			// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
 				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
@@ -2566,25 +2516,11 @@
 		// If a new transaction is registered then population is necessary
 		if(registeredNewTransaction) {
 			registeredNewTransaction = false;
-			recentTransactionsPopulated = false;
 			// replace pie chart with material spinner
 			replacePieChartWithMSpinner();
 			// Fetch JSOn for transactions and populate pie chart
 			fetchJSONForTransactions();
-			// Populate recent transactions
-			populateRecentTransactions(true, false);
-		}
-
-		if(recentTransactionsPopulated) {
 			return;
-		}
-
-		// Populate recent transactions from the cache if present
-		if(isNotEmpty(userTransSortedByDate)) {
-			populateRecentTransInfo(userTransSortedByDate);
-		} else {
-			// Populate recent transactions
-			populateRecentTransactions(true, false);
 		}
 	});
 
@@ -2633,65 +2569,27 @@
 		transactionsTable.classList.remove('d-table');
 		transactionsTable.classList.add('d-none');
 		// Remove Account Table Class
-		let popAccInfoTab = $('.accountInfoTable')
-		popAccInfoTab.removeClass('d-none');
-		// Show all the account table entries
-		let allAccountRows = popAccInfoTab.find('.recentTransactionEntry')
-		allAccountRows.removeClass('d-none');
-		allAccountRows.addClass('d-table-row');
-		// Find all misaligned arrows and align them
-		popAccInfoTab.find('.rotateZero').removeClass('rotateZero').addClass('rotateNinty');
-		
-		// If register new transaction is populated then populate account again
-		if(registeredNewTransaction) {
-			sortByAccountPopulated = false;
-		}
-
-		// If already sorted then do nothing
-		if(sortByAccountPopulated && popAccInfoTab.length > 0) {
-			return;
-		}
-		// Show the accountTable
-		document.getElementById('accountTable').classList.remove('d-none');
-		// Populates the transactions by account
-		populateTransactionsByAccount();
-	});
-
-	// Sorts the transactions by account
-	function populateTransactionsByAccount() {
-		if(isNotEmpty(userTransSortedByDate)) {
-			popTransByAccWOAJAX();
-			// If fetch all bank account flag is true then
-			fetchAllBankAccountInformation();
+		let popAccInfoTab = document.getElementsByClassName('accountInfoTable');
+		if(isEmpty(popAccInfoTab)) {
+			// Show the accountTable
+			document.getElementById('accountTable').classList.remove('d-none');
 		} else {
-			populateRecentTransactions(false, false);	
+			for(let i = 0, len = popAccInfoTab.length; i < len; i++) {
+				let elementInArray = popAccInfoTab[i];
+
+				if(elementInArray.classList.contains('recentTransactionEntry')) {
+					elementInArray.classList.add('d-table-row');
+					elementInArray.classList.remove('d-none');
+				} else if(elementInArray.classList.contains('rotateZero')) {
+					elementInArray.classList.remove('rotateZero');
+					elementInArray.classList.add('rotateNinty');
+				} else {
+					elementInArray.classList.remove('d-none');
+				}
+			}
 		}
-	}
 
-	// Populate the account sort by section
-	function popTransByAccWOAJAX() {
-		// Remove all the transactions
-		$('.accountInfoTable').remove();
-		let accountAggreDiv = document.getElementById('recTransAndAccTable');
-        let recentTransactionsFragment = document.createDocumentFragment();
-		let resultKeySet = Object.keys(userTransSortedByDate);
-		let createdAccIds = [];
-     	for(let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
-     	   let key = resultKeySet[countGrouped];
-     	   let userTransaction = userTransSortedByDate[key];
-     	   let accountId = userTransaction.accountId;
-     	   
-     	   if(!includesStr(createdAccIds,accountId)) {
-     	   		recentTransactionsFragment.appendChild(buildAccountHeader(accountId));
-     	   		// Add Created Accounts ID to the array
-     	   		createdAccIds.push(accountId);
-     	   }
-     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
-     	}
-
-		document.getElementById('accountTable').classList.add('d-none');
-    	accountAggreDiv.appendChild(recentTransactionsFragment);
-	}
+	});	
 
 	// Appends the date header for recent transactions
 	function buildAccountHeader(accountId) {
@@ -2769,70 +2667,69 @@
 		let accountAggreDiv = document.getElementById('recTransAndAccTable');
 		let accHeadFrag = document.createDocumentFragment();
   		// Iterate all bank accounts
-			for(let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
-				let bankAcc = window.allBankAccountInfoCache[i];
-				// If the ID corresponding wiht the bank account is not populated then
-				if(includesStr(accHeadersToReplace, bankAcc.accountId)) {
-					let accHeading = document.getElementById('accountTitle-' + bankAcc.accountId);
-					let accountBalance = document.getElementById('accountBalance-' + bankAcc.accountId);
-					// Replace HTML with Empty
-       			while (accHeading.firstChild) {
-       				accHeading.removeChild(accHeading.firstChild);
-       			}
-					accHeading.innerText = bankAcc['bank_account_name'];
-					if(bankAcc['account_balance'] < 0) { 
-						accountBalance.classList.add('expenseCategory');
-						accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
-					} else { 
-						accountBalance.classList.add('incomeCategory');
-						accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
-					}
-				} else {
-					// A new header for the rest
-					let accountHeaderNew = buildAccountHeader(bankAcc.accountId);
-					accountHeaderNew.getElementById('accountTitle-' + bankAcc.accountId).innerText = bankAcc['bank_account_name'];
-					let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
-					if(bankAcc['account_balance'] < 0) { 
-						accBal.classList.add('expenseCategory');
-						accBal.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
-					} else { 
-						accBal.classList.add('incomeCategory');
-						accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
-					} 
-					// Append Empty Table to child
-					accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyAccountEntry(bankAcc.accountId));
-					// Append to the transaction view
-					accHeadFrag.appendChild(accountHeaderNew);
+		for(let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+			let bankAcc = window.allBankAccountInfoCache[i];
+			// If the ID corresponding wiht the bank account is not populated then
+			if(includesStr(accHeadersToReplace, bankAcc.accountId)) {
+				let accHeading = document.getElementById('accountTitle-' + bankAcc.accountId);
+				let accountBalance = document.getElementById('accountBalance-' + bankAcc.accountId);
+				// Replace HTML with Empty
+	   			while (accHeading.firstChild) {
+	   				accHeading.removeChild(accHeading.firstChild);
+	   			}
+				accHeading.innerText = bankAcc['bank_account_name'];
+				if(bankAcc['account_balance'] < 0) { 
+					accountBalance.classList.add('expenseCategory');
+					accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
+				} else { 
+					accountBalance.classList.add('incomeCategory');
+					accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
 				}
+			} else {
+				// A new header for the rest
+				let accountHeaderNew = buildAccountHeader(bankAcc.accountId);
+				accountHeaderNew.getElementById('accountTitle-' + bankAcc.accountId).innerText = bankAcc['bank_account_name'];
+				let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
+				if(bankAcc['account_balance'] < 0) { 
+					accBal.classList.add('expenseCategory');
+					accBal.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
+				} else { 
+					accBal.classList.add('incomeCategory');
+					accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
+				} 
+				// Append Empty Table to child
+				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyAccountEntry(bankAcc.accountId));
+				// Append to the transaction view
+				accHeadFrag.appendChild(accountHeaderNew);
 			}
+		}
 
-			// If the document fragment contains a child
-			if(accHeadFrag.firstElementChild) {
-				let clickOnHeader = false;
-				// If Account Table is hidden then add d-none
-				if(!document.getElementById('transactionsTable').classList.contains('d-none') || 
-					!document.getElementById('recentTransactions').classList.contains('d-none')) {
-					let accTableInfo = accHeadFrag.getElementsByClassName('accountInfoTable');
+		// Append the account transactions to the table
+		accountAggreDiv.appendChild(accHeadFrag);
+		
+	}
 
-					// For all the account tables add d-none
-					for(let i = 0, l = accTableInfo.length; i < l; i++) {
-						accTableInfo[i].classList.add('d-none');
-					}
+	// Populate the account sort by section
+	function popTransByAccWOAJAX() {
+		// Remove all the transactions
+		$('.accountInfoTable').remove();
+		let accountAggreDiv = document.getElementById('recTransAndAccTable');
+        let recentTransactionsFragment = document.createDocumentFragment();
+		let createdAccIds = [];
+		for (var key of Object.keys(window.transactionsCache)) {
+		   let userTransaction = window.transactionsCache[key];
+     	   let accountId = userTransaction.account;
 
-					// Click on header
-					clickOnHeader = true;
+     	   if(!includesStr(createdAccIds,accountId)) {
+     	   		recentTransactionsFragment.appendChild(buildAccountHeader(accountId));
+     	   		// Add Created Accounts ID to the array
+     	   		createdAccIds.push(accountId);
+     	   }
+     	   recentTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+     	}
 
-				}
-
-				// Append the account transactions to the table
-					accountAggreDiv.appendChild(accHeadFrag);
-
-					// Simulate a click on the first table heading (Show Account Modal)
-				let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-				if(accountTableHeaders.length > 0 && clickOnHeader) {
-					accountTableHeaders.get(0).click();
-				}
-			}
+		document.getElementById('accountTable').classList.add('d-none');
+    	accountAggreDiv.appendChild(recentTransactionsFragment);
 	}
 
 	// Populate Empty account entry
@@ -2864,22 +2761,6 @@
 		rowEmpty.appendChild(cell3);
 			
 		return rowEmpty;
-	}
-
-	// Populates account / recent transaction info as necessary
-	function populateAccountOrRecentTransactionInfo() {
-		let recentTransactionHeading = document.getElementsByClassName('recentTransactionDateGrp');
-		let accountInfoTable = document.getElementsByClassName('accountInfoTable');
-		let emptyTablePopulated = document.getElementsByClassName('transactions-empty-svg');
-		if((recentTransactionHeading.length > 0 && accountInfoTable.length > 0) || emptyTablePopulated.length > 0) {
-			// Load both populate recent & accounts table
-			populateRecentTransactions(false, true);
-		} else if (recentTransactionHeading.length > 0) {
-			populateRecentTransactions(true, false);
-		} else {
-			// This populates the recent transactions for all other scenarios
-			populateRecentTransactions(false, true);
-		}
 	}
 
 	// Empty Transactions SVG

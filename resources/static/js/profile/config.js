@@ -25,5 +25,12 @@ window._config = {
     },
     app: {
         invokeUrl: 'https://app.blitzbudget.com/'
+    },
+    wallet: {
+        invokeUrl: 'wallets'
     }
 };
+
+Object.freeze(window._config);
+Object.seal(window._config);
+Object.preventExtensions(window._config);

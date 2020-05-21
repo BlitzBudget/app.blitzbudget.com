@@ -78,7 +78,7 @@ function includesStr(arr, val){
 }
 
 function notIncludesStr(arr, val){
-	return isEmpty(arr) ? null : arr.includes(val); 
+	return !includesStr(arr, val); 
 }
 
 function fetchFirstElement(arr){
@@ -155,6 +155,44 @@ function calcPage() {
 // Replace currentCurrencySymbol with currency
 function replaceWithCurrency(wallet) {
 	let currencySymbolDivs = document.getElementsByClassName('currentCurrencySymbol');
+
+	if(isEmpty(wallet) && isEmpty(window.currentUser.walletId)) {
+		/*
+		* If Wallet is empty then redirect to add wallets page
+		*/
+		let timerInterval;
+		Swal.fire({
+		  title: 'No Wallet Found',
+		  html: 'We will be redirecting you to add wallets in <b></b> milliseconds.',
+		  timer: 2000,
+		  timerProgressBar: true,
+		  showCloseButton: false,
+          showCancelButton: false,
+          allowEscapeKey: false,
+          allowOutsideClick: false,
+          closeOnClickOutside: false,
+		  onBeforeOpen: () => {
+		    Swal.showLoading()
+		    timerInterval = setInterval(() => {
+		      const content = Swal.getContent()
+		      if (content) {
+		        const b = content.querySelector('b')
+		        if (b) {
+		          b.textContent = Swal.getTimerLeft()
+		        }
+		      }
+		    }, 100)
+		  },
+		  onClose: () => {
+		    clearInterval(timerInterval)
+		  }
+		}).then((result) => {
+		  /* Read more about handling dismissals below */
+		  if (result.dismiss === Swal.DismissReason.timer) {
+		    window.location.href = window._config.app.invokeUrl + window._config.wallet.invokeUrl;
+		  }
+		})
+	}
 
 	if(isNotEmpty(wallet) && isEmpty(currentUser.walletCurrency)) {
 		window.cToS = {};

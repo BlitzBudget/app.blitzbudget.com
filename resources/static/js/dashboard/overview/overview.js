@@ -263,7 +263,7 @@
 	// Builds the rows for recent transactions
 	function buildTransactionRow(userTransaction) {
 		// Convert date from UTC to user specific dates
-		let creationDateUserRelevant = new Date(userTransaction.createDate);
+		let creationDateUserRelevant = new Date(userTransaction['creation_date']);
 		// Category Map 
 		let categoryMapForUT = categoryMap[userTransaction.category];
 		
@@ -297,7 +297,7 @@
 		
 		let elementWithCategoryName = document.createElement('div');
 		elementWithCategoryName.classList = 'small categoryNameRT w-100';
-		elementWithCategoryName.innerText = (categoryMapForUT.categoryName.length < 25 ? categoryMapForUT.categoryName : (categoryMapForUT.categoryName.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+		elementWithCategoryName.innerText = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
 		tableCellTransactionDescription.appendChild(elementWithCategoryName);
 		tableRowTransaction.appendChild(tableCellTransactionDescription);
 		
@@ -536,7 +536,7 @@
 		// Table Cell 2 
 		let userBudgetNameDiv = document.createElement('div');
 		userBudgetNameDiv.classList = 'font-weight-bold categoryNameBO d-table-cell';
-		userBudgetNameDiv.innerText = categoryMap[userBudget.category].categoryName;
+		userBudgetNameDiv.innerText = categoryMap[userBudget.category].name;
 		tableBudgetOptimization.appendChild(userBudgetNameDiv);
 		
 		// Table Cell 3 
@@ -1382,11 +1382,11 @@
 				let percentageOfTotal = (categoryTotal / absoluteTotal) * 100;
 				// If the total is greater than 5 % then print it separate else accumulate it with others
 				if(percentageOfTotal > 5) {
-					labelsArray.push(categoryObject.categoryName);
+					labelsArray.push(categoryObject.name);
 					seriesArray.push(categoryTotal);
 				} else {
 					othersTotal += categoryTotal;
-					otherLabels.push(categoryObject.categoryName);
+					otherLabels.push(categoryObject.name);
 				}
 				
 			}

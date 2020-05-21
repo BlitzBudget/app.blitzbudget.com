@@ -9,8 +9,6 @@
     if(isNotEmpty(currentCogUser)) {
         // Fill currency and Name
         fillName(); 
-        // Replace with currency
-        replaceWithCurrency();
     }
 
     /**
@@ -413,7 +411,7 @@
         let onFailure = function registerFailure(err) {
             signupLoader.classList.add('d-none');
             signupButton.classList.remove('d-none');
-        	document.getElementById('errorLoginPopup').innerText = err.message;
+        	document.getElementById('errorLoginPopup').innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
         };
 
         if (password === password2) {
@@ -491,7 +489,7 @@
                 verifyButton.classList.remove('d-none');
             },
             function verifyError(err) {
-                document.getElementById('errorLoginPopup').innerText = err.message;
+                document.getElementById('errorLoginPopup').innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
                 verifyLoader.classList.add('d-none');
                 verifyButton.classList.remove('d-none');
             }
@@ -709,7 +707,7 @@
                 fireConfirmForgotPasswordSwal(emailInputSignin, newPassword);
               },
               error: function(err) {
-                document.getElementById('errorLoginPopup').innerText = err.message;
+                document.getElementById('errorLoginPopup').innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
                 resendloader.classList.add('d-none');
                 forgotPass.classList.remove('d-none');
               }

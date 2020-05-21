@@ -748,8 +748,8 @@ er = {
 	// Security check to ensure that the category is present in the map
 	checkIfInvalidCategory(categoryIdForBudget) {
 		
-		if(isEmpty(categoryMap[Number(categoryIdForBudget)])) {
-			showNotification('Unable to the update budget at the moment. Please refresh the page and try again!',window._constants.notification.error);
+		if(isEmpty(window.categoryMap[categoryIdForBudget])) {
+			showNotification('The category chosen is invalid. Please refresh the page and try again!',window._constants.notification.error);
 			return true;
 		}
 		
@@ -817,6 +817,9 @@ er = {
 		// Set chosen date
 		chosenDate.setMonth(positionId);
 		chosenDate.setFullYear(popoverYear);
+
+		// Change the selected date ID
+		populateCurrentDate(window.datesCreated);
 		
 		// Hide the modal
 		let dateControl = document.getElementById('dateControl');
@@ -936,7 +939,7 @@ function populateCurrentDate(date) {
 		let presentDate = date[i].dateId;
 		let presentDateAsDate = new Date(presentDate.substring(5, presentDate.length));
 		if(window.chosenDate.getMonth() == presentDateAsDate.getMonth()
-			|| window.chosenDate.getFullYear() == window.chosenDate.getFullYear()) {
+			&& window.chosenDate.getFullYear() == presentDateAsDate.getFullYear()) {
 			window.currentDateAsID = presentDate;
 		}
 	}
@@ -958,6 +961,8 @@ function fetchJSONForCategories(data) {
 	
 	for(let count = 0, length = window.defaultCategories.length; count < length; count++){
 		  let value = window.defaultCategories[count];
+		  // While Changing the dates delete the ID field.
+		  delete value.id;
 
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
@@ -982,12 +987,12 @@ function fetchJSONForCategories(data) {
 		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
 			  window.incomeDropdownItems.appendChild(option);
 		  }
-	   
-  	}
-   // Sealing the object so new objects or properties cannot be added
-   Object.seal(window.categoryMap);
+  	}   
 }
 
+/*
+* If one category has been assigned a Category then
+*/
 function assignCategoryId(data) {
 	// Expense and Income Initialize
 	window.expenseDropdownItems = document.createDocumentFragment();
@@ -996,7 +1001,16 @@ function assignCategoryId(data) {
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
 
-	if(isNotEmpty(window.categoryMap[categoryName])) {window.categoryMap[categoryName].id = categoryId;}
+	if(isNotEmpty(window.categoryMap[categoryName])) {
+		delete window.categoryMap[categoryName];
+		
+		let category = {};
+		category.name = categoryName;
+		category.type = categoryType;
+		category.id = categoryId;
+		// Category Map
+		window.categoryMap[categoryId] = category;
+	}
 
 	let resultKeys = Object.keys(window.categoryMap);
 	for(let count = 0, length = resultKeys.length; count < length; count++){
@@ -1011,10 +1025,8 @@ function assignCategoryId(data) {
 		  inputValue.type = 'hidden';
 		  if(isNotEmpty(value.id)) {
 		  	inputValue.value = categoryId;
-		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
-		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
 
@@ -1025,8 +1037,6 @@ function assignCategoryId(data) {
 		  }
 	   
   	}
-   // Sealing the object so new objects or properties cannot be added
-   Object.seal(window.categoryMap);
 }
 
 // Display Confirm Account Verification Code
