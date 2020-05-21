@@ -159,11 +159,13 @@ let tickIconSVG = tickIcon();
 	    	if (result.value) {
 	    		// Populate the JSON form data
 		    	var values = {};
-				values['linked'] = 'false';
+				values['linked'] = false;
 				values['bankAccountName'] = document.getElementById('accountName').value;
 				values['accountBalance'] = document.getElementById('accountBal').value;
 				values['accountType'] = document.getElementsByClassName('accountChosen')[0].innerText;
-				values['financialPortfolioId'] = currentUser.walletId;
+				values['walletId'] = window.currentUser.walletId;
+				values['primaryWallet'] = window.currentUser.financialPortfolioId;
+				values['selectedAccount'] = false;
 				
 				// Check if the account type is valid (Upper Case)
 				if(!includesStr(accountTypeUCConst,values['accountType'])) {
@@ -174,7 +176,7 @@ let tickIconSVG = tickIcon();
 				// Ajax Requests on Error
 				let ajaxData = {};
 		   		ajaxData.isAjaxReq = true;
-		   		ajaxData.type = "POST";
+		   		ajaxData.type = "PUT";
 		   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl;
 		   		ajaxData.dataType = "json"; 
 		   		ajaxData.contentType = "application/json;charset=UTF-8";
@@ -682,6 +684,7 @@ function populateBankAccountInfo(bankAccount, count) {
 	// If Selected then highlight account
 	if(bankAccount['selected_account']) {
 		wrapperRow.classList.add('selectedBA');
+		window.selectedBankAccountId = bankAccount.accountId;
 	}
 	
 	// Link Icon
