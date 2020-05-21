@@ -2714,8 +2714,8 @@
 		let accountAggreDiv = document.getElementById('recTransAndAccTable');
         let recentTransactionsFragment = document.createDocumentFragment();
 		let createdAccIds = [];
-     	for(let countGrouped = 0; countGrouped < window.transactionsCache.length; countGrouped++) {
-     	   let userTransaction = window.transactionsCache[countGrouped];
+		for (var key of Object.keys(window.transactionsCache)) {
+			let userTransaction = window.transactionsCache[countGrouped];
      	   let accountId = userTransaction.accountId;
 
      	   if(!includesStr(createdAccIds,accountId)) {
