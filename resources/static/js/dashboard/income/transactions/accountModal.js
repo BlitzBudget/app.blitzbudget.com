@@ -9,7 +9,7 @@
 	$('body').on('click', '.accountInfoTable .recentTransactionDateGrp' , function(e) {
 		// Account modal id
 		let accInfoTable = this.closest('.accountInfoTable');
-		let accountId = lastElement(splitElement(accInfoTable.id,'-'));
+		let accountId = accInfoTable.getAttribute('data-target');
 		// Set the current account
 		currentAccountId = accountId;
 		let accountModal = document.getElementById('accountInformationMdl').classList;

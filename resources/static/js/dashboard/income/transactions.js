@@ -822,7 +822,7 @@
 	}
 	
 	// Select all check boxes for Transactions
-	$("#checkAll").click(function () {
+	$('body').on('click', '.income-dashboard #checkAll' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		manageDeleteTransactionsButton();
 	});
@@ -2596,6 +2596,7 @@
 		let docFrag = document.createDocumentFragment();
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
+		accountHeader.setAttribute('data-target', accountId);
 		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
@@ -2641,6 +2642,7 @@
 		let divMaterialSpinner = document.createElement('div');
 		divMaterialSpinner.classList = 'material-spinner-small mx-auto pendingAccInfo';
 		divMaterialSpinner.id = 'spinAcc-' + accountId;
+		divMaterialSpinner.setAttribute('data-target', accountId);
 		return divMaterialSpinner;
 	}
 
@@ -2658,7 +2660,8 @@
 	  			let replacEl = replaceAbleEl[i];
 	  			// if the element is not empty then proceed
 	  			if(isNotEmpty(replacEl)) {
-	  				accHeadersToReplace.push(lastElement(splitElement(replacEl.id,'-')));
+	  				let accountId = replacEl.getAttribute('data-target');
+	  				accHeadersToReplace.push(accountId);
 	  			}
 	  		}
     	}
