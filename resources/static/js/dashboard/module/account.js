@@ -217,19 +217,19 @@ let tickIconSVG = tickIcon();
 	
 	// Click on an account to select
 	$('#accountPickerWrapper').on('click', ".bARow", function() {
-		let position = lastElement(splitElement(this.id,'-'));
 		let currentElem = this;
+		let bnkAccountId = currentElem.getAttibute('data-target');
 		
 		// Populate the JSON form data
     	var values = {};
-		values['id'] = allBankAccountInfoCache[Number(position)-1].id;
+		values['bankAccountId'] = bnkAccountId
 		values['selectedAccount'] = 'true';
-		values['financialPortfolioId'] = currentUser.walletId;
+		values['walletId'] = currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
+   		ajaxData.type = "PUT";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl;
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
@@ -237,7 +237,7 @@ let tickIconSVG = tickIcon();
    		ajaxData.onSuccess = function(result){
 	    	  // Append as Selected Account
 	    	  for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-	    		  if(allBankAccountInfoCache[i].id == allBankAccountInfoCache[Number(position)-1].id) {
+	    		  if(allBankAccountInfoCache[i].id == bnkAccountId) {
 	    			  allBankAccountInfoCache[i]['selected_account'] = true;
 	    		  }
 	    	  }
@@ -677,6 +677,7 @@ function populateBankAccountInfo(bankAccount, count) {
 	let wrapperRow = document.createElement('div');
 	wrapperRow.classList = 'row bARow';
 	wrapperRow.id = 'bAR-' + count;
+	wrapperRow.setAttribute('data-target', bankAccount.accountId);
 	
 	// If Selected then highlight account
 	if(bankAccount['selected_account']) {

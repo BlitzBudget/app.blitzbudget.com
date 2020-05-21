@@ -1786,12 +1786,12 @@
         	  recentTrans.insertBefore(buildTransactionRow(userTransaction, 'recentTransaction'),recentTrans.childNodes[1]);
 
         	  // If the sort option is Account then
-        	  let accountAggTable = document.getElementById('accountSB-' + userTransaction.accountId);
+        	  let accountAggTable = document.getElementById('accountSB-' + userTransaction.account);
         	  if(accountAggTable == null) {
         	  	let recentTransactionsFragment = document.createDocumentFragment();
         	  	let recTransAndAccTable = document.getElementById('recTransAndAccTable');
-        	  	recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.accountId));
-        	  	recentTransactionsFragment.getElementById('accountSB-' + userTransaction.accountId).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
+        	  	recentTransactionsFragment.appendChild(buildAccountHeader(userTransaction.account));
+        	  	recentTransactionsFragment.getElementById('accountSB-' + userTransaction.account).appendChild(buildTransactionRow(userTransaction, 'accountAggre'));
         	  	recTransAndAccTable.appendChild(recentTransactionsFragment);
         	  } else {
         	  	accountAggTable.insertBefore(buildTransactionRow(userTransaction, 'accountAggre'), accountAggTable.childNodes[1]);
@@ -2715,8 +2715,8 @@
         let recentTransactionsFragment = document.createDocumentFragment();
 		let createdAccIds = [];
 		for (var key of Object.keys(window.transactionsCache)) {
-			let userTransaction = window.transactionsCache[countGrouped];
-     	   let accountId = userTransaction.accountId;
+		   let userTransaction = window.transactionsCache[key];
+     	   let accountId = userTransaction.account;
 
      	   if(!includesStr(createdAccIds,accountId)) {
      	   		recentTransactionsFragment.appendChild(buildAccountHeader(accountId));
