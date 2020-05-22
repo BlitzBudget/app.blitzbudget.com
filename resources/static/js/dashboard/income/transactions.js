@@ -197,6 +197,11 @@
 	    	values['category'] = categoryOptions;
 	    }
 
+	    if(window.categoryMap[categoryOptions].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+	    	// Update as negative amount
+	    	amount *= -1;
+	    }
+	    
 		values['amount'] = amount;
 		values['description'] = description;
 		values['dateMeantFor'] = window.currentDateAsID;
@@ -1162,13 +1167,10 @@
 			return;
 		}
 		
-		let changedDescription = splitElement($(element).attr('id'),'-');
 		var values = {};
 		values['description'] = enteredText;
-		values['transactionId'] = changedDescription[changedDescription.length - 1];
-		values['dateMeantFor'] = chosenDate;
-		values['walletId'] = currentUser.walletId;
-		values['transactionId'] = currentUser.transactionId;
+		values['transactionId'] = $(element).data('target');
+		values['walletId'] = window.currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
@@ -1253,12 +1255,10 @@
 		// Test if the entered value is the same as the previous one
 		if(previousText != enteredText){
 			// obtain the transaction id of the table row
-			let changedAmount = splitElement(element.id,'-');
 			var values = {};
 			values['amount'] = enteredText;
-			values['transactionId'] = changedAmount[changedAmount.length - 1];
-			values['dateMeantFor'] = chosenDate;
-			values['walletId'] = currentUser.walletId;
+			values['transactionId'] = element.getAttribute('data-target');
+			values['walletId'] = window.currentUser.walletId;
 			let totalAddedOrRemovedFromAmount = round(parseFloat(enteredText - previousText),2);
 			// Ajax Requests on Error
 			let ajaxData = {};
@@ -2327,6 +2327,7 @@
 		
 		let tableRowTransaction = document.createElement('div');
 		tableRowTransaction.id = idName + '-' + userTransaction.transactionId;
+		tableRowTransaction.setAttribute('data-target', userTransaction.transactionId);
 		tableRowTransaction.classList = 'recentTransactionEntry d-table-row';
 
 		// Make the account section draggable

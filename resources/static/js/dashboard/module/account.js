@@ -211,7 +211,7 @@ let tickIconSVG = tickIcon();
 	// Click on an account to select
 	$('#accountPickerWrapper').on('click', ".bARow", function() {
 		let currentElem = this;
-		let bnkAccountId = currentElem.getAttibute('data-target');
+		let bnkAccountId = currentElem.getAttribute('data-target');
 		
 		// Populate the JSON form data
     	var values = {};
