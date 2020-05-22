@@ -1,13 +1,4 @@
 "use strict";
-// SECURITY: Defining Immutable properties as constants
-const BANK_ACCOUNT_CONSTANTS = {};
-Object.defineProperties(BANK_ACCOUNT_CONSTANTS, {
-	'backslash': { value: '/', writable: false, configurable: false },
-	'bankAccountAddUrl' : { value: '/add', writable: false, configurable: false },
-	'bankAccountSelectUrl' : { value: '/select', writable: false, configurable: false },
-	'bankAccountCategorizeUrl' : { value: '/categorize', writable: false, configurable: false },
-	'firstfinancialPortfolioId': { value : '?financialPortfolioId=', writable: false, configurable: false}
-});
 let unsyncSVG = unsyncSVGFc();
 let syncSVG = syncSVGFc();
 // Constants for reference
@@ -177,7 +168,7 @@ let tickIconSVG = tickIcon();
 				let ajaxData = {};
 		   		ajaxData.isAjaxReq = true;
 		   		ajaxData.type = "PUT";
-		   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountAddUrl;
+		   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl;
 		   		ajaxData.dataType = "json"; 
 		   		ajaxData.contentType = "application/json;charset=UTF-8";
 		   		ajaxData.data = JSON.stringify(values);
@@ -225,14 +216,14 @@ let tickIconSVG = tickIcon();
 		// Populate the JSON form data
     	var values = {};
 		values['bankAccountId'] = bnkAccountId
-		values['selectedAccount'] = 'true';
+		values['selectedAccount'] = true;
 		values['walletId'] = currentUser.walletId;
 
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "PUT";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.bankAccountSelectUrl;
+   		ajaxData.type = "PATCH";
+   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl;
    		ajaxData.dataType = "json"; 
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
