@@ -706,40 +706,8 @@
 	
 	// Replace transactions table with empty spinner
 	function replaceTransactionsWithMSpinner() {
-		// Replace Transactions Table
-		let materialSpinnerFrag = document.createDocumentFragment();
-		
-		let tableRow = document.createElement('div');
-		tableRow.classList = 'd-table-row';
-		
-		let firstCell = document.createElement('div');
-		firstCell.classList = 'd-table-cell';
-		tableRow.appendChild(firstCell);
-		
-		let secCell = document.createElement('div');
-		secCell.classList = 'd-table-cell';
-		tableRow.appendChild(secCell);
-		
-		let thirdCell = document.createElement('div');
-		thirdCell.classList = 'd-table-cell';
-		tableRow.appendChild(thirdCell);
-		
-		let fourthCell = document.createElement('div');
-		fourthCell.classList = 'd-table-cell';
-		let mSpinnerDiv = document.createElement('div');
-		mSpinnerDiv.classList = 'material-spinner';
-		fourthCell.appendChild(mSpinnerDiv);
-		tableRow.appendChild(fourthCell);
-		
-		materialSpinnerFrag.appendChild(tableRow);
-		
 		// Replace the product json with empty table
-		let productJsonDiv = document.getElementById(replaceTransactionsId);
-		// Replace HTML with Empty
-		while (productJsonDiv.firstChild) {
-			productJsonDiv.removeChild(productJsonDiv.firstChild);
-		}
-		productJsonDiv.appendChild(materialSpinnerFrag);
+		document.getElementById(replaceTransactionsId).classList.remove('d-none');
 	}
 	
 	// Replace Pie Chart with Material Spinner
@@ -1339,7 +1307,7 @@
 	// Populate the account sort by section
 	function populateTransactionsByCategory(userTransactionsList) {
 		// Remove all the transactions
-		let productsJson = document.getElementById(replaceTransactionsId);
+		let transactionsTable = document.getElementById('transactionsTable');
         let populateTransactionsFragment = document.createDocumentFragment();
 		let createdCategoryIds = [];
 		for (let i = 0, len = userTransactionsList.length; i < len; i++) {
@@ -1355,7 +1323,8 @@
      	   populateTransactionsFragment.getElementById('categorySB-' + category).appendChild(buildTransactionRow(userTransaction, 'categorySorted'));
      	}
 
-    	productsJson.appendChild(populateTransactionsFragment);
+    	transactionsTable.appendChild(populateTransactionsFragment);
+    	document.getElementById(replaceTransactionsId).classList.add('d-none');
 	}
 
 	// Populate the account sort by section
