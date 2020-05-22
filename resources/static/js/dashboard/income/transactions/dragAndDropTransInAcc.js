@@ -214,7 +214,6 @@
 	function updateTransactionWithAccId(transactionId, accountId, oldAccountId) {
 		// obtain the transaction id of the table row
 		transactionId = document.getElementById(transactionId).getAttribute('data-target');
-		oldAccountId = lastElement(splitElement(oldAccountId,'-'));
 
 		let values = {};
 		values['account'] = accountId;
