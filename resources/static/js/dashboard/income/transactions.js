@@ -901,14 +901,18 @@
 	                     	}
 	                    }
 
-	                    transactionIds.join(",");
-	                     
-	                    // Ajax Requests on Error
+	                    let values = {};
+						values.walletId = window.currentUser.walletId;
+						values.itemIdArray = transactionIds;
+						
+						// Ajax Requests on Error
 						let ajaxData = {};
-						ajaxData.isAjaxReq = true;
-						ajaxData.type = 'DELETE';
-						ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-						ajaxData.contentType = "application/json; charset=utf-8";
+				   		ajaxData.isAjaxReq = true;
+				   		ajaxData.type = "POST";
+				   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteBatch;
+	                    ajaxData.dataType = "json";
+   						ajaxData.contentType = "application/json;charset=UTF-8";
+   						ajaxData.values = JSON.stringify(values);
 						ajaxData.onSuccess = function(result) {
                         	showNotification('Successfully deleted the selected transactions',window._constants.notification.success);
                         	
@@ -958,7 +962,9 @@
 	                        url: ajaxData.url,
 	                        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	                        type: ajaxData.type,
-	                        contentType: ajaxData.contentType, 
+	                        dataType: ajaxData.dataType,
+						    contentType: ajaxData.contentType,
+						    data: ajaxData.values,
 	                        success: ajaxData.onSuccess,
 	                        error: ajaxData.onFailure
 	                    });
@@ -1397,12 +1403,18 @@
 		let budgetTableCell = document.getElementById('budgetTransactionsRow-' + id);
 		budgetTableCell.classList.add('fadeOutAnimation');
 		
+		let values = {};
+		values.walletId = window.currentUser.walletId;
+		values.itemId = id;
 		
 		// Ajax Requests on Error
 		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'DELETE';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
 		ajaxData.onSuccess = function(data) {
 
         	let previousCategoryId = '';
@@ -1468,6 +1480,9 @@
             url: ajaxData.url,
             beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
+            dataType: ajaxData.dataType,
+	      	contentType: ajaxData.contentType,
+	      	data: ajaxData.values,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
         });
