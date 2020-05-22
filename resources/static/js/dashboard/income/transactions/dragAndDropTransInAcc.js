@@ -229,7 +229,7 @@
 		ajaxData.contentType = "application/json;charset=UTF-8";
 		ajaxData.data = JSON.stringify(values);
 		ajaxData.onSuccess = function(result){
-			let userTransaction = result['body=json'];
+			let userTransaction = result['body-json'];
 			// Fetch the current account balance
 			let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
 			let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.innerText,currentCurrencyPreference);
