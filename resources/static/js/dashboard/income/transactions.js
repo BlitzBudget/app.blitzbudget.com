@@ -43,9 +43,7 @@
 	 * 
 	 */
 	if(isEqual(er.getCookie('currentPage'),'transactionsPage')) {
-		if(isEqual(window.location.href, window._config.app.invokeUrl) 
-			|| isEqual(window.location.href, window._config.app.invokeUrl + '/')
-			|| isEqual(window.location.href, window._config.app.invokeUrl + '/#')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
 			er.refreshCookiePageExpiry('transactionsPage');
 		 	er.fetchCurrentPage('/transactions', function(data) {
 				// Load the new HTML

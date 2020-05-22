@@ -39,9 +39,7 @@
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
 	if(isEqual(currentPageInCookie,'overviewPage')) {
-		if(isEqual(window.location.href, window._config.app.invokeUrl) 
-			|| isEqual(window.location.href, window._config.app.invokeUrl + '/')
-			|| isEqual(window.location.href, window._config.app.invokeUrl + '/#')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
 			populateCurrentPage('overviewPage');
 		}
 	}

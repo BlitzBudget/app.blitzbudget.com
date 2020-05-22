@@ -24,9 +24,7 @@
 	 * 
 	 */
 	if(isEqual(er.getCookie('currentPage'),'budgetPage')) {
-		if(isEqual(window.location.href, window._config.app.invokeUrl) 
-			|| isEqual(window.location.href, window._config.app.invokeUrl + '/')
-			|| isEqual(window.location.href, window._config.app.invokeUrl + '/#')) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
 			er.refreshCookiePageExpiry('budgetPage');
 		 	er.fetchCurrentPage('/budgets', function(data) {
 				// Fetch user budget and build the div
