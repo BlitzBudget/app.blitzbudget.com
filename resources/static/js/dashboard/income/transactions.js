@@ -991,6 +991,14 @@
 	   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
 	   	// Remove all Account Data Table
 	   	$('.accountInfoTable').remove();
+	   	// Account Table Update Empty account table
+	   	let accountTable = document.getElementById('accountTable');
+	   	// Replace HTML with Empty
+		while (accountTable.firstChild) {
+			accountTable.removeChild(accountTable.firstChild);
+		}
+		accountTable.appendChild(buildEmptyTransactionsTab());
+
 	}
 
 	// Show or hide multiple rows in the transactions table
