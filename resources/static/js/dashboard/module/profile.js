@@ -19,7 +19,9 @@
 	 */
 	let currentPageInCookie = er.getCookie('currentPage');
 	if(isEqual(currentPageInCookie,'profilePage') || isEqual(currentPageInCookie,'profilePgDD')) {
-		if(isEqual(window.location.href, window._config.app.invokeUrl)) {
+		if(isEqual(window.location.href, window._config.app.invokeUrl) 
+			|| isEqual(window.location.href, window._config.app.invokeUrl + '/')
+			|| isEqual(window.location.href, window._config.app.invokeUrl + '/#')) {
 			populateCurrentPage('profilePage');
 		}
 	}
