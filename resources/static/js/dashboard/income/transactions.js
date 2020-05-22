@@ -385,7 +385,7 @@
 			let transactionsTableDiv = document.createDocumentFragment();
 			let documentTbody = document.getElementById(replaceTransactionsId);
 			// uncheck the select all checkbox if checked
-			let checkAllBox = document.getElementById('checkAll');
+			let checkAllBox = document.getElementById('checkAllForTransaction');
 			// Fetch all the key set for the result
 			let resultKeySet = Object.keys(result.Category);
          	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
@@ -417,7 +417,7 @@
 
 			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
 		    } else {
-			    $('#checkAllForTransaction').prop('checked', false);
+		    	checkAllBox.checked = false;
    			    checkAllBox.removeAttribute('disabled');
   			    // Replace HTML with Empty
       		    while (documentTbody.firstChild) {
@@ -887,7 +887,7 @@
 	                    	let transactionId = allCheckedItems[i].innerHTML;
 	                    	
 	                    	// Remove the check all from the list
-	                    	if(isEqual(allCheckedItems[i].id, 'checkAll')) {
+	                    	if(isEqual(allCheckedItems[i].id, 'checkAllForTransaction')) {
 	                    		continue;
 	                    	}
 	                    	
@@ -917,8 +917,8 @@
                         	// If Check All is clicked them empty div and reset pie chart
                         	if(checkAllClicked){
                         		// uncheck the select all checkbox if checked
-                        		let checkAllBox = document.getElementById('checkAll');
-                        		$('#checkAllForTransaction').prop('checked',false);
+                        		let checkAllBox = document.getElementById('checkAllForTransaction');
+                        		checkAllBox.checked = false;
                         		checkAllBox.setAttribute('disabled','disabled');
                  			   	// Remove other table data
                  			   	removeAllTableData();
@@ -1452,8 +1452,8 @@
                 	if(tableBodyDiv.childElementCount === 0) {
                 		tableBodyDiv.appendChild(fetchEmptyTableMessage());
                 		// uncheck the select all checkbox if checked
-            			let checkAllBox = document.getElementById('checkAll');
-            			$('#checkAllForTransaction').prop('checked',false);
+            			let checkAllBox = document.getElementById('checkAllForTransaction');
+            			checkAllBox.checked = false;
             			checkAllBox.setAttribute('disabled', 'disabled');
                 	}
         		}
