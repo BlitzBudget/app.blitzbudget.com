@@ -73,8 +73,6 @@
 		 * START Load at the end of the javascript
 		 */
 				
-		// Load images in category modal
-		loadCategoryModalImages();
 		// Call the transaction API to fetch information.
 		fetchJSONForTransactions();
 		// Date Picker
@@ -119,12 +117,7 @@
 	    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
 	    $(genericAddFnc).unbind('click').click(function () {
 	    	genericAddFnc.classList.toggle('d-none');
-			if($( ".number:checked" ).length > 0 || $("#checkAllForTransaction:checked").length > 0) {
-				// If length > 0 then change the add button to add
-				popup.showSwal('warning-message-and-confirmation');
-			} else {
-				$('#GSCCModal').modal('toggle');
-			}  
+			$('#GSCCModal').modal('toggle');
 		});
 
 		
@@ -302,9 +295,6 @@
 			fetchJSONForTransactions();
 			// Do not refresh the transactions if no new transactions are added
 			registeredNewTransaction = false;
-		
-			// Close category modal
-         	closeCategoryModal();
 		}		
 	});
 
@@ -1092,10 +1082,6 @@
 	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
-		// Close the category Modal
-		closeCategoryModal();
-		// Uncheck all the checked rows
-		$('.number:checked').click();
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-table');
@@ -1153,10 +1139,6 @@
 
 	// Sorts the table by aggregating transactions by account
 	$('body').on('click', '#accountSortBy' , function(e) {
-		// Close the category Modal
-		closeCategoryModal();
-		// Uncheck all the checked rows
-		$('.number:checked').click();
 		// Change title of in the dropdown
 		document.getElementById('sortByBtnTit').innerText = 'Account';
 		// hide the recent transactions
@@ -1368,9 +1350,9 @@
      	   if(!includesStr(createdCategoryIds,category)) {
      	   		populateTransactionsFragment.appendChild(buildCategoryHeader(category));
      	   		// Add Created Accounts ID to the array
-     	   		createdCategoryIds.push(accountId);
+     	   		createdCategoryIds.push(category);
      	   }
-     	   populateTransactionsFragment.getElementById('accountSB-' + accountId).appendChild(buildTransactionRow(userTransaction, 'categorySorted'));
+     	   populateTransactionsFragment.getElementById('categorySB-' + category).appendChild(buildTransactionRow(userTransaction, 'categorySorted'));
      	}
 
     	productsJson.appendChild(populateTransactionsFragment);
