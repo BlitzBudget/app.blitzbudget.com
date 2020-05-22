@@ -844,7 +844,7 @@
 	}
 	
 	// Select all check boxes for Transactions
-	$('body').on('click', '#checkAll' , function(e) {
+	$('body').on('click', '.overview-dashboard #checkAll' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		let allCheckedOptimizations = $(".number:checked");
 		

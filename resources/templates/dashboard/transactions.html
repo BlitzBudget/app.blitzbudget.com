@@ -65,7 +65,7 @@
                       <div class="text-center width-7 d-table-cell">
                         	<div class="form-check">
                             		<label class="form-check-label">
-                            		<input type="checkbox" class="form-check-input" id="checkAll">
+                            		<input type="checkbox" class="form-check-input" id="checkAllForTransaction">
               									<span class="form-check-sign">
               										<span class="check">
               										</span>
@@ -247,7 +247,7 @@
       
   
 	<!-- Vertically Centered Modal -->
-	<div class="modal" id="GSCCModal" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="GSCCModal">
+	<div class="modal" id="GSCCModal" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="GSCCModal">
     <div class="modal-dialog modal-signup" role="document">
       <div class="modal-content">
         <div class="card card-signup card-plain">
@@ -321,7 +321,7 @@
                         <div class="input-group-prepend">
                           <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction category">category</i></div>
                         </div>
-                        <div id="categoryOptions" class="btn-group btnGroup-1" data-chosen="Bills & Fees">
+                        <div id="categoryOptions" class="btn-group btnGroup-1">
                           <div class="w-md-15 w-8" disabled="">Bills & Fees</div>
                           <div type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="sr-only">Toggle Dropdown</span>
@@ -354,15 +354,17 @@
                       	<div class="input-group-prepend">
                             <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction Recurrence">repeat</i></div>
                         </div>
-                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 active" data-target="NEVER">Never</div>
-                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 weeklyR" data-target="WEEKLY">Weekly</div>
-                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 biMonthlyR" data-target="BI-MONTHLY">Bi-Monthly</div>
-                        <div class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 monthlyR" data-target="MONTHLY">Monthly</div>
+                    		<div id="recurrenceForm" class="text-left" contenteditable="true" data-gramm_editor="false">
+                    			<button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 active" data-target="NEVER">Never</button>
+                          <button class="btn btn-secondary btn-lg register-recurrence weeklyR mr-2 my-3" data-target="WEEKLY">Weekly</button>
+                          <button class="btn btn-secondary btn-lg register-recurrence biMonthlyR mr-2 my-3" data-target="BI-MONTHLY">Bi-Monthly</button>
+                          <button class="btn btn-secondary btn-lg register-recurrence monthlyR mr-2 my-3" data-target="MONTHLY">Monthly</button>
+                    		</div> 
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer justify-content-center">
-                    <button class="btn btn-success btn-round" id="addNewTransactions"  type="submit">Add Transaction</button>
+                    <button class="btn btn-success btn-round" id="addNewTransactions">Add Transaction</button>
                   </div>
                 <span id="successMessage" class="justify-content-center"></span>
 			          <span id="errorMessage" class="justify-content-center"></span>

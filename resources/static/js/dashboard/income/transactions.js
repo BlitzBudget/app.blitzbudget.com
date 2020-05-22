@@ -29,6 +29,8 @@
 	let transactionsChart = '';
 	// Fetch Drag Handle for transactions row table
 	let dragHandle = fetchDragHandle();
+	// Success SVG Fragment
+	let successSVGFormed = successSvgMessage();
 	// String Today
 	const TODAY = 'Today';
 	// Initialize transactions Cache
@@ -72,9 +74,7 @@
 		/**
 		 * START Load at the end of the javascript
 		 */
-		// Success SVG Fragment
-		let successSVGFormed = successSvgMessage();
-		
+				
 		// Load images in category modal
 		loadCategoryModalImages();
 		// Call the transaction API to fetch information.
@@ -121,7 +121,7 @@
 	    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
 	    $(genericAddFnc).unbind('click').click(function () {
 	    	genericAddFnc.classList.toggle('d-none');
-			if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+			if($( ".number:checked" ).length > 0 || $("#checkAllForTransaction:checked").length > 0) {
 				// If length > 0 then change the add button to add
 				popup.showSwal('warning-message-and-confirmation');
 			} else {
@@ -264,7 +264,9 @@
 	// on click dropdown set the data chosen attribute
 	$('body').on("click", "#categoryOptions .dropdown-item" , function(event){
 		let dropdownValue = this.lastChild.value;
-		document.getElementById('categoryOptions').setAttribute('data-chosen', dropdownValue);
+		let categoryOption = document.getElementById('categoryOptions');
+		categoryOption.firstElementChild.innerText = window.categoryMap[dropdownValue].name;
+		categoryOption.setAttribute('data-chosen', dropdownValue);
 	});
 
 	// Set Active Class on click button
@@ -273,15 +275,6 @@
 		this.classList.add('active');
 
 	});
-
-	$(document).on("click", "#categoryOptions .dropdown-item" , function(event){
-
-		let inputValue = this.lastChild.value;
-		let categoryoptions = document.getElementById('categoryOptions');
-		categoryoptions.setAttribute('data-chosen', inputValue);
-
-	});
-	
 	
 	// Use this function to fade the message out
 	function fadeoutMessage(divId, message, milliSeconds){
@@ -356,6 +349,13 @@
         	er_a.populateBankInfo(result.BankAccount);
 
         	fetchJSONForCategories(result.Category);
+        	// set default category
+        	let defaultCategory = window.defaultCategories[1];
+        	if(isEmpty(defaultCategory.id)) {
+        		document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.name);
+        	} else {
+        		document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.id);
+        	}
 
         	// Load Expense category and income category
         	let expenseSelectionDiv = document.getElementById('expenseSelection');
@@ -385,7 +385,7 @@
 			let transactionsTableDiv = document.createDocumentFragment();
 			let documentTbody = document.getElementById(replaceTransactionsId);
 			// uncheck the select all checkbox if checked
-			let checkAllBox = document.getElementById('checkAll');
+			let checkAllBox = document.getElementById('checkAllForTransaction');
 			// Fetch all the key set for the result
 			let resultKeySet = Object.keys(result.Category);
          	for(let countGrouped = 0, lengthArray = resultKeySet.length; countGrouped < lengthArray; countGrouped++) {
@@ -417,7 +417,7 @@
 
 			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
 		    } else {
-			    $('#checkAll').prop('checked', false);
+		    	checkAllBox.checked = false;
    			    checkAllBox.removeAttribute('disabled');
   			    // Replace HTML with Empty
       		    while (documentTbody.firstChild) {
@@ -797,7 +797,7 @@
 	
 	// Disable Button if no check box is clicked and vice versa
 	$( "body" ).on( "click", ".number" ,function() {
-		let checkAllElementChecked = $("#checkAll:checked");
+		let checkAllElementChecked = $("#checkAllForTransaction:checked");
 		if(checkAllElementChecked.length > 0) {
 			// uncheck the check all if a check is clicked and if the check all is already clicked
 			checkAllElementChecked.prop('checked', false);
@@ -817,19 +817,19 @@
 		let allCheckedTransactions = $(".number:checked");
 		let allTransactions = $(".number");
 		if(allCheckedTransactions.length == allTransactions.length) {
-			$("#checkAll").prop('checked', true);
+			$("#checkAllForTransaction").prop('checked', true);
 		}
 	}
 	
 	// Select all check boxes for Transactions
-	$("#checkAll").click(function () {
+	$('body').on('click', '#checkAllForTransaction' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		manageDeleteTransactionsButton();
 	});
 	
 	// Function to enable of disable the delete transactions button
 	function manageDeleteTransactionsButton(){
-		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+		if($( ".number:checked" ).length > 0 || $("#checkAllForTransaction:checked").length > 0) {
 			// If length > 0 then change the add button to add
 			document.getElementById('addFncTT').innerText = 'delete';
 			document.getElementById('genericAddFnc').classList.remove('btn-success');
@@ -887,7 +887,7 @@
 	                    	let transactionId = allCheckedItems[i].innerHTML;
 	                    	
 	                    	// Remove the check all from the list
-	                    	if(isEqual(allCheckedItems[i].id, 'checkAll')) {
+	                    	if(isEqual(allCheckedItems[i].id, 'checkAllForTransaction')) {
 	                    		continue;
 	                    	}
 	                    	
@@ -901,24 +901,28 @@
 	                     	}
 	                    }
 
-	                    transactionIds.join(",");
-	                     
-	                    // Ajax Requests on Error
+	                    let values = {};
+						values.walletId = window.currentUser.walletId;
+						values.itemIdArray = transactionIds;
+						
+						// Ajax Requests on Error
 						let ajaxData = {};
-						ajaxData.isAjaxReq = true;
-						ajaxData.type = 'DELETE';
-						ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + '/' + transactionIds + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
-						ajaxData.contentType = "application/json; charset=utf-8";
+				   		ajaxData.isAjaxReq = true;
+				   		ajaxData.type = "POST";
+				   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteBatch;
+	                    ajaxData.dataType = "json";
+   						ajaxData.contentType = "application/json;charset=UTF-8";
+   						ajaxData.values = JSON.stringify(values);
 						ajaxData.onSuccess = function(result) {
                         	showNotification('Successfully deleted the selected transactions',window._constants.notification.success);
                         	
-                        	let checkAllClicked = $("#checkAll:checked").length > 0;
+                        	let checkAllClicked = $("#checkAllForTransaction:checked").length > 0;
                         	
                         	// If Check All is clicked them empty div and reset pie chart
                         	if(checkAllClicked){
                         		// uncheck the select all checkbox if checked
-                        		let checkAllBox = document.getElementById('checkAll');
-                        		$('#checkAll').prop('checked',false);
+                        		let checkAllBox = document.getElementById('checkAllForTransaction');
+                        		checkAllBox.checked = false;
                         		checkAllBox.setAttribute('disabled','disabled');
                  			   	// Remove other table data
                  			   	removeAllTableData();
@@ -958,7 +962,9 @@
 	                        url: ajaxData.url,
 	                        beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	                        type: ajaxData.type,
-	                        contentType: ajaxData.contentType, 
+	                        dataType: ajaxData.dataType,
+						    contentType: ajaxData.contentType,
+						    data: ajaxData.values,
 	                        success: ajaxData.onSuccess,
 	                        error: ajaxData.onFailure
 	                    });
@@ -985,6 +991,14 @@
 	   	recentTransactionsTab.appendChild(buildEmptyTransactionsTab());
 	   	// Remove all Account Data Table
 	   	$('.accountInfoTable').remove();
+	   	// Account Table Update Empty account table
+	   	let accountTable = document.getElementById('accountTable');
+	   	// Replace HTML with Empty
+		while (accountTable.firstChild) {
+			accountTable.removeChild(accountTable.firstChild);
+		}
+		accountTable.appendChild(buildEmptyTransactionsTab());
+
 	}
 
 	// Show or hide multiple rows in the transactions table
@@ -1397,12 +1411,18 @@
 		let budgetTableCell = document.getElementById('budgetTransactionsRow-' + id);
 		budgetTableCell.classList.add('fadeOutAnimation');
 		
+		let values = {};
+		values.walletId = window.currentUser.walletId;
+		values.itemId = id;
 		
 		// Ajax Requests on Error
 		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'DELETE';
-		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl + currentUser.walletId + '/' + id + CUSTOM_DASHBOARD_CONSTANTS.dateMeantFor + chosenDate;
+   		ajaxData.isAjaxReq = true;
+   		ajaxData.type = "POST";
+   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+   		ajaxData.dataType = "json";
+   		ajaxData.contentType = "application/json;charset=UTF-8";
+   		ajaxData.values = JSON.stringify(values);
 		ajaxData.onSuccess = function(data) {
 
         	let previousCategoryId = '';
@@ -1452,8 +1472,8 @@
                 	if(tableBodyDiv.childElementCount === 0) {
                 		tableBodyDiv.appendChild(fetchEmptyTableMessage());
                 		// uncheck the select all checkbox if checked
-            			let checkAllBox = document.getElementById('checkAll');
-            			$('#checkAll').prop('checked',false);
+            			let checkAllBox = document.getElementById('checkAllForTransaction');
+            			checkAllBox.checked = false;
             			checkAllBox.setAttribute('disabled', 'disabled');
                 	}
         		}
@@ -1468,6 +1488,9 @@
             url: ajaxData.url,
             beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
             type: ajaxData.type,
+            dataType: ajaxData.dataType,
+	      	contentType: ajaxData.contentType,
+	      	data: ajaxData.values,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
         });
@@ -2596,6 +2619,7 @@
 		let docFrag = document.createDocumentFragment();
 		let accountHeader = document.createElement('div');
 		accountHeader.id = 'accountSB-' + accountId;
+		accountHeader.setAttribute('data-target', accountId);
 		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
 
 		let accountTit = document.createElement('div');
@@ -2641,6 +2665,7 @@
 		let divMaterialSpinner = document.createElement('div');
 		divMaterialSpinner.classList = 'material-spinner-small mx-auto pendingAccInfo';
 		divMaterialSpinner.id = 'spinAcc-' + accountId;
+		divMaterialSpinner.setAttribute('data-target', accountId);
 		return divMaterialSpinner;
 	}
 
@@ -2658,7 +2683,8 @@
 	  			let replacEl = replaceAbleEl[i];
 	  			// if the element is not empty then proceed
 	  			if(isNotEmpty(replacEl)) {
-	  				accHeadersToReplace.push(lastElement(splitElement(replacEl.id,'-')));
+	  				let accountId = replacEl.getAttribute('data-target');
+	  				accHeadersToReplace.push(accountId);
 	  			}
 	  		}
     	}
