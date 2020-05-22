@@ -207,6 +207,10 @@ figure {
 img {
   vertical-align: middle;
   border-style: none;
+  -webkit-transition: all 300ms ease-in 200ms;
+  -moz-transition: all 300ms ease-in 200ms;
+  -o-transition: all 300ms ease-in 200ms;
+  transition: all 300ms ease-in 200ms;
 }
 
 svg:not(:root) {

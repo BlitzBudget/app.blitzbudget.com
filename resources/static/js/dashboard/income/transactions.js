@@ -121,7 +121,7 @@
 	    genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
 	    $(genericAddFnc).unbind('click').click(function () {
 	    	genericAddFnc.classList.toggle('d-none');
-			if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+			if($( ".number:checked" ).length > 0 || $("#checkAllForTransaction:checked").length > 0) {
 				// If length > 0 then change the add button to add
 				popup.showSwal('warning-message-and-confirmation');
 			} else {
@@ -417,7 +417,7 @@
 
 			   document.getElementById(replaceTransactionsId).appendChild(fetchEmptyTableMessage());
 		    } else {
-			    $('#checkAll').prop('checked', false);
+			    $('#checkAllForTransaction').prop('checked', false);
    			    checkAllBox.removeAttribute('disabled');
   			    // Replace HTML with Empty
       		    while (documentTbody.firstChild) {
@@ -797,7 +797,7 @@
 	
 	// Disable Button if no check box is clicked and vice versa
 	$( "body" ).on( "click", ".number" ,function() {
-		let checkAllElementChecked = $("#checkAll:checked");
+		let checkAllElementChecked = $("#checkAllForTransaction:checked");
 		if(checkAllElementChecked.length > 0) {
 			// uncheck the check all if a check is clicked and if the check all is already clicked
 			checkAllElementChecked.prop('checked', false);
@@ -817,19 +817,19 @@
 		let allCheckedTransactions = $(".number:checked");
 		let allTransactions = $(".number");
 		if(allCheckedTransactions.length == allTransactions.length) {
-			$("#checkAll").prop('checked', true);
+			$("#checkAllForTransaction").prop('checked', true);
 		}
 	}
 	
 	// Select all check boxes for Transactions
-	$('body').on('click', '.income-dashboard #checkAll' , function(e) {
+	$('body').on('click', '#checkAllForTransaction' , function(e) {
 		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
 		manageDeleteTransactionsButton();
 	});
 	
 	// Function to enable of disable the delete transactions button
 	function manageDeleteTransactionsButton(){
-		if($( ".number:checked" ).length > 0 || $("#checkAll:checked").length > 0) {
+		if($( ".number:checked" ).length > 0 || $("#checkAllForTransaction:checked").length > 0) {
 			// If length > 0 then change the add button to add
 			document.getElementById('addFncTT').innerText = 'delete';
 			document.getElementById('genericAddFnc').classList.remove('btn-success');
@@ -912,13 +912,13 @@
 						ajaxData.onSuccess = function(result) {
                         	showNotification('Successfully deleted the selected transactions',window._constants.notification.success);
                         	
-                        	let checkAllClicked = $("#checkAll:checked").length > 0;
+                        	let checkAllClicked = $("#checkAllForTransaction:checked").length > 0;
                         	
                         	// If Check All is clicked them empty div and reset pie chart
                         	if(checkAllClicked){
                         		// uncheck the select all checkbox if checked
                         		let checkAllBox = document.getElementById('checkAll');
-                        		$('#checkAll').prop('checked',false);
+                        		$('#checkAllForTransaction').prop('checked',false);
                         		checkAllBox.setAttribute('disabled','disabled');
                  			   	// Remove other table data
                  			   	removeAllTableData();
@@ -1453,7 +1453,7 @@
                 		tableBodyDiv.appendChild(fetchEmptyTableMessage());
                 		// uncheck the select all checkbox if checked
             			let checkAllBox = document.getElementById('checkAll');
-            			$('#checkAll').prop('checked',false);
+            			$('#checkAllForTransaction').prop('checked',false);
             			checkAllBox.setAttribute('disabled', 'disabled');
                 	}
         		}
