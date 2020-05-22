@@ -12,7 +12,7 @@
   -webkit-user-drag: element;
 }
 
-.positionOfDrag .d-lg-table-cell {
+.positionOfDrag div {
 	border-bottom: 1px solid #58c65c;
 	border-radius: 0.025rem;
 }

@@ -148,7 +148,7 @@
 	}
 
 	// Delete Account functionality
-	$('body').on('keyup', '#deleteSvgAccount' , function(e) {
+	$('body').on('click', '#deleteSvgAccount' , function(e) {
 		
 		Swal.fire({
             title: 'Delete financial account',
@@ -211,12 +211,20 @@
     		Swal.resetValidationMessage()
         	// If the Delete Button is pressed
         	if (result.value) {
-        	 	// Ajax Requests on Error
+
+				let values = {};
+				values.walletId = window.currentUser.walletId;
+				values.itemId = currentAccountId;
+				
+				// Ajax Requests on Error
 				let ajaxData = {};
-				ajaxData.isAjaxReq = true;
-				ajaxData.type = 'DELETE';
-				ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId + BANK_ACCOUNT_CONSTANTS.firstfinancialPortfolioId + currentUser.walletId;
-				ajaxData.onSuccess = function(jsonObj) {
+		   		ajaxData.isAjaxReq = true;
+		   		ajaxData.type = "POST";
+		   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+		   		ajaxData.dataType = "json";
+		   		ajaxData.contentType = "application/json;charset=UTF-8";
+		   		ajaxData.values = JSON.stringify(values);
+        		ajaxData.onSuccess = function(jsonObj) {
 		        	$('#accountSB-' + currentAccountId).fadeOut('slow', function(){ 
 	                    this.remove();
 
@@ -281,6 +289,9 @@
 					url: ajaxData.url,
 					beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 			        type: ajaxData.type,
+			        dataType: ajaxData.dataType,
+		      		contentType: ajaxData.contentType,
+		      		data: ajaxData.values,
 			        success: ajaxData.onSuccess,
 			        error: ajaxData.onFailure
 	        	});

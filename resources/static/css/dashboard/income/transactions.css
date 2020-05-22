@@ -5,45 +5,8 @@
     background: inherit !important;
 }
 
-.background-snow:hover .tableRowSelectCategory, .hideableRow:hover .check, .check, .tableRowTransactionHighlight .tableRowSelectCategory, .tableRowTransactionHighlight  .descriptionDivCentering {
-	background-color: #fff;
-}
-
-.background-snow, .background-snow .tableRowSelectCategory, .hideableRow:hover, .tableRowTransactionHighlight {
-	background-color: #f2f5f7;
-}
-
-.hideableRow:hover .d-lg-table-cell, .background-snow .d-lg-table-cell, .tableRowTransactionHighlight .d-lg-table-cell, .categoryTableRow .d-lg-table-cell{
-	border-bottom: 1px solid #f6f6f6;
-	border-top: 1px solid #f6f6f6;
-}
-
-.hideableRow, 
-.d-lg-table-cell {
-  	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	-ms-transition: all 0.2s ease;
-	-o-transition: all 0.2s ease;
-	transition: all 0.2s ease;
-}
-
-.hideableRow .d-lg-table-cell {
-	border-top: 1px solid #f6f6f6;
-	padding: .18rem 0;
-}
-
 .table-fixed {
 	table-layout: fixed;
-}
-
-.descriptionDivCentering, .amountDivCentering, .categoryTableRow {
-	overflow: hidden;
-	white-space: nowrap;
-    text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    -ms-text-overflow: ellipsis;
-    -moz-binding: url(<q>assets/xml/ellipsis.xml#ellipsis</q>);
-    color: gray;
 }
 
 .dropdown-toggle-right::after {
@@ -71,117 +34,6 @@
 
 .toggle .d-lg-table-cell {
 	padding: 0.24rem 0;
-}
-
-/** Display select as plain text **/
-.tableRowSelectCategory {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none; 
-    border: none;
-    height: calc(2.1rem);
-    /* needed for Firefox: */
-    overflow:hidden;
-    width: 100%;
-    color: #000;
-    box-shadow: none;
-    text-transform: none;
-    font-size: 0.875rem;
-    font-weight: 300;
-    vertical-align: middle;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.tableRowSelectCategory::after, .dropup .tableRowSelectCategory::after {
-	border:none;
-}
-
-.bootstrap-select.tableRowForSelectCategory .optgroup-1  .dropdown-item.active,  .bootstrap-select.tableRowForSelectCategory .optgroup-1 .dropdown-item:hover, .bootstrap-select.tableRowForSelectCategory .optgroup-1 .dropdown-item:focus {
-    background-color: #ff0e00b3;
-	border-color: #ff0e00b3;
-	box-shadow: 0 14px 26px -12px rgba(244, 67, 54, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(244, 67, 54, 0.2);
-    color: #fff;
-}
-
-.bootstrap-select.tableRowForSelectCategory .optgroup-2  .dropdown-item.active,  .bootstrap-select.tableRowForSelectCategory .optgroup-2 .dropdown-item:hover, .bootstrap-select.tableRowForSelectCategory .optgroup-2 .dropdown-item:focus {
-    background-color: #47a44b;
-	border-color: #39843c;
-	box-shadow: 0 14px 26px -12px rgba(76, 175, 80, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(76, 175, 80, 0.2);
-    color: #fff;
-}
-
-.tableRowSelectCategory:focus, .tableRowSelectCategory:active, .tableRowSelectCategory:hover, .show > .btn.tableRowSelectCategory, .show > .btn.tableRowSelectCategory:hover, .show > .btn.tableRowSelectCategory:focus, .show > .btn.tableRowSelectCategory:active {
-	color: #000;
-	background-color:#fff;
-	border-color:#d2d2d2;
-}
-
-.hideableRow:hover .tableRowSelectCategory, .tableRowTransactionHighlight .tableRowSelectCategory {
-	display: inline-block;
-	width: 100%;
-	padding: .2rem 1rem .15rem .7rem;
-	line-height: 1.5;
-	color: #495057;
-	vertical-align: middle;
-	border-bottom: 1px solid #d2d2d2;
-	border-radius: 0.25rem;
-	height: 28px;
-	appearance: none;
-	max-width: calc(100% - 30px);
-}
-
-.hideableRow:hover .tableRowSelectCategory::after  {
-	border-top: 0.3em solid;
-	border-right: 0.3em solid transparent;
-	border-bottom: 0;
-	border-left: 0.3em solid transparent;
-}
-
-
-.hideableRow:hover .descriptionDivCentering, .descriptionDivCentering:active, .descriptionDivCentering:focus, .tableRowTransactionHighlight .descriptionDivCentering {
-	display: block;
-	width: 100%;
-	padding: 0.055rem 1rem .055rem .7rem;
-	line-height: 1.5;
-	color: #495057;
-	border-bottom: 1px solid #d2d2d2;
-	border-radius: .25rem;
-	appearance: none;
-	height: 28px;
-	background-color: #fff;
-	max-width: calc(100% - 30px);
-	
-}
-
-.hideableRow:hover .amountDivCentering, .hideableRow:focus .amountDivCentering, .hideableRow:active .amountDivCentering, .amountDivCentering:active, .amountDivCentering:focus, .tableRowTransactionHighlight .amountDivCentering  {
-	display: block;
-	text-align: right;
-	padding: 0.055rem 0 0.055rem 0;
-	line-height: 1.5;
-	color: #495057;
-	border-bottom: 1px solid #d2d2d2;
-	border-radius: 0.25rem;
-	appearance: none;
-	height: 28px;
-	background-color: #fff;
-	max-width: calc(100% - 0.25rem);
-	margin: 0 auto 0 auto;
-}
-
-.hideableRow .amountDivCentering, 
-.amountDivCentering,
-.tableRowTransactionHighlight .amountDivCentering,
-.hideableRow .descriptionDivCentering, 
-.descriptionDivCentering,  
-.tableRowTransactionHighlight .descriptionDivCentering,
-.hideableRow .tableRowSelectCategory, 
-.tableRowTransactionHighlight .tableRowSelectCategory {
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	-ms-transition: all 0.2s ease;
-	-o-transition: all 0.2s ease;
-	transition: all 0.2s ease;
 }
 
 .bootstrap-select .dropdown-toggle.tableRowSelectCategory .filter-option-inner-inner {
@@ -303,25 +155,8 @@
 	line-height: 22px;
 }
 
-/** Display Icons besides transactions **/
-.displayCategoryAddIcon {
-	padding-left: .51rem;
-	color: #6b5e5d;
-	font-weight : 400;
-	font-size: 0.95rem;
-	display: none;
-}
-
-div[class^="categoryTableRow-"]:hover .displayCategoryAddIcon , div[class*=" categoryTableRow-"]:hover .displayCategoryAddIcon {
-	display: inline;
-}
-
 .drag-handle {
 	display: none;
-}
-
-.hideableRow:hover .drag-handle {
-	display: block;
 }
 
 .draggable-handle-wrapper {
@@ -346,30 +181,6 @@ div[class^="categoryTableRow-"]:hover .displayCategoryAddIcon , div[class*=" cat
   position: -webkit-sticky;
   position: sticky;
   top: 4rem;
-}
-
-.hideableRow:hover .draggable-handle-wrapper {
-	height: 100%;
-	vertical-align: middle;
-	align-items: center;
-}
-
-.hideableRow:hover .draggable-handle-wrapper .drag-handle {
-	margin: auto;
-	display: block;
-	vertical-align: middle;
-}
-
-.transactionsTableDescription {
-	vertical-align: middle;
-}
-
-.category-text-danger, .expenseCategory:hover .d-lg-table-cell .d-lg-inline .displayCategoryAddIcon, .expenseCategory:hover .d-lg-table-cell .d-lg-inline, .mild-text-danger {
-	color: #fc695f;
-}
-
-.category-text-success, .incomeCategory:hover .d-lg-table-cell .d-lg-inline .displayCategoryAddIcon, .incomeCategory:hover .d-lg-table-cell .d-lg-inline, .mild-text-success {
-	color: #58c65c;
 }
 
 .transactions-chart .card-body span {
@@ -860,7 +671,8 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     background-image: linear-gradient(to top,#4caf50 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
 }
 
-.recentTransactionDateGrp {
+.recentTransactionDateGrp,
+.categorySortGrp {
     line-height: 3rem;
     color: #5d7079;
 }
@@ -885,11 +697,13 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	white-space: nowrap;
 }
 
-.accountInfoTable .recentTransactionDateGrp {
+.accountInfoTable .recentTransactionDateGrp,
+.categoryInfoTable .categorySortGrp {
 	cursor: pointer;
 }
 
 .recentTransactionDateGrp:hover .accTitleAnchor,
+.categorySortGrp:hover .accTitleAnchor,
 .accTitleAnchor:hover,
 a.accTitleAnchor:not([href]):not([tabindex]):hover,
 a.accTitleAnchor:not([href]):not([tabindex]):focus  {

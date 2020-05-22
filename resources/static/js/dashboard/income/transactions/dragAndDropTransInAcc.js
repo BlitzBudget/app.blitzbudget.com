@@ -7,17 +7,17 @@
 	let currentPosInd = null;
 
 	// On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
-	$('#recTransAndAccTable').on('dragstart', '.accTransEntry' , function(e) {
+	$('body').on('dragstart', '#recTransAndAccTable .accTransEntry' , function(e) {
 		handleDragStart(e);
 	});
 
 	// On DRAG END (The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key)).
-	$('#recTransAndAccTable').on('dragend', '.accTransEntry' , function(e) {
+	$('body').on('dragend', '#recTransAndAccTable .accTransEntry' , function(e) {
 		handleDragEnd(e);
 	});
 
 	// On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
-	$('#recTransAndAccTable').on('dragenter', '.accountInfoTable' , function(e) {
+	$('body').on('dragenter', '#recTransAndAccTable .accountInfoTable' , function(e) {
 		
 		// Don't do anything if dragged on the same wrapper.
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
@@ -51,7 +51,7 @@
 	});
 
 	// On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
-	$('#recTransAndAccTable').on('dragover', '.accountInfoTable' , function(e) {
+	$('body').on('dragover', '#recTransAndAccTable .accountInfoTable' , function(e) {
 		// Allow to be dropped only on different accounts
 		let closestParentWrapper = e.target.closest('.accountInfoTable');
 		// Scroll the window 
@@ -65,7 +65,7 @@
 	});
 
 	// On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
-	$('#recTransAndAccTable').on('drop', '.accountInfoTable' , function(e) {
+	$('body').on('drop', '#recTransAndAccTable .accountInfoTable' , function(e) {
 		handleDrop(e);
 	});
 
@@ -172,7 +172,7 @@
 	    // Find the closest parent element and drop. (Should never be null)
 	    insertAfterElement(a, e.target);
 	    // Update the transaction with the new account ID
-	    updateTransactionWithAccId(transId, closestParentWrapper.id, dragSrcEl.id);
+	    updateTransactionWithAccId(transId, closestParentWrapper.getAttribute('data-target'), dragSrcEl.getAttribute('data-target'));
 	  }
 
 	  return false;
@@ -213,25 +213,23 @@
 	// Update the transaction with the account ID
 	function updateTransactionWithAccId(transactionId, accountId, oldAccountId) {
 		// obtain the transaction id of the table row
-		transactionId = lastElement(splitElement(transactionId,'-'));
-		accountId = lastElement(splitElement(accountId,'-'));
-		oldAccountId = lastElement(splitElement(oldAccountId,'-'));
+		transactionId = document.getElementById(transactionId).getAttribute('data-target');
 
 		let values = {};
-		values['accountId'] = accountId;
+		values['account'] = accountId;
 		values['transactionId'] = transactionId;
-		values['dateMeantFor'] = chosenDate;
-		values['walletId'] = currentUser.walletId;
+		values['walletId'] = window.currentUser.walletId;
 		
 		// Ajax Requests on Error
 		let ajaxData = {};
 		ajaxData.isAjaxReq = true;
-		ajaxData.type = "POST";
+		ajaxData.type = "PATCH";
 		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
 		ajaxData.dataType = "json"; 
 		ajaxData.contentType = "application/json;charset=UTF-8";
 		ajaxData.data = JSON.stringify(values);
-		ajaxData.onSuccess = function(userTransaction){
+		ajaxData.onSuccess = function(result){
+			let userTransaction = result['body-json'];
 			// Fetch the current account balance
 			let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
 			let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.innerText,currentCurrencyPreference);
@@ -244,7 +242,7 @@
 			let currAccBal = 0;
 			let currNewAccBal = 0;
         	// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				currAccBal = oldAccBal + userTransaction.amount;
 				currNewAccBal = accBal - userTransaction.amount;
 				
