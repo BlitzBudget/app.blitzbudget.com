@@ -29,6 +29,8 @@
 	let transactionsChart = '';
 	// Fetch Drag Handle for transactions row table
 	let dragHandle = fetchDragHandle();
+	// Success SVG Fragment
+	let successSVGFormed = successSvgMessage();
 	// String Today
 	const TODAY = 'Today';
 	// Initialize transactions Cache
@@ -72,9 +74,7 @@
 		/**
 		 * START Load at the end of the javascript
 		 */
-		// Success SVG Fragment
-		let successSVGFormed = successSvgMessage();
-		
+				
 		// Load images in category modal
 		loadCategoryModalImages();
 		// Call the transaction API to fetch information.
@@ -264,7 +264,9 @@
 	// on click dropdown set the data chosen attribute
 	$('body').on("click", "#categoryOptions .dropdown-item" , function(event){
 		let dropdownValue = this.lastChild.value;
-		document.getElementById('categoryOptions').setAttribute('data-chosen', dropdownValue);
+		let categoryOption = document.getElementById('categoryOptions');
+		categoryOption.firstElementChild.innerText = window.categoryMap[dropdownValue].name;
+		categoryOption.setAttribute('data-chosen', dropdownValue);
 	});
 
 	// Set Active Class on click button
@@ -273,15 +275,6 @@
 		this.classList.add('active');
 
 	});
-
-	$(document).on("click", "#categoryOptions .dropdown-item" , function(event){
-
-		let inputValue = this.lastChild.value;
-		let categoryoptions = document.getElementById('categoryOptions');
-		categoryoptions.setAttribute('data-chosen', inputValue);
-
-	});
-	
 	
 	// Use this function to fade the message out
 	function fadeoutMessage(divId, message, milliSeconds){
@@ -356,6 +349,13 @@
         	er_a.populateBankInfo(result.BankAccount);
 
         	fetchJSONForCategories(result.Category);
+        	// set default category
+        	let defaultCategory = window.defaultCategories[1];
+        	if(isEmpty(defaultCategory.id)) {
+        		document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.name);
+        	} else {
+        		document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.id);
+        	}
 
         	// Load Expense category and income category
         	let expenseSelectionDiv = document.getElementById('expenseSelection');
