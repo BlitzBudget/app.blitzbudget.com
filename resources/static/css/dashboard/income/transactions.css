@@ -671,7 +671,8 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     background-image: linear-gradient(to top,#4caf50 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
 }
 
-.recentTransactionDateGrp {
+.recentTransactionDateGrp,
+.categorySortGrp {
     line-height: 3rem;
     color: #5d7079;
 }
@@ -696,11 +697,13 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	white-space: nowrap;
 }
 
-.accountInfoTable .recentTransactionDateGrp {
+.accountInfoTable .recentTransactionDateGrp,
+.categoryInfoTable .categorySortGrp {
 	cursor: pointer;
 }
 
 .recentTransactionDateGrp:hover .accTitleAnchor,
+.categorySortGrp:hover .accTitleAnchor,
 .accTitleAnchor:hover,
 a.accTitleAnchor:not([href]):not([tabindex]):hover,
 a.accTitleAnchor:not([href]):not([tabindex]):focus  {

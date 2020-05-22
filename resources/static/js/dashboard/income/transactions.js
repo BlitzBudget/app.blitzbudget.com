@@ -1173,13 +1173,13 @@
 	// Appends the date header for recent transactions
 	function buildCategoryHeader(category) {
 		let docFrag = document.createDocumentFragment();
-		let accountHeader = document.createElement('div');
-		accountHeader.id = 'categorySB-' + category;
-		accountHeader.setAttribute('data-target', category);
-		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
+		let categoryHeader = document.createElement('div');
+		categoryHeader.id = 'categorySB-' + category;
+		categoryHeader.setAttribute('data-target', category);
+		categoryHeader.classList = 'tableBodyDiv categoryInfoTable noselect';
 
-		let accountTit = document.createElement('div');
-		accountTit.classList = 'recentTransactionDateGrp d-table-row ml-3 font-weight-bold';
+		let categoryTit = document.createElement('div');
+		categoryTit.classList = 'categorySortGrp d-table-row ml-3 font-weight-bold';
 
 		// Title Wrapper
 		let titleWrapper = document.createElement('div');
@@ -1192,26 +1192,26 @@
 		titleWrapper.appendChild(rightArrow);
 
 		// Title
-		let accountTitle = document.createElement('a');
-		accountTitle.id = 'accountTitle-' + category;
-		accountTitle.classList = 'pl-4 accTitleAnchor';
-		accountTitle.innerText = window.categoryMap[category].name;
-		titleWrapper.appendChild(accountTitle);
-		accountTit.appendChild(titleWrapper);
+		let categoryTitle = document.createElement('a');
+		categoryTitle.id = 'categoryTitle-' + category;
+		categoryTitle.classList = 'pl-4 accTitleAnchor';
+		categoryTitle.innerText = window.categoryMap[category].name;
+		titleWrapper.appendChild(categoryTitle);
+		categoryTit.appendChild(titleWrapper);
 
 		// Empty Cell
 		let emptyCell = document.createElement('div');
 		emptyCell.classList = 'd-table-cell';
-		accountTit.appendChild(emptyCell);
+		categoryTitle.appendChild(emptyCell);
 
 		// Account Balance
-		let accountBalance = document.createElement('div');
-		accountBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
-		accountBalance.id = 'accountBalance-' + category;
-		accountTit.appendChild(accountBalance);
+		let categoryBalance = document.createElement('div');
+		categoryBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
+		categoryBalance.id = 'categoryBalance-' + category;
+		categoryTit.appendChild(categoryBalance);
 
-		accountHeader.appendChild(accountTit);
-		docFrag.appendChild(accountHeader);
+		categoryHeader.appendChild(categoryTit);
+		docFrag.appendChild(categoryHeader);
 		return docFrag;
 	}
 
@@ -1339,7 +1339,7 @@
 	// Populate the account sort by section
 	function populateTransactionsByCategory(userTransactionsList) {
 		// Remove all the transactions
-		let productsJson = document.getElementById('productsJson');
+		let productsJson = document.getElementById(replaceTransactionsId);
         let populateTransactionsFragment = document.createDocumentFragment();
 		let createdCategoryIds = [];
 		for (let i = 0, len = userTransactionsList.length; i < len; i++) {
