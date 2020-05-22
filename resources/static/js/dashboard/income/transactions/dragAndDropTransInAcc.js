@@ -241,7 +241,7 @@
 			let currAccBal = 0;
 			let currNewAccBal = 0;
         	// Append a - sign if it is an expense
-			if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+			if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				currAccBal = oldAccBal + userTransaction.amount;
 				currNewAccBal = accBal - userTransaction.amount;
 				
