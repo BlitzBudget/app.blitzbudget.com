@@ -479,51 +479,6 @@
 		
 	}
 	
-	// Build empty table message as document
-	function fetchEmptyTableMessage() {
-		let emptyTableRow = document.createElement("div");
-		emptyTableRow.className = 'd-table-row';
-		
-		// Row 1
-		let indexTableCell = document.createElement('div');
-		indexTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(indexTableCell);
-		
-		// Row 2
-		let selectAllTableCell = document.createElement('div');
-		selectAllTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(selectAllTableCell);
-		
-		// Row 3
-		let categoryTableCell = document.createElement('div');
-		categoryTableCell.className = 'd-table-cell text-center align-middle';
-		categoryTableCell.appendChild(buildEmptyTransactionsSvg());
-		emptyTableRow.appendChild(categoryTableCell);
-		
-		// Row 4
-		let descriptionTableCell = document.createElement('div');
-		descriptionTableCell.className = 'd-table-cell';
-		
-		let paragraphElement = document.createElement('p');
-		paragraphElement.className = 'text-secondary mb-0';
-		paragraphElement.innerHTML = 'There are no transactions yet. Start adding some to track your spending.';
-		
-		descriptionTableCell.appendChild(paragraphElement);
-		emptyTableRow.appendChild(descriptionTableCell);
-		
-		// Row 5
-		let amountTableCell = document.createElement('div');
-		amountTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(amountTableCell);
-		
-		// Row 6
-		let budgetTableCell = document.createElement('div');
-		budgetTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(budgetTableCell);
-		
-		return emptyTableRow;
-	}
-	
 	// Empty Transactions SVG
 	function buildEmptyTransactionsSvg() {
 		
@@ -1313,7 +1268,7 @@
 				}
 				accBal.innerText = formatToCurrency(Math.abs(bankAcc['account_balance']));
 				// Append Empty Table to child
-				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyAccountEntry(bankAcc.accountId));
+				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
 				// Append to the transaction view
 				accHeadFrag.appendChild(accountHeaderNew);
 			}
@@ -1355,11 +1310,11 @@
 		let transactionsTable = document.getElementById('transactionsTable');
         let populateTransactionsFragment = document.createDocumentFragment();
 		for (let i = 0, len = categoryList.length; i < len; i++) {
-		   let categoryData = categoryList[i];
+		   let category = categoryList[i];
 
      	   if(isEmpty(document.getElementById('categorySB-' + category.categoryId))) {
-     	   		populateTransactionsFragment.appendChild(buildCategoryHeader(category));
-     	   		populateTransactionsFragment.getElementById('categorySB-' + category).appendChild(buildEmptyTransactionsTab());
+     	   		populateTransactionsFragment.appendChild(buildCategoryHeader(category.categoryId));
+     	   		populateTransactionsFragment.getElementById('categorySB-' + category.categoryId).appendChild(buildEmptyTableEntry('emptyCategoryItem-' + category.categoryId));
      	   }
      	}
 
@@ -1392,10 +1347,10 @@
 	}
 
 	// Populate Empty account entry
-	function buildEmptyAccountEntry(accId) {
+	function buildEmptyTableEntry(accId) {
 		let rowEmpty = document.createElement('div');
 		rowEmpty.classList = 'd-table-row recentTransactionDateGrp';
-		rowEmpty.id = 'emptyAccountEntry-' + accId;
+		rowEmpty.id = accId;
 
 		let cell1 = document.createElement('div');
 		cell1.classList = 'd-table-cell align-middle imageWrapperCell text-center';
