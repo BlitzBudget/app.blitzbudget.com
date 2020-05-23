@@ -120,6 +120,42 @@
 			$('#GSCCModal').modal('toggle');
 		});
 
+	    // refresh the transactions page on closing the modal
+		$('#GSCCModal').on('hidden.bs.modal', function () {
+			// Add icon d-none
+			document.getElementById('genericAddFnc').classList.toggle('d-none');
+			replaceHTML('successMessage',"");
+			replaceHTML('errorMessage',"");
+			
+			if(registeredNewTransaction) {
+
+				// Populate category based table 
+				fetchJSONForTransactions();
+				// Do not refresh the transactions if no new transactions are added
+				registeredNewTransaction = false;
+			}		
+		});
+
+		// show the login modal
+		$('#GSCCModal').on('show.bs.modal', function () {
+			// Load Expense category and income category
+			let expenseOptGroup = document.getElementById('expenseSelection');
+			let incomeOptgroup = document.getElementById('incomeSelection');
+			// If the Category items are not populate then populate them
+			if(!expenseOptGroup.firstElementChild) {
+				expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
+			}
+			if(!incomeOptgroup.firstElementChild) {
+				incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
+			}
+		});
+
+		// Change the focus to amount after the modal is shown
+		$('#GSCCModal').on('shown.bs.modal', function () {
+			// Change focus
+			document.getElementById('amount').focus();
+		});
+		
 		
 	}
 	
@@ -280,44 +316,6 @@
     	}, milliSeconds);
 	}
 	
-	// refresh the transactions page on closing the modal
-	$('#GSCCModal').on('hidden.bs.modal', function () {
-		// Add icon d-none
-		document.getElementById('genericAddFnc').classList.toggle('d-none');
-		// Clear form input fields inside the modal and the error or success messages.
-		$('#transactionsForm').get(0).reset();
-		replaceHTML('successMessage',"");
-		replaceHTML('errorMessage',"");
-		
-		if(registeredNewTransaction) {
-
-			// Populate category based table 
-			fetchJSONForTransactions();
-			// Do not refresh the transactions if no new transactions are added
-			registeredNewTransaction = false;
-		}		
-	});
-
-	// show the login modal
-	$('#GSCCModal').on('show.bs.modal', function () {
-		// Load Expense category and income category
-		let expenseOptGroup = document.getElementById('expenseSelection');
-		let incomeOptgroup = document.getElementById('incomeSelection');
-		// If the Category items are not populate then populate them
-		if(!expenseOptGroup.firstElementChild) {
-			expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
-		}
-		if(!incomeOptgroup.firstElementChild) {
-			incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
-		}
-	});
-
-	// Change the focus to amount after the modal is shown
-	$('#GSCCModal').on('shown.bs.modal', function () {
-		// Change focus
-		document.getElementById('amount').focus();
-	});
-	
 	// Populates the transaction table
 	function fetchJSONForTransactions(){
 		let values = {};
@@ -352,9 +350,7 @@
 			* Replace With Currency
 			*/
 			replaceWithCurrency(result.Wallet);
-			
-			populateTransactionsByCategory(result.Transaction);
-			buildCategoryHeaders(result.Category);
+			populateCategorySort(result);
 			   
 			// update the Total Available Section
 			updateTotalAvailableSection(result.incomeTotal , result.expenseTotal, result.balance);
@@ -379,6 +375,21 @@
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
+	}
+
+	function populateCategorySort(result) {
+		if(isEmpty(result.Transaction) && isEmpty(result.Category)) {
+			let transactionsTable = document.getElementById(replaceTransactionsId);
+			// Replace HTML with Empty
+			while (transactionsTable.firstChild) {
+				transactionsTable.removeChild(transactionsTable.firstChild);
+			}
+    		transactionsTable.appendChild(buildEmptyTransactionsTab());
+    		transactionsTable.classList.remove('d-none');
+		} else {
+			populateTransactionsByCategory(result.Transaction);
+			buildCategoryHeaders(result.Category);
+		}
 	}
 
 	function loadCategoriesForTransaction() {
@@ -1281,6 +1292,7 @@
 
 	// Populate the account sort by section
 	function populateTransactionsByCategory(userTransactionsList) {
+
 		// Remove all the transactions
 		let transactionsTable = document.getElementById('transactionsTable');
         let populateTransactionsFragment = document.createDocumentFragment();
