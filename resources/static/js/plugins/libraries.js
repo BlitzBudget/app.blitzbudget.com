@@ -390,7 +390,7 @@ function animateValue(element, start, end, prefix ,duration) {
     if (start == end) {
         // Set as text content
         if(isNotEmpty(prefix)) {
-        	element.textContent = prefix + formatNumber(end, currentUser.locale);
+        	element.textContent = formatNumber(end, currentUser.locale) + prefix;
         } else {
         	element.textContent = end;
         }
@@ -412,7 +412,7 @@ function animateValue(element, start, end, prefix ,duration) {
 	        current += increment;
 	        // Set as text content
 	        if(isNotEmpty(prefix)) {
-	        	element.textContent = prefix + formatNumber(current, currentUser.locale);
+	        	element.textContent = formatNumber(current, currentUser.locale) + prefix;
 	        } else {
 	        	element.textContent = current;
 	        }
