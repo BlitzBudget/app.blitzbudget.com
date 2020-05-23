@@ -250,15 +250,12 @@
 				currAccBal = oldAccBal - userTransaction.amount
 				currNewAccBal = accBal + userTransaction.amount;
 			}
-			// Append minus sign to old account balance
-			let oldAccMinusSign = currAccBal < 0 ? '-' : '';
-			let newAccMinusSign = currNewAccBal < 0 ? '-' : '';
 			// Append the new amount to the front
-			oldAccDiv.innerText = oldAccMinusSign + currentCurrencyPreference + formatNumber(Math.abs(currAccBal), currentUser.locale);
-			accDiv.innerText = newAccMinusSign + currentCurrencyPreference + formatNumber(Math.abs(currNewAccBal), currentUser.locale);
+			oldAccDiv.innerText = formatToCurrency(currAccBal);
+			accDiv.innerText = formatToCurrency(currNewAccBal);
 			// If the account balance is negative then change color
-			if(isNotEmpty(oldAccMinusSign)) {oldAccDiv.classList.add('expenseCategory');oldAccDiv.classList.remove('incomeCategory'); } else { oldAccDiv.classList.add('incomeCategory');oldAccDiv.classList.remove('expenseCategory');}
-			if(isNotEmpty(newAccMinusSign)) {accDiv.classList.add('expenseCategory');accDiv.classList.remove('incomeCategory'); } else { accDiv.classList.add('incomeCategory');accDiv.classList.remove('expenseCategory');}
+			if(currAccBal < 0) {oldAccDiv.classList.add('expenseCategory');oldAccDiv.classList.remove('incomeCategory'); } else { oldAccDiv.classList.add('incomeCategory');oldAccDiv.classList.remove('expenseCategory');}
+			if(currNewAccBal < 0) {accDiv.classList.add('expenseCategory');accDiv.classList.remove('incomeCategory'); } else { accDiv.classList.add('incomeCategory');accDiv.classList.remove('expenseCategory');}
 			// Remove empty entries for the account
 			let emptyEntriesNewAcc = document.getElementById('emptyAccountEntry-' + accountId);
 			if(isNotEmpty(emptyEntriesNewAcc)) {

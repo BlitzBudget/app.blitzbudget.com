@@ -25,9 +25,20 @@ const Toast = Swal.mixin({
 	}
 })
 
+function formatToCurrency(amount) {
+	return formatNumber(amount, window.currentUser.locale) + currentCurrencyPreference;
+}
+
 function lastElement(arr){
 	if(Array.isArray(arr)){
 		return isEmpty(arr) ? arr : arr[arr.length-1];
+	}
+	return arr;
+}
+
+function firstElement(arr){
+	if(Array.isArray(arr)){
+		return isEmpty(arr) ? arr : arr[0];
 	}
 	return arr;
 }

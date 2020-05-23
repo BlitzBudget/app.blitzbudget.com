@@ -102,12 +102,7 @@
 			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(bankAccount){
 	        	// Update the budget amount in the category row
-	        	let formattedBudgetAmount = 0;
-	        	if(bankAccount.accountBalance < 0) { 
-					formattedBudgetAmount = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAccount['account_balance']), currentUser.locale);
-				} else { 
-					formattedBudgetAmount = currentCurrencyPreference + formatNumber(bankAccount['account_balance'], currentUser.locale);
-				}
+	        	let formattedBudgetAmount = formatToCurrency(bankAccount['account_balance']);
 	        	element.innerText = formattedBudgetAmount;
 
 	        	// Account Balance for account Header
@@ -130,7 +125,7 @@
 				manageErrors(thrownError, 'Unable to change the account balance. Please try again!',ajaxData);
 				
                 // update the current element with the previous amount
-                let formattedAccountAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
+                let formattedAccountAmount = formatToCurrency(previousText);
                 element.innerText = formattedAccountAmount;
             }
 
