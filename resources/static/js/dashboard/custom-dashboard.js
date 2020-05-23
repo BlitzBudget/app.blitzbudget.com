@@ -955,7 +955,7 @@ function fetchJSONForCategories(data) {
 
 	if(isNotEmpty(data)) {
 		for(let i=0,len=data.length;i<len;i++) {
-			dataNameMap[data[i]['category_name']] = data[i].categoryId;
+			dataNameMap[data[i]['category_name']] = data[i];
 		}
 	}
 	
@@ -971,10 +971,12 @@ function fetchJSONForCategories(data) {
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
-		  let categoryId = dataNameMap[value.name];
-		  if(isNotEmpty(categoryId)) {
+		  let categoryData = dataNameMap[value.name];
+		  if(isNotEmpty(categoryData)) {
+		  	let categoryId = categoryData.categoryId;
 		  	inputValue.value = categoryId;
 		  	value.id = categoryId;
+		  	value.categoryTotal = categoryData['category_total'];
 		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;

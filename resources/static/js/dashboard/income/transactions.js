@@ -703,6 +703,12 @@
 	function replaceTransactionsWithMSpinner() {
 		// Replace the product json with empty table
 		document.getElementById(replaceTransactionsId).classList.remove('d-none');
+		// Remove all category sorted transactions
+		let categoryInfoTable = document.getElementsByClassName('categoryInfoTable');
+		// Replace HTML with Empty
+		while (categoryInfoTable[0]) {
+			categoryInfoTable[0].parentNode.removeChild(categoryInfoTable[0]);
+		}
 	}
 	
 	// Replace Pie Chart with Material Spinner
@@ -1133,6 +1139,7 @@
 
 	// Appends the date header for recent transactions
 	function buildCategoryHeader(category) {
+		let categoryData = window.categoryMap[category];
 		let docFrag = document.createDocumentFragment();
 		let categoryHeader = document.createElement('div');
 		categoryHeader.id = 'categorySB-' + category;
@@ -1156,19 +1163,25 @@
 		let categoryTitle = document.createElement('a');
 		categoryTitle.id = 'categoryTitle-' + category;
 		categoryTitle.classList = 'pl-4 accTitleAnchor';
-		categoryTitle.innerText = window.categoryMap[category].name;
+		categoryTitle.innerText = categoryData.name;
 		titleWrapper.appendChild(categoryTitle);
 		categoryTit.appendChild(titleWrapper);
 
 		// Empty Cell
 		let emptyCell = document.createElement('div');
 		emptyCell.classList = 'd-table-cell';
-		categoryTitle.appendChild(emptyCell);
+		categoryTit.appendChild(emptyCell);
 
 		// Account Balance
 		let categoryBalance = document.createElement('div');
 		categoryBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
+		if(categoryData.categoryTotal < 0) {
+			categoryBalance.classList.add('expenseCategory');
+		} else {
+			categoryBalance.classList.add('incomeCategory');
+		}
 		categoryBalance.id = 'categoryBalance-' + category;
+		categoryBalance.innerText = formatToCurrency(categoryData.categoryTotal);
 		categoryTit.appendChild(categoryBalance);
 
 		categoryHeader.appendChild(categoryTit);
