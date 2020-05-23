@@ -387,6 +387,11 @@
     		transactionsTable.appendChild(buildEmptyTransactionsTab());
     		transactionsTable.classList.remove('d-none');
 		} else {
+			let categoryInfoTable = document.getElementsByClassName('categoryInfoTable');
+			// Replace HTML with Empty
+			while (categoryInfoTable[0]) {
+				categoryInfoTable[0].parentNode.removeChild(categoryInfoTable[0]);
+			}
 			populateTransactionsByCategory(result.Transaction);
 			buildCategoryHeaders(result.Category);
 		}
@@ -1292,7 +1297,7 @@
 
 	// Populate the account sort by section
 	function populateTransactionsByCategory(userTransactionsList) {
-
+		window.transactionsCache = {};
 		// Remove all the transactions
 		let transactionsTable = document.getElementById('transactionsTable');
         let populateTransactionsFragment = document.createDocumentFragment();
