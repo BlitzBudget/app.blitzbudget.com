@@ -354,6 +354,7 @@
 			replaceWithCurrency(result.Wallet);
 			
 			populateTransactionsByCategory(result.Transaction);
+			buildCategoryHeaders(result.Category);
 			   
 			// update the Total Available Section
 			updateTotalAvailableSection(result.incomeTotal , result.expenseTotal, result.balance);
@@ -1104,6 +1105,21 @@
 		}
 	});
 
+	// Sorts the table by aggregating transactions by category
+	$('body').on('click', '.categorySortGrp' , function(e) {
+		let parentWrapper = this.parentNode;
+		let materialArrow = this.firstElementChild.firstElementChild;
+		materialArrow.classList.toggle('rotateZero');
+		materialArrow.classList.toggle('rotateNinty');
+		let childElementWrappers = parentWrapper.childNodes;
+		for(let i = 1, len = childElementWrappers.length; i < len; i++) {
+			let childElementWrapper = childElementWrappers[i];
+			childElementWrapper.classList.toggle('d-none');
+			childElementWrapper.classList.toggle('d-table-row');
+		}
+
+	});
+
 	// Sorts the table by aggregating transactions by account
 	$('body').on('click', '#accountSortBy' , function(e) {
 		// Change title of in the dropdown
@@ -1314,6 +1330,7 @@
 		let transactionsTable = document.getElementById('transactionsTable');
         let populateTransactionsFragment = document.createDocumentFragment();
 		let createdCategoryIds = [];
+
 		for (let i = 0, len = userTransactionsList.length; i < len; i++) {
 		   let userTransaction = userTransactionsList[i];
 		   window.transactionsCache[userTransaction.transactionId] = userTransaction;
@@ -1329,6 +1346,26 @@
 
     	transactionsTable.appendChild(populateTransactionsFragment);
     	document.getElementById(replaceTransactionsId).classList.add('d-none');
+	}
+
+	// Fetch all bank account information
+	function buildCategoryHeaders(categoryList) {
+		
+		// Remove all the transactions
+		let transactionsTable = document.getElementById('transactionsTable');
+        let populateTransactionsFragment = document.createDocumentFragment();
+		for (let i = 0, len = categoryList.length; i < len; i++) {
+		   let categoryData = categoryList[i];
+
+     	   if(isEmpty(document.getElementById('categorySB-' + category.categoryId))) {
+     	   		populateTransactionsFragment.appendChild(buildCategoryHeader(category));
+     	   		populateTransactionsFragment.getElementById('categorySB-' + category).appendChild(buildEmptyTransactionsTab());
+     	   }
+     	}
+
+    	transactionsTable.appendChild(populateTransactionsFragment);
+    	document.getElementById(replaceTransactionsId).classList.add('d-none');
+		
 	}
 
 	// Populate the account sort by section
