@@ -420,7 +420,7 @@
         		continue;
         	}
         	  
-        	categoryRowToUpdate.innerText = currentCurrencyPreference + formatNumber(value.planned, currentUser.locale);
+        	categoryRowToUpdate.innerText = formatToCurrency(value.planned);
     	}
 		
 	}
@@ -609,7 +609,7 @@
         	transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function(data) {
       		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Value: <strong>" + currentCurrencyPreference + formatNumber(Number(sliceValue), currentUser.locale) + '</strong>');
+		        	data.element._node.setAttribute("title", "Value: <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
       		  }
 			}).on("created", function() {
@@ -906,12 +906,10 @@
 			// Append a - sign if it is an expense
 			if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
-				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
 				transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
-				transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			}
-			   
+			transactionAmount.innerHTML = formatToCurrency(userTransaction.amount);			   
 			tableRowTransaction.appendChild(transactionAmount);
 		} else {
 			let surCell = document.createElement('div');
@@ -922,11 +920,11 @@
 			// Append a - sign if it is an expense
 			if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
-				transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 			} else {
 				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
-				transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
+				
 			}
+			transactionAmount.innerHTML = formatToCurrency(userTransaction.amount);
 			surCell.appendChild(transactionAmount);  
 			  
 			let accountBalDiv = document.createElement('div');
@@ -1275,11 +1273,10 @@
 				accHeading.innerText = bankAcc['bank_account_name'];
 				if(bankAcc['account_balance'] < 0) { 
 					accountBalance.classList.add('expenseCategory');
-					accountBalance.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
 				} else { 
 					accountBalance.classList.add('incomeCategory');
-					accountBalance.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
 				}
+				accountBalance.innerText = formatToCurrency(bankAcc['account_balance']);
 			} else {
 				// A new header for the rest
 				let accountHeaderNew = buildAccountHeader(bankAcc.accountId);
@@ -1287,11 +1284,10 @@
 				let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
 				if(bankAcc['account_balance'] < 0) { 
 					accBal.classList.add('expenseCategory');
-					accBal.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(bankAcc['account_balance']), currentUser.locale);
 				} else { 
 					accBal.classList.add('incomeCategory');
-					accBal.innerText = currentCurrencyPreference + formatNumber(bankAcc['account_balance'], currentUser.locale);
-				} 
+				}
+				accBal.innerText = formatToCurrency(Math.abs(bankAcc['account_balance']));
 				// Append Empty Table to child
 				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyAccountEntry(bankAcc.accountId));
 				// Append to the transaction view

@@ -306,12 +306,10 @@
 		// Append a - sign if it is an expense
 		if(categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
 			transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
-			transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		} else {
 			transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
-			transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
 		}
-		   
+		transactionAmount.innerHTML = formatToCurrency(userTransaction.amount);  
 		   
 		tableRowTransaction.appendChild(transactionAmount);
 		
@@ -542,7 +540,7 @@
 		// Table Cell 3 
 		let overspentAmountDiv = document.createElement('div');
 		overspentAmountDiv.classList = 'budgetAmountBO expenseCategory font-weight-bold d-table-cell text-right align-middle';
-		overspentAmountDiv.innerHTML = '-' + currentCurrencyPreference + formatNumber(overSpentBudget, currentUser.locale);
+		overspentAmountDiv.innerHTML = formatToCurrency(overSpentBudget);
 		tableBudgetOptimization.appendChild(overspentAmountDiv);
 		
 		return tableBudgetOptimization;
@@ -792,7 +790,7 @@
 	    		  budgetOptimizationDiv.remove();
 	    	  } else if(totalOptimizationPending > 0) {
 	    		  // Replace the text with the pending values
-	    		  budgetOptimizationDiv.lastChild.innerText = '-' + currentCurrencyPreference + formatNumber(Math.abs(totalOptimizationPending), currentUser.locale);
+	    		  budgetOptimizationDiv.lastChild.innerText = formatToCurrency(Math.abs(totalOptimizationPending));
 	    	  }
 	    }
         ajaxData.onFailure = function(thrownError) {
@@ -1175,7 +1173,7 @@
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
     		if (data.type === "point") {
-    			data.element._node.setAttribute("title", "Total: <strong>" + currentCurrencyPreference + formatNumber(data.value.y, currentUser.locale) + '</strong>');
+    			data.element._node.setAttribute("title", "Total: <strong>" + formatToCurrency(data.value.y) + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1468,7 +1466,7 @@
         	let categoryBreakdownChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences, responsiveOptions).on('draw', function(data) {
         		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Total: <strong>" + currentCurrencyPreference + formatNumber(Number(sliceValue), currentUser.locale) + '</strong>');
+		        	data.element._node.setAttribute("title", "Total: <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
         		  }
 			}).on("created", function() {
@@ -1836,7 +1834,7 @@
     			let minusSign = '';
     			let amount = 0;
     			if(data.value.y < 0) minusSign = '-';
-    			amount = minusSign + currentCurrencyPreference + formatNumber(Math.abs(data.value.y), currentUser.locale);
+    			amount = formatToCurrency(Math.abs(data.value.y));
     			data.element._node.setAttribute("title", "Total: <strong>" + amount + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}

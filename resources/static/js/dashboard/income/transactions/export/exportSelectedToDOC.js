@@ -180,12 +180,7 @@
     transactionAmount.style.fontWeight = '500';
     transactionAmount.style.textAlign = 'right';
     
-    // Append a - sign if it is an expense
-    if(categoryMap[userTransaction.categoryId].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-      transactionAmount.innerHTML = '-' + currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
-    } else {
-      transactionAmount.innerHTML = currentCurrencyPreference + formatNumber(userTransaction.amount, currentUser.locale);
-    }
+    transactionAmount.innerHTML = formatToCurrency(userTransaction.amount);
     surCell.appendChild(transactionAmount);  
       
     let accountBalDiv = document.createElement('div');

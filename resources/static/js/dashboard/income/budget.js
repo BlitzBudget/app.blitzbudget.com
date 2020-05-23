@@ -238,7 +238,7 @@
 		cardBudgetAmountDiv.classList = 'text-left budgetAmountEntered font-weight-bold form-control';
 		cardBudgetAmountDiv.setAttribute('contenteditable', true);
 		cardBudgetAmountDiv.setAttribute('data-target', userBudget.budgetId);
-		cardBudgetAmountDiv.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
+		cardBudgetAmountDiv.innerText = formatToCurrency(userBudget.planned);
 		cardAmountWrapperDiv.appendChild(cardBudgetAmountDiv);
 		cardRowPercentage.appendChild(cardAmountWrapperDiv);
 		
@@ -523,7 +523,7 @@
        		ajaxData.onSuccess = function registerSuccess(result){
        			  let userBudget = result['body-json'];
 	        	  // on success then replace the entered text 
-	        	  element.innerText = currentCurrencyPreference + formatNumber(enteredText, currentUser.locale);
+	        	  element.innerText = formatToCurrency(enteredText);
 	        	  // Update the budget cache
 	        	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	        	  // Update the modal
@@ -533,7 +533,7 @@
             	manageErrors(thrownError, 'Unable to change the budget. Please try again',ajaxData);
             		
 	            // update the current element with the previous amount
-	            let formattedBudgetAmount = currentCurrencyPreference + formatNumber(previousText , currentUser.locale);
+	            let formattedBudgetAmount = formatToCurrency(previousText);
 	            element.innerText = formattedBudgetAmount;
 	        }
 			$.ajax({
@@ -548,7 +548,7 @@
 			});
 		} else {
 			// previous text and entered text is the same then simy replace the text
-			element.innerText = currentCurrencyPreference + formatNumber(enteredText, currentUser.locale);
+			element.innerText = formatToCurrency(enteredText);
 		}
 	}
 	
@@ -567,7 +567,6 @@
 		if(isNotEmpty(userBudgetValue) && isNotEmpty(categoryTotalAmount)) {
 			// Calculate remaining budget
 			let budgetAvailableToSpendOrSave = userBudgetValue - categoryTotalAmount;
-			let minusSign = '';
 			
 			// Calculate the minus sign and appropriate class for the remaining amount 
 			if(budgetAvailableToSpendOrSave < 0) {
@@ -581,7 +580,6 @@
 				// Anchor Icons
 				createImageAnchor(budgetIdKey, documentOrFragment);
 				
-				minusSign = '-';
 				budgetAvailableToSpendOrSave = Math.abs(budgetAvailableToSpendOrSave);
 			} else {
 				budgetLabelDiv.innerText = 'Remaining (%)';
@@ -595,7 +593,7 @@
 			
 			// Change the remaining text appropriately
 			budgetAvailableToSpendOrSave = isNaN(budgetAvailableToSpendOrSave) ? 0 : budgetAvailableToSpendOrSave;
-			remainingAmountDiv.innerText = minusSign + currentCurrencyPreference + formatNumber(budgetAvailableToSpendOrSave, currentUser.locale);
+			remainingAmountDiv.innerText = formatToCurrency(budgetAvailableToSpendOrSave);
 			
 			// Calculate percentage available to spend or save
 			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue) * 100),0);
@@ -617,7 +615,7 @@
 			progressBarCategoryModal.setAttribute('aria-valuenow', 0);
 			progressBarCategoryModal.style.width = 0 + '%';
 			// Set the amount remaining
-			remainingAmountDiv.innerText = currentCurrencyPreference + formatNumber(0.00, currentUser.locale);
+			remainingAmountDiv.innerText = formatToCurrency(0.00);
 			// Set the budget remaining text
 			budgetLabelDiv.innerText = 'Remaining (%)';
 		}
@@ -1331,7 +1329,7 @@
 		
 		// Get the user Budget overspending
 		let userBudgetOverSpending = userBudgetCache[categoryId].planned -  categoryTotalMapCache[categoryId];
-		userBudgetOverSpending = currentCurrencyPreference + formatNumber(Math.abs(userBudgetOverSpending), currentUser.locale);
+		userBudgetOverSpending = formatToCurrency(Math.abs(userBudgetOverSpending));
 		// Set the title of the modal
 		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[categoryId].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
 		
@@ -1356,7 +1354,7 @@
 		let categoryAmountAvailableDiv = document.createElement('div');
 		categoryAmountAvailableDiv.classList = 'text-right small my-auto text-small-success compensationCatSelectionAmount';
 		let printUserBudgetMoney = isNaN(userBudgetTotalAvailable) ? 0.00 : userBudgetTotalAvailable; 
-		categoryAmountAvailableDiv.innerText = currentCurrencyPreference + formatNumber(printUserBudgetMoney, currentUser.locale);
+		categoryAmountAvailableDiv.innerText = formatToCurrency(printUserBudgetMoney);
 		anchorDropdownItem.appendChild(categoryAmountAvailableDiv);
 		
 		return anchorDropdownItem;
@@ -1422,7 +1420,7 @@
 				
 				let categoryCompensationTitle = document.getElementById('categoryCompensationTitle');
 				// Set the title of the modal with the new amount necessary for compensation
-				categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[categoryForModalOpened].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + currentCurrencyPreference + formatNumber((recalculateUserBudgetOverspent - categoryBudgetAvailable), currentUser.locale) + '&nbsp </strong> With';
+				categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[categoryForModalOpened].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + formatToCurrency((recalculateUserBudgetOverspent - categoryBudgetAvailable)) + '&nbsp </strong> With';
 				
 				// Replace the compensated category name
 				compensationDisplay[0].innerText = 'Choose category';
@@ -1510,7 +1508,7 @@
 	    	  
 	    	  // Update the budget amount
 	    	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.budgetId);
-	    	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
+	    	  budgetAmountChange.innerText = formatToCurrency(userBudget.planned);
 	    }
         ajaxData.onFailure = function(thrownError) {
         	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);
@@ -1581,7 +1579,7 @@
         	  
         	  // Update the budget amount
         	  let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.budgetId);
-        	  budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
+        	  budgetAmountChange.innerText = formatToCurrency(userBudget.planned);
         }
         ajaxData.onFailure = function(thrownError) {
         	  manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);
@@ -1619,7 +1617,7 @@
         	
         	// Get the user Budget overspending
       		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  categoryTotalMapCache[userBudget.category];
-      		userBudgetOverSpending = currentCurrencyPreference + formatNumber(Math.abs(userBudgetOverSpending), currentUser.locale);
+      		userBudgetOverSpending = formatToCurrency(Math.abs(userBudgetOverSpending));
       		// Set the title of the modal
       		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.category].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
       		
@@ -1628,7 +1626,7 @@
         	  
         	// Update the budget amount
         	let budgetAmountChange = document.getElementById('budgetAmountEntered-' + userBudget.category);
-        	budgetAmountChange.innerText = currentCurrencyPreference + formatNumber(userBudget.planned, currentUser.locale);
+        	budgetAmountChange.innerText = formatToCurrency(userBudget.planned);
         }
         ajaxData.onFailure = function(thrownError) {
         	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);

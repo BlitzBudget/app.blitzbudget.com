@@ -72,15 +72,9 @@
             let currentCategory = window.categoryMap[transactionCached.categoryId];
             // Fetch the budgeted amount
             let budgetCategory = window.userBudgetMap[transactionCached.categoryId];
-            let budgetAmount = isNotEmpty(budgetCategory) ? currentCurrencyPreference + formatNumber(budgetCategory.planned, currentUser.locale) : currentCurrencyPreference + formatNumber(0, currentUser.locale) ;
+            let budgetAmount = isNotEmpty(budgetCategory) ? formatToCurrency(budgetCategory.planned) : formatToCurrency(0) ;
             // Fetch the transaction amount
-            let transactionAmount = '';
-            // Append a - sign if it is an expense
-            if(currentCategory.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-               transactionAmount = '-' + currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);
-            } else {
-               transactionAmount = currentCurrencyPreference + formatNumber(transactionCached.amount, currentUser.locale);
-            }
+            let transactionAmount = formatToCurrency(transactionCached.amount);
             
             //2nd loop will extract each column and convert it in string comma-seprated
             row += '"' + new Date(transactionCached.dateMeantFor) + '","' + 

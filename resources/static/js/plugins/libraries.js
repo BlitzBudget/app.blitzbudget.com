@@ -25,9 +25,20 @@ const Toast = Swal.mixin({
 	}
 })
 
+function formatToCurrency(amount) {
+	return formatNumber(amount, window.currentUser.locale) + currentCurrencyPreference;
+}
+
 function lastElement(arr){
 	if(Array.isArray(arr)){
 		return isEmpty(arr) ? arr : arr[arr.length-1];
+	}
+	return arr;
+}
+
+function firstElement(arr){
+	if(Array.isArray(arr)){
+		return isEmpty(arr) ? arr : arr[0];
 	}
 	return arr;
 }
@@ -379,7 +390,7 @@ function animateValue(element, start, end, prefix ,duration) {
     if (start == end) {
         // Set as text content
         if(isNotEmpty(prefix)) {
-        	element.textContent = prefix + formatNumber(end, currentUser.locale);
+        	element.textContent = formatNumber(end, currentUser.locale) + prefix;
         } else {
         	element.textContent = end;
         }
@@ -401,7 +412,7 @@ function animateValue(element, start, end, prefix ,duration) {
 	        current += increment;
 	        // Set as text content
 	        if(isNotEmpty(prefix)) {
-	        	element.textContent = prefix + formatNumber(current, currentUser.locale);
+	        	element.textContent = formatNumber(current, currentUser.locale) + prefix;
 	        } else {
 	        	element.textContent = current;
 	        }
