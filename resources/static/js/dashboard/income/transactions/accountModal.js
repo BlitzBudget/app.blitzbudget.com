@@ -173,7 +173,7 @@
 	  				// Authenticate Before cahnging password
 	  				$.ajax({
 				          type: 'POST',
-				          url: PROFILE_CONSTANTS.signinUrl,
+				          url: window._config.api.invokeUrl + window._config.api.profile.signin,
 				          dataType: 'json',
 				          contentType: "application/json;charset=UTF-8",
 				          data : JSON.stringify(values),
