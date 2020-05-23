@@ -428,14 +428,9 @@
 	// Updates the total income and total expenses
 	function updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions, totalAvailableTransactions) {
 
-		   if(totalAvailableTransactions < 0) {
-		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, Math.abs(totalAvailableTransactions),  '-' + currentCurrencyPreference ,200);
-		   } else {
-		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference ,200);
-		   }
-
-           animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference ,200);
-		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, '-' + currentCurrencyPreference ,200);
+		   animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference ,1000);
+           animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference ,1000);
+		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference ,1000);
 		   
 		   // Build Pie chart
 		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions), 'chartFinancialPosition');

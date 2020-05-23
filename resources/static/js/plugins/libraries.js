@@ -385,37 +385,18 @@ function sameDate(inpDate, checkWith) {
     inpDate.getFullYear() == checkWith.getFullYear();
 }
 
-function animateValue(element, start, end, prefix ,duration) {
-	// If start == end then return
-    if (start == end) {
-        // Set as text content
-        if(isNotEmpty(prefix)) {
-        	element.textContent = formatNumber(end, currentUser.locale) + prefix;
-        } else {
-        	element.textContent = end;
-        }
-        return;
-    }
-
-    // If different 
-    let range = end - start;
-    let current = start;
-    let increment = end > start? 1 : -1;
-    let stepTime = Math.abs(Math.floor(duration / range));
-
-    let timer = setInterval(function() {
-    	// If start == end then return
-        if (current >= end) {
-            clearInterval(timer);
-        } else {
-        	// Incremenet current (append prefix)
-	        current += increment;
-	        // Set as text content
-	        if(isNotEmpty(prefix)) {
-	        	element.textContent = formatNumber(current, currentUser.locale) + prefix;
-	        } else {
-	        	element.textContent = current;
-	        }
-        }   
-    }, stepTime);
+function animateValue(element, start, end, postfix ,duration) {
+	// Animate the element's value from start to end:
+	jQuery({someValue: start}).animate({someValue: end}, {
+		duration: duration,
+		easing:'swing', // can be anything
+		step: function() { // called on every step
+			// Update the element's text with rounded-up value:
+			$(element).text(Math.ceil(this.someValue) + postfix);
+		},
+		complete: function() {
+			// Update the element's text with rounded-up value:
+			$(element).text(formatToCurrency(end));
+		}
+	});
 }

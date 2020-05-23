@@ -187,41 +187,17 @@
 	// Populate Income Average
 	function populateTotalAssetLiabilityAndNetworth(wallet) {
 			
-		// Liability Population
-		let liability = wallet['total_debt_balance'];
-		// Asset Population
-		let asset = wallet['total_asset_balance'];
-		// Net worth population
-		let networth = wallet['wallet_balance'];
-		// Minus sign for asset
-		let minusSign = '';
-		// Asset less than 0
-		if(asset < 0) {
-			minusSign = '-';
-		}
 		// Asset Accumulated
         // Animate Value from 0 to value 
-        animateValue(document.getElementById('assetAccumuluatedAmount'), 0, Math.abs(asset), minusSign + currentCurrencyPreference ,200);
+        animateValue(document.getElementById('assetAccumuluatedAmount'), 0, wallet['total_asset_balance'], currentCurrencyPreference ,200);
 
-        // Minus sign for LIABILITY
-   			minusSign = '';
-   			// Liability less than 0
-   			if(liability < 0) {
-   				minusSign = '-';
-   			}
         // Debt Accumulated
         // Animate Value from 0 to value 
-        animateValue(document.getElementById('debtAccumulatedAmount'), 0, Math.abs(liability), minusSign + currentCurrencyPreference ,200);
+        animateValue(document.getElementById('debtAccumulatedAmount'), 0, wallet['total_debt_balance'], currentCurrencyPreference ,200);
 
-   			// Minus sign for Nteworth
-   			minusSign = '';
-   			// Networth less than 0
-   			if(networth < 0) {
-   				minusSign = '-';
-   			}
         // Networth Accumulated
         // Animate Value from 0 to value 
-        animateValue(document.getElementById('networthAmount'), 0, Math.abs(networth), minusSign + currentCurrencyPreference ,200);
+        animateValue(document.getElementById('networthAmount'), 0, wallet['wallet_balance'], currentCurrencyPreference ,200);
 	}
 	
 	// Populate Recent Transactions
