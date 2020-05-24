@@ -89,14 +89,14 @@
 			let values = {};
 			values['accountBalance'] = enteredText;
 			values['walletId'] = currentUser.walletId;
-			values['accountId'] = currentUser.walletId; //TODO
+			values['accountId'] = currentAccountId;
 			values = JSON.stringify(values);
 
 			// Ajax Requests on Error
 			let ajaxData = {};
 			ajaxData.isAjaxReq = true;
 			ajaxData.type = "PATCH";
-			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + BANK_ACCOUNT_CONSTANTS.backslash + currentAccountId;
+			ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl;
 			ajaxData.dataType = "json"; 
 			ajaxData.contentType = "application/json; charset=UTF-8";
 			ajaxData.data = JSON.stringify(values);

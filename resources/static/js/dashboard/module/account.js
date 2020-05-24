@@ -185,6 +185,8 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.data = JSON.stringify(values);
 		   		ajaxData.onSuccess = function(result){
 		   			result = result["body-json"];
+		   			// Set account balance to appropriate property
+		   			result["body-json"]['account_balance'] = result["body-json"].accountBalance;
 		        	showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully',window._constants.notification.success);
 		        	// Add Accounts to the preview mode if < 4
 		        	let bARows = document.getElementsByClassName('bARow');
