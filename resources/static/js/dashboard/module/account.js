@@ -10,12 +10,12 @@ let tickIconSVG = tickIcon();
 (function scopeWrapper($) {
 
 	let accountSubTypeToType = {};
-	accountSubTypeToType['Savings Account'] = 'ASSET';
-	accountSubTypeToType['Current Account'] = 'ASSET';
-	accountSubTypeToType['Cash'] = 'ASSET';
-	accountSubTypeToType['Assets'] = 'ASSET';
-	accountSubTypeToType['Credit Card'] = 'DEBT';
-	accountSubTypeToType['Liability'] = 'DEBT';
+	accountSubTypeToType['SAVINGS ACCOUNT'] = 'ASSET';
+	accountSubTypeToType['CURRENT ACCOUNT'] = 'ASSET';
+	accountSubTypeToType['CASH'] = 'ASSET';
+	accountSubTypeToType['ASSETS'] = 'ASSET';
+	accountSubTypeToType['CREDIT CARD'] = 'DEBT';
+	accountSubTypeToType['LIABILITY'] = 'DEBT';
 	Object.freeze(accountSubTypeToType);
 	Object.seal(accountSubTypeToType);
 	const accountTypeConst = ['Savings Account','Current Account','Cash','Assets','Credit Card','Liability'];
@@ -170,7 +170,7 @@ let tickIconSVG = tickIcon();
 				values['selectedAccount'] = false;
 				
 				// Check if the account type is valid (Upper Case)
-				if(!includesStr(accountTypeUCConst,values['accountType'])) {
+				if(!includesStr(accountTypeUCConst,values['accountSubType'])) {
 					 showNotification('Invalid account type. Please try again!',window._constants.notification.error);
 					 return;
 				}
