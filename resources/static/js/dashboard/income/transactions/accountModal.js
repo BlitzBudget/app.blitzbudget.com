@@ -89,8 +89,7 @@
 			let values = {};
 			values['accountBalance'] = enteredText;
 			values['walletId'] = currentUser.walletId;
-			values['accountId'] = currentAccountId;
-			values = JSON.stringify(values);
+			values['bankAccountId'] = currentAccountId;
 
 			// Ajax Requests on Error
 			let ajaxData = {};

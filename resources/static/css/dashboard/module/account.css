@@ -3,13 +3,13 @@
 	top: 110%;
     left: -312%;
     padding: 1rem;
+    padding-bottom: 2.7rem;
 }
 
 .accountInfoDisplay {
 	position: absolute;
     min-width: 15rem;
     width: 18rem;
-    height: 18rem;
     min-height: 18rem;
     text-align: center;
     display: inline-block;
