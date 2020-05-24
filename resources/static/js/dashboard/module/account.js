@@ -9,6 +9,15 @@ let tickIconSVG = tickIcon();
 // Account Information display
 (function scopeWrapper($) {
 
+	let accountSubTypeToType = {};
+	accountSubTypeToType['Savings Account'] = 'ASSET';
+	accountSubTypeToType['Current Account'] = 'ASSET';
+	accountSubTypeToType['Cash'] = 'ASSET';
+	accountSubTypeToType['Assets'] = 'ASSET';
+	accountSubTypeToType['Credit Card'] = 'DEBT';
+	accountSubTypeToType['Liability'] = 'DEBT';
+	Object.freeze(accountSubTypeToType);
+	Object.seal(accountSubTypeToType);
 	const accountTypeConst = ['Savings Account','Current Account','Cash','Assets','Credit Card','Liability'];
 	Object.freeze(accountTypeConst);
 	Object.seal(accountTypeConst);
@@ -148,12 +157,14 @@ let tickIconSVG = tickIcon();
 	    }).then(function(result) {
 	    	// If confirm button is clicked
 	    	if (result.value) {
+	    		let accountSubType = document.getElementsByClassName('accountChosen')[0].innerText;
 	    		// Populate the JSON form data
 		    	var values = {};
 				values['linked'] = false;
 				values['bankAccountName'] = document.getElementById('accountName').value;
 				values['accountBalance'] = parseInt(document.getElementById('accountBal').value);
-				values['accountType'] = document.getElementsByClassName('accountChosen')[0].innerText;
+				values['accountType'] = accountSubTypeToType[accountSubType];
+				values['accountSubType'] = accountSubType;
 				values['walletId'] = window.currentUser.walletId;
 				values['primaryWallet'] = window.currentUser.financialPortfolioId;
 				values['selectedAccount'] = false;
