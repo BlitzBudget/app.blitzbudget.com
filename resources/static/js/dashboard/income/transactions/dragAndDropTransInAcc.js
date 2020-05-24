@@ -238,7 +238,7 @@
 			let currAccBal = 0;
 			let currNewAccBal = 0;
         	// Append a - sign if it is an expense
-			currAccBal = oldAccBal + userTransaction.amount
+			currAccBal = oldAccBal - userTransaction.amount
 			currNewAccBal = accBal + userTransaction.amount;
 			// Append the new amount to the front
 			oldAccDiv.innerText = formatToCurrency(currAccBal);
