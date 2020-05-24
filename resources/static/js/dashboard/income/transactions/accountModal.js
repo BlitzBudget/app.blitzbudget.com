@@ -222,62 +222,60 @@
 		   		ajaxData.values = JSON.stringify(values);
         		ajaxData.onSuccess = function(jsonObj) {
         			jsonObj = jsonObj['body-json'];
-		        	$('#accountSB-' + currentAccountId).fadeOut('slow', function(){ 
-	                    this.remove();
+		        	let accountSB = document.getElementById('accountSB-' + currentAccountId).remove();
 
-	                    // Simulate a click on the first table heading (Show Account Modal)
-						let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-						if(accountTableHeaders.length > 0) {
-							accountTableHeaders.get(0).click();
-						} else {
-							// Append account Table empty information
-							let accountTable = document.getElementById('accountTable');
-							// Replace HTML with Empty
-							while (accountTable.firstChild) {
-								accountTable.removeChild(accountTable.firstChild);
-							}
-				    		accountTable.appendChild(buildEmptyTransactionsTab());
-				    		// Show the empty table
-				    		accountTable.classList.remove('d-none');
-				    		// Close the account info Modal
-				    		document.getElementById('accountHeaderClose').click();
-				    		// Replace the Transactions Table with empty entry
-				    		let transactionsTable = document.getElementById(replaceTransactionsId);
-							while (transactionsTable.firstChild) {
-								transactionsTable.removeChild(transactionsTable.firstChild);
-							}
-							transactionsTable.appendChild(fetchEmptyTableMessage());
-				    		// Replace recent transactions table with empty entry
-				    		let recTransTable = document.getElementById('recentTransactions');
-				    		// Replace HTML with Empty
-							while (recTransTable.firstChild) {
-								recTransTable.removeChild(recTransTable.firstChild);
-							}
-							recTransTable.appendChild(buildEmptyTransactionsTab());
-							// Reset the Financial Position
+                    // Simulate a click on the first table heading (Show Account Modal)
+					let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
+					if(accountTableHeaders.length > 0) {
+						accountTableHeaders.get(0).click();
+					} else {
+						// Append account Table empty information
+						let accountTable = document.getElementById('accountTable');
+						// Replace HTML with Empty
+						while (accountTable.firstChild) {
+							accountTable.removeChild(accountTable.firstChild);
 						}
+			    		accountTable.appendChild(buildEmptyTransactionsTab());
+			    		// Show the empty table
+			    		accountTable.classList.remove('d-none');
+			    		// Close the account info Modal
+			    		document.getElementById('accountHeaderClose').click();
+			    		// Replace the Transactions Table with empty entry
+			    		let transactionsTable = document.getElementById(replaceTransactionsId);
+						while (transactionsTable.firstChild) {
+							transactionsTable.removeChild(transactionsTable.firstChild);
+						}
+						transactionsTable.appendChild(fetchEmptyTableMessage());
+			    		// Replace recent transactions table with empty entry
+			    		let recTransTable = document.getElementById('recentTransactions');
+			    		// Replace HTML with Empty
+						while (recTransTable.firstChild) {
+							recTransTable.removeChild(recTransTable.firstChild);
+						}
+						recTransTable.appendChild(buildEmptyTransactionsTab());
+						// Reset the Financial Position
+					}
 
-	                    // Remove from preivew if present
-	                    let posToRemove = null;
-				    	for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-				    		if(allBankAccountInfoCache[i].id == currentAccountId) {
-				    			let position = i + 1;
-				    			// Remove the preview banka count
-				    			let previewPos = document.getElementById('bAR-' + position);
-				    			// remove the preview Pos if present
-				    			if(isNotEmpty(previewPos)) previewPos.remove();
-				    			// Update the position to remove
-				    			posToRemove = i;
-				    			break;
-				    		}
-				    	}
+                    // Remove from preivew if present
+                    let posToRemove = null;
+			    	for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+			    		if(allBankAccountInfoCache[i].id == currentAccountId) {
+			    			let position = i + 1;
+			    			// Remove the preview banka count
+			    			let previewPos = document.getElementById('bAR-' + position);
+			    			// remove the preview Pos if present
+			    			if(isNotEmpty(previewPos)) previewPos.remove();
+			    			// Update the position to remove
+			    			posToRemove = i;
+			    			break;
+			    		}
+			    	}
 
-				    	// Position to remove
-				    	if(isNotEmpty(posToRemove)) {
-				    		// Remove the bank account preview
-				    		allBankAccountInfoCache.splice(posToRemove , 1);
-				    	}
-	                });
+			    	// Position to remove
+			    	if(isNotEmpty(posToRemove)) {
+			    		// Remove the bank account preview
+			    		allBankAccountInfoCache.splice(posToRemove , 1);
+			    	}
 		        }
 			    ajaxData.onFailure = function (thrownError) {
 			    	manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!",ajaxData);
