@@ -89,7 +89,7 @@
 			let values = {};
 			values['accountBalance'] = enteredText;
 			values['walletId'] = currentUser.walletId;
-			values['bankAccountId'] = currentAccountId;
+			values['accountId'] = currentAccountId;
 
 			// Ajax Requests on Error
 			let ajaxData = {};
@@ -102,7 +102,7 @@
 			ajaxData.onSuccess = function(bankAccount){
 				bankAccount = bankAccount['body-json'];
 	        	// Update the budget amount in the category row
-	        	let formattedBudgetAmount = formatToCurrency(bankAccount['account_balance']);
+	        	let formattedBudgetAmount = formatToCurrency(bankAccount.accountBalance);
 	        	element.innerText = formattedBudgetAmount;
 
 	        	// Account Balance for account Header
