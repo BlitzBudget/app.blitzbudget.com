@@ -739,7 +739,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudget){
-	        	  
+	          userBudget = userBudget['body-json'];
 	    	  // Update the cache
 	    	  userBudgetCache[userBudget.categoryId] = userBudget;
 	    	  

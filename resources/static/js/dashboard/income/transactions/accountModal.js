@@ -101,6 +101,7 @@
 			ajaxData.contentType = "application/json; charset=UTF-8";
 			ajaxData.data = JSON.stringify(values);
 			ajaxData.onSuccess = function(bankAccount){
+				bankAccount = bankAccount['body-json'];
 	        	// Update the budget amount in the category row
 	        	let formattedBudgetAmount = formatToCurrency(bankAccount['account_balance']);
 	        	element.innerText = formattedBudgetAmount;
@@ -220,6 +221,7 @@
 		   		ajaxData.contentType = "application/json;charset=UTF-8";
 		   		ajaxData.values = JSON.stringify(values);
         		ajaxData.onSuccess = function(jsonObj) {
+        			jsonObj = jsonObj['body-json'];
 		        	$('#accountSB-' + currentAccountId).fadeOut('slow', function(){ 
 	                    this.remove();
 

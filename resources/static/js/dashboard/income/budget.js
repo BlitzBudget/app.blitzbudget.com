@@ -815,7 +815,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudgets) {
-	        	
+			userBudgets = userBudgets['body-json'];	        	
         	if(isEmpty(userBudgets)) {
         		return;
         	}
@@ -1561,6 +1561,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
+   			userBudget = userBudget['body-json'];
         	  // Update the Budget Cache
         	  userBudgetCache[userBudget.budgetId] = userBudget;
         	  
@@ -1612,6 +1613,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
+   			userBudget = userBudget['body-json'];
         	// Update the Budget Cache
         	userBudgetCache[userBudget.budgetId] = userBudget;
         	

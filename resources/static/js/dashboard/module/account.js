@@ -184,6 +184,7 @@ let tickIconSVG = tickIcon();
 		   		ajaxData.contentType = "application/json;charset=UTF-8";
 		   		ajaxData.data = JSON.stringify(values);
 		   		ajaxData.onSuccess = function(result){
+		   			 result = result["body-json"];
 		        	 showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully',window._constants.notification.success);
 		        	 // Add Accounts to the preview mode if < 4
 		        	 let bARows = document.getElementsByClassName('bARow');
@@ -239,27 +240,28 @@ let tickIconSVG = tickIcon();
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
-	    	  // Append as Selected Account
-	    	  for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-	    		  if(allBankAccountInfoCache[i].id == bnkAccountId) {
-	    			  allBankAccountInfoCache[i]['selected_account'] = true;
-	    		  }
-	    	  }
-	    	  
-	    	  let bARows = document.getElementsByClassName('bARow');
-	    	  // Remove class from list
-	    	  for(let i = 0, length = bARows.length; i < length; i++) {
-	    		  let rowElem = bARows[i];
-	    		  if(rowElem.classList.contains('selectedBA')) {
-	    			  rowElem.classList.remove('selectedBA');
-	    			  allBankAccountInfoCache[i]['selected_account'] = false;
-	    		  }
-	    	  }
-	    	  
-	    	  currentElem.classList.add('selectedBA');
-	    	  
-	    	  // Close the account Modal
-	    	  closeAccountPopup();
+   		  result = result['body-json'];
+    	  // Append as Selected Account
+    	  for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
+    		  if(allBankAccountInfoCache[i].id == bnkAccountId) {
+    			  allBankAccountInfoCache[i]['selected_account'] = true;
+    		  }
+    	  }
+    	  
+    	  let bARows = document.getElementsByClassName('bARow');
+    	  // Remove class from list
+    	  for(let i = 0, length = bARows.length; i < length; i++) {
+    		  let rowElem = bARows[i];
+    		  if(rowElem.classList.contains('selectedBA')) {
+    			  rowElem.classList.remove('selectedBA');
+    			  allBankAccountInfoCache[i]['selected_account'] = false;
+    		  }
+    	  }
+    	  
+    	  currentElem.classList.add('selectedBA');
+    	  
+    	  // Close the account Modal
+    	  closeAccountPopup();
 	    }
         ajaxData.onFailure = function(thrownError) {
         	manageErrors(thrownError, 'Unable to select the account at this moment. Please try again!',ajaxData);
