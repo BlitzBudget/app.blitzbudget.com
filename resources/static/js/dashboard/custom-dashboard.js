@@ -742,7 +742,7 @@ er = {
 	
 	//convert from currency format to number
 	convertToNumberFromCurrency(amount, currentCurrencyPreference){
-		return round(parseFloat(trimElement(firstElement(splitElement(amount,currentCurrencyPreference))).replace(/[^0-9.-]+/g,"")),2);
+		return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount,currentCurrencyPreference))), "en-US")),2);
 	},
 	
 	// Security check to ensure that the category is present in the map
