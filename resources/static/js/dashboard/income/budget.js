@@ -345,7 +345,7 @@
 		let toBeBudgetedDiv = document.getElementById('toBeBudgeted');
 		let detachChart = false;
 		if(isNotEmpty(userBudgetCacheKeys)) {
-			animateValue(totalBudgetedCategoriesDiv, 0, userBudgetCacheKeys.length, '' ,200);
+			animateValue(totalBudgetedCategoriesDiv, 0, userBudgetCacheKeys.length, '' ,1000);
 			// If empty then update the chart with the 0
 			toBeBudgetedDiv.innerText = 0;
 			
@@ -361,7 +361,7 @@
 					}
 				}
 				// assign the to be budgeted
-				animateValue(toBeBudgetedDiv, 0, toBeBudgetedAvailable, '' ,200);				
+				animateValue(toBeBudgetedDiv, 0, toBeBudgetedAvailable, '' ,1000);				
 				
 				let totalCategoriesAvailable = toBeBudgetedAvailable + userBudgetCacheKeys.length;
 				let userBudgetPercentage = round(((userBudgetCacheKeys.length / totalCategoriesAvailable) * 100),1);
@@ -815,7 +815,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudgets) {
-	        	
+			userBudgets = userBudgets['body-json'];	        	
         	if(isEmpty(userBudgets)) {
         		return;
         	}
@@ -1561,6 +1561,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
+   			userBudget = userBudget['body-json'];
         	  // Update the Budget Cache
         	  userBudgetCache[userBudget.budgetId] = userBudget;
         	  
@@ -1612,6 +1613,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.values = values;
    		ajaxData.onSuccess = function(userBudget){
+   			userBudget = userBudget['body-json'];
         	// Update the Budget Cache
         	userBudgetCache[userBudget.budgetId] = userBudget;
         	

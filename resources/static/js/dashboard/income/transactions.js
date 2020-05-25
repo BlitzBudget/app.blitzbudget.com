@@ -120,6 +120,42 @@
 			$('#GSCCModal').modal('toggle');
 		});
 
+	    // refresh the transactions page on closing the modal
+		$('#GSCCModal').on('hidden.bs.modal', function () {
+			// Add icon d-none
+			document.getElementById('genericAddFnc').classList.toggle('d-none');
+			replaceHTML('successMessage',"");
+			replaceHTML('errorMessage',"");
+			
+			if(registeredNewTransaction) {
+
+				// Populate category based table 
+				fetchJSONForTransactions();
+				// Do not refresh the transactions if no new transactions are added
+				registeredNewTransaction = false;
+			}		
+		});
+
+		// show the login modal
+		$('#GSCCModal').on('show.bs.modal', function () {
+			// Load Expense category and income category
+			let expenseOptGroup = document.getElementById('expenseSelection');
+			let incomeOptgroup = document.getElementById('incomeSelection');
+			// If the Category items are not populate then populate them
+			if(!expenseOptGroup.firstElementChild) {
+				expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
+			}
+			if(!incomeOptgroup.firstElementChild) {
+				incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
+			}
+		});
+
+		// Change the focus to amount after the modal is shown
+		$('#GSCCModal').on('shown.bs.modal', function () {
+			// Change focus
+			document.getElementById('amount').focus();
+		});
+		
 		
 	}
 	
@@ -280,44 +316,6 @@
     	}, milliSeconds);
 	}
 	
-	// refresh the transactions page on closing the modal
-	$('#GSCCModal').on('hidden.bs.modal', function () {
-		// Add icon d-none
-		document.getElementById('genericAddFnc').classList.toggle('d-none');
-		// Clear form input fields inside the modal and the error or success messages.
-		$('#transactionsForm').get(0).reset();
-		replaceHTML('successMessage',"");
-		replaceHTML('errorMessage',"");
-		
-		if(registeredNewTransaction) {
-
-			// Populate category based table 
-			fetchJSONForTransactions();
-			// Do not refresh the transactions if no new transactions are added
-			registeredNewTransaction = false;
-		}		
-	});
-
-	// show the login modal
-	$('#GSCCModal').on('show.bs.modal', function () {
-		// Load Expense category and income category
-		let expenseOptGroup = document.getElementById('expenseSelection');
-		let incomeOptgroup = document.getElementById('incomeSelection');
-		// If the Category items are not populate then populate them
-		if(!expenseOptGroup.firstElementChild) {
-			expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
-		}
-		if(!incomeOptgroup.firstElementChild) {
-			incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
-		}
-	});
-
-	// Change the focus to amount after the modal is shown
-	$('#GSCCModal').on('shown.bs.modal', function () {
-		// Change focus
-		document.getElementById('amount').focus();
-	});
-	
 	// Populates the transaction table
 	function fetchJSONForTransactions(){
 		let values = {};
@@ -352,8 +350,7 @@
 			* Replace With Currency
 			*/
 			replaceWithCurrency(result.Wallet);
-			
-			populateTransactionsByCategory(result.Transaction);
+			populateCategorySort(result);
 			   
 			// update the Total Available Section
 			updateTotalAvailableSection(result.incomeTotal , result.expenseTotal, result.balance);
@@ -378,6 +375,26 @@
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
+	}
+
+	function populateCategorySort(result) {
+		if(isEmpty(result.Transaction) && isEmpty(result.Category)) {
+			let transactionsTable = document.getElementById(replaceTransactionsId);
+			// Replace HTML with Empty
+			while (transactionsTable.firstChild) {
+				transactionsTable.removeChild(transactionsTable.firstChild);
+			}
+    		transactionsTable.appendChild(buildEmptyTransactionsTab());
+    		transactionsTable.classList.remove('d-none');
+		} else {
+			let categoryInfoTable = document.getElementsByClassName('categoryInfoTable');
+			// Replace HTML with Empty
+			while (categoryInfoTable[0]) {
+				categoryInfoTable[0].parentNode.removeChild(categoryInfoTable[0]);
+			}
+			populateTransactionsByCategory(result.Transaction);
+			buildCategoryHeaders(result.Category);
+		}
 	}
 
 	function loadCategoriesForTransaction() {
@@ -428,104 +445,40 @@
 	// Updates the total income and total expenses
 	function updateTotalAvailableSection(totalIncomeTransactions , totalExpensesTransactions, totalAvailableTransactions) {
 
-		   if(totalAvailableTransactions < 0) {
-		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, Math.abs(totalAvailableTransactions),  '-' + currentCurrencyPreference ,200);
-		   } else {
-		   	   animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference ,200);
-		   }
-
-           animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference ,200);
-		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, '-' + currentCurrencyPreference ,200);
+		   animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference ,1000);
+           animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference ,1000);
+		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference ,1000);
 		   
 		   // Build Pie chart
-		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions), 'chartFinancialPosition');
+		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions), 'chartFinancialPosition');
 		   
 	}
 	
 	// Update the pie chart with transactions data
-	function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions) {
+	function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
 		let dataPreferences = {};
 		if(totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
 			replaceHTML('legendPieChart', 'Please fill in adequare data build the chart');
-		} else if (totalIncomeTransactions < totalExpensesTransactions) {
-			let totalDeficitDifference = totalExpensesTransactions - totalIncomeTransactions;
-			let totalDeficitAsPercentageOfExpense = round(((totalDeficitDifference / totalExpensesTransactions) * 100),1);
-			   
-			let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalDeficitDifference) / totalExpensesTransactions) * 100),1);
-			   
-			// labels: [INCOME,EXPENSE,AVAILABLE]
-			dataPreferences = {
-		                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
-		                series: [totalIncomeTransactions,,totalDeficitDifference]
-		            };
-			
+		} else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
 			replaceHTML('legendPieChart', 'Total Income & Total Overspent as a percentage of Total Expense');
 			replaceHTML('totalAvailableLabel', 'Total Overspent');
 		} else  {
-			// (totalIncomeTransactions > totalExpensesTransactions) || (totalIncomeTransactions == totalExpensesTransactions)
-			let totalAvailable = totalIncomeTransactions - totalExpensesTransactions;
-			let totalAvailableAsPercentageOfIncome = round(((totalAvailable / totalIncomeTransactions) * 100),1);
-			   
-			let totalExpenseAsPercentageOfIncome = round((((totalIncomeTransactions - totalAvailable) / totalIncomeTransactions) * 100),1);
-			   
-			// labels: [INCOME,EXPENSE,AVAILABLE]
-			dataPreferences = {
-		                labels: [, totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'],
-		                series: [, totalExpensesTransactions,totalAvailable]
-		            };
-			
 			replaceHTML('legendPieChart', 'Total Expense & Total Available as a percentage of Total Income');
 			replaceHTML('totalAvailableLabel', 'Total Available');
-		        
 		}
+
+		let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
+			   
+		let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalAvailableTransactions) / totalExpensesTransactions) * 100),1);
+		   
+		// labels: [INCOME,EXPENSE,AVAILABLE]
+		dataPreferences = {
+	                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
+	                series: [Math.abs(totalIncomeTransactions),,Math.abs(totalAvailableTransactions)]
+	            };
 		
 		return dataPreferences;
 		
-	}
-	
-	// Build empty table message as document
-	function fetchEmptyTableMessage() {
-		let emptyTableRow = document.createElement("div");
-		emptyTableRow.className = 'd-table-row';
-		
-		// Row 1
-		let indexTableCell = document.createElement('div');
-		indexTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(indexTableCell);
-		
-		// Row 2
-		let selectAllTableCell = document.createElement('div');
-		selectAllTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(selectAllTableCell);
-		
-		// Row 3
-		let categoryTableCell = document.createElement('div');
-		categoryTableCell.className = 'd-table-cell text-center align-middle';
-		categoryTableCell.appendChild(buildEmptyTransactionsSvg());
-		emptyTableRow.appendChild(categoryTableCell);
-		
-		// Row 4
-		let descriptionTableCell = document.createElement('div');
-		descriptionTableCell.className = 'd-table-cell';
-		
-		let paragraphElement = document.createElement('p');
-		paragraphElement.className = 'text-secondary mb-0';
-		paragraphElement.innerHTML = 'There are no transactions yet. Start adding some to track your spending.';
-		
-		descriptionTableCell.appendChild(paragraphElement);
-		emptyTableRow.appendChild(descriptionTableCell);
-		
-		// Row 5
-		let amountTableCell = document.createElement('div');
-		amountTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(amountTableCell);
-		
-		// Row 6
-		let budgetTableCell = document.createElement('div');
-		budgetTableCell.className = 'd-table-cell';
-		emptyTableRow.appendChild(budgetTableCell);
-		
-		return emptyTableRow;
 	}
 	
 	// Empty Transactions SVG
@@ -708,6 +661,12 @@
 	function replaceTransactionsWithMSpinner() {
 		// Replace the product json with empty table
 		document.getElementById(replaceTransactionsId).classList.remove('d-none');
+		// Remove all category sorted transactions
+		let categoryInfoTable = document.getElementsByClassName('categoryInfoTable');
+		// Replace HTML with Empty
+		while (categoryInfoTable[0]) {
+			categoryInfoTable[0].parentNode.removeChild(categoryInfoTable[0]);
+		}
 	}
 	
 	// Replace Pie Chart with Material Spinner
@@ -1103,6 +1062,21 @@
 		}
 	});
 
+	// Sorts the table by aggregating transactions by category
+	$('body').on('click', '.categorySortGrp' , function(e) {
+		let parentWrapper = this.parentNode;
+		let materialArrow = this.firstElementChild.firstElementChild;
+		materialArrow.classList.toggle('rotateZero');
+		materialArrow.classList.toggle('rotateNinty');
+		let childElementWrappers = parentWrapper.childNodes;
+		for(let i = 1, len = childElementWrappers.length; i < len; i++) {
+			let childElementWrapper = childElementWrappers[i];
+			childElementWrapper.classList.toggle('d-none');
+			childElementWrapper.classList.toggle('d-table-row');
+		}
+
+	});
+
 	// Sorts the table by aggregating transactions by account
 	$('body').on('click', '#accountSortBy' , function(e) {
 		// Change title of in the dropdown
@@ -1138,6 +1112,7 @@
 
 	// Appends the date header for recent transactions
 	function buildCategoryHeader(category) {
+		let categoryData = window.categoryMap[category];
 		let docFrag = document.createDocumentFragment();
 		let categoryHeader = document.createElement('div');
 		categoryHeader.id = 'categorySB-' + category;
@@ -1161,79 +1136,30 @@
 		let categoryTitle = document.createElement('a');
 		categoryTitle.id = 'categoryTitle-' + category;
 		categoryTitle.classList = 'pl-4 accTitleAnchor';
-		categoryTitle.innerText = window.categoryMap[category].name;
+		categoryTitle.innerText = categoryData.name;
 		titleWrapper.appendChild(categoryTitle);
 		categoryTit.appendChild(titleWrapper);
 
 		// Empty Cell
 		let emptyCell = document.createElement('div');
 		emptyCell.classList = 'd-table-cell';
-		categoryTitle.appendChild(emptyCell);
+		categoryTit.appendChild(emptyCell);
 
 		// Account Balance
 		let categoryBalance = document.createElement('div');
 		categoryBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
+		if(categoryData.categoryTotal < 0) {
+			categoryBalance.classList.add('expenseCategory');
+		} else {
+			categoryBalance.classList.add('incomeCategory');
+		}
 		categoryBalance.id = 'categoryBalance-' + category;
+		categoryBalance.innerText = formatToCurrency(categoryData.categoryTotal);
 		categoryTit.appendChild(categoryBalance);
 
 		categoryHeader.appendChild(categoryTit);
 		docFrag.appendChild(categoryHeader);
 		return docFrag;
-	}
-
-	// Appends the date header for recent transactions
-	function buildAccountHeader(accountId) {
-		let docFrag = document.createDocumentFragment();
-		let accountHeader = document.createElement('div');
-		accountHeader.id = 'accountSB-' + accountId;
-		accountHeader.setAttribute('data-target', accountId);
-		accountHeader.classList = 'tableBodyDiv accountInfoTable noselect';
-
-		let accountTit = document.createElement('div');
-		accountTit.classList = 'recentTransactionDateGrp d-table-row ml-3 font-weight-bold';
-
-		// Title Wrapper
-		let titleWrapper = document.createElement('div');
-		titleWrapper.classList = 'd-table-cell text-nowrap';
-		
-		// Right Arrow
-		let rightArrow = document.createElement('div');
-		rightArrow.classList = 'material-icons rotateNinty';
-		rightArrow.innerText = 'keyboard_arrow_right';
-		titleWrapper.appendChild(rightArrow);
-
-		// Title
-		let accountTitle = document.createElement('a');
-		accountTitle.id = 'accountTitle-' + accountId;
-		accountTitle.classList = 'pl-4 accTitleAnchor';
-		accountTitle.appendChild(buildSmallMaterialSpinner(accountId));
-		titleWrapper.appendChild(accountTitle);
-		accountTit.appendChild(titleWrapper);
-
-		// Empty Cell
-		let emptyCell = document.createElement('div');
-		emptyCell.classList = 'd-table-cell';
-		accountTit.appendChild(emptyCell);
-
-		// Account Balance
-		let accountBalance = document.createElement('div');
-		accountBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
-		accountBalance.id = 'accountBalance-' + accountId;
-		accountTit.appendChild(accountBalance);
-
-		accountHeader.appendChild(accountTit);
-		docFrag.appendChild(accountHeader);
-		return docFrag;
-	}
-
-	// Build small material spinner
-	function buildSmallMaterialSpinner(accountId) {
-		// Add small Material Spinner
-		let divMaterialSpinner = document.createElement('div');
-		divMaterialSpinner.classList = 'material-spinner-small mx-auto pendingAccInfo';
-		divMaterialSpinner.id = 'spinAcc-' + accountId;
-		divMaterialSpinner.setAttribute('data-target', accountId);
-		return divMaterialSpinner;
 	}
 
 	// Fetch all bank account information
@@ -1287,9 +1213,9 @@
 				} else { 
 					accBal.classList.add('incomeCategory');
 				}
-				accBal.innerText = formatToCurrency(Math.abs(bankAcc['account_balance']));
+				accBal.innerText = formatToCurrency(bankAcc['account_balance']);
 				// Append Empty Table to child
-				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyAccountEntry(bankAcc.accountId));
+				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
 				// Append to the transaction view
 				accHeadFrag.appendChild(accountHeaderNew);
 			}
@@ -1302,10 +1228,12 @@
 
 	// Populate the account sort by section
 	function populateTransactionsByCategory(userTransactionsList) {
+		window.transactionsCache = {};
 		// Remove all the transactions
 		let transactionsTable = document.getElementById('transactionsTable');
         let populateTransactionsFragment = document.createDocumentFragment();
 		let createdCategoryIds = [];
+
 		for (let i = 0, len = userTransactionsList.length; i < len; i++) {
 		   let userTransaction = userTransactionsList[i];
 		   window.transactionsCache[userTransaction.transactionId] = userTransaction;
@@ -1321,6 +1249,26 @@
 
     	transactionsTable.appendChild(populateTransactionsFragment);
     	document.getElementById(replaceTransactionsId).classList.add('d-none');
+	}
+
+	// Fetch all bank account information
+	function buildCategoryHeaders(categoryList) {
+		
+		// Remove all the transactions
+		let transactionsTable = document.getElementById('transactionsTable');
+        let populateTransactionsFragment = document.createDocumentFragment();
+		for (let i = 0, len = categoryList.length; i < len; i++) {
+		   let category = categoryList[i];
+
+     	   if(isEmpty(document.getElementById('categorySB-' + category.categoryId))) {
+     	   		populateTransactionsFragment.appendChild(buildCategoryHeader(category.categoryId));
+     	   		populateTransactionsFragment.getElementById('categorySB-' + category.categoryId).appendChild(buildEmptyTableEntry('emptyCategoryItem-' + category.categoryId));
+     	   }
+     	}
+
+    	transactionsTable.appendChild(populateTransactionsFragment);
+    	document.getElementById(replaceTransactionsId).classList.add('d-none');
+		
 	}
 
 	// Populate the account sort by section
@@ -1344,94 +1292,6 @@
 
 		document.getElementById('accountTable').classList.add('d-none');
     	accountAggreDiv.appendChild(recentTransactionsFragment);
-	}
-
-	// Populate Empty account entry
-	function buildEmptyAccountEntry(accId) {
-		let rowEmpty = document.createElement('div');
-		rowEmpty.classList = 'd-table-row recentTransactionDateGrp';
-		rowEmpty.id = 'emptyAccountEntry-' + accId;
-
-		let cell1 = document.createElement('div');
-		cell1.classList = 'd-table-cell align-middle imageWrapperCell text-center';
-
-		let roundedCircle = document.createElement('div');
-		roundedCircle.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
-		roundedCircle.appendChild(buildEmptyAccTransactionsSvg());
-		cell1.appendChild(roundedCircle);
-		rowEmpty.appendChild(cell1);
-
-		let cell2 = document.createElement('div');
-		cell2.classList = 'descriptionCellRT align-middle d-table-cell text-center';
-
-		let emptyMessageRow = document.createElement('div');
-		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
-		cell2.appendChild(emptyMessageRow);
-		rowEmpty.appendChild(cell2);
-
-		let cell3 = document.createElement('div');
-		cell3.classList = 'descriptionCellRT d-table-cell';
-		rowEmpty.appendChild(cell3);
-			
-		return rowEmpty;
-	}
-
-	// Empty Transactions SVG
-	function buildEmptyAccTransactionsSvg() {
-		
-		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-		svgElement.setAttribute('width','32');
-		svgElement.setAttribute('height','32');
-    	svgElement.setAttribute('viewBox','0 0 64 64');
-    	svgElement.setAttribute('class','align-middle transactions-empty-svg');
-    	
-    	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement1.setAttribute('d','M 5 8 C 3.346 8 2 9.346 2 11 L 2 53 C 2 54.654 3.346 56 5 56 L 59 56 C 60.654 56 62 54.654 62 53 L 62 11 C 62 9.346 60.654 8 59 8 L 5 8 z M 5 10 L 59 10 C 59.551 10 60 10.449 60 11 L 60 20 L 4 20 L 4 11 C 4 10.449 4.449 10 5 10 z M 28 12 C 26.897 12 26 12.897 26 14 L 26 16 C 26 17.103 26.897 18 28 18 L 56 18 C 57.103 18 58 17.103 58 16 L 58 14 C 58 12.897 57.103 12 56 12 L 28 12 z M 28 14 L 56 14 L 56.001953 16 L 28 16 L 28 14 z M 4 22 L 60 22 L 60 53 C 60 53.551 59.551 54 59 54 L 5 54 C 4.449 54 4 53.551 4 53 L 4 22 z'); 
-    	svgElement.appendChild(pathElement1);
-    	
-    	let pathElement11 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement11.setAttribute('class','coloredTransactionLine');
-    	pathElement11.setAttribute('d',' M 8 13 A 2 2 0 0 0 6 15 A 2 2 0 0 0 8 17 A 2 2 0 0 0 10 15 A 2 2 0 0 0 8 13 z'); 
-    	svgElement.appendChild(pathElement11);
-    	
-    	let pathElement12 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement12.setAttribute('d',' M 14 13 A 2 2 0 0 0 12 15 A 2 2 0 0 0 14 17 A 2 2 0 0 0 16 15 A 2 2 0 0 0 14 13 z M 20 13 A 2 2 0 0 0 18 15 A 2 2 0 0 0 20 17 A 2 2 0 0 0 22 15 A 2 2 0 0 0 20 13 z '); 
-    	svgElement.appendChild(pathElement12);
-    	
-    	let pathElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement2.setAttribute('class','coloredTransactionLine');
-    	pathElement2.setAttribute('d','M 11 27.974609 C 10.448 27.974609 10 28.422609 10 28.974609 C 10 29.526609 10.448 29.974609 11 29.974609 L 15 29.974609 C 15.552 29.974609 16 29.526609 16 28.974609 C 16 28.422609 15.552 27.974609 15 27.974609 L 11 27.974609 z M 19 27.974609 C 18.448 27.974609 18 28.422609 18 28.974609 C 18 29.526609 18.448 29.974609 19 29.974609 L 33 29.974609 C 33.552 29.974609 34 29.526609 34 28.974609 C 34 28.422609 33.552 27.974609 33 27.974609 L 19 27.974609 z'); 
-    	svgElement.appendChild(pathElement2);
-    	
-    	let pathElement21 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement21.setAttribute('d',' M 39 27.974609 C 38.448 27.974609 38 28.422609 38 28.974609 C 38 29.526609 38.448 29.974609 39 29.974609 L 41 29.974609 C 41.552 29.974609 42 29.526609 42 28.974609 C 42 28.422609 41.552 27.974609 41 27.974609 L 39 27.974609 z M 45 27.974609 C 44.448 27.974609 44 28.422609 44 28.974609 C 44 29.526609 44.448 29.974609 45 29.974609 L 47 29.974609 C 47.552 29.974609 48 29.526609 48 28.974609 C 48 28.422609 47.552 27.974609 47 27.974609 L 45 27.974609 z M 51 27.974609 C 50.448 27.974609 50 28.422609 50 28.974609 C 50 29.526609 50.448 29.974609 51 29.974609 L 53 29.974609 C 53.552 29.974609 54 29.526609 54 28.974609 C 54 28.422609 53.552 27.974609 53 27.974609 L 51 27.974609 z');
-    	svgElement.appendChild(pathElement21);
-    	
-    	let pathElement3 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement3.setAttribute('class','coloredTransactionLine');
-    	pathElement3.setAttribute('d','M 11 33.974609 C 10.448 33.974609 10 34.422609 10 34.974609 C 10 35.526609 10.448 35.974609 11 35.974609 L 15 35.974609 C 15.552 35.974609 16 35.526609 16 34.974609 C 16 34.422609 15.552 33.974609 15 33.974609 L 11 33.974609 z M 19 33.974609 C 18.448 33.974609 18 34.422609 18 34.974609 C 18 35.526609 18.448 35.974609 19 35.974609 L 33 35.974609 C 33.552 35.974609 34 35.526609 34 34.974609 C 34 34.422609 33.552 33.974609 33 33.974609 L 19 33.974609 z'); 
-    	svgElement.appendChild(pathElement3);
-    	
-    	let pathElement31 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement31.setAttribute('d',' M 45 33.974609 C 44.448 33.974609 44 34.422609 44 34.974609 C 44 35.526609 44.448 35.974609 45 35.974609 L 47 35.974609 C 47.552 35.974609 48 35.526609 48 34.974609 C 48 34.422609 47.552 33.974609 47 33.974609 L 45 33.974609 z M 51 33.974609 C 50.448 33.974609 50 34.422609 50 34.974609 C 50 35.526609 50.448 35.974609 51 35.974609 L 53 35.974609 C 53.552 35.974609 54 35.526609 54 34.974609 C 54 34.422609 53.552 33.974609 53 33.974609 L 51 33.974609 z'); 
-    	svgElement.appendChild(pathElement31);
-    	
-    	let pathElement4 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement4.setAttribute('class','coloredTransactionLine');
-    	pathElement4.setAttribute('d','M 11 39.974609 C 10.448 39.974609 10 40.422609 10 40.974609 C 10 41.526609 10.448 41.974609 11 41.974609 L 15 41.974609 C 15.552 41.974609 16 41.526609 16 40.974609 C 16 40.422609 15.552 39.974609 15 39.974609 L 11 39.974609 z M 19 39.974609 C 18.448 39.974609 18 40.422609 18 40.974609 C 18 41.526609 18.448 41.974609 19 41.974609 L 33 41.974609 C 33.552 41.974609 34 41.526609 34 40.974609 C 34 40.422609 33.552 39.974609 33 39.974609 L 19 39.974609 z'); 
-    	svgElement.appendChild(pathElement4);
-    	
-    	let pathElement41 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement41.setAttribute('d','M 39 39.974609 C 38.448 39.974609 38 40.422609 38 40.974609 C 38 41.526609 38.448 41.974609 39 41.974609 L 41 41.974609 C 41.552 41.974609 42 41.526609 42 40.974609 C 42 40.422609 41.552 39.974609 41 39.974609 L 39 39.974609 z M 45 39.974609 C 44.448 39.974609 44 40.422609 44 40.974609 C 44 41.526609 44.448 41.974609 45 41.974609 L 47 41.974609 C 47.552 41.974609 48 41.526609 48 40.974609 C 48 40.422609 47.552 39.974609 47 39.974609 L 45 39.974609 z M 51 39.974609 C 50.448 39.974609 50 40.422609 50 40.974609 C 50 41.526609 50.448 41.974609 51 41.974609 L 53 41.974609 C 53.552 41.974609 54 41.526609 54 40.974609 C 54 40.422609 53.552 39.974609 53 39.974609 L 51 39.974609 z ');
-    	svgElement.appendChild(pathElement41);
-    	
-    	let pathElement5 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement5.setAttribute('d','M 7 48 C 6.448 48 6 48.448 6 49 L 6 51 C 6 51.552 6.448 52 7 52 C 7.552 52 8 51.552 8 51 L 8 49 C 8 48.448 7.552 48 7 48 z M 12 48 C 11.448 48 11 48.448 11 49 L 11 51 C 11 51.552 11.448 52 12 52 C 12.552 52 13 51.552 13 51 L 13 49 C 13 48.448 12.552 48 12 48 z M 17 48 C 16.448 48 16 48.448 16 49 L 16 51 C 16 51.552 16.448 52 17 52 C 17.552 52 18 51.552 18 51 L 18 49 C 18 48.448 17.552 48 17 48 z M 22 48 C 21.448 48 21 48.448 21 49 L 21 51 C 21 51.552 21.448 52 22 52 C 22.552 52 23 51.552 23 51 L 23 49 C 23 48.448 22.552 48 22 48 z M 27 48 C 26.448 48 26 48.448 26 49 L 26 51 C 26 51.552 26.448 52 27 52 C 27.552 52 28 51.552 28 51 L 28 49 C 28 48.448 27.552 48 27 48 z M 32 48 C 31.448 48 31 48.448 31 49 L 31 51 C 31 51.552 31.448 52 32 52 C 32.552 52 33 51.552 33 51 L 33 49 C 33 48.448 32.552 48 32 48 z M 37 48 C 36.448 48 36 48.448 36 49 L 36 51 C 36 51.552 36.448 52 37 52 C 37.552 52 38 51.552 38 51 L 38 49 C 38 48.448 37.552 48 37 48 z M 42 48 C 41.448 48 41 48.448 41 49 L 41 51 C 41 51.552 41.448 52 42 52 C 42.552 52 43 51.552 43 51 L 43 49 C 43 48.448 42.552 48 42 48 z M 47 48 C 46.448 48 46 48.448 46 49 L 46 51 C 46 51.552 46.448 52 47 52 C 47.552 52 48 51.552 48 51 L 48 49 C 48 48.448 47.552 48 47 48 z M 52 48 C 51.448 48 51 48.448 51 49 L 51 51 C 51 51.552 51.448 52 52 52 C 52.552 52 53 51.552 53 51 L 53 49 C 53 48.448 52.552 48 52 48 z M 57 48 C 56.448 48 56 48.448 56 49 L 56 51 C 56 51.552 56.448 52 57 52 C 57.552 52 58 51.552 58 51 L 58 49 C 58 48.448 57.552 48 57 48 z'); 
-    	svgElement.appendChild(pathElement5);
-
-    	return svgElement;
-    	
 	}
 
 }(jQuery));

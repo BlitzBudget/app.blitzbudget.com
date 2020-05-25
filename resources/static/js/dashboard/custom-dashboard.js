@@ -742,7 +742,7 @@ er = {
 	
 	//convert from currency format to number
 	convertToNumberFromCurrency(amount, currentCurrencyPreference){
-		return round(parseFloat(trimElement(firstElement(splitElement(amount,currentCurrencyPreference))).replace(/[^0-9.-]+/g,"")),2);
+		return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount,currentCurrencyPreference))), "en-US")),2);
 	},
 	
 	// Security check to ensure that the category is present in the map
@@ -955,7 +955,7 @@ function fetchJSONForCategories(data) {
 
 	if(isNotEmpty(data)) {
 		for(let i=0,len=data.length;i<len;i++) {
-			dataNameMap[data[i]['category_name']] = data[i].categoryId;
+			dataNameMap[data[i]['category_name']] = data[i];
 		}
 	}
 	
@@ -963,6 +963,7 @@ function fetchJSONForCategories(data) {
 		  let value = window.defaultCategories[count];
 		  // While Changing the dates delete the ID field.
 		  delete value.id;
+		  delete value.categoryTotal;
 
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
@@ -971,10 +972,12 @@ function fetchJSONForCategories(data) {
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
-		  let categoryId = dataNameMap[value.name];
-		  if(isNotEmpty(categoryId)) {
+		  let categoryData = dataNameMap[value.name];
+		  if(isNotEmpty(categoryData)) {
+		  	let categoryId = categoryData.categoryId;
 		  	inputValue.value = categoryId;
 		  	value.id = categoryId;
+		  	value.categoryTotal = categoryData['category_total'];
 		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
