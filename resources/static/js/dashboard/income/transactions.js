@@ -232,7 +232,7 @@
 		values['amount'] = amount;
 		values['description'] = description;
 		values['dateMeantFor'] = window.currentDateAsID;
-		values['recurrence'] = recurrenceValues[recurrenceValue];
+		values['recurrence'] = recurrenceValue;
 		values['account'] = window.selectedBankAccountId;
 		values['walletId'] = window.currentUser.walletId;
 
