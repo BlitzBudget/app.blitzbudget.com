@@ -450,46 +450,32 @@
 		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference ,1000);
 		   
 		   // Build Pie chart
-		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions), 'chartFinancialPosition');
+		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions), 'chartFinancialPosition');
 		   
 	}
 	
 	// Update the pie chart with transactions data
-	function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions) {
+	function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
 		let dataPreferences = {};
 		if(totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
 			replaceHTML('legendPieChart', 'Please fill in adequare data build the chart');
-		} else if (totalIncomeTransactions < totalExpensesTransactions) {
-			let totalDeficitDifference = totalExpensesTransactions - totalIncomeTransactions;
-			let totalDeficitAsPercentageOfExpense = round(((totalDeficitDifference / totalExpensesTransactions) * 100),1);
-			   
-			let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalDeficitDifference) / totalExpensesTransactions) * 100),1);
-			   
-			// labels: [INCOME,EXPENSE,AVAILABLE]
-			dataPreferences = {
-		                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
-		                series: [totalIncomeTransactions,,totalDeficitDifference]
-		            };
-			
+		} else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
 			replaceHTML('legendPieChart', 'Total Income & Total Overspent as a percentage of Total Expense');
 			replaceHTML('totalAvailableLabel', 'Total Overspent');
 		} else  {
-			// (totalIncomeTransactions > totalExpensesTransactions) || (totalIncomeTransactions == totalExpensesTransactions)
-			let totalAvailable = totalIncomeTransactions - totalExpensesTransactions;
-			let totalAvailableAsPercentageOfIncome = round(((totalAvailable / totalIncomeTransactions) * 100),1);
-			   
-			let totalExpenseAsPercentageOfIncome = round((((totalIncomeTransactions - totalAvailable) / totalIncomeTransactions) * 100),1);
-			   
-			// labels: [INCOME,EXPENSE,AVAILABLE]
-			dataPreferences = {
-		                labels: [, totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'],
-		                series: [, totalExpensesTransactions,totalAvailable]
-		            };
-			
 			replaceHTML('legendPieChart', 'Total Expense & Total Available as a percentage of Total Income');
 			replaceHTML('totalAvailableLabel', 'Total Available');
-		        
 		}
+
+		let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
+			   
+		let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalAvailableTransactions) / totalExpensesTransactions) * 100),1);
+		   
+		// labels: [INCOME,EXPENSE,AVAILABLE]
+		dataPreferences = {
+	                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
+	                series: [Math.abs(totalIncomeTransactions),,Math.abs(totalAvailableTransactions)]
+	            };
 		
 		return dataPreferences;
 		
@@ -1227,7 +1213,7 @@
 				} else { 
 					accBal.classList.add('incomeCategory');
 				}
-				accBal.innerText = formatToCurrency(Math.abs(bankAcc['account_balance']));
+				accBal.innerText = formatToCurrency(bankAcc['account_balance']);
 				// Append Empty Table to child
 				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
 				// Append to the transaction view

@@ -248,7 +248,7 @@ let tickIconSVG = tickIcon();
 		
 		// Populate the JSON form data
     	var values = {};
-		values['bankAccountId'] = bnkAccountId
+		values['accountId'] = bnkAccountId
 		values['selectedAccount'] = true;
 		values['walletId'] = currentUser.walletId;
 

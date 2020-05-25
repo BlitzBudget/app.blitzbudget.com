@@ -110,7 +110,7 @@
 
 	        	// Append as Selected Account
 		        for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-		    		if(allBankAccountInfoCache[i].id == currentAccountId) {
+		    		if(allBankAccountInfoCache[i].accountId == currentAccountId) {
 		    			// Account Balance update in preview
 		    			allBankAccountInfoCache[i]['account_balance'] = bankAccount.accountBalance;
 		    			// Position of the row

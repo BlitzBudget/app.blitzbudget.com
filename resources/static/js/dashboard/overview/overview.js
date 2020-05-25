@@ -9,11 +9,11 @@
 	// SECURITY: Defining Immutable properties as constants
 	Object.defineProperties(OVERVIEW_CONSTANTS, {
 		'yearlyOverview': { value: 'One Year Overview', writable: false, configurable: false },
+		'incomeTotalParam': { value: 'Income', writable: false, configurable: false },
+		'expenseTotalParam': { value: 'Expense', writable: false, configurable: false },
 	});
 	// Lifetime Income Transactions cache
-	let liftimeIncomeTransactionsCache = {};
-	// Lifetime Expense Transactions Cache
-	let liftimeExpenseTransactionsCache = {};
+	let liftimeTransactionsCache = {};
 	// Available Transactions with fund
 	let userBudgetWithFund = {};
 	// populate category breakdown for income or expense
@@ -25,8 +25,6 @@
 	let previousDateYearPicker = currentYearSelect - 2;
 	// Cache the next year Picker data
 	let nextDateYearPicker = currentYearSelect+2;
-	// populate category breakdown for income or expense
-	let fetchIncomeLineChartCache = true;
 	// selected year in year picker
 	let selectedYearIYPCache = 0;
 
@@ -102,12 +100,7 @@
 			
 			// Set chosen date
 			er.setChosenDateWithSelected(this);
-			
-			// Populate Recent transactions
-			populateRecentTransactions();
-			
-			// Fetch transaction total and Optimizations (Populate Category Breakdown chart if open)
-			fetchCategoryTotalForTransactions();
+			fetchOverview();
 			
 		});
 	}
@@ -882,27 +875,22 @@
 	 */ 
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter, dateAndAmountAsList) {
-		 	
+		// Store it in a cache
+    	liftimeTransactionsCache = dateAndAmountAsList;
+    	// Make it reasonably immutable
+    	Object.freeze(liftimeTransactionsCache);
+    	Object.seal(liftimeTransactionsCache);
 	 	// Income or Expense Chart Options
 	 	let incomeOrExpense = '';
 	 	
  		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
- 			// Store it in a cache
-        	liftimeIncomeTransactionsCache = dateAndAmountAsList;
-        	// Make it reasonably immutable
-        	Object.freeze(liftimeIncomeTransactionsCache);
-        	Object.seal(liftimeIncomeTransactionsCache);
+ 			
         	
         	incomeOrExpense ='Income';
 
         	calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
         	
  		}  else {
- 			// Store it in a cache
-        	liftimeExpenseTransactionsCache = dateAndAmountAsList;
-        	// Make it reasonably immutable
-        	Object.freeze(liftimeExpenseTransactionsCache);
-        	Object.seal(liftimeExpenseTransactionsCache);
         	
  			incomeOrExpense = 'Expense';
 
@@ -1024,8 +1012,6 @@
     			// Hide the Year Picker in Overview Chart Display
     			hideYearPickerICD(true);
         	} else {
-        		// Fetch line chart Income or expense cache
-        		fetchIncomeLineChartCache = true;
         		// Replace the Drop down with one year view
     			replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
     			// Replace the selected year picker cache to 0
@@ -1034,7 +1020,7 @@
     			overviewChartMonthDisplay();
     			// Generate Year Picker and replace it with current Year
     			dynamicYearGeneration();
-    			populateLineChart(liftimeIncomeTransactionsCache, true);
+    			populateLineChart(liftimeTransactionsCache, true);
     			// Hide the Year Picker in Overview Chart Display
     			hideYearPickerICD(false);
         	}
@@ -1054,15 +1040,13 @@
     			// Hide the Year Picker in Overview Chart Display
     			hideYearPickerICD(true);
         	} else {
-        		// Fetch line chart Income or expense cache
-        		fetchIncomeLineChartCache = false;
         		// Replace the selected year picker cache to 0
     			selectedYearIYPCache = 0;
     			// Replace with current year display
     			overviewChartMonthDisplay();
     			// Generate Year Picker and replace it with current Year
     			dynamicYearGeneration();
-        		populateLineChart(liftimeExpenseTransactionsCache, false);
+        		populateLineChart(liftimeTransactionsCache, false);
     			// Replace the Drop down with one year view
     			replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
     			// Hide the Year Picker in Overview Chart Display
@@ -1253,7 +1237,7 @@
 	}
 	
 	// Chart Income One Year Overview
-	$( "#chooseCategoryDD" ).on( "click", ".chartOverviewIncome" ,function() {
+	$( "body" ).on( "click", "#chooseCategoryDD .chartOverviewIncome" ,function() {
 		replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
 		
 		// Replace the selected year picker cache to 0
@@ -1263,17 +1247,15 @@
 		// Generate Year Picker and replace it with current Year
 		dynamicYearGeneration();
 		// populate the income line chart from cache
-		populateLineChart(liftimeIncomeTransactionsCache, true);
+		populateLineChart(liftimeTransactionsCache, true);
 		// Dough nut breakdown open cache
 		doughnutBreakdownOpen = false;
-		// Fetch income or expense line chart
-		fetchIncomeLineChartCache = true;
 		// Show the Year Picker for line chart
 		hideYearPickerICD(false);
 	});
 	
 	// Chart Income Breakdown Chart
-	$( "#chooseCategoryDD" ).on( "click", ".chartBreakdownIncome" ,function() {
+	$( "body" ).on( "click", "#chooseCategoryDD .chartBreakdownIncome" ,function() {
 		replaceChartChosenLabel('Income Overview');
 		
 		// Populate Breakdown Category
@@ -1287,7 +1269,7 @@
 	});
 	
 	// Chart Expense One Year Overview
-	$( "#chooseCategoryDD" ).on( "click", ".chartOverviewExpense" ,function() {
+	$( "body" ).on( "click", "#chooseCategoryDD .chartOverviewExpense" ,function() {
 		replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
 		
 		// Replace the selected year picker cache to 0
@@ -1297,17 +1279,15 @@
 		// Generate Year Picker and replace it with current Year
 		dynamicYearGeneration();
 		// Populate the expense line chart from cache
-		populateLineChart(liftimeExpenseTransactionsCache, false);
+		populateLineChart(liftimeTransactionsCache, false);
 		// Dough nut breakdown open cache
 		doughnutBreakdownOpen = false;
-		// Fetch income or expense line chart
-		fetchIncomeLineChartCache = false;
 		// Show the Year Picker for line chart
 		hideYearPickerICD(false);
 	});
 	
 	// Chart Expense  Breakdown Chart
-	$( "#chooseCategoryDD" ).on( "click", ".chartBreakdownExpense" ,function() {
+	$( "body" ).on( "click", "#chooseCategoryDD .chartBreakdownExpense" ,function() {
 		replaceChartChosenLabel('Expense Breakdown');
 		
 		// Populate Breakdown Category
@@ -1338,28 +1318,26 @@
 		let categoryKeys = Object.keys(categoryTotalMapCache);
 		for(let count = 0, length = categoryKeys.length; count < length; count++) {
 			let categoryId = categoryKeys[count];
-			let categoryTotal = categoryTotalMapCache[categoryId];
-			let categoryObject = categoryMap[categoryId];
-			if(categoryObject.type == incomeCategory) {
+			let categoryObject = categoryTotalMapCache[categoryId];
+			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
 				// Add the category total to absolute total
-				absoluteTotal += categoryTotal;
+				absoluteTotal += Math.abs(categoryObject.categoryTotal);
 			}
 		}
 		
 		// Build the legend and the series array
 		for(let count = 0, length = categoryKeys.length; count < length; count++) {
 			let categoryId = categoryKeys[count];
-			let categoryTotal = categoryTotalMapCache[categoryId];
+			let categoryObject = categoryTotalMapCache[categoryId];
 			
-			let categoryObject = categoryMap[categoryId];
-			if(categoryObject.type == incomeCategory) {
-				let percentageOfTotal = (categoryTotal / absoluteTotal) * 100;
+			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
+				let percentageOfTotal = (Math.abs(categoryObject.categoryTotal) / absoluteTotal) * 100;
 				// If the total is greater than 5 % then print it separate else accumulate it with others
 				if(percentageOfTotal > 5) {
 					labelsArray.push(categoryObject.name);
-					seriesArray.push(categoryTotal);
+					seriesArray.push(Math.abs(categoryObject.categoryTotal));
 				} else {
-					othersTotal += categoryTotal;
+					othersTotal += Math.abs(categoryObject.categoryTotal);
 					otherLabels.push(categoryObject.name);
 				}
 				
@@ -1655,11 +1633,7 @@
 		this.classList.add("font-weight-bold", "twoBThreeOneColor");
 		// Upon refresh call the income overview chart
 		if(!doughnutBreakdownOpen) {
-			if(fetchIncomeLineChartCache) {
-				populateLineChart(liftimeIncomeTransactionsCache, true);
-			} else {
-				populateLineChart(liftimeExpenseTransactionsCache, false);
-			}
+			populateLineChart(liftimeTransactionsCache, true);
 		}
 		
 	});
