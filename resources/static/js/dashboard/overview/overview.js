@@ -25,8 +25,6 @@
 	let previousDateYearPicker = currentYearSelect - 2;
 	// Cache the next year Picker data
 	let nextDateYearPicker = currentYearSelect+2;
-	// selected year in year picker
-	let selectedYearIYPCache = 0;
 
 	/**
 	* Get Overview
@@ -73,6 +71,9 @@
 	    let genericAddFnc = document.getElementById('genericAddFnc');
 	    genericAddFnc.classList.add('d-none');
 
+	    // Add highlighted element to the income
+		document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
+
 		/**
 		 * Date Picker
 		 */
@@ -106,10 +107,6 @@
 	}
 
 	function fetchOverview() {
-		// Add highlighted element to the income
-		document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
-		// Dynamically generate year
-		dynamicYearGeneration();
 		
 		let budgetDivFragment = document.createDocumentFragment();
 
@@ -146,7 +143,6 @@
 			 */ 
 			populateRecentTransactions(result.Transaction);
 			populateIncomeAverage(result.averageIncome);
-			overviewChartMonthDisplay();
 			populateExpenseAverage(result.averageExpense);
 			// Upon refresh call the income overview chart
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, result.Date);
@@ -875,6 +871,11 @@
 	 */ 
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter, dateAndAmountAsList) {
+		// If donut chart is open then do nothing
+		if(doughnutBreakdownOpen) {
+			return;
+		}
+
 		// Store it in a cache
     	liftimeTransactionsCache = dateAndAmountAsList;
     	// Make it reasonably immutable
@@ -905,25 +906,21 @@
 		let labelsArray = [];
 		let seriesArray = [];
 		
+		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+		// Replace inner HTML with EMPTY
+		while (chartAppendingDiv.firstChild) {
+			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+		}
 		// Replace with empty chart message
     	if(isEmpty(dateAndAmountAsList)) {
-    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		chartAppendingDiv.appendChild(buildEmptyChartMessage());
     		return;
     	}
     	
     	// If year selected in IYP then 
     	let countValue = 0;
-    	if(!selectedYearIYPCache) {
-    		// One year of data at a time;
-        	countValue = dateAndAmountAsList.length > 12 ? (dateAndAmountAsList.length - 12) : 0;
-    	}
+    	// One year of data at a time;
+        countValue = dateAndAmountAsList.length > 12 ? (dateAndAmountAsList.length - 12) : 0;
     	
     	for(let countGrouped = countValue, length = dateAndAmountAsList.length; countGrouped < length; countGrouped++) {
     		let dateItem = dateAndAmountAsList[countGrouped];
@@ -931,45 +928,19 @@
          	// Convert the date key as date
          	let dateAsDate = new Date(lastElement(splitElement(dateItem.dateId,'#')));
          	
-         	// If selected year is present
-         	if(selectedYearIYPCache) {
-         		if(selectedYearIYPCache == dateAsDate.getFullYear()) {
-         			labelsArray.push(months[dateAsDate.getMonth()].slice(0,3) + " '" + dateAsDate.getFullYear().toString().slice(-2));
-                 	
-                 	// Build the series array with total amount for date
-                 	seriesArray.push(dateItem[totalAm]);
-         		}
-         		// If year is valid then skip the next lines in for loop
-         		continue;
-         	}
-         	
          	labelsArray.push(months[dateAsDate.getMonth()].slice(0,3) + " '" + dateAsDate.getFullYear().toString().slice(-2));
          	
          	// Build the series array with total amount for date
          	seriesArray.push(dateItem[totalAm]);
          	
     	}
-    	
-    	// Replace with empty chart message (selectedYearIYPCache == 'EXISTS')
+
+    	// Replace with empty chart message
     	if(isEmpty(seriesArray)) {
-    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		chartAppendingDiv.appendChild(buildEmptyChartMessage());
     		return;
     	} else if(seriesArray.length == 1){
-    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildInsufficientInfoMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		chartAppendingDiv.appendChild(buildInsufficientInfoMessage());
     		return;
     	}
     	
@@ -1009,20 +980,10 @@
         		populateCategoryBreakdown(fetchIncomeBreakDownCache);
         		// Replace the Drop down with one year view
     			replaceChartChosenLabel('Income Breakdown');
-    			// Hide the Year Picker in Overview Chart Display
-    			hideYearPickerICD(true);
         	} else {
         		// Replace the Drop down with one year view
     			replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
-    			// Replace the selected year picker cache to 0
-    			selectedYearIYPCache = 0;
-    			// Replace with current year display
-    			overviewChartMonthDisplay();
-    			// Generate Year Picker and replace it with current Year
-    			dynamicYearGeneration();
     			populateLineChart(liftimeTransactionsCache, true);
-    			// Hide the Year Picker in Overview Chart Display
-    			hideYearPickerICD(false);
         	}
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Income Overview';
 			// Replace the drop down for chart options
@@ -1037,20 +998,10 @@
         		populateCategoryBreakdown(fetchIncomeBreakDownCache);
         		// Replace the Drop down with one year view
     			replaceChartChosenLabel('Expense Breakdown');
-    			// Hide the Year Picker in Overview Chart Display
-    			hideYearPickerICD(true);
         	} else {
-        		// Replace the selected year picker cache to 0
-    			selectedYearIYPCache = 0;
-    			// Replace with current year display
-    			overviewChartMonthDisplay();
-    			// Generate Year Picker and replace it with current Year
-    			dynamicYearGeneration();
         		populateLineChart(liftimeTransactionsCache, false);
     			// Replace the Drop down with one year view
     			replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
-    			// Hide the Year Picker in Overview Chart Display
-    			hideYearPickerICD(false);
         	}
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Expense Overview';
 			// Replace the drop down for chart options
@@ -1060,8 +1011,6 @@
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Asset Chart
 			populateAssetBarChart(true);
-			// Hide the Year Picker in Overview Chart Display
-    		hideYearPickerICD(true);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Asset Overview';
 		} else if(firstChildClassList.contains('debtImage')) {
@@ -1069,16 +1018,12 @@
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Debt Chart
 			populateAssetBarChart(false);
-			// Hide the Year Picker in Overview Chart Display
-    		hideYearPickerICD(true);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Debt Overview';
 		} else if(firstChildClassList.contains('networthImage')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			populateNetworthBarChart();
-			// Hide the Year Picker in Overview Chart Display
-    		hideYearPickerICD(true);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Networth Overview';
 		}
@@ -1239,19 +1184,10 @@
 	// Chart Income One Year Overview
 	$( "body" ).on( "click", "#chooseCategoryDD .chartOverviewIncome" ,function() {
 		replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
-		
-		// Replace the selected year picker cache to 0
-		selectedYearIYPCache = 0;
-		// Replace with current year display
-		overviewChartMonthDisplay();
-		// Generate Year Picker and replace it with current Year
-		dynamicYearGeneration();
 		// populate the income line chart from cache
 		populateLineChart(liftimeTransactionsCache, true);
 		// Dough nut breakdown open cache
 		doughnutBreakdownOpen = false;
-		// Show the Year Picker for line chart
-		hideYearPickerICD(false);
 	});
 	
 	// Chart Income Breakdown Chart
@@ -1264,26 +1200,15 @@
 		fetchIncomeBreakDownCache = true;
 		// Dough nut breakdown open cache
 		doughnutBreakdownOpen = true;
-		// Hide the Year Picker for line chart
-		hideYearPickerICD(true);
 	});
 	
 	// Chart Expense One Year Overview
 	$( "body" ).on( "click", "#chooseCategoryDD .chartOverviewExpense" ,function() {
 		replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
-		
-		// Replace the selected year picker cache to 0
-		selectedYearIYPCache = 0;
-		// Replace with current year display
-		overviewChartMonthDisplay();
-		// Generate Year Picker and replace it with current Year
-		dynamicYearGeneration();
 		// Populate the expense line chart from cache
 		populateLineChart(liftimeTransactionsCache, false);
 		// Dough nut breakdown open cache
 		doughnutBreakdownOpen = false;
-		// Show the Year Picker for line chart
-		hideYearPickerICD(false);
 	});
 	
 	// Chart Expense  Breakdown Chart
@@ -1296,8 +1221,6 @@
 		fetchIncomeBreakDownCache = false;
 		// Dough nut breakdown open cache
 		doughnutBreakdownOpen = true;
-		// Hide the Year Picker for line chart
-		hideYearPickerICD(true);
 	});
 	
 	// Populate Breakdown Category
@@ -1354,16 +1277,14 @@
 			seriesArray.push(othersTotal);
 		}
 		
+		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+		// Replace inner HTML with EMPTY
+		while (chartAppendingDiv.firstChild) {
+			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+		}
 		// Replace with empty chart message
     	if(isEmpty(seriesArray)) {
-    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		chartAppendingDiv.appendChild(buildEmptyChartMessage());
     		return;
     	} 
 		
@@ -1460,224 +1381,22 @@
 		chosenChartLabel[0].innerText = chosenChartText;
 	}
 	
-	/**
-	 * Overview Chart Month Display
-	 */
-	
-	// Display Month Chart Display
-	function overviewChartMonthDisplay() {
-		let monthDisplay = document.getElementById('overviewChartMonth');
-		
-		// Year Display
-		let currentDate = new Date();
-		
-		// If month is December then show only the current year 
-		if(currentDate.getMonth() == 11) {
-			monthDisplay.innerText = currentDate.getFullYear();
-		} else {
-			monthDisplay.innerText = (Number(currentDate.getFullYear()) - 1) + ' - ' + currentDate.getFullYear()
-		}
-	}
-	
-	/**
-	 * Year Picker
-	 */
-	$('body').on('click', '#chartDisplayTitle' , function(e) {
-		// If the doughnut chart is open then return
-		if(doughnutBreakdownOpen) {
-			return;
-		}
-		
-		showOrHideYearPopover(this);
-	});
-	
-	// Show popover year
-	function showOrHideYearPopover(elem) {
-		let overviewYearPickerClass = document.getElementById('overviewYearPicker').classList;
-		if(overviewYearPickerClass.contains('d-none')) {
-			// Add click outside event listener to close the modal
-			document.addEventListener('mouseup', closeYearPickerModal, false);
-		}
-		
-		// Show the popover
-		overviewYearPickerClass.toggle('d-none');
-		
-		// Convert SVG to upward arrow
-		elem.lastElementChild.classList.toggle('transformUpwardArrow');
-	}
-	
-	function dynamicYearGeneration() {
-		let yearPickerParent = document.getElementsByClassName('yearPicker');
-		// Replace inner HTML with EMPTY
-		while (yearPickerParent[0].firstChild) {
-			yearPickerParent[0].removeChild(yearPickerParent[0].firstChild);
-		}
-		// Append Child Years
-		appendChildYears(yearPickerParent[0], new Date().getFullYear());
-	}
-	
-	// Append child years
-	function appendChildYears(yearPickerParent, currentyear) {
-		let fiveYearDisplay = document.createDocumentFragment();
-		let minusTwoYearCache = currentyear-2;
-		let plusTwoYearCache = currentyear+2;
-		
-		let minusTwoYear = document.createElement('div');
-		minusTwoYear.classList = 'yearPickerDisplay';
-		minusTwoYear.innerText = minusTwoYearCache;
-		fiveYearDisplay.appendChild(minusTwoYear);
-		
-		let minusOneYear = document.createElement('div');
-		minusOneYear.classList = 'yearPickerDisplay';
-		minusOneYear.innerText = currentyear-1;
-		fiveYearDisplay.appendChild(minusOneYear);
-		
-		let currentYearDis = document.createElement('div');
-		currentYearDis.classList = 'yearPickerDisplay font-weight-bold twoBThreeOneColor';
-		currentYearDis.innerText = currentyear;
-		fiveYearDisplay.appendChild(currentYearDis);
-		
-		let plusOneYear = document.createElement('div');
-		plusOneYear.classList = 'yearPickerDisplay';
-		plusOneYear.innerText = currentyear+1;
-		fiveYearDisplay.appendChild(plusOneYear);
-		
-		let plusTwoYear = document.createElement('div');
-		plusTwoYear.classList = 'yearPickerDisplay';
-		plusTwoYear.innerText = plusTwoYearCache;
-		fiveYearDisplay.appendChild(plusTwoYear);
-		
-		yearPickerParent.appendChild(fiveYearDisplay);
-		
-		// Load the cache with previous dates
-		previousDateYearPicker = minusTwoYearCache;
-		
-		// Load the cache with next dates
-		nextDateYearPicker = plusTwoYearCache;
-	}
-	
-	// Click the up button for year picker
-	$('body').on('click', '#monthPickerUp' , function(e) {
-		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
-		removeSelectedIYP();
-		let minusFourDateCache = previousDateYearPicker-5;
-		yearPickerParent[0].innerText = minusFourDateCache;
-		yearPickerParent[1].innerText = previousDateYearPicker-4;
-		yearPickerParent[2].innerText = previousDateYearPicker-3;
-		yearPickerParent[3].innerText = previousDateYearPicker-2;
-		yearPickerParent[4].innerText = previousDateYearPicker-1;
-		
-		// Load the cache with next dates
-		nextDateYearPicker = previousDateYearPicker;
-		
-		// Load the cache with previous dates
-		previousDateYearPicker = minusFourDateCache;
-		
-	});
-	
-	// Click the down button for year picker
-	$('body').on('click', '#monthPickerDown' , function(e) {
-		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
-		removeSelectedIYP();
-		let plusFourDateCache = nextDateYearPicker+4;
-		yearPickerParent[0].innerText = nextDateYearPicker;
-		yearPickerParent[1].innerText = nextDateYearPicker+1;
-		yearPickerParent[2].innerText = nextDateYearPicker+2;
-		yearPickerParent[3].innerText = nextDateYearPicker+3;
-		yearPickerParent[4].innerText = plusFourDateCache;
-		
-		// Load the cache with previous dates
-		previousDateYearPicker = nextDateYearPicker;
-		
-		// Load the cache with next dates
-		nextDateYearPicker = plusFourDateCache+1;
-		
-	});
-	
-	// remove selected in year picker
-	function removeSelectedIYP() {
-		let yearPickerParent = document.getElementsByClassName('yearPicker')[0].children;
-		$(yearPickerParent).removeClass('font-weight-bold twoBThreeOneColor');
-	}
-	
-	// Properly closes the year picker modal and performs year picker actions.
-	function closeYearPickerModal(event) {
-		
-		let yearPickerParent = document.getElementsByClassName('yearPickerWrapper')[0];
-		let overviewTitle = document.getElementById("chartDisplayTitle");
-		
-		if(overviewTitle.contains(event.target)) {
-			// Remove event listener once the function performed its task
-			document.removeEventListener('mouseup', closeYearPickerModal, false);
-			
-		} else if(!yearPickerParent.contains(event.target)) {
-			showOrHideYearPopover(document.getElementById("chartDisplayTitle"));
-			// Remove event listener once the function performed its task
-			document.removeEventListener('mouseup', closeYearPickerModal, false);
-		} 
-	}
-	
-	// On click year in year picker
-	$('body').on('click', '.yearPickerDisplay', function() {
-		// Remove the selected in year picker
-		removeSelectedIYP();
-		// Fetch the year and store in Cache
-		selectedYearIYPCache = Number(this.innerText);
-		// Display the month
-		document.getElementById('overviewChartMonth').innerText = selectedYearIYPCache;
-		// Show or hide year picker
-		showOrHideYearPopover(document.getElementById("chartDisplayTitle"));
-		// Remove event listener once the function performed its task
-		document.removeEventListener('mouseup', closeYearPickerModal, false);
-		// High light the selected
-		this.classList.add("font-weight-bold", "twoBThreeOneColor");
-		// Upon refresh call the income overview chart
-		if(!doughnutBreakdownOpen) {
-			populateLineChart(liftimeTransactionsCache, true);
-		}
-		
-	});
-	
-	// Toggle Year picker in chart display
-	function hideYearPickerICD(hideElement) {
-		let overviewChartMonthDiv = document.getElementById('overviewChartMonth');
-		let dateMonthArrowDiv = document.getElementById('dateMonthArrow');
-		
-		if(hideElement) {
-			if(!overviewChartMonthDiv.classList.contains('d-none')) {
-				overviewChartMonthDiv.classList.add('d-none');
-			}
-			
-			if(!dateMonthArrowDiv.classList.contains('d-none')) {
-				dateMonthArrowDiv.classList.add('d-none');
-			}
-		} else {
-			if(overviewChartMonthDiv.classList.contains('d-none')) {
-				overviewChartMonthDiv.classList.remove('d-none');
-			}
-			
-			if(dateMonthArrowDiv.classList.contains('d-none')) {
-				dateMonthArrowDiv.classList.remove('d-none');
-			}
-		}
-	}
-
     /**
     * Build Total Assets / liability
     **/
     function populateAssetBarChart(fetchAssets) {
     	// Fetch asset or liability
-    	let arrayOfAccCat = fetchAssets ? window.assetCategoryTypeRel : window.liabilityCategoryTypeRel;
+    	let accType = fetchAssets ? 'ASSET' : 'DEBT';
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
 		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
 
-		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, arrayOfAccCat);
+		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, accType);
     }
 
     // Build Barchart For Asset Or Debt
-    function buildBarchartForAssetOrDebt(bankAccountList, arrayOfAccCat) {
+    function buildBarchartForAssetOrDebt(bankAccountList, accType) {
     	let labelsArray = [];
 		let seriesArray = [];
 		
@@ -1685,7 +1404,7 @@
 		for(let i = 0, length = bankAccountList.length; i < length; i++) {
 			let bankAcc = bankAccountList[i];
 			// Ensure if the asset type matches the bank account
-			if(includesStr(arrayOfAccCat, bankAcc.accountType)) {
+			if(isEqual(accType,bankAcc['account_type'])) {
 				labelsArray.push(bankAcc['bank_account_name']);
 				seriesArray.push(bankAcc['account_balance']);	
 			}
@@ -1696,16 +1415,14 @@
             series: seriesArray
         };
 
+        let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+        // Replace inner HTML with EMPTY
+    	while (chartAppendingDiv.firstChild) {
+			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+		}
     	// If series array is empty then
     	if(isEmpty(seriesArray)) {
-    		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    		let emptyMessageDocumentFragment = document.createDocumentFragment();
-    		emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
-    		// Replace inner HTML with EMPTY
-    		while (chartAppendingDiv.firstChild) {
-    			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    		}
-    		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
+    		chartAppendingDiv.appendChild(buildEmptyChartMessage());
     		return;
     	} else if(seriesArray.length == 1) {
     		// Absolute total is the first series element

@@ -963,6 +963,7 @@ function fetchJSONForCategories(data) {
 		  let value = window.defaultCategories[count];
 		  // While Changing the dates delete the ID field.
 		  delete value.id;
+		  delete value.categoryTotal;
 
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
