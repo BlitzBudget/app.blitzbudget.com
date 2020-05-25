@@ -55,7 +55,7 @@
             /**
 			* Get Overview
 			**/
-			fetchOverview();
+			fetchOverview(OVERVIEW_CONSTANTS.incomeTotalParam);
 			populateOverviewPage();
             // Set Current Page
 	        document.getElementById('currentPage').innerText = 'Overview';
@@ -101,12 +101,20 @@
 			
 			// Set chosen date
 			er.setChosenDateWithSelected(this);
-			fetchOverview();
+			// Calculate the income and expense image
+			let highlightedOverview = document.getElementsByClassName('highlightOverviewSelected')[0].firstElementChild.classList;
+			let expenseImage = highlightedOverview.contains('expenseImage');
+			let incomeImage = highlightedOverview.contains('incomeImage');
+			let incomeTotalParam;
+			if(expenseImage) {incomeTotalParam = OVERVIEW_CONSTANTS.expenseTotalParam;}
+			if(incomeImage) {incomeTotalParam = OVERVIEW_CONSTANTS.incomeTotalParam;}
+
+			fetchOverview(incomeTotalParam);
 			
 		});
 	}
 
-	function fetchOverview() {
+	function fetchOverview(incomeTotalParam) {
 		
 		let budgetDivFragment = document.createDocumentFragment();
 
@@ -145,7 +153,7 @@
 			populateIncomeAverage(result.averageIncome);
 			populateExpenseAverage(result.averageExpense);
 			// Upon refresh call the income overview chart
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, result.Date);
+			incomeOrExpenseOverviewChart(incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
 			replaceWithCurrency(result.Wallet);
 			/**
@@ -871,8 +879,9 @@
 	 */ 
 	
 	function incomeOrExpenseOverviewChart(incomeTotalParameter, dateAndAmountAsList) {
-		// If donut chart is open then do nothing
-		if(doughnutBreakdownOpen) {
+		// If donut chart is open then do nothing or If income Total Param is empty
+		if(doughnutBreakdownOpen 
+			|| isEmpty(incomeTotalParameter)) {
 			return;
 		}
 
