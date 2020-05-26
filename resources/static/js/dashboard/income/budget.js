@@ -130,7 +130,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
    			let budgets = result.Budget;
    			let dates = result.Date;
@@ -182,7 +182,7 @@
             type: ajaxData.type,
             dataType: ajaxData.dataType,
           	contentType: ajaxData.contentType,
-          	data : ajaxData.values,
+          	data : ajaxData.data,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});
@@ -519,7 +519,7 @@
        		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
        		ajaxData.dataType = "json";
        		ajaxData.contentType = "application/json;charset=UTF-8";
-       		ajaxData.values = JSON.stringify(values);
+       		ajaxData.data = JSON.stringify(values);
        		ajaxData.onSuccess = function registerSuccess(result){
        			  let userBudget = result['body-json'];
 	        	  // on success then replace the entered text 
@@ -542,7 +542,7 @@
 		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		          dataType: ajaxData.dataType,
 		          contentType: ajaxData.contentType,
-		          data : ajaxData.values,
+		          data : ajaxData.data,
 		          success: ajaxData.onSuccess,
 		          error: ajaxData.onFailure
 			});
@@ -679,7 +679,7 @@
    		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
         	  // Remove the budget modal
         	  let budgetDiv = document.getElementById('cardBudgetId-' + budgetId);
@@ -721,7 +721,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 		      contentType: ajaxData.contentType,
-		      data: ajaxData.values,
+		      data: ajaxData.data,
               success: ajaxData.onSuccess,
               error:  ajaxData.onFailure
 		});
@@ -813,7 +813,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudgets) {
 			userBudgets = userBudgets['body-json'];	        	
         	if(isEmpty(userBudgets)) {
@@ -866,7 +866,7 @@
 		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 		          dataType: ajaxData.dataType,
 		          contentType: ajaxData.contentType,
-		          data: ajaxData.values,
+		          data: ajaxData.data,
 		          success: ajaxData.onSuccess, 
 		          error: ajaxData.onFailure
 		  });
@@ -936,7 +936,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
    				// Filter the body
    				let userBudget = result['body-json'];
@@ -1064,7 +1064,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType,
-	          data: ajaxData.values,
+	          data: ajaxData.data,
 	          success: ajaxData.onSuccess,
 	          error:  ajaxData.onFailure
 		});
@@ -1143,7 +1143,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
    			let userBudget = result['body-json'];
    			// Assign new category to the user budget cache
@@ -1173,7 +1173,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType, 
-	          data : ajaxData.values,
+	          data : ajaxData.data,
 	          success: ajaxData.onSuccess,
 	          error:  ajaxData.onFailure
 		});
@@ -1497,7 +1497,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result){
    			  let userBudget = result['body-json'];
 	    	  // Update the cache containing user budgets
@@ -1520,7 +1520,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType,
-	          data : ajaxData.values,
+	          data : ajaxData.data,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
 		});
@@ -1559,7 +1559,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
+   		ajaxData.data = values;
    		ajaxData.onSuccess = function(userBudget){
    			userBudget = userBudget['body-json'];
         	  // Update the Budget Cache
@@ -1594,7 +1594,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType,
-	          data : ajaxData.values,
+	          data : ajaxData.data,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
 		});
@@ -1611,7 +1611,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = values;
+   		ajaxData.data = values;
    		ajaxData.onSuccess = function(userBudget){
    			userBudget = userBudget['body-json'];
         	// Update the Budget Cache
@@ -1642,7 +1642,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType,
-	          data : ajaxData.values,
+	          data : ajaxData.data,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
 		});

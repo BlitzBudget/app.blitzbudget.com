@@ -500,7 +500,7 @@
 				ajaxData.url = window._config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
 				ajaxData.dataType = "json";
    				ajaxData.contentType = "application/json;charset=UTF-8";
-   				ajaxData.values = JSON.stringify(values);
+   				ajaxData.data = JSON.stringify(values);
 				ajaxData.onSuccess = function(jsonObj) {
 		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
 		        	// Delete Wallet Id and Wallet Currency
@@ -517,7 +517,7 @@
 			        type: ajaxData.type,
 			        dataType: ajaxData.dataType,
           			contentType: ajaxData.contentType,
-          			data : ajaxData.values,
+          			data : ajaxData.data,
 			        success: ajaxData.onSuccess,
 			        error: ajaxData.onFailure
 	        	});
@@ -610,7 +610,7 @@
 					ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.resetAccountUrl;
 					ajaxData.dataType = "json";
    					ajaxData.contentType = "application/json;charset=UTF-8";
-   					ajaxData.values = JSON.stringify(values);
+   					ajaxData.data = JSON.stringify(values);
 					ajaxData.onSuccess = function(jsonObj) {
 				        localStorage.clear();
 				        window.location.href = window._config.home.invokeUrl;
@@ -624,7 +624,7 @@
 				        type: ajaxData.type,
 				        dataType: ajaxData.dataType,
           				contentType: ajaxData.contentType,
-          				data : ajaxData.values,
+          				data : ajaxData.data,
 				        success: ajaxData.onSuccess,
 				        error: ajaxData.onFailure
 		        	});

@@ -395,8 +395,10 @@ function animateValue(element, start, end, postfix ,duration) {
 			$(element).text(Math.ceil(this.someValue) + postfix);
 		},
 		complete: function() {
-			// Update the element's text with rounded-up value:
-			$(element).text(formatToCurrency(end));
+			if(isNotEmpty(postfix)) {
+				// Update the element's text with rounded-up value:
+				$(element).text(formatToCurrency(end));
+			}
 		}
 	});
 }

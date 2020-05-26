@@ -335,7 +335,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
         	er_a.populateBankInfo(result.BankAccount);
 
@@ -371,7 +371,7 @@
             type: ajaxData.type,
             dataType: ajaxData.dataType,
           	contentType: ajaxData.contentType,
-          	data : ajaxData.values,
+          	data : ajaxData.data,
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
@@ -470,12 +470,15 @@
 		let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
 			   
 		let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalAvailableTransactions) / totalExpensesTransactions) * 100),1);
-		   
-		// labels: [INCOME,EXPENSE,AVAILABLE]
-		dataPreferences = {
+		
+		if(totalIncomeTransactions !== 0
+			&& totalIncomeTransactions !== 0) {
+			// labels: [INCOME,EXPENSE,AVAILABLE]
+			dataPreferences = {
 	                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
 	                series: [Math.abs(totalIncomeTransactions),,Math.abs(totalAvailableTransactions)]
 	            };
+		}
 		
 		return dataPreferences;
 		

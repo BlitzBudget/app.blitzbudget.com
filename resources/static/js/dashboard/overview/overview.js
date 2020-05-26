@@ -136,7 +136,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl ;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
 
    			// Dates Cache
@@ -175,7 +175,7 @@
             type: ajaxData.type,
             dataType: ajaxData.dataType,
           	contentType: ajaxData.contentType,
-          	data : ajaxData.values,
+          	data : ajaxData.data,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});
@@ -734,7 +734,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudget){
 	          userBudget = userBudget['body-json'];
 	    	  // Update the cache
@@ -775,7 +775,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType,
-	          data : ajaxData.values,
+	          data : ajaxData.data,
 	          async: false,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
@@ -1064,12 +1064,13 @@
 	            	    labelInterpolationFnc: function(value) {
 	            	      
 	            	      value = formatLargeCurrencies(value);
-	            	      return currentCurrencyPreference + value;
+	            	      return value + currentCurrencyPreference;
 	            	    },
 	            	    scaleMinSpace: 15
 	             },
 	             axisX: {
 	                 showGrid: false,
+	                 offset: 40
 	             },
 	             showPoint: true,
 	             height: '400px'
@@ -1445,6 +1446,7 @@
             seriesBarDistance: 10,
             axisX: {
             	showGrid: false,
+            	offset: 40
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
@@ -1453,7 +1455,7 @@
 			        	minusSign = '-';
 			        }
 			        value = formatLargeCurrencies(value);
-	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+	            	return value + currentCurrencyPreference;
 			    },
 			    // Offset Y axis label
     			offset: 70
@@ -1508,9 +1510,7 @@
     		if (data.type === "bar") {
     			// Tooltip
     			let minusSign = '';
-    			let amount = 0;
-    			if(data.value.y < 0) minusSign = '-';
-    			amount = formatToCurrency(Math.abs(data.value.y));
+    			amount = formatToCurrency(data.value.y);
     			data.element._node.setAttribute("title", "Total: <strong>" + amount + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
@@ -1585,15 +1585,12 @@
             seriesBarDistance: 10,
             axisX: {
             	showGrid: false,
+            	offset: 40
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
 			        value = formatLargeCurrencies(value);
-			        let minusSign = '';
-			        if(value < 0) {
-			        	minusSign = '-';
-			        }
-	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+	            	return value + currentCurrencyPreference;
 			    },
 			    // Offset Y axis label
     			offset: 70
