@@ -1159,12 +1159,14 @@
 		for(let count = 0, length = dataKeySet.length; count < length; count++) {
 			let key = dataKeySet[count];
       	  	let userBudgetValue = userBudgetCache[key];
+      	  	let categoryForBudget = window.categoryMap[userBudgetValue.category];
       	  
-      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[userBudgetValue.category].type)) {
+      	  	if(isEmpty(userBudgetValue) 
+      	  		|| isNotEqual(selectedCategoryParentCategory,categoryForBudget.type)) {
       	  		continue;
       	  	}
       	  	
-      	  	let categoryTotalValue = window.categoryMap[key].categoryTotal;
+      	  	let categoryTotalValue = categoryForBudget.categoryTotal;
       	  	// If the category total map is empty and if the user budget is > 0
       	  	if(isEmpty(categoryTotalValue) && userBudgetValue.planned > 0) {
       	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned;
