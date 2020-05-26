@@ -299,7 +299,7 @@ window.onload = function () {
 					positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
 					
 					// Fetch the transactions data if the tab is open
-					updateExistingTransactionsInMonthPicker();
+					updateExistingDateInMonthPicker();
 				}
 
 
@@ -321,7 +321,7 @@ window.onload = function () {
 				// Reset the month picker existing budget / transactions / goals / investments
 				resetMonthExistingPicker();
 				// Update existing date for Transactions
-				updateExistingTransactionsInMonthPicker();
+				updateExistingDateInMonthPicker();
 				
 			});
 		}
@@ -338,7 +338,7 @@ window.onload = function () {
 				// Reset the month picker existing budget / transactions / goals / investments
 				resetMonthExistingPicker();
 				// Update existing date for Transactions
-				updateExistingTransactionsInMonthPicker();
+				updateExistingDateInMonthPicker();
 				
 			});
 		}
@@ -402,22 +402,7 @@ window.onload = function () {
 		}
 		
 		// Update Transactions in month picker
-		function updateExistingTransactionsInMonthPicker() {
-			
-			let transactionAmountDiv = document.getElementsByClassName('information-modal');
-			let colouredLineChartDiv = document.getElementById('colouredRoundedLineChart');
-			
-			// If other pages are present then return this event
-			if(transactionAmountDiv.length == 0 && colouredLineChartDiv == null) {
-				return;
-			}
-			
-			updateMonthExistsWithTransactionData();
-		}
-		
-		
-		// Fetch the transactions data to update month exists in Month Picker
-		function updateMonthExistsWithTransactionData() {
+		function updateExistingDateInMonthPicker() {
 			if(isNotEmpty(window.datesCreated)) {
 	        	for(let countGrouped = 0, length = window.datesCreated.length; countGrouped < length; countGrouped++) {
 	        		let date = window.datesCreated[countGrouped];
