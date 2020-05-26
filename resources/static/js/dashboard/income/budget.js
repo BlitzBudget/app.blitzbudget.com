@@ -3,19 +3,14 @@
 (function scopeWrapper($) {
 	// User Budget Map Cache
 	let userBudgetCache = {};
-	// User transaction category ID and total
-	let categoryTotalMapCache = {};
 	// Store the budget amount edited previously to compare
 	let budgetAmountEditedPreviously = '';
 	// store the budget chart in the cache to update later
 	let budgetCategoryChart = '';
-	// last Budgeted Month
-	let lastBudgetedMonthName = '';
-	let lastBudgetMonth = 0;
 	// Category Compensation Modal Values
 	let userBudgetAndTotalAvailable = {};
 	// Category modal user budget category id;
-	let categoryForModalOpened = '';
+	let budgetForModalOpened = '';
 	// Choose the current month from the user chosen date
 	let userChosenMonthName = months[chosenDate.getMonth()];
 
@@ -334,7 +329,7 @@
 	
 	// Update the budget visualization module
 	function updateBudgetVisualization() {
-		let categoryTotalKeys = Object.keys(categoryTotalMapCache);
+		let categoryKeys = Object.keys(window.categoryMap);
 		
 		let userBudgetCacheKeys = Object.keys(userBudgetCache);
 		
@@ -349,29 +344,19 @@
 			// If empty then update the chart with the 0
 			toBeBudgetedDiv.innerText = 0;
 			
-			if(isNotEmpty(categoryTotalKeys)) {
-				let toBeBudgetedAvailable = 0;
-				
-				// Calculate the to be budgeted section
-				for(let count = 0, length = categoryTotalKeys.length; count < length; count++){
-					let categoryIdKey = categoryTotalKeys[count];
-					if(!includesStr(userBudgetCacheKeys, categoryIdKey)) {
-						// Add +1 for every category id which is not present in the update budget keys
-						toBeBudgetedAvailable++;
-					}
-				}
-				// assign the to be budgeted
-				animateValue(toBeBudgetedDiv, 0, toBeBudgetedAvailable, '' ,1000);				
-				
-				let totalCategoriesAvailable = toBeBudgetedAvailable + userBudgetCacheKeys.length;
-				let userBudgetPercentage = round(((userBudgetCacheKeys.length / totalCategoriesAvailable) * 100),1);
-				let toBeBudgetedPercentage = round(((toBeBudgetedAvailable / totalCategoriesAvailable) * 100),1);
-				// labels: [Total Budgeted Category, To Be Budgeted]
-				dataPreferences = {
-	                labels: [userBudgetPercentage + '%',toBeBudgetedPercentage + '%'],
-	                series: [userBudgetCacheKeys.length,toBeBudgetedAvailable]
-	            };
-			}
+			let totalCategoriesAvailable = categoryKeys.length;
+			let toBeBudgetedAvailable = totalCategoriesAvailable - userBudgetCacheKeys.length;
+			
+			// assign the to be budgeted
+			animateValue(toBeBudgetedDiv, 0, toBeBudgetedAvailable, '' ,1000);
+
+			let userBudgetPercentage = round(((userBudgetCacheKeys.length / totalCategoriesAvailable) * 100),1);
+			let toBeBudgetedPercentage = round(((toBeBudgetedAvailable / totalCategoriesAvailable) * 100),1);
+			// labels: [Total Budgeted Category, To Be Budgeted]
+			dataPreferences = {
+                labels: [userBudgetPercentage + '%',toBeBudgetedPercentage + '%'],
+                series: [userBudgetCacheKeys.length,toBeBudgetedAvailable]
+            };
 		} else {
 			// If empty then update the chart with the 0
 			toBeBudgetedDiv.innerText = 0;
@@ -379,7 +364,7 @@
 			detachChart = true;
 			
 			// assign the to be budgeted for budget visualization chart
-			toBeBudgetedDiv.innerText = categoryTotalKeys.length;
+			toBeBudgetedDiv.innerText = categoryKeys.length;
 			
 			// Create a document fragment to append
 			let emptyBudgetDocumentFragment = document.createDocumentFragment();
@@ -414,8 +399,6 @@
 			buildPieChart(dataPreferences , 'chartBudgetVisualization');
 		}
 		
-		// Fetches all the dates for which user budget is present
-		fetchAllDatesWithUserBudgetData();
 	}
 	
 	// Introduce Chartist pie chart
@@ -566,7 +549,7 @@
 		// If the budget is not created for the particular category, make sure the budget is not equal to zero
 		if(isNotEmpty(userBudgetValue) && isNotEmpty(categoryTotalAmount)) {
 			// Calculate remaining budget
-			let budgetAvailableToSpendOrSave = userBudgetValue - categoryTotalAmount;
+			let budgetAvailableToSpendOrSave = userBudgetValue - Math.abs(categoryTotalAmount);
 			
 			// Calculate the minus sign and appropriate class for the remaining amount 
 			if(budgetAvailableToSpendOrSave < 0) {
@@ -632,6 +615,7 @@
 			let compensationIconsDiv = document.createElement('a');
 			compensationIconsDiv.classList = 'compensateAnchor';
 			compensationIconsDiv.id='compensateAnchor-' + budgetIdKey;
+			compensationIconsDiv.setAttribute('data-target', budgetIdKey);
 			compensationIconsDiv.setAttribute('data-toggle','tooltip');
 			compensationIconsDiv.setAttribute('data-placement','bottom');
 			compensationIconsDiv.setAttribute('title','Compensate overspending');
@@ -776,115 +760,16 @@
 		let element = this;
 		let budgetAmount = document.getElementById('budgetAmount');
 		
-		if(isEmpty(userBudgetCache)) {
-			// Enable the Add button
-      	  	let genericAddFnc = document.getElementById('genericAddFnc');
-      	  	genericAddFnc.classList.add('d-none');
-      	  	
-			// Appends to a document fragment
-      	  	createAnEmptyBudget(window.defaultCategories[0], budgetAmount);
-      	  	createAnEmptyBudget(window.defaultCategories[1], budgetAmount);
-			return;
-		}
-		
-		var values = {};
-		values['dateToCopy'] = lastBudgetMonth;
-		values['dateMeantFor'] = chosenDate.toISOString();
-		values['walletId'] = currentUser.walletId;
-
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
-   		ajaxData.dataType = "json";
-   		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.data = JSON.stringify(values);
-   		ajaxData.onSuccess = function(userBudgets) {
-			userBudgets = userBudgets['body-json'];	        	
-        	if(isEmpty(userBudgets)) {
-        		return;
-        	}
-        	
-        	let budgetDivFragment = document.createDocumentFragment();
-        	// Update User Budget
-        	let dataKeySet = Object.keys(userBudgets)
-        	for(let count = 0, length = dataKeySet.length; count < length; count++){
-        		let key = dataKeySet[count];
-          	  	let value = userBudgets[key];
-          	  
-          	  	if(isEmpty(value)) {
-          	  		continue;
-          	  	}
-          	  	
-          	  	// Store the values in a cache
-          	  	userBudgetCache[value.budgetId] = value;
-
-          	  	// Appends to a document fragment
-          	  	budgetDivFragment.appendChild(buildUserBudget(value));
-          	  	
-          	  	// Handle the update of the progress bar modal
-    			updateProgressBarAndRemaining(value, budgetDivFragment);
-        	}
-        	
-        	// paints them to the budget dashboard
-    		while (budgetAmount.firstChild) {
-    			budgetAmount.removeChild(budgetAmount.firstChild);
-    		}
-        	budgetAmount.appendChild(budgetDivFragment);
-
-        	
-    		// Update the Budget Visualization module
-    		updateBudgetVisualization();
-    		
-          }
-          ajaxData.onFailure = function(thrownError) {
-          		manageErrors(thrownError, 'Unable to copy the budget. Please try again',ajaxData);
-	           	
-	           	// disable the button
-	        	element.removeAttribute("disabled");
-	        	element.innerHTML = 'Start Planning For ' + userChosenMonthName;
-          }
-
-		  $.ajax({
-		          type: ajaxData.type,
-		          url: ajaxData.url,
-		          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-		          dataType: ajaxData.dataType,
-		          contentType: ajaxData.contentType,
-		          data: ajaxData.data,
-		          success: ajaxData.onSuccess, 
-		          error: ajaxData.onFailure
-		  });
+		// Enable the Add button
+  	  	let genericAddFnc = document.getElementById('genericAddFnc');
+  	  	genericAddFnc.classList.add('d-none');
+  	  	
+		// Appends to a document fragment
+  	  	createAnEmptyBudget(window.defaultCategories[0], budgetAmount);
+  	  	createAnEmptyBudget(window.defaultCategories[1], budgetAmount);
+		return;
 	});
 	
-	// Fetches all the dates for which user budget is present
-	function fetchAllDatesWithUserBudgetData(dates) {
-		
-    	// If dates are empty then return
-    	if(isEmpty(dates)) {
-    		return;
-    	}
-    	
-    	// Reset the last month date
-    	lastBudgetMonth = 0;
-    	
-    	// Last Budget Month Name
-    	lastBudgetedMonthName = months[Number(lastBudgetMonth.toString().slice(2, 4) -1)];
-    	
-    	let emptyBudgetDiv = document.getElementById('emptyBudgetCard');
-    	// If the user budget is empty then update the fields of empty div
-    	if(isEmpty(userBudgetCache) && emptyBudgetDiv != null) {
-    		// Update descriptions of the empty budget
-        	let cardRowDescription = document.getElementById('emptyBudgetDescription');
-        	cardRowDescription.innerHTML = "We'll clone <strong> &nbsp" + lastBudgetedMonthName + "'s budget &nbsp</strong> for you to get started";
-        	
-        	// Display the name if user budget is empty
-        	let previousMonthDiv = document.getElementsByClassName('previousMonth');
-        	previousMonthDiv[0].innerText = lastBudgetedMonthName.slice(0,3);
-    	}
-
-	}
 	
 	// Create two empty budgets on click Start Planning for .. button
 	function createAnEmptyBudget(categoryId, budgetAmountDiv) {
@@ -1255,36 +1140,37 @@
 		let categoryCompensationTitle = document.getElementById('categoryCompensationTitle');
 		let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
 		let anchorDropdownItemFragment = document.createDocumentFragment();
-		let categoryId = lastElement(splitElement(this.id, '-'));
+		let budgetId = this.getAttribute('data-target');
 		// Reset the cached variables
 		userBudgetAndTotalAvailable = {};
-		categoryForModalOpened = categoryId;
+		budgetForModalOpened = budgetId;
 		$('.displaySelectedCompensationCat').remove();
 		
 		// If user budget or the category is empty then show the message
-		if(isEmpty(userBudgetCache) || isEmpty(userBudgetCache[categoryId])) {
+		if(isEmpty(userBudgetCache) || isEmpty(userBudgetCache[budgetId])) {
 			showNotification('You do not have any budgets to compensate it with!',window._constants.notification.error);
 			return;
 		}
 		
 		// Build a category available cache
-		let selectedCategoryParentCategory = categoryMap[categoryId].type;
+		let currentCategory = categoryMap[userBudgetCache[budgetId].category];
+		let selectedCategoryParentCategory = currentCategory.type;
 		let dataKeySet = Object.keys(userBudgetCache);
 		for(let count = 0, length = dataKeySet.length; count < length; count++) {
 			let key = dataKeySet[count];
       	  	let userBudgetValue = userBudgetCache[key];
       	  
-      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[key].type)) {
+      	  	if(isEmpty(userBudgetValue) || isNotEqual(selectedCategoryParentCategory,categoryMap[userBudgetValue.category].type)) {
       	  		continue;
       	  	}
       	  	
-      	  	let categoryTotalValue = categoryTotalMapCache[key];
+      	  	let categoryTotalValue = window.categoryMap[key].categoryTotal;
       	  	// If the category total map is empty and if the user budget is > 0
       	  	if(isEmpty(categoryTotalValue) && userBudgetValue.planned > 0) {
       	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned;
       	  	} else if(isNotEmpty(categoryTotalValue) && userBudgetValue.planned > categoryTotalValue) {
       	  	// If the category total map is not empty and if the user budget amount is > category total
-      	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned - categoryTotalValue;
+      	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned - Math.abs(categoryTotalValue);
       	  	}
       	  	
       	  	// Build category available select (with the same parent category)
@@ -1301,10 +1187,10 @@
 		
 		
 		// Get the user Budget overspending
-		let userBudgetOverSpending = userBudgetCache[categoryId].planned -  categoryTotalMapCache[categoryId];
+		let userBudgetOverSpending = userBudgetCache[budgetId].planned -  Math.abs(window.categoryMap[userBudgetCache[budgetId].category].categoryTotal);
 		userBudgetOverSpending = formatToCurrency(Math.abs(userBudgetOverSpending));
 		// Set the title of the modal
-		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[categoryId].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
+		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' + currentCategory.name + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
 		
 		// Upload the anchor fragment to the modal
 		compensationDropdownMenu.appendChild(anchorDropdownItemFragment);
@@ -1318,10 +1204,11 @@
 		let anchorDropdownItem = document.createElement('a');
 		anchorDropdownItem.classList = 'dropdown-item compensationDropdownMenu';
 		anchorDropdownItem.id = 'categoryItemAvailable1-' + userBudgetValue.budgetId;
+		anchorDropdownItem.setAttribute('data-target', userBudgetValue.budgetId);
 		
 		let categoryLabelDiv = document.createElement('div');
 		categoryLabelDiv.classList = 'compensationCatSelectionName font-weight-bold';
-		categoryLabelDiv.innerText = categoryMap[userBudgetValue.category].categoryName;
+		categoryLabelDiv.innerText = categoryMap[userBudgetValue.category].name;
 		anchorDropdownItem.appendChild(categoryLabelDiv);
 		
 		let categoryAmountAvailableDiv = document.createElement('div');
@@ -1349,39 +1236,39 @@
 	
 	// On click drop down of the category available to compensate
 	$('.modal-footer').on('click', '.compensationDropdownMenu' , function() {
-		let selectedCategoryId = lastElement(splitElement(this.id, '-'));
+		let selectedBudgetId = this.getAttribute('data-target');
 		let compensationDisplay = document.getElementsByClassName('categoryChosenCompensation-1');
 		// Post a budget amount change to the user budget module and change to auto generated as false. 
 		var values = {};
-		values['dateMeantFor'] = chosenDate.toISOString();
 		values['walletId'] = currentUser.walletId;
 		
-		if(compensationDisplay.length == 0 || isEmpty(categoryMap[selectedCategoryId]) || isEmpty(categoryMap[categoryForModalOpened]) || isEmpty(categoryTotalMapCache[categoryForModalOpened])) {
+		if(compensationDisplay.length == 0 
+			|| isEmpty(window.categoryMap[userBudgetCache[selectedBudgetId].category]) 
+			|| isEmpty(window.categoryMap[userBudgetCache[budgetForModalOpened].category]) 
+			|| isEmpty(window.categoryMap[userBudgetCache[budgetForModalOpened].category])) {
 			showNotification('There was an error while compensating the categories. Try refreshing the page!',window._constants.notification.error);
 			return;
 		}
 		
 		// Replace the compensated category name
-		compensationDisplay[0].innerText = categoryMap[selectedCategoryId].categoryName;
+		compensationDisplay[0].innerText = categoryMap[selectedBudgetId].name;
 		
 		// Fetch category And Total Remaining
-		let categoryBudgetAvailable = userBudgetAndTotalAvailable[selectedCategoryId];
+		let categoryBudgetAvailable = userBudgetAndTotalAvailable[selectedBudgetId];
 		// Calculate the amount necessary
-		let recalculateUserBudgetOverspent = categoryTotalMapCache[categoryForModalOpened] - userBudgetCache[categoryForModalOpened].planned;
+		let recalculateUserBudgetOverspent = Math.abs(window.categoryMap[userBudgetCache[budgetForModalOpened].category].categoryTotal) - userBudgetCache[budgetForModalOpened].planned;
 		
 		// As the recalculateUserBudgetOverspent is (-amount)
 		if(recalculateUserBudgetOverspent > categoryBudgetAvailable) {
-				values['planned'] = userBudgetCache[categoryForModalOpened].planned + categoryBudgetAvailable;
-				values['categoryId'] = categoryForModalOpened;
-				values['budgetId'] = budgetId; //TODO
+				values['planned'] = userBudgetCache[budgetForModalOpened].planned + categoryBudgetAvailable;
+				values['budgetId'] = budgetForModalOpened;
 				callBudgetAmountChange(values);
 			
-				values['planned'] = userBudgetCache[selectedCategoryId].planned - categoryBudgetAvailable;
-				values['categoryId'] = selectedCategoryId;
-				values['budgetId'] = budgetId; //TODO
+				values['planned'] = userBudgetCache[selectedBudgetId].planned - Math.abs(categoryBudgetAvailable);
+				values['budgetId'] = selectedBudgetId;
 				callBudgetAmountChange(values);
 				
-				cloneAnchorToBodyAndRemoveDropdown(selectedCategoryId);
+				cloneAnchorToBodyAndRemoveDropdown(selectedBudgetId);
 				
 				// Check if there are any new dropdown elements available
 				let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
@@ -1393,21 +1280,19 @@
 				
 				let categoryCompensationTitle = document.getElementById('categoryCompensationTitle');
 				// Set the title of the modal with the new amount necessary for compensation
-				categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[categoryForModalOpened].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + formatToCurrency((recalculateUserBudgetOverspent - categoryBudgetAvailable)) + '&nbsp </strong> With';
+				categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[budgetForModalOpened].name + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + formatToCurrency((recalculateUserBudgetOverspent - Math.abs(categoryBudgetAvailable))) + '&nbsp </strong> With';
 				
 				// Replace the compensated category name
 				compensationDisplay[0].innerText = 'Choose category';
 				
 				
 		} else if(recalculateUserBudgetOverspent <= categoryBudgetAvailable) {
-				values['planned'] = categoryTotalMapCache[categoryForModalOpened];
-				values['categoryId'] = categoryForModalOpened;
-				values['budgetId'] = budgetId; //TODO
+				values['planned'] = window.categoryMap[userBudgetCache[budgetForModalOpened].category].categoryTotal;
+				values['budgetId'] = budgetForModalOpened;
 				callBudgetAmountChange(values);
 			
-				values['planned'] = userBudgetCache[selectedCategoryId].planned - recalculateUserBudgetOverspent;
-				values['categoryId'] = selectedCategoryId;
-				values['budgetId'] = budgetId; //TODO
+				values['planned'] = userBudgetCache[selectedBudgetId].planned - recalculateUserBudgetOverspent;
+				values['budgetId'] = selectedBudgetId;
 				callBudgetAmountChange(values);
 			
 				// Hide the modal
@@ -1417,16 +1302,17 @@
 	});
 	
 	// Clones the anchor dropdown to the body of the compensation budget modal 
-	function cloneAnchorToBodyAndRemoveDropdown(selectedCategoryId) {
-		let anchorTag = document.getElementById('categoryItemAvailable1-' + selectedCategoryId);
+	function cloneAnchorToBodyAndRemoveDropdown(selectedBudgetId) {
+		let anchorTag = document.getElementById('categoryItemAvailable1-' + selectedBudgetId);
 		let referenceBodyModal = document.getElementById('compensationModalBody');
 		let anchorFragment = document.createDocumentFragment();
 		// Append and remove (Move element)
 		anchorFragment.appendChild(anchorTag);
 		
 		// Change the anchor tag
-		let newAnchorTag = anchorFragment.getElementById('categoryItemAvailable1-' + selectedCategoryId);
-		newAnchorTag.id = 'categoryItemSelected-' + selectedCategoryId;
+		let newAnchorTag = anchorFragment.getElementById('categoryItemAvailable1-' + selectedBudgetId);
+		newAnchorTag.id = 'categoryItemSelected-' + selectedBudgetId;
+		newAnchorTag.setAttribute('data-target', selectedBudgetId);
 		newAnchorTag.classList = 'removeAlreadyAddedCompensation';
 		newAnchorTag.firstChild.classList = 'col-lg-6 text-left font-weight-bold text-nowrap';
 		newAnchorTag.lastChild.classList = 'col-lg-4 text-right text-small-success text-nowrap pl-0';
@@ -1440,7 +1326,8 @@
 		
 		// Close button wrapper
 		let closeButtonWrapper = document.createElement('a');
-		closeButtonWrapper.id = 'revertCompensationAnchor-' + selectedCategoryId
+		closeButtonWrapper.id = 'revertCompensationAnchor-' + selectedBudgetId;
+		closeButtonWrapper.setAttribute('data-target', selectedBudgetId);
 		closeButtonWrapper.classList = 'col-lg-2 text-center revertCompensationAnchor';
 		
 		// Close button
@@ -1450,7 +1337,7 @@
 		closeButtonWrapper.appendChild(closeIconElement);
 		
 		let materialSpinnerElement = document.createElement('div');
-    	materialSpinnerElement.id= 'deleteCompensationSpinner-' + selectedCategoryId;
+    	materialSpinnerElement.id= 'deleteCompensationSpinner-' + selectedBudgetId;
     	materialSpinnerElement.classList = 'material-spinner-small d-none position-absolute mx-auto top-20';
     	closeButtonWrapper.appendChild(materialSpinnerElement);
     	
@@ -1501,34 +1388,32 @@
 	
 	// Click the delete budget compensated
 	$('body').on('click', '.revertCompensationAnchor' , function() {
-		let toDeleteCategoryId = lastElement(splitElement(this.id,'-'));
-		document.getElementById('deleteCompensationSpinner-' + toDeleteCategoryId).classList.toggle('d-none');
+		let toDeleteBudgetId = this.getAttribute('data-target');
+		document.getElementById('deleteCompensationSpinner-' + toDeleteBudgetId).classList.toggle('d-none');
 		this.firstChild.classList.toggle('d-none');
 		
-		if(isEmpty(categoryMap[toDeleteCategoryId]) || isEmpty(userBudgetAndTotalAvailable[toDeleteCategoryId])) {
+		if(isEmpty(categoryMap[toDeleteBudgetId]) || isEmpty(userBudgetAndTotalAvailable[toDeleteBudgetId])) {
 			showNotification('Please refresh the page and try again!',window._constants.notification.error);
 			// Hide the modal
 			$('#categoryCompensationModal').modal('hide');
 			return;
 		}
-		removeCompensatedBudget(this, toDeleteCategoryId);
+		removeCompensatedBudget(this, toDeleteBudgetId);
 	});
 	
 	// Remove the budget compensation
-	function removeCompensatedBudget(element, toDeleteCategoryId) {
-		let compensationAmount = userBudgetAndTotalAvailable[toDeleteCategoryId];
+	function removeCompensatedBudget(element, toDeleteBudgetId) {
+		let compensationAmount = userBudgetAndTotalAvailable[toDeleteBudgetId];
 		// Delete the compensating category (First Compensation)
 		var values = {};
-		values['dateMeantFor'] = chosenDate.toISOString();
-		values['planned'] = userBudgetCache[toDeleteCategoryId].planned + compensationAmount;
-		values['categoryId'] = toDeleteCategoryId;
+		values['planned'] = userBudgetCache[toDeleteBudgetId].planned + compensationAmount;
+		values['budgetId'] = toDeleteBudgetId;
 		values['walletId'] = currentUser.walletId;
-		values['budgetId'] = currentUser.budgetId; // TODO
 
 		// Ajax Requests on Error
 		let ajaxData = {};
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
+   		ajaxData.type = "PATCH";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
@@ -1540,7 +1425,7 @@
         	  
         	  let compensationDropdownMenu = document.getElementById('compensationDropdownMenu-1');
       		  let anchorDropdownItemFragment = document.createDocumentFragment();
-        	  anchorDropdownItemFragment.appendChild(buildCategoryAvailableToCompensate(userBudgetAndTotalAvailable[toDeleteCategoryId], userBudget));
+        	  anchorDropdownItemFragment.appendChild(buildCategoryAvailableToCompensate(userBudgetAndTotalAvailable[toDeleteBudgetId], userBudget));
         	  // Upload the anchor fragment to the dropdown
       		  compensationDropdownMenu.appendChild(anchorDropdownItemFragment);
       		  
@@ -1573,14 +1458,13 @@
 		});
 		
 		// Delete the compensated category (Second Compensation)
-		values['planned'] = userBudgetCache[categoryForModalOpened].planned - compensationAmount;
-		values['categoryId'] = categoryForModalOpened;
+		values['planned'] = userBudgetCache[budgetForModalOpened].planned - compensationAmount;
+		values['budgetId'] = budgetForModalOpened;
 		values['walletId'] = currentUser.walletId;
-		values['budgetId'] = currentUser.budgetId; // TODO
 
 		// Ajax Requests on Error
    		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "POST";
+   		ajaxData.type = "PATCH";
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
@@ -1591,10 +1475,10 @@
         	userBudgetCache[userBudget.budgetId] = userBudget;
         	
         	// Get the user Budget overspending
-      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  categoryTotalMapCache[userBudget.category];
+      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  Math.abs(window.categoryMap[window.userBudgetCache[userBudget.budgetId].category].categoryTotal);
       		userBudgetOverSpending = formatToCurrency(Math.abs(userBudgetOverSpending));
       		// Set the title of the modal
-      		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.category].categoryName + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
+      		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.category].name + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
       		
       		// Update the modal
         	updateProgressBarAndRemaining(userBudget, document);
@@ -1626,8 +1510,6 @@
 	function resetUserBudgetWithLoader() {
 		// User Budget Map Cache
 		userBudgetCache = {};
-		// User transaction category ID and total
-		categoryTotalMapCache = {};
 		// Store the budget amount edited previously to compare
 		budgetAmountEditedPreviously = '';
 		// store the budget chart in the cache to update later
@@ -1638,7 +1520,7 @@
 		// Category Compensation Modal Values
 		userBudgetAndTotalAvailable = {};
 		// Category modal user budget category id;
-		categoryForModalOpened = '';
+		budgetForModalOpened = '';
 		
 		// Append Empty Budget Loader
 		let emptyDocumentFragment = document.createDocumentFragment();
