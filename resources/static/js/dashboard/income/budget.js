@@ -692,20 +692,6 @@
 				
         	  // Update budget visualization chart after deletion
         	  updateBudgetVisualization();
-        	  
-        	  // reset the dates cache for the user budget
-        	  if(isEmpty(userBudgetCache)) {
-        		  let datesCache = [];
-        		  for(let count = 0, length = datesWithUserBudgetData.length; count < length; count++){
-        			  
-        			  // ignore the chosen date
-        			  if(!datesWithUserBudgetData.contains(chosenDate)) {
-        				  datesCache.push(datesWithUserBudgetData[count]);
-        			  }
-        		  }
-        		  // replace the cached dates with the new ones
-        		  datesWithUserBudgetData = datesCache;
-        	  }
         }
         ajaxData.onFailure = function(thrownError) {
         	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!',ajaxData);
@@ -790,7 +776,7 @@
 		let element = this;
 		let budgetAmount = document.getElementById('budgetAmount');
 		
-		if(isEmpty(datesWithUserBudgetData) && isEmpty(userBudgetCache)) {
+		if(isEmpty(userBudgetCache)) {
 			// Enable the Add button
       	  	let genericAddFnc = document.getElementById('genericAddFnc');
       	  	genericAddFnc.classList.add('d-none');
@@ -880,21 +866,8 @@
     		return;
     	}
     	
-    	// Array of dates stored in a cache
-    	datesWithUserBudgetData = dates;
-    	
     	// Reset the last month date
     	lastBudgetMonth = 0;
-    	
-    	// Update the latest budget month
-    	for(let count = 0, length = datesWithUserBudgetData.length; count < length; count++) {
-    		let userBudgetDate = datesWithUserBudgetData[count];
-    		
-    		if(isEmpty(lastBudgetMonth) || userBudgetDate > lastBudgetMonth) {
-    			// Append preceeding zero
-    			lastBudgetMonth = ('0' + userBudgetDate).slice(-8);
-    		}
-    	}
     	
     	// Last Budget Month Name
     	lastBudgetedMonthName = months[Number(lastBudgetMonth.toString().slice(2, 4) -1)];
@@ -1659,8 +1632,6 @@
 		budgetAmountEditedPreviously = '';
 		// store the budget chart in the cache to update later
 		budgetCategoryChart = '';
-		// Fetch all dates from the user budget
-		datesWithUserBudgetData = [];
 		// last Budgeted Month
 		lastBudgetedMonthName = '';
 		lastBudgetMonth = 0;

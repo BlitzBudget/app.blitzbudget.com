@@ -1088,7 +1088,7 @@
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
     		if (data.type === "point") {
-    			data.element._node.setAttribute("title", "Total: <strong>" + formatToCurrency(data.value.y) + '</strong>');
+    			data.element._node.setAttribute("title", data.axisX.ticks[data.index] + ": <strong>" + formatToCurrency(data.value.y) + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1511,7 +1511,7 @@
     			// Tooltip
     			let minusSign = '';
     			amount = formatToCurrency(data.value.y);
-    			data.element._node.setAttribute("title", "Total: <strong>" + amount + '</strong>');
+    			data.element._node.setAttribute("title", data.axisX.ticks[data.seriesIndex] + ": <strong>" + amount + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {

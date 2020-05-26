@@ -50,9 +50,6 @@ let popoverYear = new Date().getFullYear();
 // Login popup already shown
 let loginPopupShown = false;
 
-// Fetch all dates from the user budget
-window.datesWithUserBudgetData = [];
-
 window.onload = function () {
 	$(document).ready(function(){
 
@@ -301,8 +298,6 @@ window.onload = function () {
 					let selectedMonthDiv = document.getElementsByClassName('monthPickerMonthSelected');
 					positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
 					
-					// Fetch the budget data if the tab is open
-					updateExistingBudgetInMonthPicker();
 					// Fetch the transactions data if the tab is open
 					updateExistingTransactionsInMonthPicker();
 				}
@@ -325,8 +320,6 @@ window.onload = function () {
 				calcCurrentMonthSelected();
 				// Reset the month picker existing budget / transactions / goals / investments
 				resetMonthExistingPicker();
-				// Update existing date in month picker
-				updateExistingBudgetInMonthPicker();
 				// Update existing date for Transactions
 				updateExistingTransactionsInMonthPicker();
 				
@@ -344,8 +337,6 @@ window.onload = function () {
 				calcCurrentMonthSelected();
 				// Reset the month picker existing budget / transactions / goals / investments
 				resetMonthExistingPicker();
-				// Update existing date in month picker
-				updateExistingBudgetInMonthPicker();
 				// Update existing date for Transactions
 				updateExistingTransactionsInMonthPicker();
 				
@@ -381,28 +372,6 @@ window.onload = function () {
 		function resetMonthExistingPicker() {
 			// Remove all the existing class
 			$(".monthPickerMonthExists").removeClass("monthPickerMonthExists");
-		}
-		
-		// Update existing date picker with existing budget
-		function updateExistingBudgetInMonthPicker() {
-			
-			let budgetAmountDiv = document.getElementById('budgetAmount');
-			let colouredLineChartDiv = document.getElementById('colouredRoundedLineChart');
-			
-			// If other pages are present then return this event
-			if(budgetAmountDiv == null && colouredLineChartDiv == null) {
-				return;
-			}
-			
-			// Update the latest budget month
-        	for(let count = 0, length = datesWithUserBudgetData.length; count < length; count++) {
-        		let userBudgetDate = datesWithUserBudgetData[count];
-        		userBudgetDate = ('0' + userBudgetDate).slice(-8);
-				if(popoverYear == userBudgetDate.slice(-4)) {
-					let monthToAppend = Number(userBudgetDate.slice(2,4));
-					document.getElementById('monthPicker-' + monthToAppend).classList.add('monthPickerMonthExists');
-				}
-        	}
 		}
 		
 		// Event to close the month picker
@@ -454,7 +423,7 @@ window.onload = function () {
 	        		let date = window.datesCreated[countGrouped];
 		        	
 	        		// Convert the date key as date
-	             	let dateAsDate = new Date(date.dateId.substring(4, date.dateId.length));
+	             	let dateAsDate = new Date(date.dateId.substring(5, date.dateId.length));
 	             	
 	             	if(popoverYear != dateAsDate.getFullYear()) {
 	             		continue;
