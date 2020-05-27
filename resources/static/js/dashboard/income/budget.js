@@ -563,7 +563,6 @@
 				// Anchor Icons
 				createImageAnchor(budgetIdKey, documentOrFragment);
 				
-				budgetAvailableToSpendOrSave = Math.abs(budgetAvailableToSpendOrSave);
 			} else {
 				budgetLabelDiv.innerText = 'Remaining (%)';
 				
@@ -1166,13 +1165,13 @@
       	  		continue;
       	  	}
       	  	
-      	  	let categoryTotalValue = categoryForBudget.categoryTotal;
+      	  	let categoryTotalValue = Math.abs(categoryForBudget.categoryTotal);
       	  	// If the category total map is empty and if the user budget is > 0
       	  	if(isEmpty(categoryTotalValue) && userBudgetValue.planned > 0) {
       	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned;
       	  	} else if(isNotEmpty(categoryTotalValue) && userBudgetValue.planned > categoryTotalValue) {
       	  	// If the category total map is not empty and if the user budget amount is > category total
-      	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned - Math.abs(categoryTotalValue);
+      	  		userBudgetAndTotalAvailable[key] = userBudgetValue.planned - categoryTotalValue;
       	  	}
       	  	
       	  	// Build category available select (with the same parent category)
