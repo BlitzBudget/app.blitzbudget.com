@@ -1134,7 +1134,8 @@
 	      	  	if(isEmpty(categoryObj) 
 	      	  		|| isEmpty(categoryObj.id) 
 	      	  		|| isEmpty(allBudgetedCategories[categoryObj.id])) {
-	      	  		categoryArray.push(categoryObj.name);
+	      	  		// Update category Id where ever possible, else update it with category name
+	      	  		if(isNotEmpty(categoryObj.id)) { categoryArray.push(categoryObj.id); } else { categoryArray.push(categoryObj.name); }	      	  		
 	      	  	}
 	      	  	
 			}

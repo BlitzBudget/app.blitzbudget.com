@@ -879,6 +879,30 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
     padding-left: 15px;
 }
 
+#chartFinancialPosition.ct-chart .ct-slice-donut-solid {
+	-webkit-transition: stroke-width 0.3s ease-in;
+	transition: stroke-width 0.3s ease-in;
+}
+
+#chartFinancialPosition.ct-chart .ct-slice-donut-solid:hover {
+	stroke: white;
+    stroke-width: 2px;
+    transition: stroke-width 0.3s ease-out;
+	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
+#chartFinancialPosition.ct-chart .ct-slice-donut, 
+#chartFinancialPosition.ct-chart .ct-series {
+	-webkit-transition: stroke-width 0.3s ease-in;
+	transition: stroke-width 0.3s ease-in;
+}
+
+#chartFinancialPosition.ct-chart .ct-slice-donut:hover {
+    stroke-width: 2px;
+    transition: stroke-width 0.3s ease-out;
+	-webkit-transition: stroke-width 0.3s ease-out;
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 }

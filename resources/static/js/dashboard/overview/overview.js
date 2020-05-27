@@ -1351,7 +1351,7 @@
         	let categoryBreakdownChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences, responsiveOptions).on('draw', function(data) {
         		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Total: <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+		        	data.element._node.setAttribute("title", dataPreferences.labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
         		  }
 			}).on("created", function() {

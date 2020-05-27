@@ -466,8 +466,8 @@
 			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
-	                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
-	                series: [totalIncomeTransactions,,totalAvailableTransactions]
+	                labels: [totalIncomeAsPercentageOfExpense + '%', "0%",totalDeficitAsPercentageOfExpense + '%'],
+	                series: [totalIncomeTransactions,0,totalAvailableTransactions]
 	            };
 		} else  {
 			replaceHTML('legendPieChart', 'Total Spent & Total Available as a percentage of Total Income');
@@ -476,8 +476,8 @@
 			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
-	                labels: [,totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'],
-	                series: [,totalExpensesTransactions,totalAvailableTransactions]
+	                labels: ["0%",totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'],
+	                series: [0,totalExpensesTransactions,totalAvailableTransactions]
 	            };
 		}
 		
@@ -546,6 +546,8 @@
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
 
+		let labels = ['Income', 'Spent', 'Available'];
+		
         var optionsPreferences = {
 		  donut: true,
 		  donutWidth: 50,
@@ -566,7 +568,7 @@
         	transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function(data) {
       		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Value: <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+		        	data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
       		  }
 			}).on("created", function() {
@@ -606,7 +608,7 @@
 			});
 
 			// Animate the doughnut chart
-        	//er.startAnimationDonutChart(transactionsChart);
+        	er.startAnimationDonutChart(transactionsChart);
         }
         
 	}
