@@ -935,6 +935,8 @@ function fetchJSONForCategories(data) {
 		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
+	
+
 		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
@@ -951,49 +953,38 @@ function fetchJSONForCategories(data) {
 * If one category has been assigned a Category then
 */
 function assignCategoryId(data) {
-	// Expense and Income Initialize
-	window.expenseDropdownItems = document.createDocumentFragment();
-	window.incomeDropdownItems = document.createDocumentFragment();
 	let categoryId = data.category;
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
 
 	if(isNotEmpty(window.categoryMap[categoryName])) {
-		delete window.categoryMap[categoryName];
-		
 		let category = {};
+		let categoryTotal = window.categoryMap[categoryName].categoryTotal;
+		category.categoryTotal = isNotEmpty(categoryTotal) ? categoryTotal : 0;
 		category.name = categoryName;
 		category.type = categoryType;
 		category.id = categoryId;
+
+		delete window.categoryMap[categoryName];
+		
 		// Category Map
 		window.categoryMap[categoryId] = category;
 	}
 
-	let resultKeys = Object.keys(window.categoryMap);
-	for(let count = 0, length = resultKeys.length; count < length; count++){
-		  let key = resultKeys[count];
-		  let value = window.categoryMap[key];
-		  /*create a DIV element for each matching element:*/
-	      let option = document.createElement("DIV");
-	      option.classList.add("dropdown-item");
-		  option.innerText = value.name;
+	let iterateElement;
+	if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+		  iterateElement = window.expenseDropdownItems
+	} else if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+		  iterateElement = window.incomeDropdownItems
+	}
 
-		  let inputValue = document.createElement('input');
-		  inputValue.type = 'hidden';
-		  if(isNotEmpty(value.id)) {
-		  	inputValue.value = categoryId;
-		  } else {
-		  	inputValue.value = value.name;
-		  }
-		  option.appendChild(inputValue);
-
-		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-			  window.expenseDropdownItems.appendChild(option);
-		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-			  window.incomeDropdownItems.appendChild(option);
-		  }
-	   
-  	}
+	let children = iterateElement.children;
+	for (let i = 0, len = children.length; i < len; i++) {
+	  let childElement = children[i];
+	  if(isEqual(childElement.lastChild.value, categoryName)) {
+	  		childElement.lastChild.value = categoryId;
+	  }
+	}
 }
 
 // Display Confirm Account Verification Code

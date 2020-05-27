@@ -450,7 +450,7 @@
 		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference ,1000);
 		   
 		   // Build Pie chart
-		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions), 'chartFinancialPosition');
+		   buildPieChart(updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
 		   
 	}
 	
@@ -462,21 +462,22 @@
 		} else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
 			replaceHTML('legendPieChart', 'Total Income & Total Overspent as a percentage of Total Expense');
 			replaceHTML('totalAvailableLabel', 'Total Overspent');
-		} else  {
-			replaceHTML('legendPieChart', 'Total Expense & Total Available as a percentage of Total Income');
-			replaceHTML('totalAvailableLabel', 'Total Available');
-		}
-
-		let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
-			   
-		let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalAvailableTransactions) / totalExpensesTransactions) * 100),1);
-		
-		if(totalIncomeTransactions !== 0
-			&& totalIncomeTransactions !== 0) {
+			let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
+			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
 	                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
-	                series: [Math.abs(totalIncomeTransactions),,Math.abs(totalAvailableTransactions)]
+	                series: [totalIncomeTransactions,,totalAvailableTransactions]
+	            };
+		} else  {
+			replaceHTML('legendPieChart', 'Total Spent & Total Available as a percentage of Total Income');
+			replaceHTML('totalAvailableLabel', 'Total Available');
+			let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100),1);
+			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
+			// labels: [INCOME,EXPENSE,AVAILABLE]
+			dataPreferences = {
+	                labels: [,totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'],
+	                series: [,totalExpensesTransactions,totalAvailableTransactions]
 	            };
 		}
 		
@@ -603,6 +604,9 @@
        			  totalAvailable.classList.toggle('transitionTextTo120');
        		  });
 			});
+
+			// Animate the doughnut chart
+        	//er.startAnimationDonutChart(transactionsChart);
         }
         
 	}

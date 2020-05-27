@@ -1284,7 +1284,7 @@
 			} else {
 				labelsArray.push(otherLabels[0]);
 			}
-			seriesArray.push(othersTotal);
+			seriesArray.push(Math.abs(othersTotal));
 		}
 		
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
@@ -1434,10 +1434,6 @@
     	if(isEmpty(seriesArray)) {
     		chartAppendingDiv.appendChild(buildEmptyChartMessage());
     		return;
-    	} else if(seriesArray.length == 1) {
-    		// Absolute total is the first series element
-    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', Math.abs(seriesArray[0]));
-    		return;
     	}
 
     	
@@ -1450,10 +1446,6 @@
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
-			    	let minusSign = '';
-			        if(value < 0) {
-			        	minusSign = '-';
-			        }
 			        value = formatLargeCurrencies(value);
 	            	return value + currentCurrencyPreference;
 			    },
@@ -1573,10 +1565,6 @@
     			chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
     		}
     		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
-    		return;
-    	} else if(seriesArray.length == 1) {
-    		// Absolute total is the first element in series
-    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', Math.abs(seriesArray[0]));
     		return;
     	}
 

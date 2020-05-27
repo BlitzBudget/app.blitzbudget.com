@@ -50,6 +50,17 @@
 	}
 
 	function populateBudgetResource(){
+		// User Budget Map Cache
+		userBudgetCache = {};
+		// Store the budget amount edited previously to compare
+		budgetAmountEditedPreviously = '';
+		// store the budget chart in the cache to update later
+		budgetCategoryChart = '';
+		// Category Compensation Modal Values
+		userBudgetAndTotalAvailable = {};
+		// Category modal user budget category id;
+		budgetForModalOpened = '';
+
 		/**
 		*  Add Functionality Generic + Btn
 		**/
@@ -945,7 +956,7 @@
 		let children = element.children;
 		for (let i = 0, len = children.length; i < len; i++) {
 		  let childElement = children[i];
-		  if(isNotEmpty(allBudgetedCategories[childElement.lastChild.value])) {
+		  if(isNotEmpty(userBudgetCache[childElement.lastChild.value])) {
 		  	childElement.classList.add('d-none');
 		  } else {
 		  	childElement.classList.remove('d-none');
@@ -1476,7 +1487,7 @@
         	userBudgetCache[userBudget.budgetId] = userBudget;
         	
         	// Get the user Budget overspending
-      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  Math.abs(window.categoryMap[window.userBudgetCache[userBudget.budgetId].category].categoryTotal);
+      		let userBudgetOverSpending = userBudgetCache[userBudget.budgetId].planned -  Math.abs(window.categoryMap[userBudgetCache[userBudget.budgetId].category].categoryTotal);
       		userBudgetOverSpending = formatToCurrency(Math.abs(userBudgetOverSpending));
       		// Set the title of the modal
       		categoryCompensationTitle.innerHTML = 'Compensate <strong> &nbsp' +  categoryMap[userBudget.category].name + "'s &nbsp</strong>Overspending Of <strong> &nbsp" + userBudgetOverSpending + '&nbsp </strong> With';
@@ -1515,9 +1526,6 @@
 		budgetAmountEditedPreviously = '';
 		// store the budget chart in the cache to update later
 		budgetCategoryChart = '';
-		// last Budgeted Month
-		lastBudgetedMonthName = '';
-		lastBudgetMonth = 0;
 		// Category Compensation Modal Values
 		userBudgetAndTotalAvailable = {};
 		// Category modal user budget category id;
