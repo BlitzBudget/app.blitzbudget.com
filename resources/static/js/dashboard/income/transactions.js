@@ -466,8 +466,8 @@
 			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
-	                labels: [totalIncomeAsPercentageOfExpense + '%', "0%",totalDeficitAsPercentageOfExpense + '%'],
-	                series: [totalIncomeTransactions,0,totalAvailableTransactions]
+	                labels: [totalIncomeAsPercentageOfExpense + '%', "","",totalDeficitAsPercentageOfExpense + '%'],
+	                series: [totalIncomeTransactions,0,0,totalAvailableTransactions]
 	            };
 		} else  {
 			replaceHTML('legendPieChart', 'Total Spent & Total Available as a percentage of Total Income');
@@ -476,8 +476,8 @@
 			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
-	                labels: ["0%",totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'],
-	                series: [0,totalExpensesTransactions,totalAvailableTransactions]
+	                labels: ["",totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%',""],
+	                series: [0,totalExpensesTransactions,totalAvailableTransactions,0]
 	            };
 		}
 		
@@ -546,8 +546,8 @@
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
 
-		let labels = ['Income', 'Spent', 'Available'];
-		
+		let labels = ['Income', 'Spent', 'Available', "Overspent"];
+
         var optionsPreferences = {
 		  donut: true,
 		  donutWidth: 50,
