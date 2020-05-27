@@ -565,6 +565,18 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     stroke-width: 2.5rem;
 }
 
+.ct-chart-line .ct-labels .ct-label.ct-horizontal { 
+	white-space: nowrap; 
+	-webkit-transform: rotate(60deg); 
+	-moz-transform: rotate(60deg); 
+	-ms-transform: rotate(60deg); 
+	-o-transform: rotate(60deg); 
+	transform: rotate(60deg); 
+	transform-origin: 15px 7px !important; 
+	height: 18px !important; 
+	width: 50px !important; 
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 	.choose label span {

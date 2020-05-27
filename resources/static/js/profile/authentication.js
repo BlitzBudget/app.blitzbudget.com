@@ -1018,25 +1018,13 @@ uh = {
                         let ajaxParams = {
                               type: ajData.type,
                               url: ajData.url,
+                              dataType: ajData.dataType,
+                              data: ajData.data,
+                              contentType: ajData.contentType,
+                              success: ajData.onSuccess,
                               beforeSend: function(xhr){xhr.setRequestHeader("Authorization", window.authHeader);},
                               error: ajData.onFailure
                         };
-
-                        if(isNotEmpty(ajData.dataType)) {
-                            ajaxParams.dataType =  ajData.dataType;
-                        } 
-
-                        if(isNotEmpty(ajData.data)) {
-                            ajaxParams.data = ajData.data;
-                        }
-
-                        if(isNotEmpty(ajData.contentType)) {
-                            ajaxParams.contentType = ajData.contentType;
-                        }
-
-                        if(isNotEmpty(ajData.onSuccess)) {
-                            ajaxParams.success = ajData.onSuccess;
-                        }
 
                         // AJAX request
                         $.ajax(ajaxParams);

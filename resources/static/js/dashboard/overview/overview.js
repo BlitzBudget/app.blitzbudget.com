@@ -136,7 +136,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.overviewUrl ;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
 
    			// Dates Cache
@@ -175,7 +175,7 @@
             type: ajaxData.type,
             dataType: ajaxData.dataType,
           	contentType: ajaxData.contentType,
-          	data : ajaxData.values,
+          	data : ajaxData.data,
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
 		});
@@ -734,7 +734,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(userBudget){
 	          userBudget = userBudget['body-json'];
 	    	  // Update the cache
@@ -775,7 +775,7 @@
 	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
 	          dataType: ajaxData.dataType,
 	          contentType: ajaxData.contentType,
-	          data : ajaxData.values,
+	          data : ajaxData.data,
 	          async: false,
 	          success: ajaxData.onSuccess,
 	          error: ajaxData.onFailure
@@ -1064,12 +1064,13 @@
 	            	    labelInterpolationFnc: function(value) {
 	            	      
 	            	      value = formatLargeCurrencies(value);
-	            	      return currentCurrencyPreference + value;
+	            	      return value + currentCurrencyPreference;
 	            	    },
 	            	    scaleMinSpace: 15
 	             },
 	             axisX: {
 	                 showGrid: false,
+	                 offset: 40
 	             },
 	             showPoint: true,
 	             height: '400px'
@@ -1087,7 +1088,7 @@
 		// Append tooltip with line chart
 	    let colouredRoundedLineChart = new Chartist.Line('#colouredRoundedLineChart', dataColouredRoundedLineChart, optionsColouredRoundedLineChart).on("draw", function(data) {
     		if (data.type === "point") {
-    			data.element._node.setAttribute("title", "Total: <strong>" + formatToCurrency(data.value.y) + '</strong>');
+    			data.element._node.setAttribute("title", data.axisX.ticks[data.index] + ": <strong>" + formatToCurrency(data.value.y) + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1283,7 +1284,7 @@
 			} else {
 				labelsArray.push(otherLabels[0]);
 			}
-			seriesArray.push(othersTotal);
+			seriesArray.push(Math.abs(othersTotal));
 		}
 		
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
@@ -1350,7 +1351,7 @@
         	let categoryBreakdownChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences, responsiveOptions).on('draw', function(data) {
         		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Total: <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+		        	data.element._node.setAttribute("title", dataPreferences.labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
         		  }
 			}).on("created", function() {
@@ -1433,10 +1434,6 @@
     	if(isEmpty(seriesArray)) {
     		chartAppendingDiv.appendChild(buildEmptyChartMessage());
     		return;
-    	} else if(seriesArray.length == 1) {
-    		// Absolute total is the first series element
-    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', Math.abs(seriesArray[0]));
-    		return;
     	}
 
     	
@@ -1445,15 +1442,12 @@
             seriesBarDistance: 10,
             axisX: {
             	showGrid: false,
+            	offset: 40
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
-			    	let minusSign = '';
-			        if(value < 0) {
-			        	minusSign = '-';
-			        }
 			        value = formatLargeCurrencies(value);
-	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+	            	return value + currentCurrencyPreference;
 			    },
 			    // Offset Y axis label
     			offset: 70
@@ -1508,10 +1502,8 @@
     		if (data.type === "bar") {
     			// Tooltip
     			let minusSign = '';
-    			let amount = 0;
-    			if(data.value.y < 0) minusSign = '-';
-    			amount = formatToCurrency(Math.abs(data.value.y));
-    			data.element._node.setAttribute("title", "Total: <strong>" + amount + '</strong>');
+    			amount = formatToCurrency(data.value.y);
+    			data.element._node.setAttribute("title", data.axisX.ticks[data.seriesIndex] + ": <strong>" + amount + '</strong>');
     			data.element._node.setAttribute("data-chart-tooltip", "colouredRoundedLineChart");
     		}
     	}).on("created", function() {
@@ -1574,10 +1566,6 @@
     		}
     		chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
     		return;
-    	} else if(seriesArray.length == 1) {
-    		// Absolute total is the first element in series
-    		buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', Math.abs(seriesArray[0]));
-    		return;
     	}
 
         let optionsSimpleBarChart = {
@@ -1585,15 +1573,12 @@
             seriesBarDistance: 10,
             axisX: {
             	showGrid: false,
+            	offset: 40
             },
             axisY: {
 			    labelInterpolationFnc: function(value, index) {
 			        value = formatLargeCurrencies(value);
-			        let minusSign = '';
-			        if(value < 0) {
-			        	minusSign = '-';
-			        }
-	            	return minusSign + currentCurrencyPreference + Math.abs(value);
+	            	return value + currentCurrencyPreference;
 			    },
 			    // Offset Y axis label
     			offset: 70

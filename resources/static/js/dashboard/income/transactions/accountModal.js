@@ -218,7 +218,7 @@
 		   		ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
 		   		ajaxData.dataType = "json";
 		   		ajaxData.contentType = "application/json;charset=UTF-8";
-		   		ajaxData.values = JSON.stringify(values);
+		   		ajaxData.data = JSON.stringify(values);
         		ajaxData.onSuccess = function(jsonObj) {
         			jsonObj = jsonObj['body-json'];
 		        	let accountSB = document.getElementById('accountSB-' + currentAccountId).remove();
@@ -285,7 +285,7 @@
 			        type: ajaxData.type,
 			        dataType: ajaxData.dataType,
 		      		contentType: ajaxData.contentType,
-		      		data: ajaxData.values,
+		      		data: ajaxData.data,
 			        success: ajaxData.onSuccess,
 			        error: ajaxData.onFailure
 	        	});

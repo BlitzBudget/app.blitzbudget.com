@@ -50,9 +50,6 @@ let popoverYear = new Date().getFullYear();
 // Login popup already shown
 let loginPopupShown = false;
 
-// Fetch all dates from the user budget
-window.datesWithUserBudgetData = [];
-
 window.onload = function () {
 	$(document).ready(function(){
 
@@ -301,10 +298,8 @@ window.onload = function () {
 					let selectedMonthDiv = document.getElementsByClassName('monthPickerMonthSelected');
 					positionMonthCache = selectedMonthDiv.length > 0 ? ("0" + lastElement(splitElement(selectedMonthDiv[0].id,'-'))).slice(-2) + popoverYear : positionMonthCache;
 					
-					// Fetch the budget data if the tab is open
-					updateExistingBudgetInMonthPicker();
 					// Fetch the transactions data if the tab is open
-					updateExistingTransactionsInMonthPicker();
+					updateExistingDateInMonthPicker();
 				}
 
 
@@ -325,10 +320,8 @@ window.onload = function () {
 				calcCurrentMonthSelected();
 				// Reset the month picker existing budget / transactions / goals / investments
 				resetMonthExistingPicker();
-				// Update existing date in month picker
-				updateExistingBudgetInMonthPicker();
 				// Update existing date for Transactions
-				updateExistingTransactionsInMonthPicker();
+				updateExistingDateInMonthPicker();
 				
 			});
 		}
@@ -344,10 +337,8 @@ window.onload = function () {
 				calcCurrentMonthSelected();
 				// Reset the month picker existing budget / transactions / goals / investments
 				resetMonthExistingPicker();
-				// Update existing date in month picker
-				updateExistingBudgetInMonthPicker();
 				// Update existing date for Transactions
-				updateExistingTransactionsInMonthPicker();
+				updateExistingDateInMonthPicker();
 				
 			});
 		}
@@ -383,28 +374,6 @@ window.onload = function () {
 			$(".monthPickerMonthExists").removeClass("monthPickerMonthExists");
 		}
 		
-		// Update existing date picker with existing budget
-		function updateExistingBudgetInMonthPicker() {
-			
-			let budgetAmountDiv = document.getElementById('budgetAmount');
-			let colouredLineChartDiv = document.getElementById('colouredRoundedLineChart');
-			
-			// If other pages are present then return this event
-			if(budgetAmountDiv == null && colouredLineChartDiv == null) {
-				return;
-			}
-			
-			// Update the latest budget month
-        	for(let count = 0, length = datesWithUserBudgetData.length; count < length; count++) {
-        		let userBudgetDate = datesWithUserBudgetData[count];
-        		userBudgetDate = ('0' + userBudgetDate).slice(-8);
-				if(popoverYear == userBudgetDate.slice(-4)) {
-					let monthToAppend = Number(userBudgetDate.slice(2,4));
-					document.getElementById('monthPicker-' + monthToAppend).classList.add('monthPickerMonthExists');
-				}
-        	}
-		}
-		
 		// Event to close the month picker
 		function closeMonthPickerModal(event) {
 			let dateControlDiv = document.getElementById('dateControl');
@@ -433,28 +402,13 @@ window.onload = function () {
 		}
 		
 		// Update Transactions in month picker
-		function updateExistingTransactionsInMonthPicker() {
-			
-			let transactionAmountDiv = document.getElementsByClassName('information-modal');
-			let colouredLineChartDiv = document.getElementById('colouredRoundedLineChart');
-			
-			// If other pages are present then return this event
-			if(transactionAmountDiv.length == 0 && colouredLineChartDiv == null) {
-				return;
-			}
-			
-			updateMonthExistsWithTransactionData();
-		}
-		
-		
-		// Fetch the transactions data to update month exists in Month Picker
-		function updateMonthExistsWithTransactionData() {
+		function updateExistingDateInMonthPicker() {
 			if(isNotEmpty(window.datesCreated)) {
 	        	for(let countGrouped = 0, length = window.datesCreated.length; countGrouped < length; countGrouped++) {
 	        		let date = window.datesCreated[countGrouped];
 		        	
 	        		// Convert the date key as date
-	             	let dateAsDate = new Date(date.dateId.substring(4, date.dateId.length));
+	             	let dateAsDate = new Date(date.dateId.substring(5, date.dateId.length));
 	             	
 	             	if(popoverYear != dateAsDate.getFullYear()) {
 	             		continue;
@@ -981,6 +935,8 @@ function fetchJSONForCategories(data) {
 		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
+	
+
 		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
@@ -997,49 +953,38 @@ function fetchJSONForCategories(data) {
 * If one category has been assigned a Category then
 */
 function assignCategoryId(data) {
-	// Expense and Income Initialize
-	window.expenseDropdownItems = document.createDocumentFragment();
-	window.incomeDropdownItems = document.createDocumentFragment();
 	let categoryId = data.category;
 	let categoryName = data.categoryName;
 	let categoryType = data.categoryType;
 
 	if(isNotEmpty(window.categoryMap[categoryName])) {
-		delete window.categoryMap[categoryName];
-		
 		let category = {};
+		let categoryTotal = window.categoryMap[categoryName].categoryTotal;
+		category.categoryTotal = isNotEmpty(categoryTotal) ? categoryTotal : 0;
 		category.name = categoryName;
 		category.type = categoryType;
 		category.id = categoryId;
+
+		delete window.categoryMap[categoryName];
+		
 		// Category Map
 		window.categoryMap[categoryId] = category;
 	}
 
-	let resultKeys = Object.keys(window.categoryMap);
-	for(let count = 0, length = resultKeys.length; count < length; count++){
-		  let key = resultKeys[count];
-		  let value = window.categoryMap[key];
-		  /*create a DIV element for each matching element:*/
-	      let option = document.createElement("DIV");
-	      option.classList.add("dropdown-item");
-		  option.innerText = value.name;
+	let iterateElement;
+	if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
+		  iterateElement = window.expenseDropdownItems
+	} else if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
+		  iterateElement = window.incomeDropdownItems
+	}
 
-		  let inputValue = document.createElement('input');
-		  inputValue.type = 'hidden';
-		  if(isNotEmpty(value.id)) {
-		  	inputValue.value = categoryId;
-		  } else {
-		  	inputValue.value = value.name;
-		  }
-		  option.appendChild(inputValue);
-
-		  if(value.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-			  window.expenseDropdownItems.appendChild(option);
-		  } else if(value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-			  window.incomeDropdownItems.appendChild(option);
-		  }
-	   
-  	}
+	let children = iterateElement.children;
+	for (let i = 0, len = children.length; i < len; i++) {
+	  let childElement = children[i];
+	  if(isEqual(childElement.lastChild.value, categoryName)) {
+	  		childElement.lastChild.value = categoryId;
+	  }
+	}
 }
 
 // Display Confirm Account Verification Code

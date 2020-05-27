@@ -232,7 +232,7 @@
 		values['amount'] = amount;
 		values['description'] = description;
 		values['dateMeantFor'] = window.currentDateAsID;
-		values['recurrence'] = recurrenceValues[recurrenceValue];
+		values['recurrence'] = recurrenceValue;
 		values['account'] = window.selectedBankAccountId;
 		values['walletId'] = window.currentUser.walletId;
 
@@ -335,7 +335,7 @@
    		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
    		ajaxData.dataType = "json";
    		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.values = JSON.stringify(values);
+   		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
         	er_a.populateBankInfo(result.BankAccount);
 
@@ -371,7 +371,7 @@
             type: ajaxData.type,
             dataType: ajaxData.dataType,
           	contentType: ajaxData.contentType,
-          	data : ajaxData.values,
+          	data : ajaxData.data,
             success: ajaxData.onSuccess, 
             error: ajaxData.onFailure
 		});
@@ -450,7 +450,7 @@
 		   animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference ,1000);
 		   
 		   // Build Pie chart
-		   buildPieChart(updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions), 'chartFinancialPosition');
+		   buildPieChart(updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
 		   
 	}
 	
@@ -462,20 +462,24 @@
 		} else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
 			replaceHTML('legendPieChart', 'Total Income & Total Overspent as a percentage of Total Expense');
 			replaceHTML('totalAvailableLabel', 'Total Overspent');
-		} else  {
-			replaceHTML('legendPieChart', 'Total Expense & Total Available as a percentage of Total Income');
-			replaceHTML('totalAvailableLabel', 'Total Available');
-		}
-
-		let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
-			   
-		let totalIncomeAsPercentageOfExpense = round((((totalExpensesTransactions - totalAvailableTransactions) / totalExpensesTransactions) * 100),1);
-		   
-		// labels: [INCOME,EXPENSE,AVAILABLE]
-		dataPreferences = {
-	                labels: [totalIncomeAsPercentageOfExpense + '%',,totalDeficitAsPercentageOfExpense + '%'],
-	                series: [Math.abs(totalIncomeTransactions),,Math.abs(totalAvailableTransactions)]
+			let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
+			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
+			// labels: [INCOME,EXPENSE,AVAILABLE]
+			dataPreferences = {
+	                labels: [totalIncomeAsPercentageOfExpense + '%', "","",totalDeficitAsPercentageOfExpense + '%'],
+	                series: [totalIncomeTransactions,0,0,totalAvailableTransactions]
 	            };
+		} else  {
+			replaceHTML('legendPieChart', 'Total Spent & Total Available as a percentage of Total Income');
+			replaceHTML('totalAvailableLabel', 'Total Available');
+			let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100),1);
+			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
+			// labels: [INCOME,EXPENSE,AVAILABLE]
+			dataPreferences = {
+	                labels: ["",totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%',""],
+	                series: [0,totalExpensesTransactions,totalAvailableTransactions,0]
+	            };
+		}
 		
 		return dataPreferences;
 		
@@ -542,6 +546,8 @@
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
 
+		let labels = ['Income', 'Spent', 'Available', "Overspent"];
+
         var optionsPreferences = {
 		  donut: true,
 		  donutWidth: 50,
@@ -562,7 +568,7 @@
         	transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function(data) {
       		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Value: <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+		        	data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
       		  }
 			}).on("created", function() {
@@ -600,6 +606,9 @@
        			  totalAvailable.classList.toggle('transitionTextTo120');
        		  });
 			});
+
+			// Animate the doughnut chart
+        	er.startAnimationDonutChart(transactionsChart);
         }
         
 	}
