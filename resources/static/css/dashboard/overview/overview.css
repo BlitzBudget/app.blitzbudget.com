@@ -286,8 +286,13 @@
 	color: #00bcd4;
 }
 
-.chartDisplayCard {
-		height: 30rem;
+.h-20 {
+	height: 20rem;
+}
+
+.card.chartDisplayCard .card-body+.card-footer, 
+.card.chartDisplayCard .card-footer {
+    justify-content: center;
 }
 
 /** Date time picker **/
@@ -577,10 +582,6 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	width: 50px !important; 
 }
 
-.income {
-
-}
-
 .btn.chart-option {
     color: #fff;
     background: #d5dde3;
@@ -634,10 +635,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 
 .chart-option.debt.active.btn-secondary,
 .chart-option.debt.btn.btn-secondary:hover {
-    color: #ffffff;
-  	background-color: #409444;
-  	border-color: #3d8b40;
-    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);
+    color: #fff;
+  background-color: #f44336;
+  border-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
 }
 
 .chart-option.networth.active.btn-secondary,
@@ -646,6 +647,10 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
     background-color: #00bcd4;
     border-color: #00bcd4;
     box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+}
+
+#colouredRoundedLineChart .material-spinner.rtSpinner {
+	height: 20rem;
 }
 
 /** Change the size of the text if the width and height of the screen are less **/
@@ -754,8 +759,8 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 		width: 3.9rem;
 	}
 	
-	.chartDisplayCard {
-		height: 30rem;
+	.h-20 {
+		height: 20rem;
 	}
 	
 }

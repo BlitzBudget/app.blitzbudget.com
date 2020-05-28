@@ -72,7 +72,7 @@
 	    genericAddFnc.classList.add('d-none');
 
 	    // Add highlighted element to the income
-		document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
+		document.getElementsByClassName('income')[0].classList.add('highlightOverviewSelected');
 
 		/**
 		 * Date Picker
@@ -103,8 +103,8 @@
 			er.setChosenDateWithSelected(this);
 			// Calculate the income and expense image
 			let highlightedOverview = document.getElementsByClassName('highlightOverviewSelected')[0].firstElementChild.classList;
-			let expenseImage = highlightedOverview.contains('expenseImage');
-			let incomeImage = highlightedOverview.contains('incomeImage');
+			let expenseImage = highlightedOverview.contains('expense');
+			let incomeImage = highlightedOverview.contains('income');
 			let incomeTotalParam;
 			if(expenseImage) {incomeTotalParam = OVERVIEW_CONSTANTS.expenseTotalParam;}
 			if(incomeImage) {incomeTotalParam = OVERVIEW_CONSTANTS.incomeTotalParam;}
@@ -938,6 +938,8 @@
 	
 	// Click the overview card items
 	$('body').on('click', '.chart-option', function() {
+		$('.chart-option').removeClass('active');
+		this.classList.add('active');
 		// Append spinner
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 		let materialSpinnerDocumentFragment = document.createDocumentFragment();
