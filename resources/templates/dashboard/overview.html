@@ -8,76 +8,91 @@
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-4 d-none d-md-block">
-					<div class="card overviewAverageHeaderCard">
-						<div class="card-header overviewHeadingWrapper pt-3">
-							<h4 class="overviewHeadingTab noselect">Overview</h4>
-						</div>
-						<div id="portfolioOverview" class="card-body noselect">
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 incomeImage image-center d-none d-lg-block">
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Income </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You earn an average of </span><span id="averageIncomeAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"> per month</span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 expenseImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Expense </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You spend an average of </span><span id="averageExpenseAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"> per month</span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 assetsImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Assets </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You accumulated </span><span id="assetAccumuluatedAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"></span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 debtImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Debts </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You owe </span><span id="debtAccumulatedAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"></span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 networthImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Networth</h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">Your Networth is </span><span id="networthAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"></span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-8 col-sm-12 noselect">
+			  <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-warning card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">weekend</i>
+                    </div>
+                    <p class="card-category">Income</p>
+                    <h3 id="averageIncomeAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span>></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons text-danger">warning</i>
+                      <a href="#pablo">Get More Space...</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-warning card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">weekend</i>
+                    </div>
+                    <p class="card-category">Expense</p>
+                    <h3 id="averageExpenseAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span>></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons text-danger">warning</i>
+                      <a href="#pablo">Get More Space...</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-rose card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">equalizer</i>
+                    </div>
+                    <p class="card-category">Assets</p>
+                    <h3 id="assetAccumuluatedAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons">local_offer</i> Tracked from Google Analytics
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons">store</i>
+                    </div>
+                    <p class="card-category">Debt</p>
+                    <h3 id="debtAccumulatedAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons">date_range</i> Last 24 Hours
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-info card-header-icon">
+                    <div class="card-icon">
+                      <i class="fa fa-twitter"></i>
+                    </div>
+                    <p class="card-category">Networth</p>
+                    <h3 class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons">update</i> Just Updated
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+			<div class="row">
+				<div class="col-12 noselect">
 					<div class="card chartDisplayCard">
 	                  <div class="card-header card-header-icon card-header-info">
 	                    <div class="card-icon">

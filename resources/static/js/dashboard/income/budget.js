@@ -993,6 +993,7 @@
 		let values = {};
 		values['budgetId'] = budgetId;
 		values['walletId'] = window.currentUser.walletId;
+		values['dateMeantFor'] = window.currentDateAsID;
 		values['category'] = categoryId;
 		let categoryItem = window.categoryMap[categoryId];
 		let oldCategoryName = document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText;
