@@ -797,17 +797,6 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
  
 }
 
-#downloadTransactionsData {
-	color:#999;
-}
-
-#downloadTransactionsData .material-icons:hover, #downloadTransactionsData:hover .material-icons {
-	-webkit-transform: scale(1) rotate(0deg);
-  	-ms-transform: scale(1) rotate(0deg);
-  	-o-transform: scale(1) rotate(0deg);
-  	transform: scale(1) rotate(0deg);
-}
-
 .btn.register-recurrence {
     color: #fff;
     background: #d5dde3;

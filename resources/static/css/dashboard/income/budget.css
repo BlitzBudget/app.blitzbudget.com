@@ -81,7 +81,7 @@
 	cursor: pointer;
 }
 
-.card:hover .deleteBudget,.card:hover .compensateBudgetImage {
+.card:hover .deleteBudget {
 	visibility: visible;
   	opacity: 1;
 }
@@ -90,11 +90,7 @@
 	color: #fd679a;
 }
 
-.compensateBudgetImage:hover {
-	background-image: url("../../../img/dashboard/budget/icons8-merge-rose-16.png");
-}
-
-.deleteIconWrapper, .compensateBudgetImage, .closeElementCompensation {
+.deleteIconWrapper {
 	color: #999;
 }
 
@@ -237,54 +233,6 @@
     to   { opacity: 1; }
 }
 
-.compensateBudgetImage {
-	padding-bottom: 0.3rem;
-	cursor: pointer;
-	opacity: 0;
-	visibility: hidden;
-	transition: opacity 600ms, visibility 600ms;
-	-webkit-transition: opacity 600ms, visibility 600ms;
-}
-
-#categoryCompensationModal .card-title {
-	font-size: 0.9rem;
-	color: #929292;	
-}
-
-#categoryCompensationModal .modal-dialog .modal-header .close {
-    color: #999;
-    position: absolute;
-    top: 15px;
-    right: 20px;
-}
-
-#categoryCompensationModal .modal-dialog .card-plain {
-    padding: 2rem 0 0 0;
-    margin: 0 auto;
-}
-
-#categoryCompensationModal .modal-dialog .modal-header {
-    border-bottom: 0;
-    padding: 24px 24px 0;
-}
-
-#categoryCompensationModal .modal-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    padding: 1rem;
-    border-bottom: 1px solid #e9ecef;
-    border-top-left-radius: .3rem;
-    border-top-right-radius: .3rem;
-}
-
-#categoryCompensationModal .modal-footer {
-	display: inline-block;	
-}
-
-.dropdown-menu .dropdown-item.compensationDropdownMenu:hover, 
-.dropdown-menu .dropdown-item.compensationDropdownMenu:focus, 
-.dropdown-menu .dropdown-item.compensationDropdownMenu:active, 
 .overview-dashboard .dropdown-menu .accountType:hover,
 .overview-dashboard .dropdown-menu .accountType:focus,
 .overview-dashboard .dropdown-menu .accountType:active {
@@ -295,40 +243,6 @@
 
 .text-small-success {
 	color: green;
-}
-
-.compensationDropdownMenu:hover .text-small-success {
-	color: #fff;
-}
-
-.compensationDropdownMenu {
-	cursor: pointer;
-}
-
-.closeElementCompensation { 
-	font-size: 1.1rem;
-}
-
-.displaySelectedCompensationCat {
-	padding: 1rem;
-	cursor: pointer;
-}
-
-.displaySelectedCompensationCat:hover .text-center > i {
-	color: #e91e63;
-}
-
-.compensationCatSelectionName, .compensationCatSelectionAmount {
-	white-space: nowrap;
-	padding: 0 0.5rem;
-} 
-
-.displaySelectedCompensationCat:hover {
-	box-shadow: 0 14px 26px -12px rgba(250,250,250,0.42),0 4px 23px 0 rgba(0,0,0,0.12),0 8px 10px -5px rgba(250,250,250,0.2);
-	background-color: #fafafa;
-	border-color: #ccc;
-	margin-left: -10px;
-	margin-right: -10px;
 }
 
 .w-20 {

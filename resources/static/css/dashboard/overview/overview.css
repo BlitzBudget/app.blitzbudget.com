@@ -38,7 +38,8 @@
 	border-top: 1px solid #f6f6f6;
 }
 
-.recentTransactionTitle, .optimizationTitle, .overviewHeadingTab {
+.recentTransactionTitle,
+.overviewHeadingTab {
 	color: #829ca9;
 	margin-top: 0;
 	margin-bottom: 0;
@@ -53,11 +54,11 @@
 	color: #58c65c;
 }
 
-.recentTransactionsBody, .optimizationsBody {
+.recentTransactionsBody {
 	overflow-y: auto;
 }
 
-.recentTransactionCard, .optimizationBudgetAndGoal {
+.recentTransactionCard {
 	height: 35rem;
 }
 
@@ -109,71 +110,6 @@
 	mix-blend-mode:normal
 }
 
-/*
-* Budget Optimization
-*/
-
-.tableHeadingDiv {
-	display: table-header-group;
-}
-
-.budgetOptimizationTitle {
-	text-transform: capitalize;
-	color: #8e999e;
-}
-
-.categoryNameBO {
-	color: #2e4369;
-}
-
-/* Choose module */
-.choose {
-	padding:0;
-	border:0;
-}
-
-.choose label {
-	text-align:center;
-	position:relative;
-  	cursor:pointer;
-  	margin-bottom: 0;
-}
-.choose label span {
-	color: #686969;
-	line-height: 32px;
-	height: 32px;
-	padding: 0 16px;
-	display: block;
-	transition: all .2s ease;
-	border: 1px solid rgba(0,0,0,0.1);
-	font-size: 0.7rem;
-}
-.choose label:first-of-type span {
-	border-top-left-radius:6px;
-	border-bottom-left-radius:6px;
-	border-right:0;
-}
-.choose label:last-of-type span {
-	border-top-right-radius:6px;
-	border-bottom-right-radius:6px;
-	border-left:0;
-}
-.choose label input {
-	display:none
-}
-.choose label input:checked + span {
-	box-shadow:inset 0 0 0 32px rgba(0,0,0,0.1);
-}
-
-#budgetOrGoals {
-	padding-top: 1rem;
-}
-
-#optimizationFooter {
-	border-top: 1px solid #f6f6f6;
-	padding-top: 0.5rem;	
-}
-
 .overviewEntryRow:hover, .highlightOverviewSelected {
 	background-color: #fafafa;
 }
@@ -194,70 +130,9 @@
 	color: #8e999e;
 }
 
-.optimization-empty-svg {
-	height: 80px;
-	max-width: 90px;
-	padding: 10px;
-}
-
-.optimization-empty-path-0 {
-	fill: #D9D9D9;
-}
-
-.optimization-empty-path-1 {
-	fill: #FFF;
-}
-
-.optimization-meter.all-optimized, .coloredTransactionLine {
-	fill: #00bcd4;
-}
-
-.optimization-empty-path-2 {
-	fill: #EEE;
-}
-
-.optimizationHeadingColor {
-	color: #2e4369;
-}
-
 .transactions-empty-svg {
 	 fill:#D9D9D9;
 	 margin-top: 8rem;
-}
-
-.incomeImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-rupee-64.png");
-	content: url("../../../img/dashboard/overview/icons8-rupee-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.expenseImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-card-in-use-64.png");
-	content: url("../../../img/dashboard/overview/icons8-card-in-use-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.assetsImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-bank-64.png");
-	content: url("../../../img/dashboard/overview/icons8-bank-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.debtImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-debt-64.png");
-	content: url("../../../img/dashboard/overview/icons8-debt-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.networthImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-money-bag-franc-64.png");
-	content: url("../../../img/dashboard/overview/icons8-money-bag-franc-64.png");
-	height: 64px;
-	width: 64px;
 }
 
 .descriptionAverages {
@@ -365,10 +240,6 @@
 
 #colouredRoundedLineChart.ct-chart .ct-series:hover {
     opacity: 0.8;
-}
-
-.budgetOptimization {
-	cursor: pointer;
 }
 
 #overviewChartMonth, .dateMonthArrow, .twoBThreeOneColor {
@@ -684,49 +555,6 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 		width: 40px;
 		height: 40px;
 		line-height: 40px;
-	}
-	
-	.budgetOptimizationTitle {
-		font-size: 95%;
-	}
-	
-	#selectedOptimizations {
-		font-size:90%
-	}
-	
-	.incomeImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-rupee-35.png");
-		content: url("../../../img/dashboard/overview/icons8-rupee-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.expenseImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-card-in-use-35.png");
-		content: url("../../../img/dashboard/overview/icons8-card-in-use-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.assetsImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-bank-35.png");
-		content: url("../../../img/dashboard/overview/icons8-bank-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.debtImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-debt-35.png");
-		content: url("../../../img/dashboard/overview/icons8-debt-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.networthImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-money-bag-franc-35.png");
-		content: url("../../../img/dashboard/overview/icons8-money-bag-franc-35.png");
-		height: 35px;
-		width: 35px;
 	}
 	
 	.descriptionAverages {
