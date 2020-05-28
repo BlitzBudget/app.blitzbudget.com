@@ -87,10 +87,6 @@
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions.js",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
-                "/dashboard/income/transactions/importTransactionsFromFile.js",
-                "/dashboard/income/transactions/export/exportSelectedToCSV.js",
-                "/dashboard/income/transactions/export/exportSelectedToDOC.js",
-                "/dashboard/income/transactions/export/exportSelectedToXLS.js",
                 "/dashboard/module/settings.js",
                 "/dashboard/overview/overview.js",
                 "/dashboard/module/profile.js"
