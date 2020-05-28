@@ -150,8 +150,6 @@
 			 * Populate Overview
 			 */ 
 			populateRecentTransactions(result.Transaction);
-			populateIncomeAverage(result.averageIncome);
-			populateExpenseAverage(result.averageExpense);
 			// Upon refresh call the income overview chart
 			incomeOrExpenseOverviewChart(incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
@@ -844,33 +842,6 @@
 		} else {
 			manageOptimizationsButton.setAttribute('disabled','disabled');
 		}  
-	}
-	
-	/**
-	 * Populate Income Average
-	 */
-	
-	
-	// Populate Income Average
-	function populateIncomeAverage(averageIncome) {
-    	if(isEmpty(averageIncome)) {
-    		averageIncome = 0.00;
-    	}
-    	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageIncomeAmount'), 0, averageIncome, currentCurrencyPreference ,200);
-	}
-	
-	/**
-	 *  Populate Expense Average
-	 */
-	
-	// Populate Expense Average
-	function  populateExpenseAverage(averageExpense) {
-    	if(isEmpty(averageExpense)) {
-    		averageExpense = 0.00;
-    	}
-    	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageExpenseAmount'), 0, averageExpense, currentCurrencyPreference ,200);
 	}
 	
 	/**
