@@ -555,6 +555,27 @@
 		  showLabel: true,
 		  height: '230px'
         };
+
+        let responsiveOptions = [
+    	  ['screen and (min-width: 640px)', {
+    	    chartPadding: 40,
+    	    labelOffset: 50,
+    	    labelDirection: 'explode',
+    	    labelInterpolationFnc: function(value, idx) {
+    	      // Calculates the percentage of category total vs absolute total
+    	      return value;
+    	    }
+    	  }],
+    	  ['screen and (min-width: 1301px)', {
+    	    labelOffset: 30,
+    	    chartPadding: 10
+    	  }],
+    	  ['screen and (min-width: 992px)', {
+      	    labelOffset: 45,
+      	    chartPadding: 40,
+      	  }],
+    	  
+    	];
         
         // Reset the chart
         if(isNotEmpty(transactionsChart)) {
@@ -565,7 +586,7 @@
         $("#" + id).tooltip('dispose');
         
         if(isNotEmpty(dataPreferences)) {
-        	transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function(data) {
+        	transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences, responsiveOptions).on('draw', function(data) {
       		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
 		        	data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
