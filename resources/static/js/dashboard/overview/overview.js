@@ -2,8 +2,6 @@
 (function scopeWrapper($) {
 	// User Budget Map Cache
 	let userBudgetCache = {};
-	// User transaction category ID and total
-	let categoryTotalMapCache = {};
 	// OVERVIEW CONSTANTS
 	const OVERVIEW_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
@@ -25,6 +23,7 @@
 	let previousDateYearPicker = currentYearSelect - 2;
 	// Cache the next year Picker data
 	let nextDateYearPicker = currentYearSelect+2;
+	let materialSpinnerClone = buildMaterialSpinner();
 
 	/**
 	* Get Overview
@@ -72,7 +71,7 @@
 	    genericAddFnc.classList.add('d-none');
 
 	    // Add highlighted element to the income
-		document.getElementsByClassName('incomeImage')[0].parentNode.classList.add('highlightOverviewSelected');
+		document.getElementsByClassName('income')[0].classList.add('highlightOverviewSelected');
 
 		/**
 		 * Date Picker
@@ -92,19 +91,17 @@
 				return;
 			}
 			
-			// Reset the optimizations and recent transactions tab
-			let optimizationsModule = document.getElementById('optimizations');
-			optimizationsModule.innerHTML = '<div class="material-spinner rtSpinner"></div>';
-			
 			let recentTransactionsTab = document.getElementById('recentTransactions');
-			recentTransactionsTab.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			// Replace HTML with Empty
+			while (recentTransactionsTab.firstChild) { recentTransactionsTab.removeChild(recentTransactionsTab.firstChild); }
+			cloneElementAndAppend(recentTransactionsTab, materialSpinnerClone);
 			
 			// Set chosen date
 			er.setChosenDateWithSelected(this);
 			// Calculate the income and expense image
 			let highlightedOverview = document.getElementsByClassName('highlightOverviewSelected')[0].firstElementChild.classList;
-			let expenseImage = highlightedOverview.contains('expenseImage');
-			let incomeImage = highlightedOverview.contains('incomeImage');
+			let expenseImage = highlightedOverview.contains('expense');
+			let incomeImage = highlightedOverview.contains('income');
 			let incomeTotalParam;
 			if(expenseImage) {incomeTotalParam = OVERVIEW_CONSTANTS.expenseTotalParam;}
 			if(incomeImage) {incomeTotalParam = OVERVIEW_CONSTANTS.incomeTotalParam;}
@@ -150,8 +147,6 @@
 			 * Populate Overview
 			 */ 
 			populateRecentTransactions(result.Transaction);
-			populateIncomeAverage(result.averageIncome);
-			populateExpenseAverage(result.averageExpense);
 			// Upon refresh call the income overview chart
 			incomeOrExpenseOverviewChart(incomeTotalParam, result.Date);
 			// Replace currentCurrencySymbol with currency symbol
@@ -161,8 +156,6 @@
 			 */
 			
 			populateTotalAssetLiabilityAndNetworth(result.Wallet);
-			// Fetch transaction total 
-			fetchCategoryTotalForTransactions(window.defaultCategories, result.Budget);
 		},
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
@@ -394,486 +387,6 @@
 	}
 	
 	/**
-	 * Optimizations Functionality
-	 */
-	function fetchCategoryTotalForTransactions(categoryTotalMap, userBudgetList) {
-    	// Store the result in a cache
-    	categoryTotalMapCache = categoryTotalMap;
-    	
-    	// Populate Category Break down Chart if present
-    	if(doughnutBreakdownOpen) {
-    		populateCategoryBreakdown(fetchIncomeBreakDownCache);
-    	}
-    	
-    	// Populate Optimization of budgets
-    	populateOptimizationOfBudget(userBudgetList);
-	}
-	
-	// Populate optimization of budgets
-	function populateOptimizationOfBudget(userBudgetList) {
-    	let populateOptimizationBudgetDiv = document.getElementById('optimizations');
-    	let populateOptimizationFragment = document.createDocumentFragment();
-    	for(let count = 0, length = userBudgetList.length; count < length; count++){
-        	let userBudgetValue = userBudgetList[count];
-      	  
-      	  	if(isEmpty(userBudgetValue)) {
-      	  		continue;
-      	  	}
-      	  	
-      	  	// Store the values in a cache
-      	  	userBudgetCache[userBudgetValue.budgetId] = userBudgetValue;
-      	  	
-      	    // Check for Overspent budget
-      	    if(userBudgetValue.used > userBudgetValue.planned) {
-      	    	populateOptimizationFragment.appendChild(buildBudgetOptimizations(userBudgetValue, userBudgetValue.used));
-      	    } else if (userBudgetValue.used <= userBudgetValue.planned) {
-      	    	userBudgetWithFund[userBudgetValue.category] = { 'amount' : userBudgetValue.planned - userBudgetValue.used , 'parentCategory' : categoryMap[userBudgetValue.category].type };
-      	    }
-     	}
-    	
-    	// Empty the div optimizations
-    	while (populateOptimizationBudgetDiv.firstChild) {
-    		populateOptimizationBudgetDiv.removeChild(populateOptimizationBudgetDiv.firstChild);
-		}
-    	if(populateOptimizationFragment.childElementCount === 0) {
-    		populateOptimizationFragment.appendChild(buildSvgFullyOptimized());
-    		
-    		populateFullyOptimizedDesc(populateOptimizationFragment);
-    		
-    	} else {
-    		let checkAllInput = document.getElementById('checkAll');
-    		checkAllInput.removeAttribute('disabled');
-    	}
-    		
-    	populateOptimizationBudgetDiv.appendChild(populateOptimizationFragment);
-	}
-	
-	// Populate the fully optimized description 
-	function populateFullyOptimizedDesc(populateOptimizationFragment) {
-		let headingFullyOptimized = document.createElement('h4');
-		headingFullyOptimized.classList = 'text-center font-weight-bold mt-1 optimizationHeadingColor';
-		headingFullyOptimized.innerHTML = "Budget's are fully optimized";
-		populateOptimizationFragment.appendChild(headingFullyOptimized);
-		
-		let paragraphOptimized = document.createElement('p');
-		paragraphOptimized.classList = 'text-center tripleNineColor'
-		paragraphOptimized.innerText = 'Awesomesauce!';
-		populateOptimizationFragment.appendChild(paragraphOptimized);
-		
-	}
-	
-	// Budget optimizations over budgeted
-	function buildBudgetOptimizations(userBudget, categoryTotal) {
-			
-		let overSpentBudget = Math.abs(categoryTotal - userBudget.planned);
-		
-		// Budget Optimization Row
-		let tableBudgetOptimization = document.createElement('div');
-		tableBudgetOptimization.id = 'budgetOptimization-' + userBudget.budgetId;
-		tableBudgetOptimization.classList = 'budgetOptimization d-table-row';
-		
-		// Table Cell 1
-		let checkboxCell = document.createElement('div');
-		checkboxCell.tabIndex = -1;
-		checkboxCell.className = 'd-table-cell text-center checkListBO';
-		
-		let formCheckDiv = document.createElement('div');
-		formCheckDiv.className = 'form-check';
-		formCheckDiv.tabIndex = -1;
-		
-		let fromCheckLabel = document.createElement('label');
-		fromCheckLabel.className = 'form-check-label';
-		fromCheckLabel.tabIndex = -1;
-		
-		let inputFormCheckInput = document.createElement('input');
-		inputFormCheckInput.className = 'number form-check-input';
-		inputFormCheckInput.type = 'checkbox';
-		inputFormCheckInput.innerHTML = userBudget.budgetId;
-		inputFormCheckInput.tabIndex = -1;
-		
-		let formCheckSignSpan = document.createElement('span');
-		formCheckSignSpan.className = 'form-check-sign';
-		formCheckSignSpan.tabIndex = -1;
-		
-		let checkSpan = document.createElement('span');
-		checkSpan.className = 'check';
-		formCheckSignSpan.appendChild(checkSpan);
-		fromCheckLabel.appendChild(inputFormCheckInput);
-		fromCheckLabel.appendChild(formCheckSignSpan);
-		formCheckDiv.appendChild(fromCheckLabel);
-		checkboxCell.appendChild(formCheckDiv);
-		tableBudgetOptimization.appendChild(checkboxCell);
-		
-		// Table Cell 2 
-		let userBudgetNameDiv = document.createElement('div');
-		userBudgetNameDiv.classList = 'font-weight-bold categoryNameBO d-table-cell';
-		userBudgetNameDiv.innerText = categoryMap[userBudget.category].name;
-		tableBudgetOptimization.appendChild(userBudgetNameDiv);
-		
-		// Table Cell 3 
-		let overspentAmountDiv = document.createElement('div');
-		overspentAmountDiv.classList = 'budgetAmountBO expenseCategory font-weight-bold d-table-cell text-right align-middle';
-		overspentAmountDiv.innerHTML = formatToCurrency(overSpentBudget);
-		tableBudgetOptimization.appendChild(overspentAmountDiv);
-		
-		return tableBudgetOptimization;
-	}
-	
-	// Builds an all optimized SVG meter
-	function buildSvgFullyOptimized() {
-		
-		let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-    	svgElement.setAttribute('viewBox','0 0 103.1 103.1');
-    	svgElement.setAttribute('class','optimization-empty-svg mt-5 svg-absolute-center');
-    	
-    	let gElement = document.createElementNS("http://www.w3.org/2000/svg", 'g');
-    	
-    	let pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement1.setAttribute('class','optimization-empty-path-0');
-    	pathElement1.setAttribute('d','M51.5,0C23.1,0,0,23.1,0,51.5c0,28.5,23.1,51.5,51.5,51.5c3.7,0,7.3-0.4,10.7-1.1c22.8-4.8,40-24.8,40.8-48.8 c0-0.5,0-1.1,0-1.6C103.1,23.1,80,0,51.5,0z M67,90.2c-0.1,0.2-0.2,0.3-0.4,0.4c-4.9,1.6-11.6,2.4-15.8,2.4 c-3.6,0-10.2-0.8-15.3-2.3c-0.2-0.1-0.3-0.2-0.4-0.4c-0.1-0.2,0-0.4,0.1-0.5l4.2-5.8c0.1-0.2,0.3-0.2,0.5-0.2h23 c0.2,0,0.4,0.1,0.5,0.3l3.5,5.7C67.1,89.8,67.1,90,67,90.2z M97,51.8c-0.1,17-9.5,31.7-23.3,39.5l-6.5-10.4 c-0.8-1.3-2.2-2.1-3.7-2.1H39.4c-1.4,0-2.7,0.7-3.6,1.8l-7.4,10.1C15.1,82.9,6,68.3,6,51.5C6,26.4,26.4,6,51.5,6h0.3 C76.8,6.2,97,26.5,97,51.5V51.8z');
-    	gElement.appendChild(pathElement1);
-    	
-    	let pathElement2 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement2.setAttribute('class','optimization-empty-path-1');
-    	pathElement2.setAttribute('d','M63.4,84c-0.1-0.2-0.3-0.3-0.5-0.3h-23c-0.2,0-0.4,0.1-0.5,0.2l-4.2,5.8c-0.1,0.2-0.1,0.4-0.1,0.5 c0.1,0.2,0.2,0.3,0.4,0.4c5.1,1.5,11.7,2.3,15.3,2.3c4.2,0,10.9-0.7,15.8-2.4c0.2-0.1,0.3-0.2,0.4-0.4c0.1-0.2,0-0.4-0.1-0.5 L63.4,84z');
-    	gElement.appendChild(pathElement2);
-    	
-    	let pathElement3 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement3.setAttribute('class','optimization-empty-path-1');
-    	pathElement3.setAttribute('d','M51.8,6h-0.3C26.4,6,6,26.4,6,51.5c0,16.7,9,31.3,22.4,39.2l7.4-10.1c0.8-1.1,2.2-1.8,3.6-1.8h24.1 c1.5,0,2.9,0.8,3.7,2.1l6.5,10.4C87.6,83.5,96.9,68.8,97,51.8v-0.3C97,26.5,76.8,6.2,51.8,6z M20.2,52.8c0,0.3-0.1,0.6-0.3,0.8 c-0.2,0.2-0.5,0.3-0.8,0.3h-8.3c-0.6,0-1.1-0.5-1.1-1.1l0-2.4c0-0.3,0.1-0.6,0.3-0.8c0.2-0.2,0.5-0.3,0.8-0.3H19 c0.6,0,1.1,0.5,1.1,1.1V52.8z M30.2,76.2l-5.9,5.9c-0.2,0.2-0.5,0.3-0.8,0.3c-0.3,0-0.6-0.1-0.8-0.3L21,80.3 c-0.2-0.2-0.3-0.5-0.3-0.8s0.1-0.6,0.3-0.8l5.9-5.9c0.2-0.2,0.5-0.3,0.8-0.3s0.6,0.1,0.8,0.3l1.7,1.7c0.2,0.2,0.3,0.5,0.3,0.8 C30.5,75.7,30.4,76,30.2,76.2z M30.2,28.5l-1.7,1.7c-0.2,0.2-0.5,0.3-0.8,0.3c-0.3,0-0.6-0.1-0.8-0.3L21,24.3 c-0.4-0.4-0.4-1.1,0-1.6l1.7-1.7c0.2-0.2,0.5-0.3,0.8-0.3c0.3,0,0.6,0.1,0.8,0.3l5.9,5.9C30.6,27.4,30.6,28.1,30.2,28.5z M49.2,10.7c0-0.6,0.5-1.1,1.1-1.1h2.4c0.6,0,1.1,0.5,1.1,1.1V19c0,0.6-0.5,1.1-1.1,1.1h-2.4c-0.6,0-1.1-0.5-1.1-1.1V10.7z M57,49.6c0.3,0.5,0.5,1.1,0.7,1.8c0.8,3.8-1.5,7.5-5.3,8.4c-3.8,0.8-7.5-1.5-8.4-5.3c-0.8-3.8,1.5-7.5,5.3-8.3 c0.5-0.1,0.9-0.2,1.3-0.2l19.6-26.7L57,49.6z M93.4,53.3C93,64.4,87.9,75.4,80.3,82.1c-0.2,0.2-0.5,0.3-0.7,0.3l0,0 c-0.3,0-0.6-0.1-0.8-0.3l-5.9-5.9c-0.2-0.2-0.3-0.5-0.3-0.8c0-0.3,0.1-0.6,0.3-0.8l1.7-1.7c0.2-0.2,0.5-0.3,0.8-0.3 s0.6,0.1,0.8,0.3l3.6,3.6c5.6-6.4,8.7-14.2,9.3-22.6l-5,0c-0.3,0-0.6-0.1-0.8-0.3c-0.2-0.2-0.3-0.5-0.3-0.8v-2.4 c0-0.3,0.1-0.6,0.3-0.8c0.2-0.2,0.5-0.3,0.8-0.3h5c-0.5-8.4-3.7-16.3-9.3-22.6l-3.6,3.6c-0.2,0.2-0.5,0.3-0.8,0.3s-0.6-0.1-0.8-0.3 l-1.7-1.7c-0.2-0.2-0.3-0.5-0.3-0.8c0-0.3,0.1-0.6,0.3-0.8l5.9-5.9c0.2-0.2,0.5-0.3,0.8-0.3c0.3,0,0.5,0.1,0.7,0.3 c7.6,6.7,12.7,17.8,13.1,28.9C93.5,51.4,93.5,51.5,93.4,53.3z');
-    	gElement.appendChild(pathElement3);
-    	
-    	let pathElement4 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement4.setAttribute('class','optimization-meter all-optimized');
-    	pathElement4.setAttribute('d','M80.3,21c-0.2-0.2-0.5-0.3-0.7-0.3c-0.3,0-0.6,0.1-0.8,0.3l-5.9,5.9c-0.2,0.2-0.3,0.5-0.3,0.8 c0,0.3,0.1,0.6,0.3,0.8l1.7,1.7c0.2,0.2,0.5,0.3,0.8,0.3s0.6-0.1,0.8-0.3l3.6-3.6c5.6,6.4,8.7,14.2,9.3,22.6h-5 c-0.3,0-0.6,0.1-0.8,0.3c-0.2,0.2-0.3,0.5-0.3,0.8v2.4c0,0.3,0.1,0.6,0.3,0.8c0.2,0.2,0.5,0.3,0.8,0.3l5,0 c-0.5,8.4-3.7,16.3-9.3,22.6l-3.6-3.6c-0.2-0.2-0.5-0.3-0.8-0.3s-0.6,0.1-0.8,0.3l-1.7,1.7c-0.2,0.2-0.3,0.5-0.3,0.8 c0,0.3,0.1,0.6,0.3,0.8l5.9,5.9c0.2,0.2,0.5,0.3,0.8,0.3l0,0c0.3,0,0.5-0.1,0.7-0.3c7.6-6.7,12.7-17.8,13.1-28.9 c0.1-1.8,0.1-1.8,0-3.4C93,38.7,87.9,27.7,80.3,21z');
-    	gElement.appendChild(pathElement4);
-    	
-    	let pathElement5 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement5.setAttribute('class','optimization-meter all-optimized');
-    	pathElement5.setAttribute('d','M49.3,46.1c-3.8,0.8-6.1,4.6-5.3,8.3c0.8,3.8,4.6,6.1,8.4,5.3c3.8-0.8,6.1-4.6,5.3-8.4 c-0.2-0.6-0.4-1.2-0.7-1.8l13.2-30.4L50.6,46C50.2,46,49.8,46,49.3,46.1z');
-    	gElement.appendChild(pathElement5);
-    	
-    	let pathElement6 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement6.setAttribute('class','optimization-empty-path-2');
-    	pathElement6.setAttribute('d','M50.3,20.2h2.4c0.6,0,1.1-0.5,1.1-1.1v-8.3c0-0.6-0.5-1.1-1.1-1.1h-2.4c-0.6,0-1.1,0.5-1.1,1.1V19 C49.2,19.7,49.7,20.2,50.3,20.2z');
-    	gElement.appendChild(pathElement6);
-    	
-    	let pathElement7 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement7.setAttribute('class','optimization-empty-path-2');
-    	pathElement7.setAttribute('d','M24.3,21c-0.2-0.2-0.5-0.3-0.8-0.3c-0.3,0-0.6,0.1-0.8,0.3L21,22.8c-0.4,0.4-0.4,1.1,0,1.6l5.9,5.9 c0.2,0.2,0.5,0.3,0.8,0.3c0.3,0,0.6-0.1,0.8-0.3l1.7-1.7c0.4-0.4,0.4-1.1,0-1.6L24.3,21z');
-    	gElement.appendChild(pathElement7);
-    	
-    	let pathElement8 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement8.setAttribute('class','optimization-empty-path-2');
-    	pathElement8.setAttribute('d','M19,49.2h-8.3c-0.3,0-0.6,0.1-0.8,0.3c-0.2,0.2-0.3,0.5-0.3,0.8l0,2.4c0,0.6,0.5,1.1,1.1,1.1H19 c0.3,0,0.6-0.1,0.8-0.3c0.2-0.2,0.3-0.5,0.3-0.8v-2.4C20.2,49.7,19.7,49.2,19,49.2z');
-    	gElement.appendChild(pathElement8);
-    	
-    	let pathElement9 = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-    	pathElement9.setAttribute('class','optimization-empty-path-2');
-    	pathElement9.setAttribute('d','M28.5,72.9c-0.2-0.2-0.5-0.3-0.8-0.3s-0.6,0.1-0.8,0.3L21,78.8c-0.2,0.2-0.3,0.5-0.3,0.8s0.1,0.6,0.3,0.8 l1.7,1.7c0.2,0.2,0.5,0.3,0.8,0.3c0.3,0,0.6-0.1,0.8-0.3l5.9-5.9c0.2-0.2,0.3-0.5,0.3-0.8c0-0.3-0.1-0.6-0.3-0.8L28.5,72.9z');
-    	gElement.appendChild(pathElement9);
-    	
-    	svgElement.appendChild(gElement);
-    	
-    	return svgElement;
-	}
-	
-	// Click optimization Button functionality
-	$('body').on('click', '#optimizeButton' , function(e) {
-		// disable the button
-		this.setAttribute('disabled','disabled');
-		this.classList.toggle('d-none');
-		// Enable the spinner
-		document.getElementById('optimizationSpinner').classList.toggle('d-none');
-		
-		// Post a budget amount change to the user budget module and change to auto generated as false. 
-		var values = {};
-		values['autoGenerated'] = 'false';
-		values['dateMeantFor'] = chosenDate;
-		
-		// Check if some of the optimizations are performed
-		let optimizedSome = false;
-		
-		let checkedbudgetOptimizations = $('.number:checked');
-		// Show choose atleast one budget to optimize message
-		if(checkedbudgetOptimizations == 0) {
-			showNotification('Please choose atleast one budget to optimize',window._constants.notification.error);
-			return;
-		}
-		
-		// Iterate the budgets that require optimizations
-		for(let i = 0, lengthParent = checkedbudgetOptimizations.length; i < lengthParent; i++) {
-          // To remove the select all check box values
-          let categoryId = checkedbudgetOptimizations[i].innerHTML;
-          
-          // Google Chrome Compatibility 
-          if(isEmpty(categoryId) || isEmpty(categoryMap[categoryId])) {
-        	  categoryId = checkedbudgetOptimizations[i].childNodes[0].nodeValue; 
-          }
-          
-          let userBudget = userBudgetCache[categoryId];
-		  let categoryTotal = categoryTotalMapCache[categoryId];
-		  let totalOptimization = categoryTotal - userBudget.planned;
-		  let amountToUpdateForBudget = userBudgetCache[categoryId].planned;
-		  let fullyOptimized = false;
-		  
-          if(categoryId != "on" && isNotBlank(categoryId)){
-        	  let categoryObject = categoryMap[categoryId];
-        	  let dataKeys = Object.keys(userBudgetWithFund);
-        	  
-        	  // Iterate the budgets with fund 
-        	  for(let count = 0, length = dataKeys.length; count < length; count++) {
-        		  let categoryIdKey = dataKeys[count];
-        		  let budgetWithFund = userBudgetWithFund[categoryIdKey];
-        		  if(isNotEmpty(budgetWithFund) && categoryObject.type == budgetWithFund.type) {
-        			  let totalOptimizationValue = 0;
-        			  
-        			  if(budgetWithFund.amount == 0 || totalOptimization == 0) {
-        				  continue;
-        			  }
-        			  
-        			  if(totalOptimization >= budgetWithFund.amount && (userBudgetCache[categoryIdKey].planned - budgetWithFund.amount) >= 0) {
-        				 
-        				  // Calculate remaining optimization necesary
-        				  totalOptimizationValue = budgetWithFund.amount;
-        				  
-        				  // Update the budget that needs optimization
-        				  amountToUpdateForBudget += budgetWithFund.amount;
-        				  
-        				  // Set the total optimization value
-        				  totalOptimization -= budgetWithFund.amount;
-        			  } else if(totalOptimization < budgetWithFund.amount && (userBudgetCache[categoryIdKey].planned - totalOptimization) >= 0) {
-        				  
-        				  fullyOptimized = true;
-        				  // Update the budget that needs optimization
-        				  amountToUpdateForBudget += totalOptimization;
-        				  
-        				  // Set the value to be optimized
-        				  totalOptimizationValue = totalOptimization;
-        				  
-        				  totalOptimization = 0;
-        			  }
-        			  
-        			  // Call budget amount (param2 and param3 has to be false and 0 respectively) for entries not present in optimization 
-        			  if(totalOptimizationValue != 0) {
-        				  values['planned'] = userBudgetCache[categoryIdKey].planned - totalOptimizationValue;
-        				  values['categoryId'] =  categoryIdKey;
-        				  values['walletId'] =  currentUser.walletId;
-        				  values['budgetId'] =  currentUser.budgetId; // TODO
-        				  callBudgetAmountChange(values, false, 0);
-        			  }
-    				 
-        			  // Set optimized some to true;
-        			  optimizedSome = true;
-        		  }
-
-        		  // Break out of the for loop for budget with fund
-        		  if(fullyOptimized) {
-        			  break;
-        		  }
-        	  }
-        	  
-        	  // Check the optimized vs optimization required 
-        	  let optimizedAmountForBudget = (categoryTotal - userBudget.planned) - (amountToUpdateForBudget - userBudgetCache[categoryId].planned);
-        	  
-        	  // Call the update user budget only when the value has changed
-        	  if(amountToUpdateForBudget != userBudgetCache[categoryId].planned) {
-        		  // Update the amount of budget that needs optimization at the end
-            	  values['planned'] = amountToUpdateForBudget;
-    			  values['category_id'] =  categoryId;
-    			  values['walletId'] =  currentUser.walletId;
-        		  values['budgetId'] =  currentUser.budgetId; // TODO
-    			  callBudgetAmountChange(values, fullyOptimized, optimizedAmountForBudget);
-        	  }
-        	  
-          }
-          
-       }
-		
-	   // Show notification to users
-	   if(optimizedSome) {
-		   showNotification('Successfully optimized the budgets with the funds available from other budgets!',window._constants.notification.success);
-	   } else {
-		   showNotification('Unable to optimize any budgets as there are no other budgets with available funds',window._constants.notification.error);
-	   }
-	   
-	   // Uncheck all the checked values
-	   let checkedValues = $('.number:checked');
-	   checkedValues.prop('checked', false);
-	   checkedValues.prop('disabled', true);
-	   
-	   // Uncheck if select all is chosen
-	   let checkAllValues = $('#checkAll:checked');
-	   checkAllValues.prop('checked', false);
-	   checkAllValues.prop('disabled', true);
-	   
-	   // Revert the spinner
-	   document.getElementById('optimizationSpinner').classList.toggle('d-none');
-	   // Hide the ** Selected message
-	   document.getElementById('selectedOptimizations').innerText = 'None Selected';
-	   // Show the Optimization Button as disabled
-	   this.classList.toggle('d-none');
-	   
-	   // If the optimization body is null then show the fully optimized image
-	   let optimizationBody = document.getElementById('optimizations');
-	   if(optimizationBody.childElementCount == 0) {
-		   let populateOptimizationFragment = document.createDocumentFragment();
-		   populateOptimizationFragment.appendChild(buildSvgFullyOptimized());
-   		   populateFullyOptimizedDesc(populateOptimizationFragment);
-   		   optimizationBody.appendChild(populateOptimizationFragment);
-	   }
-	   
-	},false);
-	
-	// Call budget amount change (Synchronous Ajax Call)
-	function callBudgetAmountChange(values, fullyOptimized, totalOptimizationPending) {
-		// Ajax Requests on Error
-		let ajaxData = {};
-   		ajaxData.isAjaxReq = true;
-   		ajaxData.type = "PATCH";
-   		ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.budgetAPIUrl;
-   		ajaxData.dataType = "json";
-   		ajaxData.contentType = "application/json;charset=UTF-8";
-   		ajaxData.data = JSON.stringify(values);
-   		ajaxData.onSuccess = function(userBudget){
-	          userBudget = userBudget['body-json'];
-	    	  // Update the cache
-	    	  userBudgetCache[userBudget.categoryId] = userBudget;
-	    	  
-	    	  // Update the total funds available
-	    	  if(isNotEmpty(userBudgetWithFund[userBudget.categoryId])) {
-	    		  // Ensure that the transaction total is not null
-	    		  if(isNotEmpty(categoryTotalMapCache[userBudget.categoryId])) {
-	    			  userBudgetWithFund[userBudget.categoryId].amount =  categoryTotalMapCache[userBudget.categoryId] - userBudget.planned;
-	    		  } else {
-	    			  userBudgetWithFund[userBudget.categoryId].amount = userBudget.planned;
-	    		  }
-	    		  
-	    	  }
-	    	  
-	    	  let budgetOptimizationDiv = document.getElementById('budgetOptimization-' + userBudget.categoryId);
-	    	  
-	    	  // If the document is null then return
-	    	  if(budgetOptimizationDiv == null) {
-	    		  return;
-	    	  }
-	    	  
-	    	  // If fully optimized or pending is 0 then remove
-	    	  if(fullyOptimized || totalOptimizationPending == 0) {
-	    		  budgetOptimizationDiv.remove();
-	    	  } else if(totalOptimizationPending > 0) {
-	    		  // Replace the text with the pending values
-	    		  budgetOptimizationDiv.lastChild.innerText = formatToCurrency(Math.abs(totalOptimizationPending));
-	    	  }
-	    }
-        ajaxData.onFailure = function(thrownError) {
-        	manageErrors(thrownError, 'Unable to change the budget category amount at this moment. Please try again!',ajaxData);	    	  
-	    }
-		$.ajax({
-	          type: ajaxData.type,
-	          url: ajaxData.url,
-	          beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	          dataType: ajaxData.dataType,
-	          contentType: ajaxData.contentType,
-	          data : ajaxData.data,
-	          async: false,
-	          success: ajaxData.onSuccess,
-	          error: ajaxData.onFailure
-		});
-	}	
-	
-	/**
-	 * Select All  - Functionality
-	 */
-	
-	// Disable Button if no check box is clicked and vice versa
-	$( ".optimizationBudgetAndGoal" ).on( "click", ".number" ,function() {
-		checkOrUncheckOptimization();
-	});
-	
-	// Check or Uncheck Optimization
-	function checkOrUncheckOptimization() {
-		let checkAllElementChecked = $("#checkAll:checked");
-		if(checkAllElementChecked.length > 0) {
-			// uncheck the check all if a check is clicked and if the check all is already clicked
-			checkAllElementChecked.prop('checked', false);
-		}
-		
-		// Click the checkAll is all the checkboxes are clicked
-		let allCheckedOptimizations = $(".number:checked");
-		let allTransactions = $(".number");
-		if(allCheckedOptimizations.length == allTransactions.length) {
-			$("#checkAll").prop('checked', true);
-		}
-		
-		// Choose all selected optimizations
-		let numberSelected = allCheckedOptimizations.length > 0 ? allCheckedOptimizations.length + ' Selected' : 'None Selected';
-		document.getElementById('selectedOptimizations').innerText = numberSelected;
-		
-		// Enable or disable optimizations buttons
-		manageOptimizationButton(allCheckedOptimizations.length);
-	}
-	
-	// Select all check boxes for Transactions
-	$('body').on('click', '.overview-dashboard #checkAll' , function(e) {
-		$('input[type="checkbox"]').prop('checked', $(this).prop('checked'));
-		let allCheckedOptimizations = $(".number:checked");
-		
-		// Choose all selected optimizations
-		let numberSelected = allCheckedOptimizations.length > 0 ? allCheckedOptimizations.length + ' Selected' : 'None Selected';
-		document.getElementById('selectedOptimizations').innerText = numberSelected;
-		// Enable or disable optimizations buttons
-		manageOptimizationButton(allCheckedOptimizations.length);
-	});
-	
-	// Click budget row
-	$('body').on('click', '.budgetOptimization', function() {
-		// Check the row as selected / unselected
-		let checkboxInElem = this.getElementsByClassName('number');
-		checkboxInElem = $(checkboxInElem);
-		checkboxInElem.prop('checked', !checkboxInElem.prop('checked'));
-		// Common action for toggling checkbox
-		checkOrUncheckOptimization();
-	});
-	
-	// Function to enable of disable the delete transactions button
-	function manageOptimizationButton(allCheckedLength){
-		let manageOptimizationsButton = document.getElementById('optimizeButton');
-		if(allCheckedLength > 0) {
-			manageOptimizationsButton.removeAttribute('disabled');
-		} else {
-			manageOptimizationsButton.setAttribute('disabled','disabled');
-		}  
-	}
-	
-	/**
-	 * Populate Income Average
-	 */
-	
-	
-	// Populate Income Average
-	function populateIncomeAverage(averageIncome) {
-    	if(isEmpty(averageIncome)) {
-    		averageIncome = 0.00;
-    	}
-    	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageIncomeAmount'), 0, averageIncome, currentCurrencyPreference ,200);
-	}
-	
-	/**
-	 *  Populate Expense Average
-	 */
-	
-	// Populate Expense Average
-	function  populateExpenseAverage(averageExpense) {
-    	if(isEmpty(averageExpense)) {
-    		averageExpense = 0.00;
-    	}
-    	// Animate Value from 0 to value 
-    	animateValue(document.getElementById('averageExpenseAmount'), 0, averageExpense, currentCurrencyPreference ,200);
-	}
-	
-	/**
 	 * Chart Functionality
 	 * 
 	 */ 
@@ -966,7 +479,9 @@
 	}
 	
 	// Click the overview card items
-	$('body').on('click', '.overviewEntryRow', function() {
+	$('body').on('click', '.chart-option', function() {
+		$('.chart-option').removeClass('active');
+		this.classList.add('active');
 		// Append spinner
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 		let materialSpinnerDocumentFragment = document.createDocumentFragment();
@@ -978,8 +493,8 @@
 		chartAppendingDiv.appendChild(materialSpinnerDocumentFragment);
 		
 		// Start requesting the chart  
-		let firstChildClassList = this.children[0].classList;
-		if(firstChildClassList.contains('incomeImage')) {
+		let firstChildClassList = this.classList;
+		if(firstChildClassList.contains('income')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
@@ -997,7 +512,7 @@
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Income Overview';
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Income');
-		} else if(firstChildClassList.contains('expenseImage')) {
+		} else if(firstChildClassList.contains('expense')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
@@ -1015,21 +530,21 @@
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Expense Overview';
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Expense');
-		} else if(firstChildClassList.contains('assetsImage')) {
+		} else if(firstChildClassList.contains('assets')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Asset Chart
 			populateAssetBarChart(true);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Asset Overview';
-		} else if(firstChildClassList.contains('debtImage')) {
+		} else if(firstChildClassList.contains('debt')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Debt Chart
 			populateAssetBarChart(false);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Debt Overview';
-		} else if(firstChildClassList.contains('networthImage')) {
+		} else if(firstChildClassList.contains('networth')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			populateNetworthBarChart();
@@ -1116,7 +631,7 @@
 	// Build Empty chart
 	function buildEmptyChartMessage() {
 		let emptyChartMessage = document.createElement('div');
-		emptyChartMessage.classList = 'text-center align-middle';
+		emptyChartMessage.classList = 'text-center align-middle h-20';
 		
 		let divIconWrapper = document.createElement('div');
 		divIconWrapper.classList = 'icon-center';
@@ -1243,15 +758,13 @@
 		
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 		
 		
 		// Build the Absolute total 
 		let incomeCategory = fetchIncome ? CUSTOM_DASHBOARD_CONSTANTS.incomeCategory : CUSTOM_DASHBOARD_CONSTANTS.expenseCategory;
-		let categoryKeys = Object.keys(categoryTotalMapCache);
-		for(let count = 0, length = categoryKeys.length; count < length; count++) {
-			let categoryId = categoryKeys[count];
-			let categoryObject = categoryTotalMapCache[categoryId];
+		for(let count = 0, length = window.categoryMap.length; count < length; count++) {
+			let categoryObject = window.categoryMap[count];
 			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
 				// Add the category total to absolute total
 				absoluteTotal += Math.abs(categoryObject.categoryTotal);
@@ -1259,9 +772,8 @@
 		}
 		
 		// Build the legend and the series array
-		for(let count = 0, length = categoryKeys.length; count < length; count++) {
-			let categoryId = categoryKeys[count];
-			let categoryObject = categoryTotalMapCache[categoryId];
+		for(let count = 0, length = window.categoryMap.length; count < length; count++) {
+			let categoryObject = window.categoryMap[categoryId];
 			
 			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
 				let percentageOfTotal = (Math.abs(categoryObject.categoryTotal) / absoluteTotal) * 100;
@@ -1375,7 +887,7 @@
 	function populateLineChart(dateAndTimeAsList, incomeChart) {
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 		
 		if(incomeChart) {
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, dateAndTimeAsList);
@@ -1400,7 +912,7 @@
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 
 		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, accType);
     }
@@ -1531,7 +1043,7 @@
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 
 		buildchartForNetworth(window.allBankAccountInfoCache);
     }

@@ -14,7 +14,7 @@
           <div class="card">
             <div class="card-header card-header-success card-header-icon">
               <div class="card-icon">
-                <i class="material-icons">assignment</i>
+                <i class="material-icons noselect">assignment</i>
               </div>
               <h5 class="card-title d-inline-block noselect">Transactions</h5>
               <div class="float-right d-none d-lg-block">
@@ -53,7 +53,7 @@
                   </div>
                 </div>
                 <div id="exportData" class="mt-3 d-none">
-                  <button id="downloadTransactionsData" class="btn btn-secondary btn-link pl-4 py-0 pr-1 mb-0 tripleNineColor">Download<i class="material-icons">cloud_download</i></button>
+                  <button id="downloadTransactionsData" class="btn btn-secondary btn-link pl-4 py-0 pr-1 mb-0 tripleNineColor">Download<i class="material-icons noselect">cloud_download</i></button>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@
           <div class="card transactions-chart noselect">
           	<div class="card-header card-header-icon card-header-danger">
               <div class="card-icon">
-                <i class="material-icons">pie_chart</i>
+                <i class="material-icons noselect">pie_chart</i>
               </div>
               <h5 class="card-title noselect d-none d-lg-flex">Financial Position</h5>
             </div>
@@ -102,17 +102,17 @@
             		<div class="material-spinner"></div>
             	</div>
            		<div>
-           			<i class="material-icons text-success legend-spacing">fiber_manual_record</i><span class="align-middle">Total Income</span>
+           			<i class="material-icons noselect text-success legend-spacing">fiber_manual_record</i><span class="align-middle">Total Income</span>
            		</div>
            			<h4 id="totalIncomeTransactions" class="font-weight-bold transitionTextToNormal">0.00<span class="currentCurrencySymbol"></span></h4>
            		<hr>
            		<div>
-            		<i class="material-icons text-danger legend-spacing">fiber_manual_record</i><span class="align-middle">Total Spent</span>
+            		<i class="material-icons noselect text-danger legend-spacing">fiber_manual_record</i><span class="align-middle">Total Spent</span>
             	</div>
               	<h4 id="totalExpensesTransactions" class="font-weight-bold transitionTextToNormal">0.00<span class="currentCurrencySymbol"></span></h4>
            		<hr>
            		<div>
-    						<i class="material-icons text-orange legend-spacing">fiber_manual_record</i><span id="totalAvailableLabel" class="align-middle">Total Available</span>
+    						<i class="material-icons noselect text-orange legend-spacing">fiber_manual_record</i><span id="totalAvailableLabel" class="align-middle">Total Available</span>
     					</div>
             		<h4 id="totalAvailableTransactions" class="font-weight-bold transitionTextToNormal">0.00<span class="currentCurrencySymbol"></span></h4>
             </div>
@@ -128,7 +128,7 @@
            		</div> 
            		<div class="col-lg-6">
            			<button type="button" id="categoryHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
-              			<i class="material-icons float-right">clear</i>
+              			<i class="material-icons noselect float-right">clear</i>
     						</button>
     					</div>
     				</div>
@@ -179,7 +179,7 @@
               </div> 
               <div class="col-lg-6">
                 <button type="button" id="accountHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="material-icons float-right">clear</i>
+                    <i class="material-icons noselect float-right">clear</i>
                 </button>
               </div>
             </div>
@@ -207,7 +207,7 @@
               <hr>
               <div class="row accountAmountDiv">
                 <div class="col-lg-3 d-inline-block h-100">
-                  <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="Account Balance">account_balance</i>
+                  <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Account Balance">account_balance</i>
                 </div> 
                 <span id="accountAmountEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
                 <span class="currentCurrencySymbol"></span>0.00</span> 
@@ -241,7 +241,7 @@
           <div class="modal-header">
             <h5 class="modal-title card-title noselect">Choose Your Preference</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <i class="material-icons">clear</i>
+              <i class="material-icons noselect">clear</i>
             </button>
           </div>
           <div class="modal-body">
@@ -249,7 +249,7 @@
               <div class="col-md-5 ml-auto d-none d-md-block">
                 <div class="info info-horizontal">
                   <div class="icon icon-rose">
-                    <i class="material-icons">account_balance</i>
+                    <i class="material-icons noselect">account_balance</i>
                   </div>
                   <div class="description">
                     <h4 class="info-title">Connect With Your Bank</h4>
@@ -260,7 +260,7 @@
                 </div>
                 <div class="info info-horizontal">
                   <div class="icon icon-primary">
-                    <i class="material-icons">sync</i>
+                    <i class="material-icons noselect">sync</i>
                   </div>
                   <div class="description">
                     <h4 class="info-title">Automatic Bank Account Syncs</h4>
@@ -271,7 +271,7 @@
                 </div>
                 <div class="info info-horizontal">
                   <div class="icon icon-info">
-                    <i class="material-icons">import_export</i>
+                    <i class="material-icons noselect">import_export</i>
                   </div>
                   <div class="description">
                     <h4 class="info-title">Import From Bank Statements</h4>
@@ -284,13 +284,13 @@
               <div class="col-md-add-transactions mr-auto">
                 <div class="social text-center">
                   <button class="btn btn-just-icon btn-round btn-bank">
-                    <i class="material-icons">account_balance</i>
+                    <i class="material-icons noselect">account_balance</i>
                   </button>
                   <button class="btn btn-just-icon btn-round btn-sync">
-                    <i class="material-icons">sync</i>
+                    <i class="material-icons noselect">sync</i>
                   </button>
                   <button class="btn btn-just-icon btn-round btn-import">
-                    <i class="material-icons">import_export</i>
+                    <i class="material-icons noselect">import_export</i>
                   </button>
                   <h4> or be classical </h4>
                 </div>
@@ -298,7 +298,7 @@
                     <div class="form-group bmd-form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Amount">money</i></div>
+                          <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Amount">money</i></div>
                         </div>
                         <input id="amount" name="amount" type="number" class="form-control small-input" required aria-required="true" aria-invalid="true" placeholder="Amount"/>
                       </div>
@@ -306,7 +306,7 @@
                     <div class="form-group bmd-form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction category">category</i></div>
+                          <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Transaction category">category</i></div>
                         </div>
                         <div id="categoryOptions" class="btn-group btnGroup-1">
                           <div class="w-md-15 w-8" disabled="">Bills & Fees</div>
@@ -316,7 +316,7 @@
                           <div class="dropdown-menu">
                             <!-- Drop down dynamic load -->
                             <div class="input-group">
-                              <span class="m-1 tripleNineColor"><i class="material-icons">search</i></span>
+                              <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
                               <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
                               <h6 class="dropdown-header">Expense</h6>
                               <div id="expenseSelection" class="w-100"></div>
@@ -331,7 +331,7 @@
                     <div class="form-group bmd-form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Write a note">description</i></div>
+                          <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Write a note">description</i></div>
                         </div>
                         <input id="description" name="description" type="text" class="form-control" placeholder="Write a note"/>
                       </div>
@@ -339,9 +339,9 @@
                     <div class="form-group bmd-form-group">
                       <div class="input-group">
                       	<div class="input-group-prepend">
-                            <div class="input-group-text"><i class="material-icons" data-toggle="tooltip" title="Transaction Recurrence">repeat</i></div>
+                            <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Transaction Recurrence">repeat</i></div>
                         </div>
-                    		<div id="recurrenceForm" class="text-left" contenteditable="true" data-gramm_editor="false">
+                    		<div id="recurrenceForm" class="text-left" data-gramm_editor="false">
                     			<button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 active" data-target="NEVER">Never</button>
                           <button class="btn btn-secondary btn-lg register-recurrence weeklyR mr-2 my-3" data-target="WEEKLY">Weekly</button>
                           <button class="btn btn-secondary btn-lg register-recurrence biMonthlyR mr-2 my-3" data-target="BI-MONTHLY">Bi-Monthly</button>

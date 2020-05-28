@@ -38,7 +38,8 @@
 	border-top: 1px solid #f6f6f6;
 }
 
-.recentTransactionTitle, .optimizationTitle, .overviewHeadingTab {
+.recentTransactionTitle,
+.overviewHeadingTab {
 	color: #829ca9;
 	margin-top: 0;
 	margin-bottom: 0;
@@ -53,11 +54,11 @@
 	color: #58c65c;
 }
 
-.recentTransactionsBody, .optimizationsBody {
+.recentTransactionsBody {
 	overflow-y: auto;
 }
 
-.recentTransactionCard, .optimizationBudgetAndGoal {
+.recentTransactionCard {
 	height: 35rem;
 }
 
@@ -109,71 +110,6 @@
 	mix-blend-mode:normal
 }
 
-/*
-* Budget Optimization
-*/
-
-.tableHeadingDiv {
-	display: table-header-group;
-}
-
-.budgetOptimizationTitle {
-	text-transform: capitalize;
-	color: #8e999e;
-}
-
-.categoryNameBO {
-	color: #2e4369;
-}
-
-/* Choose module */
-.choose {
-	padding:0;
-	border:0;
-}
-
-.choose label {
-	text-align:center;
-	position:relative;
-  	cursor:pointer;
-  	margin-bottom: 0;
-}
-.choose label span {
-	color: #686969;
-	line-height: 32px;
-	height: 32px;
-	padding: 0 16px;
-	display: block;
-	transition: all .2s ease;
-	border: 1px solid rgba(0,0,0,0.1);
-	font-size: 0.7rem;
-}
-.choose label:first-of-type span {
-	border-top-left-radius:6px;
-	border-bottom-left-radius:6px;
-	border-right:0;
-}
-.choose label:last-of-type span {
-	border-top-right-radius:6px;
-	border-bottom-right-radius:6px;
-	border-left:0;
-}
-.choose label input {
-	display:none
-}
-.choose label input:checked + span {
-	box-shadow:inset 0 0 0 32px rgba(0,0,0,0.1);
-}
-
-#budgetOrGoals {
-	padding-top: 1rem;
-}
-
-#optimizationFooter {
-	border-top: 1px solid #f6f6f6;
-	padding-top: 0.5rem;	
-}
-
 .overviewEntryRow:hover, .highlightOverviewSelected {
 	background-color: #fafafa;
 }
@@ -194,70 +130,9 @@
 	color: #8e999e;
 }
 
-.optimization-empty-svg {
-	height: 80px;
-	max-width: 90px;
-	padding: 10px;
-}
-
-.optimization-empty-path-0 {
-	fill: #D9D9D9;
-}
-
-.optimization-empty-path-1 {
-	fill: #FFF;
-}
-
-.optimization-meter.all-optimized, .coloredTransactionLine {
-	fill: #00bcd4;
-}
-
-.optimization-empty-path-2 {
-	fill: #EEE;
-}
-
-.optimizationHeadingColor {
-	color: #2e4369;
-}
-
 .transactions-empty-svg {
 	 fill:#D9D9D9;
 	 margin-top: 8rem;
-}
-
-.incomeImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-rupee-64.png");
-	content: url("../../../img/dashboard/overview/icons8-rupee-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.expenseImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-card-in-use-64.png");
-	content: url("../../../img/dashboard/overview/icons8-card-in-use-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.assetsImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-bank-64.png");
-	content: url("../../../img/dashboard/overview/icons8-bank-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.debtImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-debt-64.png");
-	content: url("../../../img/dashboard/overview/icons8-debt-64.png");
-	height: 64px;
-	width: 64px;
-}
-
-.networthImage .image-center {
-	background-image: url("../../../img/dashboard/overview/icons8-money-bag-franc-64.png");
-	content: url("../../../img/dashboard/overview/icons8-money-bag-franc-64.png");
-	height: 64px;
-	width: 64px;
 }
 
 .descriptionAverages {
@@ -286,8 +161,13 @@
 	color: #00bcd4;
 }
 
-.chartDisplayCard {
-		height: 30rem;
+.h-20 {
+	height: 20rem;
+}
+
+.card.chartDisplayCard .card-body+.card-footer, 
+.card.chartDisplayCard .card-footer {
+    justify-content: center;
 }
 
 /** Date time picker **/
@@ -360,10 +240,6 @@
 
 #colouredRoundedLineChart.ct-chart .ct-series:hover {
     opacity: 0.8;
-}
-
-.budgetOptimization {
-	cursor: pointer;
 }
 
 #overviewChartMonth, .dateMonthArrow, .twoBThreeOneColor {
@@ -577,6 +453,73 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	width: 50px !important; 
 }
 
+.btn.chart-option {
+    color: #fff;
+    background: #d5dde3;
+    border: 1px solid #d5dde3;
+    border-top-color: rgb(213, 221, 227);
+    border-right-color: rgb(213, 221, 227);
+    border-bottom-color: rgb(213, 221, 227);
+    border-left-color: rgb(213, 221, 227);
+    display: inline-block;
+    vertical-align: top;
+    padding: 2px 10px;
+    border: 1px solid #bcc4cc;
+    background: #bcc4cc;
+    font-size: 0.7rem;
+    line-height: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: grayscale;
+    -webkit-transition: color .15s ease-out,background .15s ease-out,border-color .15s ease-out;
+    transition: color .15s ease-out,background .15s ease-out,border-color .15s ease-out;
+    white-space: nowrap;
+}
+
+.chart-option.income.active.btn-secondary,
+.chart-option.income.btn.btn-secondary:hover {
+    color: #fff;
+    background-color: #ff9800;
+    border-color: #ff9800;
+    box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12);
+}
+
+.chart-option.expense.active.btn-secondary,
+.chart-option.expense.btn.btn-secondary:hover {
+    color: #fff;
+    background-color: #e91e63;
+    border-color: #e91e63;
+    box-shadow: 0 2px 2px 0 rgba(233, 30, 99, 0.14), 0 3px 1px -2px rgba(233, 30, 99, 0.2), 0 1px 5px 0 rgba(233, 30, 99, 0.12);
+}
+
+.chart-option.assets.active.btn-secondary,
+.chart-option.assets.btn.btn-secondary:hover {
+    color: #ffffff;
+  	background-color: #409444;
+  	border-color: #3d8b40;
+    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);
+}
+
+.chart-option.debt.active.btn-secondary,
+.chart-option.debt.btn.btn-secondary:hover {
+    color: #fff;
+  background-color: #f44336;
+  border-color: #f44336;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0.14), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+}
+
+.chart-option.networth.active.btn-secondary,
+.chart-option.networth.btn.btn-secondary:hover {
+    color: #fff;
+    background-color: #00bcd4;
+    border-color: #00bcd4;
+    box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
 	.choose label span {
@@ -614,49 +557,6 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 		line-height: 40px;
 	}
 	
-	.budgetOptimizationTitle {
-		font-size: 95%;
-	}
-	
-	#selectedOptimizations {
-		font-size:90%
-	}
-	
-	.incomeImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-rupee-35.png");
-		content: url("../../../img/dashboard/overview/icons8-rupee-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.expenseImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-card-in-use-35.png");
-		content: url("../../../img/dashboard/overview/icons8-card-in-use-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.assetsImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-bank-35.png");
-		content: url("../../../img/dashboard/overview/icons8-bank-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.debtImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-debt-35.png");
-		content: url("../../../img/dashboard/overview/icons8-debt-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
-	.networthImage .image-center {
-		background-image: url("../../../img/dashboard/overview/icons8-money-bag-franc-35.png");
-		content: url("../../../img/dashboard/overview/icons8-money-bag-franc-35.png");
-		height: 35px;
-		width: 35px;
-	}
-	
 	.descriptionAverages {
 		font-size: 0.7rem;
 	}
@@ -683,8 +583,8 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 		width: 3.9rem;
 	}
 	
-	.chartDisplayCard {
-		height: 30rem;
+	.h-20 {
+		height: 20rem;
 	}
 	
 }

@@ -797,17 +797,6 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
  
 }
 
-#downloadTransactionsData {
-	color:#999;
-}
-
-#downloadTransactionsData .material-icons:hover, #downloadTransactionsData:hover .material-icons {
-	-webkit-transform: scale(1) rotate(0deg);
-  	-ms-transform: scale(1) rotate(0deg);
-  	-o-transform: scale(1) rotate(0deg);
-  	transform: scale(1) rotate(0deg);
-}
-
 .btn.register-recurrence {
     color: #fff;
     background: #d5dde3;
@@ -916,7 +905,7 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 
 @media (min-width:768px) {
 	.col-md-add-transactions {
-		flex: 0 0 45%;
-    	max-width: 45%;
+		flex: 0 0 46%;
+    	max-width: 46%;
 	}
 }

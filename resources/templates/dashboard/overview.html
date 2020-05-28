@@ -8,80 +8,61 @@
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-4 d-none d-md-block">
-					<div class="card overviewAverageHeaderCard">
-						<div class="card-header overviewHeadingWrapper pt-3">
-							<h4 class="overviewHeadingTab noselect">Overview</h4>
-						</div>
-						<div id="portfolioOverview" class="card-body noselect">
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 incomeImage image-center d-none d-lg-block">
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Income </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You earn an average of </span><span id="averageIncomeAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"> per month</span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 expenseImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Expense </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You spend an average of </span><span id="averageExpenseAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"> per month</span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 assetsImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Assets </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You accumulated </span><span id="assetAccumuluatedAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"></span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 debtImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Debts </h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">You owe </span><span id="debtAccumulatedAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"></span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-							<div class="row py-3 overviewEntryRow">	
-								<div class="col-md-3 networthImage image-center d-none d-lg-block" >
-									<div class="image-center"></div>
-								</div>
-								<div class="col-md-8 namdAndDescription m-3 m-lg-0">
-									<h4 class="font-weight-bold overviewHeading">Networth</h4>
-									<div class="descriptionAverages text-nowrap"><span class="d-none d-lg-inline">Your Networth is </span><span id="networthAmount" class="font-weight-bold">0.00<span class="currentCurrencySymbol"></span></span><span class="font-weight-bold"></span></div>
-								</div>
-								<div class="col-md-1 icon-center">
-									<i class="material-icons overviewChartDisplay">keyboard_arrow_right</i>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-8 col-sm-12 noselect">
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-rose card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons noselect">store</i>
+                    </div>
+                    <p class="card-category">Assets</p>
+                    <h3 id="assetAccumuluatedAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons noselect">update</i> Just Updated
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons noselect">credit_card</i>
+                    </div>
+                    <p class="card-category">Debt</p>
+                    <h3 id="debtAccumulatedAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons noselect">update</i> Just Updated
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                  <div class="card-header card-header-info card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons noselect">insights</i>
+                    </div>
+                    <p class="card-category">Networth</p>
+                    <h3 id="networthAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                  </div>
+                  <div class="card-footer">
+                    <div class="stats">
+                      <i class="material-icons noselect">update</i> Just Updated
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+			<div class="row">
+				<div class="col-12 noselect">
 					<div class="card chartDisplayCard">
 	                  <div class="card-header card-header-icon card-header-info">
 	                    <div class="card-icon">
-	                      <i class="material-icons">timeline</i>
+	                      <i class="material-icons noselect">timeline</i>
 	                    </div>
 	                    <h5 id="chartDisplayTitle" class="card-title d-inline-block noselect">Income Overview
 	                    </h5>
@@ -96,21 +77,6 @@
 						  </div>
 						</div>
 						
-						<div id="overviewYearPicker" class="popover overviewNavigationYear d-none">
-							<div class="yearPickerWrapper">
-								<div id="monthPickerUp" class="monthPickerUp noselect">
-	            					<i class="material-icons">keyboard_arrow_up</i>
-	            				</div>
-								<div class="yearPicker">
-									<div class="material-spinner rtSpinner"></div>
-									<!-- Dynamic Year Generation -->
-			            		</div>
-			            		<div id="monthPickerDown" class="monthPickerDown noselect">
-	            					<i class="material-icons">keyboard_arrow_down</i>
-	            				</div>
-							</div>
-		            	</div>
-						
 	                  </div>
 	                  <div class="card-body">
 	                    <div id="colouredRoundedLineChart" class="ct-chart">
@@ -118,11 +84,20 @@
 							<!-- Charts dynamic load -->
 	                    </div>
 					  </div>
+					  <div class="card-footer">
+					  	<div class="text-center m-2" data-gramm_editor="false">
+	                	  <button class="btn btn-secondary btn-lg chart-option income mr-2 my-3 active" data-target="NEVER">Income</button>
+	                      <button class="btn btn-secondary btn-lg chart-option expense mr-2 my-3" data-target="WEEKLY">Expense</button>
+	                      <button class="btn btn-secondary btn-lg chart-option assets mr-2 my-3" data-target="BI-MONTHLY">Assets</button>
+	                      <button class="btn btn-secondary btn-lg chart-option debt mr-2 my-3" data-target="MONTHLY">Debt</button>
+	                      <button class="btn btn-secondary btn-lg chart-option networth mr-2 my-3" data-target="MONTHLY">Networth</button>
+	                  	</div>
+					  </div>
 					</div>
 				</div>
 			</div>
         	<div class="row">
-				<div class="col-md-6 col-sm-12">
+				<div class="col-12">
 					<div class="card recentTransactionCard">
 						<div class="card-header pb-0">
 							<div class="row">
@@ -144,63 +119,7 @@
 					</div>
 				</div>
 				<div class="col-md-6 col-sm-12">
-					<div class="card optimizationBudgetAndGoal">
-						<div class="card-header pb-0">
-							<div class="row">
-								<div class="col-12">
-									<h4 class="optimizationTitle">Optimizations</h4>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-12">
-									<div id="budgetOrGoals" class="">
-			                			<fieldset class="choose align-center pb-3">
-										    <label><input type="radio" value="Overspent Budget" name="budgetOrGoals" checked><span class="disable-select">Overspent Budget</span></label>
-										    <label><input type="radio" value="Underfunded Goals" name="budgetOrGoals"><span class="disable-select">Underfunded Goals</span></label>
-										</fieldset>
-			                		</div>
-								</div>
-							</div>
-							<div class="table-responsive">
-								<div class="table table-fixed d-table mb-2">
-									<div class="tableHeadingDiv">
-										<div class="d-table-row">
-											<div class="text-center w-20 d-table-cell checkBoxHeading">
-												<div class="form-check">
-					                          		<label class="form-check-label">
-					                          		<input type="checkbox" class="form-check-input" id="checkAll" disabled>
-														<span class="form-check-sign">
-															<span class="check">
-															</span>
-														</span>
-													</label>
-												</div>
-											</div>
-											<div class="budgetOptimizationTitle w-50 d-table-cell">Category Name</div>
-											<div class="budgetOptimizationTitle text-right w-30 d-table-cell">Overspent</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="card-body optimizationsBody pt-0">
-							<div class="table-responsive">
-								<div class="table table-fixed d-table">
-									<div id="optimizations" class=" tableBodyDiv">
-										<div class="material-spinner rtSpinner"></div>
-										<!-- Recent optimizations dynamic load -->
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="optimizationFooter" class="row card-footer">
-							<div id="selectedOptimizations" class="col-6 pl-2 font-weight-bold tripleNineColor">None Selected</div>
-							<div class="col-6 pr-0">
-								<button id="optimizeButton" class="btn btn-info ml-auto float-right" disabled="disabled" data-toggle="tooltip" data-placement="bottom" title="Select atleast one optimization">Optimize</button>
-								<div id="optimizationSpinner" class="material-spinner float-right d-none mr-5"></div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 			</div>
      	</div>
