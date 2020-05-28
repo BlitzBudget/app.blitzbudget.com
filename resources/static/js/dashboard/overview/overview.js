@@ -2,8 +2,6 @@
 (function scopeWrapper($) {
 	// User Budget Map Cache
 	let userBudgetCache = {};
-	// User transaction category ID and total
-	let categoryTotalMapCache = {};
 	// OVERVIEW CONSTANTS
 	const OVERVIEW_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
@@ -93,12 +91,6 @@
 				return;
 			}
 			
-			// Reset the optimizations and recent transactions tab
-			let optimizationsModule = document.getElementById('optimizations');
-			// Replace HTML with Empty
-			while (optimizationsModule.firstChild) { optimizationsModule.removeChild(optimizationsModule.firstChild); }
-			cloneElementAndAppend(optimizationsModule, materialSpinnerClone);
-			
 			let recentTransactionsTab = document.getElementById('recentTransactions');
 			// Replace HTML with Empty
 			while (recentTransactionsTab.firstChild) { recentTransactionsTab.removeChild(recentTransactionsTab.firstChild); }
@@ -164,8 +156,6 @@
 			 */
 			
 			populateTotalAssetLiabilityAndNetworth(result.Wallet);
-			// Fetch transaction total 
-			fetchCategoryTotalForTransactions(window.defaultCategories, result.Budget);
 		},
 		ajaxData.onFailure = function(thrownError) {
 			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
@@ -773,10 +763,8 @@
 		
 		// Build the Absolute total 
 		let incomeCategory = fetchIncome ? CUSTOM_DASHBOARD_CONSTANTS.incomeCategory : CUSTOM_DASHBOARD_CONSTANTS.expenseCategory;
-		let categoryKeys = Object.keys(categoryTotalMapCache);
-		for(let count = 0, length = categoryKeys.length; count < length; count++) {
-			let categoryId = categoryKeys[count];
-			let categoryObject = categoryTotalMapCache[categoryId];
+		for(let count = 0, length = window.categoryMap.length; count < length; count++) {
+			let categoryObject = window.categoryMap[count];
 			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
 				// Add the category total to absolute total
 				absoluteTotal += Math.abs(categoryObject.categoryTotal);
@@ -784,9 +772,8 @@
 		}
 		
 		// Build the legend and the series array
-		for(let count = 0, length = categoryKeys.length; count < length; count++) {
-			let categoryId = categoryKeys[count];
-			let categoryObject = categoryTotalMapCache[categoryId];
+		for(let count = 0, length = window.categoryMap.length; count < length; count++) {
+			let categoryObject = window.categoryMap[categoryId];
 			
 			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
 				let percentageOfTotal = (Math.abs(categoryObject.categoryTotal) / absoluteTotal) * 100;

@@ -286,6 +286,10 @@
 		currencyRemainingText.innerText = ' Remaining';
 		cardProgressAndRemainingAmount.appendChild(currencyRemainingText);
 		cardBody.appendChild(cardProgressAndRemainingAmount);
+
+		let actionDiv = document.createElement('div');
+		actionDiv.id = 'actionIcons-' + userBudget.budgetId;
+		actionDiv.classList = 'text-right';
 		
 		// Build a delete icon Div
 		let deleteIconDiv = document.createElement('div');
