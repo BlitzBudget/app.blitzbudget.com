@@ -99,7 +99,7 @@
 			// Set chosen date
 			er.setChosenDateWithSelected(this);
 			// Calculate the income and expense image
-			let highlightedOverview = document.getElementsByClassName('highlightOverviewSelected')[0].firstElementChild.classList;
+			let highlightedOverview = document.getElementsByClassName('highlightOverviewSelected')[0];
 			let expenseImage = highlightedOverview.contains('expense');
 			let incomeImage = highlightedOverview.contains('income');
 			let incomeTotalParam;
@@ -763,8 +763,10 @@
 		
 		// Build the Absolute total 
 		let incomeCategory = fetchIncome ? CUSTOM_DASHBOARD_CONSTANTS.incomeCategory : CUSTOM_DASHBOARD_CONSTANTS.expenseCategory;
-		for(let count = 0, length = window.categoryMap.length; count < length; count++) {
-			let categoryObject = window.categoryMap[count];
+		let categoryKeys = Object.keys(window.categoryMap);
+		for(let count = 0, length = categoryKeys.length; count < length; count++) {
+			let categoryId = categoryKeys[count];
+			let categoryObject = window.categoryMap[categoryId];
 			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
 				// Add the category total to absolute total
 				absoluteTotal += Math.abs(categoryObject.categoryTotal);
@@ -772,7 +774,8 @@
 		}
 		
 		// Build the legend and the series array
-		for(let count = 0, length = window.categoryMap.length; count < length; count++) {
+		for(let count = 0, length = categoryKeys.length; count < length; count++) {
+			let categoryId = categoryKeys[count];
 			let categoryObject = window.categoryMap[categoryId];
 			
 			if(categoryObject.type == incomeCategory && isNotEmpty(categoryObject.categoryTotal)) {
