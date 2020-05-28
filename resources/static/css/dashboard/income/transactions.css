@@ -916,7 +916,7 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus  {
 
 @media (min-width:768px) {
 	.col-md-add-transactions {
-		flex: 0 0 45%;
-    	max-width: 45%;
+		flex: 0 0 46%;
+    	max-width: 46%;
 	}
 }

@@ -937,7 +937,7 @@
 	}
 	
 	// Click the overview card items
-	$('body').on('click', '.overviewEntryRow', function() {
+	$('body').on('click', '.chart-option', function() {
 		// Append spinner
 		let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 		let materialSpinnerDocumentFragment = document.createDocumentFragment();
@@ -949,8 +949,8 @@
 		chartAppendingDiv.appendChild(materialSpinnerDocumentFragment);
 		
 		// Start requesting the chart  
-		let firstChildClassList = this.children[0].classList;
-		if(firstChildClassList.contains('incomeImage')) {
+		let firstChildClassList = this.classList;
+		if(firstChildClassList.contains('income')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
@@ -968,7 +968,7 @@
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Income Overview';
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Income');
-		} else if(firstChildClassList.contains('expenseImage')) {
+		} else if(firstChildClassList.contains('expense')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
 			// Populate Category Break down Chart if present
@@ -986,21 +986,21 @@
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Expense Overview';
 			// Replace the drop down for chart options
 			appendChartOptionsForIncomeOrExpense('Expense');
-		} else if(firstChildClassList.contains('assetsImage')) {
+		} else if(firstChildClassList.contains('assets')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Asset Chart
 			populateAssetBarChart(true);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Asset Overview';
-		} else if(firstChildClassList.contains('debtImage')) {
+		} else if(firstChildClassList.contains('debt')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Debt Chart
 			populateAssetBarChart(false);
     		// Change Label
     		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Debt Overview';
-		} else if(firstChildClassList.contains('networthImage')) {
+		} else if(firstChildClassList.contains('networth')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			populateNetworthBarChart();

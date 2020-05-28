@@ -8,7 +8,7 @@
 	<div class="content">
 		<div class="container-fluid">
 			<div class="row">
-              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="card card-stats">
                   <div class="card-header card-header-rose card-header-icon">
                     <div class="card-icon">
@@ -24,7 +24,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="card card-stats">
                   <div class="card-header card-header-success card-header-icon">
                     <div class="card-icon">
@@ -40,7 +40,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="card card-stats">
                   <div class="card-header card-header-info card-header-icon">
                     <div class="card-icon">
@@ -80,27 +80,19 @@
 						  </div>
 						</div>
 						
-						<div id="overviewYearPicker" class="popover overviewNavigationYear d-none">
-							<div class="yearPickerWrapper">
-								<div id="monthPickerUp" class="monthPickerUp noselect">
-	            					<i class="material-icons">keyboard_arrow_up</i>
-	            				</div>
-								<div class="yearPicker">
-									<div class="material-spinner rtSpinner"></div>
-									<!-- Dynamic Year Generation -->
-			            		</div>
-			            		<div id="monthPickerDown" class="monthPickerDown noselect">
-	            					<i class="material-icons">keyboard_arrow_down</i>
-	            				</div>
-							</div>
-		            	</div>
-						
 	                  </div>
 	                  <div class="card-body">
 	                    <div id="colouredRoundedLineChart" class="ct-chart">
 	                    	<div class="material-spinner rtSpinner"></div>
 							<!-- Charts dynamic load -->
 	                    </div>
+	                    <div class="text-center m-2" contenteditable="true" data-gramm_editor="false">
+                    	  <button class="btn btn-secondary btn-lg chart-option income mr-2 my-3 active" data-target="NEVER">Income</button>
+                          <button class="btn btn-secondary btn-lg chart-option expense mr-2 my-3" data-target="WEEKLY">Expense</button>
+                          <button class="btn btn-secondary btn-lg chart-option assets mr-2 my-3" data-target="BI-MONTHLY">Assets</button>
+                          <button class="btn btn-secondary btn-lg chart-option debt mr-2 my-3" data-target="MONTHLY">Debt</button>
+                          <button class="btn btn-secondary btn-lg chart-option networth mr-2 my-3" data-target="MONTHLY">Networth</button>
+                    	</div>
 					  </div>
 					</div>
 				</div>
