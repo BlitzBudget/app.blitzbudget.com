@@ -25,6 +25,7 @@
 	let previousDateYearPicker = currentYearSelect - 2;
 	// Cache the next year Picker data
 	let nextDateYearPicker = currentYearSelect+2;
+	let materialSpinnerClone = buildMaterialSpinner();
 
 	/**
 	* Get Overview
@@ -94,10 +95,14 @@
 			
 			// Reset the optimizations and recent transactions tab
 			let optimizationsModule = document.getElementById('optimizations');
-			optimizationsModule.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			// Replace HTML with Empty
+			while (optimizationsModule.firstChild) { optimizationsModule.removeChild(optimizationsModule.firstChild); }
+			cloneElementAndAppend(optimizationsModule, materialSpinnerClone);
 			
 			let recentTransactionsTab = document.getElementById('recentTransactions');
-			recentTransactionsTab.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+			// Replace HTML with Empty
+			while (recentTransactionsTab.firstChild) { recentTransactionsTab.removeChild(recentTransactionsTab.firstChild); }
+			cloneElementAndAppend(recentTransactionsTab, materialSpinnerClone);
 			
 			// Set chosen date
 			er.setChosenDateWithSelected(this);
@@ -1089,7 +1094,7 @@
 	// Build Empty chart
 	function buildEmptyChartMessage() {
 		let emptyChartMessage = document.createElement('div');
-		emptyChartMessage.classList = 'text-center align-middle';
+		emptyChartMessage.classList = 'text-center align-middle h-20';
 		
 		let divIconWrapper = document.createElement('div');
 		divIconWrapper.classList = 'icon-center';
@@ -1216,7 +1221,7 @@
 		
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 		
 		
 		// Build the Absolute total 
@@ -1348,7 +1353,7 @@
 	function populateLineChart(dateAndTimeAsList, incomeChart) {
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 		
 		if(incomeChart) {
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, dateAndTimeAsList);
@@ -1373,7 +1378,7 @@
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 
 		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, accType);
     }
@@ -1504,7 +1509,7 @@
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="material-spinner rtSpinner"></div>';
+		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
 
 		buildchartForNetworth(window.allBankAccountInfoCache);
     }

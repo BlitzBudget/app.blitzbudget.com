@@ -466,7 +466,7 @@
 			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
-	                labels: [totalIncomeAsPercentageOfExpense + '%', "","",totalDeficitAsPercentageOfExpense + '%'],
+	                labels: [totalIncomeAsPercentageOfExpense + '%', " "," ",totalDeficitAsPercentageOfExpense + '%'],
 	                series: [totalIncomeTransactions,0,0,totalAvailableTransactions]
 	            };
 		} else  {
@@ -476,7 +476,7 @@
 			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
 			dataPreferences = {
-	                labels: ["",totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%',""],
+	                labels: [" ",totalExpenseAsPercentageOfIncome + '%',totalAvailableAsPercentageOfIncome + '%'," "],
 	                series: [0,totalExpensesTransactions,totalAvailableTransactions,0]
 	            };
 		}

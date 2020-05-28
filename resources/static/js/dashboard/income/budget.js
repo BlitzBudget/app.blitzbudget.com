@@ -415,7 +415,8 @@
 	// Introduce Chartist pie chart
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
-
+		let labels = ['Total Budgeted', 'To Be Budgeted']
+		
         var optionsPreferences = {
 		  donut: true,
 		  donutWidth: 50,
@@ -434,7 +435,7 @@
         	budgetCategoryChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function(data) {
       		  if(data.type === 'slice') {
 		        	let sliceValue = data.element._node.getAttribute('ct:value');
-		        	data.element._node.setAttribute("title", "Total Categories: <strong>" + sliceValue + '</strong>');
+		        	data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + sliceValue + '</strong>');
 					data.element._node.setAttribute("data-chart-tooltip", id);
       		  }
 			}).on("created", function() {
