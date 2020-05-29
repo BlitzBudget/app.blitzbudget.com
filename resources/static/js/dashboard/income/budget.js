@@ -25,6 +25,8 @@
 				populateBudgetResource();
 				// Load the new HTML
 	            $('#mutableDashboard').html(data);
+	            // Translate current Page
+				translatePage(getLanguage());
 	            // Set Current Page
 		        document.getElementById('currentPage').innerText = 'Budget';
 			});
@@ -41,6 +43,8 @@
 				populateBudgetResource();
 				// Load the new HTML
 	            $('#mutableDashboard').html(data);
+	            // Translate current Page
+				translatePage(getLanguage());
 	            // Set Current Page
 		        document.getElementById('currentPage').innerText = 'Budget';
 			});
