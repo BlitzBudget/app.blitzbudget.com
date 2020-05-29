@@ -46,6 +46,8 @@
 		 	er.fetchCurrentPage('/transactions', function(data) {
 				// Load the new HTML
 	            $('#mutableDashboard').html(data);
+	            // Translate current Page
+				translatePage(getLanguage());
 	            // Call the transaction API to fetch information.
 				initialLoadOfTransactions();
 	            // Set Current Page
@@ -61,6 +63,8 @@
 			er.fetchCurrentPage('/transactions', function(data) {
 				// Load the new HTML
 	            $('#mutableDashboard').html(data);
+	            // Translate current Page
+				translatePage(getLanguage());
 	            initialLoadOfTransactions();
 	            // Set Current Page
 		        document.getElementById('currentPage').innerText = 'Transactions';

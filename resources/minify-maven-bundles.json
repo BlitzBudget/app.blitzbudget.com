@@ -61,6 +61,7 @@
             "type": "js",
             "name": "core.js",
             "files": [
+                "/core/translator.js",
                 "/core/jquery.min.js",
                 "/core/popper.min.js",
                 "/core/bootstrap-material-design.min.js",

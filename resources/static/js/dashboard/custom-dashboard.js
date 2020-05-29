@@ -634,6 +634,8 @@ er = {
 	},
 
 	showLoginPopup() {
+		// Translate current Page
+		translatePage(getLanguage());
 		// If the modal is open then return
 		if(document.getElementById('loginModal').classList.contains('show') || 
 			document.getElementById('unlockModal').classList.contains('show') || 

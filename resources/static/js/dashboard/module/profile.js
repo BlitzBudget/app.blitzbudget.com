@@ -43,6 +43,8 @@
 		er.fetchCurrentPage('/profile', function(data) {
 			// Load the new HTML
             $('#mutableDashboard').html(data);
+            // Translate current Page
+			translatePage(getLanguage());
             /**
 			* populate Profile
 			**/
