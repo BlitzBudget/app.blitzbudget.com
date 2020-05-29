@@ -156,6 +156,7 @@
 	        b.addEventListener("click", function(e) {
 	              /*insert the value for the autocomplete text field:*/
 	              if(isNotEmpty(inp)) inp.value = this.getElementsByTagName("input")[0].value;
+	              updateRelevantFields(this);
 	              /*close the list of autocompleted values,
 	              (or any other open lists of autocompleted values:*/
 	              closeAllLists();
@@ -227,6 +228,24 @@
 	        x[i].parentNode.removeChild(x[i]);
 	      }
 	    }
+	}
+
+	// Updates relevant fields to the concerned entity
+	function updateRelevantFields(element) {
+		let chooseCtyId = 'chosenCountryInpautocomplete-list';
+	    let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
+	    let id = element.parentElement.id;
+	   // Choose country DD update locale
+	   if(isEqual(id, chooseCtyId))  {
+		  let valObj = { parentElId : "currentCountries", valueChosen : element.lastChild.value};
+		  updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[element.lastChild.value], element, valObj);
+	   } else if(isEqual(id, chooseCrncyId)) {
+		  let valObj = { parentElId : "currentCurrencies", valueChosen : element.lastChild.value};
+		  patchWallets(cToS[element.lastChild.value], element, valObj);
+	   } else if(isEqual(id, "chosenExportFileFormatDD")) {
+		  let valObj = { parentElId : "exportFileFormat", valueChosen : element.lastChild.value};
+		  updateUserAttr('exportFileFormat', element.lastChild.value, element, valObj);
+	   }
 	}
 
 	/**
@@ -498,25 +517,6 @@
 			document.getElementById('chosenCountryInp').value = '';
 			// Close all list
 			closeAllDDLists(this);
-		});
-
-		
-		// On click drop down btn of country search
-		$('#generalLink .dropdown-item').unbind('click').click(function () {
-			let chooseCtyId = 'chosenCountryInpautocomplete-list';
-			let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
-			let id = this.parentElement.id;
-			// Choose country DD update locale
-			if(isEqual(id, chooseCtyId))  {
-				let valObj = { parentElId : "currentCountries", valueChosen : this.lastChild.value};
-				updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, valObj);
-			} else if(isEqual(id, chooseCrncyId)) {
-				let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
-				patchWallets(cToS[this.lastChild.value], this, valObj);
-			} else if(isEqual(id, "chosenExportFileFormatDD")) {
-				let valObj = { parentElId : "exportFileFormat", valueChosen : this.lastChild.value};
-				updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
-			}
 		});
 
 	}

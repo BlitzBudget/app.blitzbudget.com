@@ -51,39 +51,39 @@ let popoverYear = new Date().getFullYear();
 let loginPopupShown = false;
 
 window.onload = function () {
-	$(document).ready(function(){
+	(function scopeWrapper($) {
 
 		// Position for month selection
 		let positionMonthCache = 0;
 
 		
 		// Append "active" class name to toggle sidebar color change
-		if($('.overview-dashboard').length) {
+		if(document.getElementsByClassName('overview-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.overviewDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
-		if($('.income-dashboard').length) {
+		if(document.getElementsByClassName('income-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.transactionDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
-		if($('.goal-dashboard').length) {
+		if(document.getElementsByClassName('goal-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.goalDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
-		if($('.budget-dashboard').length) {
+		if(document.getElementsByClassName('budget-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.budgetDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
-		if($('.investment-dashboard').length) {
+		if(document.getElementsByClassName('investment-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.investmentDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
-		if($('.settings-dashboard').length) {
+		if(document.getElementsByClassName('settings-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.settingsDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
@@ -623,7 +623,7 @@ window.onload = function () {
 		  	}
 		});
 
-	});
+	}(jQuery));	
 }
 
 er = {
