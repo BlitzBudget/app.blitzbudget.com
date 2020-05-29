@@ -209,10 +209,12 @@ function replaceWithCurrency(wallet) {
 		window.cToS = {};
 		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 		for(let i = 0, l = curToSym.length; i < l; i++) {
-			cToS[curToSym[i].currency] = curToSym[i].symbol;
+			window.cToS[curToSym[i].currency] = curToSym[i].symbol;
 		}
-		window.currentUser.walletId = wallet[0].walletId;
-		window.currentUser.walletCurrency = cToS[wallet[0].currency];
+		// If Wallet is an array then
+		if(isNotEmpty(wallet[0])) { wallet = wallet[0];}
+		window.currentUser.walletId = wallet.walletId;
+		window.currentUser.walletCurrency = window.cToS[wallet.currency];
         // We save the item in the localStorage.
         localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
 	}

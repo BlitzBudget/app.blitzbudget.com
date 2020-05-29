@@ -238,10 +238,10 @@
 	   // Choose country DD update locale
 	   if(isEqual(id, chooseCtyId))  {
 		  let valObj = { parentElId : "currentCountries", valueChosen : element.lastChild.value};
-		  updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[element.lastChild.value], element, valObj);
+		  updateUserAttr('locale', currentUser.locale.substring(0,3) +  window.lToC[element.lastChild.value], element, valObj);
 	   } else if(isEqual(id, chooseCrncyId)) {
 		  let valObj = { parentElId : "currentCurrencies", valueChosen : element.lastChild.value};
-		  patchWallets(cToS[element.lastChild.value], element, valObj);
+		  patchWallets(window.cToS[element.lastChild.value], element, valObj);
 	   } else if(isEqual(id, "chosenExportFileFormatDD")) {
 		  let valObj = { parentElId : "exportFileFormat", valueChosen : element.lastChild.value};
 		  updateUserAttr('exportFileFormat', element.lastChild.value, element, valObj);
@@ -294,14 +294,14 @@
             	// For upadting the javascript cache for currency
             	currentCurrencyPreference = currentUser.walletCurrency;
             	// Remove from List
-            	const index = currencies.indexOf(valObj.valueChosen);
+            	const index = window.currencies.indexOf(valObj.valueChosen);
 				if (index > -1) {
-				  currencies.splice(index, 1);
+				  window.currencies.splice(index, 1);
 				}
             	// To be used for Auto complete
-            	currencies.push(oldValText);
+            	window.currencies.push(oldValText);
             	/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-				autocomplete(inpSearchEl, currencies, "chooseCurrencyDD");
+				autocomplete(inpSearchEl, window.currencies, "chooseCurrencyDD");
 	        },
 	        error: function(thrownError) {
 	        	// Change button text to the old Inp value
@@ -369,14 +369,14 @@
 	            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
 	            if(isEqual(param, 'locale')) {
 	            	// To be used for Auto complete
-					countries.push(oldValText);
+					window.countries.push(oldValText);
 					// Remove from List
-					const index = countries.indexOf(valObj.valueChosen);
+					const index = window.countries.indexOf(valObj.valueChosen);
 					if (index > -1) {
-					  countries.splice(index, 1);
+					  window.countries.splice(index, 1);
 					}
 					/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
-					autocomplete(inpSearchEl, countries, "chooseCountryDD");
+					autocomplete(inpSearchEl, window.countries, "chooseCountryDD");
 					
 	            }
             }
@@ -434,12 +434,12 @@
 		*/
 
 		/*An array containing all the country names in the world:*/
-		let countries = [];
-		let lToC = {};
+		window.countries = [];
+		window.lToC = {};
 		let locToCou = window.localeToCountry.localeToCountry;
 		for(let i = 0, l = locToCou.length; i < l; i++) {
 			// Map of country and locale to be used later
-			lToC[locToCou[i].name] = locToCou[i].country
+			window.lToC[locToCou[i].name] = locToCou[i].country
 			/* Update the default locale in Settings */
 			if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) {
 				document.getElementById('chosenCountry').innerText = locToCou[i].name;	
@@ -447,33 +447,33 @@
 				document.getElementById('currentCountries').appendChild(dropdownItemsWithWallet(locToCou[i].name));
 			} else {
 				// To be used for Auto complete
-				countries.push(locToCou[i].name);
+				window.countries.push(locToCou[i].name);
 			}
 		}
 		/*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
-		autocomplete(document.getElementById("chosenCountryInp"), countries, "chooseCountryDD");
+		autocomplete(document.getElementById("chosenCountryInp"), window.countries, "chooseCountryDD");
 
 		/*
 		*	Currency Dropdown Populate
 		*/
 
 		/*An array containing all the currency names in the world:*/
-		let currencies = [];
-		let cToS = {};
+		window.currencies = [];
+		window.cToS = {};
 		let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
 		for(let i = 0, l = curToSym.length; i < l; i++) {
-			cToS[curToSym[i].currency] = curToSym[i].symbol;
+			window.cToS[curToSym[i].currency] = curToSym[i].symbol;
 			/* Update the default currency in Settings */
 			if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
 				document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
 				// To be used to display "with wallet" section
 				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 			} else {
-				currencies.push(curToSym[i].currency);
+				window.currencies.push(curToSym[i].currency);
 			}
 		}
 		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-		autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
+		autocomplete(document.getElementById("chosenCurrencyInp"), window.currencies, "chooseCurrencyDD");
 
 		// On click drop down btn of country search
 		$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
