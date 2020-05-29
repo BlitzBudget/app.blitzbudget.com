@@ -9,7 +9,7 @@
 	display: table-row-group;
 }
 
-.recentTransactionDescription, .overviewHeading {
+.overviewHeading {
 	color: #2e4369;
 	letter-spacing: 0;
 	clear: both;
@@ -17,28 +17,11 @@
 	white-space: nowrap;
 }
 
-.categoryNameRT {
-	margin-bottom: 0;
-	color: #5d7079;
-}
-
-.descriptionCellRT {
-	border-top: 1px solid #f6f6f6;
-	padding-top: 0.25rem;
-}
-
-.transactionAmountRT {
-	border-top: 1px solid #f6f6f6;
-	padding-top: 0.25rem;
-	padding-right: 1rem;
-}
-
 .overviewEntryRow {
 	cursor: pointer;
 	border-top: 1px solid #f6f6f6;
 }
 
-.recentTransactionTitle,
 .overviewHeadingTab {
 	color: #829ca9;
 	margin-top: 0;
@@ -54,41 +37,13 @@
 	color: #58c65c;
 }
 
-.recentTransactionsBody {
-	overflow-y: auto;
-}
-
-.recentTransactionCard {
-	height: 35rem;
-}
-
 .w-15 {
 	width: 15%;	
 }
 
-.imageWrapperCell, .checkListBO, .categoryNameBO, .budgetAmountBO {
+.imageWrapperCell {
 	border-top: 1px solid #f6f6f6;
 	padding: 0.25rem;
-}
-
-.circleWrapperImageRT {
-	background-color: #f2f5f7;
-	font-size: 16px;
-	width: 48px;
-	height: 48px;
-	line-height: 48px;
-}
-
-.recentTransactionEntry:hover {
-	background-color: #f2f5f7;
-} 
-
-.recentTransactionEntry:hover .circleWrapperImageRT{
-	background-color: #fff;
-}
- 
-.imagesTransactionEmpty {
-	padding-top: 6rem;
 }
 
 .rtSpinner {
@@ -522,40 +477,11 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {
-	.choose label span {
-		font-size: 0.875rem;	
-	}
-	
-	.checkListBO, .checkBoxHeading {
-		width: 7.2rem;
-	}
 	
 }
 
 /** Change the size of the text if the width and height of the screen are less **/
 @media (max-width:1300px) {
-	.recentTransactionDescription {
-	    font-size: 0.7rem;
-	}
-	
-	.categoryNameRT {
-		font-size: 0.6rem;
-	}
-	
-	.transactionAmountRT, .budgetAmountBO, .categoryNameBO {
-		font-size: 0.8rem;
-	}
-	
-	.plusRawSvg, .creditCardSvg {
-		width: 50%;
-		height: 50%;
-	}
-	
-	.circleWrapperImageRT {
-		width: 40px;
-		height: 40px;
-		line-height: 40px;
-	}
 	
 	.descriptionAverages {
 		font-size: 0.7rem;
@@ -577,10 +503,6 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	.overviewHeadingWrapper {
 		padding-bottom: 0;
 		padding-top: 0.25rem;
-	}
-	
-	.checkListBO, .checkBoxHeading {
-		width: 3.9rem;
 	}
 	
 	.h-20 {

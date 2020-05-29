@@ -577,7 +577,7 @@ a.manageBA.text-dynamic-color:hover, a.manageBA.text-dynamic-color:focus {
 	width: 15%;	
 }
 
-.imageWrapperCell, .checkListBO, .categoryNameBO, .budgetAmountBO {
+.imageWrapperCell {
 	border-top: 1px solid #f6f6f6;
 	padding: 0.25rem;
 }
