@@ -241,10 +241,7 @@
 		  updateUserAttr('locale', currentUser.locale.substring(0,3) +  window.lToC[element.lastChild.value], element, valObj);
 	   } else if(isEqual(id, chooseCrncyId)) {
 		  let valObj = { parentElId : "currentCurrencies", valueChosen : element.lastChild.value};
-		  patchWallets(window.cToS[element.lastChild.value], element, valObj);
-	   } else if(isEqual(id, "chosenExportFileFormatDD")) {
-		  let valObj = { parentElId : "exportFileFormat", valueChosen : element.lastChild.value};
-		  updateUserAttr('exportFileFormat', element.lastChild.value, element, valObj);
+		  patchWallets(element.lastChild.value, element, valObj);
 	   }
 	}
 
@@ -264,8 +261,8 @@
 		// Set Param Val combination
 		let values = {};
 		values['currency'] = chosenCurrencyMW;
-		values['walletId'] = currentUser.walletId;
-		values['userId'] = currentUser.financialPortfolioId;
+		values['walletId'] = window.currentUser.walletId;
+		values['userId'] = window.currentUser.financialPortfolioId;
 
 		jQuery.ajax({
 			url: window._config.api.invokeUrl + SETTINGS_CONSTANTS.walletUrl,
@@ -275,7 +272,7 @@
 	        data : JSON.stringify(values),
 	        success: function(result) {
 	        	// After a successful updation of parameters to cache
-		        currentUser.walletCurrency = chosenCurrencyMW;
+		        window.currentUser.walletCurrency = window.cToS[chosenCurrencyMW];
 		        // We save the item in the localStorage.
 	            localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
 	            // Input search element
@@ -292,7 +289,7 @@
 	            itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
 	            // Set current Curreny preference
             	// For upadting the javascript cache for currency
-            	currentCurrencyPreference = currentUser.walletCurrency;
+            	currentCurrencyPreference = window.currentUser.walletCurrency;
             	// Remove from List
             	const index = window.currencies.indexOf(valObj.valueChosen);
 				if (index > -1) {
@@ -306,7 +303,7 @@
 	        error: function(thrownError) {
 	        	// Change button text to the old Inp value
 				document.getElementById(inpId).innerText = oldValInTe;
-				manageErrors(thrownError, "There was an error while updating. Please try again later!",ajaxData);
+				manageErrors(thrownError, "There was an error while updating. Please try again later!");
 	        }
 	    });
 	}
@@ -396,6 +393,14 @@
 	        error: ajaxData.onFailure
     	});
 	}
+
+	/*
+	* Export File Format
+	*/
+	$('body').on("click", "#chosenExportFileFormatDD .dropdown-item" , function(event){
+		let valObj = { parentElId : "exportFileFormat", valueChosen : this.lastChild.value};
+		updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
+	});
 
 	// Create the dropdown item with wallet
 	function dropdownItemsWithWallet(withWalletItem) {
