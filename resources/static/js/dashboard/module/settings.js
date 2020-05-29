@@ -56,47 +56,6 @@
 		});
 	}
 
-	// List Devices on click tab
-	$('body').on('click', '#devicesTabLink' , function(e) {
-		listRegisteredDevices(this);
-	});
-
-	function listRegisteredDevices(currentEl) {
-		
-		// Ajax Requests on Error
-		let ajaxData = {};
-		ajaxData.isAjaxReq = true;
-		ajaxData.type = 'GET';
-		ajaxData.url = _config.api.invokeUrl + SETTINGS_CONSTANTS.devicesUrl + SETTINGS_CONSTANTS.firstUserNameParam + currentUser.email;
-		ajaxData.onSuccess = function(jsonObj) {
-        	let devices = jsonObj.Devices;
-		    console.log(devices);
-        }
-	    ajaxData.onFailure = function (thrownError) {
-	    	manageErrors(thrownError, "There was an error while retrieving all the registered devices. Please try again later!",ajaxData);
-        }
-	 	jQuery.ajax({
-			url: ajaxData.url,
-			beforeSend: function(xhr){xhr.setRequestHeader("Authorization", authHeader);},
-	        type: ajaxData.type,
-	        success: ajaxData.onSuccess,
-	        error: ajaxData.onFailure
-    	});
-	
-		
-	}
-
-	function globalSignout() {
-		var params = {
-		  AccessToken: window.authHeader /* required */
-		};
-
-		cognitoUser.globalSignOut(params, function(err, data) {
-		  if (err) showNotification(err.message,window._constants.notification.error); // an error occurred
-		  else     console.log(data);           // successful response
-		});
-	}
-
 	/**
 	* Autocomplete Module
 	**/
@@ -257,28 +216,6 @@
 	  }
 	}
 
-	// On click drop down btn of country search
-	$("#chosenCountryDropdown").on("shown.bs.dropdown", function(event){
-		let countryInp = document.getElementById('chosenCountryInp');
-		// Input change focus to the country search bar 
-		countryInp.focus();
-		// Trigger input event
-		let eventInp = new Event('input', {
-		    bubbles: true,
-		    cancelable: true,
-		});
-
-		countryInp.dispatchEvent(eventInp);
-	});
-
-	// On click drop down btn of country search
-	$("#chosenCountryDropdown").on("hidden.bs.dropdown", function(event){
-		// Input clear value for the country search bar 
-		document.getElementById('chosenCountryInp').value = '';
-		// Close all list
-		closeAllDDLists(this);
-	});
-
 	// Close all lists within element
 	function closeAllDDLists(elmnt) {
 	    /*close all autocomplete lists in the document,
@@ -291,24 +228,6 @@
 	      }
 	    }
 	}
-
-	// On click drop down btn of country search
-	$(document).on("click", ".settings-dashboard .dropdown-item" , function(event){
-		let chooseCtyId = 'chosenCountryInpautocomplete-list';
-		let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
-		let id = this.parentElement.id;
-		// Choose country DD update locale
-		if(isEqual(id, chooseCtyId))  {
-			let valObj = { parentElId : "currentCountries", valueChosen : this.lastChild.value};
-			updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, valObj);
-		} else if(isEqual(id, chooseCrncyId)) {
-			let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
-			patchWallets(cToS[this.lastChild.value], this, valObj);
-		} else if(isEqual(id, "chosenExportFileFormatDD")) {
-			let valObj = { parentElId : "exportFileFormat", valueChosen : this.lastChild.value};
-			updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
-		}
-	});
 
 	/**
 	*
@@ -459,28 +378,6 @@
     	});
 	}
 
-	// On click drop down btn of country search
-	$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
-		let currencyInp = document.getElementById('chosenCurrencyInp');
-		// Input change focus to the country search bar 
-		currencyInp.focus();
-		// Trigger input event
-		let eventInp = new Event('input', {
-		    bubbles: true,
-		    cancelable: true,
-		});
-
-		currencyInp.dispatchEvent(eventInp);
-	});
-
-	// On click drop down btn of country search
-	$("#chosenCurrencyDropdown").on("hidden.bs.dropdown", function(event){
-		// Input clear value for the country search bar 
-		document.getElementById('chosenCurrencyInp').value = '';
-		// Close all list
-		closeAllDDLists(this);
-	});
-
 	// Create the dropdown item with wallet
 	function dropdownItemsWithWallet(withWalletItem) {
 		let dpItem = document.createElement('div');
@@ -558,6 +455,70 @@
 		}
 		/*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyInp"), currencies, "chooseCurrencyDD");
+
+		// On click drop down btn of country search
+		$("#chosenCurrencyDropdown").on("shown.bs.dropdown", function(event){
+			let currencyInp = document.getElementById('chosenCurrencyInp');
+			// Input change focus to the country search bar 
+			currencyInp.focus();
+			// Trigger input event
+			let eventInp = new Event('input', {
+			    bubbles: true,
+			    cancelable: true,
+			});
+
+			currencyInp.dispatchEvent(eventInp);
+		});
+
+		// On click drop down btn of country search
+		$("#chosenCurrencyDropdown").on("hidden.bs.dropdown", function(event){
+			// Input clear value for the country search bar 
+			document.getElementById('chosenCurrencyInp').value = '';
+			// Close all list
+			closeAllDDLists(this);
+		});
+
+		// On click drop down btn of country search
+		$("#chosenCountryDropdown").on("shown.bs.dropdown", function(event){
+			let countryInp = document.getElementById('chosenCountryInp');
+			// Input change focus to the country search bar 
+			countryInp.focus();
+			// Trigger input event
+			let eventInp = new Event('input', {
+			    bubbles: true,
+			    cancelable: true,
+			});
+
+			countryInp.dispatchEvent(eventInp);
+		});
+
+		// On click drop down btn of country search
+		$("#chosenCountryDropdown").on("hidden.bs.dropdown", function(event){
+			// Input clear value for the country search bar 
+			document.getElementById('chosenCountryInp').value = '';
+			// Close all list
+			closeAllDDLists(this);
+		});
+
+		
+		// On click drop down btn of country search
+		$('#generalLink .dropdown-item').unbind('click').click(function () {
+			let chooseCtyId = 'chosenCountryInpautocomplete-list';
+			let chooseCrncyId = 'chosenCurrencyInpautocomplete-list';
+			let id = this.parentElement.id;
+			// Choose country DD update locale
+			if(isEqual(id, chooseCtyId))  {
+				let valObj = { parentElId : "currentCountries", valueChosen : this.lastChild.value};
+				updateUserAttr('locale', currentUser.locale.substring(0,3) +  lToC[this.lastChild.value], this, valObj);
+			} else if(isEqual(id, chooseCrncyId)) {
+				let valObj = { parentElId : "currentCurrencies", valueChosen : this.lastChild.value};
+				patchWallets(cToS[this.lastChild.value], this, valObj);
+			} else if(isEqual(id, "chosenExportFileFormatDD")) {
+				let valObj = { parentElId : "exportFileFormat", valueChosen : this.lastChild.value};
+				updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
+			}
+		});
+
 	}
 
 }(jQuery));
