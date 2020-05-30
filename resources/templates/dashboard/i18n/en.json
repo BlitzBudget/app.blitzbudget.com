@@ -38,7 +38,8 @@
 			"profile": "Profile"
 		},
 		"account": "Account",
-		"support": "Support"
+		"support": "Support",
+		"page": "Dashboard"
 	},
 	"sidebar": {
 		"overview": "Overview",
@@ -48,5 +49,40 @@
 	},
 	"home": {
 		"title": "Dashboard Home | BlitzBudget"
+	},
+	"settings": {
+		"page": {
+			"general": "General",
+			"notifications": "Notifications",
+			"devices": "Devices",
+			"region": {
+				"title": "Regional preferences",
+				"subtitle": "Select your preferred language, currency and country for appropriate regional formatting."
+			},
+			"country": {
+				"title": "Country",
+				"subtitle": "Choose your country for appropriate regional currency formatting.",
+				"withWallet": "Countries with wallet",
+				"withoutWallet": "Countries without wallet"
+			},
+			"currency": {
+				"title": "Currency",
+				"subtitle": "The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.",
+				"withWallet": "Currencies with wallet",
+				"withoutWallet": "Currencies without wallet"
+			},
+			"language": {
+				"title": "Language",
+				"subtitle": "We are working on providing more than English (US) as your language option."
+			},
+			"export": {
+				"title": "Export",
+				"subtitle": "Select your preferred file format for the exportation of data.",
+				"file": {
+					"title": "File Format",
+					"subtitle": "We currently support Excel, Google Docs & Comma Separated Values (CSV)."
+				}
+			}
+		}
 	}
 }

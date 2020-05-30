@@ -20,7 +20,6 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 	'transactionDashboardId': { value: 'transaction-dashboard-sidebar', writable: false, configurable: false },
 	'goalDashboardId': { value: 'goal-dashboard-sidebar', writable: false, configurable: false },
 	'budgetDashboardId': { value: 'budget-dashboard-sidebar', writable: false, configurable: false },
-	'investmentDashboardId': { value: 'investment-dashboard-sidebar', writable: false, configurable: false },
 	'settingsDashboardId': { value: 'settingsPage', writable: false, configurable: false },
 	'dateMeantFor': { value: '&dateMeantFor=', writable: false, configurable: false },
 	'expenseCategory': { value: 'Expense', writable: false, configurable: false },
@@ -75,11 +74,6 @@ window.onload = function () {
 		
 		if(document.getElementsByClassName('budget-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.budgetDashboardId);
-			currentActiveSideBar.classList.add('active');
-		}
-		
-		if(document.getElementsByClassName('investment-dashboard').length) {
-			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.investmentDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
@@ -177,12 +171,6 @@ window.onload = function () {
 				case 'overviewPage':
 					color = 'azure';
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
-				    break;
-				case 'investmentsPage':
-					url = '/investment';
-					color = 'purple';
-					currentPage = 'Investment';
-					imageUrl = '../img/dashboard/sidebar/sidebar-5.jpg';
 				    break;
 				case 'settingsPage':
 				case 'settingsPgDD':

@@ -18,17 +18,17 @@
                 <ul class="nav nav-pills nav-pills-info nav-pills-icons justify-content-center" role="tablist">
                   <li class="nav-item">
                     <a class="nav-link active show" data-toggle="tab" href="#generalLink" role="tablist">
-                      <i class="material-icons noselect">language</i> General
+                      <i class="material-icons noselect">language</i> <span data-i18n="settings.page.general">General</span>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#notificationLink" role="tablist">
-                      <i class="material-icons noselect">notifications_none</i> Notifications
+                      <i class="material-icons noselect">notifications_none</i> <span data-i18n="settings.page.notifications">Notifications</span>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#devicesTabLink" role="tablist">
-                      <i class="material-icons noselect">devices</i> Devices
+                      <i class="material-icons noselect">devices</i> <span data-i18n="settings.page.devices">Devices</span>
                     </a>
                   </li>
                 </ul>
@@ -36,16 +36,16 @@
                   <div class="tab-pane active show" id="generalLink">
                     <div class="card">
                       <div class="card-header">
-                        <h5 class="card-title">Regional preferences</h5>
-                        <p class="card-category">
+                        <h5 class="card-title" data-i18n="settings.page.region.title">Regional preferences</h5>
+                        <p class="card-category" data-i18n="settings.page.region.subtitle">
                           Select your preferred language, currency and country for appropriate regional formatting.
                         </p>
                       </div>
                       <div class="card-body">
                         <div class="row mt-3 mt-md-0">
                           <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5>Country</h5>
-                              <p class="tripleNineColor">Choose your country for appropriate regional currency formatting.</p>
+                              <h5 data-i18n="settings.page.country.title">Country</h5>
+                              <p class="tripleNineColor" data-i18n="settings.page.country.subtitle">Choose your country for appropriate regional currency formatting.</p>
                           </div>
                           <div class="col-lg-8 col-md-8 col-sm-12">
                               <div id="chosenCountryDropdown" class="btn-group btnGroup-1 float-left">
@@ -58,10 +58,10 @@
                                   <div class="input-group">
                                     <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
                                     <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
-                                    <h6 class="dropdown-header">Countries with wallet</h6>
+                                    <h6 class="dropdown-header" data-i18n="settings.page.country.withWallet">Countries with wallet</h6>
                                     <div id="currentCountries"></div>
                                     <div class="dropdown-divider"></div>
-                                    <h6 class="dropdown-header">Countries without wallet</h6>
+                                    <h6 class="dropdown-header" data-i18n="settings.page.country.withoutWallet">Countries without wallet</h6>
                                   </div>
                                 </div>
                               </div>
@@ -69,8 +69,8 @@
                         </div>
                         <div id="primaryCurrency" class="row mt-3 mt-md-0">
                           <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5>Currency</h5>
-                              <p class="tripleNineColor">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
+                              <h5 data-i18n="settings.page.currency.title">Currency</h5>
+                              <p class="tripleNineColor" data-i18n="settings.page.currency.subtitle">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
                           </div>
                           <div class="col-lg-8 col-md-8 col-sm-12">
                               <div id="chosenCurrencyDropdown" class="btn-group btnGroup-1 float-left">
@@ -83,10 +83,10 @@
                                   <div class="input-group">
                                     <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
                                     <input id="chosenCurrencyInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
-                                    <h6 class="dropdown-header">Currencies with wallet</h6>
+                                    <h6 class="dropdown-header" data-i18n="settings.page.currency.withWallet">Currencies with wallet</h6>
                                     <div id="currentCurrencies"></div>
                                     <div class="dropdown-divider"></div>
-                                    <h6 class="dropdown-header">Currencies without wallet</h6>
+                                    <h6 class="dropdown-header" data-i18n="settings.page.currency.withoutWallet">Currencies without wallet</h6>
                                   </div>
                                 </div>
                               </div>
@@ -94,8 +94,8 @@
                         </div>
                         <div class="row mt-3 mt-md-0">
                           <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5>Language</h5>
-                              <p class="tripleNineColor">We are working on providing more than English (US) as your language option.</p>
+                              <h5 data-i18n="settings.page.language.title">Language</h5>
+                              <p class="tripleNineColor" data-i18n="settings.page.language.subtitle">We are working on providing more than English (US) as your language option.</p>
                           </div>
                           <div class="col-lg-8 col-md-8 col-sm-12">
                               <div class="btn-group btnGroup-1 float-left">
@@ -112,16 +112,16 @@
                       </div>
                       <hr class="w-90 mx-auto">
                       <div class="card-header">
-                        <h5 class="card-title">Export</h5>
-                        <p class="card-category">
+                        <h5 class="card-title" data-i18n="settings.page.export.title">Export</h5>
+                        <p class="card-category" data-i18n="settings.page.export.subtitle">
                           Select your preferred file format for the exportation of data.
                         </p>
                       </div>
                       <div class="card-body">
                         <div class="row mt-3 mt-md-0">
                           <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5>File Format</h5>
-                              <p class="tripleNineColor">We currently support Excel, PDF, Google Docs & Comma Separated Values.</p>
+                              <h5 data-i18n="settings.page.export.file.title">File Format</h5>
+                              <p class="tripleNineColor" data-i18n="settings.page.export.file.subtitle">We currently support Excel, Google Docs & Comma Separated Values.</p>
                           </div>
                           <div class="col-lg-8 col-md-8 col-sm-12">
                               <div class="btn-group btnGroup-1 float-left">
