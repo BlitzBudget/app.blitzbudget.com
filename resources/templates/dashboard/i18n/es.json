@@ -69,6 +69,7 @@
 				"title": "Moneda",
 				"subtitle": "La moneda de preferencia para esta cartera. Sus transacciones y resúmenes estarán en esta moneda.",
 				"withWallet": "Monedas con cartera",
+		
 				"withoutWallet": "Monedas sin cartera"
 			},
 			"language": {
@@ -94,18 +95,18 @@
 					"title": " Ordenar por",
 					"account": "Cuenta",
 					"creationdate": "Fecha de creación"
-				},
-				"chart": {
-					"title": "Posición financiera",
-					"income": "Ingreso total",
-					"spent": "Total gastado",
-					"available": "Total disponible"
-				},
-				"account": {
-					"remaining": "Remanente (%)",
-					"remainingtext": "Remanente",
-					"transaction": "Transacciones"
 				}
+			},
+			"chart": {
+				"title": "Posición financiera",
+				"income": "Ingreso total",
+				"spent": "Total gastado",
+				"available": "Total disponible"
+			},
+			"account": {
+				"remaining": "Remanente (%)",
+				"remainingtext": "Remanente",
+				"transaction": "Transacciones"
 			}
 		},
 		"modal": {

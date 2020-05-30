@@ -94,18 +94,18 @@
 					"title": " Sort By",
 					"account": "Account",
 					"creationdate": "Creation Date"
-				},
-				"chart": {
-					"title": "Financial Position",
-					"income": "Total Income",
-					"spent": "Total Spent",
-					"available": "Total Available"
-				},
-				"account": {
-					"remaining": "Remaining (%)",
-					"remainingtext": "Remaining",
-					"transaction": "Transactions"
 				}
+			},
+			"chart": {
+				"title": "Financial Position",
+				"income": "Total Income",
+				"spent": "Total Spent",
+				"available": "Total Available"
+			},
+			"account": {
+				"remaining": "Remaining (%)",
+				"remainingtext": "Remaining",
+				"transaction": "Transactions"
 			}
 		},
 		"modal": {
