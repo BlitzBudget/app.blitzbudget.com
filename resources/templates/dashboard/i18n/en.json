@@ -1,7 +1,52 @@
 {
 	"login" : {
 	    "popup": {
-	    	"header": "Login"
+	    	"header": "Login",
+	    	"subtitle": "Or be classical",
+	    	"continue": "Continue",
+	    	"forgot": "I Forgot My Password",
+	    	"resend": "Resend code",
+	    	"account": "Already have an account",
+	    	"signup": "Signup",
+	    	"verify": {
+	    		"title": "Verify",
+	    		"subtitle": "We've sent the verification email to "
+	    	},
+	    	"notme": "not me"
 	    }
+	},
+	"support" : {
+		"popup": {
+			"header": "How Can We Help?",
+			"rating": "Was this answer helpful?",
+			"happy": "We are happy to help! ",
+			"ask": "Ask us directly",
+			"yes": "Yes",
+			"no": "No"
+		}
+	},
+	"unlock": {
+		"popup": {
+			"password": "Enter Password",
+			"button": "Unlock"
+		}
+	},
+	"nav": {
+		"dropdown": {
+			"logout": "Log out",
+			"settings": "Settings",
+			"profile": "Profile"
+		},
+		"account": "Account",
+		"support": "Support"
+	},
+	"sidebar": {
+		"overview": "Overview",
+		"goals": "Goals",
+		"budget": "Budget",
+		"transaction": "Transactions"
+	},
+	"home": {
+		"title": "Dashboard Home | BlitzBudget"
 	}
 }

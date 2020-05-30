@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blitzbudget</groupId>
 	<artifactId>Every-Rupee-Static</artifactId>
-	<version>0.8.677-SNAPSHOT</version>
+	<version>0.9.777-SNAPSHOT</version>
 	<name>bb-app</name>
 	<description>Core Web App for Blitz Budget</description>
 	<packaging>pom</packaging>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	<title>
+	<title data-i18n="home.title">
 	   Dashboard Home | BlitzBudget
 	</title>
 	<meta charset="utf-8" />
@@ -107,25 +107,25 @@
           <li id="overview-dashboard-sidebar" class="nav-item">
             <a class="nav-link pageDynamicLoadForDashboard" href="Javascript:void(0);" id="overviewPage">
               <i class="material-icons noselect">timeline</i>
-              <p>Overview</p>
+              <p data-i18n="sidebar.overview">Overview</p>
             </a>
           </li>
           <li id="transaction-dashboard-sidebar" class="nav-item">
             <a class="nav-link pageDynamicLoadForDashboard" href="Javascript:void(0);" id="transactionsPage">
               <i class="material-icons noselect">account_balance_wallet</i>
-              <p>Transactions</p>
+              <p data-i18n="sidebar.transaction">Transactions</p>
             </a>
           </li>
           <li id="budget-dashboard-sidebar" class="nav-item">
             <a class="nav-link pageDynamicLoadForDashboard" href="Javascript:void(0);" id="budgetPage">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" class="mt-1 budgetIcon"><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M17.5 13.082c.754 1.79.65 3.688-.278 5.078-.78 1.17-2.068 1.84-3.533 1.84H4.312c-1.466 0-2.754-.67-3.533-1.84-.929-1.39-1.033-3.289-.28-5.078 1.31-3.112 3.465-6.039 5.594-7.634L6.08 5.43l-.44-.695a51.11 51.11 0 0 0-.462-.728c-.783-1.22-1.35-2.102-.983-2.952.201-.465.631-.763 1.278-.886C5.59.147 6.476 0 6.98 0c.124 0 .225.008.318.026.324.061.595.187.834.299.084.04.168.078.252.112.155.062.363.108.615.138.252-.03.46-.076.615-.138.084-.034.168-.073.252-.112.24-.112.51-.238.835-.3A1.7 1.7 0 0 1 11.019 0c.504 0 1.391.147 1.508.169.646.123 1.076.42 1.277.886.367.85-.2 1.732-.984 2.952-.147.23-.304.474-.46.728l-.441.695-.012.018c2.129 1.595 4.284 4.522 5.594 7.634zm-9.14 3.68h.957V15.68c1.449-.146 2.086-1.003 2.086-2.084 0-1.333-1.06-1.446-2.086-1.7v-1.723c.444.108.931.314 1.286.636l.642-.93a3.228 3.228 0 0 0-1.925-.867l-.003-.9h-.923l-.035.88c-1.33.135-2.17.974-2.17 1.957 0 1.323 1.121 1.785 2.136 2.029v1.587c-.66-.116-1.356-.534-1.72-.914l-.632.996c.542.536 1.334.946 2.37 1.033l.016 1.082zm-.998-5.88c0-.419.397-.644.946-.718l.017 1.37c-.512-.16-.963-.294-.963-.652zm2.768 2.882c0 .386-.19.765-.813.886l-.013-1.704c.537.169.826.42.826.818z"></path></g></svg>
-              <p>Budget</p>
+              <p data-i18n="sidebar.budget">Budget</p>
             </a>
           </li>
           <li id="goal-dashboard-sidebar" class="nav-item">
             <a class="nav-link pageDynamicLoadForDashboard" href="Javascript:void(0);" id="goalsPage">
               <i class="material-icons noselect">track_changes</i>
-              <p>Goals</p>
+              <p data-i18n="sidebar.goals">Goals</p>
             </a>
           </li>
           <li id="investment-dashboard-sidebar" class="nav-item">
@@ -243,7 +243,7 @@
               <li class="nav-item">
                <a class="nav-link helpCenter" href="javascript:void(0);">
                  <i class="material-icons noselect">help</i>
-                 <span class="d-lg-none d-md-block">
+                 <span class="d-lg-none d-md-block" data-i18n="nav.support">
                    Support
                  </span>
                </a>
@@ -263,15 +263,15 @@
              <li class="nav-item dropdown">
                <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  <img id="contact-dashboard-top-nav" src="../img/dummy/avatarProfile.jpg">
-                 <span class="d-lg-none d-md-block">
+                 <span class="d-lg-none d-md-block" data-i18n="nav.account">
                    Account
                  </span>
                </a>
                <div class="dropdown-menu dropdown-menu-right noselect" aria-labelledby="navbarDropdownProfile">
-                 <a class="dropdown-item pageDynamicLoadForDashboard" id="profilePgDD">Profile</a>
-                 <a class="dropdown-item pageDynamicLoadForDashboard" id="settingsPgDD">Settings</a>
+                 <a class="dropdown-item pageDynamicLoadForDashboard" id="profilePgDD" data-i18n="nav.dropdown.profile">Profile</a>
+                 <a class="dropdown-item pageDynamicLoadForDashboard" id="settingsPgDD" data-i18n="nav.dropdown.settings">Settings</a>
                  <div class="dropdown-divider"></div>
-                 <a id="logoutUser" class="dropdown-item" href="javascript:void(0);">Log out</a>
+                 <a id="logoutUser" class="dropdown-item" href="javascript:void(0);" data-i18n="nav.dropdown.logout">Log out</a>
                </div>
              </li>
            </ul>
@@ -331,7 +331,7 @@
     <div class="modal-dialog support-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">How Can We Help?</h5>
+          <h5 class="modal-title" data-i18n="support.popup.header">How Can We Help?</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -344,12 +344,12 @@
         </div>
         <div class="modal-footer">
           <div class="article-ratings mx-auto d-none">
-              <span class="article-ratings-question">Was this answer helpful?</span>
+              <span class="article-ratings-question" data-i18n="support.popup.rating">Was this answer helpful?</span>
               <span id="article-ratings-success" class="d-none"></span>
-              <span id="article-ratings-failure" class="d-none">We are happy to help! <div class="askUsDirectly helpProfile text-info text-center">Ask us directly</div></span>
+              <span id="article-ratings-failure" class="d-none" data-i18n="support.popup.happy">We are happy to help! <div class="askUsDirectly helpProfile text-info text-center" data-i18n="support.popup.ask">Ask us directly</div></span>
               <div class="article-ratings-actions">
                   <button class="rate-action rate-action-positive" data-rating="positive">
-                      <span class="sr-only">Yes</span>
+                      <span class="sr-only" data-i18n="support.popup.yes">Yes</span>
                       <span class="rating-face">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                               <path fill-rule="evenodd" d="M5.538 14.026A19.392 19.392 0 0 1 12 12.923c2.26 0 4.432.388 6.462 1.103-1.087 2.61-3.571 4.436-6.462 4.436-2.891 0-5.375-1.825-6.462-4.436zm1.847-3.872a1.846 1.846 0 1 1 0-3.692 1.846 1.846 0 0 1 0 3.692zm9.23 0a1.846 1.846 0 1 1 0-3.692 1.846 1.846 0 0 1 0 3.692z"></path>
@@ -357,7 +357,7 @@
                       </span>
                   </button>
                   <button class="rate-action rate-action-negative" data-rating="negative">
-                      <span class="sr-only">No</span>
+                      <span class="sr-only" data-i18n="support.popup.no">No</span>
                       <span class="rating-face">
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                               <path fill-rule="evenodd" d="M7.385 13.846a1.846 1.846 0 1 1 0-3.692 1.846 1.846 0 0 1 0 3.692zm9.23 0a1.846 1.846 0 1 1 0-3.692 1.846 1.846 0 0 1 0 3.692zm-.967 4.95a.992.992 0 0 1-.615-.212c-1.701-1.349-4.364-1.349-6.065 0a.998.998 0 0 1-1.36-.123.895.895 0 0 1 .127-1.3A6.897 6.897 0 0 1 12 15.692c1.555 0 3.069.521 4.266 1.467.41.326.467.909.127 1.3a.982.982 0 0 1-.745.335z"></path>
@@ -384,12 +384,12 @@
         <div class="card-body ">
           <h4 id="unlockName" class="card-title noselect">John Doe</h4>
           <div class="form-group bmd-form-group mt-4">
-            <label for="unlockAppPass" class="bmd-label-floating">Enter Password</label>
+            <label for="unlockAppPass" class="bmd-label-floating" data-i18n="unlock.popup.password">Enter Password</label>
             <input type="password" class="form-control" id="unlockAppPass" minlength="8">
           </div>
         </div>
         <div class="card-footer justify-content-center">
-          <a href="javascript:void(0);" class="btn btn-dynamic-color btn-round" id="unlockApplication">Unlock</a>
+          <a href="javascript:void(0);" class="btn btn-dynamic-color btn-round" id="unlockApplication" data-i18n="unlock.popup.button">Unlock</a>
           <div class="material-spinner-medium d-none" id="unlockLoader"></div>
         </div>
         <div id="errorUnlockPopup" class="justify-content-center px-4 pb-3 errorCodePopup text-center"></div>
@@ -447,7 +447,7 @@
 	                </div>
 	                <div class="modal-body">
 	                    <form class="form" method="POST" id="signinForm">
-	                        <p class="description text-center">Or Be Classical</p>
+	                        <p class="description text-center" data-i18n="login.popup.subtitle">Or Be Classical</p>
 	                        <div class="card-body px-4">
 	
 	                            <div class="form-group bmd-form-group">
@@ -458,13 +458,13 @@
 	                                <input type="password" id="passwordInputSignin" name="password" placeholder="Password..." class="form-control">
 	                            </div>
 	                            <div class="text-center">
-					                       <button class="btn btn-dynamic-color btn-raised" name="Submit" value="Login" type="Submit">Continue</button>
+					                       <button class="btn btn-dynamic-color btn-raised" name="Submit" value="Login" type="Submit" data-i18n="login.popup.continue">Continue</button>
                                  <div class="material-spinner-medium d-none mx-auto my-auto" id="loginLoader"></div>
 					                     </div>
 	                        </div>
 	                    </form>
                       <form class="form d-none" method="POST" id="verifyForm">
-                          <p class="description text-center">We've sent the verification email to </p>
+                          <p class="description text-center" data-i18n="login.popup.verify.subtitle">We've sent the verification email to </p>
                           <div class="card-body">
                               <div class="form-group bmd-form-group">
                                 <div class="input-group">
@@ -473,7 +473,7 @@
                                     </div>
                                     <input type="email" class="form-control d-none" id="emailInputVerify" name="emailInputVerify" placeholder="Required">
                                     <div id="emailDisplayVE" class=""></div> 
-                                    <a href="javascript:void(0);" class="pl-2" id="shyAnchor"><u>not me</u></a>
+                                    <a href="javascript:void(0);" class="pl-2" id="shyAnchor"><u data-i18n="login.popup.notme">not me</u></a>
                                 </div>
                               </div>
                               <div class="form-group bmd-form-group">
@@ -485,7 +485,7 @@
                                 </div>
                               </div>
                               <div class="text-center">
-                                 <button id="vcBtnFrm" class="btn btn-dynamic-color btn-raised" name="Submit" value="Verify" type="Submit">Verify</button>
+                                 <button id="vcBtnFrm" class="btn btn-dynamic-color btn-raised" name="Submit" value="Verify" type="Submit" data-i18n="login.popup.verify.title">Verify</button>
                                  <div class="material-spinner-medium d-none mx-auto my-auto" id="verifyLoader"></div>
                               </div>
                           </div>
@@ -516,15 +516,15 @@
                               </div>
                           </div>
 			                    <div class="text-center">
-                            <button class="btn btn-dynamic-color btn-raised" name="Submit" value="Signup" type="Submit">Sign Up</button>
+                            <button class="btn btn-dynamic-color btn-raised" name="Submit" value="Signup" type="Submit" data-i18n="login.popup.signup">Sign Up</button>
                             <div class="material-spinner-medium d-none mx-auto my-auto" id="signupLoader"></div>
                           </div>
 			                 </form>
 	                </div>
 	                <div class="modal-footer justify-content-center">
-	                    <a id="forgotPassLogin" href="javascript:void(0);" class="btn btn-primary btn-link btn-wd btn-lg">I Forgot My Password</a>
-                      <a id="resendCodeLogin" href="javascript:void(0);" class="btn btn-primary btn-link btn-wd btn-lg d-none">Resend Code</a>
-                      <a id="haveAnAccount" href="javascript:void(0);" class="btn btn-primary btn-link btn-wd btn-lg d-none">Already have an account</a>
+	                    <a id="forgotPassLogin" href="javascript:void(0);" class="btn btn-primary btn-link btn-wd btn-lg" data-i18n="login.popup.forgot">I Forgot My Password</a>
+                      <a id="resendCodeLogin" href="javascript:void(0);" class="btn btn-primary btn-link btn-wd btn-lg d-none" data-i18n="login.popup.resend">Resend Code</a>
+                      <a id="haveAnAccount" href="javascript:void(0);" class="btn btn-primary btn-link btn-wd btn-lg d-none" data-i18n="login.popup.account">Already have an account</a>
                       <div class="material-spinner-medium d-none" id="resendLoader"></div>
 	                </div>
                   <div id="successLoginPopup" class="justify-content-center px-4 text-center text-secondary"></div>
