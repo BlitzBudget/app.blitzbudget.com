@@ -1,7 +1,52 @@
 {
 	"login" : {
 	    "popup": {
-	    	"header": "Iniciar sesión"
+	    	"header": "Iniciar sesión",
+	    	"subtitle": "O ser clásico",
+	    	"continue": "Siguiente",
+	    	"forgot": "He olvidado mi contraseña",
+	    	"resend": "Reenviar el código",
+	    	"account": "Ya tengo una cuenta",
+	    	"signup": "Crear cuenta",
+	    	"verify": {
+	    		"title": "Verificar",
+	    		"subtitle": "Hemos enviado el correo electrónico de verificación a "
+	    	},
+	    	"notme": "no yo"
 	    }
+	},
+	"support" : {
+		"popup": {
+			"header": "¿Cómo podemos ayudar?",
+			"rating": "¿Esta respuesta fue útil?",
+			"happy": "Estamos felices de ayudar! ",
+			"ask": "Pregúntenos directamente",
+			"yes": "Sí",
+			"no": "No"
+		}
+	},
+	"unlock": {
+		"popup": {
+			"password": "Introduzca la contraseña",
+			"button": "Desbloquear"
+		}
+	},
+	"nav": {
+		"dropdown": {
+			"logout": "Cerrar sesión",
+			"settings": "Configuración",
+			"profile": "perfil"
+		},
+		"account": "Cuenta",
+		"support": "Soporte"
+	},
+	"sidebar": {
+		"overview": "Resumen",
+		"goals": "Objetivo",
+		"budget": "Presupuesto",
+		"transaction": "Transacciones"
+	},
+	"home": {
+		"title": "Inicio del Tablero de Control | BlitzBudget"
 	}
 }
