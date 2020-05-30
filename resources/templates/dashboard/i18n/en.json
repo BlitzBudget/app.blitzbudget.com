@@ -84,5 +84,56 @@
 				}
 			}
 		}
+	},
+	"transactions": {
+		"page": {
+			"table": {
+				"title": "Transactions",
+				"sortby": {
+					"category": "Category",
+					"title": " Sort By",
+					"account": "Account",
+					"creationdate": "Creation Date"
+				},
+				"chart": {
+					"title": "Financial Position",
+					"income": "Total Income",
+					"spent": "Total Spent",
+					"available": "Total Available"
+				},
+				"account": {
+					"remaining": "Remaining (%)",
+					"remainingtext": "Remaining",
+					"transaction": "Transactions"
+				}
+			}
+		},
+		"modal": {
+			"title": "Choose Your Preference",
+			"connect": {
+				"title" : "Connect With Your Bank",
+				"description": "Connect your bank account to import the transactions for the current month."
+			},
+			"sync": {
+				"title": "Automatic Bank Account Syncs",
+				"description": "Automatically syncs with the bank account to obtain transactions every start of the month."
+			},
+			"import": {
+				"title": "Import From Bank Statements",
+				"description": "You can also import the transactions from your bank statements"
+			},
+			"add" : {
+				"classical": " or be classical ",
+				"expense": "Expense",
+				"income": "Income",
+				"recurrence": {
+					"never": "Never",
+					"weekly": "Weekly",
+					"bimonthly": "Bi-Monthly",
+					"monthly": "Monthly"
+				},
+				"button": "Add Transaction"
+			}
+		}
 	}
 }

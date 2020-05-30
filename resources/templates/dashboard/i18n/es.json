@@ -84,5 +84,56 @@
 				}
 			}	
 		}
+	},
+	"transactions": {
+		"page": {
+			"table": {
+				"title": "Transacciones",
+				"sortby": {
+					"category": "Categoría",
+					"title": " Ordenar por",
+					"account": "Cuenta",
+					"creationdate": "Fecha de creación"
+				},
+				"chart": {
+					"title": "Posición financiera",
+					"income": "Ingreso total",
+					"spent": "Total gastado",
+					"available": "Total disponible"
+				},
+				"account": {
+					"remaining": "Remanente (%)",
+					"remainingtext": "Remanente",
+					"transaction": "Transacciones"
+				}
+			}
+		},
+		"modal": {
+			"title": "Elija su preferencia",
+			"connect": {
+				"title" : "Conecta con tu banco",
+				"description": "Conecte su cuenta bancaria para importar las transacciones del mes en curso."
+			},
+			"sync": {
+				"title": "Sincronización automática de cuentas bancarias",
+				"description": "Se sincroniza automáticamente con la cuenta bancaria para obtener transacciones cada principio de mes."
+			},
+			"import": {
+				"title": "Importación de estados de cuenta bancarios",
+				"description": "También puede importar las transacciones de sus estados de cuenta bancarios"
+			},
+			"add" : {
+				"classical": " o ser clásico ",
+				"expense": "Gasto",
+				"income": "Ingresos",
+				"recurrence": {
+					"never": "Nunca",
+					"weekly": "Semanal",
+					"bimonthly": "Bimensual",
+					"monthly": "Mensual"
+				},
+				"button": "Agregar transacción"
+			}
+		}
 	}
 }
