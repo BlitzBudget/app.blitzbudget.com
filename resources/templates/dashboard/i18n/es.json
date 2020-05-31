@@ -143,16 +143,16 @@
 			"title": "Presupuesto",
 			"card": {
 				"remaining": "Restante (%)",
-				"remain": "Restante",
-				"chart": {
-					"title": "Visualización del presupuesto",
-					"total": "Total presupuestado",
-					"categories": " Categorías",
-					"tobebudgeted": "A presupuestar",
-					"compensation": {
-						"title": "Compensar este gasto excesivo con",
-						"choose": "Elegir categoría",
-					}
+				"remain": "Restante"
+			},
+			"chart": {
+				"title": "Visualización del presupuesto",
+				"total": "Total presupuestado",
+				"categories": " Categorías",
+				"tobebudgeted": "A presupuestar",
+				"compensation": {
+					"title": "Compensar este gasto excesivo con",
+					"choose": "Elegir categoría"
 				}
 			}
 		}
