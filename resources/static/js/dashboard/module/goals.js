@@ -14,7 +14,7 @@
 
     // Generic Add Functionality
     let genericAddFnc = document.getElementById('genericAddFnc');
-    document.getElementById('addFncTT').innerText = 'add';
+    document.getElementById('addFncTT').textContent = 'add';
     genericAddFnc.classList = 'btn btn-round btn-warning btn-just-icon bottomFixed float-right addNewGoals';
     $(genericAddFnc).unbind('click').click(function () {
     	if(!this.classList.contains('addNewGoals')) {

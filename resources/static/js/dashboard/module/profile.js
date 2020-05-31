@@ -56,7 +56,7 @@
 				featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
 			}
             // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Profile';
+	        document.getElementById('currentPage').textContent = 'Profile';
 	        
 		    /**
 			*  Add Functionality Generic + Btn
@@ -79,7 +79,7 @@
 		ajaxData.url = _config.api.invokeUrl + PROFILE_CONSTANTS.userAttributeUrl + PROFILE_CONSTANTS.firstUserNameParam + currentUser.email;
 		ajaxData.onSuccess = function(result) {
 			let userCreationDate = result.UserCreateDate;
-	        document.getElementById('userCreationDate').innerText = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
+	        document.getElementById('userCreationDate').textContent = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	manageErrors(thrownError, "There was an error while fetching user information!",ajaxData);
@@ -101,10 +101,10 @@
 	function displayUserDetailsProfile() {
 		// User Name
 		let userName = currentUser.name + ' ' + currentUser.family_name;
-		document.getElementById('userNameProfileDisplay').innerText = userName;
+		document.getElementById('userNameProfileDisplay').textContent = userName;
 
 		// Email
-		document.getElementById('emailProfileDisplay').innerText = currentUser.email;
+		document.getElementById('emailProfileDisplay').textContent = currentUser.email;
 
 	}
 
@@ -139,8 +139,8 @@
 		let errorCPNew = document.getElementById('cpErrorDispNew');
 
 		if(isEmpty(oldPassword) || oldPassword.length < 8) {
-			errorCPNew.innerText = '';
-			errorCPOld.innerText = 'The current password field should have a minimum length of 8 characters.';
+			errorCPNew.textContent = '';
+			errorCPOld.textContent = 'The current password field should have a minimum length of 8 characters.';
 			return;
 		}
 
@@ -153,8 +153,8 @@
 		let errorCPOld = document.getElementById('cpErrorDispOld');
 
 		if(isEmpty(newPassword) || newPassword.length < 8) {
-			errorCPOld.innerText = '';
-			errorCPNew.innerText = 'The new password should have a minimum length of 8 characters.';
+			errorCPOld.textContent = '';
+			errorCPNew.textContent = 'The new password should have a minimum length of 8 characters.';
 			return;
 		}
 	});
@@ -192,7 +192,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Old Password';
+		oldPassLabel.textContent = 'Old Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -216,7 +216,7 @@
 
 		let miEye = document.createElement('i');
 		miEye.classList = 'material-icons';
-		miEye.innerText = 'remove_red_eye';
+		miEye.textContent = 'remove_red_eye';
 		dropdownTriggerOP.appendChild(miEye);
 		dropdownGroupOP.appendChild(dropdownTriggerOP);
 		oldPassWrapper.appendChild(dropdownGroupOP);
@@ -234,7 +234,7 @@
 		newPassInput.classList = 'newPassInput text-left';
 		
 		let newPassLabel = document.createElement('label');
-		newPassLabel.innerText = 'New Password';
+		newPassLabel.textContent = 'New Password';
 		newPassLabel.appendChild(informationIconSVG());
 		newPassInput.appendChild(newPassLabel);
 
@@ -258,7 +258,7 @@
 
 		let miEyeNP = document.createElement('i');
 		miEyeNP.classList = 'material-icons';
-		miEyeNP.innerText = 'remove_red_eye';
+		miEyeNP.textContent = 'remove_red_eye';
 		dropdownTriggerNP.appendChild(miEyeNP);
 		dropdownGroupNP.appendChild(dropdownTriggerNP);
 		newPassInput.appendChild(dropdownGroupNP);
@@ -659,34 +659,34 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.innerText = 'all transactions will be deleted';
+		liOne.textContent = 'all transactions will be deleted';
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.innerText = 'all the budgets will be deleted';
+		liTwo.textContent = 'all the budgets will be deleted';
 		ulWarn.appendChild(liTwo);
 
 		let liThree = document.createElement('li');
-		liThree.innerText = 'all goals will be deleted';
+		liThree.textContent = 'all goals will be deleted';
 		ulWarn.appendChild(liThree);
 
 		let liFour = document.createElement('li');
-		liFour.innerText = 'all financial accounts will be deleted';
+		liFour.textContent = 'all financial accounts will be deleted';
 		ulWarn.appendChild(liFour);
 
 		let liFive = document.createElement('li');
-		liFive.innerText = 'all wallets will be deleted';
+		liFive.textContent = 'all wallets will be deleted';
 		ulWarn.appendChild(liFive);
 
 		let liSix = document.createElement('li');
-		liSix.innerText = 'all investments will be deleted';
+		liSix.textContent = 'all investments will be deleted';
 		ulWarn.appendChild(liSix);
 		resetPassFrag.appendChild(ulWarn);
 
 		// Subscription
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.innerText = 'Premium subscription will remain intact after the reset.';
+		subsText.textContent = 'Premium subscription will remain intact after the reset.';
 		resetPassFrag.appendChild(subsText);
 
 		// Old Password
@@ -695,7 +695,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Confirm Password';
+		oldPassLabel.textContent = 'Confirm Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -718,7 +718,7 @@
 
 		let miEye = document.createElement('i');
 		miEye.classList = 'material-icons';
-		miEye.innerText = 'remove_red_eye';
+		miEye.textContent = 'remove_red_eye';
 		dropdownTriggerOP.appendChild(miEye);
 		dropdownGroupOP.appendChild(dropdownTriggerOP);
 		oldPassWrapper.appendChild(dropdownGroupOP);
@@ -745,7 +745,7 @@
 			return;
 		}
 
-		errorDispRA.innerText = '';
+		errorDispRA.textContent = '';
 		resetAccountBtn.removeAttribute('disabled');
 
 		let keyCode = e.keyCode || e.which;
@@ -768,12 +768,12 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			errorDispRA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
+			errorDispRA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
 			resetAccountBtn.setAttribute('disabled','disabled');
 			return;
 		}
 
-		errorDispRA.innerText = '';
+		errorDispRA.textContent = '';
 
 	});
 	
@@ -796,18 +796,18 @@
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.innerText = "premium subscription will be terminated";
+		liTwo.textContent = "premium subscription will be terminated";
 		ulWarn.appendChild(liTwo);
 
 		let liThree = document.createElement('li');
-		liThree.innerText = 'your Blitz Budget user account will be deleted';
+		liThree.textContent = 'your Blitz Budget user account will be deleted';
 		ulWarn.appendChild(liThree);
 		deletePassFrag.appendChild(ulWarn);
 
 		// Subscription
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.innerText = 'Consider exporting your data!';
+		subsText.textContent = 'Consider exporting your data!';
 		deletePassFrag.appendChild(subsText);
 
 		// Old Password
@@ -816,7 +816,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Confirm Password';
+		oldPassLabel.textContent = 'Confirm Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -839,7 +839,7 @@
 
 		let miEye = document.createElement('i');
 		miEye.classList = 'material-icons';
-		miEye.innerText = 'remove_red_eye';
+		miEye.textContent = 'remove_red_eye';
 		dropdownTriggerOP.appendChild(miEye);
 		dropdownGroupOP.appendChild(dropdownTriggerOP);
 		oldPassWrapper.appendChild(dropdownGroupOP);
@@ -866,7 +866,7 @@
 			return;
 		}
 
-		errorDispRA.innerText = '';
+		errorDispRA.textContent = '';
 		deleteAccountBtn.removeAttribute('disabled');
 
 		// Delete Account
@@ -889,12 +889,12 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			errorDispRA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
+			errorDispRA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
 			deleteAccountBtn.setAttribute('disabled','disabled');
 			return;
 		}
 
-		errorDispRA.innerText = '';
+		errorDispRA.textContent = '';
 
 	});
 
@@ -993,7 +993,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Confirm Password';
+		oldPassLabel.textContent = 'Confirm Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -1016,7 +1016,7 @@
 
 		let miEye = document.createElement('i');
 		miEye.classList = 'material-icons';
-		miEye.innerText = 'remove_red_eye';
+		miEye.textContent = 'remove_red_eye';
 		dropdownTriggerOP.appendChild(miEye);
 		dropdownGroupOP.appendChild(dropdownTriggerOP);
 		oldPassWrapper.appendChild(dropdownGroupOP);
@@ -1035,8 +1035,8 @@
 	 // Update User Attribute
     function updateUserName(firstName, lastName) {
     	let userNameProfileDisplay = document.getElementById('userNameProfileDisplay')
-    	let userNameDispText = userNameProfileDisplay.innerText;
-    	userNameProfileDisplay.innerText = firstName + ' ' + lastName;
+    	let userNameDispText = userNameProfileDisplay.textContent;
+    	userNameProfileDisplay.textContent = firstName + ' ' + lastName;
 
     	let values = {
     		"name" : firstName,
@@ -1058,11 +1058,11 @@
 	        // We save the item in the localStorage.
             localStorage.setItem("currentUserSI", JSON.stringify(currentUser));
             // Update User Name in App
-            document.getElementById('userName').innerText = firstName + ' ' + lastName;
+            document.getElementById('userName').textContent = firstName + ' ' + lastName;
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Replace Old name to Profile
-	    	userNameProfileDisplay.innerText = userNameDispText;
+	    	userNameProfileDisplay.textContent = userNameDispText;
 	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!",ajaxData);
         }
 	 	jQuery.ajax({
@@ -1089,7 +1089,7 @@
 			return;
 		}
 
-		cpErrorDispUA.innerText = '';
+		cpErrorDispUA.textContent = '';
 		confirmPassBtn.removeAttribute('disabled');
 
 		let keyCode = e.keyCode || e.which;
@@ -1111,12 +1111,12 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			cpErrorDispUA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
+			cpErrorDispUA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
 			confirmPassBtn.setAttribute('disabled','disabled');
 			return;
 		}
 
-		cpErrorDispUA.innerText = '';
+		cpErrorDispUA.textContent = '';
 
 	});
 
@@ -1448,7 +1448,7 @@
 		              data : JSON.stringify(values),
 		              success: function(result){
 		              	// Update email
-				        document.getElementById('emailProfileDisplay').innerText = emailModInp;
+				        document.getElementById('emailProfileDisplay').textContent = emailModInp;
 
 				        // Authentication Details
 				        let values = {};

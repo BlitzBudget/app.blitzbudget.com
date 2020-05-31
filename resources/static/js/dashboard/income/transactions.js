@@ -51,7 +51,7 @@
 	            // Call the transaction API to fetch information.
 				initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').innerText = 'Transactions';
+		        document.getElementById('currentPage').textContent = 'Transactions';
 			});
 	 	}
 	}
@@ -67,7 +67,7 @@
 				translatePage(getLanguage());
 	            initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').innerText = 'Transactions';
+		        document.getElementById('currentPage').textContent = 'Transactions';
 			});
 		});
 	}
@@ -301,7 +301,7 @@
 	$('body').on("click", "#categoryOptions .dropdown-item" , function(event){
 		let dropdownValue = this.lastChild.value;
 		let categoryOption = document.getElementById('categoryOptions');
-		categoryOption.firstElementChild.innerText = window.categoryMap[dropdownValue].name;
+		categoryOption.firstElementChild.textContent = window.categoryMap[dropdownValue].name;
 		categoryOption.setAttribute('data-chosen', dropdownValue);
 	});
 
@@ -441,7 +441,7 @@
         		continue;
         	}
         	  
-        	categoryRowToUpdate.innerText = formatToCurrency(value.planned);
+        	categoryRowToUpdate.textContent = formatToCurrency(value.planned);
     	}
 		
 	}
@@ -657,7 +657,7 @@
     	
     	let messageParagraphElement = document.createElement('p');
     	messageParagraphElement.className = 'green-icon margin-bottom-zero margin-left-five';
-    	messageParagraphElement.innerHTML = 'Successfully added the transaction.';
+    	messageParagraphElement.textContent = 'Successfully added the transaction.';
     	
     	var br = document.createElement('br');
     	
@@ -690,7 +690,13 @@
         }
         
 		let chartFinPosition = document.getElementById('chartFinancialPosition');
-		chartFinPosition.innerHTML = '<div class="material-spinner"></div>';
+		// Replace HTML with Empty
+		while (chartFinPosition.firstChild) {
+			chartFinPosition.removeChild(chartFinPosition.firstChild);
+		}
+		let materialSpinnerElement = document.createElement('div');
+    	materialSpinnerElement.classList = 'material-spinner';
+    	chartFinPosition.appendChild(materialSpinnerElement);
 	}
 
 	/*
@@ -780,7 +786,7 @@
 	function appendToday() {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = TODAY;
+		dateHeader.textContent = TODAY;
 		
 		return dateHeader;
 	}
@@ -789,7 +795,7 @@
 	function appendDateHeader(creationDate) {
 		let dateHeader = document.createElement('div');
 		dateHeader.classList = 'recentTransactionDateGrp ml-3 font-weight-bold';
-		dateHeader.innerText = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
+		dateHeader.textContent = getWeekDays(creationDate.getDay()) + ' ' + ordinalSuffixOf(creationDate.getDate());
 		
 		return dateHeader;
 	}
@@ -810,7 +816,7 @@
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+		emptyMessageRow.textContent = "Oh! Snap! You don't have any transactions yet.";
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
 
@@ -862,12 +868,12 @@
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
-		elementWithDescription.innerText = isEmpty(userTransaction.description) ? 'No Description' : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
+		elementWithDescription.textContent = isEmpty(userTransaction.description) ? 'No Description' : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
 		tableCellTransactionDescription.appendChild(elementWithDescription);
 		
 		let elementWithCategoryName = document.createElement('div');
 		elementWithCategoryName.classList = 'small categoryNameRT w-100';
-		elementWithCategoryName.innerText = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+		elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0,26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0,3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
 		tableCellTransactionDescription.appendChild(elementWithCategoryName);
 		tableRowTransaction.appendChild(tableCellTransactionDescription);
 		
@@ -881,7 +887,7 @@
 			} else {
 				transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
 			}
-			transactionAmount.innerHTML = formatToCurrency(userTransaction.amount);			   
+			transactionAmount.textContent = formatToCurrency(userTransaction.amount);			   
 			tableRowTransaction.appendChild(transactionAmount);
 		} else {
 			let surCell = document.createElement('div');
@@ -896,7 +902,7 @@
 				transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
 				
 			}
-			transactionAmount.innerHTML = formatToCurrency(userTransaction.amount);
+			transactionAmount.textContent = formatToCurrency(userTransaction.amount);
 			surCell.appendChild(transactionAmount);  
 			  
 			let accountBalDiv = document.createElement('div');
@@ -1019,7 +1025,7 @@
 	// Click on sort by creation date
 	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = 'Creation Date';
+		document.getElementById('sortByBtnTit').textContent = 'Creation Date';
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-table');
@@ -1048,7 +1054,7 @@
 	// Click on sort by creation date
 	$('body').on('click', '#categorySortBy' , function(e) {
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = 'Category';
+		document.getElementById('sortByBtnTit').textContent = 'Category';
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the accountTable
@@ -1093,7 +1099,7 @@
 	// Sorts the table by aggregating transactions by account
 	$('body').on('click', '#accountSortBy' , function(e) {
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').innerText = 'Account';
+		document.getElementById('sortByBtnTit').textContent = 'Account';
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the transactions table
@@ -1142,14 +1148,14 @@
 		// Right Arrow
 		let rightArrow = document.createElement('div');
 		rightArrow.classList = 'material-icons rotateNinty';
-		rightArrow.innerText = 'keyboard_arrow_right';
+		rightArrow.textContent = 'keyboard_arrow_right';
 		titleWrapper.appendChild(rightArrow);
 
 		// Title
 		let categoryTitle = document.createElement('a');
 		categoryTitle.id = 'categoryTitle-' + category;
 		categoryTitle.classList = 'pl-4 accTitleAnchor';
-		categoryTitle.innerText = categoryData.name;
+		categoryTitle.textContent = categoryData.name;
 		titleWrapper.appendChild(categoryTitle);
 		categoryTit.appendChild(titleWrapper);
 
@@ -1167,7 +1173,7 @@
 			categoryBalance.classList.add('incomeCategory');
 		}
 		categoryBalance.id = 'categoryBalance-' + category;
-		categoryBalance.innerText = formatToCurrency(categoryData.categoryTotal);
+		categoryBalance.textContent = formatToCurrency(categoryData.categoryTotal);
 		categoryTit.appendChild(categoryBalance);
 
 		categoryHeader.appendChild(categoryTit);
@@ -1209,24 +1215,24 @@
 	   			while (accHeading.firstChild) {
 	   				accHeading.removeChild(accHeading.firstChild);
 	   			}
-				accHeading.innerText = bankAcc['bank_account_name'];
+				accHeading.textContent = bankAcc['bank_account_name'];
 				if(bankAcc['account_balance'] < 0) { 
 					accountBalance.classList.add('expenseCategory');
 				} else { 
 					accountBalance.classList.add('incomeCategory');
 				}
-				accountBalance.innerText = formatToCurrency(bankAcc['account_balance']);
+				accountBalance.textContent = formatToCurrency(bankAcc['account_balance']);
 			} else {
 				// A new header for the rest
 				let accountHeaderNew = buildAccountHeader(bankAcc.accountId);
-				accountHeaderNew.getElementById('accountTitle-' + bankAcc.accountId).innerText = bankAcc['bank_account_name'];
+				accountHeaderNew.getElementById('accountTitle-' + bankAcc.accountId).textContent = bankAcc['bank_account_name'];
 				let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
 				if(bankAcc['account_balance'] < 0) { 
 					accBal.classList.add('expenseCategory');
 				} else { 
 					accBal.classList.add('incomeCategory');
 				}
-				accBal.innerText = formatToCurrency(bankAcc['account_balance']);
+				accBal.textContent = formatToCurrency(bankAcc['account_balance']);
 				// Append Empty Table to child
 				accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
 				// Append to the transaction view

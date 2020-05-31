@@ -17,11 +17,11 @@
 		let recentTransactionEntry = accInfoTable.getElementsByClassName('recentTransactionEntry');
 		// Set the number of transactions if present
 		let numberOfTransactionsDiv = document.getElementById('numberOfTransInAcc');
-		numberOfTransactionsDiv.innerText = isEmpty(recentTransactionEntry) ? 0 : recentTransactionEntry.length;
+		numberOfTransactionsDiv.textContent = isEmpty(recentTransactionEntry) ? 0 : recentTransactionEntry.length;
 		// Set Account Title
-		document.getElementById('accountLabelInModal').innerText = document.getElementById('accountTitle-' + accountId).innerText;
+		document.getElementById('accountLabelInModal').textContent = document.getElementById('accountTitle-' + accountId).textContent;
 		// Account Balance Update 
-		document.getElementById('accountAmountEntry').innerText = document.getElementById('accountBalance-' + accountId).innerText;
+		document.getElementById('accountAmountEntry').textContent = document.getElementById('accountBalance-' + accountId).textContent;
 		// Toggle Account Transaction 
 		let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
 		for(let i = 0, l = accTransEntry.length; i < l; i++) {
@@ -53,7 +53,7 @@
 
 	// Focus in for the remaining account amount
 	$('body').on('focusin', '#accountAmountEntry' , function(e) {
-		amountEditedAccount = trimElement(this.innerText);
+		amountEditedAccount = trimElement(this.textContent);
 	});
 
 	// Change the remaining amount
@@ -69,7 +69,7 @@
 	// Submit Amount Change
 	function submitAmountChange(element) {
 		// If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-		let enteredText = er.convertToNumberFromCurrency(element.innerText,currentCurrencyPreference);
+		let enteredText = er.convertToNumberFromCurrency(element.textContent,currentCurrencyPreference);
 		let previousText = er.convertToNumberFromCurrency(amountEditedAccount,currentCurrencyPreference);
 		
 		// Test if the entered value is valid
@@ -103,10 +103,10 @@
 				bankAccount = bankAccount['body-json'];
 	        	// Update the budget amount in the category row
 	        	let formattedBudgetAmount = formatToCurrency(bankAccount.accountBalance);
-	        	element.innerText = formattedBudgetAmount;
+	        	element.textContent = formattedBudgetAmount;
 
 	        	// Account Balance for account Header
-	        	document.getElementById('accountBalance-' + bankAccount.accountId).innerText = formattedBudgetAmount;
+	        	document.getElementById('accountBalance-' + bankAccount.accountId).textContent = formattedBudgetAmount;
 
 	        	// Append as Selected Account
 		        for(let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
@@ -116,7 +116,7 @@
 		    			// Position of the row
 		    			let position = i + 1;
 		    			// update the formatted button
-			    		document.getElementById('bAR-' + position).lastElementChild.innerText = formattedBudgetAmount;
+			    		document.getElementById('bAR-' + position).lastElementChild.textContent = formattedBudgetAmount;
 			    		break;
 		    		}
 		        }
@@ -126,7 +126,7 @@
 				
                 // update the current element with the previous amount
                 let formattedAccountAmount = formatToCurrency(previousText);
-                element.innerText = formattedAccountAmount;
+                element.textContent = formattedAccountAmount;
             }
 
 			$.ajax({
@@ -311,7 +311,7 @@
 		// Warning Text
 		let warnDiv = document.createElement('div');
 		warnDiv.classList = 'noselect text-left mb-3 fs-90';
-		warnDiv.innerHTML = 'Do you want to delete your bank account <strong>' + accountLabelInModal.innerText + '</strong> and <strong>delete all the transactions.</strong>?';
+		warnDiv.innerHTML = 'Do you want to delete your bank account <strong>' + accountLabelInModal.textContent + '</strong> and <strong>delete all the transactions.</strong>?';
 		deletePassFrag.appendChild(warnDiv);
 
 		// UL tag
@@ -319,18 +319,18 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.innerHTML = 'all your transactions associated with ' + accountLabelInModal.innerText + ' will be deleted.';
+		liOne.textContent = 'all your transactions associated with ' + accountLabelInModal.textContent + ' will be deleted.';
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.innerText = accountLabelInModal.innerText + ' financial account will be deleted.';
+		liTwo.textContent = accountLabelInModal.textContent + ' financial account will be deleted.';
 		ulWarn.appendChild(liTwo);
 		deletePassFrag.appendChild(ulWarn);
 
 		// Move Transactions
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.innerText = 'Consider dragging and dropping the transaction to another account before deleting the financial account!';
+		subsText.textContent = 'Consider dragging and dropping the transaction to another account before deleting the financial account!';
 		deletePassFrag.appendChild(subsText);
 
 		// Old Password
@@ -339,7 +339,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Confirm Password';
+		oldPassLabel.textContent = 'Confirm Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -362,7 +362,7 @@
 
 		let miEye = document.createElement('i');
 		miEye.classList = 'material-icons';
-		miEye.innerText = 'remove_red_eye';
+		miEye.textContent = 'remove_red_eye';
 		dropdownTriggerOP.appendChild(miEye);
 		dropdownGroupOP.appendChild(dropdownTriggerOP);
 		oldPassWrapper.appendChild(dropdownGroupOP);
@@ -389,7 +389,7 @@
 			return;
 		}
 
-		errorDispRA.innerText = '';
+		errorDispRA.textContent = '';
 		deleteAccountBtn.removeAttribute('disabled');
 
 		// Delete Account
@@ -412,12 +412,12 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			errorDispRA.innerText = 'The confirm password field should have a minimum length of 8 characters.';
+			errorDispRA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
 			deleteAccountBtn.setAttribute('disabled','disabled');
 			return;
 		}
 
-		errorDispRA.innerText = '';
+		errorDispRA.textContent = '';
 
 	});
 
@@ -449,7 +449,7 @@
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+		emptyMessageRow.textContent = "Oh! Snap! You don't have any transactions yet.";
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
 
@@ -544,7 +544,7 @@
 		
 		let paragraphElement = document.createElement('p');
 		paragraphElement.className = 'text-secondary mb-0';
-		paragraphElement.innerHTML = 'There are no transactions yet. Start adding some to track your spending.';
+		paragraphElement.textContent = 'There are no transactions yet. Start adding some to track your spending.';
 		
 		descriptionTableCell.appendChild(paragraphElement);
 		emptyTableRow.appendChild(descriptionTableCell);

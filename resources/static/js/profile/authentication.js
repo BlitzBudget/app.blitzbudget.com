@@ -109,7 +109,7 @@
             // Set the name of the user
             let userName = document.getElementById('userName');
             if(userName) {
-                userName.innerText = window.currentUser.name + ' ' + window.currentUser.family_name;
+                userName.textContent = window.currentUser.name + ' ' + window.currentUser.family_name;
             }
         }
     }
@@ -144,7 +144,7 @@
         /**
         *   Other Errors
         **/
-        document.getElementById(errM).innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+        document.getElementById(errM).textContent = lastElement(splitElement(err.responseJSON.errorMessage,':'));
     }
 
 
@@ -275,7 +275,7 @@
             let unlockLoader = document.getElementById('unlockLoader');
             unlockLoader.classList.remove('d-none');
             unlockApplication.classList.add('d-none');
-            document.getElementById('errorUnlockPopup').innerText = '';
+            document.getElementById('errorUnlockPopup').textContent = '';
             event.preventDefault();
 
             signin(email, password,
@@ -330,20 +330,20 @@
         let loginLoader = document.getElementById('loginLoader');
         let loginButton = loginLoader.parentElement.firstElementChild;
         let loginModal = $('#loginModal');
-        document.getElementById('errorLoginPopup').innerText = '';
+        document.getElementById('errorLoginPopup').textContent = '';
         event.preventDefault();
 
         if(isEmpty(email) && isEmpty(password)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Email & Password fields cannot be empty';
             return;
         } else if(isEmpty(email)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Email field cannot be empty';
             return;
         } else if(isEmpty(password)) {
-            document.getElementById('errorLoginPopup').innerText = 'Password field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Password field cannot be empty';
             return;
         } else if (password.length < 8) {
-            document.getElementById('errorLoginPopup').innerText = 'Password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').textContent = 'Password should have a minimum length of 8 characters';
             return;
         }
 
@@ -379,19 +379,19 @@
         event.preventDefault();
 
         if(isEmpty(email) && isEmpty(password)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Email & Password fields cannot be empty';
             return;
         } else if(isEmpty(email)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Email field cannot be empty';
             return;
         } else if(isEmpty(password)) {
-            document.getElementById('errorLoginPopup').innerText = 'Password field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Password field cannot be empty';
             return;
         } else if (password.length < 8) {
-            document.getElementById('errorLoginPopup').innerText = 'Password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').textContent = 'Password should have a minimum length of 8 characters';
             return;
         } else if (password !== password2) {
-            document.getElementById('errorLoginPopup').innerText = 'Passwords do not match';
+            document.getElementById('errorLoginPopup').textContent = 'Passwords do not match';
             return;
         }
 
@@ -411,7 +411,7 @@
         let onFailure = function registerFailure(err) {
             signupLoader.classList.add('d-none');
             signupButton.classList.remove('d-none');
-        	document.getElementById('errorLoginPopup').innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+        	document.getElementById('errorLoginPopup').textContent = lastElement(splitElement(err.responseJSON.errorMessage,':'));
         };
 
         if (password === password2) {
@@ -430,7 +430,7 @@
         let password = document.getElementById('passwordInputSignin').value;
         let verifyLoader = document.getElementById('verifyLoader');
         let verifyButton = verifyLoader.parentElement.firstElementChild;
-        let errorLoginPopup = document.getElementById('errorLoginPopup').innerText;
+        let errorLoginPopup = document.getElementById('errorLoginPopup').textContent;
         
         // Replace HTML with Empty
         while (errorLoginPopup.firstChild) {
@@ -473,7 +473,7 @@
                 }
                 // Check if email and password is empty
                 if(isEmpty(password)) {
-                    errorLoginPopup.innerText = 'Password field cannot be empty';
+                    errorLoginPopup.textContent = 'Password field cannot be empty';
                     // Toggle Sign In
                     toggleLogin(email);
                     // Do not trigger login
@@ -489,7 +489,7 @@
                 verifyButton.classList.remove('d-none');
             },
             function verifyError(err) {
-                document.getElementById('errorLoginPopup').innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+                document.getElementById('errorLoginPopup').textContent = lastElement(splitElement(err.responseJSON.errorMessage,':'));
                 verifyLoader.classList.add('d-none');
                 verifyButton.classList.remove('d-none');
             }
@@ -666,22 +666,22 @@
         let newPassword = document.getElementById('passwordInputSignin').value;
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email & Password fields cannot be empty, Enter the new password in the password field';
+            document.getElementById('errorLoginPopup').textContent = 'Email & Password fields cannot be empty, Enter the new password in the password field';
             // Change focus to email
             document.getElementById('emailInputSignin').focus();
             return;
         } else if(isEmpty(emailInputSignin)) {
-            document.getElementById('errorLoginPopup').innerText = 'Email field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = 'Email field cannot be empty';
             // Change focus to email
             document.getElementById('emailInputSignin').focus();
             return;
         } else if(isEmpty(newPassword)) {
-            document.getElementById('errorLoginPopup').innerText = 'Enter the new password in the password field';
+            document.getElementById('errorLoginPopup').textContent = 'Enter the new password in the password field';
             // Change focus to password
             document.getElementById('passwordInputSignin').focus();
             return;
         } else if (newPassword.length < 8) {
-            document.getElementById('errorLoginPopup').innerText = 'The new password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').textContent = 'The new password should have a minimum length of 8 characters';
             // Change focus to password
             document.getElementById('passwordInputSignin').focus();
             return;
@@ -707,7 +707,7 @@
                 fireConfirmForgotPasswordSwal(emailInputSignin, newPassword);
               },
               error: function(err) {
-                document.getElementById('errorLoginPopup').innerText = lastElement(splitElement(err.responseJSON.errorMessage,':'));
+                document.getElementById('errorLoginPopup').textContent = lastElement(splitElement(err.responseJSON.errorMessage,':'));
                 resendloader.classList.add('d-none');
                 forgotPass.classList.remove('d-none');
               }
@@ -790,7 +790,7 @@
                         retrieveAttributes(result, loginModal);
 
                         // Post success message
-                        document.getElementById('successLoginPopup').innerText = 'Successfully logged you in! Preparing the application with your data.';
+                        document.getElementById('successLoginPopup').textContent = 'Successfully logged you in! Preparing the application with your data.';
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
 
@@ -863,7 +863,7 @@
         document.getElementById('gmail').classList.remove('d-none');
         document.getElementById('outlook').classList.remove('d-none');
 
-        document.getElementById('loginModalTitle').innerText = 'Email Verification';
+        document.getElementById('loginModalTitle').textContent = 'Email Verification';
 
         document.getElementById('signinForm').classList.add('d-none');
 
@@ -871,7 +871,7 @@
 
         document.getElementById('emailInputVerify').value = email;
 
-        document.getElementById('emailDisplayVE').innerText = email;
+        document.getElementById('emailDisplayVE').textContent = email;
 
         document.getElementById('forgotPassLogin').classList.add('d-none');
 
@@ -883,8 +883,8 @@
         document.getElementById('emailInputRegister').value = '';
         document.getElementById('passwordInputRegister').value = '';
         
-        document.getElementById('successLoginPopup').innerText = '';
-        document.getElementById('errorLoginPopup').innerText = '';
+        document.getElementById('successLoginPopup').textContent = '';
+        document.getElementById('errorLoginPopup').textContent = '';
 
         document.getElementById('haveAnAccount').classList.add('d-none');
 
@@ -902,7 +902,7 @@
         document.getElementById('gmail').classList.add('d-none');
         document.getElementById('outlook').classList.add('d-none');
 
-        document.getElementById('loginModalTitle').innerText = 'Sign Up';
+        document.getElementById('loginModalTitle').textContent = 'Sign Up';
 
         document.getElementById('signinForm').classList.add('d-none');
 
@@ -910,7 +910,7 @@
 
         document.getElementById('emailInputVerify').value = '';
 
-        document.getElementById('emailDisplayVE').innerText = '';
+        document.getElementById('emailDisplayVE').textContent = '';
 
         document.getElementById('forgotPassLogin').classList.add('d-none');
 
@@ -924,8 +924,8 @@
         
         document.getElementById('passwordInputRegister').value = pass;
         
-        document.getElementById('successLoginPopup').innerText = '';
-        document.getElementById('errorLoginPopup').innerText = '';
+        document.getElementById('successLoginPopup').textContent = '';
+        document.getElementById('errorLoginPopup').textContent = '';
 
         // Toggle Focus to confirm password
         document.getElementById('password2InputRegister').focus();
@@ -1052,7 +1052,7 @@ function toggleLogin(email) {
     document.getElementById('gmail').classList.add('d-none');
     document.getElementById('outlook').classList.add('d-none');
 
-    document.getElementById('loginModalTitle').innerText = 'Login';
+    document.getElementById('loginModalTitle').textContent = 'Login';
 
     document.getElementById('signinForm').classList.remove('d-none');
 
@@ -1062,7 +1062,7 @@ function toggleLogin(email) {
         document.getElementById('emailInputVerify').value = email;
     }
 
-    document.getElementById('emailDisplayVE').innerText = '';
+    document.getElementById('emailDisplayVE').textContent = '';
 
     document.getElementById('forgotPassLogin').classList.remove('d-none');
 
@@ -1074,8 +1074,8 @@ function toggleLogin(email) {
     document.getElementById('emailInputRegister').value = '';
     document.getElementById('passwordInputRegister').value = '';
     
-    document.getElementById('successLoginPopup').innerText = '';
-    document.getElementById('errorLoginPopup').innerText = '';
+    document.getElementById('successLoginPopup').textContent = '';
+    document.getElementById('errorLoginPopup').textContent = '';
 
     document.getElementById('haveAnAccount').classList.add('d-none');
 

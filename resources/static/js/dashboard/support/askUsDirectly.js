@@ -49,7 +49,7 @@
 
 		let messageLabel = document.createElement('label');
 		messageLabel.classList = 'labelEmail text-left ml-5';
-		messageLabel.innerText = 'Message';
+		messageLabel.textContent = 'Message';
 		askUsDirectlyDiv.appendChild(messageLabel);
 
 		let textArea = document.createElement('textarea');
@@ -83,7 +83,7 @@
 			return;
 		}
 
-		textErrorDispUA.innerText = '';
+		textErrorDispUA.textContent = '';
 		sendEmailBtn.removeAttribute('disabled');	
 	});
 
@@ -95,12 +95,12 @@
 		let textAreaEnt = this.value;
 
 		if(isEmpty(textAreaEnt) || textAreaEnt.length < 80) {
-			textErrorDispUA.innerText = 'Please enter a minimum of 80 characters.';
+			textErrorDispUA.textContent = 'Please enter a minimum of 80 characters.';
 			sendEmailBtn.setAttribute('disabled','disabled');
 			return;
 		}
 
-		textErrorDispUA.innerText = '';
+		textErrorDispUA.textContent = '';
 
 	});
 

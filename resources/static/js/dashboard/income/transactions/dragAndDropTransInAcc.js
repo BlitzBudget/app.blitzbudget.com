@@ -232,17 +232,17 @@
 			let userTransaction = result['body-json'];
 			// Fetch the current account balance
 			let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
-			let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.innerText,currentCurrencyPreference);
+			let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.textContent,currentCurrencyPreference);
 			let accDiv = document.getElementById('accountBalance-' + accountId);
-			let accBal = er.convertToNumberFromCurrency(accDiv.innerText,currentCurrencyPreference);
+			let accBal = er.convertToNumberFromCurrency(accDiv.textContent,currentCurrencyPreference);
 			let currAccBal = 0;
 			let currNewAccBal = 0;
         	// Append a - sign if it is an expense
 			currAccBal = oldAccBal - userTransaction.amount
 			currNewAccBal = accBal + userTransaction.amount;
 			// Append the new amount to the front
-			oldAccDiv.innerText = formatToCurrency(currAccBal);
-			accDiv.innerText = formatToCurrency(currNewAccBal);
+			oldAccDiv.textContent = formatToCurrency(currAccBal);
+			accDiv.textContent = formatToCurrency(currNewAccBal);
 			// If the account balance is negative then change color
 			if(currAccBal < 0) {oldAccDiv.classList.add('expenseCategory');oldAccDiv.classList.remove('incomeCategory'); } else { oldAccDiv.classList.add('incomeCategory');oldAccDiv.classList.remove('expenseCategory');}
 			if(currNewAccBal < 0) {accDiv.classList.add('expenseCategory');accDiv.classList.remove('incomeCategory'); } else { accDiv.classList.add('incomeCategory');accDiv.classList.remove('expenseCategory');}
@@ -294,7 +294,7 @@
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+		emptyMessageRow.textContent = "Oh! Snap! You don't have any transactions yet.";
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
 
