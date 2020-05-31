@@ -54,7 +54,7 @@
 			**/
 			populateSettings();
             // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Settings';
+	        document.getElementById('currentPage').textContent = 'Settings';
 		});
 	}
 
@@ -172,7 +172,7 @@
 	      	/*create a DIV element for each matching element:*/
 	          b = document.createElement("DIV");
 	          b.classList = "noResultsDD";
-	          b.innerText = 'No Results';
+	          b.textContent = 'No Results';
 	          a.appendChild(b);
 	      }  
 
@@ -257,9 +257,9 @@
 		let inpId = '';
 		// Fetch the display btn for auto complete
 		inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
-		oldValInTe = document.getElementById(inpId).innerText;
+		oldValInTe = document.getElementById(inpId).textContent;
 		// Update the button to new value
-		document.getElementById(inpId).innerText = event.lastChild.value;
+		document.getElementById(inpId).textContent = event.lastChild.value;
 		// Set Param Val combination
 		let values = {};
 		values['currency'] = chosenCurrencyMW;
@@ -304,7 +304,7 @@
 	        },
 	        error: function(thrownError) {
 	        	// Change button text to the old Inp value
-				document.getElementById(inpId).innerText = oldValInTe;
+				document.getElementById(inpId).textContent = oldValInTe;
 				manageErrors(thrownError, "There was an error while updating. Please try again later!");
 	        }
 	    });
@@ -318,20 +318,20 @@
         if(isEqual(param, 'locale')) {
         	// Fetch the display btn for auto complete
 			inpId = event.parentElement.id.replace('Inpautocomplete-list','');		
-			oldValInTe = document.getElementById(inpId).innerText;
+			oldValInTe = document.getElementById(inpId).textContent;
 			// Update the button to new value
-			document.getElementById(inpId).innerText = event.lastChild.value;
+			document.getElementById(inpId).textContent = event.lastChild.value;
         } else {
         	// Fetch the display btn from drop down
 			inpId = event.parentElement.id.replace('DD','');		
-			oldValInTe = document.getElementById(inpId).innerText;
+			oldValInTe = document.getElementById(inpId).textContent;
 
 			if(isEqual(param, 'exportFileFormat')) {
 				// Update the button to new value
-				document.getElementById(inpId).innerText = exportFileFormatObj[event.lastChild.value];
+				document.getElementById(inpId).textContent = exportFileFormatObj[event.lastChild.value];
 			} else {
 				// Update the button to new value
-				document.getElementById(inpId).innerText = event.lastChild.value;
+				document.getElementById(inpId).textContent = event.lastChild.value;
 			}
         }
 		
@@ -382,7 +382,7 @@
         }
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Change button text to the old Inp value
-			document.getElementById(inpId).innerText = oldValInTe;
+			document.getElementById(inpId).textContent = oldValInTe;
 			manageErrors(thrownError, "There was an error while updating. Please try again later!",ajaxData);
         }
 	 	jQuery.ajax({
@@ -408,7 +408,7 @@
 	function dropdownItemsWithWallet(withWalletItem) {
 		let dpItem = document.createElement('div');
 		dpItem.classList = 'dropdown-item';
-		dpItem.innerText = withWalletItem;
+		dpItem.textContent = withWalletItem;
 
 		let inpHi = document.createElement('input');
 		inpHi.setAttribute('type', 'hidden');
@@ -431,10 +431,10 @@
 	    *	Add current preferrence of export file format
 	    **/
 	    let currentExportFileFormat = exportFileFormatObj[currentUser.exportFileFormat];
-	    document.getElementById('chosenExportFileFormat').innerText = isNotEmpty(currentExportFileFormat) ? currentExportFileFormat : exportFileFormatObj['XLS'];
+	    document.getElementById('chosenExportFileFormat').textContent = isNotEmpty(currentExportFileFormat) ? currentExportFileFormat : exportFileFormatObj['XLS'];
 
 	    // Display Email for devices
-		document.getElementById('currentUserEmail').innerText = currentUser.email;
+		document.getElementById('currentUserEmail').textContent = currentUser.email;
 
 		/*
 		*	Country Drop down Populate
@@ -449,7 +449,7 @@
 			window.lToC[locToCou[i].name] = locToCou[i].country
 			/* Update the default locale in Settings */
 			if(isEqual(currentUser.locale.slice(-2),locToCou[i].country)) {
-				document.getElementById('chosenCountry').innerText = locToCou[i].name;	
+				document.getElementById('chosenCountry').textContent = locToCou[i].name;	
 				// To be used to display "with wallet" section
 				document.getElementById('currentCountries').appendChild(dropdownItemsWithWallet(locToCou[i].name));
 			} else {
@@ -472,7 +472,7 @@
 			window.cToS[curToSym[i].currency] = curToSym[i].symbol;
 			/* Update the default currency in Settings */
 			if(isEqual(currentUser.walletCurrency,curToSym[i].symbol)) {
-				document.getElementById('chosenCurrency').innerText = curToSym[i].currency;
+				document.getElementById('chosenCurrency').textContent = curToSym[i].currency;
 				// To be used to display "with wallet" section
 				document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
 			} else {

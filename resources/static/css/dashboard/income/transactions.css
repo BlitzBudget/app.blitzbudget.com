@@ -225,56 +225,12 @@
 	padding-left: 0;
 }
 
-/**
-* 
-* Category Modal Designs
-*
-**/
-
-.category-modal {
-	padding: 0.5rem;
-	position: -webkit-sticky;
-	position: sticky;
-	top: 4rem;
-}
-
-#categoryHeaderClose > i, .category-modal .card-footer .text-left {
-	color: #999;
-}
-
-.category-modal .card-footer, .category-modal .card-header .card-title {
-	white-space: nowrap;	
-}
-
-.category-modal .card-footer .text-left {
-	padding-left: 0;
-}
-
-#categoryLabelInModal {
-	display: block;
-	margin-bottom: .8rem;
-	line-height: 1;
-	color: #495257;
-	font-weight: 600;
-	text-align: left;
-}
 
 .headingDiv {
 	text-transform: capitalize;
 	color: #8e999e;
 }
 
-.category-modal progress  {
-	display: block;
-	margin-bottom: .8rem;
-	border: 0;
-	width: 100%;
-	height: 8px;
-	-webkit-appearance: none;
-	-moz-appearance: none;
-	appearance: none;
-	color: #58c65c;
-}
 
 /* Firefox */
 progress::-moz-progress-value { 
@@ -292,24 +248,6 @@ progress::-webkit-progress-value {
 	font-weight: 600;
 }
 
-#plannedAmountCategoryModal {
-	font-size: 1.2rem;
-	padding-top: 0.25rem;
-	font-weight: 400;
-	padding-bottom: 0.5rem;
-	color: #686969;
-	display: block;
-    -webkit-transition: border-color .3s ease;
-	-moz-transition: border-color .3s ease;
-	-ms-transition: border-color .3s ease;
-	-o-transition: border-color .3s ease;
-	transition: border-color .3s ease;
-    margin-right: -.8rem;
-    width: calc(100% + 1.6rem);
-    resize: none;
-    line-height: 1;
-}
-
 #addNewGoals {
 	border-color: transparent;
 	background-color: transparent;
@@ -323,15 +261,7 @@ progress::-webkit-progress-value {
 	font-weight: 700;
 }
 
-.budgetAmountDiv span:hover  {
-	background: linear-gradient(#d5d9db,#d5d9db) 0 calc(100% - .025rem)/100% 0.050rem no-repeat, transparent;
-}
-
-.budgetAmountDiv #plannedAmountCategoryModal {
-	padding-top: 0.5rem;
-}
-
-.budgetAmountDiv .col-lg-3,  .recurrenceDiv .col-lg-3 {
+.recurrenceDiv .col-lg-3 {
 	padding-top: 0;
 }
 

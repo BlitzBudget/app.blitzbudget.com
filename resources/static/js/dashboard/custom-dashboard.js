@@ -20,7 +20,6 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
 	'transactionDashboardId': { value: 'transaction-dashboard-sidebar', writable: false, configurable: false },
 	'goalDashboardId': { value: 'goal-dashboard-sidebar', writable: false, configurable: false },
 	'budgetDashboardId': { value: 'budget-dashboard-sidebar', writable: false, configurable: false },
-	'investmentDashboardId': { value: 'investment-dashboard-sidebar', writable: false, configurable: false },
 	'settingsDashboardId': { value: 'settingsPage', writable: false, configurable: false },
 	'dateMeantFor': { value: '&dateMeantFor=', writable: false, configurable: false },
 	'expenseCategory': { value: 'Expense', writable: false, configurable: false },
@@ -75,11 +74,6 @@ window.onload = function () {
 		
 		if(document.getElementsByClassName('budget-dashboard').length) {
 			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.budgetDashboardId);
-			currentActiveSideBar.classList.add('active');
-		}
-		
-		if(document.getElementsByClassName('investment-dashboard').length) {
-			currentActiveSideBar = document.getElementById(CUSTOM_DASHBOARD_CONSTANTS.investmentDashboardId);
 			currentActiveSideBar.classList.add('active');
 		}
 		
@@ -178,12 +172,6 @@ window.onload = function () {
 					color = 'azure';
 					imageUrl = '../img/dashboard/sidebar/sidebar-4.jpg';
 				    break;
-				case 'investmentsPage':
-					url = '/investment';
-					color = 'purple';
-					currentPage = 'Investment';
-					imageUrl = '../img/dashboard/sidebar/sidebar-5.jpg';
-				    break;
 				case 'settingsPage':
 				case 'settingsPgDD':
 					color = ''; /* No Color */
@@ -262,7 +250,7 @@ window.onload = function () {
 			
 			// Build current year information in date popover
 			for(let count = 0, length = monthPickerYear.length; count < length; count++) {
-				monthPickerYear[count].innerText = selectedYear;
+				monthPickerYear[count].textContent = selectedYear;
 			}
 			
 			// Update the cache
@@ -430,8 +418,8 @@ window.onload = function () {
 			let overviewYearHeading = document.getElementsByClassName('overviewYearHeading')[0];
 			
 			let currentDate = new Date();
-			if(isNotEmpty(overviewHeading)) {overviewHeading.innerText = months[currentDate.getMonth()];}
-			if(isNotEmpty(overviewYearHeading)) {overviewYearHeading.innerText = currentDate.getFullYear();}
+			if(isNotEmpty(overviewHeading)) {overviewHeading.textContent = months[currentDate.getMonth()];}
+			if(isNotEmpty(overviewYearHeading)) {overviewYearHeading.textContent = currentDate.getFullYear();}
 		}
 
 		// Once the login modal is hidden then (Reload ALL API CALLS)
@@ -681,7 +669,7 @@ er = {
 				    backdrop: 'static',
 				    keyboard: false
 				});
-				document.getElementById('unlockName').innerText = currentUser.name + ' ' + currentUser.family_name;
+				document.getElementById('unlockName').textContent = currentUser.name + ' ' + currentUser.family_name;
 				// Id token refresh
 				localStorage.removeItem('idToken');
 			} else {
@@ -788,8 +776,8 @@ er = {
 		let overviewYearHeading = document.getElementsByClassName('overviewYearHeading')[0];
 		
 		// Print the year
-		overviewHeading.innerText = months[chosenDate.getMonth()];
-		overviewYearHeading.innerText = popoverYear;
+		overviewHeading.textContent = months[chosenDate.getMonth()];
+		overviewYearHeading.textContent = popoverYear;
 		
 		// Remove selected from current
 		let monthsSelected = document.getElementsByClassName('monthPickerMonthSelected');
@@ -924,7 +912,7 @@ function fetchJSONForCategories(data) {
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
-		  option.innerText = value.name;
+		  option.textContent = value.name;
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
@@ -997,7 +985,7 @@ function toggleVerify(email, verifyCode) {
     document.getElementById('gmail').classList.remove('d-none');
     document.getElementById('outlook').classList.remove('d-none');
 
-    document.getElementById('loginModalTitle').innerText = 'Email Verification';
+    document.getElementById('loginModalTitle').textContent = 'Email Verification';
 
     document.getElementById('signinForm').classList.add('d-none');
 
@@ -1005,7 +993,7 @@ function toggleVerify(email, verifyCode) {
 
     document.getElementById('emailInputVerify').value = email;
 
-    document.getElementById('emailDisplayVE').innerText = email;
+    document.getElementById('emailDisplayVE').textContent = email;
 
     document.getElementById('codeInputVerify').value = verifyCode;
 
@@ -1016,8 +1004,8 @@ function toggleVerify(email, verifyCode) {
     // hide Signin
     document.getElementById('signinForm').classList.add('d-none');
     
-    document.getElementById('successLoginPopup').innerText = '';
-    document.getElementById('errorLoginPopup').innerText = '';
+    document.getElementById('successLoginPopup').textContent = '';
+    document.getElementById('errorLoginPopup').textContent = '';
 
     document.getElementById('forgotPassLogin').classList.add('d-none');
 

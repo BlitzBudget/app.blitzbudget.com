@@ -33,7 +33,7 @@ function replaceText(translation) {
 		let keys = el.dataset.i18n.split(".");
 		let text = keys.reduce((obj, i) => obj[i], translation);
 		if (isNotEmpty(text)) {
-		  el.innerHTML = text;
+		  el.textContent = text;
 		}
 	}
 }

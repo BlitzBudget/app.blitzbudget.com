@@ -28,7 +28,7 @@
 	            // Translate current Page
 				translatePage(getLanguage());
 	            // Set Current Page
-		        document.getElementById('currentPage').innerText = 'Budget';
+		        document.getElementById('currentPage').textContent = 'Budget';
 			});
 	 	}
 	}
@@ -46,7 +46,7 @@
 	            // Translate current Page
 				translatePage(getLanguage());
 	            // Set Current Page
-		        document.getElementById('currentPage').innerText = 'Budget';
+		        document.getElementById('currentPage').textContent = 'Budget';
 			});
 		});
 	}
@@ -74,7 +74,7 @@
 
 	    // Generic Add Functionality
 	    let genericAddFnc = document.getElementById('genericAddFnc');
-	    document.getElementById('addFncTT').innerText = 'add';
+	    document.getElementById('addFncTT').textContent = 'add';
 	    genericAddFnc.classList = 'btn btn-round btn-rose btn-just-icon bottomFixed float-right addNewBudget';
 	    $(genericAddFnc).unbind('click').click(function () {
 	    	if(!this.classList.contains('addNewBudget')) {
@@ -218,7 +218,7 @@
 		let cardTitle = document.createElement('div');
 		cardTitle.id = 'categoryName-' + userBudget.budgetId;
 		cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
-		cardTitle.innerText = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
+		cardTitle.textContent = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
 		cardRowRemaining.appendChild(cardTitle);
 		
 		
@@ -226,7 +226,7 @@
 		let cardRemainingText = document.createElement('div');
 		cardRemainingText.classList = 'col-lg-6 text-right headingDiv justify-content-center align-self-center mild-text';
 		cardRemainingText.id = 'budgetInfoLabelInModal-' + userBudget.budgetId;
-		cardRemainingText.innerText = 'Remaining (%)';
+		cardRemainingText.textContent = 'Remaining (%)';
 		cardRowRemaining.appendChild(cardRemainingText);
 		cardBody.appendChild(cardRowRemaining);
 		
@@ -244,7 +244,7 @@
 		cardBudgetAmountDiv.classList = 'text-left budgetAmountEntered font-weight-bold form-control';
 		cardBudgetAmountDiv.setAttribute('contenteditable', true);
 		cardBudgetAmountDiv.setAttribute('data-target', userBudget.budgetId);
-		cardBudgetAmountDiv.innerText = formatToCurrency(userBudget.planned);
+		cardBudgetAmountDiv.textContent = formatToCurrency(userBudget.planned);
 		cardAmountWrapperDiv.appendChild(cardBudgetAmountDiv);
 		cardRowPercentage.appendChild(cardAmountWrapperDiv);
 		
@@ -252,7 +252,7 @@
 		let cardRemainingPercentage = document.createElement('div');
 		cardRemainingPercentage.classList = 'col-lg-9 text-right percentageAvailable';
 		cardRemainingPercentage.id = 'percentageAvailable-' + userBudget.budgetId;
-		cardRemainingPercentage.innerText = 'NA';
+		cardRemainingPercentage.textContent = 'NA';
 		cardRowPercentage.appendChild(cardRemainingPercentage);
 		cardBody.appendChild(cardRowPercentage);
 		
@@ -281,13 +281,13 @@
 		remainingAmountDiv.classList = 'mild-text-budget';
 		
 		let currencyRemainingAmount = document.createElement('span');
-		currencyRemainingAmount.innerText = currentCurrencyPreference + '0.00';
+		currencyRemainingAmount.textContent = currentCurrencyPreference + '0.00';
 		remainingAmountDiv.appendChild(currencyRemainingAmount);
 		cardProgressAndRemainingAmount.appendChild(remainingAmountDiv);
 		
 		let currencyRemainingText = document.createElement('span');
 		currencyRemainingText.classList = 'mild-text'
-		currencyRemainingText.innerText = ' Remaining';
+		currencyRemainingText.textContent = ' Remaining';
 		cardProgressAndRemainingAmount.appendChild(currencyRemainingText);
 		cardBody.appendChild(cardProgressAndRemainingAmount);
 
@@ -352,7 +352,7 @@
 		if(isNotEmpty(userBudgetCacheKeys)) {
 			animateValue(totalBudgetedCategoriesDiv, 0, userBudgetCacheKeys.length, '' ,1000);
 			// If empty then update the chart with the 0
-			toBeBudgetedDiv.innerText = 0;
+			toBeBudgetedDiv.textContent = 0;
 			
 			let totalCategoriesAvailable = categoryKeys.length;
 			let toBeBudgetedAvailable = totalCategoriesAvailable - userBudgetCacheKeys.length;
@@ -369,12 +369,12 @@
             };
 		} else {
 			// If empty then update the chart with the 0
-			toBeBudgetedDiv.innerText = 0;
-			totalBudgetedCategoriesDiv.innerText = 0;
+			toBeBudgetedDiv.textContent = 0;
+			totalBudgetedCategoriesDiv.textContent = 0;
 			detachChart = true;
 			
 			// assign the to be budgeted for budget visualization chart
-			toBeBudgetedDiv.innerText = categoryKeys.length;
+			toBeBudgetedDiv.textContent = categoryKeys.length;
 			
 			// Create a document fragment to append
 			let emptyBudgetDocumentFragment = document.createDocumentFragment();
@@ -456,7 +456,7 @@
 	
 	// Catch the amount when the user focuses on the budget
 	$( "body" ).on( "focusin", ".budgetAmountEntered" ,function() {
-		budgetAmountEditedPreviously = trimElement(this.innerText);
+		budgetAmountEditedPreviously = trimElement(this.textContent);
 	});
 	
 	// Catch the amount when the user focuses on the budget
@@ -479,7 +479,7 @@
 	// Post the newly entered budget amount and convert the auto generation to false
 	function postNewBudgetAmount(element) {
 		// If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-		let enteredText = er.convertToNumberFromCurrency(element.innerText, currentCurrencyPreference);
+		let enteredText = er.convertToNumberFromCurrency(element.textContent, currentCurrencyPreference);
 		let previousText = er.convertToNumberFromCurrency(budgetAmountEditedPreviously, currentCurrencyPreference);
 		
 		// Test if the entered value is valid
@@ -517,7 +517,7 @@
        		ajaxData.onSuccess = function registerSuccess(result){
        			  let userBudget = result['body-json'];
 	        	  // on success then replace the entered text 
-	        	  element.innerText = formatToCurrency(enteredText);
+	        	  element.textContent = formatToCurrency(enteredText);
 	        	  // Update the budget cache
 	        	  userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
 	        	  // Update the modal
@@ -528,7 +528,7 @@
             		
 	            // update the current element with the previous amount
 	            let formattedBudgetAmount = formatToCurrency(previousText);
-	            element.innerText = formattedBudgetAmount;
+	            element.textContent = formattedBudgetAmount;
 	        }
 			$.ajax({
 		          type: ajaxData.type,
@@ -542,7 +542,7 @@
 			});
 		} else {
 			// previous text and entered text is the same then simy replace the text
-			element.innerText = formatToCurrency(enteredText);
+			element.textContent = formatToCurrency(enteredText);
 		}
 	}
 	
@@ -566,26 +566,26 @@
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
 				if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-					budgetLabelDiv.innerText = 'Overspent (%)';
+					budgetLabelDiv.textContent = 'Overspent (%)';
 				} else if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-					budgetLabelDiv.innerText = 'To Be Budgeted (%)';
+					budgetLabelDiv.textContent = 'To Be Budgeted (%)';
 				}
 				
 			} else {
-				budgetLabelDiv.innerText = 'Remaining (%)';
+				budgetLabelDiv.textContent = 'Remaining (%)';
 			}
 			
 			// Change the remaining text appropriately
 			budgetAvailableToSpendOrSave = isNaN(budgetAvailableToSpendOrSave) ? 0 : budgetAvailableToSpendOrSave;
-			remainingAmountDiv.innerText = formatToCurrency(budgetAvailableToSpendOrSave);
+			remainingAmountDiv.textContent = formatToCurrency(budgetAvailableToSpendOrSave);
 			
 			// Calculate percentage available to spend or save
 			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue) * 100),0);
 			// If the user budget is 0 then the percentage calculation is not applicable
 			if(userBudgetValue == 0 || isNaN(remainingAmountPercentage)) {
-				remainingAmountPercentageDiv.innerText = 'NA';
+				remainingAmountPercentageDiv.textContent = 'NA';
 			} else {
-				remainingAmountPercentageDiv.innerText = remainingAmountPercentage + '%';
+				remainingAmountPercentageDiv.textContent = remainingAmountPercentage + '%';
 			}
 			
 			// Assign progress bar value. If the category amount is higher then the progress is 100%
@@ -594,14 +594,14 @@
 			progressBarCategoryModal.setAttribute('aria-valuenow', progressBarPercentage);
 			progressBarCategoryModal.style.width = progressBarPercentage + '%'; 
 		} else if(progressBarCategoryModal != null) {
-			remainingAmountPercentageDiv.innerText = 'NA';
+			remainingAmountPercentageDiv.textContent = 'NA';
 			// Set the value and percentage of the progress bar
 			progressBarCategoryModal.setAttribute('aria-valuenow', 0);
 			progressBarCategoryModal.style.width = 0 + '%';
 			// Set the amount remaining
-			remainingAmountDiv.innerText = formatToCurrency(0.00);
+			remainingAmountDiv.textContent = formatToCurrency(0.00);
 			// Set the budget remaining text
-			budgetLabelDiv.innerText = 'Remaining (%)';
+			budgetLabelDiv.textContent = 'Remaining (%)';
 		}
 	}
 	
@@ -692,7 +692,7 @@
 		
 		let monthSpanCurrent = document.createElement('span');
 		monthSpanCurrent.classList = 'currentMonth';
-		monthSpanCurrent.innerText = userChosenMonthName.slice(0,3);
+		monthSpanCurrent.textContent = userChosenMonthName.slice(0,3);
 		imgDiv.appendChild(monthSpanCurrent)
 		cardBody.appendChild(imgDiv);
 		
@@ -700,7 +700,7 @@
 		let cardRowHeading = document.createElement('div');
 		cardRowHeading.id = 'emptyBudgetHeading'
 		cardRowHeading.classList = 'row font-weight-bold justify-content-center';
-		cardRowHeading.innerHTML = 'Hey, Looks like you need a budget for ' + userChosenMonthName + '.';
+		cardRowHeading.textContent = 'Hey, Looks like you need a budget for ' + userChosenMonthName + '.';
 		cardBody.appendChild(cardRowHeading);
 		
 		// card description
@@ -713,7 +713,7 @@
 		let clonePreviousMonthButton = document.createElement('button');
 		clonePreviousMonthButton.id = 'copyPreviousMonthsBudget';
 		clonePreviousMonthButton.classList = 'btn btn-budget'
-		clonePreviousMonthButton.innerHTML = 'Start Planning For ' + userChosenMonthName;
+		clonePreviousMonthButton.textContent = 'Start Planning For ' + userChosenMonthName;
 		cardBody.appendChild(clonePreviousMonthButton);
 			
 		card.appendChild(cardBody);
@@ -724,7 +724,7 @@
 	// Clicking on copy budget
 	$('body').on('click', '#copyPreviousMonthsBudget' , function(e) {
 		this.setAttribute("disabled", "disabled");
-		this.innerHTML = 'Creating budgets..';
+		this.textContent = 'Creating budgets..';
 		let element = this;
 		let budgetAmount = document.getElementById('budgetAmount');
 		
@@ -800,7 +800,7 @@
 				let displayCategory = document.createElement('div');
 				displayCategory.classList = 'w-md-15 w-8 dd-display-wrapper';
 				displayCategory.disabled = true;
-				displayCategory.innerText = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
+				displayCategory.textContent = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
 				containerForSelect.appendChild(displayCategory);
 
 
@@ -812,7 +812,7 @@
 
 				let srOnly = document.createElement('span');
 				srOnly.classList = 'sr-only';
-				srOnly.innerText = 'Toggle Dropdown';
+				srOnly.textContent = 'Toggle Dropdown';
 				dropdownArrow.appendChild(srOnly);
 				containerForSelect.appendChild(dropdownArrow);
 
@@ -824,7 +824,7 @@
 
 				let incomeCategoriesHSix = document.createElement('h6');
 				incomeCategoriesHSix.classList = 'dropdown-header';
-				incomeCategoriesHSix.innerText = 'Income';
+				incomeCategoriesHSix.textContent = 'Income';
 				inputGroup.appendChild(incomeCategoriesHSix);
 
 				let incomeCategories = document.createElement('div');
@@ -840,7 +840,7 @@
 
 				let expenseCategoriesHSix = document.createElement('h6');
 				expenseCategoriesHSix.classList = 'dropdown-header';
-				expenseCategoriesHSix.innerText = 'Expense';
+				expenseCategoriesHSix.textContent = 'Expense';
 				inputGroup.appendChild(expenseCategoriesHSix);
 
 				let expenseCategories = document.createElement('div');
@@ -954,13 +954,13 @@
 		values['dateMeantFor'] = window.currentDateAsID;
 		values['category'] = categoryId;
 		let categoryItem = window.categoryMap[categoryId];
-		let oldCategoryName = document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText;
+		let oldCategoryName = document.getElementById('selectCategoryRow-' + budgetId).firstChild.textContent;
 		if(isEmpty(categoryItem.id)) {
 			values['categoryType'] = categoryItem.type;
 			values['dateMeantFor'] = window.currentDateAsID;
-			document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = categoryId;
+			document.getElementById('selectCategoryRow-' + budgetId).firstChild.textContent = categoryId;
 		} else {
-			document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = window.categoryMap[categoryId].name;
+			document.getElementById('selectCategoryRow-' + budgetId).firstChild.textContent = window.categoryMap[categoryId].name;
 		}
 
 		// Ajax Requests on Error
@@ -991,7 +991,7 @@
         ajaxData.onFailure = function (thrownError) {
         		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!',ajaxData);
         		// Chacnge the button text to the old one if fails. 
-        		document.getElementById('selectCategoryRow-' + budgetId).firstChild.innerText = oldCategoryName;
+        		document.getElementById('selectCategoryRow-' + budgetId).firstChild.textContent = oldCategoryName;
         }
 
 		$.ajax({
@@ -1137,7 +1137,7 @@
 		
 		let remainingTextDiv = document.createElement('div');
 		remainingTextDiv.classList = 'col-lg-9 text-right headingDiv justify-content-center align-self-center mild-text';
-		remainingTextDiv.innerText = 'Remaining (%)';
+		remainingTextDiv.textContent = 'Remaining (%)';
 		animationBudgetRowDiv.appendChild(remainingTextDiv);
 		cardBody.appendChild(animationBudgetRowDiv);
 		
@@ -1223,7 +1223,13 @@
 		
 		// Budget Visualization
 		let chartVisualization = document.getElementById('chartBudgetVisualization');
-		chartVisualization.innerHTML = '<div class="material-spinner"></div>';
+		// Replace HTML with Empty
+		while (chartVisualization.firstChild) {
+			chartVisualization.removeChild(chartVisualization.firstChild);
+		}
+		let materialSpinnerElement = document.createElement('div');
+    	materialSpinnerElement.classList = 'material-spinner';
+    	chartVisualization.appendChild(materialSpinnerElement);
 	}
 
 }(jQuery));	

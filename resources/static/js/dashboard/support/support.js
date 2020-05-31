@@ -150,7 +150,7 @@
               if(isNotEmpty(a) && isEmpty(a.firstChild)) {
                 b = document.createElement("span");
                 b.classList.add("tripleNineColor");
-                b.innerText = 'No Results';
+                b.textContent = 'No Results';
                 a.appendChild(b);
               }
           }
@@ -311,8 +311,8 @@
             let category = categoryInfo[i];
             if(isEqual(category.categoryName, title)) {
                 // Update body
-                document.getElementById('article-title').innerText = category.categoryName;
-                document.getElementById('article-description').innerText = category.description;
+                document.getElementById('article-title').textContent = category.categoryName;
+                document.getElementById('article-description').textContent = category.description;
                 let bcEl = document.getElementById('breadcrumb');
                 while(bcEl.firstChild) {
                     bcEl.removeChild(bcEl.firstChild);
@@ -350,14 +350,14 @@
 
             let articleIcon = document.createElement('i');
             articleIcon.classList = 'material-icons align-middle';
-            articleIcon.innerText = 'assignment';
+            articleIcon.textContent = 'assignment';
             li.appendChild(articleIcon);
     
             let anchorArticle = document.createElement('a');
             anchorArticle.classList.add('sub-category-link');
             anchorArticle.classList.add('help-center-result');
             anchorArticle.href = window._config.help.invokeUrl + category.dataUrl + subCategoryNavItem.url.slice(1);
-            anchorArticle.innerText = subCategoryNavItem.title;
+            anchorArticle.textContent = subCategoryNavItem.title;
             li.appendChild(anchorArticle);
             ul.appendChild(li);
         }
@@ -374,8 +374,8 @@
             document.getElementsByClassName('article-ratings')[0].classList.remove('d-none');
         }
         // Update body
-        document.getElementById('article-title').innerText = result.title;
-        document.getElementById('article-description').innerText = '';
+        document.getElementById('article-title').textContent = result.title;
+        document.getElementById('article-description').textContent = '';
         let bcEl = document.getElementById('breadcrumb');
         while(bcEl.firstChild) {
             bcEl.removeChild(bcEl.firstChild);
@@ -437,34 +437,34 @@
         let anchorZero = document.createElement('a');
         anchorZero.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
         anchorZero.classList.add('crumbAnchor');
-        anchorZero.innerText = breadcrumbAnchor.crumbTitle;
+        anchorZero.textContent = breadcrumbAnchor.crumbTitle;
         breadcrumbDiv.appendChild(anchorZero);  
 
         for(let i=1, len = breadcrumbSC.length; i < len; i++) {
             let span = document.createElement('span');
             span.classList.add('nextCrumb');
-            span.innerText = '>';
+            span.textContent = '>';
             breadcrumbDiv.appendChild(span);
 
             let breadcrumbAnchor = breadcrumbSC[i];
             let anchorOther = document.createElement('a');
             anchorOther.classList.add('crumbAnchor');
             anchorOther.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
-            anchorOther.innerText = breadcrumbAnchor.crumbTitle;
+            anchorOther.textContent = breadcrumbAnchor.crumbTitle;
             breadcrumbDiv.appendChild(anchorOther);
         }
 
         // Upload the category
         let span = document.createElement('span');
         span.classList.add('nextCrumb');
-        span.innerText = '>';
+        span.textContent = '>';
         breadcrumbDiv.appendChild(span);
 
         // Bread crumb last
         let anchorLast = document.createElement('a');
         anchorLast.href = window._config.help.invokeUrl + result.url;
         anchorLast.classList.add('crumbAnchor');
-        anchorLast.innerText = result.title;
+        anchorLast.textContent = result.title;
         breadcrumbDiv.appendChild(anchorLast);
 
         return breadcrumbDiv;

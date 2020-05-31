@@ -57,7 +57,7 @@
 			fetchOverview(OVERVIEW_CONSTANTS.incomeTotalParam);
 			populateOverviewPage();
             // Set Current Page
-	        document.getElementById('currentPage').innerText = 'Overview';
+	        document.getElementById('currentPage').textContent = 'Overview';
 		});
 	}
 
@@ -427,13 +427,13 @@
 		
 		let iconChart = document.createElement('i');
 		iconChart.classList = 'material-icons noDataChartIcon';
-		iconChart.innerText = 'multiline_chart';
+		iconChart.textContent = 'multiline_chart';
 		divIconWrapper.appendChild(iconChart);
 		emptyChartMessage.appendChild(divIconWrapper);
 		
 		let emptyMessage = document.createElement('div');
 		emptyMessage.classList = 'font-weight-bold tripleNineColor';
-		emptyMessage.innerText = "There's not enough data! Start adding transactions..";
+		emptyMessage.textContent = "There's not enough data! Start adding transactions..";
 		emptyChartMessage.appendChild(emptyMessage);
 		
 		return emptyChartMessage;
@@ -450,13 +450,13 @@
 		
 		let iconChart = document.createElement('i');
 		iconChart.classList = 'material-icons noDataChartIcon';
-		iconChart.innerText = 'bubble_chart';
+		iconChart.textContent = 'bubble_chart';
 		divIconWrapper.appendChild(iconChart);
 		emptyChartMessage.appendChild(divIconWrapper);
 		
 		let emptyMessage = document.createElement('div');
 		emptyMessage.classList = 'font-weight-bold tripleNineColor';
-		emptyMessage.innerText = "There's not enough data! We need transactions in atleast 2 categories..";
+		emptyMessage.textContent = "There's not enough data! We need transactions in atleast 2 categories..";
 		emptyChartMessage.appendChild(emptyMessage);
 		
 		return emptyChartMessage;
@@ -474,7 +474,7 @@
 		
 		let categoryLabelDiv = document.createElement('div');
 		categoryLabelDiv.classList = 'font-weight-bold';
-		categoryLabelDiv.innerText = OVERVIEW_CONSTANTS.yearlyOverview;
+		categoryLabelDiv.textContent = OVERVIEW_CONSTANTS.yearlyOverview;
 		anchorDropdownItem.appendChild(categoryLabelDiv);
 		anchorFragment.appendChild(anchorDropdownItem);
 		
@@ -483,7 +483,7 @@
 		
 		let categoryLabelDiv1 = document.createElement('div');
 		categoryLabelDiv1.classList = 'font-weight-bold';
-		categoryLabelDiv1.innerText = incomeOrExpenseParam + ' Breakdown';
+		categoryLabelDiv1.textContent = incomeOrExpenseParam + ' Breakdown';
 		anchorDropdownItem1.appendChild(categoryLabelDiv1);
 		anchorFragment.appendChild(anchorDropdownItem1);
 		
@@ -547,7 +547,16 @@
 		
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
+		// Replace HTML with Empty
+		while (colouredRoundedLineChart.firstChild) {
+			colouredRoundedLineChart.removeChild(colouredRoundedLineChart.firstChild);
+		}
+		let h20 = document.createElement('div');
+		h20.classList = 'h-20';
+		let materialSpinnerElement = document.createElement('div');
+    	materialSpinnerElement.classList = 'material-spinner rtSpinner';
+    	h20.appendChild(materialSpinnerElement);
+    	colouredRoundedLineChart.appendChild(h20);
 		
 		
 		// Build the Absolute total 
@@ -679,7 +688,16 @@
 	function populateLineChart(dateAndTimeAsList, incomeChart) {
 		// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
+		// Replace HTML with Empty
+		while (colouredRoundedLineChart.firstChild) {
+			colouredRoundedLineChart.removeChild(colouredRoundedLineChart.firstChild);
+		}
+		let h20 = document.createElement('div');
+		h20.classList = 'h-20';
+		let materialSpinnerElement = document.createElement('div');
+    	materialSpinnerElement.classList = 'material-spinner rtSpinner';
+    	h20.appendChild(materialSpinnerElement);
+    	colouredRoundedLineChart.appendChild(h20);
 		
 		if(incomeChart) {
 			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, dateAndTimeAsList);
@@ -692,7 +710,7 @@
 	// Replaces the text of the chart chosen
 	function replaceChartChosenLabel(chosenChartText) {
 		let chosenChartLabel = document.getElementsByClassName('chosenChart');
-		chosenChartLabel[0].innerText = chosenChartText;
+		chosenChartLabel[0].textContent = chosenChartText;
 	}
 	
     /**
@@ -704,7 +722,16 @@
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
+		// Replace HTML with Empty
+		while (colouredRoundedLineChart.firstChild) {
+			colouredRoundedLineChart.removeChild(colouredRoundedLineChart.firstChild);
+		}
+		let h20 = document.createElement('div');
+		h20.classList = 'h-20';
+		let materialSpinnerElement = document.createElement('div');
+    	materialSpinnerElement.classList = 'material-spinner rtSpinner';
+    	h20.appendChild(materialSpinnerElement);
+    	colouredRoundedLineChart.appendChild(h20);
 
 		buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, accType);
     }
@@ -835,7 +862,16 @@
 
     	// Reset the line chart with spinner
 		let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-		colouredRoundedLineChart.innerHTML = '<div class="h-20"><div class="material-spinner rtSpinner"></div></div>';
+		// Replace HTML with Empty
+		while (colouredRoundedLineChart.firstChild) {
+			colouredRoundedLineChart.removeChild(colouredRoundedLineChart.firstChild);
+		}
+		let h20 = document.createElement('div');
+		h20.classList = 'h-20';
+		let materialSpinnerElement = document.createElement('div');
+    	materialSpinnerElement.classList = 'material-spinner rtSpinner';
+    	h20.appendChild(materialSpinnerElement);
+    	colouredRoundedLineChart.appendChild(h20);
 
 		buildchartForNetworth(window.allBankAccountInfoCache);
     }

@@ -58,7 +58,7 @@ let tickIconSVG = tickIcon();
 	
 	// Click any drop down menu
 	$(document).on('click', ".accountType", function() {
-		let selectedAT = this.innerText;
+		let selectedAT = this.textContent;
 		let accountTypeECL = document.getElementById('accountTypeErr').classList;
 		let changeClrBtn = document.getElementsByClassName('changeBtnClr')[0].classList;
 		let accCfrmBtn = document.getElementsByClassName('swal2-confirm')[0];
@@ -66,7 +66,7 @@ let tickIconSVG = tickIcon();
 		let accBalance = document.getElementById('accountBal').value;
 		
 		// Set Text
-		document.getElementsByClassName('accountChosen')[0].innerText = selectedAT;
+		document.getElementsByClassName('accountChosen')[0].textContent = selectedAT;
 		
 		// If the account Type is not in the selected
 		if(!includesStr(accountTypeConst,selectedAT)) {
@@ -157,7 +157,7 @@ let tickIconSVG = tickIcon();
 	    }).then(function(result) {
 	    	// If confirm button is clicked
 	    	if (result.value) {
-	    		let accountSubType = document.getElementsByClassName('accountChosen')[0].innerText;
+	    		let accountSubType = document.getElementsByClassName('accountChosen')[0].textContent;
 	    		// Populate the JSON form data
 		    	var values = {};
 				values['linked'] = false;
@@ -200,14 +200,14 @@ let tickIconSVG = tickIcon();
 
 		        	// A new header for the rest
 					let accountHeaderNew = buildAccountHeader(result.accountId);
-					accountHeaderNew.getElementById('accountTitle-' + result.accountId).innerText = result['bank_account_name'];
+					accountHeaderNew.getElementById('accountTitle-' + result.accountId).textContent = result['bank_account_name'];
 					let accBal = accountHeaderNew.getElementById('accountBalance-' + result.accountId);
 					if(result['account_balance'] < 0) { 
 						accBal.classList.add('expenseCategory');
 					} else { 
 						accBal.classList.add('incomeCategory');
 					}
-					accBal.innerText = formatToCurrency(Math.abs(result['account_balance']));
+					accBal.textContent = formatToCurrency(Math.abs(result['account_balance']));
 					// Append Empty Table to child
 					accountHeaderNew.getElementById('accountSB-' + result.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + result.accountId));
 					// Append to the transaction view
@@ -327,7 +327,7 @@ let tickIconSVG = tickIcon();
 		
 		let arrowIcon = document.createElement('i');
 		arrowIcon.classList = 'material-icons';
-		arrowIcon.innerText = 'keyboard_arrow_left';
+		arrowIcon.textContent = 'keyboard_arrow_left';
 		arrowWrapper.appendChild(arrowIcon);
 		arrowFrag.appendChild(arrowWrapper);
 		
@@ -373,14 +373,14 @@ let tickIconSVG = tickIcon();
 		
 		let headingElem = document.createElement('h4');
 		headingElem.classList = 'col-lg-10 accOptions text-left pb-2 mb-0';
-		headingElem.innerText = 'Account Types';
+		headingElem.textContent = 'Account Types';
 		headingWrap.appendChild(headingElem);
 		knowMoreFrag.appendChild(headingWrap);
 		
 		// Account Info Description
 		let accountInfoDesc = document.createElement('div');
 		accountInfoDesc.classList = 'accInfoDesc text-left small mt-3 noselect';
-		accountInfoDesc.innerText = 'You will always have the option to unsync or sync the accounts at any time.';
+		accountInfoDesc.textContent = 'You will always have the option to unsync or sync the accounts at any time.';
 		knowMoreFrag.appendChild(accountInfoDesc);
 		
 		// Table Responsive
@@ -423,12 +423,12 @@ let tickIconSVG = tickIcon();
 		
 		let titleSC1 = document.createElement('div');
 		titleSC1.classList = 'd-table-cell';
-		titleSC1.innerText = 'Sync';
+		titleSC1.textContent = 'Sync';
 		firstTableRow.appendChild(titleSC1);
 		
 		let titlsTC1 = document.createElement('div');
 		titlsTC1.classList = 'd-table-cell';
-		titlsTC1.innerText = 'Unsync';
+		titlsTC1.textContent = 'Unsync';
 		firstTableRow.appendChild(titlsTC1);
 		tableInfo.appendChild(firstTableRow);
 		
@@ -437,7 +437,7 @@ let tickIconSVG = tickIcon();
 		SixthTableRow.classList = 'd-table-row';
 		
 		let emptyFC6 = document.createElement('div');
-		emptyFC6.innerText = 'Connect to your Financial Institution';
+		emptyFC6.textContent = 'Connect to your Financial Institution';
 		emptyFC6.classList = 'd-table-cell pt-2 text-left align-middle';
 		SixthTableRow.appendChild(emptyFC6);
 		
@@ -457,7 +457,7 @@ let tickIconSVG = tickIcon();
 		secondTableRow.classList = 'd-table-row';
 		
 		let emptyFC2 = document.createElement('div');
-		emptyFC2.innerText = 'Import from a file *';
+		emptyFC2.textContent = 'Import from a file *';
 		emptyFC2.classList = 'd-table-cell pt-2 text-left align-middle';
 		secondTableRow.appendChild(emptyFC2);
 		
@@ -477,7 +477,7 @@ let tickIconSVG = tickIcon();
 		ThirdTableRow.classList = 'd-table-row';
 		
 		let emptyFC3 = document.createElement('div');
-		emptyFC3.innerText = 'Manually Enter Transactions';
+		emptyFC3.textContent = 'Manually Enter Transactions';
 		emptyFC3.classList = 'd-table-cell pt-2 text-left align-middle';
 		ThirdTableRow.appendChild(emptyFC3);
 		
@@ -497,7 +497,7 @@ let tickIconSVG = tickIcon();
 		FourthTableRow.classList = 'd-table-row';
 		
 		let emptyFC4 = document.createElement('div');
-		emptyFC4.innerText = 'International Availability *';
+		emptyFC4.textContent = 'International Availability *';
 		emptyFC4.classList = 'd-table-cell pt-2 text-left align-middle';
 		FourthTableRow.appendChild(emptyFC4);
 		
@@ -517,7 +517,7 @@ let tickIconSVG = tickIcon();
 		FifthTableRow.classList = 'd-table-row';
 		
 		let emptyFC5 = document.createElement('div');
-		emptyFC5.innerText = 'Mobile Apps Availability';
+		emptyFC5.textContent = 'Mobile Apps Availability';
 		emptyFC5.classList = 'd-table-cell pt-2 text-left align-middle';
 		FifthTableRow.appendChild(emptyFC5);
 		
@@ -537,7 +537,7 @@ let tickIconSVG = tickIcon();
 		// Append Back Arrow
 		let arrowWrapper = document.createElement('div');
 		arrowWrapper.classList = 'arrowWrapKM btn-round btn-sm btn btn-dynamic-color';
-		arrowWrapper.innerText = 'Back';
+		arrowWrapper.textContent = 'Back';
 		knowMoreFrag.appendChild(arrowWrapper);
 		
 		// Replace the HTML to empty and then append child
@@ -572,7 +572,7 @@ let tickIconSVG = tickIcon();
 			
 			let arrowIcon = document.createElement('i');
 			arrowIcon.classList = 'material-icons';
-			arrowIcon.innerText = 'keyboard_arrow_left';
+			arrowIcon.textContent = 'keyboard_arrow_left';
 			arrowWrapper.appendChild(arrowIcon);
 			arrowFrag.appendChild(arrowWrapper);
 			
@@ -655,7 +655,7 @@ function buildEmptyTableEntry(accId) {
 
 	let emptyMessageRow = document.createElement('div');
 	emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-	emptyMessageRow.innerText = "Oh! Snap! You don't have any transactions yet.";
+	emptyMessageRow.textContent = "Oh! Snap! You don't have any transactions yet.";
 	cell2.appendChild(emptyMessageRow);
 	rowEmpty.appendChild(cell2);
 
@@ -741,7 +741,7 @@ function buildAccountHeader(accountId) {
 	// Right Arrow
 	let rightArrow = document.createElement('div');
 	rightArrow.classList = 'material-icons rotateNinty';
-	rightArrow.innerText = 'keyboard_arrow_right';
+	rightArrow.textContent = 'keyboard_arrow_right';
 	titleWrapper.appendChild(rightArrow);
 
 	// Title
@@ -811,12 +811,12 @@ function populateAccountInfo(bankAccountsInfo) {
 	
 	let bAHeading = document.createElement('h4');
 	bAHeading.classList = 'bAHeading text-left pl-3 pr-0 col-lg-7 font-weight-bold';
-	bAHeading.innerText = 'Accounts';
+	bAHeading.textContent = 'Accounts';
 	bAHRow.appendChild(bAHeading);
 	
 	let bAManage = document.createElement('a');
 	bAManage.classList = 'text-right col-lg-5 pr-3 manageBA text-dynamic-color';
-	bAManage.innerText = 'view all';
+	bAManage.textContent = 'view all';
 	bAHRow.appendChild(bAManage);
 	bAFragment.appendChild(bAHRow);
 
@@ -869,13 +869,13 @@ function populateBankAccountInfo(bankAccount, count) {
 	// Bank Account Name
 	let bAName = document.createElement('div');
 	bAName.classList = 'col-lg-5 text-left bAName py-2';
-	bAName.innerText = bankAccount['bank_account_name'];
+	bAName.textContent = bankAccount['bank_account_name'];
 	wrapperRow.appendChild(bAName);
 	
 	// Bank Account Balance
 	let bABalance = document.createElement('div');
 	bABalance.classList = 'col-lg-5 text-right font-weight-bold py-2 bAAmount';
-	bABalance.innerText = formatToCurrency(bankAccount['account_balance']);
+	bABalance.textContent = formatToCurrency(bankAccount['account_balance']);
 	wrapperRow.appendChild(bABalance);
 	
 	return wrapperRow;
@@ -908,7 +908,7 @@ function populateEmptyAccountInfo() {
 	syncInfo.classList = 'font-weight-bold';
 	
 	let syncTitle = document.createElement('div');
-	syncTitle.innerText = 'Automatically Sync Accounts';
+	syncTitle.textContent = 'Automatically Sync Accounts';
 	syncTitle.classList = 'noselect';
 	syncInfo.appendChild(syncTitle);
 	
@@ -919,7 +919,7 @@ function populateEmptyAccountInfo() {
 	separatorRow.classList="separator-text"
 		
 	let separatorSpan = document.createElement('span');
-	separatorSpan.innerText = 'or';
+	separatorSpan.textContent = 'or';
 	separatorRow.appendChild(separatorSpan);
 	emptyAccountFragment.appendChild(separatorRow);
 	
@@ -949,7 +949,7 @@ function populateEmptyAccountInfo() {
 	tenColTwo.classList = 'font-weight-bold';
 	
 	let unsyncTitle = document.createElement('div');
-	unsyncTitle.innerText = 'Unsynced Accounts';
+	unsyncTitle.textContent = 'Unsynced Accounts';
 	unsyncTitle.classList = 'noselect';
 	tenColTwo.appendChild(unsyncTitle);
 	
@@ -977,7 +977,7 @@ function populateEmptyAccountInfo() {
 	colTenThree.classList = 'pl-0 col-lg-10 small';
 	
 	let infoTitle = document.createElement('div');
-	infoTitle.innerText = 'Synced or Unsynced?';
+	infoTitle.textContent = 'Synced or Unsynced?';
 	infoTitle.classList = 'text-left account-footer-title';
 	colTenThree.appendChild(infoTitle);
 	
@@ -987,11 +987,11 @@ function populateEmptyAccountInfo() {
 	let knowMore = document.createElement('a');
 	knowMore.href="#";
 	knowMore.classList = 'knowMoreAccount account-info-color';
-	knowMore.innerText = 'Know more'
+	knowMore.textContent = 'Know more'
 	infoDescription.appendChild(knowMore);
 	
 	let restOfTheText = document.createElement('span');
-	restOfTheText.innerText = ' to help you decide';
+	restOfTheText.textContent = ' to help you decide';
 	infoDescription.appendChild(restOfTheText);
 	
 	colTenThree.appendChild(infoDescription);
@@ -1017,7 +1017,7 @@ function unSyncedAccount() {
 	// Description
 	let description = document.createElement('div');
 	description.classList = 'descriptionAccount';
-	description.innerText = "Let's get your account started! you can always sync it later on.";
+	description.textContent = "Let's get your account started! you can always sync it later on.";
 	unsyncFormWrapper.appendChild(description);
 	unsyncedDocumentFragment.appendChild(unsyncFormWrapper);
 	
@@ -1026,7 +1026,7 @@ function unSyncedAccount() {
 	chooseTypeWrapper.classList = "chooseTypeWrapper text-left";
 	
 	let chooseTypeLabel = document.createElement('label');
-	chooseTypeLabel.innerText = 'What is the type of your account?';
+	chooseTypeLabel.textContent = 'What is the type of your account?';
 	chooseTypeWrapper.appendChild(chooseTypeLabel);
 	
 	
@@ -1036,7 +1036,7 @@ function unSyncedAccount() {
 	let displaySelected = document.createElement('button');
 	displaySelected.classList = 'btn btn-secondary w-85 accountChosen';
 	displaySelected.setAttribute('disabled', 'disabled');
-	displaySelected.innerText = 'Cash';
+	displaySelected.textContent = 'Cash';
 	dropdownGroup.appendChild(displaySelected);
 	
 	let dropdownTrigger = document.createElement('button');
@@ -1047,7 +1047,7 @@ function unSyncedAccount() {
 	
 	let toggleSpan = document.createElement('span');
 	toggleSpan.classList = 'sr-only';
-	toggleSpan.innerText = 'Toggle Dropdown';
+	toggleSpan.textContent = 'Toggle Dropdown';
 	dropdownTrigger.appendChild(toggleSpan);
 	dropdownGroup.appendChild(dropdownTrigger);
 	
@@ -1059,49 +1059,49 @@ function unSyncedAccount() {
 	
 	// Drop Down Menu
 	let budgetHeading = document.createElement('label');
-	budgetHeading.innerText = 'Saving';
+	budgetHeading.textContent = 'Saving';
 	dropdownContentWrap.appendChild(budgetHeading);
 	
 	// Savings
 	let savingsAnchor = document.createElement('a');
 	savingsAnchor.classList = 'accountType d-block px-3 py-1 small';
-	savingsAnchor.innerText = 'Savings Account';
+	savingsAnchor.textContent = 'Savings Account';
 	dropdownContentWrap.appendChild(savingsAnchor);
 	
 	// Current
 	let currentAnchor = document.createElement('a');
 	currentAnchor.classList = 'accountType d-block px-3 py-1 small';
-	currentAnchor.innerText = 'Current Account';
+	currentAnchor.textContent = 'Current Account';
 	dropdownContentWrap.appendChild(currentAnchor);
 	
 	// Cash
 	let cashAnchor = document.createElement('a');
 	cashAnchor.classList = 'accountType d-block px-3 py-1 small';
-	cashAnchor.innerText = 'Cash';
+	cashAnchor.textContent = 'Cash';
 	dropdownContentWrap.appendChild(cashAnchor);
 	
 	// Assets
 	let assetsAnchor = document.createElement('a');
 	assetsAnchor.classList = 'accountType d-block px-3 py-1 small';
-	assetsAnchor.innerText = 'Assets';
+	assetsAnchor.textContent = 'Assets';
 	dropdownContentWrap.appendChild(assetsAnchor);
 	
 	// Drop Down Menu 2
 	let debtHeading = document.createElement('label');
-	debtHeading.innerText = 'Borrowing';
+	debtHeading.textContent = 'Borrowing';
 	debtHeading.classList = 'mt-2';
 	dropdownContentWrap.appendChild(debtHeading);
 	
 	// Credit card
 	let creditCardAnchor = document.createElement('a');
 	creditCardAnchor.classList = 'accountType d-block px-3 py-1 small';
-	creditCardAnchor.innerText = 'Credit Card';
+	creditCardAnchor.textContent = 'Credit Card';
 	dropdownContentWrap.appendChild(creditCardAnchor);
 	
 	// Liability
 	let liabilityAnchor = document.createElement('a');
 	liabilityAnchor.classList = 'accountType d-block px-3 py-1 small';
-	liabilityAnchor.innerText = 'Liability';
+	liabilityAnchor.textContent = 'Liability';
 	dropdownContentWrap.appendChild(liabilityAnchor);
 	dropdownMenu.appendChild(dropdownContentWrap);
 	dropdownGroup.appendChild(dropdownMenu);
@@ -1112,7 +1112,7 @@ function unSyncedAccount() {
 	let accountTypeError = document.createElement('div');
 	accountTypeError.id = 'accountTypeErr';
 	accountTypeError.classList = 'd-none text-danger text-left small mb-2 noselect';
-	accountTypeError.innerText = 'Account type is not valid';
+	accountTypeError.textContent = 'Account type is not valid';
 	unsyncedDocumentFragment.appendChild(accountTypeError);
 	
 	// Name Of account
@@ -1121,7 +1121,7 @@ function unSyncedAccount() {
 	accountNameWrapper.classList = 'accountNameWrapper text-left';
 	
 	let accountNameLabel = document.createElement('label');
-	accountNameLabel.innerText = 'Give it a name';
+	accountNameLabel.textContent = 'Give it a name';
 	accountNameWrapper.appendChild(accountNameLabel);
 	
 	let accountNameInput = document.createElement('input');
@@ -1139,7 +1139,7 @@ function unSyncedAccount() {
 	
 	
 	let accountBalLabel = document.createElement('label');
-	accountBalLabel.innerText = 'What is your account balance?';
+	accountBalLabel.textContent = 'What is your account balance?';
 	accountBalWrapper.appendChild(accountBalLabel);
 	
 	let accountBalInput = document.createElement('input');
@@ -1155,7 +1155,7 @@ function unSyncedAccount() {
 	let accountBalErr = document.createElement('div');
 	accountBalErr.id = 'accountBalErr';
 	accountBalErr.classList = 'd-none text-danger text-left small mb-2 noselect';
-	accountBalErr.innerText = 'Account balance can contain only numbers and dot.';
+	accountBalErr.textContent = 'Account balance can contain only numbers and dot.';
 	unsyncedDocumentFragment.appendChild(accountBalErr);
 	
     return unsyncedDocumentFragment;

@@ -38,7 +38,8 @@
 			"profile": "perfil"
 		},
 		"account": "Cuenta",
-		"support": "Soporte"
+		"support": "Soporte",
+		"page": "Tablero de Control"
 	},
 	"sidebar": {
 		"overview": "Resumen",
@@ -48,5 +49,92 @@
 	},
 	"home": {
 		"title": "Inicio del Tablero de Control | BlitzBudget"
+	},
+	"settings": {
+		"page": {
+			"general": "General",
+			"notifications": "Notificaciones",
+			"devices": "Dispositivos",
+			"region": {
+				"title": "Preferencias regionales",
+				"subtitle": "Seleccione el idioma, la moneda y el país que prefiera para el formato regional apropiado"
+			},
+			"country": {
+				"title": "País",
+				"subtitle": "Elija su país para el formato de moneda regional apropiado.",
+				"withWallet": "Países con cartera",
+				"withoutWallet": "Países sin cartera"
+			},
+			"currency": {
+				"title": "Moneda",
+				"subtitle": "La moneda de preferencia para esta cartera. Sus transacciones y resúmenes estarán en esta moneda.",
+				"withWallet": "Monedas con cartera",
+		
+				"withoutWallet": "Monedas sin cartera"
+			},
+			"language": {
+				"title": "Lenguaje",
+				"subtitle": "Estamos trabajando para proporcionar más que el inglés (EE.UU.) como su opción de idioma"
+			},
+			"export": {
+				"title": "Exportación",
+				"subtitle": "Seleccione su formato de archivo preferido para la exportación de datos.",
+				"file": {
+					"title": "Formato de archivo",
+					"subtitle": "Actualmente soportamos Excel, Google Docs y valores separados por comas (CSV)."
+				}
+			}	
+		}
+	},
+	"transactions": {
+		"page": {
+			"table": {
+				"title": "Transacciones",
+				"sortby": {
+					"category": "Categoría",
+					"title": " Ordenar por",
+					"account": "Cuenta",
+					"creationdate": "Fecha de creación"
+				}
+			},
+			"chart": {
+				"title": "Posición financiera",
+				"income": "Ingreso total",
+				"spent": "Total gastado",
+				"available": "Total disponible"
+			},
+			"account": {
+				"remaining": "Remanente (%)",
+				"remainingtext": "Remanente",
+				"transaction": "Transacciones"
+			}
+		},
+		"modal": {
+			"title": "Elija su preferencia",
+			"connect": {
+				"title" : "Conecta con tu banco",
+				"description": "Conecte su cuenta bancaria para importar las transacciones del mes en curso."
+			},
+			"sync": {
+				"title": "Sincronización automática de cuentas bancarias",
+				"description": "Se sincroniza automáticamente con la cuenta bancaria para obtener transacciones cada principio de mes."
+			},
+			"import": {
+				"title": "Importación de estados de cuenta bancarios",
+				"description": "También puede importar las transacciones de sus estados de cuenta bancarios"
+			},
+			"add" : {
+				"classical": " o ser clásico ",
+				"expense": "Gasto",
+				"income": "Ingresos",
+				"recurrence": {
+					"never": "Nunca",
+					"weekly": "Semanal",
+					"bimonthly": "Bimensual",
+					"monthly": "Mensual"
+				},
+				"button": "Agregar transacción"
+			}
+		}
 	}
 }

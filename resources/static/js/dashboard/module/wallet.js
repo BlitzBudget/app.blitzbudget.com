@@ -235,7 +235,7 @@
 	      	/*create a DIV element for each matching element:*/
 	          b = document.createElement("DIV");
 	          b.classList = "noResultsDD";
-	          b.innerText = 'No Results';
+	          b.textContent = 'No Results';
 	          a.appendChild(b);
 	      }  
 
@@ -324,11 +324,11 @@
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
 			document.getElementById('confirmWallet').removeAttribute('disabled');
-			document.getElementById('chosenCurrencyW').innerText = this.lastChild.value;
+			document.getElementById('chosenCurrencyW').textContent = this.lastChild.value;
 			chosenCurrencyW = this.lastChild.value;
 		} else if(isEqual(id, chooseCrncyMWId)) {
 			document.getElementById('modifyWallet').removeAttribute('disabled');
-			document.getElementById('chosenCurrencyWMW').innerText = this.lastChild.value;
+			document.getElementById('chosenCurrencyWMW').textContent = this.lastChild.value;
 			chosenCurrencyWMW = this.lastChild.value;
 		}
 	});
@@ -337,7 +337,7 @@
 	function dropdownItemsWithWallet(withWalletItem) {
 		let dpItem = document.createElement('div');
 		dpItem.classList = 'dropdown-item';
-		dpItem.innerText = withWalletItem;
+		dpItem.textContent = withWalletItem;
 
 		let inpHi = document.createElement('input');
 		inpHi.setAttribute('type', 'hidden');
@@ -473,7 +473,7 @@
 		/*
 		* Add Wallet Currency Text
 		*/
-		let currentCurrenyW = document.getElementById('chosenCurrencyW').innerText = WALLET_CONSTANTS.chooseCurrencyDefault;
+		let currentCurrenyW = document.getElementById('chosenCurrencyW').textContent = WALLET_CONSTANTS.chooseCurrencyDefault;
 
 		/*initiate the autocomplete function on the "chosenCurrencyWInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyWInp"), currencies, "chooseCurrencyDD");
@@ -490,7 +490,7 @@
 		/*create a DIV element for each matching element:*/
         let b = document.createElement("DIV");
         b.classList = "noResultsDD";
-        b.innerText = 'No Active Currency';
+        b.textContent = 'No Active Currency';
         return b;
 	}
 
@@ -507,11 +507,11 @@
 
 		let h2 = document.createElement('h2');
 		h2.classList = 'suggested-heading';
-		h2.innerText = isEmpty(wallet['wallet_name']) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet['wallet_name'];
+		h2.textContent = isEmpty(wallet['wallet_name']) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet['wallet_name'];
 		suggestedAnchor.appendChild(h2);
 
 		let p = document.createElement('h3');
-		p.innerText = wallet.currency;
+		p.textContent = wallet.currency;
 		p.classList = 'currency-desc';
 		suggestedAnchor.appendChild(p);
 		walletDiv.appendChild(suggestedAnchor);
@@ -537,7 +537,7 @@
 		
 		let icons = document.createElement('span');
 		icons.classList = 'material-icons favourite-icon';
-		icons.innerText = 'star';
+		icons.textContent = 'star';
 		currentWalletWrap.appendChild(icons);
 
 		return currentWalletWrap;
@@ -729,7 +729,7 @@
     	/*
 		*	Currency Dropdown Populate (EDIT)
 		*/
-		document.getElementById('chosenCurrencyWMW').innerText = currentWallet.currency;
+		document.getElementById('chosenCurrencyWMW').textContent = currentWallet.currency;
 		/*
 		* Disable Manage Wallets
 		*/
@@ -946,30 +946,30 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.innerText = 'all transactions from this wallet will be deleted';
+		liOne.textContent = 'all transactions from this wallet will be deleted';
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.innerText = 'all the budgets from this wallet will be deleted';
+		liTwo.textContent = 'all the budgets from this wallet will be deleted';
 		ulWarn.appendChild(liTwo);
 
 		let liThree = document.createElement('li');
-		liThree.innerText = 'all goals within this wallet will be deleted';
+		liThree.textContent = 'all goals within this wallet will be deleted';
 		ulWarn.appendChild(liThree);
 
 		let liFour = document.createElement('li');
-		liFour.innerText = 'all financial accounts associated with this wallet will be deleted';
+		liFour.textContent = 'all financial accounts associated with this wallet will be deleted';
 		ulWarn.appendChild(liFour);
 
 		let liSix = document.createElement('li');
-		liSix.innerText = 'all investments associated with this wallet will be deleted';
+		liSix.textContent = 'all investments associated with this wallet will be deleted';
 		ulWarn.appendChild(liSix);
 		resetPassFrag.appendChild(ulWarn);
 
 		// Subscription
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.innerText = 'Premium subscription will remain intact after the reset.';
+		subsText.textContent = 'Premium subscription will remain intact after the reset.';
 		resetPassFrag.appendChild(subsText);
 
 		// Old Password
@@ -978,7 +978,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.innerText = 'Confirm Password';
+		oldPassLabel.textContent = 'Confirm Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -1001,7 +1001,7 @@
 
 		let miEye = document.createElement('i');
 		miEye.classList = 'material-icons';
-		miEye.innerText = 'remove_red_eye';
+		miEye.textContent = 'remove_red_eye';
 		dropdownTriggerOP.appendChild(miEye);
 		dropdownGroupOP.appendChild(dropdownTriggerOP);
 		oldPassWrapper.appendChild(dropdownGroupOP);
