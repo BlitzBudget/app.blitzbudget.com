@@ -52,6 +52,7 @@
 	},
 	"settings": {
 		"page": {
+			"title": "Settings",
 			"general": "General",
 			"notifications": "Notifications",
 			"devices": "Devices",
@@ -133,6 +134,25 @@
 					"monthly": "Monthly"
 				},
 				"button": "Add Transaction"
+			}
+		}
+	},
+	"budget": {
+		"page": {
+			"title": "Budget",
+			"card": {
+				"remaining": "Remaining (%)",
+				"remain": "Remaining",
+				"chart": {
+					"title": "Budget Visualization",
+					"total": "Total Budgeted",
+					"categories": " Categories",
+					"tobebudgeted": "To Be Budgeted",
+					"compensation": {
+						"title": "Compensate This Overspending With",
+						"choose": "Choose category",
+					}
+				}
 			}
 		}
 	}

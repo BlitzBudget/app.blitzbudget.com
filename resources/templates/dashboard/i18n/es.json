@@ -52,6 +52,7 @@
 	},
 	"settings": {
 		"page": {
+			"title": "Configuraciones",
 			"general": "General",
 			"notifications": "Notificaciones",
 			"devices": "Dispositivos",
@@ -134,6 +135,25 @@
 					"monthly": "Mensual"
 				},
 				"button": "Agregar transacción"
+			}
+		}
+	},
+	"budget": {
+		"page": {
+			"title": "Presupuesto",
+			"card": {
+				"remaining": "Restante (%)",
+				"remain": "Restante",
+				"chart": {
+					"title": "Visualización del presupuesto",
+					"total": "Total presupuestado",
+					"categories": " Categorías",
+					"tobebudgeted": "A presupuestar",
+					"compensation": {
+						"title": "Compensar este gasto excesivo con",
+						"choose": "Elegir categoría",
+					}
+				}
 			}
 		}
 	}
