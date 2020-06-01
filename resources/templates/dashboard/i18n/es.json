@@ -149,10 +149,29 @@
 				"title": "Visualización del presupuesto",
 				"total": "Total presupuestado",
 				"categories": " Categorías",
-				"tobebudgeted": "A presupuestar",
-				"compensation": {
-					"title": "Compensar este gasto excesivo con",
-					"choose": "Elegir categoría"
+				"tobebudgeted": "A presupuestar"
+			},
+			"compensation": {
+				"title": "Compensar este gasto excesivo con",
+				"choose": "Elegir categoría"
+			}
+		}
+	},
+	"overview": {
+		"page": {
+			"title": "Visión general",
+			"assets": "Activos",
+			"debt": "Deuda",
+			"networth": "Valor neto",
+			"chart": {
+				"networth": "Visión general de los ingresos",
+				"option": "Resumen de un año",
+				"options": {
+					"income": "Ingresos",
+					"expense": "Gasto",
+					"assets": "Activos",
+					"debt": "Deuda",
+					"networth": "Valor neto"
 				}
 			}
 		}

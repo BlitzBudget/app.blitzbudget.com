@@ -148,10 +148,29 @@
 				"title": "Budget Visualization",
 				"total": "Total Budgeted",
 				"categories": " Categories",
-				"tobebudgeted": "To Be Budgeted",
-				"compensation": {
-					"title": "Compensate This Overspending With",
-					"choose": "Choose category"
+				"tobebudgeted": "To Be Budgeted"
+			},
+			"compensation": {
+				"title": "Compensate This Overspending With",
+				"choose": "Choose category"
+			}
+		}
+	},
+	"overview": {
+		"page": {
+			"title": "Overview",
+			"assets": "Assets",
+			"debt": "Debt",
+			"networth": "Networth",
+			"chart": {
+				"networth": "Income Overview",
+				"option": "One Year Overview",
+				"options": {
+					"income": "Income",
+					"expense": "Expense",
+					"assets": "Assets",
+					"debt": "Debt",
+					"networth": "Networth"
 				}
 			}
 		}
