@@ -35,11 +35,10 @@
 		"dropdown": {
 			"logout": "Cerrar sesión",
 			"settings": "Configuración",
-			"profile": "perfil"
+			"profile": "Perfil"
 		},
 		"account": "Cuenta",
-		"support": "Soporte",
-		"page": "Tablero de Control"
+		"support": "Soporte"
 	},
 	"sidebar": {
 		"overview": "Resumen",
@@ -70,7 +69,6 @@
 				"title": "Moneda",
 				"subtitle": "La moneda de preferencia para esta cartera. Sus transacciones y resúmenes estarán en esta moneda.",
 				"withWallet": "Monedas con cartera",
-		
 				"withoutWallet": "Monedas sin cartera"
 			},
 			"language": {
@@ -136,6 +134,44 @@
 				},
 				"button": "Agregar transacción"
 			}
+		},
+		"dynamic": {
+			"title": "Transacciones",
+			"today": "Hoy",
+			"empty": {
+				"success": "¡Oh! ¡Chasquido! No tienes ninguna transacción todavía."
+			},
+			"add": {
+				"amounterror": "Por favor, llene la cantidad.",
+				"nonzeroerror": "La cantidad no puede ser cero.",
+				"recurerror": "El valor de recurrencia seleccionado es inválido",
+				"categoryerror": "Categoría elegida no es válida. Por favor, seleccione una válida.",
+				"unableerror": "Incapaz de añadir esta transacción.",
+				"success": "Añadida con éxito la transacción.",
+				"tooltip": "Añadir Transacciones"
+			},
+			"get": {
+				"unableerror": "Hubo un error al buscar las transacciones. ¡Por favor, inténtelo de nuevo más tarde!"
+			},
+			"chart": {
+				"empty": "Por favor, rellene los datos adecuados para construir un gráfico",
+				"expense": "Total de ingresos y total de gastos excesivos como porcentaje del total de gastos",
+				"income": "Total gastado y total disponible como porcentaje del total de ingresos",
+				"labels": {
+					"income": "Ingresos",
+					"spent": "Gastado",
+					"available": "Disponible",
+					"overspent": "Gasto excesivo"
+				}
+			},
+			"card": {
+				"description": "Sin descripción"
+			},
+			"sort": {
+				"creationdate": "Fecha de creación",
+				"category": "Categoría",
+				"account": "Cuenta"
+			}
 		}
 	},
 	"budget": {
@@ -155,6 +191,34 @@
 				"title": "Compensar este gasto excesivo con",
 				"choose": "Elegir categoría"
 			}
+		},
+		"dynamic": {
+			"fetcherror": "Incapaz de conseguir tu presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
+			"chart": {
+				"totalbudget": "Total presupuestado",
+				"tobebudgeted":"A presupuestar"
+			},
+			"card": {
+				"overspent": "Gasto excesivo (%)",
+				"tobebudgeted": "A presupuestar (%)",
+				"remaining": "Restante (%)",
+				"remain": " Restante",
+				"na": "NA",
+				"deleteerror": "No se puede borrar el presupuesto. ¡Por favor, refresque e intente de nuevo!",
+				"empty": {
+					"plan": "Comenzar a planear para ",
+					"hey": "Hola, parece que necesitas un presupuesto para ",
+					"create": "Crear presupuestos..."
+				}
+			},
+			"unableerror": "Incapaz de crear los presupuestos. ¡Por favor, refresque e intente de nuevo!",
+			"alreadyerror": "La categoría seleccionada ya tiene un presupuesto. ¡Por favor, elija una categoría diferente!",
+			"changeerror": "No se puede cambiar la categoría del presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
+			"allcategorieserror": "¡Tiene un presupuesto para todas las categorías!",
+			"tooltip": "Añadir el presupuesto",
+			"delete": "Borrar el presupuesto",
+			"income": "Ingreso",
+			"expense": "Gastos"
 		}
 	},
 	"overview": {
@@ -227,6 +291,7 @@
 				},
 				"manage": {
 					"title": "Administrar la cartera",
+					"name": "Dale un nombre",
 					"preference": "¿Cuál es su preferencia monetaria?",
 					"withWallet": "Monedas con cartera",
 					"withoutWallet": "Monedas sin cartera",

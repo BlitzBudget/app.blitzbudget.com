@@ -38,8 +38,7 @@
 			"profile": "Profile"
 		},
 		"account": "Account",
-		"support": "Support",
-		"page": "Dashboard"
+		"support": "Support"
 	},
 	"sidebar": {
 		"overview": "Overview",
@@ -135,6 +134,44 @@
 				},
 				"button": "Add Transaction"
 			}
+		},
+		"dynamic": {
+			"title": "Transactions",
+			"today": "Today",
+			"empty": {
+				"success": "Oh! Snap! You don't have any transactions yet."
+			},
+			"add": {
+				"amounterror": "Please fill the Amount.",
+				"nonzeroerror": "Amount cannot be zero.",
+				"recurerror": "Recurrence value selected is invalid",
+				"categoryerror": "Chosen category is not valid. Please select a valid one.",
+				"unableerror": "Unable to add this transaction.",
+				"success": "Successfully added the transaction.",
+				"tooltip": "Add Transactions"
+			},
+			"get": {
+				"unableerror": "There was an error while fetching the transactions. Please try again later!"
+			},
+			"chart": {
+				"empty": "Please fill in adequare data to build a chart",
+				"expense": "Total Income & Total Overspent as a percentage of Total Expense",
+				"income": "Total Spent & Total Available as a percentage of Total Income",
+				"labels": {
+					"income": "Income",
+					"spent": "Spent",
+					"available": "Available",
+					"overspent": "Overspent"
+				}
+			},
+			"card": {
+				"description": "No Description"
+			},
+			"sort": {
+				"creationdate": "Creation Date",
+				"category": "Category",
+				"account": "Account"
+			}
 		}
 	},
 	"budget": {
@@ -154,6 +191,34 @@
 				"title": "Compensate This Overspending With",
 				"choose": "Choose category"
 			}
+		},
+		"dynamic": {
+			"fetcherror": "Unable to fetch you budget at this moment. Please try again!",
+			"chart": {
+				"totalbudget": "Total Budgeted",
+				"tobebudgeted":"To Be Budgeted"
+			},
+			"card": {
+				"overspent": "Overspent (%)",
+				"tobebudgeted": "To Be Budgeted (%)",
+				"remaining": "Remaining (%)",
+				"remain": " Remaining",
+				"na": "NA",
+				"deleteerror": "Unable to delete the budget. Please refresh and try again.",
+				"empty": {
+					"plan": "Start Planning For ",
+					"hey": "Hey, Looks like you need a budget for ",
+					"create": "Creating budgets.."
+				}
+			},
+			"unableerror": "Unable to create the budgets. Please refresh and try again!",
+			"alreadyerror": "The selected category already has a budget. Please choose a different category!",
+			"changeerror": "Unable to change the budget category at this moment. Please try again!",
+			"allcategorieserror": "You have a budget for all the categories!",
+			"tooltip": "Add Budget",
+			"delete": "Delete budget",
+			"income": "Income",
+			"expense": "Expense"
 		}
 	},
 	"overview": {
@@ -226,6 +291,7 @@
 				},
 				"manage": {
 					"title": "Manage wallet",
+					"name": "Give it a name",
 					"preference": "What is your currency preference?",
 					"withWallet": "Currencies with wallet",
 					"withoutWallet": "Currencies without wallet",

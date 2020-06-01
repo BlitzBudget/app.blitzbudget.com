@@ -12,10 +12,7 @@ function translatePage(locale) {
 	      // Examine the text in the response
 	      response.json().then(function(data) {
 	      	// Add to a cache
-	      	window.translationData = {
-	      		"locale": locale,
-	      		"data": data
-	      	}
+	      	window.translationData = data;
 	        replaceText(data);
 	      });
 	    }
