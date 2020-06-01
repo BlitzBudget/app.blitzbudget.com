@@ -175,5 +175,37 @@
 				}
 			}
 		}
+	},
+	"profile": {
+		"page": {
+			"title": "Perfil",
+			"edit": "Editar",
+			"change": "Cambio",
+			"changepassword": "Cambiar Contraseña",
+			"nocards": "Sin cartas",
+			"joined": "Se unió",
+			"creditcard": "Añadir tarjeta de crédito",
+			"connected": "Cuentas conectadas",
+			"connect": {
+				"title": "Conectar",
+				"description": "Puedes conectarte con los miembros de tu familia para tener una mejor visión general de tus finanzas"	
+			},
+			"reset": {
+				"title": "Reiniciar cuenta",
+				"description": "Su cuenta de usuario permanecerá, pero todos los datos serán eliminados para que pueda empezar desde una pizarra en blanco. Considere la posibilidad de exportar todos sus datos.",
+				"button": "Reiniciar mi cuenta de usuario del Blitz Budget"
+			},
+			"delete": {
+				"title": "Borrar cuenta",
+				"description": "Tengan cuidado. Esto eliminará su cuenta de usuario y toda la información que haya introducido. Le recomendamos que exporte todos sus datos",
+				"button": "Borrar mi cuenta de usuario del Blitz Budget"
+			},
+			"question": {
+				"title": "¿Tiene una pregunta?",
+				"feature": "Enviar una solicitud la característica",
+				"ask": "Pregúntenos directamente",
+				"help": "Centro de ayuda"
+			}
+		}
 	}
 }

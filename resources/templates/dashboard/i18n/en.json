@@ -174,5 +174,37 @@
 				}
 			}
 		}
+	},
+	"profile": {
+		"page": {
+			"title": "Profile",
+			"edit": "Edit",
+			"change": "Change",
+			"changepassword": "Change Password",
+			"nocards": "No Cards",
+			"joined": "Joined on",
+			"creditcard": "Add Credit Card",
+			"connected": "Connected Accounts",
+			"connect": {
+				"title": "Connect",
+				"description": "You can connect with your family members to have a better overview of your finances."	
+			},
+			"reset": {
+				"title": "Reset account",
+				"description": "Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.",
+				"button": "Reset my Blitz Budget user account"
+			},
+			"delete": {
+				"title": "Delete account",
+				"description": "Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.",
+				"button": "Delete my Blitz Budget user account"
+			},
+			"question": {
+				"title": "Got a question?",
+				"feature": "Send a feature request",
+				"ask": "Ask us directly",
+				"help": "Help center"
+			}
+		}
 	}
 }
