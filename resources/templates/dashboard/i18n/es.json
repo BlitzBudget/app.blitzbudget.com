@@ -35,7 +35,7 @@
 		"dropdown": {
 			"logout": "Cerrar sesión",
 			"settings": "Configuración",
-			"profile": "perfil"
+			"profile": "Perfil"
 		},
 		"account": "Cuenta",
 		"support": "Soporte",
@@ -155,6 +155,29 @@
 				"title": "Compensar este gasto excesivo con",
 				"choose": "Elegir categoría"
 			}
+		},
+		"dynamic": {
+			"fetcherror": "Incapaz de conseguir tu presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
+			"chart": {
+				"totalbudget": "Total presupuestado",
+				"tobebudgeted":"A presupuestar"
+			},
+			"card": {
+				"overspent": "Gasto excesivo (%)",
+				"tobebudgeted": "A presupuestar (%)",
+				"remaining": "Restante (%)",
+				"na": "NA",
+				"deleteerror": "No se puede borrar el presupuesto. ¡Por favor, refresque e intente de nuevo!",
+				"empty": {
+					"plan": "Comenzar a planear para ",
+					"hey": "Hola, parece que necesitas un presupuesto para ",
+					"create": "Crear presupuestos..."
+				}
+			},
+			"unableerror": "Incapaz de crear los presupuestos. ¡Por favor, refresque e intente de nuevo!",
+			"alreadyerror": "La categoría seleccionada ya tiene un presupuesto. ¡Por favor, elija una categoría diferente!",
+			"changeerror": "No se puede cambiar la categoría del presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
+			"allcategorieserror": "¡Tiene un presupuesto para todas las categorías!"
 		}
 	},
 	"overview": {
@@ -220,7 +243,6 @@
 				"title": "¿Qué cartera?",
 				"add": {
 					"title": "Agregar cartera",
-					"name": "Dale un nombre",
 					"withWallet": "Monedas con cartera",
 					"withoutWallet": "Monedas sin cartera",
 					"button": "Añadir",
@@ -228,6 +250,7 @@
 				},
 				"manage": {
 					"title": "Administrar la cartera",
+					"name": "Dale un nombre",
 					"preference": "¿Cuál es su preferencia monetaria?",
 					"withWallet": "Monedas con cartera",
 					"withoutWallet": "Monedas sin cartera",

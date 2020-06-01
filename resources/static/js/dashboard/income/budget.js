@@ -28,7 +28,7 @@
 	            // Translate current Page
 				translatePage(getLanguage());
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = 'Budget';
+		        document.getElementById('currentPage').textContent = window.translationData.budget.page.title;
 			});
 	 	}
 	}
@@ -46,7 +46,7 @@
 	            // Translate current Page
 				translatePage(getLanguage());
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = 'Budget';
+		        document.getElementById('currentPage').textContent = window.translationData.budget.page.title;
 			});
 		});
 	}
@@ -179,7 +179,7 @@
     		updateBudgetVisualization();
         }
         ajaxData.onFailure = function (thrownError) {
-        	manageErrors(thrownError, 'Unable to fetch you budget at this moment. Please try again!',ajaxData);
+        	manageErrors(thrownError, window.translationData.budget.dynamic.fetcherror,ajaxData);
         }
 
 		jQuery.ajax({
@@ -414,7 +414,7 @@
 	// Introduce Chartist pie chart
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
-		let labels = ['Total Budgeted', 'To Be Budgeted']
+		let labels = [window.translationData.budget.dynamic.chart.totalbudget, window.translationData.budget.dynamic.chart.tobebudgeted]
 
         var optionsPreferences = {
 		  donut: true,
@@ -566,13 +566,13 @@
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
 				if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-					budgetLabelDiv.textContent = 'Overspent (%)';
+					budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.overspent;
 				} else if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-					budgetLabelDiv.textContent = 'To Be Budgeted (%)';
+					budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.tobebudgeted;
 				}
 				
 			} else {
-				budgetLabelDiv.textContent = 'Remaining (%)';
+				budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.remaining;
 			}
 			
 			// Change the remaining text appropriately
@@ -583,7 +583,7 @@
 			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue) * 100),0);
 			// If the user budget is 0 then the percentage calculation is not applicable
 			if(userBudgetValue == 0 || isNaN(remainingAmountPercentage)) {
-				remainingAmountPercentageDiv.textContent = 'NA';
+				remainingAmountPercentageDiv.textContent = window.translationData.budget.dynamic.card.na;
 			} else {
 				remainingAmountPercentageDiv.textContent = remainingAmountPercentage + '%';
 			}
@@ -594,14 +594,14 @@
 			progressBarCategoryModal.setAttribute('aria-valuenow', progressBarPercentage);
 			progressBarCategoryModal.style.width = progressBarPercentage + '%'; 
 		} else if(progressBarCategoryModal != null) {
-			remainingAmountPercentageDiv.textContent = 'NA';
+			remainingAmountPercentageDiv.textContent = window.translationData.budget.dynamic.card.na;
 			// Set the value and percentage of the progress bar
 			progressBarCategoryModal.setAttribute('aria-valuenow', 0);
 			progressBarCategoryModal.style.width = 0 + '%';
 			// Set the amount remaining
 			remainingAmountDiv.textContent = formatToCurrency(0.00);
 			// Set the budget remaining text
-			budgetLabelDiv.textContent = 'Remaining (%)';
+			budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.remaining;
 		}
 	}
 	
@@ -616,7 +616,7 @@
 		
 		// Security check to ensure that the budget is present
 		if(isEmpty(userBudgetCache[budgetId])) {
-			showNotification('Unable to delete the budget. Please refresh and try again!',window._constants.notification.error);
+			showNotification(window.translationData.budget.dynamic.card.deleteerror,window._constants.notification.error);
 			return;
 		}
 
@@ -646,7 +646,7 @@
         	  updateBudgetVisualization();
         }
         ajaxData.onFailure = function(thrownError) {
-        	  manageErrors(thrownError, 'Unable to delete the budget at this moment. Please try again!',ajaxData);
+        	  manageErrors(thrownError, window.translationData.budget.dynamic.card.deleteerror,ajaxData);
 	          	
 	          // Remove the material spinner and show the delete button again
 	          document.getElementById('deleteElementSpinner-' + budgetId).classList.toggle('d-none');
@@ -700,7 +700,7 @@
 		let cardRowHeading = document.createElement('div');
 		cardRowHeading.id = 'emptyBudgetHeading'
 		cardRowHeading.classList = 'row font-weight-bold justify-content-center';
-		cardRowHeading.textContent = 'Hey, Looks like you need a budget for ' + userChosenMonthName + '.';
+		cardRowHeading.textContent = window.translationData.budget.dynamic.card.empty.hey + userChosenMonthName + '.';
 		cardBody.appendChild(cardRowHeading);
 		
 		// card description
@@ -713,7 +713,7 @@
 		let clonePreviousMonthButton = document.createElement('button');
 		clonePreviousMonthButton.id = 'copyPreviousMonthsBudget';
 		clonePreviousMonthButton.classList = 'btn btn-budget'
-		clonePreviousMonthButton.textContent = 'Start Planning For ' + userChosenMonthName;
+		clonePreviousMonthButton.textContent = window.translationData.budget.dynamic.card.empty.plan + userChosenMonthName;
 		cardBody.appendChild(clonePreviousMonthButton);
 			
 		card.appendChild(cardBody);
@@ -724,7 +724,7 @@
 	// Clicking on copy budget
 	$('body').on('click', '#copyPreviousMonthsBudget' , function(e) {
 		this.setAttribute("disabled", "disabled");
-		this.textContent = 'Creating budgets..';
+		this.textContent = window.translationData.budget.dynamic.card.empty.create;
 		let element = this;
 		let budgetAmount = document.getElementById('budgetAmount');
 		
@@ -881,7 +881,7 @@
       	  	let genericAddFnc = document.getElementById('genericAddFnc');
       	  	genericAddFnc.classList.remove('d-none');
       	  	
-        	manageErrors(thrownError, 'Unable to create the budgets. Please refresh and try again!',ajaxData);
+        	manageErrors(thrownError, window.translationData.budget.dynamic.unableerror,ajaxData);
         }
 
 		$.ajax({
@@ -943,7 +943,7 @@
 		// Make sure that the category selected is not budgeted
 		let allUnbudgetedCategories = returnUnbudgetedCategories();
 		if(notIncludesStr(allUnbudgetedCategories,this.lastChild.value)) {
-			showNotification('The selected category already has a budget. Please choose a different category!',window._constants.notification.error);
+			showNotification(window.translationData.budget.dynamic.alreadyerror,window._constants.notification.error);
 			return;
 		}
 		
@@ -989,7 +989,7 @@
 	        	 
 		}
         ajaxData.onFailure = function (thrownError) {
-        		manageErrors(thrownError, 'Unable to change the budget category at this moment. Please try again!',ajaxData);
+        		manageErrors(thrownError, window.translationData.budget.dynamic.changeerror,ajaxData);
         		// Chacnge the button text to the old one if fails. 
         		document.getElementById('selectCategoryRow-' + budgetId).firstChild.textContent = oldCategoryName;
         }
@@ -1012,7 +1012,7 @@
 		let categoryItem = returnUnbudgetedCategory();
 		
 		if(isEmpty(categoryItem)) {
-			showNotification('You have a budget for all the categories!',window._constants.notification.error);
+			showNotification(window.translationData.budget.dynamic.allcategorieserror,window._constants.notification.error);
 			return;
 		}
 		// Disable the add button
@@ -1137,7 +1137,7 @@
 		
 		let remainingTextDiv = document.createElement('div');
 		remainingTextDiv.classList = 'col-lg-9 text-right headingDiv justify-content-center align-self-center mild-text';
-		remainingTextDiv.textContent = 'Remaining (%)';
+		remainingTextDiv.textContent = window.translationData.budget.dynamic.card.remaining;
 		animationBudgetRowDiv.appendChild(remainingTextDiv);
 		cardBody.appendChild(animationBudgetRowDiv);
 		

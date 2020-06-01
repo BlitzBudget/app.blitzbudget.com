@@ -154,6 +154,29 @@
 				"title": "Compensate This Overspending With",
 				"choose": "Choose category"
 			}
+		},
+		"dynamic": {
+			"fetcherror": "Unable to fetch you budget at this moment. Please try again!",
+			"chart": {
+				"totalbudget": "Total Budgeted",
+				"tobebudgeted":"To Be Budgeted"
+			},
+			"card": {
+				"overspent": "Overspent (%)",
+				"tobebudgeted": "To Be Budgeted (%)",
+				"remaining": "Remaining (%)",
+				"na": "NA",
+				"deleteerror": "Unable to delete the budget. Please refresh and try again.",
+				"empty": {
+					"plan": "Start Planning For ",
+					"hey": "Hey, Looks like you need a budget for ",
+					"create": "Creating budgets.."
+				}
+			},
+			"unableerror": "Unable to create the budgets. Please refresh and try again!",
+			"alreadyerror": "The selected category already has a budget. Please choose a different category!",
+			"changeerror": "Unable to change the budget category at this moment. Please try again!",
+			"allcategorieserror": "You have a budget for all the categories!"
 		}
 	},
 	"overview": {
@@ -219,7 +242,6 @@
 				"title": "Which wallet?",
 				"add": {
 					"title": "Add wallet",
-					"name": "Give it a name",
 					"withWallet": "Currencies with wallet",
 					"withoutWallet": "Currencies without wallet",
 					"button": "Add",
@@ -227,6 +249,7 @@
 				},
 				"manage": {
 					"title": "Manage wallet",
+					"name": "Give it a name",
 					"preference": "What is your currency preference?",
 					"withWallet": "Currencies with wallet",
 					"withoutWallet": "Currencies without wallet",
