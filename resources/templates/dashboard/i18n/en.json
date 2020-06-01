@@ -138,6 +138,9 @@
 		"dynamic": {
 			"title": "Transactions",
 			"today": "Today",
+			"empty": {
+				"success": "Oh! Snap! You don't have any transactions yet."
+			},
 			"add": {
 				"amounterror": "Please fill the Amount.",
 				"nonzeroerror": "Amount cannot be zero.",

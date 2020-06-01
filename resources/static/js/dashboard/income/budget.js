@@ -28,7 +28,9 @@
 	            // Translate current Page
 				translatePage(getLanguage());
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = window.translationData.budget.page.title;
+	            let currentPage = document.getElementById('currentPage');
+	            currentPage.setAttribute('data-i18n', budget.page.title);
+				currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.page.title : "Budget";
 			});
 	 	}
 	}
@@ -46,7 +48,9 @@
 	            // Translate current Page
 				translatePage(getLanguage());
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = window.translationData.budget.page.title;
+	            let currentPage = document.getElementById('currentPage');
+	            currentPage.setAttribute('data-i18n', budget.page.title);
+				currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.page.title : "Budget";
 			});
 		});
 	}
@@ -226,7 +230,8 @@
 		let cardRemainingText = document.createElement('div');
 		cardRemainingText.classList = 'col-lg-6 text-right headingDiv justify-content-center align-self-center mild-text';
 		cardRemainingText.id = 'budgetInfoLabelInModal-' + userBudget.budgetId;
-		cardRemainingText.textContent = window.translationData.budget.dynamic.card.remaining;
+		cardRemainingText.setAttribute('data-i18n', budget.dynamic.card.remaining);
+		cardRemainingText.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.remaining : "Remaining (%)";
 		cardRowRemaining.appendChild(cardRemainingText);
 		cardBody.appendChild(cardRowRemaining);
 		
@@ -252,7 +257,8 @@
 		let cardRemainingPercentage = document.createElement('div');
 		cardRemainingPercentage.classList = 'col-lg-9 text-right percentageAvailable';
 		cardRemainingPercentage.id = 'percentageAvailable-' + userBudget.budgetId;
-		cardRemainingPercentage.textContent = window.translationData.budget.dynamic.card.na;
+		cardRemainingPercentage.setAttribute('data-i18n', budget.dynamic.card.na);
+		cardRemainingPercentage.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.na : "NA";
 		cardRowPercentage.appendChild(cardRemainingPercentage);
 		cardBody.appendChild(cardRowPercentage);
 		
@@ -286,8 +292,9 @@
 		cardProgressAndRemainingAmount.appendChild(remainingAmountDiv);
 		
 		let currencyRemainingText = document.createElement('span');
-		currencyRemainingText.classList = 'mild-text'
-		currencyRemainingText.textContent = window.translationData.budget.dynamic.card.remain;
+		currencyRemainingText.classList = 'mild-text';
+		currencyRemainingText.setAttribute('data-i18n', budget.dynamic.card.remain);
+		currencyRemainingText.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.remain : "Remaining";
 		cardProgressAndRemainingAmount.appendChild(currencyRemainingText);
 		cardBody.appendChild(cardProgressAndRemainingAmount);
 
@@ -566,13 +573,16 @@
 			if(budgetAvailableToSpendOrSave < 0) {
 				// if the transaction category is expense category then show overspent else show To be budgeted
 				if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-					budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.overspent;
+					budgetLabelDiv.setAttribute('data-i18n', budget.dynamic.card.overspent);
+					budgetLabelDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.overspent : "Overspent (%)";
 				} else if(categoryMap[budget.category].type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-					budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.tobebudgeted;
+					budgetLabelDiv.setAttribute('data-i18n', budget.dynamic.card.tobebudgeted);
+					budgetLabelDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.tobebudgeted : "To Be Budgeted (%)";
 				}
 				
 			} else {
-				budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.remaining;
+				budgetLabelDiv.setAttribute('data-i18n', budget.dynamic.card.remaining);
+				budgetLabelDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.remaining : "Remaining (%)";
 			}
 			
 			// Change the remaining text appropriately
@@ -583,7 +593,8 @@
 			let remainingAmountPercentage = round(((budgetAvailableToSpendOrSave / userBudgetValue) * 100),0);
 			// If the user budget is 0 then the percentage calculation is not applicable
 			if(userBudgetValue == 0 || isNaN(remainingAmountPercentage)) {
-				remainingAmountPercentageDiv.textContent = window.translationData.budget.dynamic.card.na;
+				remainingAmountPercentageDiv.setAttribute('data-i18n', budget.dynamic.card.na);
+				remainingAmountPercentageDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.na : "NA";
 			} else {
 				remainingAmountPercentageDiv.textContent = remainingAmountPercentage + '%';
 			}
@@ -594,14 +605,16 @@
 			progressBarCategoryModal.setAttribute('aria-valuenow', progressBarPercentage);
 			progressBarCategoryModal.style.width = progressBarPercentage + '%'; 
 		} else if(progressBarCategoryModal != null) {
-			remainingAmountPercentageDiv.textContent = window.translationData.budget.dynamic.card.na;
+			remainingAmountPercentageDiv.setAttribute('data-i18n', budget.dynamic.card.na);
+			remainingAmountPercentageDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.na : "NA";
 			// Set the value and percentage of the progress bar
 			progressBarCategoryModal.setAttribute('aria-valuenow', 0);
 			progressBarCategoryModal.style.width = 0 + '%';
 			// Set the amount remaining
 			remainingAmountDiv.textContent = formatToCurrency(0.00);
 			// Set the budget remaining text
-			budgetLabelDiv.textContent = window.translationData.budget.dynamic.card.remaining;
+			budgetLabelDiv.setAttribute('data-i18n', budget.dynamic.card.remaining);
+			budgetLabelDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.remaining : "Remaining (%)";
 		}
 	}
 	
@@ -700,7 +713,8 @@
 		let cardRowHeading = document.createElement('div');
 		cardRowHeading.id = 'emptyBudgetHeading'
 		cardRowHeading.classList = 'row font-weight-bold justify-content-center';
-		cardRowHeading.textContent = window.translationData.budget.dynamic.card.empty.hey + userChosenMonthName + '.';
+		cardRowHeading.setAttribute('data-i18n', budget.dynamic.card.empty.hey);
+		cardRowHeading.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.empty.hey + userChosenMonthName + '.' : "Hey, Looks like you need a budget for " + userChosenMonthName + '.';
 		cardBody.appendChild(cardRowHeading);
 		
 		// card description
@@ -712,8 +726,9 @@
 		// card button clone
 		let clonePreviousMonthButton = document.createElement('button');
 		clonePreviousMonthButton.id = 'copyPreviousMonthsBudget';
-		clonePreviousMonthButton.classList = 'btn btn-budget'
-		clonePreviousMonthButton.textContent = window.translationData.budget.dynamic.card.empty.plan + userChosenMonthName;
+		clonePreviousMonthButton.classList = 'btn btn-budget';
+		clonePreviousMonthButton.setAttribute('data-i18n', budget.dynamic.card.empty.plan);
+		clonePreviousMonthButton.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.empty.plan + userChosenMonthName : "Start Planning For " + userChosenMonthName;
 		cardBody.appendChild(clonePreviousMonthButton);
 			
 		card.appendChild(cardBody);
@@ -724,7 +739,8 @@
 	// Clicking on copy budget
 	$('body').on('click', '#copyPreviousMonthsBudget' , function(e) {
 		this.setAttribute("disabled", "disabled");
-		this.textContent = window.translationData.budget.dynamic.card.empty.create;
+		this.setAttribute('data-i18n', budget.dynamic.card.empty.create);
+		this.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.empty.create : "Creating budgets..";
 		let element = this;
 		let budgetAmount = document.getElementById('budgetAmount');
 		
@@ -824,7 +840,8 @@
 
 				let incomeCategoriesHSix = document.createElement('h6');
 				incomeCategoriesHSix.classList = 'dropdown-header';
-				incomeCategoriesHSix.textContent = window.translationData.budget.dynamic.income;
+				incomeCategoriesHSix.setAttribute('data-i18n', budget.dynamic.income);
+				incomeCategoriesHSix.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.income : "Income";
 				inputGroup.appendChild(incomeCategoriesHSix);
 
 				let incomeCategories = document.createElement('div');
@@ -840,7 +857,8 @@
 
 				let expenseCategoriesHSix = document.createElement('h6');
 				expenseCategoriesHSix.classList = 'dropdown-header';
-				expenseCategoriesHSix.textContent = window.translationData.budget.dynamic.expense;
+				expenseCategoriesHSix.setAttribute('data-i18n', budget.dynamic.expense);
+				expenseCategoriesHSix.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.expense : "Expense";
 				inputGroup.appendChild(expenseCategoriesHSix);
 
 				let expenseCategories = document.createElement('div');
@@ -1137,7 +1155,8 @@
 		
 		let remainingTextDiv = document.createElement('div');
 		remainingTextDiv.classList = 'col-lg-9 text-right headingDiv justify-content-center align-self-center mild-text';
-		remainingTextDiv.textContent = window.translationData.budget.dynamic.card.remaining;
+		remainingTextDiv.setAttribute('data-i18n', budget.dynamic.card.remaining);
+		remainingTextDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.budget.dynamic.card.remaining : "Remaining (%)";
 		animationBudgetRowDiv.appendChild(remainingTextDiv);
 		cardBody.appendChild(animationBudgetRowDiv);
 		

@@ -138,6 +138,9 @@
 		"dynamic": {
 			"title": "Transacciones",
 			"today": "Hoy",
+			"empty": {
+				"success": "¡Oh! ¡Chasquido! No tienes ninguna transacción todavía."
+			},
 			"add": {
 				"amounterror": "Por favor, llene la cantidad.",
 				"nonzeroerror": "La cantidad no puede ser cero.",

@@ -51,7 +51,9 @@
 	            // Call the transaction API to fetch information.
 				initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = window.translationData.transactions.dynamic.title;
+	            let currentPage = document.getElementById('currentPage');
+				currentPage.setAttribute('data-i18n', transactions.dynamic.title);
+				currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.title : "Transactions";
 			});
 	 	}
 	}
@@ -67,7 +69,9 @@
 				translatePage(getLanguage());
 	            initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = window.translationData.transactions.dynamic.title;
+		        let currentPage = document.getElementById('currentPage');
+				currentPage.setAttribute('data-i18n', transactions.dynamic.title);
+				currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.title : "Transactions";
 			});
 		});
 	}
@@ -657,7 +661,8 @@
     	
     	let messageParagraphElement = document.createElement('p');
     	messageParagraphElement.className = 'green-icon margin-bottom-zero margin-left-five';
-    	messageParagraphElement.textContent = window.translationData.transactions.dynamic.add.success;
+    	messageParagraphElement.setAttribute('data-i18n', transactions.dynamic.add.success);
+    	messageParagraphElement.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.add.success : "Successfully added the transaction.";
     	
     	var br = document.createElement('br');
     	
@@ -816,7 +821,8 @@
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.textContent = window.translationData.transactions.dynamic.empty.success;
+		emptyMessageRow.setAttribute('data-i18n', transactions.dynamic.empty.success);
+		emptyMessageRow.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.empty.success : "Oh! Snap! You don't have any transactions yet.";
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
 
@@ -1025,7 +1031,9 @@
 	// Click on sort by creation date
 	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').textContent = window.translationData.transactions.dynamic.sort.creationdate;
+		let sortByDiv = document.getElementById('sortByBtnTit');
+		sortByDiv.setAttribute('data-i18n', transactions.dynamic.sort.creationdate);
+		sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.creationdate : "Creation Date";
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-table');
@@ -1054,7 +1062,9 @@
 	// Click on sort by creation date
 	$('body').on('click', '#categorySortBy' , function(e) {
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').textContent = window.translationData.transactions.dynamic.sort.category;
+		let sortByDiv = document.getElementById('sortByBtnTit');
+		sortByDiv.setAttribute('data-i18n', transactions.dynamic.sort.category);
+		sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.category : "Category";
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the accountTable
@@ -1099,7 +1109,9 @@
 	// Sorts the table by aggregating transactions by account
 	$('body').on('click', '#accountSortBy' , function(e) {
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').textContent = window.translationData.transactions.dynamic.sort.account;
+		let sortByDiv = document.getElementById('sortByBtnTit');
+		sortByDiv.setAttribute('data-i18n', transactions.dynamic.sort.account);
+		sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the transactions table
