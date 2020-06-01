@@ -32,6 +32,9 @@
 		window.location.href = '/';
 	}
 
+	// Translate current Page
+	translatePage(getLanguage());
+
 	document.getElementById('genericAddFnc').addEventListener("click",function(e){
 		document.getElementById('addWallet').classList.remove('d-none');
 		document.getElementById('whichWallet').classList.add('d-none');

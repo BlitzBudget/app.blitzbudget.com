@@ -219,6 +219,7 @@
 				"title": "Which wallet?",
 				"add": {
 					"title": "Add wallet",
+					"name": "Give it a name",
 					"withWallet": "Currencies with wallet",
 					"withoutWallet": "Currencies without wallet",
 					"button": "Add",

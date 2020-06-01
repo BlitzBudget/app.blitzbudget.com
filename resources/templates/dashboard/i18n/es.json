@@ -220,6 +220,7 @@
 				"title": "¿Qué cartera?",
 				"add": {
 					"title": "Agregar cartera",
+					"name": "Dale un nombre",
 					"withWallet": "Monedas con cartera",
 					"withoutWallet": "Monedas sin cartera",
 					"button": "Añadir",
