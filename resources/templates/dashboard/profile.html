@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>
+	<title data-i18n="profile.page.title">
 	    Profile
 	 </title>
    <link href="/css/profile.min.css" rel="stylesheet preload" as="style">
@@ -28,7 +28,7 @@
                             <i class="material-icons noselect">arrow_forward</i>
                         </button>
                     </div>
-                    <a id="userNameEdit" class="editProfile text-info">Edit</a>
+                    <a id="userNameEdit" class="editProfile text-info" data-i18n="profile.page.edit">Edit</a>
                     <h5 id="emailProfileDisplay" class="mb-0 mt-3 font-weight-bold">john_doe@blitzbudget.com</h5>
                     <div id="emailEditProf" class="btn-group d-none">
                         <input id="emailModInp" type="email" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left">
@@ -36,14 +36,14 @@
                             <i class="material-icons noselect">arrow_forward</i>
                         </button>
                     </div>
-                    <a id="emailEdit" class="editProfile text-info">Change</a>
+                    <a id="emailEdit" class="editProfile text-info" data-i18n="profile.page.change">Change</a>
                     <h5 class="mb-0 mt-3 font-weight-bold">**********</h5>
-                    <a id="changePasswordProfile" class="editProfile text-info">Change Password</a>
+                    <a id="changePasswordProfile" class="editProfile text-info" data-i18n="profile.page.changepassword">Change Password</a>
                 </div>
                 <div class="pl-md-5 pl-sm-0 text-md-left text-center col-md-6 col-sm-12">
-                    <h3 class="font-weight-bold mt-sm-3 mt-md-0">No Cards</h3>                    
-                    <p class="mild-text">Joined on <span id="userCreationDate">December 2019</span></p>
-                    <button class="btn btn-info btn-round btn-lg" disabled>Add Credit Card</button>
+                    <h3 class="font-weight-bold mt-sm-3 mt-md-0" data-i18n="profile.page.nocards">No Cards</h3>                    
+                    <p class="mild-text"><span data-i18n="profile.page.joined">Joined on</span> <span id="userCreationDate">December 2019</span></p>
+                    <button class="btn btn-info btn-round btn-lg" disabled data-i18n="profile.page.creditcard">Add Credit Card</button>
                 </div>                
               </div>
             </div>
@@ -57,11 +57,11 @@
               <div class="col-8 connectedUser ml-auto mr-auto">
                   <div class="row">
                       <div class="pr-md-5 pr-sm-0 text-md-right text-center col-md-6 col-sm-12">
-                          <h3 class="mt-0">Connected Accounts</h3>
-                          <a class="btn btn-info btn-round btn-sm" href="/wallets">Connect</a>
+                          <h3 class="mt-0" data-i18n="profile.page.connected">Connected Accounts</h3>
+                          <a class="btn btn-info btn-round btn-sm" href="/wallets" data-i18n="profile.page.connect.title">Connect</a>
                       </div>
                       <div class="pl-md-5 pl-sm-0 text-md-left text-center col-md-6 col-sm-12 my-auto">
-                          <p class="mild-text mb-0 d-none d-md-block">You can connect with your family members to have a better overview of your finances.</p>
+                          <p class="mild-text mb-0 d-none d-md-block" data-i18n="profile.page.connect.description">You can connect with your family members to have a better overview of your finances.</p>
                       </div>
                   </div>
               </div>
@@ -75,14 +75,14 @@
               <div class="col-8 resetOrDeleteUser ml-auto mr-auto">
                   <div class="row">
                       <div class="pr-md-5 pr-sm-0 text-md-right text-center col-md-6 col-sm-12">
-                          <h3 class="mt-0">Reset account</h3>
-                          <p class="mild-text">Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.</p>
-                          <a id="resetBBAccount" class="resetAccount text-info">Reset my Blitz Budget user account</a>
+                          <h3 class="mt-0" data-i18n="profile.page.reset.title">Reset account</h3>
+                          <p class="mild-text" data-i18n="profile.page.reset.description">Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.</p>
+                          <a id="resetBBAccount" class="resetAccount text-info" data-i18n="profile.page.reset.button">Reset my Blitz Budget user account</a>
                       </div>
                       <div class="pl-md-5 pl-sm-0 text-md-left text-center col-md-6 col-sm-12">
-                          <h3 class="mt-sm-3 mt-md-0">Delete account</h3>
-                          <p class="mild-text">Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.</p>
-                          <a id="deleteBBAccount" class="deleteAccount text-info">Delete my Blitz Budget user account</a>
+                          <h3 class="mt-sm-3 mt-md-0" data-i18n="profile.page.delete.title">Delete account</h3>
+                          <p class="mild-text" data-i18n="profile.page.delete.description">Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.</p>
+                          <a id="deleteBBAccount" class="deleteAccount text-info" data-i18n="profile.page.delete.button">Delete my Blitz Budget user account</a>
                       </div>
                   </div>
               </div>
@@ -99,11 +99,11 @@
                           <img class="gotQuesImg" src="../img/characters/beon/profile/beon-question.svg">
                       </div>
                       <div class="pl-md-5 pl-sm-0 text-md-left text-center col-md-6 col-sm-12">
-                          <h3 class="mb-4 mt-0">Got a question?</h3>
+                          <h3 class="mb-4 mt-0" data-i18n="profile.page.question.title">Got a question?</h3>
                           <ul class="resetUlStyling">
-                              <li class="mb-2"><a href="https://www.blitzbudget.com/feature-request" class="helpProfile text-info" id="sendFeatureRequest" target="_blank">Send a feature request</a></li>
-                              <li class="mb-2"><a class="helpProfile text-info askUsDirectly">Ask us directly</a></li>
-                              <li class="mb-2"><a class="helpCenter helpProfile text-info" href="javascript:void(0);">Help center</a></li>
+                              <li class="mb-2"><a href="https://www.blitzbudget.com/feature-request" class="helpProfile text-info" id="sendFeatureRequest" target="_blank" data-i18n="profile.page.question.feature">Send a feature request</a></li>
+                              <li class="mb-2"><a class="helpProfile text-info askUsDirectly" data-i18n="profile.page.question.ask">Ask us directly</a></li>
+                              <li class="mb-2"><a class="helpCenter helpProfile text-info" href="javascript:void(0);" data-i18n="profile.page.question.help">Help center</a></li>
                           </ul>
                       </div>
                   </div>

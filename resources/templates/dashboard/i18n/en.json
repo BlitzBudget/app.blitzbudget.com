@@ -52,6 +52,7 @@
 	},
 	"settings": {
 		"page": {
+			"title": "Settings",
 			"general": "General",
 			"notifications": "Notifications",
 			"devices": "Devices",
@@ -133,6 +134,104 @@
 					"monthly": "Monthly"
 				},
 				"button": "Add Transaction"
+			}
+		}
+	},
+	"budget": {
+		"page": {
+			"title": "Budget",
+			"card": {
+				"remaining": "Remaining (%)",
+				"remain": "Remaining"
+			},
+			"chart": {
+				"title": "Budget Visualization",
+				"total": "Total Budgeted",
+				"categories": " Categories",
+				"tobebudgeted": "To Be Budgeted"
+			},
+			"compensation": {
+				"title": "Compensate This Overspending With",
+				"choose": "Choose category"
+			}
+		}
+	},
+	"overview": {
+		"page": {
+			"title": "Overview",
+			"assets": "Assets",
+			"debt": "Debt",
+			"networth": "Networth",
+			"chart": {
+				"networth": "Income Overview",
+				"option": "One Year Overview",
+				"options": {
+					"income": "Income",
+					"expense": "Expense",
+					"assets": "Assets",
+					"debt": "Debt",
+					"networth": "Networth"
+				}
+			}
+		}
+	},
+	"profile": {
+		"page": {
+			"title": "Profile",
+			"edit": "Edit",
+			"change": "Change",
+			"changepassword": "Change Password",
+			"nocards": "No Cards",
+			"joined": "Joined on",
+			"creditcard": "Add Credit Card",
+			"connected": "Connected Accounts",
+			"connect": {
+				"title": "Connect",
+				"description": "You can connect with your family members to have a better overview of your finances."	
+			},
+			"reset": {
+				"title": "Reset account",
+				"description": "Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.",
+				"button": "Reset my Blitz Budget user account"
+			},
+			"delete": {
+				"title": "Delete account",
+				"description": "Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.",
+				"button": "Delete my Blitz Budget user account"
+			},
+			"question": {
+				"title": "Got a question?",
+				"feature": "Send a feature request",
+				"ask": "Ask us directly",
+				"help": "Help center"
+			}
+		}
+	},
+	"wallet": {
+		"page": {
+			"title": "Wallets",
+			"nav": {
+				"manage": "Manage wallets",
+				"done": "Done",
+				"delete": "Delete wallet"
+			},
+			"main": {
+				"title": "Which wallet?",
+				"add": {
+					"title": "Add wallet",
+					"withWallet": "Currencies with wallet",
+					"withoutWallet": "Currencies without wallet",
+					"button": "Add",
+					"cancel": "Cancel"
+				},
+				"manage": {
+					"title": "Manage wallet",
+					"preference": "What is your currency preference?",
+					"withWallet": "Currencies with wallet",
+					"withoutWallet": "Currencies without wallet",
+					"save": "Save",
+					"cancel": "Cancel"
+				}
 			}
 		}
 	}

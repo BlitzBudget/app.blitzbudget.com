@@ -52,6 +52,7 @@
 	},
 	"settings": {
 		"page": {
+			"title": "Configuraciones",
 			"general": "General",
 			"notifications": "Notificaciones",
 			"devices": "Dispositivos",
@@ -134,6 +135,104 @@
 					"monthly": "Mensual"
 				},
 				"button": "Agregar transacción"
+			}
+		}
+	},
+	"budget": {
+		"page": {
+			"title": "Presupuesto",
+			"card": {
+				"remaining": "Restante (%)",
+				"remain": "Restante"
+			},
+			"chart": {
+				"title": "Visualización del presupuesto",
+				"total": "Total presupuestado",
+				"categories": " Categorías",
+				"tobebudgeted": "A presupuestar"
+			},
+			"compensation": {
+				"title": "Compensar este gasto excesivo con",
+				"choose": "Elegir categoría"
+			}
+		}
+	},
+	"overview": {
+		"page": {
+			"title": "Visión general",
+			"assets": "Activos",
+			"debt": "Deuda",
+			"networth": "Valor neto",
+			"chart": {
+				"networth": "Visión general de los ingresos",
+				"option": "Resumen de un año",
+				"options": {
+					"income": "Ingresos",
+					"expense": "Gasto",
+					"assets": "Activos",
+					"debt": "Deuda",
+					"networth": "Valor neto"
+				}
+			}
+		}
+	},
+	"profile": {
+		"page": {
+			"title": "Perfil",
+			"edit": "Editar",
+			"change": "Cambio",
+			"changepassword": "Cambiar Contraseña",
+			"nocards": "Sin cartas",
+			"joined": "Se unió",
+			"creditcard": "Añadir tarjeta de crédito",
+			"connected": "Cuentas conectadas",
+			"connect": {
+				"title": "Conectar",
+				"description": "Puedes conectarte con los miembros de tu familia para tener una mejor visión general de tus finanzas"	
+			},
+			"reset": {
+				"title": "Reiniciar cuenta",
+				"description": "Su cuenta de usuario permanecerá, pero todos los datos serán eliminados para que pueda empezar desde una pizarra en blanco. Considere la posibilidad de exportar todos sus datos.",
+				"button": "Reiniciar mi cuenta de usuario del Blitz Budget"
+			},
+			"delete": {
+				"title": "Borrar cuenta",
+				"description": "Tengan cuidado. Esto eliminará su cuenta de usuario y toda la información que haya introducido. Le recomendamos que exporte todos sus datos",
+				"button": "Borrar mi cuenta de usuario del Blitz Budget"
+			},
+			"question": {
+				"title": "¿Tiene una pregunta?",
+				"feature": "Enviar una solicitud la característica",
+				"ask": "Pregúntenos directamente",
+				"help": "Centro de ayuda"
+			}
+		}
+	},
+	"wallet": {
+		"page": {
+			"title": "Carteras",
+			"nav": {
+				"manage": "Administrar las carteras",
+				"done": "Hecho",
+				"delete": "Borrar cartera"
+			},
+			"main": {
+				"title": "¿Qué cartera?",
+				"add": {
+					"title": "Agregar cartera",
+					"withWallet": "Monedas con cartera",
+					"withoutWallet": "Monedas sin cartera",
+					"button": "Añadir",
+					"cancel": "Cancelar"
+				},
+				"manage": {
+					"title": "Administrar la cartera",
+					"preference": "¿Cuál es su preferencia monetaria?",
+					"withWallet": "Monedas con cartera",
+					"withoutWallet": "Monedas sin cartera",
+					"save": "Guardar",
+					"cancel": "Cancelar"
+				}
 			}
 		}
 	}

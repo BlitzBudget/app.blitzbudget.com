@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	  <title>
+	  <title data-i18n="budget.page.title">
 	    Budget
 	  </title>
 	  <link href="/css/budgets.min.css" rel="stylesheet preload" as="style">
@@ -19,7 +19,7 @@
 								<div id="" class="col-lg-3">
 									<div id="" class="w-100 animationBudget"></div>
 								</div>
-								<div class="col-lg-9 text-right headingDiv justify-content-center align-self-center mild-text" id="">Remaining (%)</div>
+								<div class="col-lg-9 text-right headingDiv justify-content-center align-self-center mild-text" id="" data-i18n="budget.page.card.remaining">Remaining (%)</div>
 							</div>
 							<div class="row">
 								<div class="col-lg-3">
@@ -37,7 +37,7 @@
 							<div class="row">
 								<div id="" class="col-lg-11">
 									<div id="remainingAmountMock" class="d-inline-block animationBudget"></div>
-									<span class="mild-text"> Remaining</span>
+									<span class="mild-text" data-i18n="budget.page.card.remain"> Remaining</span>
 								</div>
 								<div id="" class="col-lg-1">
 								</div>
@@ -58,21 +58,21 @@
 		                  <div class="card-icon">
 		                    <i class="material-icons noselect">pie_chart</i>
 		                  </div>
-		                  <h5 class="card-title noselect">Budget Visualization</h5>
+		                  <h5 class="card-title noselect" data-i18n="budget.page.chart.title">Budget Visualization</h5>
 		                </div>
 		                <div class="card-body text-center">
 		                	<div id="chartBudgetVisualization" class="ct-chart">
 		                		<div class="material-spinner"></div>
 		                	</div>
 		                	<div>
-		               			<i class="material-icons noselect text-rose legend-spacing">fiber_manual_record</i><span class="align-middle">Total Budgeted</span>
+		               			<i class="material-icons noselect text-rose legend-spacing">fiber_manual_record</i><span class="align-middle" data-i18n="budget.page.chart.total">Total Budgeted</span>
 		               		</div>
-		               			<h4 id="totalBudgetedCategories" class="font-weight-bold transitionTextToNormal">0</h4><span> Categories</span>
+		               			<h4 id="totalBudgetedCategories" class="font-weight-bold transitionTextToNormal">0</h4><span data-i18n="budget.page.chart.categories"> Categories</span>
 		               		<hr>
 		               		<div>
-		                		<i class="material-icons noselect text-warning legend-spacing">fiber_manual_record</i><span class="align-middle">To Be Budgeted</span>
+		                		<i class="material-icons noselect text-warning legend-spacing">fiber_manual_record</i><span class="align-middle" data-i18n="budget.page.chart.tobebudgeted">To Be Budgeted</span>
 		                	</div>
-			                	<h4 id="toBeBudgeted" class="font-weight-bold">0</h4><span> Categories</span>
+			                	<h4 id="toBeBudgeted" class="font-weight-bold">0</h4><span data-i18n="budget.page.chart.categories"> Categories</span>
                			</div>
                		</div>
 				</div>
@@ -86,7 +86,7 @@
 		    <div id="categoryCompensationDisplay" class="modal-content">
 		      <div class="card card-plain">
 		        <div class="modal-header text-center">
-		          <h5 id="categoryCompensationTitle" class="modal-title card-title noselect">Compensate This Overspending With</h5>
+		          <h5 id="categoryCompensationTitle" class="modal-title card-title noselect" data-i18n="budget.page.compensation.title">Compensate This Overspending With</h5>
 		          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          	<i class="material-icons noselect">clear</i>
 		          </button>
@@ -96,8 +96,8 @@
 		        </div>
 		        <div class="modal-footer text-center">
 		        	<!-- Drop Down Button -->
-		        	<div class="btn-group btnGroup-1">
-					  <button class="categoryChosenCompensation-1 btn btn-secondary" disabled>Choose category</button>
+		        	<div class="btn-group btnGroup-1">s
+					  <button class="categoryChosenCompensation-1 btn btn-secondary" disabled data-i18n="budget.page.compensation.choose">Choose category</button>
 					  <button type="button" class="btn btn-rose dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <span class="sr-only">Toggle Dropdown</span>
 					  </button>
