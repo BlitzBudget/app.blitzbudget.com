@@ -30,7 +30,7 @@
 	// Success SVG Fragment
 	let successSVGFormed = successSvgMessage();
 	// String Today
-	const TODAY = 'Today';
+	const TODAY = window.translationData.transactions.dynamic.today;
 	// Initialize transactions Cache
 	window.transactionsCache = {};
 	// Initialize user budget 
@@ -51,7 +51,7 @@
 	            // Call the transaction API to fetch information.
 				initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = 'Transactions';
+		        document.getElementById('currentPage').textContent = window.translationData.transactions.dynamic.title;
 			});
 	 	}
 	}
@@ -67,7 +67,7 @@
 				translatePage(getLanguage());
 	            initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = 'Transactions';
+		        document.getElementById('currentPage').textContent = window.translationData.transactions.dynamic.title;;
 			});
 		});
 	}
@@ -179,13 +179,13 @@
 	   
 	   let amount = document.getElementById('amount').value;
 	   if(amount == null || amount == ''){
-		   fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Please fill the Amount.</p></div> <br/>',2000);
+		   fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.amounterror + '</p></div> <br/>',2000);
 		   formValidation = false;
 	   }
 	   
 	   amount = er.convertToNumberFromCurrency(amount,currentCurrencyPreference);
 	   if(amount == 0){
-		   fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Amount cannot be zero.</p></div> <br/>',2000);
+		   fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.nonzeroerror + '</p></div> <br/>',2000);
 		   formValidation = false;
 	   }
 	   
@@ -204,7 +204,7 @@
 	    let recurrenceValue = recurrence.getAttribute('data-target');
 	    // Security to ensure data is not manipulated
 	    if(notIncludesStr(recurrenceValues,recurrenceValue)) {
-	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Recurrence value selected is invalid',2000);
+	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.recurerror ,2000);
 	    	// enable button after successful submission
 		    addTransactionsButton.removeAttribute("disabled");
 	    	return;
@@ -217,7 +217,7 @@
 	    if(notIncludesStr(categoryOptions, 'Category#')) {
 	    	let chosenCategory = window.categoryMap[categoryOptions];
 	    	if(isEmpty(chosenCategory)) {
-	    		fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Chosen category is not valid. Please select a valid one.',2000);
+	    		fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.categoryerror,2000);
 	    		// enable button after successful submission
 		    	addTransactionsButton.removeAttribute("disabled");
 	    		return;
@@ -269,7 +269,7 @@
   	    	addTransactionsButton.removeAttribute("disabled");
   	    }
 	    ajaxData.onFailure = function(data) {
-  	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + 'Unable to add this transaction.</p></div> <br/>',2000);
+  	    	fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.unableerror + '</p></div> <br/>',2000);
   	    	registeredNewTransaction=false;
   	    	addTransactionsButton.removeAttribute("disabled");
 
@@ -366,7 +366,7 @@
 			populateRecentTransactions(result.Transaction);
         }
 		ajaxData.onFailure = function(thrownError) {
-			manageErrors(thrownError, "There was an error while fetching the transactions. Please try again later!",ajaxData);
+			manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror ,ajaxData);
         }
 		// Load all user transaction from API
 		jQuery.ajax({
@@ -462,9 +462,9 @@
 	function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
 		let dataPreferences = {};
 		if(totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
-			replaceHTML('legendPieChart', 'Please fill in adequare data build the chart');
+			replaceHTML('legendPieChart', window.translationData.transactions.dynamic.chart.empty);
 		} else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
-			replaceHTML('legendPieChart', 'Total Income & Total Overspent as a percentage of Total Expense');
+			replaceHTML('legendPieChart', window.translationData.transactions.dynamic.chart.expense);
 			replaceHTML('totalAvailableLabel', 'Total Overspent');
 			let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
 			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
@@ -474,7 +474,7 @@
 	                series: [totalIncomeTransactions,0,0,totalAvailableTransactions]
 	            };
 		} else  {
-			replaceHTML('legendPieChart', 'Total Spent & Total Available as a percentage of Total Income');
+			replaceHTML('legendPieChart', window.translationData.transactions.dynamic.chart.income);
 			replaceHTML('totalAvailableLabel', 'Total Available');
 			let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100),1);
 			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
@@ -550,7 +550,7 @@
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
 
-		let labels = ['Income', 'Spent', 'Available', "Overspent"];
+		let labels = [window.translationData.transactions.dynamic.chart.labels.income, window.translationData.transactions.dynamic.chart.labels.spent, window.translationData.transactions.dynamic.chart.labels.available, window.translationData.transactions.dynamic.chart.labels.overspent];
 
         var optionsPreferences = {
 		  donut: true,
@@ -657,7 +657,7 @@
     	
     	let messageParagraphElement = document.createElement('p');
     	messageParagraphElement.className = 'green-icon margin-bottom-zero margin-left-five';
-    	messageParagraphElement.textContent = 'Successfully added the transaction.';
+    	messageParagraphElement.textContent = window.translationData.transactions.dynamic.add.success;
     	
     	var br = document.createElement('br');
     	
@@ -816,7 +816,7 @@
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.textContent = "Oh! Snap! You don't have any transactions yet.";
+		emptyMessageRow.textContent = window.translationData.transactions.dynamic.empty.success;
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
 
@@ -868,7 +868,7 @@
 		
 		let elementWithDescription = document.createElement('div');
 		elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
-		elementWithDescription.textContent = isEmpty(userTransaction.description) ? 'No Description' : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
+		elementWithDescription.textContent = isEmpty(userTransaction.description) ? window.translationData.transactions.dynamic.card.description : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0,26) + '...';
 		tableCellTransactionDescription.appendChild(elementWithDescription);
 		
 		let elementWithCategoryName = document.createElement('div');
@@ -1025,7 +1025,7 @@
 	// Click on sort by creation date
 	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').textContent = 'Creation Date';
+		document.getElementById('sortByBtnTit').textContent = window.translationData.transactions.dynamic.sort.creationdate;
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
 		transactionsTable.classList.remove('d-table');
@@ -1054,7 +1054,7 @@
 	// Click on sort by creation date
 	$('body').on('click', '#categorySortBy' , function(e) {
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').textContent = 'Category';
+		document.getElementById('sortByBtnTit').textContent = window.translationData.transactions.dynamic.sort.category;
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the accountTable
@@ -1099,7 +1099,7 @@
 	// Sorts the table by aggregating transactions by account
 	$('body').on('click', '#accountSortBy' , function(e) {
 		// Change title of in the dropdown
-		document.getElementById('sortByBtnTit').textContent = 'Account';
+		document.getElementById('sortByBtnTit').textContent = window.translationData.transactions.dynamic.sort.account;
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
 		// hide the transactions table

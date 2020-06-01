@@ -38,8 +38,7 @@
 			"profile": "Profile"
 		},
 		"account": "Account",
-		"support": "Support",
-		"page": "Dashboard"
+		"support": "Support"
 	},
 	"sidebar": {
 		"overview": "Overview",
@@ -135,6 +134,40 @@
 				},
 				"button": "Add Transaction"
 			}
+		},
+		"dynamic": {
+			"title": "Transactions",
+			"today": "Today",
+			"add": {
+				"amounterror": "Please fill the Amount.",
+				"nonzeroerror": "Amount cannot be zero.",
+				"recurerror": "Recurrence value selected is invalid",
+				"categoryerror": "Chosen category is not valid. Please select a valid one.",
+				"unableerror": "Unable to add this transaction.",
+				"success": "Successfully added the transaction."
+			},
+			"get": {
+				"unableerror": "There was an error while fetching the transactions. Please try again later!"
+			},
+			"chart": {
+				"empty": "Please fill in adequare data to build a chart",
+				"expense": "Total Income & Total Overspent as a percentage of Total Expense",
+				"income": "Total Spent & Total Available as a percentage of Total Income",
+				"labels": {
+					"income": "Income",
+					"spent": "Spent",
+					"available": "Available",
+					"overspent": "Overspent"
+				}
+			},
+			"card": {
+				"description": "No Description"
+			},
+			"sort": {
+				"creationdate": "Creation Date",
+				"category": "Category",
+				"account": "Account"
+			}
 		}
 	},
 	"budget": {
@@ -165,6 +198,7 @@
 				"overspent": "Overspent (%)",
 				"tobebudgeted": "To Be Budgeted (%)",
 				"remaining": "Remaining (%)",
+				"remain": " Remaining",
 				"na": "NA",
 				"deleteerror": "Unable to delete the budget. Please refresh and try again.",
 				"empty": {

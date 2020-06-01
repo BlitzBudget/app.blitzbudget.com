@@ -287,7 +287,7 @@
 		
 		let currencyRemainingText = document.createElement('span');
 		currencyRemainingText.classList = 'mild-text'
-		currencyRemainingText.textContent = ' Remaining';
+		currencyRemainingText.textContent = window.translationData.budget.dynamic.card.remain;
 		cardProgressAndRemainingAmount.appendChild(currencyRemainingText);
 		cardBody.appendChild(cardProgressAndRemainingAmount);
 

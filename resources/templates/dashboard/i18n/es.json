@@ -38,8 +38,7 @@
 			"profile": "Perfil"
 		},
 		"account": "Cuenta",
-		"support": "Soporte",
-		"page": "Tablero de Control"
+		"support": "Soporte"
 	},
 	"sidebar": {
 		"overview": "Resumen",
@@ -136,6 +135,39 @@
 				},
 				"button": "Agregar transacción"
 			}
+		},
+		"dynamic": {
+			"title": "Transacciones",
+			"add": {
+				"amounterror": "Por favor, llene la cantidad.",
+				"nonzeroerror": "La cantidad no puede ser cero.",
+				"recurerror": "El valor de recurrencia seleccionado es inválido",
+				"categoryerror": "Categoría elegida no es válida. Por favor, seleccione una válida.",
+				"unableerror": "Incapaz de añadir esta transacción.",
+				"success": "Añadida con éxito la transacción."
+			},
+			"get": {
+				"unableerror": "Hubo un error al buscar las transacciones. ¡Por favor, inténtelo de nuevo más tarde!"
+			},
+			"chart": {
+				"empty": "Por favor, rellene los datos adecuados para construir un gráfico",
+				"expense": "Total de ingresos y total de gastos excesivos como porcentaje del total de gastos",
+				"income": "Total gastado y total disponible como porcentaje del total de ingresos",
+				"labels": {
+					"income": "Ingresos",
+					"spent": "Gastado",
+					"available": "Disponible",
+					"overspent": "Gasto excesivo"
+				}
+			},
+			"card": {
+				"description": "Sin descripción"
+			},
+			"sort": {
+				"creationdate": "Fecha de creación",
+				"category": "Categoría",
+				"account": "Cuenta"
+			}
 		}
 	},
 	"budget": {
@@ -166,6 +198,7 @@
 				"overspent": "Gasto excesivo (%)",
 				"tobebudgeted": "A presupuestar (%)",
 				"remaining": "Restante (%)",
+				"remain": " Restante",
 				"na": "NA",
 				"deleteerror": "No se puede borrar el presupuesto. ¡Por favor, refresque e intente de nuevo!",
 				"empty": {
