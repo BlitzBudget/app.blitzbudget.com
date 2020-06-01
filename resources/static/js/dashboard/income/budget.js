@@ -67,7 +67,7 @@
 
 		// Register Tooltips
 		let ttinit = $("#addFncTT");
-		ttinit.attr('data-original-title', 'Add Budget');
+		ttinit.attr('data-original-title', window.translationData.budget.dynamic.tooltip);
 		ttinit.tooltip({
 			delay: { "show": 300, "hide": 100 }
 	    });
@@ -226,7 +226,7 @@
 		let cardRemainingText = document.createElement('div');
 		cardRemainingText.classList = 'col-lg-6 text-right headingDiv justify-content-center align-self-center mild-text';
 		cardRemainingText.id = 'budgetInfoLabelInModal-' + userBudget.budgetId;
-		cardRemainingText.textContent = 'Remaining (%)';
+		cardRemainingText.textContent = window.translationData.budget.dynamic.card.remaining;
 		cardRowRemaining.appendChild(cardRemainingText);
 		cardBody.appendChild(cardRowRemaining);
 		
@@ -252,7 +252,7 @@
 		let cardRemainingPercentage = document.createElement('div');
 		cardRemainingPercentage.classList = 'col-lg-9 text-right percentageAvailable';
 		cardRemainingPercentage.id = 'percentageAvailable-' + userBudget.budgetId;
-		cardRemainingPercentage.textContent = 'NA';
+		cardRemainingPercentage.textContent = window.translationData.budget.dynamic.card.na;
 		cardRowPercentage.appendChild(cardRemainingPercentage);
 		cardBody.appendChild(cardRowPercentage);
 		
@@ -300,7 +300,7 @@
 		deleteIconDiv.classList = 'svg-container deleteIconWrapper d-inline-block';
 		deleteIconDiv.setAttribute('data-toggle','tooltip');
 		deleteIconDiv.setAttribute('data-placement','bottom');
-		deleteIconDiv.setAttribute('title','Delete budget');
+		deleteIconDiv.setAttribute('title', window.translationData.budget.dynamic.delete);
 		
 		// SVG for delete
 		let deleteSvgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
@@ -524,7 +524,7 @@
 	        	  updateProgressBarAndRemaining(userBudgetCache[userBudget.budgetId], document);
             }
             ajaxData.onFailure = function (thrownError) {
-            	manageErrors(thrownError, 'Unable to change the budget. Please try again',ajaxData);
+            	manageErrors(thrownError, window.translationData.budget.dynamic.changeerror,ajaxData);
             		
 	            // update the current element with the previous amount
 	            let formattedBudgetAmount = formatToCurrency(previousText);
@@ -824,7 +824,7 @@
 
 				let incomeCategoriesHSix = document.createElement('h6');
 				incomeCategoriesHSix.classList = 'dropdown-header';
-				incomeCategoriesHSix.textContent = 'Income';
+				incomeCategoriesHSix.textContent = window.translationData.budget.dynamic.income;
 				inputGroup.appendChild(incomeCategoriesHSix);
 
 				let incomeCategories = document.createElement('div');
@@ -840,7 +840,7 @@
 
 				let expenseCategoriesHSix = document.createElement('h6');
 				expenseCategoriesHSix.classList = 'dropdown-header';
-				expenseCategoriesHSix.textContent = 'Expense';
+				expenseCategoriesHSix.textContent = window.translationData.budget.dynamic.expense;
 				inputGroup.appendChild(expenseCategoriesHSix);
 
 				let expenseCategories = document.createElement('div');

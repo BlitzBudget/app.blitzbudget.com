@@ -211,7 +211,11 @@
 			"unableerror": "Unable to create the budgets. Please refresh and try again!",
 			"alreadyerror": "The selected category already has a budget. Please choose a different category!",
 			"changeerror": "Unable to change the budget category at this moment. Please try again!",
-			"allcategorieserror": "You have a budget for all the categories!"
+			"allcategorieserror": "You have a budget for all the categories!",
+			"tooltip": "Add Budget",
+			"delete": "Delete budget",
+			"income": "Income",
+			"expense": "Expense"
 		}
 	},
 	"overview": {
