@@ -67,7 +67,7 @@
 				translatePage(getLanguage());
 	            initialLoadOfTransactions();
 	            // Set Current Page
-		        document.getElementById('currentPage').textContent = window.translationData.transactions.dynamic.title;;
+		        document.getElementById('currentPage').textContent = window.translationData.transactions.dynamic.title;
 			});
 		});
 	}
@@ -111,7 +111,7 @@
 
 		// Register Tooltips
 		let ttinit = $("#addFncTT");
-		ttinit.attr('data-original-title', 'Add Transactions')
+		ttinit.attr('data-original-title', window.translationData.transactions.dynamic.add.tooltip);
 		ttinit.tooltip({
 			delay: { "show": 300, "hide": 100 }
 	    });

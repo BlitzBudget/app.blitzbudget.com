@@ -144,7 +144,8 @@
 				"recurerror": "Recurrence value selected is invalid",
 				"categoryerror": "Chosen category is not valid. Please select a valid one.",
 				"unableerror": "Unable to add this transaction.",
-				"success": "Successfully added the transaction."
+				"success": "Successfully added the transaction.",
+				"tooltip": "Add Transactions"
 			},
 			"get": {
 				"unableerror": "There was an error while fetching the transactions. Please try again later!"

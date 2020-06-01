@@ -138,13 +138,15 @@
 		},
 		"dynamic": {
 			"title": "Transacciones",
+			"today": "Hoy",
 			"add": {
 				"amounterror": "Por favor, llene la cantidad.",
 				"nonzeroerror": "La cantidad no puede ser cero.",
 				"recurerror": "El valor de recurrencia seleccionado es inválido",
 				"categoryerror": "Categoría elegida no es válida. Por favor, seleccione una válida.",
 				"unableerror": "Incapaz de añadir esta transacción.",
-				"success": "Añadida con éxito la transacción."
+				"success": "Añadida con éxito la transacción.",
+				"tooltip": "Añadir Transacciones"
 			},
 			"get": {
 				"unableerror": "Hubo un error al buscar las transacciones. ¡Por favor, inténtelo de nuevo más tarde!"
