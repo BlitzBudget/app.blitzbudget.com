@@ -206,5 +206,33 @@
 				"help": "Help center"
 			}
 		}
+	},
+	"wallet": {
+		"page": {
+			"title": "Wallets",
+			"nav": {
+				"manage": "Manage wallets",
+				"done": "Done",
+				"delete": "Delete wallet"
+			},
+			"main": {
+				"title": "Which wallet?",
+				"add": {
+					"title": "Add wallet",
+					"withWallet": "Currencies with wallet",
+					"withoutWallet": "Currencies without wallet",
+					"button": "Add",
+					"cancel": "Cancel"
+				},
+				"manage": {
+					"title": "Manage wallet",
+					"preference": "What is your currency preference?",
+					"withWallet": "Currencies with wallet",
+					"withoutWallet": "Currencies without wallet",
+					"save": "Save",
+					"cancel": "Cancel"
+				}
+			}
+		}
 	}
 }

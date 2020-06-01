@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>BlitzBudget</title>
+	<title data-i18n="wallet.page.title">Wallets | BlitzBudget</title>
     <meta name="author" content="BLITZBUDGET a.s. www.blitzbudget.com">
     <meta name="copyright" content="Copyright 2020 BLITZBUDGET a.s. | All Rights Reserved">
     <meta name="description" content="Control all your money in one place with ease using Blitzbudget. track your transactions, create a financial plan and execute your dreams. Get BlitzBudget now!">        
@@ -83,21 +83,21 @@
 			        </svg>
 	 			</a>
 	 			<div class="spacer"></div>
-	 			<button id="manageWallets" class="btn btn-outline-info mr-4 d-sm-none d-block">Manage wallets</button>
-	 			<button id="doneManage" class="btn btn-outline-info mr-5 d-none">Done</button>
-	 			<button id="deleteWallet" class="btn btn-outline-info mr-5 d-none">Delete wallet</button>
+	 			<button id="manageWallets" class="btn btn-outline-info mr-4 d-sm-none d-block" data-i18n="wallet.page.nav.manage">Manage wallets</button>
+	 			<button id="doneManage" class="btn btn-outline-info mr-5 d-none" data-i18n="wallet.page.nav.done">Done</button>
+	 			<button id="deleteWallet" class="btn btn-outline-info mr-5 d-none" data-i18n="wallet.page.nav.delete">Delete wallet</button>
 	 		</div>
 	 	</nav>
 	 </div>
 	 <div id="root">
 	 	<section class="Cards">
 	 		<div id="whichWallet" class="row m-lg-auto mt-5 mb-0 features-body text-center">
-	 			<h1 class="heading-wallet my-lg-4 mt-4 text-animation fadeIn">
+	 			<h1 class="heading-wallet my-lg-4 mt-4 text-animation fadeIn" data-i18n="wallet.page.main.title">
 			                    Which wallet?
 			    </h1>
 	 		</div>
 	 		<div id="addWallet" class="row m-auto features-body text-center d-none">
-	 			<h1 class="heading-wallet my-4 text-animation fadeIn">
+	 			<h1 class="heading-wallet my-4 text-animation fadeIn" data-i18n="wallet.page.main.add.title">
 			                    Add wallet
 			    </h1>
 			 	<div id="chosenCurrencyWDropdown" class="btn-group btnGroup-1 m-auto text-animation fadeIn">
@@ -110,20 +110,20 @@
 		              <div class="input-group">
 		                <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
 		                <input id="chosenCurrencyWInp" class="form-control w-75 mr-2" type="text" placeholder="Search...">
-		                <h6 class="dropdown-header">Currencies with wallet</h6>
+		                <h6 class="dropdown-header" data-i18n="wallet.page.main.add.withWallet">Currencies with wallet</h6>
 		                <div id="currentCurrencies"></div>
 		                <div class="dropdown-divider"></div>
-		                <h6 class="dropdown-header">Currencies without wallet</h6>
+		                <h6 class="dropdown-header" data-i18n="wallet.page.main.add.withoutWallet">Currencies without wallet</h6>
 		              </div>
 		            </div>
 		        </div>
 		        <div class="wrapper-button text-animation fadeIn">
-		        	<button type="button" id="confirmWallet" class="btn btn-info btn-large mr-4" aria-label="">Continue</button>
-		        	<button type="button" id="cancelWallet" class="btn btn-secondary btn-large" aria-label="">Cancel</button>
+		        	<button type="button" id="confirmWallet" class="btn btn-info btn-large mr-4" aria-label="" data-i18n="wallet.page.main.add.button">Add</button>
+		        	<button type="button" id="cancelWallet" class="btn btn-secondary btn-large" aria-label="" data-i18n="wallet.page.main.add.cancel">Cancel</button>
 		        </div>
 			 </div>
 			 <div id="manageWallet" class="row m-auto features-body text-center d-none">
-	 			<h1 class="heading-wallet my-4 text-animation fadeIn">
+	 			<h1 class="heading-wallet my-4 text-animation fadeIn" data-i18n="wallet.page.main.manage.title">
 			                    Manage wallet
 			    </h1>
 			    <div data-gramm_editor="false" class="manageNameWrapper text-left m-auto">
@@ -131,7 +131,7 @@
 					<input id="manageWalletName" type="text" autocapitalize="off" spellcheck="false" autocorrect="off">
 				</div>
 				<div data-gramm_editor="false" class="manageCurrencyWrapper text-left m-auto">
-					<label>What is your currency preference?</label>
+					<label data-i18n="wallet.page.main.manage.preference">What is your currency preference?</label>
 				 	<div id="chosenCurrencyWDropdownMW" class="btn-group btnGroup-1 m-auto text-animation fadeIn">
 			            <button id="chosenCurrencyWMW" class="chosenCurrency btn btn-secondary w-md-15 w-8" disabled="">American Dollars</button>
 			            <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -142,17 +142,17 @@
 			              <div class="input-group">
 			                <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
 			                <input id="chosenCurrencyWInpMW" class="form-control w-75 mr-2" type="text" placeholder="Search...">
-			                <h6 class="dropdown-header">Currencies with wallet</h6>
+			                <h6 class="dropdown-header" data-i18n="wallet.page.main.manage.withWallet">Currencies with wallet</h6>
 			                <div id="currentCurrenciesMW"></div>
 			                <div class="dropdown-divider"></div>
-			                <h6 class="dropdown-header">Currencies without wallet</h6>
+			                <h6 class="dropdown-header" data-i18n="wallet.page.main.manage.withoutWallet">Currencies without wallet</h6>
 			              </div>
 			            </div>
 			        </div>
 		    	</div>
 		        <div class="wrapper-button text-animation fadeIn">
-		        	<button type="button" id="modifyWallet" class="btn btn-info btn-large mr-4" aria-label="">Save</button>
-		        	<button type="button" id="cancelModification" class="btn btn-secondary btn-large" aria-label="">Cancel</button>
+		        	<button type="button" id="modifyWallet" class="btn btn-info btn-large mr-4" aria-label="" data-i18n="wallet.page.main.manage.save">Save</button>
+		        	<button type="button" id="cancelModification" class="btn btn-secondary btn-large" aria-label="" data-i18n="wallet.page.main.manage.cancel">Cancel</button>
 		        </div>
 			 </div>
 	 		<!-- Generic Add Functionality -->

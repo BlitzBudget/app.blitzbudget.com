@@ -207,5 +207,33 @@
 				"help": "Centro de ayuda"
 			}
 		}
+	},
+	"wallet": {
+		"page": {
+			"title": "Carteras",
+			"nav": {
+				"manage": "Administrar las carteras",
+				"done": "Hecho",
+				"delete": "Borrar cartera"
+			},
+			"main": {
+				"title": "¿Qué cartera?",
+				"add": {
+					"title": "Agregar cartera",
+					"withWallet": "Monedas con cartera",
+					"withoutWallet": "Monedas sin cartera",
+					"button": "Añadir",
+					"cancel": "Cancelar"
+				},
+				"manage": {
+					"title": "Administrar la cartera",
+					"preference": "¿Cuál es su preferencia monetaria?",
+					"withWallet": "Monedas con cartera",
+					"withoutWallet": "Monedas sin cartera",
+					"save": "Guardar",
+					"cancel": "Cancelar"
+				}
+			}
+		}
 	}
 }

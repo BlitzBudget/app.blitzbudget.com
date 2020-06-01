@@ -11,6 +11,11 @@ function translatePage(locale) {
 
 	      // Examine the text in the response
 	      response.json().then(function(data) {
+	      	// Add to a cache
+	      	window.translationData = {
+	      		"locale": locale,
+	      		"data": data
+	      	}
 	        replaceText(data);
 	      });
 	    }
@@ -21,7 +26,12 @@ function translatePage(locale) {
 }
 
 function getLanguage() {
-  var lang = navigator.languages ? navigator.languages[0] : navigator.language;
+  // If locale is not empty from the user cache then
+  if(isNotEmpty(window.currentUser) && isNotEmpty(window.currentUser.locale)) {
+  	return window.currentUser.locale.substr(0,2);
+  }
+ 
+  let lang = navigator.languages ? navigator.languages[0] : navigator.language;
   
   return lang.substr(0, 2);
 }
