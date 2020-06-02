@@ -162,7 +162,9 @@
 					"spent": "Spent",
 					"available": "Available",
 					"overspent": "Overspent"
-				}
+				},
+				"available": "Total Available",
+				"overspent": "Total Overspent"
 			},
 			"card": {
 				"description": "No Description"

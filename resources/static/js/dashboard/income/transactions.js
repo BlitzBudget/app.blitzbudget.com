@@ -30,7 +30,7 @@
 	// Success SVG Fragment
 	let successSVGFormed = successSvgMessage();
 	// String Today
-	const TODAY = window.translationData.transactions.dynamic.today;
+	const TODAY = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.today : 'Today';
 	// Initialize transactions Cache
 	window.transactionsCache = {};
 	// Initialize user budget 
@@ -52,7 +52,7 @@
 				initialLoadOfTransactions();
 	            // Set Current Page
 	            let currentPage = document.getElementById('currentPage');
-				currentPage.setAttribute('data-i18n', transactions.dynamic.title);
+				currentPage.setAttribute('data-i18n', 'transactions.dynamic.title');
 				currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.title : "Transactions";
 			});
 	 	}
@@ -70,7 +70,7 @@
 	            initialLoadOfTransactions();
 	            // Set Current Page
 		        let currentPage = document.getElementById('currentPage');
-				currentPage.setAttribute('data-i18n', transactions.dynamic.title);
+				currentPage.setAttribute('data-i18n', 'transactions.dynamic.title');
 				currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.title : "Transactions";
 			});
 		});
@@ -115,7 +115,8 @@
 
 		// Register Tooltips
 		let ttinit = $("#addFncTT");
-		ttinit.attr('data-original-title', window.translationData.transactions.dynamic.add.tooltip);
+		let tttitle = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.add.tooltip : 'Add Transactions';
+		ttinit.attr('data-original-title', tttitle);
 		ttinit.tooltip({
 			delay: { "show": 300, "hide": 100 }
 	    });
@@ -466,10 +467,13 @@
 	function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
 		let dataPreferences = {};
 		if(totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
-			replaceHTML('legendPieChart', window.translationData.transactions.dynamic.chart.empty);
+			let empty = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.empty : "Please fill in adequare data to build a chart";
+			replaceHTML('legendPieChart', empty);
 		} else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
-			replaceHTML('legendPieChart', window.translationData.transactions.dynamic.chart.expense);
-			replaceHTML('totalAvailableLabel', 'Total Overspent');
+			let exp = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.expense : "Total Income & Total Overspent as a percentage of Total Expense";
+			let overspent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.overspent : "Total Overspent";
+			replaceHTML('legendPieChart', exp);
+			replaceHTML('totalAvailableLabel', overspent);
 			let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100),1);
 			let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
@@ -478,8 +482,10 @@
 	                series: [totalIncomeTransactions,0,0,totalAvailableTransactions]
 	            };
 		} else  {
-			replaceHTML('legendPieChart', window.translationData.transactions.dynamic.chart.income);
-			replaceHTML('totalAvailableLabel', 'Total Available');
+			let income = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.income : "Total Spent & Total Available as a percentage of Total Income";
+			let available = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.available : "Total Available";
+			replaceHTML('legendPieChart', income);
+			replaceHTML('totalAvailableLabel', available);
 			let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100),1);
 			let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100),1);
 			// labels: [INCOME,EXPENSE,AVAILABLE]
@@ -553,8 +559,11 @@
 	// Introduce Chartist pie chart
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
-
-		let labels = [window.translationData.transactions.dynamic.chart.labels.income, window.translationData.transactions.dynamic.chart.labels.spent, window.translationData.transactions.dynamic.chart.labels.available, window.translationData.transactions.dynamic.chart.labels.overspent];
+		let inc  = window.translationData.transactions.dynamic.chart.labels.income;
+		let spent = , window.translationData.transactions.dynamic.chart.labels.spent;
+		let avai = window.translationData.transactions.dynamic.chart.labels.available;
+		let oversp = window.translationData.transactions.dynamic.chart.labels.overspent;
+		let labels = [inc, spent, avai, oversp];
 
         var optionsPreferences = {
 		  donut: true,
@@ -661,7 +670,7 @@
     	
     	let messageParagraphElement = document.createElement('p');
     	messageParagraphElement.className = 'green-icon margin-bottom-zero margin-left-five';
-    	messageParagraphElement.setAttribute('data-i18n', transactions.dynamic.add.success);
+    	messageParagraphElement.setAttribute('data-i18n', 'transactions.dynamic.add.success');
     	messageParagraphElement.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.add.success : "Successfully added the transaction.";
     	
     	var br = document.createElement('br');
@@ -821,7 +830,7 @@
 
 		let emptyMessageRow = document.createElement('div');
 		emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-		emptyMessageRow.setAttribute('data-i18n', transactions.dynamic.empty.success);
+		emptyMessageRow.setAttribute('data-i18n', 'transactions.dynamic.empty.success');
 		emptyMessageRow.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.empty.success : "Oh! Snap! You don't have any transactions yet.";
 		cell2.appendChild(emptyMessageRow);
 		rowEmpty.appendChild(cell2);
@@ -1032,7 +1041,7 @@
 	$('body').on('click', '#creationDateSortBy' , function(e) {	
 		// Change title of in the dropdown
 		let sortByDiv = document.getElementById('sortByBtnTit');
-		sortByDiv.setAttribute('data-i18n', transactions.dynamic.sort.creationdate);
+		sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.creationdate');
 		sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.creationdate : "Creation Date";
 		// hide the category view
 		let transactionsTable = document.getElementById('transactionsTable');
@@ -1063,7 +1072,7 @@
 	$('body').on('click', '#categorySortBy' , function(e) {
 		// Change title of in the dropdown
 		let sortByDiv = document.getElementById('sortByBtnTit');
-		sortByDiv.setAttribute('data-i18n', transactions.dynamic.sort.category);
+		sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.category');
 		sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.category : "Category";
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
@@ -1110,7 +1119,7 @@
 	$('body').on('click', '#accountSortBy' , function(e) {
 		// Change title of in the dropdown
 		let sortByDiv = document.getElementById('sortByBtnTit');
-		sortByDiv.setAttribute('data-i18n', transactions.dynamic.sort.account);
+		sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.account');
 		sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
 		// hide the recent transactions
 		document.getElementById(recentTransactionsId).classList.add('d-none');
