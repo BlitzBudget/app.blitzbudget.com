@@ -211,7 +211,6 @@
 }
 
 #accountPickerWrapper.knowMore {
-	height: 28rem;
 	transition: height 0.25s ease-in;
 	color: #5d7079;
 }

@@ -22,8 +22,6 @@ let tickIconSVG = tickIcon();
 	accountSubTypeToType[assetdata] = 'ASSET';
 	accountSubTypeToType[creditcarddata] = 'DEBT';
 	accountSubTypeToType[liabilitydata] = 'DEBT';
-	Object.freeze(accountSubTypeToType);
-	Object.seal(accountSubTypeToType);
 	// Toggle Account Information
 	let showAccountsDiv = document.getElementById("showAccounts");
 	if(isNotEmpty(showAccountsDiv)) {
@@ -58,6 +56,19 @@ let tickIconSVG = tickIcon();
 	
 	// Click any drop down menu
 	$(document).on('click', ".accountType", function() {
+		
+		let sadata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.savingsacc : 'Savings Account';
+		let cadata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.currentacc : 'Current Account';
+		let cashdata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.cash : 'Cash';
+		let assetdata =  isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.assets : 'Assets';
+		let creditcarddata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.creditcard : 'Credit Card';
+		let liabilitydata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.liability : 'Liability';
+		accountSubTypeToType[sadata] = 'ASSET';
+		accountSubTypeToType[cadata] = 'ASSET';
+		accountSubTypeToType[cashdata] = 'ASSET';
+		accountSubTypeToType[assetdata] = 'ASSET';
+		accountSubTypeToType[creditcarddata] = 'DEBT';
+		accountSubTypeToType[liabilitydata] = 'DEBT';
 		let selectedAT = this.getAttribute('data-target');
 		let accountTypeECL = document.getElementById('accountTypeErr').classList;
 		let changeClrBtn = document.getElementsByClassName('changeBtnClr')[0].classList;
@@ -1071,6 +1082,12 @@ function unSyncedAccount() {
 	budgetHeading.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.savings : 'Savings';
 	dropdownContentWrap.appendChild(budgetHeading);
 	
+	let sadata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.savingsacc : 'Savings Account';
+	let cadata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.currentacc : 'Current Account';
+	let cashdata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.cash : 'Cash';
+	let assetdata =  isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.assets : 'Assets';
+	let creditcarddata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.creditcard : 'Credit Card';
+	let liabilitydata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.liability : 'Liability';
 	// Savings
 	let savingsAnchor = document.createElement('a');
 	savingsAnchor.classList = 'accountType d-block px-3 py-1 small';
