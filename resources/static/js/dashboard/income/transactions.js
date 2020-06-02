@@ -560,7 +560,7 @@
 	function buildPieChart(dataPreferences, id) {
 		 /*  **************** Public Preferences - Pie Chart ******************** */
 		let inc  = window.translationData.transactions.dynamic.chart.labels.income;
-		let spent = , window.translationData.transactions.dynamic.chart.labels.spent;
+		let spent = window.translationData.transactions.dynamic.chart.labels.spent;
 		let avai = window.translationData.transactions.dynamic.chart.labels.available;
 		let oversp = window.translationData.transactions.dynamic.chart.labels.overspent;
 		let labels = [inc, spent, avai, oversp];

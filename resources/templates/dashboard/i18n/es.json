@@ -302,5 +302,60 @@
 				}
 			}
 		}
+	},
+	"account": {
+		"dynamic": {
+			"feature": "¡Esta característica viene pronto!",
+			"create": "Crear una cuenta",
+			"addtitle": "Añadir cuenta no sincronizada",
+			"invalidtype": "Tipo de cuenta inválido. Por favor, inténtelo de nuevo!",
+			"unsynacc": "Cuenta no sincronizada '",
+			"unsyncacc2": "' ha sido creado con éxito",
+			"adderror": "¡Incapaz de añadir la cuenta en este momento. Por favor, inténtelo de nuevo!",
+			"selecterror": "¡Incapaz de seleccionar la cuenta en este momento. Por favor, inténtelo de nuevo!",
+			"accounttype": "Tipos de cuenta",
+			"add": {
+				"unsync": {
+					"description": "Siempre tendrás la opción de desincronizar o sincronizar las cuentas en cualquier momento.",
+					"connect": "Conectar con su institución financiera",
+					"import": "Importar desde un archivo *",
+					"manual": "Introducir manualmente las transacciones",
+					"available": "Disponibilidad internacional *",
+					"mobile": "Disponibilidad de aplicaciones móviles",
+					"desc": "Desincronizado"
+				},
+				"sync": {
+					"description": "Sincronizado"
+				},
+				"accstart": "¡Que empiece tu cuenta! Siempre puedes sincronizarla más tarde.",
+				"typeacc": "¿Cuál es el tipo de tu cuenta?",
+				"cash": "efectivo",
+				"savings": "Ahorros",
+				"savingsacc": "Cuenta de ahorros",
+				"currentacc": "Cuenta corrientes",
+				"assets": "Activos",
+				"borrowing": "Tomar prestado",
+				"creditcard": "Tarjeta de crédito",
+				"liability": "Responsabilidad",
+				"accounttype": "El tipo de cuenta no es válido",
+				"giveitname": "Dale un nombre",
+				"accbalance": "¿Cuál es el saldo de su cuenta?",
+				"numanddot": "El saldo de la cuenta sólo puede contener números y puntos.",
+				"or": "o"
+			},
+			"know": {
+				"back": "Volver"
+			},
+			"manage": "Cuenta",
+			"populate": {
+				"name": "Cuentas",
+				"viewall": "ver todo",
+				"accsync": "Sincronización automática de cuentas",
+				"unsyncacc": "Cuentas no sincronizadas",
+				"syncorunsync": "¿Sincronizado o no sincronizado?",
+				"knowmore": "Saber más",
+				"helpdecide": " para ayudarte a decidir"
+			}
+		}
 	}
 }
