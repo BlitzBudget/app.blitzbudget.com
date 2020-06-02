@@ -10,20 +10,14 @@ let tickIconSVG = tickIcon();
 (function scopeWrapper($) {
 
 	let accountSubTypeToType = {};
-	accountSubTypeToType['SAVINGS ACCOUNT'] = 'ASSET';
-	accountSubTypeToType['CURRENT ACCOUNT'] = 'ASSET';
-	accountSubTypeToType['CASH'] = 'ASSET';
-	accountSubTypeToType['ASSETS'] = 'ASSET';
-	accountSubTypeToType['CREDIT CARD'] = 'DEBT';
-	accountSubTypeToType['LIABILITY'] = 'DEBT';
+	accountSubTypeToType['Savings Account'] = 'ASSET';
+	accountSubTypeToType['Current Account'] = 'ASSET';
+	accountSubTypeToType['Cash'] = 'ASSET';
+	accountSubTypeToType['Assets'] = 'ASSET';
+	accountSubTypeToType['Credit Card'] = 'DEBT';
+	accountSubTypeToType['Liability'] = 'DEBT';
 	Object.freeze(accountSubTypeToType);
 	Object.seal(accountSubTypeToType);
-	const accountTypeConst = ['Savings Account','Current Account','Cash','Assets','Credit Card','Liability'];
-	Object.freeze(accountTypeConst);
-	Object.seal(accountTypeConst);
-	const accountTypeUCConst = ['SAVINGS ACCOUNT','CURRENT ACCOUNT','CASH','ASSETS','CREDIT CARD','LIABILITY'];
-	Object.freeze(accountTypeUCConst);
-	Object.seal(accountTypeUCConst);
 	// Toggle Account Information
 	let showAccountsDiv = document.getElementById("showAccounts");
 	if(isNotEmpty(showAccountsDiv)) {
@@ -66,10 +60,12 @@ let tickIconSVG = tickIcon();
 		let accBalance = document.getElementById('accountBal').value;
 		
 		// Set Text
-		document.getElementsByClassName('accountChosen')[0].textContent = selectedAT;
+		let accountChosen = document.getElementsByClassName('accountChosen')[0];
+		accountChosen.textContent = selectedAT;
+		accountChosen.setAttribute('data-target', selectedAT);
 		
 		// If the account Type is not in the selected
-		if(!includesStr(accountTypeConst,selectedAT)) {
+		if(isEmpty(accountSubTypeToType[selectedAT])) {
 			accountTypeECL.remove('d-none');
 			changeClrBtn.remove('btn-dynamic-color');
 			changeClrBtn.add('btn-danger');
@@ -85,7 +81,10 @@ let tickIconSVG = tickIcon();
 		}
 		
 		// Enable confirm button
-		if(accountTypeECL.contains('d-none') && accountBalErr.contains('d-none') && regexForFloat.test(accBalance) && includesStr(accountTypeConst,selectedAT)) {
+		if(accountTypeECL.contains('d-none') 
+			&& accountBalErr.contains('d-none') 
+			&& regexForFloat.test(accBalance) 
+			&& isNotEmpty(accountTypeConst[selectedAT])) {
 			accCfrmBtn.removeAttribute('disabled');
 		}
 		
@@ -120,21 +119,24 @@ let tickIconSVG = tickIcon();
 
 	// Synchronized accounts
 	$(document).on('click', "#syncAccountWrap", function() {
-		showNotification("This feature is coming soon!",  "info");
+		let feature = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.feature : "This feature is coming soon!";
+		showNotification(feature,  "info");
 	});
 	
 	
 	// Click on Add unsynced account 
 	$(document).on('click', "#unsyncedAccountWrap", function() {
+		let create = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.create : 'Create Account';
+		let addtitle = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.addtitle : 'Add Unsynced Account';
 		// Show Sweet Alert
 		Swal.fire({
-	        title: 'Add Unsynced Account',
+	        title: addtitle,
 	        html: unSyncedAccount(),
 	        inputAttributes: {
 	            autocapitalize: 'on'
 	        },
 	        confirmButtonClass: 'createAccount btn btn-dynamic-color',
-	        confirmButtonText: 'Create Account',
+	        confirmButtonText: create,
 	        showCloseButton: true,
 	        buttonsStyling: false,
 	        customClass: {
@@ -157,7 +159,7 @@ let tickIconSVG = tickIcon();
 	    }).then(function(result) {
 	    	// If confirm button is clicked
 	    	if (result.value) {
-	    		let accountSubType = document.getElementsByClassName('accountChosen')[0].textContent;
+	    		let accountSubType = document.getElementsByClassName('accountChosen')[0].getAttribute('data-target');
 	    		// Populate the JSON form data
 		    	var values = {};
 				values['linked'] = false;
@@ -170,8 +172,8 @@ let tickIconSVG = tickIcon();
 				values['selectedAccount'] = false;
 				
 				// Check if the account type is valid (Upper Case)
-				if(!includesStr(accountTypeUCConst,values['accountSubType'])) {
-					 showNotification('Invalid account type. Please try again!',window._constants.notification.error);
+				if(isEmpty(accountTypeConst[values['accountSubType']])) {
+					 showNotification(window.translationData.account.dynamic.invalidtype,window._constants.notification.error);
 					 return;
 				}
 				
@@ -190,8 +192,7 @@ let tickIconSVG = tickIcon();
 		   			result['bank_account_name'] = result.bankAccountName;
 		   			result['account_type'] = result.accountType;
 		   			result['selected_account'] = result.selectedAccount;
-
-		        	showNotification('Unsynced account "' + values['bankAccountName'] + '" has been created successfully',window._constants.notification.success);
+		        	showNotification(window.translationData.account.dynamic.unsynacc + values['bankAccountName'] + window.translationData.account.dynamic.unsyncacc2,window._constants.notification.success);
 		        	// Add Accounts to the preview mode if < 4
 		        	let bARows = document.getElementsByClassName('bARow');
 		        	if(bARows.length < 4) {
@@ -214,7 +215,7 @@ let tickIconSVG = tickIcon();
 					document.getElementById('recTransAndAccTable').appendChild(accountHeaderNew);
 		        }
 		        ajaxData.onFailure = function(thrownError) {
-		        	 manageErrors(thrownError, 'Unable to add the account at this moment. Please try again!',ajaxData);
+		        	 manageErrors(thrownError, window.translationData.account.dynamic.adderror,ajaxData);
 		        }
 
 				// AJAX call for adding a new unlinked Account
@@ -285,7 +286,7 @@ let tickIconSVG = tickIcon();
     	  closeAccountPopup();
 	    }
         ajaxData.onFailure = function(thrownError) {
-        	manageErrors(thrownError, 'Unable to select the account at this moment. Please try again!',ajaxData);
+        	manageErrors(thrownError, window.translationData.account.dynamic.selecterror,ajaxData);
         }
 		
 		// AJAX call for adding a new unlinked Account
@@ -373,14 +374,14 @@ let tickIconSVG = tickIcon();
 		
 		let headingElem = document.createElement('h4');
 		headingElem.classList = 'col-lg-10 accOptions text-left pb-2 mb-0';
-		headingElem.textContent = 'Account Types';
+		headingElem.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.accounttype : 'Account Types';
 		headingWrap.appendChild(headingElem);
 		knowMoreFrag.appendChild(headingWrap);
 		
 		// Account Info Description
 		let accountInfoDesc = document.createElement('div');
 		accountInfoDesc.classList = 'accInfoDesc text-left small mt-3 noselect';
-		accountInfoDesc.textContent = 'You will always have the option to unsync or sync the accounts at any time.';
+		accountInfoDesc.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.description : 'You will always have the option to unsync or sync the accounts at any time.';
 		knowMoreFrag.appendChild(accountInfoDesc);
 		
 		// Table Responsive
@@ -423,12 +424,12 @@ let tickIconSVG = tickIcon();
 		
 		let titleSC1 = document.createElement('div');
 		titleSC1.classList = 'd-table-cell';
-		titleSC1.textContent = 'Sync';
+		titleSC1.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.sync.description : 'Sync';
 		firstTableRow.appendChild(titleSC1);
 		
 		let titlsTC1 = document.createElement('div');
 		titlsTC1.classList = 'd-table-cell';
-		titlsTC1.textContent = 'Unsync';
+		titlsTC1.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.desc : 'Unsync';
 		firstTableRow.appendChild(titlsTC1);
 		tableInfo.appendChild(firstTableRow);
 		
@@ -437,7 +438,7 @@ let tickIconSVG = tickIcon();
 		SixthTableRow.classList = 'd-table-row';
 		
 		let emptyFC6 = document.createElement('div');
-		emptyFC6.textContent = 'Connect to your Financial Institution';
+		emptyFC6.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.connect : 'Connect to your Financial Institution';
 		emptyFC6.classList = 'd-table-cell pt-2 text-left align-middle';
 		SixthTableRow.appendChild(emptyFC6);
 		
@@ -457,7 +458,7 @@ let tickIconSVG = tickIcon();
 		secondTableRow.classList = 'd-table-row';
 		
 		let emptyFC2 = document.createElement('div');
-		emptyFC2.textContent = 'Import from a file *';
+		emptyFC2.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.import : 'Import from a file *';
 		emptyFC2.classList = 'd-table-cell pt-2 text-left align-middle';
 		secondTableRow.appendChild(emptyFC2);
 		
@@ -477,7 +478,7 @@ let tickIconSVG = tickIcon();
 		ThirdTableRow.classList = 'd-table-row';
 		
 		let emptyFC3 = document.createElement('div');
-		emptyFC3.textContent = 'Manually Enter Transactions';
+		emptyFC3.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.manual : 'Manually Enter Transactions';
 		emptyFC3.classList = 'd-table-cell pt-2 text-left align-middle';
 		ThirdTableRow.appendChild(emptyFC3);
 		
@@ -497,7 +498,7 @@ let tickIconSVG = tickIcon();
 		FourthTableRow.classList = 'd-table-row';
 		
 		let emptyFC4 = document.createElement('div');
-		emptyFC4.textContent = 'International Availability *';
+		emptyFC4.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.available : 'International Availability *';
 		emptyFC4.classList = 'd-table-cell pt-2 text-left align-middle';
 		FourthTableRow.appendChild(emptyFC4);
 		
@@ -517,7 +518,7 @@ let tickIconSVG = tickIcon();
 		FifthTableRow.classList = 'd-table-row';
 		
 		let emptyFC5 = document.createElement('div');
-		emptyFC5.textContent = 'Mobile Apps Availability';
+		emptyFC5.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.unsync.mobile : 'Mobile Apps Availability';
 		emptyFC5.classList = 'd-table-cell pt-2 text-left align-middle';
 		FifthTableRow.appendChild(emptyFC5);
 		
@@ -537,7 +538,7 @@ let tickIconSVG = tickIcon();
 		// Append Back Arrow
 		let arrowWrapper = document.createElement('div');
 		arrowWrapper.classList = 'arrowWrapKM btn-round btn-sm btn btn-dynamic-color';
-		arrowWrapper.textContent = 'Back';
+		arrowWrapper.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.know.back : 'Back';
 		knowMoreFrag.appendChild(arrowWrapper);
 		
 		// Replace the HTML to empty and then append child
@@ -610,7 +611,8 @@ let tickIconSVG = tickIcon();
 		// Close the account Modal
 	   	closeAccountPopup();
 	   	// Store the account sorting in window.sortingTransTable
-	   	window.sortingTransTable = 'Account';
+	   	let manageaccount = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.manage : 'Account';
+	   	window.sortingTransTable = manageaccount;
 	   	// Click the transactions page
 	   	document.getElementById('transactionsPage').click();
 	});
@@ -655,7 +657,7 @@ function buildEmptyTableEntry(accId) {
 
 	let emptyMessageRow = document.createElement('div');
 	emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-	emptyMessageRow.textContent = "Oh! Snap! You don't have any transactions yet.";
+	emptyMessageRow.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.empty.success : "Oh! Snap! You don't have any transactions yet.";
 	cell2.appendChild(emptyMessageRow);
 	rowEmpty.appendChild(cell2);
 
@@ -811,12 +813,12 @@ function populateAccountInfo(bankAccountsInfo) {
 	
 	let bAHeading = document.createElement('h4');
 	bAHeading.classList = 'bAHeading text-left pl-3 pr-0 col-lg-7 font-weight-bold';
-	bAHeading.textContent = 'Accounts';
+	bAHeading.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.name : 'Accounts';
 	bAHRow.appendChild(bAHeading);
 	
 	let bAManage = document.createElement('a');
 	bAManage.classList = 'text-right col-lg-5 pr-3 manageBA text-dynamic-color';
-	bAManage.textContent = 'view all';
+	bAManage.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.viewall : 'view all';
 	bAHRow.appendChild(bAManage);
 	bAFragment.appendChild(bAHRow);
 
@@ -908,7 +910,7 @@ function populateEmptyAccountInfo() {
 	syncInfo.classList = 'font-weight-bold';
 	
 	let syncTitle = document.createElement('div');
-	syncTitle.textContent = 'Automatically Sync Accounts';
+	syncTitle.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.accsync : 'Automatically Sync Accounts';
 	syncTitle.classList = 'noselect';
 	syncInfo.appendChild(syncTitle);
 	
@@ -919,7 +921,7 @@ function populateEmptyAccountInfo() {
 	separatorRow.classList="separator-text"
 		
 	let separatorSpan = document.createElement('span');
-	separatorSpan.textContent = 'or';
+	separatorSpan.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.or : 'or';
 	separatorRow.appendChild(separatorSpan);
 	emptyAccountFragment.appendChild(separatorRow);
 	
@@ -949,7 +951,7 @@ function populateEmptyAccountInfo() {
 	tenColTwo.classList = 'font-weight-bold';
 	
 	let unsyncTitle = document.createElement('div');
-	unsyncTitle.textContent = 'Unsynced Accounts';
+	unsyncTitle.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.unsyncacc : 'Unsynced Accounts';
 	unsyncTitle.classList = 'noselect';
 	tenColTwo.appendChild(unsyncTitle);
 	
@@ -977,7 +979,7 @@ function populateEmptyAccountInfo() {
 	colTenThree.classList = 'pl-0 col-lg-10 small';
 	
 	let infoTitle = document.createElement('div');
-	infoTitle.textContent = 'Synced or Unsynced?';
+	infoTitle.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.syncorunsync : 'Synced or Unsynced?';
 	infoTitle.classList = 'text-left account-footer-title';
 	colTenThree.appendChild(infoTitle);
 	
@@ -987,11 +989,11 @@ function populateEmptyAccountInfo() {
 	let knowMore = document.createElement('a');
 	knowMore.href="#";
 	knowMore.classList = 'knowMoreAccount account-info-color';
-	knowMore.textContent = 'Know more'
+	knowMore.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.knowmore : 'Know more';
 	infoDescription.appendChild(knowMore);
 	
 	let restOfTheText = document.createElement('span');
-	restOfTheText.textContent = ' to help you decide';
+	restOfTheText.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.populate.helpdecide : ' to help you decide';
 	infoDescription.appendChild(restOfTheText);
 	
 	colTenThree.appendChild(infoDescription);
@@ -1017,7 +1019,7 @@ function unSyncedAccount() {
 	// Description
 	let description = document.createElement('div');
 	description.classList = 'descriptionAccount';
-	description.textContent = "Let's get your account started! you can always sync it later on.";
+	description.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.accstart : "Let's get your account started! you can always sync it later on.";
 	unsyncFormWrapper.appendChild(description);
 	unsyncedDocumentFragment.appendChild(unsyncFormWrapper);
 	
@@ -1026,7 +1028,7 @@ function unSyncedAccount() {
 	chooseTypeWrapper.classList = "chooseTypeWrapper text-left";
 	
 	let chooseTypeLabel = document.createElement('label');
-	chooseTypeLabel.textContent = 'What is the type of your account?';
+	chooseTypeLabel.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.typeacc : 'What is the type of your account?';
 	chooseTypeWrapper.appendChild(chooseTypeLabel);
 	
 	
@@ -1036,7 +1038,8 @@ function unSyncedAccount() {
 	let displaySelected = document.createElement('button');
 	displaySelected.classList = 'btn btn-secondary w-85 accountChosen';
 	displaySelected.setAttribute('disabled', 'disabled');
-	displaySelected.textContent = 'Cash';
+	displaySelected.setAttribute('data-target', 'Cash');
+	displaySelected.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.cash : 'Cash';
 	dropdownGroup.appendChild(displaySelected);
 	
 	let dropdownTrigger = document.createElement('button');
@@ -1059,49 +1062,49 @@ function unSyncedAccount() {
 	
 	// Drop Down Menu
 	let budgetHeading = document.createElement('label');
-	budgetHeading.textContent = 'Saving';
+	budgetHeading.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.savings : 'Savings';
 	dropdownContentWrap.appendChild(budgetHeading);
 	
 	// Savings
 	let savingsAnchor = document.createElement('a');
 	savingsAnchor.classList = 'accountType d-block px-3 py-1 small';
-	savingsAnchor.textContent = 'Savings Account';
+	savingsAnchor.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.savingsacc : 'Savings Account';
 	dropdownContentWrap.appendChild(savingsAnchor);
 	
 	// Current
 	let currentAnchor = document.createElement('a');
 	currentAnchor.classList = 'accountType d-block px-3 py-1 small';
-	currentAnchor.textContent = 'Current Account';
+	currentAnchor.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.currentacc : 'Current Account';
 	dropdownContentWrap.appendChild(currentAnchor);
 	
 	// Cash
 	let cashAnchor = document.createElement('a');
 	cashAnchor.classList = 'accountType d-block px-3 py-1 small';
-	cashAnchor.textContent = 'Cash';
+	cashAnchor.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.cash : 'Cash';
 	dropdownContentWrap.appendChild(cashAnchor);
 	
 	// Assets
 	let assetsAnchor = document.createElement('a');
 	assetsAnchor.classList = 'accountType d-block px-3 py-1 small';
-	assetsAnchor.textContent = 'Assets';
+	assetsAnchor.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.assets : 'Assets';
 	dropdownContentWrap.appendChild(assetsAnchor);
 	
 	// Drop Down Menu 2
 	let debtHeading = document.createElement('label');
-	debtHeading.textContent = 'Borrowing';
+	debtHeading.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.borrowing : 'Borrowing';
 	debtHeading.classList = 'mt-2';
 	dropdownContentWrap.appendChild(debtHeading);
 	
 	// Credit card
 	let creditCardAnchor = document.createElement('a');
 	creditCardAnchor.classList = 'accountType d-block px-3 py-1 small';
-	creditCardAnchor.textContent = 'Credit Card';
+	creditCardAnchor.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.creditcard : 'Credit Card';
 	dropdownContentWrap.appendChild(creditCardAnchor);
 	
 	// Liability
 	let liabilityAnchor = document.createElement('a');
 	liabilityAnchor.classList = 'accountType d-block px-3 py-1 small';
-	liabilityAnchor.textContent = 'Liability';
+	liabilityAnchor.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.liability : 'Liability';
 	dropdownContentWrap.appendChild(liabilityAnchor);
 	dropdownMenu.appendChild(dropdownContentWrap);
 	dropdownGroup.appendChild(dropdownMenu);
@@ -1112,7 +1115,7 @@ function unSyncedAccount() {
 	let accountTypeError = document.createElement('div');
 	accountTypeError.id = 'accountTypeErr';
 	accountTypeError.classList = 'd-none text-danger text-left small mb-2 noselect';
-	accountTypeError.textContent = 'Account type is not valid';
+	accountTypeError.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.accounttype : 'Account type is not valid';
 	unsyncedDocumentFragment.appendChild(accountTypeError);
 	
 	// Name Of account
@@ -1121,7 +1124,7 @@ function unSyncedAccount() {
 	accountNameWrapper.classList = 'accountNameWrapper text-left';
 	
 	let accountNameLabel = document.createElement('label');
-	accountNameLabel.textContent = 'Give it a name';
+	accountNameLabel.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.giveitname : 'Give it a name';
 	accountNameWrapper.appendChild(accountNameLabel);
 	
 	let accountNameInput = document.createElement('input');
@@ -1139,7 +1142,7 @@ function unSyncedAccount() {
 	
 	
 	let accountBalLabel = document.createElement('label');
-	accountBalLabel.textContent = 'What is your account balance?';
+	accountBalLabel.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.accbalance : 'What is your account balance?';
 	accountBalWrapper.appendChild(accountBalLabel);
 	
 	let accountBalInput = document.createElement('input');
@@ -1155,7 +1158,7 @@ function unSyncedAccount() {
 	let accountBalErr = document.createElement('div');
 	accountBalErr.id = 'accountBalErr';
 	accountBalErr.classList = 'd-none text-danger text-left small mb-2 noselect';
-	accountBalErr.textContent = 'Account balance can contain only numbers and dot.';
+	accountBalErr.textContent = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.numanddot : 'Account balance can contain only numbers and dot.';
 	unsyncedDocumentFragment.appendChild(accountBalErr);
 	
     return unsyncedDocumentFragment;

@@ -162,7 +162,9 @@
 					"spent": "Spent",
 					"available": "Available",
 					"overspent": "Overspent"
-				}
+				},
+				"available": "Total Available",
+				"overspent": "Total Overspent"
 			},
 			"card": {
 				"description": "No Description"
@@ -298,6 +300,61 @@
 					"save": "Save",
 					"cancel": "Cancel"
 				}
+			}
+		}
+	},
+	"account": {
+		"dynamic": {
+			"feature": "This feature is coming soon!",
+			"create": "Create Account",
+			"addtitle": "Add Unsynced Account",
+			"invalidtype": "Invalid account type. Please try again!",
+			"unsynacc": "Unsynced account '",
+			"unsyncacc2": "' has been created successfully",
+			"adderror": "Unable to add the account at this moment. Please try again!",
+			"selecterror": "Unable to select the account at this moment. Please try again!",
+			"accounttype": "Account Types",
+			"add": {
+				"unsync": {
+					"description": "You will always have the option to unsync or sync the accounts at any time.",
+					"connect": "Connect to your Financial Institution",
+					"import": "Import from a file *",
+					"manual": "Manually Enter Transactions",
+					"available": "International Availability *",
+					"mobile": "Mobile Apps Availability",
+					"desc": "Unsync"
+				},
+				"sync": {
+					"description": "Sync"
+				},
+				"accstart": "Let's get your account started! you can always sync it later on.",
+				"typeacc": "What is the type of your account?",
+				"cash": "Cash",
+				"savings": "Savings",
+				"savingsacc": "Savings Account",
+				"currentacc": "Current Account",
+				"assets": "Assets",
+				"borrowing": "Borrowing",
+				"creditcard": "Credit Card",
+				"liability": "Liability",
+				"accounttype": "Account type is not valid",
+				"giveitname": "Give it a name",
+				"accbalance": "What is your account balance?",
+				"numanddot": "Account balance can contain only numbers and dot.",
+				"or": "or"
+			},
+			"know": {
+				"back": "Back"
+			},
+			"manage": "Account",
+			"populate": {
+				"name": "Accounts",
+				"viewall": "view all",
+				"accsync": "Automatically Sync Accounts",
+				"unsyncacc": "Unsynced Accounts",
+				"syncorunsync": "Synced or Unsynced?",
+				"knowmore": "Know more",
+				"helpdecide": " to help you decide"
 			}
 		}
 	}
