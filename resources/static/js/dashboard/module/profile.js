@@ -56,8 +56,9 @@
 				featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
 			}
             // Set Current Page
-
-	        document.getElementById('currentPage').textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.title : 'Profile';
+ 			let currentPage = document.getElementById('currentPage');
+	        currentPage.setAttribute('data-i18n', 'profile.page.title');
+	        currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.title : 'Profile';
 	        
 		    /**
 			*  Add Functionality Generic + Btn

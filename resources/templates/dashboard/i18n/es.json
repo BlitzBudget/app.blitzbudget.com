@@ -240,6 +240,24 @@
 					"networth": "Valor neto"
 				}
 			}
+		},
+		"dynamic": {
+			"oneyear": "Resumen de un año",
+			"incomeparam": "Ingresos",
+			"expenseparam": "Gasto",
+			"title": "Visión general",
+			"geterror": "Error de búsqueda de información para la visión general. Por favor, inténtelo de nuevo más tarde!",
+			"chart": {
+				"incomeoverview": "Visión general de los ingresos",
+				"expenseoverview": "Visión general de los gastos",
+				"assetoverview": "Visión general de la activos",
+				"debtoverview": "Visión general de la deuda",
+				"networthoverview": "Visión general de la valor neto",
+				"expensebreakdown": "Desglose de gastos",
+				"incomebreakdown": "Desglose de ingresos",
+				"nodata": "¡No hay suficientes datos! Comienza a agregar transacciones...",
+				"onecategory": "¡No hay suficientes datos! Necesitamos transacciones en al menos 2 categorías ..."
+			}
 		}
 	},
 	"profile": {

@@ -54,7 +54,9 @@
 			**/
 			populateSettings();
             // Set Current Page
-	        document.getElementById('currentPage').textContent = 'Settings';
+	         let currentPage = document.getElementById('currentPage');
+	        currentPage.setAttribute('data-i18n', 'settings.page.title');
+	        currentPage.textContent = 'Settings';
 		});
 	}
 

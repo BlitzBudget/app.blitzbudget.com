@@ -240,6 +240,24 @@
 					"networth": "Networth"
 				}
 			}
+		},
+		"dynamic": {
+			"oneyear": "One Year Overview",
+			"incomeparam": "Income",
+			"expenseparam": "Expense",
+			"title": "Overview",
+			"geterror": "Error fetching information for overview. Please try again later!",
+			"chart": {
+				"incomeoverview": "Income Overview",
+				"expenseoverview": "Expense Overview",
+				"assetoverview": "Asset Overview",
+				"debtoverview": "Debt Overview",
+				"networthoverview": "Networth Overview",
+				"expensebreakdown": "Expense Breakdown",
+				"incomebreakdown": "Income Breakdown",
+				"nodata": "There's not enough data! Start adding transactions..",
+				"onecategory": "There's not enough data! We need transactions in atleast 2 categories.."
+			}
 		}
 	},
 	"profile": {
