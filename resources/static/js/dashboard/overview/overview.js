@@ -309,7 +309,7 @@
         	}
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.incomeoverview;
 			// Replace the drop down for chart options
-			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.chart.incomeoverview);
+			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.incomeparam, window.translationData.overview.dynamic.chart.incomeoverview);
 		} else if(firstChildClassList.contains('expense')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
@@ -327,7 +327,7 @@
         	}
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.expenseoverview;
 			// Replace the drop down for chart options
-			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.chart.expenseoverview);
+			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.expenseparam, window.translationData.overview.dynamic.chart.expenseoverview);
 		} else if(firstChildClassList.contains('assets')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
