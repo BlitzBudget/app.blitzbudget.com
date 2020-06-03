@@ -272,6 +272,77 @@
 				"ask": "Pregúntenos directamente",
 				"help": "Centro de ayuda"
 			}
+		},
+		"dynamic": {
+			"title": "Perfil",
+			"createerror": "¡Hubo un error al buscar la información del usuario!",
+			"mininumpassworderror": "El campo de la contraseña actual debe tener una longitud mínima de 8 caracteres.",
+			"newminimumerror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres.",
+			"oldpassworderror": "El campo de la contraseña antigua debe tener una longitud mínima de 8 caracteres.",
+			"changenameerror": "¡Hubo un error al cambiar el nombre. Por favor, inténtelo de nuevo más tarde!",
+			"confirmpassword": {
+				"error": "El campo de confirmación de la contraseña debe tener una longitud mínima de 8 caracteres.",
+				"title": "Confirmar contraseña"
+			},
+			"changepassword": {
+				"oldpassword": "Contraseña antigua",
+				"newpassword": "Nueva contraseña",
+				"change": "Cambiar la contraseña",
+				"success": "¡Cambió con éxito la contraseña!",
+				"button": "Cambiar la contraseña"
+			},
+			"reset": {
+				"title": "Reajuste su cuenta de usuario del Blitz Budget",
+				"yes": "¡Sí, reinícielo!",
+				"no": "No, quédatelo",
+				"success": "¡Reajuste con éxito su cuenta. Su cuenta está como nueva!",
+				"error": "¡Hubo un error al reiniciar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+				"swal": {
+					"title": "¿Quiere restablecer su cuenta de usuario?",
+					"title2": " y ",
+					"title3": "borrar todas las entradas",
+					"title4": " del Blitz Budget?",
+					"transactions": "todas las transacciones serán borradas",
+					"budgets": "todos los presupuestos serán eliminados",
+					"goals": "todos los objetivos serán borrados",
+					"bankaccounts": "todas las cuentas financieras serán eliminadas",
+					"wallets": "todas las carteras serán borradas",
+					"investments": "todas las inversiones serán eliminadas",
+					"premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+					"confirm": "Confirmar contraseña"
+				}
+			},
+			"delete": {
+				"title": "Borre su cuenta de usuario del Blitz Budget",
+				"yes": "¡Sí, bórralo!",
+				"no": "No, quédatelo",
+				"error": "¡Hubo un error al borrar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+				"swal": {
+					"title": "¿Quiere borrar su cuenta de usuario?",
+					"title2": " y ",
+					"title3": "borrar todas las entradas",
+					"title4": " del Blitz Budget?",
+					"alldata": "todos sus datos,, ",
+					"alldata2": "¡Todo!",
+					"alldata3": " será borrado",
+					"premium": "la suscripción a la prima será terminada",
+					"account": "su cuenta de usuario del Blitz Budget será eliminada",
+					"consider": "¡Considere la posibilidad de exportar sus datos!",
+					"confirm": "Confirme la contraseña"
+				}
+			},
+			"email": {
+				"error": "El campo de correo electrónico debe tener una entrada válida",
+				"success": "¡Cambió con éxito el correo electrónico!",
+				"verify": {
+					"title": "Código de verificación",
+					"description": "El código de verificación ha sido enviado a ",
+					"button": "Verificar el correo electrónico",
+					"emptyerror": "El código de verificación no puede estar vacío",
+					"lessthansixerror": "El código de verificación debe tener 6 caracteres de longitud",
+					"nanerror": "El código de verificación sólo puede contener números"
+				}
+			}
 		}
 	},
 	"wallet": {
