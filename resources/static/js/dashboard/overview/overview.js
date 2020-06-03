@@ -123,6 +123,9 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
+   			oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
+			incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
+			expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
    			// Dates Cache
         	window.datesCreated = result.Date;
         	  
@@ -200,14 +203,14 @@
  			
         	
         	incomeOrExpense ='Income';
-        	translatedText = window.translationData.overview.dynamic.incomeparam;
+        	translatedText = window.translationData.overview.dynamic.chart.incomeoverview;
 
         	calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
         	
  		}  else {
         	
  			incomeOrExpense = 'Expense';
- 			translatedText = window.translationData.overview.dynamic.expenseparam;
+ 			translatedText = window.translationData.overview.dynamic.chart.expenseoverview;
 
  			calcAndBuildLineChart(dateAndAmountAsList, 'expense_total');
  		}
@@ -272,6 +275,9 @@
 	
 	// Click the overview card items
 	$('body').on('click', '.chart-option', function() {
+		oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
+		incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
+		expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
 		$('.chart-option').removeClass('active');
 		this.classList.add('active');
 		// Append spinner
@@ -303,7 +309,7 @@
         	}
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.incomeoverview;
 			// Replace the drop down for chart options
-			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.incomeparam);
+			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.chart.incomeoverview);
 		} else if(firstChildClassList.contains('expense')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
@@ -321,7 +327,7 @@
         	}
         	document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.expenseoverview;
 			// Replace the drop down for chart options
-			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.expenseparam);
+			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.chart.expenseoverview);
 		} else if(firstChildClassList.contains('assets')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
@@ -486,7 +492,7 @@
 		
 		let categoryLabelDiv1 = document.createElement('div');
 		categoryLabelDiv1.classList = 'font-weight-bold';
-		categoryLabelDiv1.textContent = incomeOrExpenseParam + ' Breakdown';
+		categoryLabelDiv1.textContent = incomeOrExpText;
 		anchorDropdownItem1.appendChild(categoryLabelDiv1);
 		anchorFragment.appendChild(anchorDropdownItem1);
 		
