@@ -240,6 +240,24 @@
 					"networth": "Networth"
 				}
 			}
+		},
+		"dynamic": {
+			"oneyear": "One Year Overview",
+			"incomeparam": "Income",
+			"expenseparam": "Expense",
+			"title": "Overview",
+			"geterror": "Error fetching information for overview. Please try again later!",
+			"chart": {
+				"incomeoverview": "Income Overview",
+				"expenseoverview": "Expense Overview",
+				"assetoverview": "Asset Overview",
+				"debtoverview": "Debt Overview",
+				"networthoverview": "Networth Overview",
+				"expensebreakdown": "Expense Breakdown",
+				"incomebreakdown": "Income Breakdown",
+				"nodata": "There's not enough data! Start adding transactions..",
+				"onecategory": "There's not enough data! We need transactions in atleast 2 categories.."
+			}
 		}
 	},
 	"profile": {
@@ -271,6 +289,77 @@
 				"feature": "Send a feature request",
 				"ask": "Ask us directly",
 				"help": "Help center"
+			}
+		},
+		"dynamic": {
+			"title": "Profile",
+			"createerror": "There was an error while fetching user information!",
+			"mininumpassworderror": "The current password field should have a minimum length of 8 characters.",
+			"newminimumerror": "The new password should have a minimum length of 8 characters.",
+			"oldpassworderror": "The old password field should have a minimum length of 8 characters.",
+			"changenameerror": "There was an error while changing the name. Please try again later!",
+			"confirmpassword": {
+				"error": "The confirm password field should have a minimum length of 8 characters.",
+				"title": "Confirm Password"
+			},
+			"changepassword": {
+				"oldpassword": "Old Password",
+				"newpassword": "New Password",
+				"change": "Change Password",
+				"success": "Successfully changed the password!",
+				"button": "Change Password"
+			},
+			"reset": {
+				"title": "Reset your Blitz Budget user account",
+				"yes": "Yes, reset it!",
+				"no": "No, keep it",
+				"success": "Successfully reset your account. Your account is as good as new!",
+				"error": "There was an error while resetting the account. Please try again later!",
+				"swal": {
+					"title": "Do you want to reset your user account?",
+					"title2": " and ",
+					"title3": "delete all entries",
+					"title4": " from Blitz Budget?",
+					"transactions": "all transactions will be deleted",
+					"budgets": "all the budgets will be deleted",
+					"goals": "all goals will be deleted",
+					"bankaccounts": "all financial accounts will be deleted",
+					"wallets": "all wallets will be deleted",
+					"investments": "all investments will be deleted",
+					"premium": "Premium subscription will remain intact after the reset.",
+					"confirm": "Confirm Password"
+				}
+			},
+			"delete": {
+				"title": "Delete your Blitz Budget user account",
+				"yes": "Yes, delete it!",
+				"no": "No, keep it",
+				"error": "There was an error while deleting the account. Please try again later!",
+				"swal": {
+					"title": "Do you want to delete your user account",
+					"title2": " and ",
+					"title3": "delete all entries",
+					"title4": " from Blitz Budget?",
+					"alldata": "all your data, ",
+					"alldata2": "Everything!",
+					"alldata3": " will be deleted",
+					"premium": "premium subscription will be terminated",
+					"account": "your Blitz Budget user account will be deleted",
+					"consider": "Consider exporting your data!",
+					"confirm": "Confirm Password"
+				}
+			},
+			"email": {
+				"error": "Email field should have a valid entry",
+				"success": "Successfully changed the email!",
+				"verify": {
+					"title": "Verification Code",
+					"description": "Verification code has been sent to ",
+					"button": "Verify Email",
+					"emptyerror": "Verification code cannot be empty",
+					"lessthansixerror": "Verification code should be 6 characters in length",
+					"nanerror": "Verification code can only contain numbers"
+				}
 			}
 		}
 	},

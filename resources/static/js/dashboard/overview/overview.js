@@ -5,11 +5,9 @@
 	// OVERVIEW CONSTANTS
 	const OVERVIEW_CONSTANTS = {};
 	// SECURITY: Defining Immutable properties as constants
-	Object.defineProperties(OVERVIEW_CONSTANTS, {
-		'yearlyOverview': { value: 'One Year Overview', writable: false, configurable: false },
-		'incomeTotalParam': { value: 'Income', writable: false, configurable: false },
-		'expenseTotalParam': { value: 'Expense', writable: false, configurable: false },
-	});
+	let oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
+	let incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
+	let expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
 	// Lifetime Income Transactions cache
 	let liftimeTransactionsCache = {};
 	// populate category breakdown for income or expense
@@ -54,10 +52,12 @@
             /**
 			* Get Overview
 			**/
-			fetchOverview(OVERVIEW_CONSTANTS.incomeTotalParam);
+			fetchOverview(incomeparam);
 			populateOverviewPage();
             // Set Current Page
-	        document.getElementById('currentPage').textContent = 'Overview';
+	        let currentPage = document.getElementById('currentPage');
+	        currentPage.setAttribute('data-i18n', 'overview.page.title');
+	        currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.title : 'Overview';
 		});
 	}
 
@@ -91,8 +91,8 @@
 			let expenseImage = highlightedOverview.contains('expense');
 			let incomeImage = highlightedOverview.contains('income');
 			let incomeTotalParam;
-			if(expenseImage) {incomeTotalParam = OVERVIEW_CONSTANTS.expenseTotalParam;}
-			if(incomeImage) {incomeTotalParam = OVERVIEW_CONSTANTS.incomeTotalParam;}
+			if(expenseImage) {incomeTotalParam = expenseparam;}
+			if(incomeImage) {incomeTotalParam = incomeparam;}
 
 			fetchOverview(incomeTotalParam);
 			
@@ -123,6 +123,9 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
    		ajaxData.onSuccess = function(result) {
+   			oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
+			incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
+			expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
    			// Dates Cache
         	window.datesCreated = result.Date;
         	  
@@ -143,7 +146,7 @@
 			populateTotalAssetLiabilityAndNetworth(result.Wallet);
 		},
 		ajaxData.onFailure = function(thrownError) {
-			manageErrors(thrownError, "Error fetching information for overview. Please try again later!",ajaxData);
+			manageErrors(thrownError, window.translationData.overview.dynamic.geterror,ajaxData);
         }
 
 		// Load all user transaction from API
@@ -194,22 +197,25 @@
     	Object.seal(liftimeTransactionsCache);
 	 	// Income or Expense Chart Options
 	 	let incomeOrExpense = '';
+	 	let translatedText;
 	 	
- 		if(isEqual(OVERVIEW_CONSTANTS.incomeTotalParam,incomeTotalParameter)) {
+ 		if(isEqual(incomeparam,incomeTotalParameter)) {
  			
         	
         	incomeOrExpense ='Income';
+        	translatedText = window.translationData.overview.dynamic.chart.incomeoverview;
 
         	calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
         	
  		}  else {
         	
  			incomeOrExpense = 'Expense';
+ 			translatedText = window.translationData.overview.dynamic.chart.expenseoverview;
 
  			calcAndBuildLineChart(dateAndAmountAsList, 'expense_total');
  		}
 	 	
-	 	appendChartOptionsForIncomeOrExpense(incomeOrExpense);
+	 	appendChartOptionsForIncomeOrExpense(incomeOrExpense, translatedText);
 	}
 	
 	// Calculate and build line chart for income / expense
@@ -269,6 +275,9 @@
 	
 	// Click the overview card items
 	$('body').on('click', '.chart-option', function() {
+		oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
+		incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
+		expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
 		$('.chart-option').removeClass('active');
 		this.classList.add('active');
 		// Append spinner
@@ -292,15 +301,15 @@
         		fetchIncomeBreakDownCache = true;
         		populateCategoryBreakdown(fetchIncomeBreakDownCache);
         		// Replace the Drop down with one year view
-    			replaceChartChosenLabel('Income Breakdown');
+    			replaceChartChosenLabel(window.translationData.overview.dynamic.incomebreakdown);
         	} else {
         		// Replace the Drop down with one year view
-    			replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
+    			replaceChartChosenLabel(oneyearoverview);
     			populateLineChart(liftimeTransactionsCache, true);
         	}
-        	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Income Overview';
+        	document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.incomeoverview;
 			// Replace the drop down for chart options
-			appendChartOptionsForIncomeOrExpense('Income');
+			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.incomeparam, window.translationData.overview.dynamic.chart.incomeoverview);
 		} else if(firstChildClassList.contains('expense')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
@@ -310,35 +319,35 @@
         		fetchIncomeBreakDownCache = false;
         		populateCategoryBreakdown(fetchIncomeBreakDownCache);
         		// Replace the Drop down with one year view
-    			replaceChartChosenLabel('Expense Breakdown');
+    			replaceChartChosenLabel(window.translationData.overview.dynamic.expensebreakdown);
         	} else {
         		populateLineChart(liftimeTransactionsCache, false);
     			// Replace the Drop down with one year view
-    			replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
+    			replaceChartChosenLabel(oneyearoverview);
         	}
-        	document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Expense Overview';
+        	document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.expenseoverview;
 			// Replace the drop down for chart options
-			appendChartOptionsForIncomeOrExpense('Expense');
+			appendChartOptionsForIncomeOrExpense(window.translationData.overview.dynamic.expenseparam, window.translationData.overview.dynamic.chart.expenseoverview);
 		} else if(firstChildClassList.contains('assets')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Asset Chart
 			populateAssetBarChart(true);
     		// Change Label
-    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Asset Overview';
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.assetoverview;
 		} else if(firstChildClassList.contains('debt')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			// Populate Debt Chart
 			populateAssetBarChart(false);
     		// Change Label
-    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Debt Overview';
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.debtoverview;
 		} else if(firstChildClassList.contains('networth')) {
 			// Show the button to choose charts
 			document.getElementById('chosenChartIncAndExp').classList.add('d-none');
 			populateNetworthBarChart();
     		// Change Label
-    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = 'Networth Overview';
+    		document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.networthoverview;
 		}
 		
 		// Remove the old highlighted element
@@ -433,7 +442,7 @@
 		
 		let emptyMessage = document.createElement('div');
 		emptyMessage.classList = 'font-weight-bold tripleNineColor';
-		emptyMessage.textContent = "There's not enough data! Start adding transactions..";
+		emptyMessage.textContent = window.translationData.overview.dynamic.chart.nodata;
 		emptyChartMessage.appendChild(emptyMessage);
 		
 		return emptyChartMessage;
@@ -456,7 +465,7 @@
 		
 		let emptyMessage = document.createElement('div');
 		emptyMessage.classList = 'font-weight-bold tripleNineColor';
-		emptyMessage.textContent = "There's not enough data! We need transactions in atleast 2 categories..";
+		emptyMessage.textContent = window.translationData.overview.dynamic.chart.onecategory;
 		emptyChartMessage.appendChild(emptyMessage);
 		
 		return emptyChartMessage;
@@ -466,7 +475,7 @@
 	/**
 	 * Chart Overview Drop Down (Income / Expense)
 	 */
-	function appendChartOptionsForIncomeOrExpense(incomeOrExpenseParam) {
+	function appendChartOptionsForIncomeOrExpense(incomeOrExpenseParam, incomeOrExpText) {
 		let anchorFragment = document.createDocumentFragment();
 		
 		let anchorDropdownItem = document.createElement('a');
@@ -474,7 +483,7 @@
 		
 		let categoryLabelDiv = document.createElement('div');
 		categoryLabelDiv.classList = 'font-weight-bold';
-		categoryLabelDiv.textContent = OVERVIEW_CONSTANTS.yearlyOverview;
+		categoryLabelDiv.textContent = oneyearoverview;
 		anchorDropdownItem.appendChild(categoryLabelDiv);
 		anchorFragment.appendChild(anchorDropdownItem);
 		
@@ -483,7 +492,7 @@
 		
 		let categoryLabelDiv1 = document.createElement('div');
 		categoryLabelDiv1.classList = 'font-weight-bold';
-		categoryLabelDiv1.textContent = incomeOrExpenseParam + ' Breakdown';
+		categoryLabelDiv1.textContent = incomeOrExpText;
 		anchorDropdownItem1.appendChild(categoryLabelDiv1);
 		anchorFragment.appendChild(anchorDropdownItem1);
 		
@@ -497,7 +506,7 @@
 	
 	// Chart Income One Year Overview
 	$( "body" ).on( "click", "#chooseCategoryDD .chartOverviewIncome" ,function() {
-		replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
+		replaceChartChosenLabel(oneyearoverview);
 		// populate the income line chart from cache
 		populateLineChart(liftimeTransactionsCache, true);
 		// Dough nut breakdown open cache
@@ -506,7 +515,7 @@
 	
 	// Chart Income Breakdown Chart
 	$( "body" ).on( "click", "#chooseCategoryDD .chartBreakdownIncome" ,function() {
-		replaceChartChosenLabel('Income Overview');
+		replaceChartChosenLabel(window.translationData.overview.dynamic.chart.incomeoverview);
 		
 		// Populate Breakdown Category
 		populateCategoryBreakdown(true);
@@ -518,7 +527,7 @@
 	
 	// Chart Expense One Year Overview
 	$( "body" ).on( "click", "#chooseCategoryDD .chartOverviewExpense" ,function() {
-		replaceChartChosenLabel(OVERVIEW_CONSTANTS.yearlyOverview);
+		replaceChartChosenLabel(oneyearoverview);
 		// Populate the expense line chart from cache
 		populateLineChart(liftimeTransactionsCache, false);
 		// Dough nut breakdown open cache
@@ -527,7 +536,7 @@
 	
 	// Chart Expense  Breakdown Chart
 	$( "body" ).on( "click", "#chooseCategoryDD .chartBreakdownExpense" ,function() {
-		replaceChartChosenLabel('Expense Breakdown');
+		replaceChartChosenLabel(window.translationData.overview.dynamic.chart.expenseoverview);
 		
 		// Populate Breakdown Category
 		populateCategoryBreakdown(false);
@@ -700,9 +709,9 @@
     	colouredRoundedLineChart.appendChild(h20);
 		
 		if(incomeChart) {
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.incomeTotalParam, dateAndTimeAsList);
+			incomeOrExpenseOverviewChart(incomeparam, dateAndTimeAsList);
 		} else {
-			incomeOrExpenseOverviewChart(OVERVIEW_CONSTANTS.expenseTotalParam, dateAndTimeAsList);
+			incomeOrExpenseOverviewChart(expenseparam, dateAndTimeAsList);
 		}
 		
 	}

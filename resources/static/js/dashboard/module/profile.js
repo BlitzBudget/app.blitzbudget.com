@@ -56,7 +56,9 @@
 				featureRequest.href = featureRequest.href + '?email_id=' + currentUser.email; 
 			}
             // Set Current Page
-	        document.getElementById('currentPage').textContent = 'Profile';
+ 			let currentPage = document.getElementById('currentPage');
+	        currentPage.setAttribute('data-i18n', 'profile.page.title');
+	        currentPage.textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.title : 'Profile';
 	        
 		    /**
 			*  Add Functionality Generic + Btn
@@ -82,7 +84,8 @@
 	        document.getElementById('userCreationDate').textContent = months[Number(userCreationDate.substring(5,7)) -1] + ' ' + userCreationDate.substring(0,4);
         }
 	    ajaxData.onFailure = function (thrownError) {
-	    	manageErrors(thrownError, "There was an error while fetching user information!",ajaxData);
+	    	let createddateerror = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.createerror : "There was an error while fetching user information!";
+	    	manageErrors(thrownError, createddateerror,ajaxData);
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -140,7 +143,7 @@
 
 		if(isEmpty(oldPassword) || oldPassword.length < 8) {
 			errorCPNew.textContent = '';
-			errorCPOld.textContent = 'The current password field should have a minimum length of 8 characters.';
+			errorCPOld.textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.mininumpassworderror : 'The current password field should have a minimum length of 8 characters.';
 			return;
 		}
 
@@ -154,7 +157,7 @@
 
 		if(isEmpty(newPassword) || newPassword.length < 8) {
 			errorCPOld.textContent = '';
-			errorCPNew.textContent = 'The new password should have a minimum length of 8 characters.';
+			errorCPNew.textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.newminimumerror : 'The new password should have a minimum length of 8 characters.';
 			return;
 		}
 	});
@@ -192,7 +195,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.textContent = 'Old Password';
+		oldPassLabel.textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.changepassword.oldpassword : 'Old Password';
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -234,7 +237,7 @@
 		newPassInput.classList = 'newPassInput text-left';
 		
 		let newPassLabel = document.createElement('label');
-		newPassLabel.textContent = 'New Password';
+		newPassLabel.textContent = isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.changepassword.newpassword : 'New Password';
 		newPassLabel.appendChild(informationIconSVG());
 		newPassInput.appendChild(newPassLabel);
 
@@ -309,7 +312,7 @@
    		ajaxData.contentType = "application/json;charset=UTF-8";
    		ajaxData.data = JSON.stringify(values);
 		ajaxData.onSuccess = function(data) {
-			showNotification('Successfully changed the password!',window._constants.notification.success);
+			showNotification(window.translationData.profile.dynamic.changepassword.success,window._constants.notification.success);
 		}
 	    ajaxData.onFailure = function(data) {
 	    	showNotification(data.message,window._constants.notification.error);
@@ -335,13 +338,13 @@
     $('body').on('click', '#changePasswordProfile' , function(e) {    
         // Show Sweet Alert
         Swal.fire({
-            title: 'Change Password',
+            title: isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.changepassword.change : 'Change Password',
             html: changePasswordFrag(),
             inputAttributes: {
                 autocapitalize: 'on'
             },
             confirmButtonClass: 'changePassword btn btn-info',
-            confirmButtonText: 'Change Password',
+            confirmButtonText: window.translationData.profile.dynamic.changepassword.button,
             showCloseButton: true,
             buttonsStyling: false,
             showLoaderOnConfirm: true,
@@ -432,7 +435,7 @@
 	// Reset Account
 	$('body').on('click', '#resetBBAccount' , function(e) {
 		Swal.fire({
-            title: 'Reset your Blitz Budget user account',
+            title: isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.reset.title : 'Reset your Blitz Budget user account',
             html: resetBBAccount(),
             inputAttributes: {
                 autocapitalize: 'on'
@@ -440,8 +443,8 @@
             icon: 'info',
             showCancelButton: true,
             showCloseButton: true,
-            confirmButtonText: 'Yes, reset it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.reset.yes : 'Yes, reset it!',
+            cancelButtonText: isNotEmpty(window.translationData) ? window.translationData.profile.dynamic.reset.no : 'No, keep it',
             confirmButtonClass: "btn btn-info",
             cancelButtonClass: "btn btn-secondary",
             buttonsStyling: false,
@@ -504,14 +507,14 @@
    				ajaxData.contentType = "application/json;charset=UTF-8";
    				ajaxData.data = JSON.stringify(values);
 				ajaxData.onSuccess = function(jsonObj) {
-		        	showNotification("Successfully reset your account. Your account is as good as new!",window._constants.notification.success);
+		        	showNotification(window.translationData.profile.dynamic.reset.success,window._constants.notification.success);
 		        	// Delete Wallet Id and Wallet Currency
 		        	delete window.currentUser.walletId;
 		        	delete window.currentUser.walletCurrency;
 		        	localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
 		        }
 			    ajaxData.onFailure = function (thrownError) {
-			    	manageErrors(thrownError, "There was an error while resetting the account. Please try again later!",ajaxData);
+			    	manageErrors(thrownError, window.translationData.profile.dynamic.reset.error,ajaxData);
 	            }
         	 	jQuery.ajax({
 					url: ajaxData.url,
@@ -541,7 +544,7 @@
 	$('body').on('click', '#deleteBBAccount' , function(e) {
 
 		Swal.fire({
-                title: 'Delete your Blitz Budget user account',
+                title: window.translationData.profile.dynamic.delete.title,
                 html: deleteBBAccount(),
 	            inputAttributes: {
 	                autocapitalize: 'on'
@@ -549,8 +552,8 @@
                 icon: 'info',
                 showCancelButton: true,
                 showCloseButton: true,
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'No, keep it',
+                confirmButtonText: window.translationData.profile.dynamic.delete.yes,
+                cancelButtonText: window.translationData.profile.dynamic.delete.no,
                 confirmButtonClass: "btn btn-info",
                 cancelButtonClass: "btn btn-secondary",
                 buttonsStyling: false,
@@ -618,7 +621,7 @@
 				        window.location.href = window._config.home.invokeUrl;
 			        }
 				    ajaxData.onFailure = function (thrownError) {
-				    	manageErrors(thrownError, "There was an error while deleting the account. Please try again later!",ajaxData);
+				    	manageErrors(thrownError, window.translationData.profile.dynamic.delete.error,ajaxData);
 		            }
             	   	jQuery.ajax({
 						url: ajaxData.url,
@@ -651,7 +654,7 @@
 		// Warning Text
 		let warnDiv = document.createElement('div');
 		warnDiv.classList = 'noselect text-left mb-3 fs-90';
-		warnDiv.innerHTML = 'Do you want to reset your user account <strong>' + currentUser.email + '</strong> and <strong>delete all entries</strong> from Blitz Budget?';
+		warnDiv.innerHTML = window.translationData.profile.dynamic.reset.swal.title + ' <strong>' + currentUser.email + '</strong>' + window.translationData.profile.dynamic.reset.swal.title2 + '<strong>' + window.translationData.profile.dynamic.reset.swal.title3 + '</strong>' + window.translationData.profile.dynamic.reset.swal.title4;
 		resetPassFrag.appendChild(warnDiv);
 
 		// UL tag
@@ -659,34 +662,34 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.textContent = 'all transactions will be deleted';
+		liOne.textContent = window.translationData.profile.dynamic.reset.swal.transactions;
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.textContent = 'all the budgets will be deleted';
+		liTwo.textContent = window.translationData.profile.dynamic.reset.swal.budgets;
 		ulWarn.appendChild(liTwo);
 
 		let liThree = document.createElement('li');
-		liThree.textContent = 'all goals will be deleted';
+		liThree.textContent = window.translationData.profile.dynamic.reset.swal.goals;
 		ulWarn.appendChild(liThree);
 
 		let liFour = document.createElement('li');
-		liFour.textContent = 'all financial accounts will be deleted';
+		liFour.textContent = window.translationData.profile.dynamic.reset.swal.bankaccounts;
 		ulWarn.appendChild(liFour);
 
 		let liFive = document.createElement('li');
-		liFive.textContent = 'all wallets will be deleted';
+		liFive.textContent = window.translationData.profile.dynamic.reset.swal.wallets;
 		ulWarn.appendChild(liFive);
 
 		let liSix = document.createElement('li');
-		liSix.textContent = 'all investments will be deleted';
+		liSix.textContent = window.translationData.profile.dynamic.reset.swal.investments;
 		ulWarn.appendChild(liSix);
 		resetPassFrag.appendChild(ulWarn);
 
 		// Subscription
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.textContent = 'Premium subscription will remain intact after the reset.';
+		subsText.textContent = window.translationData.profile.dynamic.reset.swal.premium;
 		resetPassFrag.appendChild(subsText);
 
 		// Old Password
@@ -695,7 +698,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.textContent = 'Confirm Password';
+		oldPassLabel.textContent = window.translationData.profile.dynamic.reset.swal.confirm;
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -768,7 +771,7 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			errorDispRA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
+			errorDispRA.textContent = window.translationData.profile.dynamic.confirmpassword.error;
 			resetAccountBtn.setAttribute('disabled','disabled');
 			return;
 		}
@@ -784,7 +787,7 @@
 		// Warning Text
 		let warnDiv = document.createElement('div');
 		warnDiv.classList = 'noselect text-left mb-3 fs-90';
-		warnDiv.innerHTML = 'Do you want to delete your user account <strong>' + currentUser.email + '</strong> and <strong>delete all data</strong> from Blitz Budget?';
+		warnDiv.innerHTML = window.translationData.profile.dynamic.delete.swal.title + ' <strong>' + currentUser.email + '</strong>' +  window.translationData.profile.dynamic.delete.swal.title2  + '<strong>' + window.translationData.profile.dynamic.delete.swal.title3 + window.translationData.profile.dynamic.delete.swal.title4;
 		deletePassFrag.appendChild(warnDiv);
 
 		// UL tag
@@ -792,22 +795,22 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.innerHTML = 'all your data, <strong>Everything!</strong> will be deleted';
+		liOne.innerHTML = window.translationData.profile.dynamic.delete.swal.alldata + '<strong>' + window.translationData.profile.dynamic.delete.swal.alldata2 + '</strong>' +  window.translationData.profile.dynamic.delete.swal.alldata3;
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.textContent = "premium subscription will be terminated";
+		liTwo.textContent = window.translationData.profile.dynamic.delete.swal.premium;
 		ulWarn.appendChild(liTwo);
 
 		let liThree = document.createElement('li');
-		liThree.textContent = 'your Blitz Budget user account will be deleted';
+		liThree.textContent = window.translationData.profile.dynamic.delete.swal.account;
 		ulWarn.appendChild(liThree);
 		deletePassFrag.appendChild(ulWarn);
 
 		// Subscription
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.textContent = 'Consider exporting your data!';
+		subsText.textContent = window.translationData.profile.dynamic.delete.swal.consider;
 		deletePassFrag.appendChild(subsText);
 
 		// Old Password
@@ -816,7 +819,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.textContent = 'Confirm Password';
+		oldPassLabel.textContent = window.translationData.profile.dynamic.delete.swal.confirm;
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -889,7 +892,7 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			errorDispRA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
+			errorDispRA.textContent = window.translationData.profile.dynamic.oldpassworderror;
 			deleteAccountBtn.setAttribute('disabled','disabled');
 			return;
 		}
@@ -993,7 +996,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.textContent = 'Confirm Password';
+		oldPassLabel.textContent = window.translationData.profile.dynamic.confirmpassword.title;
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -1063,7 +1066,7 @@
 	    ajaxData.onFailure = function (thrownError) {
 	    	// Replace Old name to Profile
 	    	userNameProfileDisplay.textContent = userNameDispText;
-	    	manageErrors(thrownError, "There was an error while changing the name. Please try again later!",ajaxData);
+	    	manageErrors(thrownError, window.translationData.profile.dynamic.changenameerror,ajaxData);
         }
 	 	jQuery.ajax({
 			url: ajaxData.url,
@@ -1111,7 +1114,7 @@
 		let passwordEnt = this.value;
 
 		if(isEmpty(passwordEnt) || passwordEnt.length < 8) {
-			cpErrorDispUA.textContent = 'The confirm password field should have a minimum length of 8 characters.';
+			cpErrorDispUA.textContent = window.translationData.profile.dynamic.confirmpassword.error;
 			confirmPassBtn.setAttribute('disabled','disabled');
 			return;
 		}
@@ -1197,20 +1200,20 @@
 		let emailModInp = document.getElementById('emailModInp').value;
 
 		if(emailModInp.length < 4) {
-			showNotification('Email field should have a valid entry',window._constants.notification.error);
+			showNotification(window.translationData.profile.dynamic.email.error,window._constants.notification.error);
 			return;
 		}
 
 
 		// Show Sweet Alert
         Swal.fire({
-            title: 'Confirm Password',
+            title: window.translationData.profile.dynamic.confirmpassword.title,
             html: confirmPasswordFrag(),
             inputAttributes: {
                 autocapitalize: 'on'
             },
             confirmButtonClass: 'btn btn-info',
-            confirmButtonText: 'Confirm Password',
+            confirmButtonText: window.translationData.profile.dynamic.confirmpassword.title,
             showCloseButton: true,
             buttonsStyling: false,
             showLoaderOnConfirm: true,
@@ -1330,11 +1333,11 @@
     	let oldUserAcessToken = '';
     	// Show Sweet Alert
         Swal.fire({
-            title: 'Verification Code',
-		  	html: 'Verification code has been sent to <strong>' + emailModInp + '</strong>', 
+            title: window.translationData.profile.dynamic.email.verify.title,
+		  	html: window.translationData.profile.dynamic.email.verify.description + '<strong>' + emailModInp + '</strong>', 
 		  	input: 'text',
 		  	confirmButtonClass: 'btn btn-info',
-		  	confirmButtonText: 'Verify Email',
+		  	confirmButtonText: window.translationData.profile.dynamic.email.verify.button,
 		  	showCancelButton: false,
 		  	allowEscapeKey: false,
 		  	allowOutsideClick: false,
@@ -1352,15 +1355,15 @@
 			},
 		  	inputValidator: (value) => {
 			    if (!value) {
-			      return 'Verification code cannot be empty'
+			      return window.translationData.profile.dynamic.email.verify.emptyerror;
 			    }
 
 			    if(value.length < 6) {
-			    	return 'Verification code should be 6 characters in length';
+			    	return window.translationData.profile.dynamic.email.verify.lessthansixerror;
 			    }
 
 			    if(isNaN(value)) {
-                    return 'Verification code can only contain numbers';
+                    return window.translationData.profile.dynamic.email.verify.nanerror;
                 }
 			},
 		    showClass: {
@@ -1456,7 +1459,7 @@
 				        values.password = confPasswordUA;
 				        values.checkPassword = true;
 
-				        showNotification('Successfully changed the email!',window._constants.notification.success);
+				        showNotification(window.translationData.profile.dynamic.email.success,window._constants.notification.success);
 		              },
 		              error: function(err) {
 		              	showNotification(err.message,window._constants.notification.error);
