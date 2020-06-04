@@ -13,8 +13,7 @@
 	Object.defineProperties(WALLET_CONSTANTS, {
 		'resetAccountUrl': { value: '/profile/reset-account', writable: false, configurable: false },
 		'walletUrl': { value: '/wallet', writable: false, configurable: false },
-		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false },
-		'chooseCurrencyDefault': { value: 'Choose Currency', writable: false, configurable: false },
+		'userAttributeUrl': { value: '/profile/user-attribute', writable: false, configurable: false }
 	});
 
 	// Add wallet
@@ -111,7 +110,7 @@
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-					showNotification("Unexpected error occured while adding the wallet." ,window._constants.notification.error);
+					showNotification(window.translationData.wallet.dynamic.add.error ,window._constants.notification.error);
 				} else if(isNotEmpty(thrownError.message)) {
 					showNotification(thrownError.message,window._constants.notification.error);
 				} else {
@@ -238,7 +237,7 @@
 	      	/*create a DIV element for each matching element:*/
 	          b = document.createElement("DIV");
 	          b.classList = "noResultsDD";
-	          b.textContent = 'No Results';
+	          b.textContent = window.translationData.wallet.dynamic.noresults;
 	          a.appendChild(b);
 	      }  
 
@@ -410,7 +409,7 @@
 	        },
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-					showNotification("Unexpected error occured while fetching the wallets",window._constants.notification.error);
+					showNotification(window.translationData.wallet.dynamic.fetcherror,window._constants.notification.error);
 				} else if(isNotEmpty(thrownError.message)) {
 					showNotification(thrownError.message,window._constants.notification.error);
 				} else {
@@ -476,7 +475,7 @@
 		/*
 		* Add Wallet Currency Text
 		*/
-		let currentCurrenyW = document.getElementById('chosenCurrencyW').textContent = WALLET_CONSTANTS.chooseCurrencyDefault;
+		let currentCurrenyW = document.getElementById('chosenCurrencyW').textContent = window.translationData.wallet.dynamic.choosecurrency;
 
 		/*initiate the autocomplete function on the "chosenCurrencyWInp" element, and pass along the countries array as possible autocomplete values:*/
 		autocomplete(document.getElementById("chosenCurrencyWInp"), currencies, "chooseCurrencyDD");
@@ -493,7 +492,7 @@
 		/*create a DIV element for each matching element:*/
         let b = document.createElement("DIV");
         b.classList = "noResultsDD";
-        b.textContent = 'No Active Currency';
+        b.textContent = window.translationData.wallet.dynamic.noactivecurrency;
         return b;
 	}
 
@@ -803,7 +802,7 @@
 		}
 
 		Swal.fire({
-            title: 'Delete wallet',
+            title: window.translationData.wallet.dynamic.deletewallet,
             html: resetBBAccount(),
             inputAttributes: {
                 autocapitalize: 'on'
@@ -811,8 +810,8 @@
             icon: 'info',
             showCancelButton: true,
             showCloseButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
+            confirmButtonText: window.translationData.wallet.dynamic.yesdelete,
+            cancelButtonText: window.translationData.wallet.dynamic.nodelete,
             confirmButtonClass: "btn btn-info",
             cancelButtonClass: "btn btn-secondary",
             buttonsStyling: false,
@@ -907,7 +906,7 @@
 			        	populateAutocompleteCurrency(window.globalWallet);			        	
 			        },
 			        error: function (thrownError) {
-				    	manageErrors(thrownError, "There was an error while deleteing your wallet. Please try again later!",'');
+				    	manageErrors(thrownError, window.translationData.wallet.dynamic.deleteerror,'');
 				    	chosenDiv.removeClass('d-none');
 		            }
 	        	});
@@ -941,7 +940,7 @@
 		// Warning Text
 		let warnDiv = document.createElement('div');
 		warnDiv.classList = 'noselect text-left mb-3 fs-90';
-		warnDiv.innerHTML = 'Do you want to delete your wallet associated with <strong>' + currentUser.email + '</strong> and <strong>delete all entries</strong> associated with this wallet from Blitz Budget?';
+		warnDiv.innerHTML = window.translationData.wallet.dynamic.delete.text + '<strong>' + currentUser.email + '</strong>' + window.translationData.wallet.dynamic.delete.text2 + '<strong>' + window.translationData.wallet.dynamic.delete.text3 + '</strong>' + window.translationData.wallet.dynamic.delete.text4;
 		resetPassFrag.appendChild(warnDiv);
 
 		// UL tag
@@ -949,30 +948,30 @@
 		ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
 		let liOne = document.createElement('li');
-		liOne.textContent = 'all transactions from this wallet will be deleted';
+		liOne.textContent = window.translationData.wallet.dynamic.delete.transactions;
 		ulWarn.appendChild(liOne);
 
 		let liTwo = document.createElement('li');
-		liTwo.textContent = 'all the budgets from this wallet will be deleted';
+		liTwo.textContent = window.translationData.wallet.dynamic.delete.budgets;
 		ulWarn.appendChild(liTwo);
 
 		let liThree = document.createElement('li');
-		liThree.textContent = 'all goals within this wallet will be deleted';
+		liThree.textContent = window.translationData.wallet.dynamic.delete.goals;
 		ulWarn.appendChild(liThree);
 
 		let liFour = document.createElement('li');
-		liFour.textContent = 'all financial accounts associated with this wallet will be deleted';
+		liFour.textContent = window.translationData.wallet.dynamic.delete.bankaccounts;
 		ulWarn.appendChild(liFour);
 
 		let liSix = document.createElement('li');
-		liSix.textContent = 'all investments associated with this wallet will be deleted';
+		liSix.textContent = window.translationData.wallet.dynamic.delete.investments;
 		ulWarn.appendChild(liSix);
 		resetPassFrag.appendChild(ulWarn);
 
 		// Subscription
 		let subsText = document.createElement('div');
 		subsText.classList = 'noselect text-left mb-3 fs-90';
-		subsText.textContent = 'Premium subscription will remain intact after the reset.';
+		subsText.textContent = window.translationData.wallet.dynamic.delete.premium;
 		resetPassFrag.appendChild(subsText);
 
 		// Old Password
@@ -981,7 +980,7 @@
 		oldPassWrapper.classList = 'oldPassWrapper text-left';
 		
 		let oldPassLabel = document.createElement('label');
-		oldPassLabel.textContent = 'Confirm Password';
+		oldPassLabel.textContent = window.translationData.wallet.dynamic.delete.confirmpassword;
 		oldPassWrapper.appendChild(oldPassLabel);
 
 
@@ -1061,7 +1060,7 @@
 	        data : values,
 	        error: function(thrownError) {
 	        	if(isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
-					showNotification("Unexpected error occured while updating the wallet." ,window._constants.notification.error);
+					showNotification(window.translationData.wallet.dynamic.patcherror ,window._constants.notification.error);
 				} else if(isNotEmpty(thrownError.message)) {
 					showNotification(thrownError.message,window._constants.notification.error);
 				} else {

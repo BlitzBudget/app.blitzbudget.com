@@ -407,6 +407,33 @@
 					"cancel": "Cancel"
 				}
 			}
+		},
+		"dynamic": {
+			"add": {
+				"error": "Unexpected error occured while adding the wallet."
+			},
+			"fetcherror": "Unexpected error occured while fetching the wallets",
+			"noactivecurrency": "No Active Currency",
+			"deletewallet": "Delete wallet",
+			"yesdelete": "Yes, delete it!",
+			"nodelete": "No, keep it",
+			"deleteerror": "There was an error while deleteing your wallet. Please try again later!",
+			"delete": {
+				"text": "Do you want to delete your wallet associated with ",
+				"text2": " and ",
+				"text3": "delete all entries",
+				"text4": " associated with this wallet from Blitz Budget?",
+				"transactions": "all transactions from this wallet will be deleted",
+				"budgets": "all the budgets from this wallet will be deleted",
+				"goals": "all goals within this wallet will be deleted",
+				"bankaccounts": "all financial accounts associated with this wallet will be deleted",
+				"investments": "all investments associated with this wallet will be deleted",
+				"premium": "Premium subscription will remain intact after the reset.",
+				"confirmpassword": "Confirm Password"
+			},
+			"patcherror": "Unexpected error occured while updating the wallet.",
+			"noresults": "No Results",
+			"choosecurrency": "Choose Currency"
 		}
 	},
 	"account": {

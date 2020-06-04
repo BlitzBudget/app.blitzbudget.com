@@ -407,6 +407,33 @@
 					"cancel": "Cancelar"
 				}
 			}
+		},
+		"dynamic": {
+			"add": {
+				"error": "Un error inesperado ocurrió mientras añadía la cartera"
+			},
+			"fetcherror": "Un error inesperado ocurrió al ir a buscar las carteras",
+			"noactivecurrency": "No hay moneda activa",
+			"deletewallet": "Borrar cartera",
+			"yesdelete": "¡Sí, bórralo!",
+			"nodelete": "No, quédatelo",
+			"deleteerror": "Hubo un error al borrar su cartera. Por favor, inténtelo de nuevo más tarde!",
+			"delete": {
+				"text": "¿Quieres borrar tu cartera asociada a ",
+				"text2": " y ",
+				"text3": "borrar todas las entradas",
+				"text4": " asociado con esta cartera del Blitz Budget?",
+				"transactions": "todas las transacciones de esta cartera serán borradas",
+				"budgets": "todos los presupuestos de esta cartera serán borrados",
+				"goals": "todos los objetivos dentro de esta cartera serán borrados",
+				"bankaccounts": "todas las cuentas financieras asociadas a esta cartera serán eliminadas",
+				"investments": "todas las inversiones asociadas a esta cartera serán eliminadas",
+				"premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+				"confirmpassword": "Confirmar contraseña"
+			},
+			"patcherror": "Un error inesperado ocurrió mientras actualizaba la cartera.",
+			"noresults": "No hay resultados",
+			"choosecurrency": "Elija la moneda"
 		}
 	},
 	"account": {
