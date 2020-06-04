@@ -33,6 +33,13 @@
 			"texterror": "Por favor, introduzca un mínimo de 80 caracteres.",
 			"success": "Gracias por el correo electrónico. ¡Responderemos con él en las próximas 24 horas!",
 			"error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!"
+		},
+		"helpcenter": {
+			"redirect": "Redireccionamiento no posible",
+			"tryagain": "Por favor, inténtelo de nuevo más tarde",
+			"noresults": "Sin resultados",
+			"unableurl": "Incapaz de obtener la url solicitada",
+			"thanks": "Gracias por la retroalimentación"
 		}
 	},
 	"unlock": {
@@ -456,5 +463,42 @@
 				"helpdecide": " para ayudarte a decidir"
 			}
 		}
+	},
+	"common": {
+		"fetcherror": "Redireccionamiento de errores",
+		"tryagain": "Por favor, inténtelo de nuevo más tarde",
+		"redirecting": "Redirección no posible",
+		"invalidcategory": "La categoría elegida es inválida. ¡Por favor, refresque la página e inténtelo de nuevo!",
+		"verify": {
+			"title": "Verificación del correo electrónico"
+		}
+	},
+	"month": {
+		"short": {
+			"january": "Ene",
+			"february": "Feb",
+			"march": "Mar",
+			"april": "Abr",
+			"may": "May",
+			"june": "Jun",
+			"july": "Jul",
+			"august": "Ago",
+			"september": "Sep",
+			"october": "Oct",
+			"november": "Nov",
+			"december": "Dic"
+		},
+		"january": "Enero",
+		"february": "Febrero",
+		"march": "Marzo",
+		"april": "Abril",
+		"may": "Mayo",
+		"june": "Junio",
+		"july": "Julio",
+		"august": "Agosto",
+		"september": "Septiembre",
+		"october": "Octubre",
+		"november": "Noviembre",
+		"december": "Diciembre"
 	}
 }

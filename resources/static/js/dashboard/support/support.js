@@ -33,8 +33,8 @@
             },
             error: function(){
                 Swal.fire({
-                    title: "Redirecting Not Possible",
-                    text: 'Please try again later',
+                    title: window.translationData.support.helpcenter.redirect,
+                    text: window.translationData.support.helpcenter.tryagain,
                     icon: 'warning',
                     timer: 1000,
                     showConfirmButton: false
@@ -150,7 +150,7 @@
               if(isNotEmpty(a) && isEmpty(a.firstChild)) {
                 b = document.createElement("span");
                 b.classList.add("tripleNineColor");
-                b.textContent = 'No Results';
+                b.textContent = window.translationData.support.helpcenter.noresults;
                 a.appendChild(b);
               }
           }
@@ -280,7 +280,7 @@
             error: function(userTransactionsList) {
                 Toast.fire({
                     icon: 'error',
-                    title: "Unable to fetch the requested url"
+                    title: window.translationData.support.helpcenter.unableurl
                 });
             }
         });
@@ -621,7 +621,7 @@
         
         let messageParagraphElement = document.createElement('p');
         messageParagraphElement.className = 'article-success margin-bottom-zero margin-left-five';
-        messageParagraphElement.innerHTML = 'Thanks for the feedback.';
+        messageParagraphElement.innerHTML = window.translationData.support.helpcenter.thanks;
         
         var br = document.createElement('br');
         
