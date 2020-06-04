@@ -23,6 +23,16 @@
 			"ask": "Ask us directly",
 			"yes": "Yes",
 			"no": "No"
+		},
+		"askusdirectly": {
+			"title": "Ask Us Directly",
+			"customersupport": "Customer Support: Requesting More Information within 24 hours",
+			"message": "Message",
+			"text": "The article with the url ",
+			"text2": " could have more information to be most useful. I would appreciate if the article contained.. ",
+			"texterror": "Please enter a minimum of 80 characters.",
+			"success": "Thanks for the email. We'll respond with in the next 24 hours!",
+			"error": "Unable to send the email at the moment. Please try again!"
 		}
 	},
 	"unlock": {

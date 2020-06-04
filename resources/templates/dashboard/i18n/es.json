@@ -23,6 +23,16 @@
 			"ask": "Pregúntenos directamente",
 			"yes": "Sí",
 			"no": "No"
+		},
+		"askusdirectly": {
+			"title": "Pregúntenos directamente",
+			"customersupport": "Atención al cliente: Solicitar más información dentro de las 24 horas",
+			"message": "Mensaje",
+			"text": "El artículo con la url ",
+			"text2": " podría tener más información para ser más útil. Agradecería que el artículo contuviera.. ",
+			"texterror": "Por favor, introduzca un mínimo de 80 caracteres.",
+			"success": "Gracias por el correo electrónico. ¡Responderemos con él en las próximas 24 horas!",
+			"error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!"
 		}
 	},
 	"unlock": {

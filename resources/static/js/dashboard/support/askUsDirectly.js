@@ -5,7 +5,7 @@
 		// Show Sweet Alert
         Swal.fire({
         	position: 'bottom-right',
-            title: 'Ask Us Directly',
+            title: window.translationData.support.askusdirectly.title,
             html: askUsDirectly(this.getAttribute('data-url')),
             inputAttributes: {
                 autocapitalize: 'on'
@@ -20,7 +20,7 @@
                 // send Email
                 let email =  window.currentUser.email;
                 let message =  document.getElementById('askUsDirectlyText').value;
-                let subject = "Customer Support: Requesting More Information in 24 hours";
+                let subject = window.translationData.support.askusdirectly.customersupport;
 				sendEmailToSupport(email, message, subject);
             }
 
@@ -49,7 +49,7 @@
 
 		let messageLabel = document.createElement('label');
 		messageLabel.classList = 'labelEmail text-left ml-5';
-		messageLabel.textContent = 'Message';
+		messageLabel.textContent = window.translationData.support.askusdirectly.message;
 		askUsDirectlyDiv.appendChild(messageLabel);
 
 		let textArea = document.createElement('textarea');
@@ -57,7 +57,7 @@
 		textArea.classList = 'askUsDirectlyText';
 
 		if(isNotEmpty(url)) {
-			textArea.value = 'The article with the url ' + url + ' could have more information to be most useful. I would appreciate if the article contained.. ';
+			textArea.value = window.translationData.support.askusdirectly.text + url + window.translationData.support.askusdirectly.text2;
 		}
 
 		askUsDirectlyDiv.appendChild(textArea);
@@ -95,7 +95,7 @@
 		let textAreaEnt = this.value;
 
 		if(isEmpty(textAreaEnt) || textAreaEnt.length < 80) {
-			textErrorDispUA.textContent = 'Please enter a minimum of 80 characters.';
+			textErrorDispUA.textContent = window.translationData.support.askusdirectly.texterror;
 			sendEmailBtn.setAttribute('disabled','disabled');
 			return;
 		}
@@ -121,13 +121,13 @@
 	        success: function(result) {
 	        	Toast.fire({
 					icon: 'success',
-					title: "Thanks for the email. We'll respond with in the next 24 hours!"
+					title: window.translationData.support.askusdirectly.success
 				});
         	},
 	        error: function (thrownError) {
 	    		Toast.fire({
 					icon: 'error',
-					title: "Unable to send the email at the moment. Please try again!"
+					title: window.translationData.support.askusdirectly.error
 				});
         	}
     	});
