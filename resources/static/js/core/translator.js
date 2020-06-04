@@ -14,6 +14,8 @@ function translatePage(locale) {
 	      	// Add to a cache
 	      	window.translationData = data;
 	        replaceText(data);
+	        // Set Translated Months
+	        setTranslatedMonths();
 	      });
 	    }
 	  )
@@ -43,4 +45,26 @@ function replaceText(translation) {
 		  el.textContent = text;
 		}
 	}
+}
+
+/*
+* Translates the months
+*/
+function setTranslatedMonths() {
+	window.months = [];
+	window.months.push(window.translationData.month.january);
+	window.months.push(window.translationData.month.february);
+	window.months.push(window.translationData.month.march);
+	window.months.push(window.translationData.month.april);
+	window.months.push(window.translationData.month.may);
+	window.months.push(window.translationData.month.june);
+	window.months.push(window.translationData.month.july);
+	window.months.push(window.translationData.month.august);
+	window.months.push(window.translationData.month.september);
+	window.months.push(window.translationData.month.october);
+	window.months.push(window.translationData.month.november);
+	window.months.push(window.translationData.month.december);
+
+	// Overview month name 
+	document.getElementById('overviewMonthHeading').textContent = window.months[new Date().getMonth()];
 }

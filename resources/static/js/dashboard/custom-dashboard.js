@@ -41,9 +41,6 @@ window.today = new Date();
 window.chosenDate = today;
 // Name of the months (0-January :: 11-December)
 window.months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-// Freeze the months object
-Object.freeze(months);
-Object.seal(months);
 //Popover Cache
 let popoverYear = new Date().getFullYear();
 // Login popup already shown
@@ -144,8 +141,8 @@ window.onload = function () {
 			
 			if(isEmpty(id)){
 				Swal.fire({
-	                title: "Error Redirecting",
-	                text: 'Please try again later',
+	                title: window.translationData.common.fetcherror,
+	                text: window.translationData.common.tryagain,
 	                icon: 'warning',
 	                timer: 1000,
 	                showConfirmButton: false
@@ -182,8 +179,8 @@ window.onload = function () {
 				    break;
 				default:
 					Swal.fire({
-		                title: "Redirecting Not Possible",
-		                text: 'Please try again later',
+		                title: window.translationData.common.redirecting,
+		                text: window.translationData.common.tryagain,
 		                icon: 'warning',
 		                timer: 1000,
 		                showConfirmButton: false
@@ -418,7 +415,7 @@ window.onload = function () {
 			let overviewYearHeading = document.getElementsByClassName('overviewYearHeading')[0];
 			
 			let currentDate = new Date();
-			if(isNotEmpty(overviewHeading)) {overviewHeading.textContent = months[currentDate.getMonth()];}
+			if(isNotEmpty(overviewHeading)) {overviewHeading.textContent = window.months[currentDate.getMonth()];}
 			if(isNotEmpty(overviewYearHeading)) {overviewYearHeading.textContent = currentDate.getFullYear();}
 		}
 
@@ -693,7 +690,7 @@ er = {
 	checkIfInvalidCategory(categoryIdForBudget) {
 		
 		if(isEmpty(window.categoryMap[categoryIdForBudget])) {
-			showNotification('The category chosen is invalid. Please refresh the page and try again!',window._constants.notification.error);
+			showNotification(window.translationData.common.invalidcategory,window._constants.notification.error);
 			return true;
 		}
 		
@@ -776,7 +773,7 @@ er = {
 		let overviewYearHeading = document.getElementsByClassName('overviewYearHeading')[0];
 		
 		// Print the year
-		overviewHeading.textContent = months[chosenDate.getMonth()];
+		overviewHeading.textContent = window.months[chosenDate.getMonth()];
 		overviewYearHeading.textContent = popoverYear;
 		
 		// Remove selected from current
@@ -864,8 +861,8 @@ er = {
 	        success: onSuccess,
 	        error: function(){
 	        	Swal.fire({
-	                title: "Redirecting Not Possible",
-	                text: 'Please try again later',
+	                title: window.translationData.common.redirecting,
+	                text: window.translationData.common.tryagain,
 	                icon: 'warning',
 	                timer: 1000,
 	                showConfirmButton: false
@@ -985,7 +982,7 @@ function toggleVerify(email, verifyCode) {
     document.getElementById('gmail').classList.remove('d-none');
     document.getElementById('outlook').classList.remove('d-none');
 
-    document.getElementById('loginModalTitle').textContent = 'Email Verification';
+    document.getElementById('loginModalTitle').textContent = window.translationData.common.verify.title;
 
     document.getElementById('signinForm').classList.add('d-none');
 

@@ -10,7 +10,7 @@
 	// Category modal user budget category id;
 	let budgetForModalOpened = '';
 	// Choose the current month from the user chosen date
-	let userChosenMonthName = months[chosenDate.getMonth()];
+	let userChosenMonthName = window.months[chosenDate.getMonth()];
 
 	/**
 	 * START loading the page
@@ -686,7 +686,7 @@
 	// Copy all budget from previous modal if budget is empty
 	function createCopyFromPreviousMonthModal() {
 		// User chosen month
-		userChosenMonthName = months[chosenDate.getMonth()];
+		userChosenMonthName = window.months[chosenDate.getMonth()];
 		
 		let card = document.createElement("div");
 		card.id = 'emptyBudgetCard';

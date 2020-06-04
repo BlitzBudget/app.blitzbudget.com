@@ -23,6 +23,23 @@
 			"ask": "Ask us directly",
 			"yes": "Yes",
 			"no": "No"
+		},
+		"askusdirectly": {
+			"title": "Ask Us Directly",
+			"customersupport": "Customer Support: Requesting More Information within 24 hours",
+			"message": "Message",
+			"text": "The article with the url ",
+			"text2": " could have more information to be most useful. I would appreciate if the article contained.. ",
+			"texterror": "Please enter a minimum of 80 characters.",
+			"success": "Thanks for the email. We'll respond with in the next 24 hours!",
+			"error": "Unable to send the email at the moment. Please try again!"
+		},
+		"helpcenter": {
+			"redirect": "Redirecting Not Possible",
+			"tryagain": "Please try again later",
+			"noresults": "No Results",
+			"unableurl": "Unable to fetch the requested url",
+			"thanks": "Thanks for the feedback."
 		}
 	},
 	"unlock": {
@@ -390,6 +407,33 @@
 					"cancel": "Cancel"
 				}
 			}
+		},
+		"dynamic": {
+			"add": {
+				"error": "Unexpected error occured while adding the wallet."
+			},
+			"fetcherror": "Unexpected error occured while fetching the wallets",
+			"noactivecurrency": "No Active Currency",
+			"deletewallet": "Delete wallet",
+			"yesdelete": "Yes, delete it!",
+			"nodelete": "No, keep it",
+			"deleteerror": "There was an error while deleteing your wallet. Please try again later!",
+			"delete": {
+				"text": "Do you want to delete your wallet associated with ",
+				"text2": " and ",
+				"text3": "delete all entries",
+				"text4": " associated with this wallet from Blitz Budget?",
+				"transactions": "all transactions from this wallet will be deleted",
+				"budgets": "all the budgets from this wallet will be deleted",
+				"goals": "all goals within this wallet will be deleted",
+				"bankaccounts": "all financial accounts associated with this wallet will be deleted",
+				"investments": "all investments associated with this wallet will be deleted",
+				"premium": "Premium subscription will remain intact after the reset.",
+				"confirmpassword": "Confirm Password"
+			},
+			"patcherror": "Unexpected error occured while updating the wallet.",
+			"noresults": "No Results",
+			"choosecurrency": "Choose Currency"
 		}
 	},
 	"account": {
@@ -446,5 +490,42 @@
 				"helpdecide": " to help you decide"
 			}
 		}
+	},
+	"common": {
+		"fetcherror": "Error Redirecting",
+		"tryagain": "Please try again later",
+		"redirecting": "Redirecting Not Possible",
+		"invalidcategory": "The category chosen is invalid. Please refresh the page and try again!",
+		"verify": {
+			"title": "Email Verification"
+		}
+	},
+	"month": {
+		"short": {
+			"january": "Jan",
+			"february": "Feb",
+			"march": "Mar",
+			"april": "Apr",
+			"may": "May",
+			"june": "Jun",
+			"july": "Jul",
+			"august": "Aug",
+			"september": "Sep",
+			"october": "Oct",
+			"november": "Nov",
+			"december": "Dec"
+		},
+		"january": "January",
+		"february": "February",
+		"march": "March",
+		"april": "April",
+		"may": "May",
+		"june": "June",
+		"july": "July",
+		"august": "August",
+		"september": "September",
+		"october": "October",
+		"november": "November",
+		"december": "December"
 	}
 }

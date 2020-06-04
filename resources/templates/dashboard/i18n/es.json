@@ -23,6 +23,23 @@
 			"ask": "Pregúntenos directamente",
 			"yes": "Sí",
 			"no": "No"
+		},
+		"askusdirectly": {
+			"title": "Pregúntenos directamente",
+			"customersupport": "Atención al cliente: Solicitar más información dentro de las 24 horas",
+			"message": "Mensaje",
+			"text": "El artículo con la url ",
+			"text2": " podría tener más información para ser más útil. Agradecería que el artículo contuviera.. ",
+			"texterror": "Por favor, introduzca un mínimo de 80 caracteres.",
+			"success": "Gracias por el correo electrónico. ¡Responderemos con él en las próximas 24 horas!",
+			"error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!"
+		},
+		"helpcenter": {
+			"redirect": "Redireccionamiento no posible",
+			"tryagain": "Por favor, inténtelo de nuevo más tarde",
+			"noresults": "Sin resultados",
+			"unableurl": "Incapaz de obtener la url solicitada",
+			"thanks": "Gracias por la retroalimentación"
 		}
 	},
 	"unlock": {
@@ -390,6 +407,33 @@
 					"cancel": "Cancelar"
 				}
 			}
+		},
+		"dynamic": {
+			"add": {
+				"error": "Un error inesperado ocurrió mientras añadía la cartera"
+			},
+			"fetcherror": "Un error inesperado ocurrió al ir a buscar las carteras",
+			"noactivecurrency": "No hay moneda activa",
+			"deletewallet": "Borrar cartera",
+			"yesdelete": "¡Sí, bórralo!",
+			"nodelete": "No, quédatelo",
+			"deleteerror": "Hubo un error al borrar su cartera. Por favor, inténtelo de nuevo más tarde!",
+			"delete": {
+				"text": "¿Quieres borrar tu cartera asociada a ",
+				"text2": " y ",
+				"text3": "borrar todas las entradas",
+				"text4": " asociado con esta cartera del Blitz Budget?",
+				"transactions": "todas las transacciones de esta cartera serán borradas",
+				"budgets": "todos los presupuestos de esta cartera serán borrados",
+				"goals": "todos los objetivos dentro de esta cartera serán borrados",
+				"bankaccounts": "todas las cuentas financieras asociadas a esta cartera serán eliminadas",
+				"investments": "todas las inversiones asociadas a esta cartera serán eliminadas",
+				"premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+				"confirmpassword": "Confirmar contraseña"
+			},
+			"patcherror": "Un error inesperado ocurrió mientras actualizaba la cartera.",
+			"noresults": "No hay resultados",
+			"choosecurrency": "Elija la moneda"
 		}
 	},
 	"account": {
@@ -446,5 +490,42 @@
 				"helpdecide": " para ayudarte a decidir"
 			}
 		}
+	},
+	"common": {
+		"fetcherror": "Redireccionamiento de errores",
+		"tryagain": "Por favor, inténtelo de nuevo más tarde",
+		"redirecting": "Redirección no posible",
+		"invalidcategory": "La categoría elegida es inválida. ¡Por favor, refresque la página e inténtelo de nuevo!",
+		"verify": {
+			"title": "Verificación del correo electrónico"
+		}
+	},
+	"month": {
+		"short": {
+			"january": "Ene",
+			"february": "Feb",
+			"march": "Mar",
+			"april": "Abr",
+			"may": "May",
+			"june": "Jun",
+			"july": "Jul",
+			"august": "Ago",
+			"september": "Sep",
+			"october": "Oct",
+			"november": "Nov",
+			"december": "Dic"
+		},
+		"january": "Enero",
+		"february": "Febrero",
+		"march": "Marzo",
+		"april": "Abril",
+		"may": "Mayo",
+		"june": "Junio",
+		"july": "Julio",
+		"august": "Agosto",
+		"september": "Septiembre",
+		"october": "Octubre",
+		"november": "Noviembre",
+		"december": "Diciembre"
 	}
 }
