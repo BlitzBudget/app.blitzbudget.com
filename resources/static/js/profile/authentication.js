@@ -1051,7 +1051,7 @@ function toggleLogin(email) {
     document.getElementById('gmail').classList.add('d-none');
     document.getElementById('outlook').classList.add('d-none');
 
-    document.getElementById('loginModalTitle').textContent = window.translationData.login.popup.header;
+    document.getElementById('loginModalTitle').textContent = isNotEmpty(window.translationData) ? window.translationData.login.popup.header : 'Login';
 
     document.getElementById('signinForm').classList.remove('d-none');
 
