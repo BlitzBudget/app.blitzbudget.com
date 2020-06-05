@@ -30,6 +30,8 @@
                 loadAutoCompleteModuleOnSwal();
                 // Focus the search article
                 document.getElementById('searchArticle').focus();
+                // Translate current Page
+                translatePage(getLanguage());
             },
             error: function(){
                 Swal.fire({

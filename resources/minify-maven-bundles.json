@@ -81,7 +81,6 @@
                 "/dashboard/data/defaultCategories.js",
                 "/dashboard/data/currency-name-symbol.js",
                 "/dashboard/data/locale-country.js",
-                "/dashboard/data/bankAccountCategories.js",
                 "/dashboard/support/support.js",
                 "/dashboard/income/budget.js",
                 "/dashboard/income/transactions/accountModal.js",

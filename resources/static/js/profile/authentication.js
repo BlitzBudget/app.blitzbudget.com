@@ -334,16 +334,16 @@
         event.preventDefault();
 
         if(isEmpty(email) && isEmpty(password)) {
-            document.getElementById('errorLoginPopup').textContent = 'Email & Password fields cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptyallerror;
             return;
         } else if(isEmpty(email)) {
-            document.getElementById('errorLoginPopup').textContent = 'Email field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptyemailerror;
             return;
         } else if(isEmpty(password)) {
-            document.getElementById('errorLoginPopup').textContent = 'Password field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptypassworderror;
             return;
         } else if (password.length < 8) {
-            document.getElementById('errorLoginPopup').textContent = 'Password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.passwordlengtherror;
             return;
         }
 
@@ -379,19 +379,19 @@
         event.preventDefault();
 
         if(isEmpty(email) && isEmpty(password)) {
-            document.getElementById('errorLoginPopup').textContent = 'Email & Password fields cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptyallerror;
             return;
         } else if(isEmpty(email)) {
-            document.getElementById('errorLoginPopup').textContent = 'Email field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptyemailerror;
             return;
         } else if(isEmpty(password)) {
-            document.getElementById('errorLoginPopup').textContent = 'Password field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptypassworderror;
             return;
         } else if (password.length < 8) {
-            document.getElementById('errorLoginPopup').textContent = 'Password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.passwordlengtherror;
             return;
         } else if (password !== password2) {
-            document.getElementById('errorLoginPopup').textContent = 'Passwords do not match';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.passwordnomatcherror;
             return;
         }
 
@@ -438,10 +438,10 @@
         }
         
         if(isEmpty(code)) {
-            errorLoginPopup = 'Verification code cannot be empty';
+            errorLoginPopup = window.translationData.profile.dynamic.email.verify.emptyerror;
             return;
         } else if (code.length !== 6) {
-            errorLoginPopup = 'Verification code must be 6 characters long';
+            errorLoginPopup = window.translationData.profile.dynamic.email.verify.lessthansixerror;
             return;
         }
 
@@ -473,7 +473,7 @@
                 }
                 // Check if email and password is empty
                 if(isEmpty(password)) {
-                    errorLoginPopup.textContent = 'Password field cannot be empty';
+                    errorLoginPopup.textContent = window.translationData.login.dynamic.emptypassworderror;
                     // Toggle Sign In
                     toggleLogin(email);
                     // Do not trigger login
@@ -666,22 +666,22 @@
         let newPassword = document.getElementById('passwordInputSignin').value;
 
         if(isEmpty(emailInputSignin) && isEmpty(newPassword)) {
-            document.getElementById('errorLoginPopup').textContent = 'Email & Password fields cannot be empty, Enter the new password in the password field';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptyallnewerror;
             // Change focus to email
             document.getElementById('emailInputSignin').focus();
             return;
         } else if(isEmpty(emailInputSignin)) {
-            document.getElementById('errorLoginPopup').textContent = 'Email field cannot be empty';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptyemailerror;
             // Change focus to email
             document.getElementById('emailInputSignin').focus();
             return;
         } else if(isEmpty(newPassword)) {
-            document.getElementById('errorLoginPopup').textContent = 'Enter the new password in the password field';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.emptynewpassworderror;
             // Change focus to password
             document.getElementById('passwordInputSignin').focus();
             return;
         } else if (newPassword.length < 8) {
-            document.getElementById('errorLoginPopup').textContent = 'The new password should have a minimum length of 8 characters';
+            document.getElementById('errorLoginPopup').textContent = window.translationData.login.dynamic.newpasswordlengtherror;
             // Change focus to password
             document.getElementById('passwordInputSignin').focus();
             return;
@@ -720,11 +720,11 @@
 
         // Show Sweet Alert
         Swal.fire({
-            title: 'Verification Code',
-            html: 'Verification code has been sent to <strong>' + email + '</strong>', 
+            title: window.translationData.profile.dynamic.email.verify.title,
+            html: window.translationData.profile.dynamic.email.verify.description + '<strong>' + email + '</strong>', 
             input: 'text',
             confirmButtonClass: 'btn btn-dynamic-color',
-            confirmButtonText: 'Verify Email',
+            confirmButtonText: window.translationData.profile.dynamic.email.verify.button,
             showCloseButton: true,
             showCancelButton: false,
             allowEscapeKey: false,
@@ -746,15 +746,15 @@
             },
             inputValidator: (value) => {
                 if (!value) {
-                  return 'Verification code cannot be empty'
+                  return window.translationData.profile.dynamic.email.verify.emptyerror;
                 }
 
                 if(value.length < 6) {
-                    return 'Verification code should be 6 characters in length';
+                    return window.translationData.profile.dynamic.email.verify.lessthansixerror;
                 }
 
                 if(isNaN(value)) {
-                    return 'Verification code can only contain numbers';
+                    return window.translationData.profile.dynamic.email.verify.nanerror;
                 }
 
                 // Set Confirmation code
@@ -790,7 +790,6 @@
                         retrieveAttributes(result, loginModal);
 
                         // Post success message
-                        document.getElementById('successLoginPopup').textContent = 'Successfully logged you in! Preparing the application with your data.';
                         resendloader.classList.add('d-none');
                         forgotPass.classList.remove('d-none');
 
@@ -863,7 +862,7 @@
         document.getElementById('gmail').classList.remove('d-none');
         document.getElementById('outlook').classList.remove('d-none');
 
-        document.getElementById('loginModalTitle').textContent = 'Email Verification';
+        document.getElementById('loginModalTitle').textContent = window.translationData.common.verify.title;
 
         document.getElementById('signinForm').classList.add('d-none');
 
@@ -902,7 +901,7 @@
         document.getElementById('gmail').classList.add('d-none');
         document.getElementById('outlook').classList.add('d-none');
 
-        document.getElementById('loginModalTitle').textContent = 'Sign Up';
+        document.getElementById('loginModalTitle').textContent = window.translationData.login.popup.signup;
 
         document.getElementById('signinForm').classList.add('d-none');
 
@@ -1052,7 +1051,7 @@ function toggleLogin(email) {
     document.getElementById('gmail').classList.add('d-none');
     document.getElementById('outlook').classList.add('d-none');
 
-    document.getElementById('loginModalTitle').textContent = 'Login';
+    document.getElementById('loginModalTitle').textContent = isNotEmpty(window.translationData) ? window.translationData.login.popup.header : 'Login';
 
     document.getElementById('signinForm').classList.remove('d-none');
 
