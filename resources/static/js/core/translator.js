@@ -75,6 +75,9 @@ function setTranslatedMonths() {
 
 // Assign category key value pairs for categories
 function translatedCategoryNames() {
+	// Initialize map
+	window.translatedCategoryName = {};
+
 	for(let key in window.translationData.categories) {
 		window.translatedCategoryName[key] = window.translationData.categories[key];
 	}

@@ -909,8 +909,11 @@ function fetchJSONForCategories(data) {
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
-	      let translatedText = window.translatedCategoryName[value.name];
-	      if(isEmpty(translatedText)) {
+	      /* Translated text*/
+	      let translatedText;
+	      if(isNotEmpty(window.translatedCategoryName)) {
+	      	translatedText = window.translatedCategoryName[value.name];
+	      } else {
 	      	option.setAttribute('data-category-item-key', value.name);
 	      }
 		  option.textContent = isNotEmpty(translatedText) ? value.name : translatedText;
