@@ -565,5 +565,15 @@
 		"Others": "Otros",
 		"Parential Leave": "Permiso Parental",
 		"Salary": "Sueldo"
+	},
+	"placeholder": {
+		"email": "Correo electrónico...",
+		"password": "Contraseña...",
+		"required": "Requerida",
+		"confirmpassword": "Confirmar Contraseña",
+		"search": "Buscar...",
+		"amount": "Cantidad",
+		"note": "Escriba una nota",
+		"searcharticle": "Buscar artículos..."
 	}
 }

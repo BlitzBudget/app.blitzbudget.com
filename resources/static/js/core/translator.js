@@ -18,6 +18,8 @@ function translatePage(locale) {
 	        setTranslatedMonths();
 	        // Set Translated CategoryNames
 	        translatedCategoryNames();
+	        // Replace placeholders
+	        replacePlaceholders();
 	      });
 	    }
 	  )
@@ -84,6 +86,19 @@ function translatedCategoryNames() {
 		let categoryNameTranslation = window.translatedCategoryName[elements.dataset.categoryItemKey];
 		if(isNotEmpty(categoryNameTranslation)) {
 			el.textContent = categoryNameTranslation;
+		}
+	}
+}
+
+// Replace placeholders
+function replacePlaceholders() {
+	let elements = document.querySelectorAll("[data-placeholder-i18n]");
+	for(let i = 0, len = elements.length; i < len; i++) {
+		let el = elements[i];
+		let keys = el.dataset.i18n.split(".");
+		let text = keys.reduce((obj, i) => obj[i], window.translationData);
+		if (isNotEmpty(text)) {
+		  el.placeholder = text;
 		}
 	}
 }

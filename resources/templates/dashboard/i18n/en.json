@@ -565,5 +565,15 @@
 		"Others": "Others",
 		"Parential Leave": "Parential Leave",
 		"Salary": "Salary"
+	},
+	"placeholder": {
+		"email": "Email...",
+		"password": "Password...",
+		"required": "Required",
+		"confirmpassword": "Confirm Password",
+		"search": "Search...",
+		"amount": "Amount",
+		"note": "Write a note",
+		"searcharticle": "Search for articles..."
 	}
 }
