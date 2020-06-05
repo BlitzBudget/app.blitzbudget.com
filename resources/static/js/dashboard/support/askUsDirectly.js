@@ -11,7 +11,7 @@
                 autocapitalize: 'on'
             },
             confirmButtonClass: 'btn btn-info btn-large',
-            confirmButtonText: 'Send',
+            confirmButtonText: window.translationData.support.askusdirectly.confirm,
             showCloseButton: true,
             buttonsStyling: false
         }).then(function(result) {

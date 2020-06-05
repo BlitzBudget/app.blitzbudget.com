@@ -42,7 +42,8 @@
 			"text2": " podría tener más información para ser más útil. Agradecería que el artículo contuviera.. ",
 			"texterror": "Por favor, introduzca un mínimo de 80 caracteres.",
 			"success": "Gracias por el correo electrónico. ¡Responderemos con él en las próximas 24 horas!",
-			"error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!"
+			"error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!",
+			"confirm": "Enviar"
 		},
 		"helpcenter": {
 			"redirect": "Redireccionamiento no posible",
@@ -537,5 +538,32 @@
 		"october": "Octubre",
 		"november": "Noviembre",
 		"december": "Diciembre"
+	},
+	"categories": {
+		"Beauty": "Belleza",
+		"Bills & Fees": "Facturas y Honorarios",
+		"Car": "Coche",
+		"Education": "Educación",
+		"Entertainment": "Entretenimiento",
+		"Family & Personal": "Familia y Personal",
+		"Food & Drink": "Comida y Bebida",
+		"Gifts": "Regalos",
+		"Groceries": "Comestibles",
+		"Healthcare": "Asistencia sanitaria",
+		"Home": "Hogar",
+		"Other": "Otro",
+		"Shopping": "Compras",
+		"Sport & Hobbies": "Deportes y Pasatiempos",
+		"Transport": "Transporte",
+		"Travel": "Viaje",
+		"Work": "Trabajo",
+		"Business": "Negocios",
+		"Extra Income": "Ingreso Extra",
+		"Gift": "Regalo",
+		"Insurance Payout": "Pago del seguro",
+		"Loan": "Préstamo",
+		"Others": "Otros",
+		"Parential Leave": "Permiso Parental",
+		"Salary": "Sueldo"
 	}
 }

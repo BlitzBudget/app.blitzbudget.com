@@ -16,6 +16,8 @@ function translatePage(locale) {
 	        replaceText(data);
 	        // Set Translated Months
 	        setTranslatedMonths();
+	        // Set Translated CategoryNames
+	        translatedCategoryNames();
 	      });
 	    }
 	  )
@@ -67,4 +69,21 @@ function setTranslatedMonths() {
 
 	// Overview month name 
 	document.getElementById('overviewMonthHeading').textContent = window.months[new Date().getMonth()];
+}
+
+// Assign category key value pairs for categories
+function translatedCategoryNames() {
+	for(let key in window.translationData.categories) {
+		window.translatedCategoryName[key] = window.translationData.categories[key];
+	}
+
+	// Translate the text if translation is obtained late. 
+	let elements = document.querySelectorAll("[data-category-item-key]");
+	for(let i = 0, len = elements.length; i < len; i++) {
+		let el = elements[i];
+		let categoryNameTranslation = window.translatedCategoryName[elements.dataset.categoryItemKey];
+		if(isNotEmpty(categoryNameTranslation)) {
+			el.textContent = categoryNameTranslation;
+		}
+	}
 }

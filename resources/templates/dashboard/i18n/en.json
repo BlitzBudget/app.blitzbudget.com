@@ -42,7 +42,8 @@
 			"text2": " could have more information to be most useful. I would appreciate if the article contained.. ",
 			"texterror": "Please enter a minimum of 80 characters.",
 			"success": "Thanks for the email. We'll respond with in the next 24 hours!",
-			"error": "Unable to send the email at the moment. Please try again!"
+			"error": "Unable to send the email at the moment. Please try again!",
+			"confirm": "Send"
 		},
 		"helpcenter": {
 			"redirect": "Redirecting Not Possible",
@@ -537,5 +538,32 @@
 		"october": "October",
 		"november": "November",
 		"december": "December"
+	},
+	"categories": {
+		"Beauty": "Beauty",
+		"Bills & Fees": "Bills & Fees",
+		"Car": "Car",
+		"Education": "Education",
+		"Entertainment": "Entertainment",
+		"Family & Personal": "Family & Personal",
+		"Food & Drink": "Food & Drink",
+		"Gifts": "Gifts",
+		"Groceries": "Groceries",
+		"Healthcare": "Healthcare",
+		"Home": "Home",
+		"Other": "Other",
+		"Shopping": "Shopping",
+		"Sport & Hobbies": "Sport & Hobbies",
+		"Transport": "Transport",
+		"Travel": "Travel",
+		"Work": "Work",
+		"Business": "Business",
+		"Extra Income": "Extra Income",
+		"Gift": "Gift",
+		"Insurance Payout": "Insurance Payout",
+		"Loan": "Loan",
+		"Others": "Others",
+		"Parential Leave": "Parential Leave",
+		"Salary": "Salary"
 	}
 }

@@ -909,7 +909,11 @@ function fetchJSONForCategories(data) {
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
-		  option.textContent = value.name;
+	      let translatedText = window.translatedCategoryName[value.name];
+	      if(isEmpty(translatedText)) {
+	      	option.setAttribute('data-category-item-key', value.name);
+	      }
+		  option.textContent = isNotEmpty(translatedText) ? value.name : translatedText;
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
