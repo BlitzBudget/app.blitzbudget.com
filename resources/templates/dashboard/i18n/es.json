@@ -13,6 +13,16 @@
 	    		"subtitle": "Hemos enviado el correo electrónico de verificación a "
 	    	},
 	    	"notme": "no yo"
+	    },
+	    "dynamic": {
+	    	"emptyallerror": "Los campos de correo electrónico y contraseña no pueden estar vacíos",
+	    	"emptyemailerror": "El campo de correo electrónico no puede estar vacío",
+	    	"emptypassworderror": "El campo de la contraseña no puede estar vacío",
+	    	"passwordlengtherror": "La contraseña debe tener una longitud mínima de 8 caracteres",
+	    	"passwordnomatcherror": "Las contraseñas no coinciden",
+	    	"emptyallnewerror": "Los campos de correo electrónico y contraseña no pueden estar vacíos, introduzca la nueva contraseña en el campo de la contraseña",
+	    	"emptynewpassworderror": "Introduzca la nueva contraseña en el campo de la contraseña",
+	    	"newpasswordlengtherror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres"
 	    }
 	},
 	"support" : {

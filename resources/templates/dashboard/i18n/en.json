@@ -13,6 +13,16 @@
 	    		"subtitle": "We've sent the verification email to "
 	    	},
 	    	"notme": "not me"
+	    },
+	    "dynamic": {
+	    	"emptyallerror": "Email & Password fields cannot be empty",
+	    	"emptyemailerror": "Email field cannot be empty",
+	    	"emptypassworderror": "Password field cannot be empty",
+	    	"passwordlengtherror": "Password should have a minimum length of 8 characters",
+	    	"passwordnomatcherror": "Passwords do not match",
+	    	"emptyallnewerror": "Email & Password fields cannot be empty, Enter the new password in the password field",
+	    	"emptynewpassworderror": "Enter the new password in the password field",
+	    	"newpasswordlengtherror": "The new password should have a minimum length of 8 characters"
 	    }
 	},
 	"support" : {
