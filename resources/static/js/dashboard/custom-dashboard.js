@@ -551,7 +551,7 @@ window.onload = function () {
 
 		// Assign background image for sidebar
 		function changeImageOfSidebar(img) {
-			if ($sidebar.length != 0) {
+			if (isNotEmpty($sidebar) && $sidebar.length != 0) {
 				 $sidebar.attr('data-image', img);
 				 
 				$sidebar_img_container = $sidebar.find('.sidebar-background');
@@ -564,7 +564,7 @@ window.onload = function () {
 
 		// Assign color change for side bar
 		function changeColorOfSidebar(color){
-			if ($sidebar.length != 0) {
+			if (isNotEmpty($sidebar) && $sidebar.length != 0) {
 				 $sidebar.attr('data-color', color);
 			 }
 		}
@@ -967,9 +967,9 @@ function assignCategoryId(data) {
 
 	let iterateElement;
 	if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-		  iterateElement = window.expenseDropdownItems
+		  iterateElement = window.expenseDropdownItems;
 	} else if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-		  iterateElement = window.incomeDropdownItems
+		  iterateElement = window.incomeDropdownItems;
 	}
 
 	let children = iterateElement.children;

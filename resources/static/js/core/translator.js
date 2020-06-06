@@ -91,6 +91,24 @@ function translatedCategoryNames() {
 			el.textContent = categoryNameTranslation;
 		}
 	}
+
+	// Expense dropdown items
+	for (let i = 0, len = window.expenseDropdownItems.length; i < len; i++) {
+	  let expensedropdown = window.expenseDropdownItems[i];
+	  let categoryName = window.translatedCategoryName[expensedropdown.textContent];
+	  if(isNotEmpty(categoryName)) {
+	  	expensedropdown.textContent = categoryName;
+	  }
+	}
+
+	// Income dropdown items
+	for (let i = 0, len = window.incomeDropdownItems.length; i < len; i++) {
+	  let incomedropdown = window.incomeDropdownItems[i];
+	  let categoryName = window.translatedCategoryName[incomedropdown.textContent];
+	  if(isNotEmpty(categoryName)) {
+	  	incomedropdown.textContent = categoryName;
+	  }
+	}
 }
 
 // Replace placeholders
@@ -98,7 +116,7 @@ function replacePlaceholders() {
 	let elements = document.querySelectorAll("[data-placeholder-i18n]");
 	for(let i = 0, len = elements.length; i < len; i++) {
 		let el = elements[i];
-		let keys = el.dataset.i18n.split(".");
+		let keys = el.dataset.placeholderI18n.split(".");
 		let text = keys.reduce((obj, i) => obj[i], window.translationData);
 		if (isNotEmpty(text)) {
 		  el.placeholder = text;
