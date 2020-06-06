@@ -577,8 +577,8 @@
 		"searcharticle": "Buscar artículos..."
 	},
 	"tooltip": {
-		"logout": "Desconexión",
+		"logout": "Cerrar sesión",
 		"fullscreen": "Pantalla completa",
-		"settings": "Ajustes"
+		"settings": "Configuración"
 	}
 }
