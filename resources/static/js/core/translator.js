@@ -108,6 +108,7 @@ function replaceTooltips() {
 		let text = keys.reduce((obj, i) => obj[i], window.translationData);
 		if (isNotEmpty(text)) {
 		  el.title = text;
+		  el.dataset.originalTitle = text;
 		}
 	}
 }
