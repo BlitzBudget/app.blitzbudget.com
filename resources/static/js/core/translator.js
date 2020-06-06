@@ -82,33 +82,6 @@ function translatedCategoryNames() {
 		window.translatedCategoryName[key] = window.translationData.categories[key];
 	}
 
-	// Translate the text if translation is obtained late. 
-	let elements = document.querySelectorAll("[data-category-item-key]");
-	for(let i = 0, len = elements.length; i < len; i++) {
-		let el = elements[i];
-		let categoryNameTranslation = window.translatedCategoryName[elements.dataset.categoryItemKey];
-		if(isNotEmpty(categoryNameTranslation)) {
-			el.textContent = categoryNameTranslation;
-		}
-	}
-
-	// Expense dropdown items
-	for (let i = 0, len = window.expenseDropdownItems.length; i < len; i++) {
-	  let expensedropdown = window.expenseDropdownItems[i];
-	  let categoryName = window.translatedCategoryName[expensedropdown.textContent];
-	  if(isNotEmpty(categoryName)) {
-	  	expensedropdown.textContent = categoryName;
-	  }
-	}
-
-	// Income dropdown items
-	for (let i = 0, len = window.incomeDropdownItems.length; i < len; i++) {
-	  let incomedropdown = window.incomeDropdownItems[i];
-	  let categoryName = window.translatedCategoryName[incomedropdown.textContent];
-	  if(isNotEmpty(categoryName)) {
-	  	incomedropdown.textContent = categoryName;
-	  }
-	}
 }
 
 // Replace placeholders

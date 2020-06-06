@@ -1176,7 +1176,7 @@
 		let categoryTitle = document.createElement('a');
 		categoryTitle.id = 'categoryTitle-' + category;
 		categoryTitle.classList = 'pl-4 accTitleAnchor';
-		categoryTitle.textContent = categoryData.name;
+		categoryTitle.textContent = isNotEmpty(window.translatedCategoryName) ? window.translatedCategoryName[categoryData.name] : categoryData.name;
 		titleWrapper.appendChild(categoryTitle);
 		categoryTit.appendChild(titleWrapper);
 

@@ -910,13 +910,9 @@ function fetchJSONForCategories(data) {
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
 	      /* Translated text*/
-	      let translatedText;
-	      if(isNotEmpty(window.translatedCategoryName)) {
-	      	translatedText = window.translatedCategoryName[value.name];
-	      } else {
-	      	option.setAttribute('data-category-item-key', value.name);
-	      }
-		  option.textContent = isNotEmpty(translatedText) ? value.name : translatedText;
+	      let translatedText = value.name;
+	      if(isNotEmpty(window.translatedCategoryName)) { translatedText = window.translatedCategoryName[value.name]; } 
+		  option.textContent = translatedText;
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
@@ -929,8 +925,6 @@ function fetchJSONForCategories(data) {
 		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
-	
-
 		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);

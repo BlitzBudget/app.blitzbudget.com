@@ -224,7 +224,8 @@
 		let cardTitle = document.createElement('div');
 		cardTitle.id = 'categoryName-' + userBudget.budgetId;
 		cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
-		cardTitle.textContent = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName;
+		let categoryname = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName
+		cardTitle.textContent = isNotEmpty(window.translatedCategoryName) ? window.translatedCategoryName[categoryname] : categoryname;
 		cardRowRemaining.appendChild(cardTitle);
 		
 		
