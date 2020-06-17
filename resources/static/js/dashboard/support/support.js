@@ -143,7 +143,7 @@
                     b.innerHTML = arr[i].title.substr(0, startPos) + "<strong>" + arr[i].title.substr(startPos, val.length) + "</strong>" + arr[i].title.substr(startPos2);
                 }
                 /*insert a input field that will hold the current array item's value:*/
-                b.href = window._config.help.invokeUrl + arr[i].url;
+                b.href = window._config.help.invokeUrl + '/' + getLanguage() + arr[i].url;
                 
                 a.appendChild(b);
               }
@@ -199,7 +199,7 @@
     function loadAutoCompleteModuleOnSwal() {
         // FAQ populate the questions for search
         let faq = [];
-        let categoryInformation = window.categoryInfo;
+        let categoryInformation = window.categoryInfo[getLanguage()];
         for(let i = 0, len = categoryInformation.length; i < len; i++) {
             let categoryInfoItem = categoryInformation[i];
             let subCategoryArr = categoryInfoItem.subCategory;
@@ -306,7 +306,7 @@
     // Populate Sub Category Info
     function populateSubCategoryInfo(result) {
         let title = result.title;
-        let categoryInfo = window.categoryInfo;
+        let categoryInfo = window.categoryInfo[getLanguage()];
 
         // Category Information iteration
         for(let i=0, len=categoryInfo.length; i<len ; i++) {
@@ -358,7 +358,7 @@
             let anchorArticle = document.createElement('a');
             anchorArticle.classList.add('sub-category-link');
             anchorArticle.classList.add('help-center-result');
-            anchorArticle.href = window._config.help.invokeUrl + category.dataUrl + subCategoryNavItem.url.slice(1);
+            anchorArticle.href = window._config.help.invokeUrl + '/' + getLanguage() + category.dataUrl + subCategoryNavItem.url.slice(1);
             anchorArticle.textContent = subCategoryNavItem.title;
             li.appendChild(anchorArticle);
             ul.appendChild(li);
@@ -437,7 +437,7 @@
         // Bread crumb 0
         let breadcrumbAnchor = breadcrumbSC[0];
         let anchorZero = document.createElement('a');
-        anchorZero.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
+        anchorZero.href = window._config.help.invokeUrl + '/' + getLanguage() + breadcrumbAnchor.crumbUrl;
         anchorZero.classList.add('crumbAnchor');
         anchorZero.textContent = breadcrumbAnchor.crumbTitle;
         breadcrumbDiv.appendChild(anchorZero);  
@@ -451,7 +451,7 @@
             let breadcrumbAnchor = breadcrumbSC[i];
             let anchorOther = document.createElement('a');
             anchorOther.classList.add('crumbAnchor');
-            anchorOther.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
+            anchorOther.href = window._config.help.invokeUrl + '/' + getLanguage() + breadcrumbAnchor.crumbUrl;
             anchorOther.textContent = breadcrumbAnchor.crumbTitle;
             breadcrumbDiv.appendChild(anchorOther);
         }
@@ -464,7 +464,7 @@
 
         // Bread crumb last
         let anchorLast = document.createElement('a');
-        anchorLast.href = window._config.help.invokeUrl + result.url;
+        anchorLast.href = window._config.help.invokeUrl + '/' + getLanguage() + result.url;
         anchorLast.classList.add('crumbAnchor');
         anchorLast.textContent = result.title;
         breadcrumbDiv.appendChild(anchorLast);
