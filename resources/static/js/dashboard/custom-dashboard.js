@@ -551,7 +551,7 @@ window.onload = function () {
 
 		// Assign background image for sidebar
 		function changeImageOfSidebar(img) {
-			if ($sidebar.length != 0) {
+			if (isNotEmpty($sidebar) && $sidebar.length != 0) {
 				 $sidebar.attr('data-image', img);
 				 
 				$sidebar_img_container = $sidebar.find('.sidebar-background');
@@ -564,7 +564,7 @@ window.onload = function () {
 
 		// Assign color change for side bar
 		function changeColorOfSidebar(color){
-			if ($sidebar.length != 0) {
+			if (isNotEmpty($sidebar) && $sidebar.length != 0) {
 				 $sidebar.attr('data-color', color);
 			 }
 		}
@@ -909,11 +909,10 @@ function fetchJSONForCategories(data) {
 		  /*create a DIV element for each matching element:*/
 	      let option = document.createElement("DIV");
 	      option.classList.add("dropdown-item");
-	      let translatedText = window.translatedCategoryName[value.name];
-	      if(isEmpty(translatedText)) {
-	      	option.setAttribute('data-category-item-key', value.name);
-	      }
-		  option.textContent = isNotEmpty(translatedText) ? value.name : translatedText;
+	      /* Translated text*/
+	      let translatedText = value.name;
+	      if(isNotEmpty(window.translatedCategoryName)) { translatedText = window.translatedCategoryName[value.name]; } 
+		  option.textContent = translatedText;
 
 		  let inputValue = document.createElement('input');
 		  inputValue.type = 'hidden';
@@ -926,8 +925,6 @@ function fetchJSONForCategories(data) {
 		  	window.categoryMap[value.id] = value;
 		  } else {
 		  	inputValue.value = value.name;
-	
-
 		  	window.categoryMap[value.name] = value;
 		  }
 		  option.appendChild(inputValue);
@@ -964,9 +961,9 @@ function assignCategoryId(data) {
 
 	let iterateElement;
 	if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory){
-		  iterateElement = window.expenseDropdownItems
+		  iterateElement = window.expenseDropdownItems;
 	} else if(categoryType == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
-		  iterateElement = window.incomeDropdownItems
+		  iterateElement = window.incomeDropdownItems;
 	}
 
 	let children = iterateElement.children;

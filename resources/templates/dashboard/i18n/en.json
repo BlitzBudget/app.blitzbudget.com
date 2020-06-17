@@ -575,5 +575,10 @@
 		"amount": "Amount",
 		"note": "Write a note",
 		"searcharticle": "Search for articles..."
+	},
+	"tooltip": {
+		"logout": "Logout",
+		"fullscreen": "FullScreen",
+		"settings": "Settings"
 	}
 }

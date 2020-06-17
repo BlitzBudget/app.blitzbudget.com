@@ -20,6 +20,8 @@ function translatePage(locale) {
 	        translatedCategoryNames();
 	        // Replace placeholders
 	        replacePlaceholders();
+	        //Replace tooltip
+	        replaceTooltips();
 	      });
 	    }
 	  )
@@ -75,19 +77,13 @@ function setTranslatedMonths() {
 
 // Assign category key value pairs for categories
 function translatedCategoryNames() {
+	// Initialize map
+	window.translatedCategoryName = {};
+
 	for(let key in window.translationData.categories) {
 		window.translatedCategoryName[key] = window.translationData.categories[key];
 	}
 
-	// Translate the text if translation is obtained late. 
-	let elements = document.querySelectorAll("[data-category-item-key]");
-	for(let i = 0, len = elements.length; i < len; i++) {
-		let el = elements[i];
-		let categoryNameTranslation = window.translatedCategoryName[elements.dataset.categoryItemKey];
-		if(isNotEmpty(categoryNameTranslation)) {
-			el.textContent = categoryNameTranslation;
-		}
-	}
 }
 
 // Replace placeholders
@@ -95,10 +91,24 @@ function replacePlaceholders() {
 	let elements = document.querySelectorAll("[data-placeholder-i18n]");
 	for(let i = 0, len = elements.length; i < len; i++) {
 		let el = elements[i];
-		let keys = el.dataset.i18n.split(".");
+		let keys = el.dataset.placeholderI18n.split(".");
 		let text = keys.reduce((obj, i) => obj[i], window.translationData);
 		if (isNotEmpty(text)) {
 		  el.placeholder = text;
+		}
+	}
+}
+
+// Replace tooltip
+function replaceTooltips() {
+	let elements = document.querySelectorAll("[data-title-i18n]");
+	for(let i = 0, len = elements.length; i < len; i++) {
+		let el = elements[i];
+		let keys = el.dataset.titleI18n.split(".");
+		let text = keys.reduce((obj, i) => obj[i], window.translationData);
+		if (isNotEmpty(text)) {
+		  el.title = text;
+		  el.dataset.originalTitle = text;
 		}
 	}
 }

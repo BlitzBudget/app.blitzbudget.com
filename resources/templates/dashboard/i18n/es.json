@@ -575,5 +575,10 @@
 		"amount": "Cantidad",
 		"note": "Escriba una nota",
 		"searcharticle": "Buscar artículos..."
+	},
+	"tooltip": {
+		"logout": "Cerrar sesión",
+		"fullscreen": "Pantalla completa",
+		"settings": "Configuración"
 	}
 }
