@@ -1,584 +1,584 @@
 {
-	"login" : {
-	    "popup": {
-	    	"header": "Iniciar sesión",
-	    	"subtitle": "O ser clásico",
-	    	"continue": "Siguiente",
-	    	"forgot": "He olvidado mi contraseña",
-	    	"resend": "Reenviar el código",
-	    	"account": "Ya tengo una cuenta",
-	    	"signup": "Crear cuenta",
-	    	"verify": {
-	    		"title": "Verificar",
-	    		"subtitle": "Hemos enviado el correo electrónico de verificación a "
-	    	},
-	    	"notme": "no yo"
-	    },
-	    "dynamic": {
-	    	"emptyallerror": "Los campos de correo electrónico y contraseña no pueden estar vacíos",
-	    	"emptyemailerror": "El campo de correo electrónico no puede estar vacío",
-	    	"emptypassworderror": "El campo de la contraseña no puede estar vacío",
-	    	"passwordlengtherror": "La contraseña debe tener una longitud mínima de 8 caracteres",
-	    	"passwordnomatcherror": "Las contraseñas no coinciden",
-	    	"emptyallnewerror": "Los campos de correo electrónico y contraseña no pueden estar vacíos, introduzca la nueva contraseña en el campo de la contraseña",
-	    	"emptynewpassworderror": "Introduzca la nueva contraseña en el campo de la contraseña",
-	    	"newpasswordlengtherror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres"
-	    }
-	},
-	"support" : {
-		"popup": {
-			"header": "¿Cómo podemos ayudar?",
-			"rating": "¿Esta respuesta fue útil?",
-			"happy": "Estamos felices de ayudar! ",
-			"ask": "Pregúntenos directamente",
-			"yes": "Sí",
-			"no": "No"
-		},
-		"askusdirectly": {
-			"title": "Pregúntenos directamente",
-			"customersupport": "Atención al cliente: Solicitar más información dentro de las 24 horas",
-			"message": "Mensaje",
-			"text": "El artículo con la url ",
-			"text2": " podría tener más información para ser más útil. Agradecería que el artículo contuviera.. ",
-			"texterror": "Por favor, introduzca un mínimo de 80 caracteres.",
-			"success": "Gracias por el correo electrónico. ¡Responderemos con él en las próximas 24 horas!",
-			"error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!",
-			"confirm": "Enviar"
-		},
-		"helpcenter": {
-			"redirect": "Redireccionamiento no posible",
-			"tryagain": "Por favor, inténtelo de nuevo más tarde",
-			"noresults": "Sin resultados",
-			"unableurl": "Incapaz de obtener la url solicitada",
-			"thanks": "Gracias por la retroalimentación"
-		}
-	},
-	"unlock": {
-		"popup": {
-			"password": "Introduzca la contraseña",
-			"button": "Desbloquear"
-		}
-	},
-	"nav": {
-		"dropdown": {
-			"logout": "Cerrar sesión",
-			"settings": "Configuración",
-			"profile": "Perfil"
-		},
-		"account": "Cuenta",
-		"support": "Soporte"
-	},
-	"sidebar": {
-		"overview": "Resumen",
-		"goals": "Objetivo",
-		"budget": "Presupuesto",
-		"transaction": "Transacciones"
-	},
-	"home": {
-		"title": "Inicio del Tablero de Control | BlitzBudget"
-	},
-	"settings": {
-		"page": {
-			"title": "Configuraciones",
-			"general": "General",
-			"notifications": "Notificaciones",
-			"devices": "Dispositivos",
-			"region": {
-				"title": "Preferencias regionales",
-				"subtitle": "Seleccione el idioma, la moneda y el país que prefiera para el formato regional apropiado"
-			},
-			"country": {
-				"title": "País",
-				"subtitle": "Elija su país para el formato de moneda regional apropiado.",
-				"withWallet": "Países con cartera",
-				"withoutWallet": "Países sin cartera"
-			},
-			"currency": {
-				"title": "Moneda",
-				"subtitle": "La moneda de preferencia para esta cartera. Sus transacciones y resúmenes estarán en esta moneda.",
-				"withWallet": "Monedas con cartera",
-				"withoutWallet": "Monedas sin cartera"
-			},
-			"language": {
-				"title": "Lenguaje",
-				"subtitle": "Estamos trabajando para proporcionar más que el inglés (EE.UU.) como su opción de idioma"
-			},
-			"export": {
-				"title": "Exportación",
-				"subtitle": "Seleccione su formato de archivo preferido para la exportación de datos.",
-				"file": {
-					"title": "Formato de archivo",
-					"subtitle": "Actualmente soportamos Excel, Google Docs y valores separados por comas (CSV)."
-				}
-			}	
-		}
-	},
-	"transactions": {
-		"page": {
-			"table": {
-				"title": "Transacciones",
-				"sortby": {
-					"category": "Categoría",
-					"title": " Ordenar por",
-					"account": "Cuenta",
-					"creationdate": "Fecha de creación"
-				}
-			},
-			"chart": {
-				"title": "Posición financiera",
-				"income": "Ingreso total",
-				"spent": "Total gastado",
-				"available": "Total disponible"
-			},
-			"account": {
-				"remaining": "Remanente (%)",
-				"remainingtext": "Remanente",
-				"transaction": "Transacciones"
-			}
-		},
-		"modal": {
-			"title": "Elija su preferencia",
-			"connect": {
-				"title" : "Conecta con tu banco",
-				"description": "Conecte su cuenta bancaria para importar las transacciones del mes en curso."
-			},
-			"sync": {
-				"title": "Sincronización automática de cuentas bancarias",
-				"description": "Se sincroniza automáticamente con la cuenta bancaria para obtener transacciones cada principio de mes."
-			},
-			"import": {
-				"title": "Importación de estados de cuenta bancarios",
-				"description": "También puede importar las transacciones de sus estados de cuenta bancarios"
-			},
-			"add" : {
-				"classical": " o ser clásico ",
-				"expense": "Gasto",
-				"income": "Ingresos",
-				"recurrence": {
-					"never": "Nunca",
-					"weekly": "Semanal",
-					"bimonthly": "Bimensual",
-					"monthly": "Mensual"
-				},
-				"button": "Agregar transacción"
-			}
-		},
-		"dynamic": {
-			"title": "Transacciones",
-			"today": "Hoy",
-			"empty": {
-				"success": "¡Oh! ¡Chasquido! No tienes ninguna transacción todavía."
-			},
-			"add": {
-				"amounterror": "Por favor, llene la cantidad.",
-				"nonzeroerror": "La cantidad no puede ser cero.",
-				"recurerror": "El valor de recurrencia seleccionado es inválido",
-				"categoryerror": "Categoría elegida no es válida. Por favor, seleccione una válida.",
-				"unableerror": "Incapaz de añadir esta transacción.",
-				"success": "Añadida con éxito la transacción.",
-				"tooltip": "Añadir Transacciones"
-			},
-			"get": {
-				"unableerror": "Hubo un error al buscar las transacciones. ¡Por favor, inténtelo de nuevo más tarde!"
-			},
-			"chart": {
-				"empty": "Por favor, rellene los datos adecuados para construir un gráfico",
-				"expense": "Total de ingresos y total de gastos excesivos como porcentaje del total de gastos",
-				"income": "Total gastado y total disponible como porcentaje del total de ingresos",
-				"labels": {
-					"income": "Ingresos",
-					"spent": "Gastado",
-					"available": "Disponible",
-					"overspent": "Gasto excesivo"
-				},
-				"available": "Total disponible",
-				"overspent": "Total gastado en exceso"
-			},
-			"card": {
-				"description": "Sin descripción"
-			},
-			"sort": {
-				"creationdate": "Fecha de creación",
-				"category": "Categoría",
-				"account": "Cuenta"
-			}
-		}
-	},
-	"budget": {
-		"page": {
-			"title": "Presupuesto",
-			"card": {
-				"remaining": "Restante (%)",
-				"remain": "Restante"
-			},
-			"chart": {
-				"title": "Visualización del presupuesto",
-				"total": "Total presupuestado",
-				"categories": " Categorías",
-				"tobebudgeted": "A presupuestar"
-			},
-			"compensation": {
-				"title": "Compensar este gasto excesivo con",
-				"choose": "Elegir categoría"
-			}
-		},
-		"dynamic": {
-			"fetcherror": "Incapaz de conseguir tu presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
-			"chart": {
-				"totalbudget": "Total presupuestado",
-				"tobebudgeted":"A presupuestar"
-			},
-			"card": {
-				"overspent": "Gasto excesivo (%)",
-				"tobebudgeted": "A presupuestar (%)",
-				"remaining": "Restante (%)",
-				"remain": " Restante",
-				"na": "NA",
-				"deleteerror": "No se puede borrar el presupuesto. ¡Por favor, refresque e intente de nuevo!",
-				"empty": {
-					"plan": "Comenzar a planear para ",
-					"hey": "Hola, parece que necesitas un presupuesto para ",
-					"create": "Crear presupuestos..."
-				}
-			},
-			"unableerror": "Incapaz de crear los presupuestos. ¡Por favor, refresque e intente de nuevo!",
-			"alreadyerror": "La categoría seleccionada ya tiene un presupuesto. ¡Por favor, elija una categoría diferente!",
-			"changeerror": "No se puede cambiar la categoría del presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
-			"allcategorieserror": "¡Tiene un presupuesto para todas las categorías!",
-			"tooltip": "Añadir el presupuesto",
-			"delete": "Borrar el presupuesto",
-			"income": "Ingreso",
-			"expense": "Gastos"
-		}
-	},
-	"overview": {
-		"page": {
-			"title": "Visión general",
-			"assets": "Activos",
-			"debt": "Deuda",
-			"networth": "Valor neto",
-			"chart": {
-				"networth": "Visión general de los ingresos",
-				"option": "Resumen de un año",
-				"options": {
-					"income": "Ingresos",
-					"expense": "Gasto",
-					"assets": "Activos",
-					"debt": "Deuda",
-					"networth": "Valor neto"
-				}
-			}
-		},
-		"dynamic": {
-			"oneyear": "Resumen de un año",
-			"incomeparam": "Ingresos",
-			"expenseparam": "Gasto",
-			"title": "Visión general",
-			"geterror": "Error de búsqueda de información para la visión general. Por favor, inténtelo de nuevo más tarde!",
-			"chart": {
-				"incomeoverview": "Visión general de los ingresos",
-				"expenseoverview": "Visión general de los gastos",
-				"assetoverview": "Visión general de la activos",
-				"debtoverview": "Visión general de la deuda",
-				"networthoverview": "Visión general de la valor neto",
-				"expensebreakdown": "Desglose de gastos",
-				"incomebreakdown": "Desglose de ingresos",
-				"nodata": "¡No hay suficientes datos! Comienza a agregar transacciones...",
-				"onecategory": "¡No hay suficientes datos! Necesitamos transacciones en al menos 2 categorías ..."
-			}
-		}
-	},
-	"profile": {
-		"page": {
-			"title": "Perfil",
-			"edit": "Editar",
-			"change": "Cambio",
-			"changepassword": "Cambiar Contraseña",
-			"nocards": "Sin cartas",
-			"joined": "Se unió",
-			"creditcard": "Añadir tarjeta de crédito",
-			"connected": "Cuentas conectadas",
-			"connect": {
-				"title": "Conectar",
-				"description": "Puedes conectarte con los miembros de tu familia para tener una mejor visión general de tus finanzas"	
-			},
-			"reset": {
-				"title": "Reiniciar cuenta",
-				"description": "Su cuenta de usuario permanecerá, pero todos los datos serán eliminados para que pueda empezar desde una pizarra en blanco. Considere la posibilidad de exportar todos sus datos.",
-				"button": "Reiniciar mi cuenta de usuario del Blitz Budget"
-			},
-			"delete": {
-				"title": "Borrar cuenta",
-				"description": "Tengan cuidado. Esto eliminará su cuenta de usuario y toda la información que haya introducido. Le recomendamos que exporte todos sus datos",
-				"button": "Borrar mi cuenta de usuario del Blitz Budget"
-			},
-			"question": {
-				"title": "¿Tiene una pregunta?",
-				"feature": "Enviar una solicitud la característica",
-				"ask": "Pregúntenos directamente",
-				"help": "Centro de ayuda"
-			}
-		},
-		"dynamic": {
-			"title": "Perfil",
-			"createerror": "¡Hubo un error al buscar la información del usuario!",
-			"mininumpassworderror": "El campo de la contraseña actual debe tener una longitud mínima de 8 caracteres.",
-			"newminimumerror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres.",
-			"oldpassworderror": "El campo de la contraseña antigua debe tener una longitud mínima de 8 caracteres.",
-			"changenameerror": "¡Hubo un error al cambiar el nombre. Por favor, inténtelo de nuevo más tarde!",
-			"confirmpassword": {
-				"error": "El campo de confirmación de la contraseña debe tener una longitud mínima de 8 caracteres.",
-				"title": "Confirmar contraseña"
-			},
-			"changepassword": {
-				"oldpassword": "Contraseña antigua",
-				"newpassword": "Nueva contraseña",
-				"change": "Cambiar la contraseña",
-				"success": "¡Cambió con éxito la contraseña!",
-				"button": "Cambiar la contraseña"
-			},
-			"reset": {
-				"title": "Reajuste su cuenta de usuario del Blitz Budget",
-				"yes": "¡Sí, reinícielo!",
-				"no": "No, quédatelo",
-				"success": "¡Reajuste con éxito su cuenta. Su cuenta está como nueva!",
-				"error": "¡Hubo un error al reiniciar la cuenta. Por favor, inténtelo de nuevo más tarde!",
-				"swal": {
-					"title": "¿Quiere restablecer su cuenta de usuario?",
-					"title2": " y ",
-					"title3": "borrar todas las entradas",
-					"title4": " del Blitz Budget?",
-					"transactions": "todas las transacciones serán borradas",
-					"budgets": "todos los presupuestos serán eliminados",
-					"goals": "todos los objetivos serán borrados",
-					"bankaccounts": "todas las cuentas financieras serán eliminadas",
-					"wallets": "todas las carteras serán borradas",
-					"investments": "todas las inversiones serán eliminadas",
-					"premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
-					"confirm": "Confirmar contraseña"
-				}
-			},
-			"delete": {
-				"title": "Borre su cuenta de usuario del Blitz Budget",
-				"yes": "¡Sí, bórralo!",
-				"no": "No, quédatelo",
-				"error": "¡Hubo un error al borrar la cuenta. Por favor, inténtelo de nuevo más tarde!",
-				"swal": {
-					"title": "¿Quiere borrar su cuenta de usuario?",
-					"title2": " y ",
-					"title3": "borrar todas las entradas",
-					"title4": " del Blitz Budget?",
-					"alldata": "todos sus datos,, ",
-					"alldata2": "¡Todo!",
-					"alldata3": " será borrado",
-					"premium": "la suscripción a la prima será terminada",
-					"account": "su cuenta de usuario del Blitz Budget será eliminada",
-					"consider": "¡Considere la posibilidad de exportar sus datos!",
-					"confirm": "Confirme la contraseña"
-				}
-			},
-			"email": {
-				"error": "El campo de correo electrónico debe tener una entrada válida",
-				"success": "¡Cambió con éxito el correo electrónico!",
-				"verify": {
-					"title": "Código de verificación",
-					"description": "El código de verificación ha sido enviado a ",
-					"button": "Verificar el correo electrónico",
-					"emptyerror": "El código de verificación no puede estar vacío",
-					"lessthansixerror": "El código de verificación debe tener 6 caracteres de longitud",
-					"nanerror": "El código de verificación sólo puede contener números"
-				}
-			}
-		}
-	},
-	"wallet": {
-		"page": {
-			"title": "Carteras",
-			"nav": {
-				"manage": "Administrar las carteras",
-				"done": "Hecho",
-				"delete": "Borrar cartera"
-			},
-			"main": {
-				"title": "¿Qué cartera?",
-				"add": {
-					"title": "Agregar cartera",
-					"withWallet": "Monedas con cartera",
-					"withoutWallet": "Monedas sin cartera",
-					"button": "Añadir",
-					"cancel": "Cancelar"
-				},
-				"manage": {
-					"title": "Administrar la cartera",
-					"name": "Dale un nombre",
-					"preference": "¿Cuál es su preferencia monetaria?",
-					"withWallet": "Monedas con cartera",
-					"withoutWallet": "Monedas sin cartera",
-					"save": "Guardar",
-					"cancel": "Cancelar"
-				}
-			}
-		},
-		"dynamic": {
-			"add": {
-				"error": "Un error inesperado ocurrió mientras añadía la cartera"
-			},
-			"fetcherror": "Un error inesperado ocurrió al ir a buscar las carteras",
-			"noactivecurrency": "No hay moneda activa",
-			"deletewallet": "Borrar cartera",
-			"yesdelete": "¡Sí, bórralo!",
-			"nodelete": "No, quédatelo",
-			"deleteerror": "Hubo un error al borrar su cartera. Por favor, inténtelo de nuevo más tarde!",
-			"delete": {
-				"text": "¿Quieres borrar tu cartera asociada a ",
-				"text2": " y ",
-				"text3": "borrar todas las entradas",
-				"text4": " asociado con esta cartera del Blitz Budget?",
-				"transactions": "todas las transacciones de esta cartera serán borradas",
-				"budgets": "todos los presupuestos de esta cartera serán borrados",
-				"goals": "todos los objetivos dentro de esta cartera serán borrados",
-				"bankaccounts": "todas las cuentas financieras asociadas a esta cartera serán eliminadas",
-				"investments": "todas las inversiones asociadas a esta cartera serán eliminadas",
-				"premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
-				"confirmpassword": "Confirmar contraseña"
-			},
-			"patcherror": "Un error inesperado ocurrió mientras actualizaba la cartera.",
-			"noresults": "No hay resultados",
-			"choosecurrency": "Elija la moneda"
-		}
-	},
-	"account": {
-		"dynamic": {
-			"feature": "¡Esta característica viene pronto!",
-			"create": "Crear una cuenta",
-			"addtitle": "Añadir cuenta no sincronizada",
-			"invalidtype": "Tipo de cuenta inválido. Por favor, inténtelo de nuevo!",
-			"unsynacc": "Cuenta no sincronizada '",
-			"unsyncacc2": "' ha sido creado con éxito",
-			"adderror": "¡Incapaz de añadir la cuenta en este momento. Por favor, inténtelo de nuevo!",
-			"selecterror": "¡Incapaz de seleccionar la cuenta en este momento. Por favor, inténtelo de nuevo!",
-			"accounttype": "Tipos de cuenta",
-			"add": {
-				"unsync": {
-					"description": "Siempre tendrás la opción de desincronizar o sincronizar las cuentas en cualquier momento.",
-					"connect": "Conectar con su institución financiera",
-					"import": "Importar desde un archivo *",
-					"manual": "Introducir manualmente las transacciones",
-					"available": "Disponibilidad internacional *",
-					"mobile": "Disponibilidad de aplicaciones móviles",
-					"desc": "Desincronizado"
-				},
-				"sync": {
-					"description": "Sincronizado"
-				},
-				"accstart": "¡Que empiece tu cuenta! Siempre puedes sincronizarla más tarde.",
-				"typeacc": "¿Cuál es el tipo de tu cuenta?",
-				"cash": "Efectivo",
-				"savings": "Ahorros",
-				"savingsacc": "Cuenta de ahorros",
-				"currentacc": "Cuenta corrientes",
-				"assets": "Activos",
-				"borrowing": "Tomar prestado",
-				"creditcard": "Tarjeta de crédito",
-				"liability": "Responsabilidad",
-				"accounttype": "El tipo de cuenta no es válido",
-				"giveitname": "Dale un nombre",
-				"accbalance": "¿Cuál es el saldo de su cuenta?",
-				"numanddot": "El saldo de la cuenta sólo puede contener números y puntos.",
-				"or": "o"
-			},
-			"know": {
-				"back": "Volver"
-			},
-			"manage": "Cuenta",
-			"populate": {
-				"name": "Cuentas",
-				"viewall": "ver todo",
-				"accsync": "Sincronización automática de cuentas",
-				"unsyncacc": "Cuentas no sincronizadas",
-				"syncorunsync": "¿Sincronizado o no sincronizado?",
-				"knowmore": "Saber más",
-				"helpdecide": " para ayudarte a decidir"
-			}
-		}
-	},
-	"common": {
-		"fetcherror": "Redireccionamiento de errores",
-		"tryagain": "Por favor, inténtelo de nuevo más tarde",
-		"redirecting": "Redirección no posible",
-		"invalidcategory": "La categoría elegida es inválida. ¡Por favor, refresque la página e inténtelo de nuevo!",
-		"verify": {
-			"title": "Verificación del correo electrónico"
-		}
-	},
-	"month": {
-		"short": {
-			"january": "Ene",
-			"february": "Feb",
-			"march": "Mar",
-			"april": "Abr",
-			"may": "May",
-			"june": "Jun",
-			"july": "Jul",
-			"august": "Ago",
-			"september": "Sep",
-			"october": "Oct",
-			"november": "Nov",
-			"december": "Dic"
-		},
-		"january": "Enero",
-		"february": "Febrero",
-		"march": "Marzo",
-		"april": "Abril",
-		"may": "Mayo",
-		"june": "Junio",
-		"july": "Julio",
-		"august": "Agosto",
-		"september": "Septiembre",
-		"october": "Octubre",
-		"november": "Noviembre",
-		"december": "Diciembre"
-	},
-	"categories": {
-		"Beauty": "Belleza",
-		"Bills & Fees": "Facturas y Honorarios",
-		"Car": "Coche",
-		"Education": "Educación",
-		"Entertainment": "Entretenimiento",
-		"Family & Personal": "Familia y Personal",
-		"Food & Drink": "Comida y Bebida",
-		"Gifts": "Regalos",
-		"Groceries": "Comestibles",
-		"Healthcare": "Asistencia sanitaria",
-		"Home": "Hogar",
-		"Other": "Otro",
-		"Shopping": "Compras",
-		"Sport & Hobbies": "Deportes y Pasatiempos",
-		"Transport": "Transporte",
-		"Travel": "Viaje",
-		"Work": "Trabajo",
-		"Business": "Negocios",
-		"Extra Income": "Ingreso Extra",
-		"Gift": "Regalo",
-		"Insurance Payout": "Pago del seguro",
-		"Loan": "Préstamo",
-		"Others": "Otros",
-		"Parential Leave": "Permiso Parental",
-		"Salary": "Sueldo"
-	},
-	"placeholder": {
-		"email": "Correo electrónico...",
-		"password": "Contraseña...",
-		"required": "Requerida",
-		"confirmpassword": "Confirmar Contraseña",
-		"search": "Buscar...",
-		"amount": "Cantidad",
-		"note": "Escriba una nota",
-		"searcharticle": "Buscar artículos..."
-	},
-	"tooltip": {
-		"logout": "Cerrar sesión",
-		"fullscreen": "Pantalla completa",
-		"settings": "Configuración"
-	}
+    "login": {
+        "popup": {
+            "header": "Iniciar sesión",
+            "subtitle": "O ser clásico",
+            "continue": "Siguiente",
+            "forgot": "He olvidado mi contraseña",
+            "resend": "Reenviar el código",
+            "account": "Ya tengo una cuenta",
+            "signup": "Crear cuenta",
+            "verify": {
+                "title": "Verificar",
+                "subtitle": "Hemos enviado el correo electrónico de verificación a "
+            },
+            "notme": "no yo"
+        },
+        "dynamic": {
+            "emptyallerror": "Los campos de correo electrónico y contraseña no pueden estar vacíos",
+            "emptyemailerror": "El campo de correo electrónico no puede estar vacío",
+            "emptypassworderror": "El campo de la contraseña no puede estar vacío",
+            "passwordlengtherror": "La contraseña debe tener una longitud mínima de 8 caracteres",
+            "passwordnomatcherror": "Las contraseñas no coinciden",
+            "emptyallnewerror": "Los campos de correo electrónico y contraseña no pueden estar vacíos, introduzca la nueva contraseña en el campo de la contraseña",
+            "emptynewpassworderror": "Introduzca la nueva contraseña en el campo de la contraseña",
+            "newpasswordlengtherror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres"
+        }
+    },
+    "support": {
+        "popup": {
+            "header": "¿Cómo podemos ayudar?",
+            "rating": "¿Esta respuesta fue útil?",
+            "happy": "Estamos felices de ayudar! ",
+            "ask": "Pregúntenos directamente",
+            "yes": "Sí",
+            "no": "No"
+        },
+        "askusdirectly": {
+            "title": "Pregúntenos directamente",
+            "customersupport": "Atención al cliente: Solicitar más información dentro de las 24 horas",
+            "message": "Mensaje",
+            "text": "El artículo con la url ",
+            "text2": " podría tener más información para ser más útil. Agradecería que el artículo contuviera.. ",
+            "texterror": "Por favor, introduzca un mínimo de 80 caracteres.",
+            "success": "Gracias por el correo electrónico. ¡Responderemos con él en las próximas 24 horas!",
+            "error": "No se puede enviar el correo electrónico en este momento. ¡Por favor, inténtelo de nuevo!",
+            "confirm": "Enviar"
+        },
+        "helpcenter": {
+            "redirect": "Redireccionamiento no posible",
+            "tryagain": "Por favor, inténtelo de nuevo más tarde",
+            "noresults": "Sin resultados",
+            "unableurl": "Incapaz de obtener la url solicitada",
+            "thanks": "Gracias por la retroalimentación"
+        }
+    },
+    "unlock": {
+        "popup": {
+            "password": "Introduzca la contraseña",
+            "button": "Desbloquear"
+        }
+    },
+    "nav": {
+        "dropdown": {
+            "logout": "Cerrar sesión",
+            "settings": "Configuración",
+            "profile": "Perfil"
+        },
+        "account": "Cuenta",
+        "support": "Soporte"
+    },
+    "sidebar": {
+        "overview": "Resumen",
+        "goals": "Objetivo",
+        "budget": "Presupuesto",
+        "transaction": "Transacciones"
+    },
+    "home": {
+        "title": "Inicio del Tablero de Control | BlitzBudget"
+    },
+    "settings": {
+        "page": {
+            "title": "Configuraciones",
+            "general": "General",
+            "notifications": "Notificaciones",
+            "devices": "Dispositivos",
+            "region": {
+                "title": "Preferencias regionales",
+                "subtitle": "Seleccione el idioma, la moneda y el país que prefiera para el formato regional apropiado"
+            },
+            "country": {
+                "title": "País",
+                "subtitle": "Elija su país para el formato de moneda regional apropiado.",
+                "withWallet": "Países con cartera",
+                "withoutWallet": "Países sin cartera"
+            },
+            "currency": {
+                "title": "Moneda",
+                "subtitle": "La moneda de preferencia para esta cartera. Sus transacciones y resúmenes estarán en esta moneda.",
+                "withWallet": "Monedas con cartera",
+                "withoutWallet": "Monedas sin cartera"
+            },
+            "language": {
+                "title": "Lenguaje",
+                "subtitle": "Estamos trabajando para proporcionar más que el inglés (EE.UU.) como su opción de idioma"
+            },
+            "export": {
+                "title": "Exportación",
+                "subtitle": "Seleccione su formato de archivo preferido para la exportación de datos.",
+                "file": {
+                    "title": "Formato de archivo",
+                    "subtitle": "Actualmente soportamos Excel, Google Docs y valores separados por comas (CSV)."
+                }
+            }
+        }
+    },
+    "transactions": {
+        "page": {
+            "table": {
+                "title": "Transacciones",
+                "sortby": {
+                    "category": "Categoría",
+                    "title": " Ordenar por",
+                    "account": "Cuenta",
+                    "creationdate": "Fecha de creación"
+                }
+            },
+            "chart": {
+                "title": "Posición financiera",
+                "income": "Ingreso total",
+                "spent": "Total gastado",
+                "available": "Total disponible"
+            },
+            "account": {
+                "remaining": "Remanente (%)",
+                "remainingtext": "Remanente",
+                "transaction": "Transacciones"
+            }
+        },
+        "modal": {
+            "title": "Elija su preferencia",
+            "connect": {
+                "title": "Conecta con tu banco",
+                "description": "Conecte su cuenta bancaria para importar las transacciones del mes en curso."
+            },
+            "sync": {
+                "title": "Sincronización automática de cuentas bancarias",
+                "description": "Se sincroniza automáticamente con la cuenta bancaria para obtener transacciones cada principio de mes."
+            },
+            "import": {
+                "title": "Importación de estados de cuenta bancarios",
+                "description": "También puede importar las transacciones de sus estados de cuenta bancarios"
+            },
+            "add": {
+                "classical": " o ser clásico ",
+                "expense": "Gasto",
+                "income": "Ingresos",
+                "recurrence": {
+                    "never": "Nunca",
+                    "weekly": "Semanal",
+                    "bimonthly": "Bimensual",
+                    "monthly": "Mensual"
+                },
+                "button": "Agregar transacción"
+            }
+        },
+        "dynamic": {
+            "title": "Transacciones",
+            "today": "Hoy",
+            "empty": {
+                "success": "¡Oh! ¡Chasquido! No tienes ninguna transacción todavía."
+            },
+            "add": {
+                "amounterror": "Por favor, llene la cantidad.",
+                "nonzeroerror": "La cantidad no puede ser cero.",
+                "recurerror": "El valor de recurrencia seleccionado es inválido",
+                "categoryerror": "Categoría elegida no es válida. Por favor, seleccione una válida.",
+                "unableerror": "Incapaz de añadir esta transacción.",
+                "success": "Añadida con éxito la transacción.",
+                "tooltip": "Añadir Transacciones"
+            },
+            "get": {
+                "unableerror": "Hubo un error al buscar las transacciones. ¡Por favor, inténtelo de nuevo más tarde!"
+            },
+            "chart": {
+                "empty": "Por favor, rellene los datos adecuados para construir un gráfico",
+                "expense": "Total de ingresos y total de gastos excesivos como porcentaje del total de gastos",
+                "income": "Total gastado y total disponible como porcentaje del total de ingresos",
+                "labels": {
+                    "income": "Ingresos",
+                    "spent": "Gastado",
+                    "available": "Disponible",
+                    "overspent": "Gasto excesivo"
+                },
+                "available": "Total disponible",
+                "overspent": "Total gastado en exceso"
+            },
+            "card": {
+                "description": "Sin descripción"
+            },
+            "sort": {
+                "creationdate": "Fecha de creación",
+                "category": "Categoría",
+                "account": "Cuenta"
+            }
+        }
+    },
+    "budget": {
+        "page": {
+            "title": "Presupuesto",
+            "card": {
+                "remaining": "Restante (%)",
+                "remain": "Restante"
+            },
+            "chart": {
+                "title": "Visualización del presupuesto",
+                "total": "Total presupuestado",
+                "categories": " Categorías",
+                "tobebudgeted": "A presupuestar"
+            },
+            "compensation": {
+                "title": "Compensar este gasto excesivo con",
+                "choose": "Elegir categoría"
+            }
+        },
+        "dynamic": {
+            "fetcherror": "Incapaz de conseguir tu presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
+            "chart": {
+                "totalbudget": "Total presupuestado",
+                "tobebudgeted": "A presupuestar"
+            },
+            "card": {
+                "overspent": "Gasto excesivo (%)",
+                "tobebudgeted": "A presupuestar (%)",
+                "remaining": "Restante (%)",
+                "remain": " Restante",
+                "na": "NA",
+                "deleteerror": "No se puede borrar el presupuesto. ¡Por favor, refresque e intente de nuevo!",
+                "empty": {
+                    "plan": "Comenzar a planear para ",
+                    "hey": "Hola, parece que necesitas un presupuesto para ",
+                    "create": "Crear presupuestos..."
+                }
+            },
+            "unableerror": "Incapaz de crear los presupuestos. ¡Por favor, refresque e intente de nuevo!",
+            "alreadyerror": "La categoría seleccionada ya tiene un presupuesto. ¡Por favor, elija una categoría diferente!",
+            "changeerror": "No se puede cambiar la categoría del presupuesto en este momento. ¡Por favor, inténtelo de nuevo!",
+            "allcategorieserror": "¡Tiene un presupuesto para todas las categorías!",
+            "tooltip": "Añadir el presupuesto",
+            "delete": "Borrar el presupuesto",
+            "income": "Ingreso",
+            "expense": "Gastos"
+        }
+    },
+    "overview": {
+        "page": {
+            "title": "Visión general",
+            "assets": "Activos",
+            "debt": "Deuda",
+            "networth": "Valor neto",
+            "chart": {
+                "networth": "Visión general de los ingresos",
+                "option": "Resumen de un año",
+                "options": {
+                    "income": "Ingresos",
+                    "expense": "Gasto",
+                    "assets": "Activos",
+                    "debt": "Deuda",
+                    "networth": "Valor neto"
+                }
+            }
+        },
+        "dynamic": {
+            "oneyear": "Resumen de un año",
+            "incomeparam": "Ingresos",
+            "expenseparam": "Gasto",
+            "title": "Visión general",
+            "geterror": "Error de búsqueda de información para la visión general. Por favor, inténtelo de nuevo más tarde!",
+            "chart": {
+                "incomeoverview": "Visión general de los ingresos",
+                "expenseoverview": "Visión general de los gastos",
+                "assetoverview": "Visión general de la activos",
+                "debtoverview": "Visión general de la deuda",
+                "networthoverview": "Visión general de la valor neto",
+                "expensebreakdown": "Desglose de gastos",
+                "incomebreakdown": "Desglose de ingresos",
+                "nodata": "¡No hay suficientes datos! Comienza a agregar transacciones...",
+                "onecategory": "¡No hay suficientes datos! Necesitamos transacciones en al menos 2 categorías ..."
+            }
+        }
+    },
+    "profile": {
+        "page": {
+            "title": "Perfil",
+            "edit": "Editar",
+            "change": "Cambio",
+            "changepassword": "Cambiar Contraseña",
+            "nocards": "Sin cartas",
+            "joined": "Se unió",
+            "creditcard": "Añadir tarjeta de crédito",
+            "connected": "Cuentas conectadas",
+            "connect": {
+                "title": "Conectar",
+                "description": "Puedes conectarte con los miembros de tu familia para tener una mejor visión general de tus finanzas"
+            },
+            "reset": {
+                "title": "Reiniciar cuenta",
+                "description": "Su cuenta de usuario permanecerá, pero todos los datos serán eliminados para que pueda empezar desde una pizarra en blanco. Considere la posibilidad de exportar todos sus datos.",
+                "button": "Reiniciar mi cuenta de usuario del Blitz Budget"
+            },
+            "delete": {
+                "title": "Borrar cuenta",
+                "description": "Tengan cuidado. Esto eliminará su cuenta de usuario y toda la información que haya introducido. Le recomendamos que exporte todos sus datos",
+                "button": "Borrar mi cuenta de usuario del Blitz Budget"
+            },
+            "question": {
+                "title": "¿Tiene una pregunta?",
+                "feature": "Enviar una solicitud la característica",
+                "ask": "Pregúntenos directamente",
+                "help": "Centro de ayuda"
+            }
+        },
+        "dynamic": {
+            "title": "Perfil",
+            "createerror": "¡Hubo un error al buscar la información del usuario!",
+            "mininumpassworderror": "El campo de la contraseña actual debe tener una longitud mínima de 8 caracteres.",
+            "newminimumerror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres.",
+            "oldpassworderror": "El campo de la contraseña antigua debe tener una longitud mínima de 8 caracteres.",
+            "changenameerror": "¡Hubo un error al cambiar el nombre. Por favor, inténtelo de nuevo más tarde!",
+            "confirmpassword": {
+                "error": "El campo de confirmación de la contraseña debe tener una longitud mínima de 8 caracteres.",
+                "title": "Confirmar contraseña"
+            },
+            "changepassword": {
+                "oldpassword": "Contraseña antigua",
+                "newpassword": "Nueva contraseña",
+                "change": "Cambiar la contraseña",
+                "success": "¡Cambió con éxito la contraseña!",
+                "button": "Cambiar la contraseña"
+            },
+            "reset": {
+                "title": "Reajuste su cuenta de usuario del Blitz Budget",
+                "yes": "¡Sí, reinícielo!",
+                "no": "No, quédatelo",
+                "success": "¡Reajuste con éxito su cuenta. Su cuenta está como nueva!",
+                "error": "¡Hubo un error al reiniciar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+                "swal": {
+                    "title": "¿Quiere restablecer su cuenta de usuario?",
+                    "title2": " y ",
+                    "title3": "borrar todas las entradas",
+                    "title4": " del Blitz Budget?",
+                    "transactions": "todas las transacciones serán borradas",
+                    "budgets": "todos los presupuestos serán eliminados",
+                    "goals": "todos los objetivos serán borrados",
+                    "bankaccounts": "todas las cuentas financieras serán eliminadas",
+                    "wallets": "todas las carteras serán borradas",
+                    "investments": "todas las inversiones serán eliminadas",
+                    "premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+                    "confirm": "Confirmar contraseña"
+                }
+            },
+            "delete": {
+                "title": "Borre su cuenta de usuario del Blitz Budget",
+                "yes": "¡Sí, bórralo!",
+                "no": "No, quédatelo",
+                "error": "¡Hubo un error al borrar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+                "swal": {
+                    "title": "¿Quiere borrar su cuenta de usuario?",
+                    "title2": " y ",
+                    "title3": "borrar todas las entradas",
+                    "title4": " del Blitz Budget?",
+                    "alldata": "todos sus datos,, ",
+                    "alldata2": "¡Todo!",
+                    "alldata3": " será borrado",
+                    "premium": "la suscripción a la prima será terminada",
+                    "account": "su cuenta de usuario del Blitz Budget será eliminada",
+                    "consider": "¡Considere la posibilidad de exportar sus datos!",
+                    "confirm": "Confirme la contraseña"
+                }
+            },
+            "email": {
+                "error": "El campo de correo electrónico debe tener una entrada válida",
+                "success": "¡Cambió con éxito el correo electrónico!",
+                "verify": {
+                    "title": "Código de verificación",
+                    "description": "El código de verificación ha sido enviado a ",
+                    "button": "Verificar el correo electrónico",
+                    "emptyerror": "El código de verificación no puede estar vacío",
+                    "lessthansixerror": "El código de verificación debe tener 6 caracteres de longitud",
+                    "nanerror": "El código de verificación sólo puede contener números"
+                }
+            }
+        }
+    },
+    "wallet": {
+        "page": {
+            "title": "Carteras",
+            "nav": {
+                "manage": "Administrar las carteras",
+                "done": "Hecho",
+                "delete": "Borrar cartera"
+            },
+            "main": {
+                "title": "¿Qué cartera?",
+                "add": {
+                    "title": "Agregar cartera",
+                    "withWallet": "Monedas con cartera",
+                    "withoutWallet": "Monedas sin cartera",
+                    "button": "Añadir",
+                    "cancel": "Cancelar"
+                },
+                "manage": {
+                    "title": "Administrar la cartera",
+                    "name": "Dale un nombre",
+                    "preference": "¿Cuál es su preferencia monetaria?",
+                    "withWallet": "Monedas con cartera",
+                    "withoutWallet": "Monedas sin cartera",
+                    "save": "Guardar",
+                    "cancel": "Cancelar"
+                }
+            }
+        },
+        "dynamic": {
+            "add": {
+                "error": "Un error inesperado ocurrió mientras añadía la cartera"
+            },
+            "fetcherror": "Un error inesperado ocurrió al ir a buscar las carteras",
+            "noactivecurrency": "No hay moneda activa",
+            "deletewallet": "Borrar cartera",
+            "yesdelete": "¡Sí, bórralo!",
+            "nodelete": "No, quédatelo",
+            "deleteerror": "Hubo un error al borrar su cartera. Por favor, inténtelo de nuevo más tarde!",
+            "delete": {
+                "text": "¿Quieres borrar tu cartera asociada a? ",
+                "text2": " y ",
+                "text3": "borrar todas las entradas",
+                "text4": " asociado con esta cartera del Blitz Budget?",
+                "transactions": "todas las transacciones de esta cartera serán borradas",
+                "budgets": "todos los presupuestos de esta cartera serán borrados",
+                "goals": "todos los objetivos dentro de esta cartera serán borrados",
+                "bankaccounts": "todas las cuentas financieras asociadas a esta cartera serán eliminadas",
+                "investments": "todas las inversiones asociadas a esta cartera serán eliminadas",
+                "premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+                "confirmpassword": "Confirmar contraseña"
+            },
+            "patcherror": "Un error inesperado ocurrió mientras actualizaba la cartera.",
+            "noresults": "No hay resultados",
+            "choosecurrency": "Elija la moneda"
+        }
+    },
+    "account": {
+        "dynamic": {
+            "feature": "¡Esta característica viene pronto!",
+            "create": "Crear una cuenta",
+            "addtitle": "Añadir cuenta no sincronizada",
+            "invalidtype": "Tipo de cuenta inválido. Por favor, inténtelo de nuevo!",
+            "unsynacc": "Cuenta no sincronizada '",
+            "unsyncacc2": "' ha sido creado con éxito",
+            "adderror": "¡Incapaz de añadir la cuenta en este momento. Por favor, inténtelo de nuevo!",
+            "selecterror": "¡Incapaz de seleccionar la cuenta en este momento. Por favor, inténtelo de nuevo!",
+            "accounttype": "Tipos de cuenta",
+            "add": {
+                "unsync": {
+                    "description": "Siempre tendrás la opción de desincronizar o sincronizar las cuentas en cualquier momento.",
+                    "connect": "Conectar con su institución financiera",
+                    "import": "Importar desde un archivo *",
+                    "manual": "Introducir manualmente las transacciones",
+                    "available": "Disponibilidad internacional *",
+                    "mobile": "Disponibilidad de aplicaciones móviles",
+                    "desc": "Desincronizado"
+                },
+                "sync": {
+                    "description": "Sincronizado"
+                },
+                "accstart": "¡Que empiece tu cuenta! Siempre puedes sincronizarla más tarde!",
+                "typeacc": "¿Cuál es el tipo de tu cuenta?",
+                "cash": "Efectivo",
+                "savings": "Ahorros",
+                "savingsacc": "Cuenta de ahorros",
+                "currentacc": "Cuenta corrientes",
+                "assets": "Activos",
+                "borrowing": "Tomar prestado",
+                "creditcard": "Tarjeta de crédito",
+                "liability": "Responsabilidad",
+                "accounttype": "El tipo de cuenta no es válido",
+                "giveitname": "Dale un nombre",
+                "accbalance": "¿Cuál es el saldo de su cuenta?",
+                "numanddot": "El saldo de la cuenta sólo puede contener números y puntos.",
+                "or": "o"
+            },
+            "know": {
+                "back": "Volver"
+            },
+            "manage": "Cuenta",
+            "populate": {
+                "name": "Cuentas",
+                "viewall": "ver todo",
+                "accsync": "Sincronización automática de cuentas",
+                "unsyncacc": "Cuentas no sincronizadas",
+                "syncorunsync": "¿Sincronizado o no sincronizado?",
+                "knowmore": "Saber más",
+                "helpdecide": " para ayudarte a decidir"
+            }
+        }
+    },
+    "common": {
+        "fetcherror": "Redireccionamiento de errores",
+        "tryagain": "Por favor, inténtelo de nuevo más tarde",
+        "redirecting": "Redirección no posible",
+        "invalidcategory": "La categoría elegida es inválida. ¡Por favor, refresque la página e inténtelo de nuevo!",
+        "verify": {
+            "title": "Verificación del correo electrónico"
+        }
+    },
+    "month": {
+        "short": {
+            "january": "Ene",
+            "february": "Feb",
+            "march": "Mar",
+            "april": "Abr",
+            "may": "May",
+            "june": "Jun",
+            "july": "Jul",
+            "august": "Ago",
+            "september": "Sep",
+            "october": "Oct",
+            "november": "Nov",
+            "december": "Dic"
+        },
+        "january": "Enero",
+        "february": "Febrero",
+        "march": "Marzo",
+        "april": "Abril",
+        "may": "Mayo",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre",
+        "october": "Octubre",
+        "november": "Noviembre",
+        "december": "Diciembre"
+    },
+    "categories": {
+        "Beauty": "Belleza",
+        "Bills & Fees": "Facturas y Honorarios",
+        "Car": "Coche",
+        "Education": "Educación",
+        "Entertainment": "Entretenimiento",
+        "Family & Personal": "Familia y Personal",
+        "Food & Drink": "Comida y Bebida",
+        "Gifts": "Regalos",
+        "Groceries": "Comestibles",
+        "Healthcare": "Asistencia sanitaria",
+        "Home": "Hogar",
+        "Other": "Otro",
+        "Shopping": "Compras",
+        "Sport & Hobbies": "Deportes y Pasatiempos",
+        "Transport": "Transporte",
+        "Travel": "Viaje",
+        "Work": "Trabajo",
+        "Business": "Negocios",
+        "Extra Income": "Ingreso Extra",
+        "Gift": "Regalo",
+        "Insurance Payout": "Pago del seguro",
+        "Loan": "Préstamo",
+        "Others": "Otros",
+        "Parential Leave": "Permiso Parental",
+        "Salary": "Sueldo"
+    },
+    "placeholder": {
+        "email": "Correo electrónico...",
+        "password": "Contraseña...",
+        "required": "Requerida",
+        "confirmpassword": "Confirmar Contraseña",
+        "search": "Buscar...",
+        "amount": "Cantidad",
+        "note": "Escriba una nota",
+        "searcharticle": "Buscar artículos..."
+    },
+    "tooltip": {
+        "logout": "Cerrar sesión",
+        "fullscreen": "Pantalla completa",
+        "settings": "Configuración"
+    }
 }
