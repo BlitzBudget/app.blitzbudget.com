@@ -437,7 +437,7 @@
         // Bread crumb 0
         let breadcrumbAnchor = breadcrumbSC[0];
         let anchorZero = document.createElement('a');
-        anchorZero.href = window._config.help.invokeUrl + '/' + getLanguage() + breadcrumbAnchor.crumbUrl;
+        anchorZero.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
         anchorZero.classList.add('crumbAnchor');
         anchorZero.textContent = breadcrumbAnchor.crumbTitle;
         breadcrumbDiv.appendChild(anchorZero);  
