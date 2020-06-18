@@ -255,138 +255,138 @@
         "page": {
             "title": "概述",
             "assets": "资产",
-            "debt": "Deuda",
-            "networth": "Valor neto",
+            "debt": "债务",
+            "networth": "净资产",
             "chart": {
-                "networth": "Visión general de los ingresos",
-                "option": "Resumen de un año",
+                "networth": "收入概览",
+                "option": "一年总结",
                 "options": {
-                    "income": "Ingresos",
-                    "expense": "Gasto",
-                    "assets": "Activos",
-                    "debt": "Deuda",
-                    "networth": "Valor neto"
+                    "income": "收入",
+                    "expense": "支出",
+                    "assets": "资产",
+                    "debt": "债务",
+                    "networth": "净资产"
                 }
             }
         },
         "dynamic": {
-            "oneyear": "Resumen de un año",
-            "incomeparam": "Ingresos",
-            "expenseparam": "Gasto",
-            "title": "Visión general",
-            "geterror": "Error de búsqueda de información para la visión general. Por favor, inténtelo de nuevo más tarde!",
+            "oneyear": "一年总结",
+            "incomeparam": "收入",
+            "expenseparam": "我花了",
+            "title": "概述",
+            "geterror": "概览的信息搜索错误。请稍后再试！",
             "chart": {
-                "incomeoverview": "Visión general de los ingresos",
-                "expenseoverview": "Visión general de los gastos",
-                "assetoverview": "Visión general de la activos",
-                "debtoverview": "Visión general de la deuda",
-                "networthoverview": "Visión general de la valor neto",
-                "expensebreakdown": "Desglose de gastos",
-                "incomebreakdown": "Desglose de ingresos",
-                "nodata": "¡No hay suficientes datos! Comienza a agregar transacciones...",
-                "onecategory": "¡No hay suficientes datos! Necesitamos transacciones en al menos 2 categorías ..."
+                "incomeoverview": "收入概览",
+                "expenseoverview": "费用概览",
+                "assetoverview": "资产概览",
+                "debtoverview": "债务概况",
+                "networthoverview": "净值概览",
+                "expensebreakdown": "费用明细",
+                "incomebreakdown": "收入明细",
+                "nodata": "数据不够用！开始添加交易...",
+                "onecategory": "数据不够用！。我们至少需要2类交易。"
             }
         }
     },
     "profile": {
         "page": {
-            "title": "Perfil",
-            "edit": "Editar",
-            "change": "Cambio",
-            "changepassword": "Cambiar Contraseña",
-            "nocards": "Sin cartas",
-            "joined": "Se unió",
-            "creditcard": "Añadir tarjeta de crédito",
-            "connected": "Cuentas conectadas",
+            "title": "简介",
+            "edit": "编辑",
+            "change": "结束",
+            "changepassword": "更改密码",
+            "nocards": "无牌",
+            "joined": "加入",
+            "creditcard": "添加信用卡",
+            "connected": "连接的账户",
             "connect": {
-                "title": "Conectar",
-                "description": "Puedes conectarte con los miembros de tu familia para tener una mejor visión general de tus finanzas"
+                "title": "连接",
+                "description": "你可以与你的家庭成员联系，以便更好地了解你的财务状况"
             },
             "reset": {
-                "title": "Reiniciar cuenta",
-                "description": "Su cuenta de usuario permanecerá, pero todos los datos serán eliminados para que pueda empezar desde una pizarra en blanco. Considere la posibilidad de exportar todos sus datos.",
-                "button": "Reiniciar mi cuenta de usuario del Blitz Budget"
+                "title": "重置账户",
+                "description": "你的用户账户将保留，但所有数据将被删除，这样你就可以从一个空白的板块开始。考虑将所有数据导出",
+                "button": "重新启动我的闪电预算用户账户"
             },
             "delete": {
-                "title": "Borrar cuenta",
-                "description": "Tengan cuidado. Esto eliminará su cuenta de usuario y toda la información que haya introducido. Le recomendamos que exporte todos sus datos",
-                "button": "Borrar mi cuenta de usuario del Blitz Budget"
+                "title": "删除账户",
+                "description": "小心。这将删除你的用户账户和你输入的所有信息。我们建议您导出您的所有数据",
+                "button": "删除我的闪电预算用户账户"
             },
             "question": {
-                "title": "¿Tiene una pregunta?",
-                "feature": "Enviar una solicitud la característica",
-                "ask": "Pregúntenos directamente",
-                "help": "Centro de ayuda"
+                "title": "你有问题吗？",
+                "feature": "提交特征请求",
+                "ask": "直接问我们。",
+                "help": "帮助中心"
             }
         },
         "dynamic": {
-            "title": "Perfil",
-            "createerror": "¡Hubo un error al buscar la información del usuario!",
-            "mininumpassworderror": "El campo de la contraseña actual debe tener una longitud mínima de 8 caracteres.",
-            "newminimumerror": "La nueva contraseña debe tener una longitud mínima de 8 caracteres.",
-            "oldpassworderror": "El campo de la contraseña antigua debe tener una longitud mínima de 8 caracteres.",
-            "changenameerror": "¡Hubo un error al cambiar el nombre. Por favor, inténtelo de nuevo más tarde!",
+            "title": "简介",
+            "createerror": "在搜索用户信息时出现了错误！",
+            "mininumpassworderror": "当前密码字段必须至少有8个字符长。",
+            "newminimumerror": "新密码必须至少有8个字符长。",
+            "oldpassworderror": "旧密码字段必须至少有8个字符长。",
+            "changenameerror": "有一个错误的改变名称。请稍后再试！",
             "confirmpassword": {
-                "error": "El campo de confirmación de la contraseña debe tener una longitud mínima de 8 caracteres.",
-                "title": "Confirmar contraseña"
+                "error": "密码确认字段必须至少有8个字符长",
+                "title": "确认密码"
             },
             "changepassword": {
-                "oldpassword": "Contraseña antigua",
-                "newpassword": "Nueva contraseña",
-                "change": "Cambiar la contraseña",
-                "success": "¡Cambió con éxito la contraseña!",
-                "button": "Cambiar la contraseña"
+                "oldpassword": "老密码",
+                "newpassword": "新密码",
+                "change": "改密码",
+                "success": "成功更改密码！",
+                "button": "更改密码"
             },
             "reset": {
-                "title": "Reajuste su cuenta de usuario del Blitz Budget",
-                "yes": "¡Sí, reinícielo!",
-                "no": "No, quédatelo",
-                "success": "¡Reajuste con éxito su cuenta. Su cuenta está como nueva!",
-                "error": "¡Hubo un error al reiniciar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+                "title": "重置您的闪电预算用户账户",
+                "yes": "是的，重启它！",
+                "no": "不，留着吧。",
+                "success": "重置账户成功。你的账户跟新的一样！",
+                "error": "有一个错误重置账户。请稍后再试！",
                 "swal": {
-                    "title": "¿Quiere restablecer su cuenta de usuario?",
-                    "title2": " y ",
-                    "title3": "borrar todas las entradas",
-                    "title4": " del Blitz Budget?",
-                    "transactions": "todas las transacciones serán borradas",
-                    "budgets": "todos los presupuestos serán eliminados",
-                    "goals": "todos los objetivos serán borrados",
-                    "bankaccounts": "todas las cuentas financieras serán eliminadas",
-                    "wallets": "todas las carteras serán borradas",
-                    "investments": "todas las inversiones serán eliminadas",
-                    "premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
-                    "confirm": "Confirmar contraseña"
+                    "title": "你想重置你的用户账户吗？",
+                    "title2": " 和 ",
+                    "title3": "删除所有条目",
+                    "title4": " 闪电战预算的？",
+                    "transactions": "所有交易将被删除。",
+                    "budgets": "所有预算将被取消",
+                    "goals": "所有目标将被删除。",
+                    "bankaccounts": "所有金融账户将被删除",
+                    "wallets": "所有钱包将被删除。",
+                    "investments": "所有投资将被取消",
+                    "premium": "高级订阅在重置后将保持不变。",
+                    "confirm": "确认密码"
                 }
             },
             "delete": {
-                "title": "Borre su cuenta de usuario del Blitz Budget",
-                "yes": "¡Sí, bórralo!",
-                "no": "No, quédatelo",
-                "error": "¡Hubo un error al borrar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+                "title": "删除您的闪电预算用户账户",
+                "yes": "是，删掉它！",
+                "no": "不，留着吧。",
+                "error": "删除账户时出现了错误。请稍后再试！",
                 "swal": {
-                    "title": "¿Quiere borrar su cuenta de usuario?",
-                    "title2": " y ",
-                    "title3": "borrar todas las entradas",
-                    "title4": " del Blitz Budget?",
-                    "alldata": "todos sus datos, ",
-                    "alldata2": "¡Todo!",
-                    "alldata3": " será borrado",
-                    "premium": "la suscripción a la prima será terminada",
-                    "account": "su cuenta de usuario del Blitz Budget será eliminada",
-                    "consider": "¡Considere la posibilidad de exportar sus datos!",
-                    "confirm": "Confirme la contraseña"
+                    "title": "你想删除你的用户账户吗？",
+                    "title2": " 和 ",
+                    "title3": "删除所有条目",
+                    "title4": " 闪电战预算的？",
+                    "alldata": "你的所有数据, ",
+                    "alldata2": "一切！",
+                    "alldata3": " 将被删除。",
+                    "premium": "高级订阅将被终止",
+                    "account": "您的闪电预算用户账户将被删除",
+                    "consider": "考虑导出你的数据！",
+                    "confirm": "确认密码"
                 }
             },
             "email": {
-                "error": "El campo de correo electrónico debe tener una entrada válida",
-                "success": "¡Cambió con éxito el correo electrónico!",
+                "error": "电子邮件字段必须有一个有效的条目",
+                "success": "成功地更改了电子邮件！",
                 "verify": {
-                    "title": "Código de verificación",
-                    "description": "El código de verificación ha sido enviado a ",
-                    "button": "Verificar el correo electrónico",
-                    "emptyerror": "El código de verificación no puede estar vacío",
-                    "lessthansixerror": "El código de verificación debe tener 6 caracteres de longitud",
-                    "nanerror": "El código de verificación sólo puede contener números"
+                    "title": "验证码",
+                    "description": "验证码已发送至 ",
+                    "button": "检查电子邮件。",
+                    "emptyerror": "验证码不能为空",
+                    "lessthansixerror": "验证码必须是6个字符长",
+                    "nanerror": "验证码只能包含数字"
                 }
             }
         }
