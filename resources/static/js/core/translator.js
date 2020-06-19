@@ -37,7 +37,7 @@ function getLanguage() {
         return window.currentUser.locale.substr(0, 2);
     }
 
-    let languagespreferred = ["en", "es", "fr", "pt"];
+    let languagespreferred = ["en", "es", "fr", "pt", "ja", "ru", "zh"];
     let lang = navigator.languages ? navigator.languages[0] : navigator.language;
     lang = lang.substr(0, 2);
     lang = includesStr(languagespreferred, lang) ? lang : "en";
