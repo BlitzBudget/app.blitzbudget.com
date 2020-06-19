@@ -1,0 +1,584 @@
+{
+    "login": {
+        "popup": {
+            "header": "Логин",
+            "subtitle": "Или будь классикой",
+            "continue": "Следующий",
+            "forgot": "Я забыл свой пароль",
+            "resend": "Переслать код",
+            "account": "У меня уже есть аккаунт",
+            "signup": "Создать аккаунт",
+            "verify": {
+                "title": "подтвердить",
+                "subtitle": "Мы отправили электронное письмо с подтверждением "
+            },
+            "notme": "не я"
+        },
+        "dynamic": {
+            "emptyallerror": "Поля электронной почты и пароля не могут быть пустыми",
+            "emptyemailerror": "Поле электронной почты не может быть пустым",
+            "emptypassworderror": "поле пароля не может быть пустым",
+            "passwordlengtherror": "длина пароля должна составлять не менее 8 символов",
+            "passwordnomatcherror": "пароли не совпадают",
+            "emptyallnewerror": "поля электронной почты и пароль не могут быть пустыми, введите новый пароль в поле пароля",
+            "emptynewpassworderror": "Введите новый пароль в поле пароля",
+            "newpasswordlengtherror": "новый пароль должен иметь длину не менее 8 символов"
+        }
+    },
+    "support": {
+        "popup": {
+            "header": "Как мы можем помочь?",
+            "rating": "был ли этот ответ полезен?",
+            "happy": "Мы рады помочь! ",
+            "ask": "спросите нас напрямую",
+            "yes": "Да",
+            "no": "нет"
+        },
+        "askusdirectly": {
+            "title": "спросите нас напрямую",
+            "customersupport": "поддержка клиентов: запросить дополнительную информацию в течение 24 часов",
+            "message": "Сообщение",
+            "text": "статья с U ",
+            "text2": " у вас может быть больше информации, чтобы быть более полезным. Я был бы признателен, если бы статья содержала.. ",
+            "texterror": "пожалуйста, введите не менее 80 символов.",
+            "success": "Спасибо за электронную почту. Мы ответим с ним в течение следующих 24 часов!",
+            "error": "не удается отправить электронное письмо в это время. Пожалуйста, попробуйте еще раз!",
+            "confirm": "Отправить"
+        },
+        "helpcenter": {
+            "redirect": "перенаправление невозможно",
+            "tryagain": "пожалуйста, попробуйте еще раз позже",
+            "noresults": "без результатов",
+            "unableurl": "не удается получить запрошенный U",
+            "thanks": "спасибо за обратную связь"
+        }
+    },
+    "unlock": {
+        "popup": {
+            "password": "введите пароль",
+            "button": "Разблокировать"
+        }
+    },
+    "nav": {
+        "dropdown": {
+            "logout": "выйти из системы",
+            "settings": "Настройки",
+            "profile": "Профиль"
+        },
+        "account": "учетная запись",
+        "support": "Поддержка"
+    },
+    "sidebar": {
+        "overview": "Резюме",
+        "goals": "Цель",
+        "budget": "Бюджет",
+        "transaction": "транзакции"
+    },
+    "home": {
+        "title": "запуск панели управления | BlitzBudget"
+    },
+    "settings": {
+        "page": {
+            "title": "Настройки",
+            "general": "генерал",
+            "notifications": "Уведомления",
+            "devices": "устройства",
+            "region": {
+                "title": "региональные предпочтения",
+                "subtitle": "Выберите язык, валюту и страну, которую вы предпочитаете для соответствующего регионального формата"
+            },
+            "country": {
+                "title": "Страна",
+                "subtitle": "Выберите свою страну для соответствующего регионального формата валюты.",
+                "withWallet": "страны с портфелем",
+                "withoutWallet": "Страны без портфеля"
+            },
+            "currency": {
+                "title": "валюта",
+                "subtitle": "предпочтительная валюта для этого кошелька. Ваши транзакции и сводки будут в этой валюте.",
+                "withWallet": "монеты с кошельком",
+                "withoutWallet": "монеты без кошелька"
+            },
+            "language": {
+                "title": "Язык",
+                "subtitle": "мы работаем над тем, чтобы предоставить больше, чем английский (США) в качестве вашего языкового варианта"
+            },
+            "export": {
+                "title": "Экспорт",
+                "subtitle": "выберите предпочтительный формат файла для экспорта данных.",
+                "file": {
+                    "title": "Формат файла",
+                    "subtitle": "в настоящее время мы поддерживаем Excel, Google Docs и значения, разделенные запятыми (CSV)."
+                }
+            }
+        }
+    },
+    "transactions": {
+        "page": {
+            "table": {
+                "title": "транзакции",
+                "sortby": {
+                    "category": "категория",
+                    "title": " Сортировать по",
+                    "account": "учетная запись",
+                    "creationdate": "Дата создания"
+                }
+            },
+            "chart": {
+                "title": "финансовое Положение",
+                "income": "общий доход",
+                "spent": "Всего потрачено",
+                "available": "всего доступно"
+            },
+            "account": {
+                "remaining": "остаток (%)",
+                "remainingtext": "Обмылки",
+                "transaction": "транзакции"
+            }
+        },
+        "modal": {
+            "title": "выберите свои предпочтения",
+            "connect": {
+                "title": "подключение к вашему банку",
+                "description": "подключите свой банковский счет, чтобы импортировать транзакции текущего месяца."
+            },
+            "sync": {
+                "title": "автоматическая Синхронизация банковских счетов",
+                "description": "автоматически синхронизируется с банковским счетом для получения транзакций в начале месяца."
+            },
+            "import": {
+                "title": "Импорт банковских выписок",
+                "description": "вы также можете импортировать транзакции из своих банковских выписок"
+            },
+            "add": {
+                "classical": " или быть классическим ",
+                "expense": "Расходы",
+                "income": "Доход",
+                "recurrence": {
+                    "never": "никогда",
+                    "weekly": "Еженедельный сайт",
+                    "bimonthly": "Два раза в месяц",
+                    "monthly": "Ежемесячно"
+                },
+                "button": "Агрегар трансакцион"
+            }
+        },
+        "dynamic": {
+            "title": "транзакции",
+            "today": "Сегодня",
+            "empty": {
+                "success": "о! Щелчок! У вас еще нет транзакций."
+            },
+            "add": {
+                "amounterror": "пожалуйста, заполните сумму.",
+                "nonzeroerror": "сумма не может быть равна нулю.",
+                "recurerror": "выбранное значение повторения недопустимо",
+                "categoryerror": "выбранная категория недействительна. Пожалуйста, выберите действительный.",
+                "unableerror": "не удалось добавить эту транзакцию.",
+                "success": "успешно добавлена транзакция.",
+                "tooltip": "добавить транзакции"
+            },
+            "get": {
+                "unableerror": "произошла ошибка при поиске транзакций. Пожалуйста, попробуйте еще раз позже!"
+            },
+            "chart": {
+                "empty": "пожалуйста, заполните соответствующие данные для построения графика",
+                "expense": "общий доход и общий перерасход в процентах от общего объема расходов",
+                "income": "общая потраченная и общая доступная в процентах от общего дохода",
+                "labels": {
+                    "income": "Доход",
+                    "spent": "потрачено",
+                    "available": "Доступно",
+                    "overspent": "перерасход"
+                },
+                "available": "всего доступно",
+                "overspent": "всего перерасход"
+            },
+            "card": {
+                "description": "нет описания"
+            },
+            "sort": {
+                "creationdate": "Дата создания",
+                "category": "категория",
+                "account": "учетная запись"
+            }
+        }
+    },
+    "budget": {
+        "page": {
+            "title": "бюджет",
+            "card": {
+                "remaining": "оставшийся (%)",
+                "remain": "оставшийся"
+            },
+            "chart": {
+                "title": "Просмотр бюджета",
+                "total": "всего в бюджете",
+                "categories": " Категории",
+                "tobebudgeted": "В бюджет"
+            },
+            "compensation": {
+                "title": "компенсировать эти перерасходы с помощью",
+                "choose": "выбрать категорию"
+            }
+        },
+        "dynamic": {
+            "fetcherror": "не в состоянии получить свой бюджет прямо сейчас. Пожалуйста, попробуйте еще раз!",
+            "chart": {
+                "totalbudget": "Всего в бюджете",
+                "tobebudgeted": "В бюджет"
+            },
+            "card": {
+                "overspent": "перерасход (%)",
+                "tobebudgeted": "В бюджет (%)",
+                "remaining": "оставшийся (%)",
+                "remain": " оставшийся",
+                "na": "на",
+                "deleteerror": "вы не можете очистить бюджет. Пожалуйста, охладите и попробуйте еще раз!",
+                "empty": {
+                    "plan": "начать планирование для ",
+                    "hey": "привет, похоже, вам нужен бюджет для ",
+                    "create": "создать бюджеты..."
+                }
+            },
+            "unableerror": "не в Состоянии создать бюджеты. Пожалуйста, охладите и попробуйте еще раз!",
+            "alreadyerror": "выбранная категория уже имеет бюджет. Пожалуйста, выберите другую категорию!",
+            "changeerror": "вы не можете изменить категорию бюджета на данный момент. Пожалуйста, попробуйте еще раз!",
+            "allcategorieserror": "у вас есть бюджет для всех категорий!",
+            "tooltip": "добавить бюджет",
+            "delete": "очистить бюджет",
+            "income": "Доход",
+            "expense": "Расходы"
+        }
+    },
+    "overview": {
+        "page": {
+            "title": "обзор",
+            "assets": "Активы",
+            "debt": "Долг",
+            "networth": "чистая Стоимость",
+            "chart": {
+                "networth": "обзор доходов",
+                "option": "обзор за год",
+                "options": {
+                    "income": "Доход",
+                    "expense": "Расходы",
+                    "assets": "Активы",
+                    "debt": "Долг",
+                    "networth": "чистая Стоимость"
+                }
+            }
+        },
+        "dynamic": {
+            "oneyear": "Обзор года",
+            "incomeparam": "Доход",
+            "expenseparam": "Расходы",
+            "title": "обзор",
+            "geterror": "ошибка поиска информации для обзора. Пожалуйста, попробуйте еще раз позже!",
+            "chart": {
+                "incomeoverview": "обзор доходов",
+                "expenseoverview": "обзор расходов",
+                "assetoverview": "обзор активов",
+                "debtoverview": "обзор долгового",
+                "networthoverview": "обзор чистой стоимости",
+                "expensebreakdown": "Разбивка расходов",
+                "incomebreakdown": "разбивка доходов",
+                "nodata": "не хватает данных! Начните добавлять транзакции...",
+                "onecategory": "недостаточно данных! Нам нужны транзакции как минимум в 2 категориях..."
+            }
+        }
+    },
+    "profile": {
+        "page": {
+            "title": "Профиль",
+            "edit": "Редактировать",
+            "change": "изменение",
+            "changepassword": "Изменить Пароль",
+            "nocards": "Без карт",
+            "joined": "присоединился",
+            "creditcard": "Добавить кредитную карту",
+            "connected": "подключенные Учетные записи",
+            "connect": {
+                "title": "Подключить",
+                "description": "вы можете связаться с членами вашей семьи, чтобы получить лучший обзор ваших финансов"
+            },
+            "reset": {
+                "title": "перезапустить учетную запись",
+                "description": "ваша учетная запись пользователя останется, но все данные будут удалены, так что вы можете начать с чистого листа. Рассмотрите возможность экспорта всех ваших данных.",
+                "button": "Reiniciar mi cuenta de usuario del Blitz Budget"
+            },
+            "delete": {
+                "title": "удалить учетную запись",
+                "description": "будьте осторожны. Это удалит вашу учетную запись пользователя и всю введенную вами информацию. Мы рекомендуем Вам экспортировать все ваши данные",
+                "button": "перезагрузить учетную запись Пользователя Blitz Budget"
+            },
+            "question": {
+                "title": "у вас есть вопрос?",
+                "feature": "отправить запрос функции",
+                "ask": "спросите нас напрямую",
+                "help": "справочный центр"
+            }
+        },
+        "dynamic": {
+            "title": "Профиль",
+            "createerror": "произошла ошибка при поиске информации о пользователе!",
+            "mininumpassworderror": "текущее поле пароля должно иметь длину не менее 8 символов.",
+            "newminimumerror": "длина нового пароля должна составлять не менее 8 символов.",
+            "oldpassworderror": "поле старого пароля должно иметь длину не менее 8 символов.",
+            "changenameerror": "произошла ошибка при переименовании. Пожалуйста, попробуйте еще раз позже!",
+            "confirmpassword": {
+                "error": "поле подтверждения пароля должно иметь длину не менее 8 символов.",
+                "title": "подтвердить пароль"
+            },
+            "changepassword": {
+                "oldpassword": "старый Пароль",
+                "newpassword": "Новый пароль",
+                "change": "Изменить пароль",
+                "success": "успешно изменил пароль!",
+                "button": "Изменить пароль"
+            },
+            "reset": {
+                "title": "Reajuste su cuenta de usuario del Blitz Budget",
+                "yes": "¡Sí, reinícielo!",
+                "no": "No, quédatelo",
+                "success": "¡Reajuste con éxito su cuenta. Su cuenta está como nueva!",
+                "error": "¡Hubo un error al reiniciar la cuenta. Por favor, inténtelo de nuevo más tarde!",
+                "swal": {
+                    "title": "¿Quiere restablecer su cuenta de usuario?",
+                    "title2": " y ",
+                    "title3": "borrar todas las entradas",
+                    "title4": " del Blitz Budget?",
+                    "transactions": "todas las transacciones serán borradas",
+                    "budgets": "todos los presupuestos serán eliminados",
+                    "goals": "todos los objetivos serán borrados",
+                    "bankaccounts": "todas las cuentas financieras serán eliminadas",
+                    "wallets": "todas las carteras serán borradas",
+                    "investments": "todas las inversiones serán eliminadas",
+                    "premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+                    "confirm": "Confirmar contraseña"
+                }
+            },
+            "delete": {
+                "title": "перенастройка учетной записи Пользователя Blitz Budget",
+                "yes": "да, перезагрузите его!",
+                "no": "нет, оставь себе",
+                "error": "успешно перезагрузите свою учетную запись. Ваш счет как новый!",
+                "swal": {
+                    "title": "хотите удалить свою учетную запись пользователя?",
+                    "title2": " и ",
+                    "title3": "удалить все записи",
+                    "title4": " из Blitz Budget?",
+                    "alldata": "все ваши данные, ",
+                    "alldata2": "Все!",
+                    "alldata3": " будет удален",
+                    "premium": "подписка на премию будет прекращена",
+                    "account": "ваша учетная запись Пользователя Blitz Budget будет удалена",
+                    "consider": "подумайте об экспорте ваших данных!",
+                    "confirm": "Подтвердите пароль"
+                }
+            },
+            "email": {
+                "error": "поле электронной почты должно иметь действительную запись",
+                "success": "успешно изменил электронную почту!",
+                "verify": {
+                    "title": "Код подтверждения",
+                    "description": "код подтверждения был отправлен в ",
+                    "button": "проверить электронную почту",
+                    "emptyerror": "код подтверждения не может быть пустым",
+                    "lessthansixerror": "код подтверждения должен быть длиной 6 символов",
+                    "nanerror": "проверочный код может содержать только цифры"
+                }
+            }
+        }
+    },
+    "wallet": {
+        "page": {
+            "title": "Кошельки",
+            "nav": {
+                "manage": "Управление портфелями",
+                "done": "Готово",
+                "delete": "удалить кошелек"
+            },
+            "main": {
+                "title": "какой кошелек?",
+                "add": {
+                    "title": "добавить портфель",
+                    "withWallet": "монеты с кошельком",
+                    "withoutWallet": "монеты без кошелька",
+                    "button": "Добавить",
+                    "cancel": "Отменить"
+                },
+                "manage": {
+                    "title": "Управление портфелем",
+                    "name": "дайте ему имя",
+                    "preference": "каково ваше денежное предпочтение?",
+                    "withWallet": "монеты с кошельком",
+                    "withoutWallet": "монеты без кошелька",
+                    "save": "Сохранить",
+                    "cancel": "Отменить"
+                }
+            }
+        },
+        "dynamic": {
+            "add": {
+                "error": "неожиданная ошибка произошла при добавлении кошелька"
+            },
+            "fetcherror": "неожиданная ошибка произошла при поиске кошельков",
+            "noactivecurrency": "нет активной валюты",
+            "deletewallet": "Удалить портфель",
+            "yesdelete": "Да, уберите его!",
+            "nodelete": "нет, оставь его себе",
+            "deleteerror": "произошла ошибка при удалении вашего кошелька. Пожалуйста, попробуйте еще раз позже!",
+            "delete": {
+                "text": "вы хотите удалить свой кошелек, связанный с? ",
+                "text2": " и ",
+                "text3": "borrar todas las entradas",
+                "text4": " asociado con esta cartera del Blitz Budget?",
+                "transactions": "todas las transacciones de esta cartera serán borradas",
+                "budgets": "todos los presupuestos de esta cartera serán borrados",
+                "goals": "todos los objetivos dentro de esta cartera serán borrados",
+                "bankaccounts": "todas las cuentas financieras asociadas a esta cartera serán eliminadas",
+                "investments": "todas las inversiones asociadas a esta cartera serán eliminadas",
+                "premium": "La suscripción premium permanecerá intacta después del restablecimiento.",
+                "confirmpassword": "Confirmar contraseña"
+            },
+            "patcherror": "Un error inesperado ocurrió mientras actualizaba la cartera.",
+            "noresults": "No hay resultados",
+            "choosecurrency": "Elija la moneda"
+        }
+    },
+    "account": {
+        "dynamic": {
+            "feature": "¡Esta característica viene pronto!",
+            "create": "Crear una cuenta",
+            "addtitle": "Añadir cuenta no sincronizada",
+            "invalidtype": "Tipo de cuenta inválido. Por favor, inténtelo de nuevo!",
+            "unsynacc": "Cuenta no sincronizada '",
+            "unsyncacc2": "' ha sido creado con éxito",
+            "adderror": "¡Incapaz de añadir la cuenta en este momento. Por favor, inténtelo de nuevo!",
+            "selecterror": "¡Incapaz de seleccionar la cuenta en este momento. Por favor, inténtelo de nuevo!",
+            "accounttype": "Tipos de cuenta",
+            "add": {
+                "unsync": {
+                    "description": "Siempre tendrás la opción de desincronizar o sincronizar las cuentas en cualquier momento.",
+                    "connect": "Conectar con su institución financiera",
+                    "import": "Importar desde un archivo *",
+                    "manual": "Introducir manualmente las transacciones",
+                    "available": "Disponibilidad internacional *",
+                    "mobile": "Disponibilidad de aplicaciones móviles",
+                    "desc": "Desincronizado"
+                },
+                "sync": {
+                    "description": "Sincronizado"
+                },
+                "accstart": "¡Que empiece tu cuenta! Siempre puedes sincronizarla más tarde!",
+                "typeacc": "¿Cuál es el tipo de tu cuenta?",
+                "cash": "Efectivo",
+                "savings": "Ahorros",
+                "savingsacc": "Cuenta de ahorros",
+                "currentacc": "Cuenta corrientes",
+                "assets": "Activos",
+                "borrowing": "Tomar prestado",
+                "creditcard": "Tarjeta de crédito",
+                "liability": "Responsabilidad",
+                "accounttype": "El tipo de cuenta no es válido",
+                "giveitname": "Dale un nombre",
+                "accbalance": "¿Cuál es el saldo de su cuenta?",
+                "numanddot": "El saldo de la cuenta sólo puede contener números y puntos.",
+                "or": "o"
+            },
+            "know": {
+                "back": "Volver"
+            },
+            "manage": "Cuenta",
+            "populate": {
+                "name": "Cuentas",
+                "viewall": "ver todo",
+                "accsync": "Sincronización automática de cuentas",
+                "unsyncacc": "Cuentas no sincronizadas",
+                "syncorunsync": "¿Sincronizado o no sincronizado?",
+                "knowmore": "Saber más",
+                "helpdecide": " para ayudarte a decidir"
+            }
+        }
+    },
+    "common": {
+        "fetcherror": "Redireccionamiento de errores",
+        "tryagain": "Por favor, inténtelo de nuevo más tarde",
+        "redirecting": "Redirección no posible",
+        "invalidcategory": "La categoría elegida es inválida. ¡Por favor, refresque la página e inténtelo de nuevo!",
+        "verify": {
+            "title": "Verificación del correo electrónico"
+        }
+    },
+    "month": {
+        "short": {
+            "january": "Ene",
+            "february": "Feb",
+            "march": "Mar",
+            "april": "Abr",
+            "may": "May",
+            "june": "Jun",
+            "july": "Jul",
+            "august": "Ago",
+            "september": "Sep",
+            "october": "Oct",
+            "november": "Nov",
+            "december": "Dic"
+        },
+        "january": "Enero",
+        "february": "Febrero",
+        "march": "Marzo",
+        "april": "Abril",
+        "may": "Mayo",
+        "june": "Junio",
+        "july": "Julio",
+        "august": "Agosto",
+        "september": "Septiembre",
+        "october": "Octubre",
+        "november": "Noviembre",
+        "december": "Diciembre"
+    },
+    "categories": {
+        "Beauty": "Belleza",
+        "Bills & Fees": "Facturas y Honorarios",
+        "Car": "Coche",
+        "Education": "Educación",
+        "Entertainment": "Entretenimiento",
+        "Family & Personal": "Familia y Personal",
+        "Food & Drink": "Comida y Bebida",
+        "Gifts": "Regalos",
+        "Groceries": "Comestibles",
+        "Healthcare": "Asistencia sanitaria",
+        "Home": "Hogar",
+        "Other": "Otro",
+        "Shopping": "Compras",
+        "Sport & Hobbies": "Deportes y Pasatiempos",
+        "Transport": "Transporte",
+        "Travel": "Viaje",
+        "Work": "Trabajo",
+        "Business": "Negocios",
+        "Extra Income": "Ingreso Extra",
+        "Gift": "Regalo",
+        "Insurance Payout": "Pago del seguro",
+        "Loan": "Préstamo",
+        "Others": "Otros",
+        "Parential Leave": "Permiso Parental",
+        "Salary": "Sueldo"
+    },
+    "placeholder": {
+        "email": "Correo electrónico...",
+        "password": "Contraseña...",
+        "required": "Requerida",
+        "confirmpassword": "Confirmar Contraseña",
+        "search": "Buscar...",
+        "amount": "Cantidad",
+        "note": "Escriba una nota",
+        "searcharticle": "Buscar artículos..."
+    },
+    "tooltip": {
+        "logout": "Cerrar sesión",
+        "fullscreen": "Pantalla completa",
+        "settings": "Configuración"
+    }
+}
