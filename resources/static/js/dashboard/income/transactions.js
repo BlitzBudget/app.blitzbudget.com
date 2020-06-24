@@ -304,7 +304,7 @@
 
 	// on click dropdown set the data chosen attribute
 	$('body').on("click", "#categoryOptions .dropdown-item" , function(event){
-		let dropdownValue = this.lastChild.value;
+		let dropdownValue = this.lastElementChild.value;
 		let categoryOption = document.getElementById('categoryOptions');
 		categoryOption.firstElementChild.textContent = window.categoryMap[dropdownValue].name;
 		categoryOption.setAttribute('data-chosen', dropdownValue);

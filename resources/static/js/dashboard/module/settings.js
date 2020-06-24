@@ -278,15 +278,15 @@
         if (isEqual(id, chooseCtyId)) {
             let valObj = {
                 parentElId: "currentCountries",
-                valueChosen: element.lastChild.value
+                valueChosen: element.lastElementChild.value
             };
-            updateUserAttr('locale', currentUser.locale.substring(0, 3) + window.lToC[element.lastChild.value], element, valObj);
+            updateUserAttr('locale', currentUser.locale.substring(0, 3) + window.lToC[element.lastElementChild.value], element, valObj);
         } else if (isEqual(id, chooseCrncyId)) {
             let valObj = {
                 parentElId: "currentCurrencies",
-                valueChosen: element.lastChild.value
+                valueChosen: element.lastElementChild.value
             };
-            patchWallets(element.lastChild.value, element, valObj);
+            patchWallets(element.lastElementChild.value, element, valObj);
         }
     }
 
@@ -302,7 +302,7 @@
         inpId = event.parentElement.id.replace('Inpautocomplete-list', '');
         oldValInTe = document.getElementById(inpId).textContent;
         // Update the button to new value
-        document.getElementById(inpId).textContent = event.lastChild.value;
+        document.getElementById(inpId).textContent = event.lastElementChild.value;
         // Set Param Val combination
         let values = {};
         values['currency'] = chosenCurrencyMW;
@@ -327,13 +327,13 @@
                 let inpSearchEl = document.getElementById(inpBtnSrch);
                 let itemWithWallet = document.getElementById(valObj.parentElId);
                 // First Child Input value
-                let oldValText = itemWithWallet.firstChild.lastChild.value;
+                let oldValText = itemWithWallet.firstElementChild.lastElementChild.value;
                 // Replace HTML with Empty
                 while (itemWithWallet.firstChild) {
                     itemWithWallet.removeChild(itemWithWallet.firstChild);
                 }
                 // Set the dropdown item current selection
-                itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
+                itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastElementChild.value));
                 // Set current Curreny preference
                 // For upadting the javascript cache for currency
                 currentCurrencyPreference = window.currentUser.walletCurrency;
@@ -360,12 +360,18 @@
         let oldValInTe = '';
         let inpId = '';
         // Current countries and current currencies then do
-        if (isEqual(param, 'locale')) {
+        if (isEqual(param, 'locale') && isNotEmpty(valObj)) {
             // Fetch the display btn for auto complete
             inpId = event.parentElement.id.replace('Inpautocomplete-list', '');
             oldValInTe = document.getElementById(inpId).textContent;
             // Update the button to new value
-            document.getElementById(inpId).textContent = event.lastChild.value;
+            document.getElementById(inpId).textContent = event.lastElementChild.value;
+        } else if (isEqual(param, 'locale') && isEmpty(valObj)) {
+            // Fetch the display btn for auto complete (Update Language)
+            inpId = document.getElementById('currentLanguageShown');
+            oldValInTe = document.getElementById(inpId).textContent;
+            // Update the button to new value
+            document.getElementById(inpId).textContent = event.lastElementChild.value;
         } else {
             // Fetch the display btn from drop down
             inpId = event.parentElement.id.replace('DD', '');
@@ -373,10 +379,10 @@
 
             if (isEqual(param, 'exportFileFormat')) {
                 // Update the button to new value
-                document.getElementById(inpId).textContent = exportFileFormatObj[event.lastChild.value];
+                document.getElementById(inpId).textContent = exportFileFormatObj[event.lastElementChild.value];
             } else {
                 // Update the button to new value
-                document.getElementById(inpId).textContent = event.lastChild.value;
+                document.getElementById(inpId).textContent = event.lastElementChild.value;
             }
         }
 
@@ -404,13 +410,13 @@
                 let inpSearchEl = document.getElementById(inpBtnSrch);
                 let itemWithWallet = document.getElementById(valObj.parentElId);
                 // First Child Input value
-                let oldValText = itemWithWallet.firstChild.lastChild.value;
+                let oldValText = itemWithWallet.firstElementChild.lastElementChild.value;
                 // Replace HTML with Empty
                 while (itemWithWallet.firstChild) {
                     itemWithWallet.removeChild(itemWithWallet.firstChild);
                 }
                 // Set the dropdown item current selection
-                itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastChild.value));
+                itemWithWallet.appendChild(dropdownItemsWithWallet(event.lastElementChild.value));
                 // To be used for Auto complete
                 window.countries.push(oldValText);
                 // Remove from List
@@ -447,9 +453,9 @@
     $('body').on("click", "#chosenExportFileFormatDD .dropdown-item", function (event) {
         let valObj = {
             parentElId: "exportFileFormat",
-            valueChosen: this.lastChild.value
+            valueChosen: this.lastElementChild.value
         };
-        updateUserAttr('exportFileFormat', this.lastChild.value, this, valObj);
+        updateUserAttr('exportFileFormat', this.lastElementChild.value, this, valObj);
     });
 
     // Create the dropdown item with wallet

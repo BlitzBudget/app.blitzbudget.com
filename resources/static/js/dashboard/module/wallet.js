@@ -326,12 +326,12 @@
 		// Choose country DD update locale
 		if(isEqual(id, chooseCrncyId)) {
 			document.getElementById('confirmWallet').removeAttribute('disabled');
-			document.getElementById('chosenCurrencyW').textContent = this.lastChild.value;
-			chosenCurrencyW = this.lastChild.value;
+			document.getElementById('chosenCurrencyW').textContent = this.lastElementChild.value;
+			chosenCurrencyW = this.lastElementChild.value;
 		} else if(isEqual(id, chooseCrncyMWId)) {
 			document.getElementById('modifyWallet').removeAttribute('disabled');
-			document.getElementById('chosenCurrencyWMW').textContent = this.lastChild.value;
-			chosenCurrencyWMW = this.lastChild.value;
+			document.getElementById('chosenCurrencyWMW').textContent = this.lastElementChild.value;
+			chosenCurrencyWMW = this.lastElementChild.value;
 		}
 	});
 
@@ -1107,4 +1107,4 @@
     	}
 	}	
 
-}(jQuery));	
+}(jQuery));

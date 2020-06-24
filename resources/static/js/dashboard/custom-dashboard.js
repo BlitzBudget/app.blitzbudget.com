@@ -1034,8 +1034,8 @@ function assignCategoryId(data) {
     let children = iterateElement.children;
     for (let i = 0, len = children.length; i < len; i++) {
         let childElement = children[i];
-        if (isEqual(childElement.lastChild.value, categoryName)) {
-            childElement.lastChild.value = categoryId;
+        if (isEqual(childElement.lastElementChild.value, categoryName)) {
+            childElement.lastElementChild.value = categoryId;
         }
     }
 }
