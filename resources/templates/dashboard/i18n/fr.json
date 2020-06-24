@@ -36,7 +36,7 @@
         },
         "askusdirectly": {
             "title": "Demandez-nous directement",
-            "customersupport": "service client : Demandez plus d'informations dans les 24 heures",
+            "customersupport": "Service client : Demandez plus d'informations dans les 24 heures",
             "message": "Message",
             "text": "L'article avec l'url ",
             "text2": " Je pourrais avoir plus d'informations pour être plus utile. J'apprécierais que l'article contienne.. ",
@@ -273,6 +273,8 @@
             "oneyear": "Résumé d'un an",
             "incomeparam": "Revenu",
             "expenseparam": "Je dépense",
+            "expensebreakdown": "Répartition des dépenses",
+            "incomebreakdown": "Répartition des revenus",
             "title": "Vue d'ensemble",
             "geterror": "Erreur de recherche d'informations pour la vue d'ensemble. Veuillez réessayer plus tard!",
             "chart": {

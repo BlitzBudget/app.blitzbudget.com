@@ -1,0 +1,586 @@
+{
+    "login": {
+        "popup": {
+            "header": "登录",
+            "subtitle": "或者是经典",
+            "continue": "下一个",
+            "forgot": "我忘了我的密码",
+            "resend": "重新发送代码",
+            "account": "我已经有一个账户",
+            "signup": "创建账户",
+            "verify": {
+                "title": "核实",
+                "subtitle": "我们已将验证邮件发送至 "
+            },
+            "notme": "不是我"
+        },
+        "dynamic": {
+            "emptyallerror": "电子邮件和密码字段不能为空",
+            "emptyemailerror": "电子邮件字段不能为空",
+            "emptypassworderror": "密码字段不能为空",
+            "passwordlengtherror": "密码必须至少有8个字符长",
+            "passwordnomatcherror": "密码不匹配",
+            "emptyallnewerror": "邮箱和密码字段不能为空，请在密码字段中输入新密码",
+            "emptynewpassworderror": "在密码栏中输入新密码",
+            "newpasswordlengtherror": "新密码必须至少有8个字符长"
+        }
+    },
+    "support": {
+        "popup": {
+            "header": "我们如何帮助？",
+            "rating": "这个答案有用吗？",
+            "happy": "我们很乐意帮忙! ",
+            "ask": "直接问我们",
+            "yes": "是",
+            "no": "没有"
+        },
+        "askusdirectly": {
+            "title": "直接问我们",
+            "customersupport": "客服。24小时内索取更多信息",
+            "message": "信息",
+            "text": "带有网址的文章 ",
+            "text2": "  我可能有更多的信息，更有用。如果文章中包含以下内容，我将不胜感激： ",
+            "texterror": "请至少输入80个字符。",
+            "success": "谢谢您的邮件，我们会在24小时内回复！",
+            "error": "目前无法发送电子邮件，请重试！",
+            "confirm": "发送"
+        },
+        "helpcenter": {
+            "redirect": "重定向不可能",
+            "tryagain": "请稍后再试",
+            "noresults": "无结果",
+            "unableurl": "无法获得所请求的网址",
+            "thanks": "谢谢你的反馈"
+        }
+    },
+    "unlock": {
+        "popup": {
+            "password": "输入密码",
+            "button": "解锁"
+        }
+    },
+    "nav": {
+        "dropdown": {
+            "logout": "注销",
+            "settings": "配置",
+            "profile": "概况"
+        },
+        "account": "账户",
+        "support": "支持"
+    },
+    "sidebar": {
+        "overview": "摘要",
+        "goals": "客观",
+        "budget": "预算",
+        "transaction": "交易"
+    },
+    "home": {
+        "title": "控制面板启动 | BlitzBudget"
+    },
+    "settings": {
+        "page": {
+            "title": "设置",
+            "general": "一般",
+            "notifications": "通知",
+            "devices": "设备",
+            "region": {
+                "title": "区域优惠",
+                "subtitle": "选择您喜欢的语言、货币和国家，以获得适当的区域格式"
+            },
+            "country": {
+                "title": "国家",
+                "subtitle": "选择您的国家以获得适当的区域货币格式。",
+                "withWallet": "有投资组合的国家",
+                "withoutWallet": "没有投资组合的国家"
+            },
+            "currency": {
+                "title": "货币",
+                "subtitle": "本投资组合的首选货币。你的交易和总结将用这种货币。",
+                "withWallet": "带钱包的货币",
+                "withoutWallet": "没有钱包的硬币"
+            },
+            "language": {
+                "title": "语言",
+                "subtitle": "我们正在努力为您提供更多的语言选择，而不仅仅是英语（美国）"
+            },
+            "export": {
+                "title": "出口",
+                "subtitle": "选择您喜欢的文件格式进行数据导出。",
+                "file": {
+                    "title": "文件格式",
+                    "subtitle": "我们目前支持Excel、Google Docs和逗号分隔值（CSV）。"
+                }
+            }
+        }
+    },
+    "transactions": {
+        "page": {
+            "table": {
+                "title": "交易",
+                "sortby": {
+                    "category": "类别",
+                    "title": " 排序",
+                    "account": "账户",
+                    "creationdate": "创建日期"
+                }
+            },
+            "chart": {
+                "title": "财务状况",
+                "income": "总收入",
+                "spent": "总花费",
+                "available": "可用总数"
+            },
+            "account": {
+                "remaining": "剩余(%)",
+                "remainingtext": "剩余",
+                "transaction": "交易"
+            }
+        },
+        "modal": {
+            "title": "选择你的喜好。",
+            "connect": {
+                "title": "连接到你的银行。",
+                "description": "连接你的银行账户，导入当月的交易。"
+            },
+            "sync": {
+                "title": "银行账户自动同步",
+                "description": "它能自动与银行账户同步，每个月初都能获得交易。"
+            },
+            "import": {
+                "title": "导入银行对账单",
+                "description": "你也可以从你的银行报表中导入交易"
+            },
+            "add": {
+                "classical": " 或成为经典 ",
+                "expense": "支出",
+                "income": "收入",
+                "recurrence": {
+                    "never": "从不",
+                    "weekly": "每周",
+                    "bimonthly": "双月",
+                    "monthly": "每月"
+                },
+                "button": "添加交易"
+            }
+        },
+        "dynamic": {
+            "title": "交易",
+            "today": "今天",
+            "empty": {
+                "success": "哦！啪！。你还没有任何交易。"
+            },
+            "add": {
+                "amounterror": "请填写金额。",
+                "nonzeroerror": "金额不能为零。",
+                "recurerror": "所选的递归值无效。",
+                "categoryerror": "所选类别无效。请选择一个有效的",
+                "unableerror": "无法添加此交易。",
+                "success": "成功添加交易。",
+                "tooltip": "添加交易"
+            },
+            "get": {
+                "unableerror": "搜索交易时出错，请稍后再试！"
+            },
+            "chart": {
+                "empty": "请填写相应的数据建立图表",
+                "expense": "总收入和总超支占总支出的百分比",
+                "income": "支出总额和可用总额占总收入的百分比",
+                "labels": {
+                    "income": "收入",
+                    "spent": "花了",
+                    "available": "可用",
+                    "overspent": "过度开支"
+                },
+                "available": "可用总数",
+                "overspent": "超支总额"
+            },
+            "card": {
+                "description": "没有说明"
+            },
+            "sort": {
+                "creationdate": "创建日期",
+                "category": "类别",
+                "account": "账户"
+            }
+        }
+    },
+    "budget": {
+        "page": {
+            "title": "预算",
+            "card": {
+                "remaining": "剩余(%)",
+                "remain": "剩余"
+            },
+            "chart": {
+                "title": "预算显示",
+                "total": "预算总额",
+                "categories": " 类别",
+                "tobebudgeted": "待编预算"
+            },
+            "compensation": {
+                "title": "用 补偿这种超支",
+                "choose": "选择类别"
+            }
+        },
+        "dynamic": {
+            "fetcherror": "现在无法获取您的预算，请再试一次！",
+            "chart": {
+                "totalbudget": "预算总额",
+                "tobebudgeted": "待编预算"
+            },
+            "card": {
+                "overspent": "超支(%)",
+                "tobebudgeted": "待编预算(%)",
+                "remaining": "剩余(%)",
+                "remain": " 剩余",
+                "na": "NA",
+                "deleteerror": "无法删除预算，请刷新再试！",
+                "empty": {
+                    "plan": "开始规划 ",
+                    "hey": "你好，看来你需要一个报价 ",
+                    "create": "创建预算..."
+                }
+            },
+            "unableerror": "无法创建预算。 请刷新并重试！",
+            "alreadyerror": "所选类别已经有预算，请选择其他类别！",
+            "changeerror": "目前无法更改预算类别，请重试！",
+            "allcategorieserror": "你有所有类别的预算！",
+            "tooltip": "添加预算",
+            "delete": "删除预算",
+            "income": "收入",
+            "expense": "费用"
+        }
+    },
+    "overview": {
+        "page": {
+            "title": "概述",
+            "assets": "资产",
+            "debt": "债务",
+            "networth": "净资产",
+            "chart": {
+                "networth": "收入概览",
+                "option": "一年总结",
+                "options": {
+                    "income": "收入",
+                    "expense": "支出",
+                    "assets": "资产",
+                    "debt": "债务",
+                    "networth": "净资产"
+                }
+            }
+        },
+        "dynamic": {
+            "oneyear": "一年总结",
+            "incomeparam": "收入",
+            "expenseparam": "我花了",
+            "expensebreakdown": "支出明细",
+            "incomebreakdown": "收入明细",
+            "title": "概述",
+            "geterror": "概览的信息搜索错误。请稍后再试！",
+            "chart": {
+                "incomeoverview": "收入概览",
+                "expenseoverview": "费用概览",
+                "assetoverview": "资产概览",
+                "debtoverview": "债务概况",
+                "networthoverview": "净值概览",
+                "expensebreakdown": "费用明细",
+                "incomebreakdown": "收入明细",
+                "nodata": "数据不够用！开始添加交易...",
+                "onecategory": "数据不够用！。我们至少需要2类交易。"
+            }
+        }
+    },
+    "profile": {
+        "page": {
+            "title": "简介",
+            "edit": "编辑",
+            "change": "结束",
+            "changepassword": "更改密码",
+            "nocards": "无牌",
+            "joined": "加入",
+            "creditcard": "添加信用卡",
+            "connected": "连接的账户",
+            "connect": {
+                "title": "连接",
+                "description": "你可以与你的家庭成员联系，以便更好地了解你的财务状况"
+            },
+            "reset": {
+                "title": "重置账户",
+                "description": "你的用户账户将保留，但所有数据将被删除，这样你就可以从一个空白的板块开始。考虑将所有数据导出",
+                "button": "重新启动我的闪电预算用户账户"
+            },
+            "delete": {
+                "title": "删除账户",
+                "description": "小心。这将删除你的用户账户和你输入的所有信息。我们建议您导出您的所有数据",
+                "button": "删除我的闪电预算用户账户"
+            },
+            "question": {
+                "title": "你有问题吗？",
+                "feature": "提交特征请求",
+                "ask": "直接问我们。",
+                "help": "帮助中心"
+            }
+        },
+        "dynamic": {
+            "title": "简介",
+            "createerror": "在搜索用户信息时出现了错误！",
+            "mininumpassworderror": "当前密码字段必须至少有8个字符长。",
+            "newminimumerror": "新密码必须至少有8个字符长。",
+            "oldpassworderror": "旧密码字段必须至少有8个字符长。",
+            "changenameerror": "有一个错误的改变名称。请稍后再试！",
+            "confirmpassword": {
+                "error": "密码确认字段必须至少有8个字符长",
+                "title": "确认密码"
+            },
+            "changepassword": {
+                "oldpassword": "老密码",
+                "newpassword": "新密码",
+                "change": "改密码",
+                "success": "成功更改密码！",
+                "button": "更改密码"
+            },
+            "reset": {
+                "title": "重置您的闪电预算用户账户",
+                "yes": "是的，重启它！",
+                "no": "不，留着吧。",
+                "success": "重置账户成功。你的账户跟新的一样！",
+                "error": "有一个错误重置账户。请稍后再试！",
+                "swal": {
+                    "title": "你想重置你的用户账户吗？",
+                    "title2": " 和 ",
+                    "title3": "删除所有条目",
+                    "title4": " 闪电战预算的？",
+                    "transactions": "所有交易将被删除。",
+                    "budgets": "所有预算将被取消",
+                    "goals": "所有目标将被删除。",
+                    "bankaccounts": "所有金融账户将被删除",
+                    "wallets": "所有钱包将被删除。",
+                    "investments": "所有投资将被取消",
+                    "premium": "高级订阅在重置后将保持不变。",
+                    "confirm": "确认密码"
+                }
+            },
+            "delete": {
+                "title": "删除您的闪电预算用户账户",
+                "yes": "是，删掉它！",
+                "no": "不，留着吧。",
+                "error": "删除账户时出现了错误。请稍后再试！",
+                "swal": {
+                    "title": "你想删除你的用户账户吗？",
+                    "title2": " 和 ",
+                    "title3": "删除所有条目",
+                    "title4": " 闪电战预算的？",
+                    "alldata": "你的所有数据, ",
+                    "alldata2": "一切！",
+                    "alldata3": " 将被删除。",
+                    "premium": "高级订阅将被终止",
+                    "account": "您的闪电预算用户账户将被删除",
+                    "consider": "考虑导出你的数据！",
+                    "confirm": "确认密码"
+                }
+            },
+            "email": {
+                "error": "电子邮件字段必须有一个有效的条目",
+                "success": "成功地更改了电子邮件！",
+                "verify": {
+                    "title": "验证码",
+                    "description": "验证码已发送至 ",
+                    "button": "检查电子邮件。",
+                    "emptyerror": "验证码不能为空",
+                    "lessthansixerror": "验证码必须是6个字符长",
+                    "nanerror": "验证码只能包含数字"
+                }
+            }
+        }
+    },
+    "wallet": {
+        "page": {
+            "title": "钱包",
+            "nav": {
+                "manage": "管理投资组合",
+                "done": "完成",
+                "delete": "删除钱包"
+            },
+            "main": {
+                "title": "什么组合？",
+                "add": {
+                    "title": "添加投资组合",
+                    "withWallet": "带钱包的硬币",
+                    "withoutWallet": "没有钱包的硬币",
+                    "button": "添加",
+                    "cancel": "取消"
+                },
+                "manage": {
+                    "title": "管理投资组合",
+                    "name": "给它起个名字",
+                    "preference": "你的货币偏好是什么？",
+                    "withWallet": "带钱包的硬币",
+                    "withoutWallet": "没有钱包的硬币",
+                    "save": "保存",
+                    "cancel": "取消"
+                }
+            }
+        },
+        "dynamic": {
+            "add": {
+                "error": "添加投资组合时发生意外错误"
+            },
+            "fetcherror": "当我去拿钱包时，发生了一个意外的错误。",
+            "noactivecurrency": "无活动货币",
+            "deletewallet": "删除钱包",
+            "yesdelete": "是的，删除它！",
+            "nodelete": "不，留着吧。",
+            "deleteerror": "在删除他的钱包时出现了错误。请稍后再试！",
+            "delete": {
+                "text": "你想删除你的钱包关联？",
+                "text2": " 和 ",
+                "text3": "删除所有条目",
+                "text4": " 与这一突击预算组合有关？",
+                "transactions": "本投资组合中的所有交易将被删除",
+                "budgets": "本组合中的所有预算将被删除",
+                "goals": "本组合中的所有目标都将被删除",
+                "bankaccounts": "与该投资组合有关的所有金融账户将被取消",
+                "investments": "与该投资组合有关的所有投资将被取消",
+                "premium": "高级订阅在重置后将保持不变。",
+                "confirmpassword": "确认密码"
+            },
+            "patcherror": "更新投资组合时发生意外错误。",
+            "noresults": "无结果。",
+            "choosecurrency": "选择货币"
+        }
+    },
+    "account": {
+        "dynamic": {
+            "feature": "此功能即将推出！",
+            "create": "创建一个账户。",
+            "addtitle": "添加非同步账户",
+            "invalidtype": "无效账户类型。请再试一次！",
+            "unsynacc": "非同步账户 '",
+            "unsyncacc2": "' 已成功创建",
+            "adderror": "目前无法添加账户。请再试一次！",
+            "selecterror": "目前无法选择账户。请再试一次！",
+            "accounttype": "账户类型",
+            "add": {
+                "unsync": {
+                    "description": "你将始终可以选择在任何时候取消同步或同步账户。",
+                    "connect": "连接到你的金融机构",
+                    "import": "从*文件导入 *",
+                    "manual": "手动输入交易",
+                    "available": "国际可用性 *",
+                    "mobile": "移动应用程序的可用性",
+                    "desc": "不同步"
+                },
+                "sync": {
+                    "description": "同步"
+                },
+                "accstart": "让您的账户开始吧! 你以后可以随时同步！",
+                "typeacc": "你的账户类型是什么？",
+                "cash": "现金",
+                "savings": "储蓄",
+                "savingsacc": "储蓄账户",
+                "currentacc": "经常账户",
+                "assets": "资产",
+                "borrowing": "借",
+                "creditcard": "信用卡",
+                "liability": "责任",
+                "accounttype": "账户类型无效",
+                "giveitname": "给它起个名字",
+                "accbalance": "你的账户余额是多少？",
+                "numanddot": "账户余额只能包含数字和点数。",
+                "or": "或"
+            },
+            "know": {
+                "back": "返回"
+            },
+            "manage": "账户",
+            "populate": {
+                "name": "账户",
+                "viewall": "看到一切",
+                "accsync": "自动账户同步",
+                "unsyncacc": "非同步账户",
+                "syncorunsync": "同步的还是不同步的？",
+                "knowmore": "知更",
+                "helpdecide": " 帮助你决定"
+            }
+        }
+    },
+    "common": {
+        "fetcherror": "错误重定向",
+        "tryagain": "请稍后再试",
+        "redirecting": "重定向不可能",
+        "invalidcategory": "所选类别无效，请刷新页面再试！",
+        "verify": {
+            "title": "电子邮件验证"
+        }
+    },
+    "month": {
+        "short": {
+            "january": "一月",
+            "february": "二月",
+            "march": "三月",
+            "april": "四月",
+            "may": "5月",
+            "june": "六月",
+            "july": "七月",
+            "august": "八月",
+            "september": "九月",
+            "october": "十月",
+            "november": "十一月",
+            "december": "十二月"
+        },
+        "january": "一月",
+        "february": "二月",
+        "march": "三月",
+        "april": "四月",
+        "may": "5月",
+        "june": "六月",
+        "july": "七月",
+        "august": "八月",
+        "september": "九月",
+        "october": "十月",
+        "november": "十一月",
+        "december": "十二月"
+    },
+    "categories": {
+        "Beauty": "美",
+        "Bills & Fees": "账单和费用",
+        "Car": "车",
+        "Education": "教育",
+        "Entertainment": "娱乐",
+        "Family & Personal": "家庭和个人",
+        "Food & Drink": "吃喝",
+        "Gifts": "礼物",
+        "Groceries": "杂货",
+        "Healthcare": "保健",
+        "Home": "家",
+        "Other": "其他",
+        "Shopping": "购物",
+        "Sport & Hobbies": "运动和爱好",
+        "Transport": "运输",
+        "Travel": "旅程",
+        "Work": "工作",
+        "Business": "业务",
+        "Extra Income": "额外收入",
+        "Gift": "礼物",
+        "Insurance Payout": "保险赔付",
+        "Loan": "贷款",
+        "Others": "其他",
+        "Parential Leave": "父母假",
+        "Salary": "薪资"
+    },
+    "placeholder": {
+        "email": "电子邮件...",
+        "password": "密码...",
+        "required": "所需",
+        "confirmpassword": "确认密码",
+        "search": "搜索...",
+        "amount": "数量",
+        "note": "写一张笔记",
+        "searcharticle": "搜索文章..."
+    },
+    "tooltip": {
+        "logout": "注销",
+        "fullscreen": "全屏",
+        "settings": "配置"
+    }
+}
