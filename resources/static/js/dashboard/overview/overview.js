@@ -518,44 +518,42 @@
 
     // Chart Income One Year Overview
     $("body").on("click", "#chooseCategoryDD .chartOverviewIncome", function () {
+        // Dough nut breakdown open cache
+        doughnutBreakdownOpen = false;
         replaceChartChosenLabel(oneyearoverview);
         // populate the income line chart from cache
         populateLineChart(liftimeTransactionsCache, true);
-        // Dough nut breakdown open cache
-        doughnutBreakdownOpen = false;
     });
 
     // Chart Income Breakdown Chart
     $("body").on("click", "#chooseCategoryDD .chartBreakdownIncome", function () {
+        // Dough nut breakdown open cache
+        doughnutBreakdownOpen = true;
         replaceChartChosenLabel(window.translationData.overview.dynamic.chart.incomeoverview);
-
         // Populate Breakdown Category
         populateCategoryBreakdown(true);
         // Populate cache for income or expense breakdown
         fetchIncomeBreakDownCache = true;
-        // Dough nut breakdown open cache
-        doughnutBreakdownOpen = true;
     });
 
     // Chart Expense One Year Overview
     $("body").on("click", "#chooseCategoryDD .chartOverviewExpense", function () {
+        // Dough nut breakdown open cache
+        doughnutBreakdownOpen = false;
         replaceChartChosenLabel(oneyearoverview);
         // Populate the expense line chart from cache
         populateLineChart(liftimeTransactionsCache, false);
-        // Dough nut breakdown open cache
-        doughnutBreakdownOpen = false;
     });
 
     // Chart Expense  Breakdown Chart
     $("body").on("click", "#chooseCategoryDD .chartBreakdownExpense", function () {
+        // Dough nut breakdown open cache
+        doughnutBreakdownOpen = true;
         replaceChartChosenLabel(window.translationData.overview.dynamic.chart.expenseoverview);
-
         // Populate Breakdown Category
         populateCategoryBreakdown(false);
         // Populate cache for income or expense breakdown
         fetchIncomeBreakDownCache = false;
-        // Dough nut breakdown open cache
-        doughnutBreakdownOpen = true;
     });
 
     // Populate Breakdown Category
