@@ -623,7 +623,7 @@ window.onload = function () {
 
         // Assign color change for side bar
         function changeColorOfSidebar(color) {
-            if (isNotEmpty($sidebar) && $sidebar.length != 0) {
+            if ($sidebar && $sidebar.length != 0) {
                 $sidebar.attr('data-color', color);
             }
         }
