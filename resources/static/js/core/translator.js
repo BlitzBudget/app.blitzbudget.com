@@ -1,4 +1,6 @@
 "use strict";
+// Get today
+window.today = new Date();
 // chosenDate for transactions (April 2019 as 042019)
 window.chosenDate = today;
 

@@ -91,8 +91,6 @@ window.currentActiveSideBar = '';
 //Regex to check if the entered value is a float
 const regexForFloat = /^[+-]?\d+(\.\d+)?$/;
 
-// Get today
-window.today = new Date();
 // Name of the months (0-January :: 11-December)
 window.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 //Popover Cache
