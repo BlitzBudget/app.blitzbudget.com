@@ -100,6 +100,8 @@ let loginPopupShown = false;
 
 window.onload = function () {
     (function scopeWrapper($) {
+        // Define sidebar
+        $sidebar = $('.sidebar');
 
         // Position for month selection
         let positionMonthCache = 0;
@@ -1002,6 +1004,11 @@ function fetchJSONForCategories(data) {
  * If one category has been assigned a Category then
  */
 function assignCategoryId(data) {
+    // If category is already present
+    if (isNotEmpty(window.categoryMap[data.category])) {
+        return;
+    }
+
     let categoryId = data.category;
     let categoryName = data.categoryName;
     let categoryType = data.categoryType;
