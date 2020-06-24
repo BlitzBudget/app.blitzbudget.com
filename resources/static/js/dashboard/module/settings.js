@@ -369,9 +369,9 @@
         } else if (isEqual(param, 'locale') && isEmpty(valObj)) {
             // Fetch the display btn for auto complete (Update Language)
             inpId = document.getElementById('currentLanguageShown');
-            oldValInTe = document.getElementById(inpId).textContent;
+            oldValInTe = inpId.textContent;
             // Update the button to new value
-            document.getElementById(inpId).textContent = event.lastElementChild.value;
+            inpId.textContent = event.lastElementChild.value;
         } else {
             // Fetch the display btn from drop down
             inpId = event.parentElement.id.replace('DD', '');
