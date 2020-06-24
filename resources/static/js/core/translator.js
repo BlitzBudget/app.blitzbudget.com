@@ -75,7 +75,7 @@ function setTranslatedMonths() {
     window.months.push(window.translationData.month.december);
 
     // Overview month name
-    document.getElementById('overviewMonthHeading').textContent = window.months[new Date().getMonth()];
+    document.getElementById('overviewMonthHeading').textContent = window.months[currentDate.getMonth()];
 }
 
 // Assign category key value pairs for categories
