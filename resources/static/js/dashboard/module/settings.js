@@ -563,7 +563,7 @@
     }
 
     /*
-     * Export File Format
+     * Choose current language
      */
     $('body').on("click", "#chooseLanguageDD .dropdown-item", function (event) {
         updateUserAttr('locale', this.dataset.target + window.currentUser.locale.substring(2, 5), this, null);
