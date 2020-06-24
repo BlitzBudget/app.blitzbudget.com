@@ -574,12 +574,12 @@
             closeAllDDLists(this);
         });
 
-    }
+        /*
+         * Populate current Locale
+         */
+        document.getElementById("currentLanguageShown").textContent = languageOptions[window.currentUser.locale.substring(0, 2)];
 
-    /*
-     * Populate current Locale
-     */
-    document.getElementById("currentLanguageShown").textContent = languageOptions[window.currentUser.locale.substring(0, 2)];
+    }
 
     /*
      * Choose current language
