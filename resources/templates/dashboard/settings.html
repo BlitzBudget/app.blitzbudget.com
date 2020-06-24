@@ -2,312 +2,338 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title data-i18n="settings.page.title">
-	    Settings
-	  </title>
+    <title data-i18n="settings.page.title">
+        Settings
+    </title>
     <link href="/css/settings.min.css" rel="stylesheet preload" as="style">
 </head>
 
-<body class="settings-dashboard" >    
-      <div class="content noselect">
+<body class="settings-dashboard">
+    <div class="content noselect">
         <div class="container-fluid">
-        	<div class="col-lg-12 col-md-12">
-              <div class="page-categories">
-                <h3 class="title text-center"></h3>
-                <br>
-                <ul class="nav nav-pills nav-pills-info nav-pills-icons justify-content-center" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active show" data-toggle="tab" href="#generalLink" role="tablist">
-                      <i class="material-icons noselect">language</i> <span data-i18n="settings.page.general">General</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#notificationLink" role="tablist">
-                      <i class="material-icons noselect">notifications_none</i> <span data-i18n="settings.page.notifications">Notifications</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#devicesTabLink" role="tablist">
-                      <i class="material-icons noselect">devices</i> <span data-i18n="settings.page.devices">Devices</span>
-                    </a>
-                  </li>
-                </ul>
-                <div class="tab-content tab-space tab-subcategories">
-                  <div class="tab-pane active show" id="generalLink">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5 class="card-title" data-i18n="settings.page.region.title">Regional preferences</h5>
-                        <p class="card-category" data-i18n="settings.page.region.subtitle">
-                          Select your preferred language, currency and country for appropriate regional formatting.
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        <div class="row mt-3 mt-md-0">
-                          <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5 data-i18n="settings.page.country.title">Country</h5>
-                              <p class="tripleNineColor" data-i18n="settings.page.country.subtitle">Choose your country for appropriate regional currency formatting.</p>
-                          </div>
-                          <div class="col-lg-8 col-md-8 col-sm-12">
-                              <div id="chosenCountryDropdown" class="btn-group btnGroup-1 float-left">
-                                <button id="chosenCountry" class="chosenCountry btn btn-secondary w-md-15 w-8" disabled="">United States</button>
-                                <button id="chosenCountryDownBtn" type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div id="chooseCountryDD" class="dropdown-menu">
-                                  <!-- Drop down dynamic load -->
-                                  <div class="input-group">
-                                    <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
-                                    <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" data-placeholder-i18n="placeholder.search" placeholder="Search...">
-                                    <h6 class="dropdown-header" data-i18n="settings.page.country.withWallet">Countries with wallet</h6>
-                                    <div id="currentCountries"></div>
-                                    <div class="dropdown-divider"></div>
-                                    <h6 class="dropdown-header" data-i18n="settings.page.country.withoutWallet">Countries without wallet</h6>
-                                  </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="page-categories">
+                    <h3 class="title text-center"></h3>
+                    <br>
+                    <ul class="nav nav-pills nav-pills-info nav-pills-icons justify-content-center" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active show" data-toggle="tab" href="#generalLink" role="tablist">
+                                <i class="material-icons noselect">language</i> <span data-i18n="settings.page.general">General</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#notificationLink" role="tablist">
+                                <i class="material-icons noselect">notifications_none</i> <span data-i18n="settings.page.notifications">Notifications</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#devicesTabLink" role="tablist">
+                                <i class="material-icons noselect">devices</i> <span data-i18n="settings.page.devices">Devices</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content tab-space tab-subcategories">
+                        <div class="tab-pane active show" id="generalLink">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title" data-i18n="settings.page.region.title">Regional preferences</h5>
+                                    <p class="card-category" data-i18n="settings.page.region.subtitle">
+                                        Select your preferred language, currency and country for appropriate regional formatting.
+                                    </p>
                                 </div>
-                              </div>
-                          </div>
-                        </div>
-                        <div id="primaryCurrency" class="row mt-3 mt-md-0">
-                          <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5 data-i18n="settings.page.currency.title">Currency</h5>
-                              <p class="tripleNineColor" data-i18n="settings.page.currency.subtitle">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
-                          </div>
-                          <div class="col-lg-8 col-md-8 col-sm-12">
-                              <div id="chosenCurrencyDropdown" class="btn-group btnGroup-1 float-left">
-                                <button id="chosenCurrency" class="chosenCurrency btn btn-secondary w-md-15 w-8" disabled="">American Dollars</button>
-                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div id="chooseCurrencyDD" class="dropdown-menu">
-                                  <!-- Drop down dynamic load -->
-                                  <div class="input-group">
-                                    <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
-                                    <input id="chosenCurrencyInp" class="form-control w-75 mr-2" type="text" data-placeholder-i18n="placeholder.search" placeholder="Search...">
-                                    <h6 class="dropdown-header" data-i18n="settings.page.currency.withWallet">Currencies with wallet</h6>
-                                    <div id="currentCurrencies"></div>
-                                    <div class="dropdown-divider"></div>
-                                    <h6 class="dropdown-header" data-i18n="settings.page.currency.withoutWallet">Currencies without wallet</h6>
-                                  </div>
+                                <div class="card-body">
+                                    <div class="row mt-3 mt-md-0">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
+                                            <h5 data-i18n="settings.page.country.title">Country</h5>
+                                            <p class="tripleNineColor" data-i18n="settings.page.country.subtitle">Choose your country for appropriate regional currency formatting.</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12">
+                                            <div id="chosenCountryDropdown" class="btn-group btnGroup-1 float-left">
+                                                <button id="chosenCountry" class="chosenCountry btn btn-secondary w-md-15 w-8" disabled="">United States</button>
+                                                <button id="chosenCountryDownBtn" type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div id="chooseCountryDD" class="dropdown-menu">
+                                                    <!-- Drop down dynamic load -->
+                                                    <div class="input-group">
+                                                        <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
+                                                        <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" data-placeholder-i18n="placeholder.search" placeholder="Search...">
+                                                        <h6 class="dropdown-header" data-i18n="settings.page.country.withWallet">Countries with wallet</h6>
+                                                        <div id="currentCountries"></div>
+                                                        <div class="dropdown-divider"></div>
+                                                        <h6 class="dropdown-header" data-i18n="settings.page.country.withoutWallet">Countries without wallet</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="primaryCurrency" class="row mt-3 mt-md-0">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
+                                            <h5 data-i18n="settings.page.currency.title">Currency</h5>
+                                            <p class="tripleNineColor" data-i18n="settings.page.currency.subtitle">The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12">
+                                            <div id="chosenCurrencyDropdown" class="btn-group btnGroup-1 float-left">
+                                                <button id="chosenCurrency" class="chosenCurrency btn btn-secondary w-md-15 w-8" disabled="">American Dollars</button>
+                                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div id="chooseCurrencyDD" class="dropdown-menu">
+                                                    <!-- Drop down dynamic load -->
+                                                    <div class="input-group">
+                                                        <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
+                                                        <input id="chosenCurrencyInp" class="form-control w-75 mr-2" type="text" data-placeholder-i18n="placeholder.search" placeholder="Search...">
+                                                        <h6 class="dropdown-header" data-i18n="settings.page.currency.withWallet">Currencies with wallet</h6>
+                                                        <div id="currentCurrencies"></div>
+                                                        <div class="dropdown-divider"></div>
+                                                        <h6 class="dropdown-header" data-i18n="settings.page.currency.withoutWallet">Currencies without wallet</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 mt-md-0">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
+                                            <h5 data-i18n="settings.page.language.title">Language</h5>
+                                            <p class="tripleNineColor" data-i18n="settings.page.language.subtitle">We are working on providing more than English (US) as your language option.</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12">
+                                            <div class="btn-group btnGroup-1 float-left">
+                                                <button class="chosenLanguage btn btn-secondary w-md-15 w-8" disabled="">English (US)</button>
+                                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div id="chooseLanguageDD" class="dropdown-menu">
+                                                    <a class="dropdown-item languageEng" data-target="en">
+                                                        <div class="font-weight-bold">English (US)</div>
+                                                    </a>
+                                                    <a class="dropdown-item languageEng" data-target="es">
+                                                        <div class="font-weight-bold">Español (ES)</div>
+                                                    </a>
+                                                    <a class="dropdown-item languageEng" data-target="fr">
+                                                        <div class="font-weight-bold">Français (FR)</div>
+                                                    </a>
+                                                    <a class="dropdown-item languageEng" data-target="ja">
+                                                        <div class="font-weight-bold">にほんご (JA)</div>
+                                                    </a>
+                                                    <a class="dropdown-item languageEng" data-target="pt">
+                                                        <div class="font-weight-bold">Portugês (PT)</div>
+                                                    </a>
+                                                    <a class="dropdown-item languageEng" data-target="ru">
+                                                        <div class="font-weight-bold">русский (RU)</div>
+                                                    </a>
+                                                    <a class="dropdown-item languageEng" data-target="zh">
+                                                        <div class="font-weight-bold">中文 (ZH)</div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
-                        </div>
-                        <div class="row mt-3 mt-md-0">
-                          <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5 data-i18n="settings.page.language.title">Language</h5>
-                              <p class="tripleNineColor" data-i18n="settings.page.language.subtitle">We are working on providing more than English (US) as your language option.</p>
-                          </div>
-                          <div class="col-lg-8 col-md-8 col-sm-12">
-                              <div class="btn-group btnGroup-1 float-left">
-                                <button class="chosenLanguage btn btn-secondary w-md-15 w-8" disabled="">English (US)</button>
-                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div id="chooseLanguageDD" class="dropdown-menu">
-                                  <a class="dropdown-item languageEng"><div class="font-weight-bold">English (US)</div></a>
+                                <hr class="w-90 mx-auto">
+                                <div class="card-header">
+                                    <h5 class="card-title" data-i18n="settings.page.export.title">Export</h5>
+                                    <p class="card-category" data-i18n="settings.page.export.subtitle">
+                                        Select your preferred file format for the exportation of data.
+                                    </p>
                                 </div>
-                              </div>
-                          </div>
-                        </div>
-                      </div>
-                      <hr class="w-90 mx-auto">
-                      <div class="card-header">
-                        <h5 class="card-title" data-i18n="settings.page.export.title">Export</h5>
-                        <p class="card-category" data-i18n="settings.page.export.subtitle">
-                          Select your preferred file format for the exportation of data.
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        <div class="row mt-3 mt-md-0">
-                          <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
-                              <h5 data-i18n="settings.page.export.file.title">File Format</h5>
-                              <p class="tripleNineColor" data-i18n="settings.page.export.file.subtitle">We currently support Excel, Google Docs & Comma Separated Values.</p>
-                          </div>
-                          <div class="col-lg-8 col-md-8 col-sm-12">
-                              <div class="btn-group btnGroup-1 float-left">
-                                <button id="chosenExportFileFormat" class="btn btn-secondary w-md-15 w-8" disabled="">Excel (XLS)</button>
-                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div id="chosenExportFileFormatDD" class="dropdown-menu">
-                                  <a class="dropdown-item"><div class="font-weight-bold">Excel (XLS)</div><input type="hidden" value="XLS"></a>
-                                  <a class="dropdown-item"><div class="font-weight-bold">Word Document (DOC)</div><input type="hidden" value="DOC"></a>
-                                  <a class="dropdown-item"><div class="font-weight-bold">Comma Separated Values (CSV)</div><input type="hidden" value="CSV"></a>
+                                <div class="card-body">
+                                    <div class="row mt-3 mt-md-0">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 my-auto text-md-right text-left">
+                                            <h5 data-i18n="settings.page.export.file.title">File Format</h5>
+                                            <p class="tripleNineColor" data-i18n="settings.page.export.file.subtitle">We currently support Excel, Google Docs & Comma Separated Values.</p>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-12">
+                                            <div class="btn-group btnGroup-1 float-left">
+                                                <button id="chosenExportFileFormat" class="btn btn-secondary w-md-15 w-8" disabled="">Excel (XLS)</button>
+                                                <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div id="chosenExportFileFormatDD" class="dropdown-menu">
+                                                    <a class="dropdown-item">
+                                                        <div class="font-weight-bold">Excel (XLS)</div><input type="hidden" value="XLS">
+                                                    </a>
+                                                    <a class="dropdown-item">
+                                                        <div class="font-weight-bold">Word Document (DOC)</div><input type="hidden" value="DOC">
+                                                    </a>
+                                                    <a class="dropdown-item">
+                                                        <div class="font-weight-bold">Comma Separated Values (CSV)</div><input type="hidden" value="CSV">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                          </div>
+                            </div>
                         </div>
-                      </div>
+                        <div class="tab-pane" id="notificationLink">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Notification preferences</h5>
+                                    <p class="card-category">
+                                        Choose what we can get in touch about
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8 my-auto pl-5">
+
+                                        </div>
+                                        <div class="col-md-2 d-none d-md-block">
+                                            <h5 class="notTitle my-3">Email</h5>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <h5 class="notTitle my-3">Push</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 my-1 pl-5">
+                                            <h5 class="mb-0 ml-2">Your transfers and balances</h5>
+                                            <p class="tripleNineColor ml-2 mb-0">Notifications about where your money is.</p>
+                                        </div>
+                                        <div class="col-md-2 d-none d-md-block">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 d-none d-md-block">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 my-1 pl-5">
+                                            <h5 class="mb-0 ml-2">Monthly Reports</h5>
+                                            <a class="text-info editSettings">Settings</a>
+                                        </div>
+                                        <div class="col-md-2 d-none d-md-block">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 my-1 pl-5">
+                                            <h5 class="mb-0 ml-2">Advanced Notifications</h5>
+                                            <a class="text-info editSettings">Customize</a>
+                                        </div>
+                                        <div class="col-md-2 d-none d-md-block">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" disabled>
+                                                    <span class="form-check-sign">
+                                                        <span class="check disabled-check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8 my-1 pl-5">
+                                            <h5 class="mb-0 ml-2">Features & improvents</h5>
+                                            <p class="tripleNineColor ml-2">News about our latest and greatest work. Plus tips on using BlitzBudget.</p>
+                                        </div>
+                                        <div class="col-md-2 d-none d-md-block">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2 col-sm-4">
+                                            <div class="form-check ml-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="">
+                                                    <span class="form-check-sign">
+                                                        <span class="check">
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="w-90 mx-auto">
+                                    <p class="ml-5 tripleNineColor">There are some things that we'll always need to tell you about – like changes to our T&amp;Cs.</p>
+                                    <button class="mr-5 mb-4 mt-2 btn btn-info notiSC float-right">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="devicesTabLink">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title">Registered Devices</h5>
+                                    <p class="card-category">
+                                        Devices registered with <span id="currentUserEmail">john_doe@blitzbudget.com</span> are listed below:
+                                    </p>
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="text-center font-weight-bold appHeading mb-2 mt-5">Get the app</h3>
+                                    <p class="text-center appParagraph mb-3">Track your transactions on the go, or make new ones in a couple of taps.</p>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12 my-auto text-md-right text-center">
+                                            <img src="img/playstore/btn_download_appstore_en.svg" class="playstoreIcon mb-3" alt="Apple playstore button">
+                                        </div>
+                                        <div class="col-md-6 col-sm-12 my-auto text-md-left text-center">
+                                            <img src="img/playstore/btn_download_playstore_en.svg" class="playstoreIcon mb-3" alt="Android playstore button">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
-                  <div class="tab-pane" id="notificationLink">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5 class="card-title">Notification preferences</h5>
-                        <p class="card-category">
-                          Choose what we can get in touch about
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-md-8 my-auto pl-5">
-                              
-                          </div>
-                          <div class="col-md-2 d-none d-md-block">
-                              <h5 class="notTitle my-3">Email</h5>
-                          </div>
-                          <div class="col-md-2 col-sm-4">
-                              <h5 class="notTitle my-3">Push</h5>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-8 my-1 pl-5">
-                              <h5 class="mb-0 ml-2">Your transfers and balances</h5>
-                              <p class="tripleNineColor ml-2 mb-0">Notifications about where your money is.</p>
-                          </div>
-                          <div class="col-md-2 d-none d-md-block">
-                              <div class="form-check ml-2">
-                                  <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" id="">
-                                  <span class="form-check-sign">
-                                    <span class="check">
-                                    </span>
-                                  </span>
-                                </label>
-                              </div>
-                          </div>
-                          <div class="col-md-2 d-none d-md-block">
-                            <div class="form-check ml-2">
-                                <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="">
-                                <span class="form-check-sign">
-                                  <span class="check">
-                                  </span>
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                         <div class="row">
-                          <div class="col-md-8 my-1 pl-5">
-                              <h5 class="mb-0 ml-2">Monthly Reports</h5>
-                              <a class="text-info editSettings">Settings</a>
-                          </div>
-                          <div class="col-md-2 d-none d-md-block">
-                              <div class="form-check ml-2">
-                                  <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" id="">
-                                  <span class="form-check-sign">
-                                    <span class="check">
-                                    </span>
-                                  </span>
-                                </label>
-                              </div>
-                          </div>
-                          <div class="col-md-2 col-sm-4">
-                            <div class="form-check ml-2">
-                                <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="">
-                                <span class="form-check-sign">
-                                  <span class="check">
-                                  </span>
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                         <div class="row">
-                          <div class="col-md-8 my-1 pl-5">
-                              <h5 class="mb-0 ml-2">Advanced Notifications</h5>
-                              <a class="text-info editSettings">Customize</a>
-                          </div>
-                          <div class="col-md-2 d-none d-md-block">
-                              <div class="form-check ml-2">
-                                  <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" disabled>
-                                  <span class="form-check-sign">
-                                    <span class="check disabled-check">
-                                    </span>
-                                  </span>
-                                </label>
-                              </div>
-                          </div>
-                          <div class="col-md-2 col-sm-4">
-                            <div class="form-check ml-2">
-                                <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="">
-                                <span class="form-check-sign">
-                                  <span class="check">
-                                  </span>
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                         <div class="row">
-                          <div class="col-md-8 my-1 pl-5">
-                              <h5 class="mb-0 ml-2">Features & improvents</h5>
-                              <p class="tripleNineColor ml-2">News about our latest and greatest work. Plus tips on using BlitzBudget.</p>
-                          </div>
-                          <div class="col-md-2 d-none d-md-block">
-                              <div class="form-check ml-2">
-                                  <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" id="">
-                                  <span class="form-check-sign">
-                                    <span class="check">
-                                    </span>
-                                  </span>
-                                </label>
-                              </div>
-                          </div>
-                          <div class="col-md-2 col-sm-4">
-                            <div class="form-check ml-2">
-                                <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="">
-                                <span class="form-check-sign">
-                                  <span class="check">
-                                  </span>
-                                </span>
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                        <hr class="w-90 mx-auto">
-                        <p class="ml-5 tripleNineColor">There are some things that we'll always need to tell you about – like changes to our T&amp;Cs.</p>
-                        <button class="mr-5 mb-4 mt-2 btn btn-info notiSC float-right">Save Changes</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane" id="devicesTabLink">
-                    <div class="card">
-                      <div class="card-header">
-                        <h5 class="card-title">Registered Devices</h5>
-                        <p class="card-category">
-                          Devices registered with <span id="currentUserEmail">john_doe@blitzbudget.com</span> are listed below:
-                        </p>
-                      </div>
-                      <div class="card-body">
-                        <h3 class="text-center font-weight-bold appHeading mb-2 mt-5">Get the app</h3>
-                        <p class="text-center appParagraph mb-3">Track your transactions on the go, or make new ones in a couple of taps.</p>
-                        <div class="row">
-                          <div class="col-md-6 col-sm-12 my-auto text-md-right text-center">
-                            <img src="img/playstore/btn_download_appstore_en.svg" class="playstoreIcon mb-3" alt="Apple playstore button">
-                          </div>
-                          <div class="col-md-6 col-sm-12 my-auto text-md-left text-center">
-                            <img src="img/playstore/btn_download_playstore_en.svg" class="playstoreIcon mb-3" alt="Android playstore button">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-      
-      
+    </div>
+    </div>
+
+
 </body>
 
 </html>
