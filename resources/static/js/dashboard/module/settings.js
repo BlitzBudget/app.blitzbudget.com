@@ -8,6 +8,20 @@
     //exportFileFormatObj['PDF'] = 'Adobe (PDF)';
     exportFileFormatObj['DOC'] = 'Word Document (DOC)';
     exportFileFormatObj['CSV'] = 'Comma Separated Values (CSV)';
+    Object.seal(exportFileFormatObj);
+    Object.freeze(exportFileFormatObj);
+
+    // Let Language Options
+    let languageOptions = {};
+    languageOptions["en"] = "English (US)";
+    languageOptions["es"] = "Español (ES)";
+    languageOptions["fr"] = "Français (FR)";
+    languageOptions["ja"] = "にほんご (JA)";
+    languageOptions["pt"] = "Portugês (PT)";
+    languageOptions["ru"] = "русский (RU)";
+    languageOptions["zh"] = "中文 (ZH)";
+    Object.seal(languageOptions);
+    Object.freeze(languageOptions);
 
     // SECURITY: Defining Immutable properties as constants
     Object.defineProperties(SETTINGS_CONSTANTS, {
@@ -561,6 +575,11 @@
         });
 
     }
+
+    /*
+     * Populate current Locale
+     */
+    document.getElementById("currentLanguageShown").textContent = languageOptions[window.currentUser.locale.substring(0, 2)];
 
     /*
      * Choose current language
