@@ -1,4 +1,6 @@
 "use strict";
+// chosenDate for transactions (April 2019 as 042019)
+window.chosenDate = today;
 
 function translatePage(locale) {
     fetch('./i18n/' + locale + '.json')
@@ -75,7 +77,7 @@ function setTranslatedMonths() {
     window.months.push(window.translationData.month.december);
 
     // Overview month name
-    document.getElementById('overviewMonthHeading').textContent = window.months[currentDate.getMonth()];
+    document.getElementById('overviewMonthHeading').textContent = window.months[window.chosenDate.getMonth()];
 }
 
 // Assign category key value pairs for categories
