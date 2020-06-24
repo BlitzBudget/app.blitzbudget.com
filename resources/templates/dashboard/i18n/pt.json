@@ -273,6 +273,8 @@
             "oneyear": "Resumo de um ano",
             "incomeparam": "Receitas",
             "expenseparam": "Eu gasto",
+            "expensebreakdown": "Repartição das despesas",
+            "incomebreakdown": "Repartição dos rendimentos",
             "title": "Resumo",
             "geterror": "Erro de pesquisa de informação para uma visão geral. Por favor, tente novamente mais tarde!",
             "chart": {

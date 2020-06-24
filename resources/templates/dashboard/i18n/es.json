@@ -273,6 +273,8 @@
             "oneyear": "Resumen de un año",
             "incomeparam": "Ingresos",
             "expenseparam": "Gasto",
+            "expensebreakdown": "Desglose de gastos",
+            "incomebreakdown": "Desglose de ingresos",
             "title": "Visión general",
             "geterror": "Error de búsqueda de información para la visión general. Por favor, inténtelo de nuevo más tarde!",
             "chart": {

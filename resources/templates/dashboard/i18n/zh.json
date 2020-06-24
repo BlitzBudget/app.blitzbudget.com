@@ -273,6 +273,8 @@
             "oneyear": "一年总结",
             "incomeparam": "收入",
             "expenseparam": "我花了",
+            "expensebreakdown": "支出明细",
+            "incomebreakdown": "收入明细",
             "title": "概述",
             "geterror": "概览的信息搜索错误。请稍后再试！",
             "chart": {

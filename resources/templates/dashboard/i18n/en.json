@@ -1,584 +1,586 @@
 {
-	"login" : {
-	    "popup": {
-	    	"header": "Login",
-	    	"subtitle": "Or be classical",
-	    	"continue": "Continue",
-	    	"forgot": "I Forgot My Password",
-	    	"resend": "Resend code",
-	    	"account": "Already have an account",
-	    	"signup": "Signup",
-	    	"verify": {
-	    		"title": "Verify",
-	    		"subtitle": "We've sent the verification email to "
-	    	},
-	    	"notme": "not me"
-	    },
-	    "dynamic": {
-	    	"emptyallerror": "Email & Password fields cannot be empty",
-	    	"emptyemailerror": "Email field cannot be empty",
-	    	"emptypassworderror": "Password field cannot be empty",
-	    	"passwordlengtherror": "Password should have a minimum length of 8 characters",
-	    	"passwordnomatcherror": "Passwords do not match",
-	    	"emptyallnewerror": "Email & Password fields cannot be empty, Enter the new password in the password field",
-	    	"emptynewpassworderror": "Enter the new password in the password field",
-	    	"newpasswordlengtherror": "The new password should have a minimum length of 8 characters"
-	    }
-	},
-	"support" : {
-		"popup": {
-			"header": "How Can We Help?",
-			"rating": "Was this answer helpful?",
-			"happy": "We are happy to help! ",
-			"ask": "Ask us directly",
-			"yes": "Yes",
-			"no": "No"
-		},
-		"askusdirectly": {
-			"title": "Ask Us Directly",
-			"customersupport": "Customer Support: Requesting More Information within 24 hours",
-			"message": "Message",
-			"text": "The article with the url ",
-			"text2": " could have more information to be most useful. I would appreciate if the article contained.. ",
-			"texterror": "Please enter a minimum of 80 characters.",
-			"success": "Thanks for the email. We'll respond with in the next 24 hours!",
-			"error": "Unable to send the email at the moment. Please try again!",
-			"confirm": "Send"
-		},
-		"helpcenter": {
-			"redirect": "Redirecting Not Possible",
-			"tryagain": "Please try again later",
-			"noresults": "No Results",
-			"unableurl": "Unable to fetch the requested url",
-			"thanks": "Thanks for the feedback."
-		}
-	},
-	"unlock": {
-		"popup": {
-			"password": "Enter Password",
-			"button": "Unlock"
-		}
-	},
-	"nav": {
-		"dropdown": {
-			"logout": "Log out",
-			"settings": "Settings",
-			"profile": "Profile"
-		},
-		"account": "Account",
-		"support": "Support"
-	},
-	"sidebar": {
-		"overview": "Overview",
-		"goals": "Goals",
-		"budget": "Budget",
-		"transaction": "Transactions"
-	},
-	"home": {
-		"title": "Dashboard Home | BlitzBudget"
-	},
-	"settings": {
-		"page": {
-			"title": "Settings",
-			"general": "General",
-			"notifications": "Notifications",
-			"devices": "Devices",
-			"region": {
-				"title": "Regional preferences",
-				"subtitle": "Select your preferred language, currency and country for appropriate regional formatting."
-			},
-			"country": {
-				"title": "Country",
-				"subtitle": "Choose your country for appropriate regional currency formatting.",
-				"withWallet": "Countries with wallet",
-				"withoutWallet": "Countries without wallet"
-			},
-			"currency": {
-				"title": "Currency",
-				"subtitle": "The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.",
-				"withWallet": "Currencies with wallet",
-				"withoutWallet": "Currencies without wallet"
-			},
-			"language": {
-				"title": "Language",
-				"subtitle": "We are working on providing more than English (US) as your language option."
-			},
-			"export": {
-				"title": "Export",
-				"subtitle": "Select your preferred file format for the exportation of data.",
-				"file": {
-					"title": "File Format",
-					"subtitle": "We currently support Excel, Google Docs & Comma Separated Values (CSV)."
-				}
-			}
-		}
-	},
-	"transactions": {
-		"page": {
-			"table": {
-				"title": "Transactions",
-				"sortby": {
-					"category": "Category",
-					"title": " Sort By",
-					"account": "Account",
-					"creationdate": "Creation Date"
-				}
-			},
-			"chart": {
-				"title": "Financial Position",
-				"income": "Total Income",
-				"spent": "Total Spent",
-				"available": "Total Available"
-			},
-			"account": {
-				"remaining": "Remaining (%)",
-				"remainingtext": "Remaining",
-				"transaction": "Transactions"
-			}
-		},
-		"modal": {
-			"title": "Choose Your Preference",
-			"connect": {
-				"title" : "Connect With Your Bank",
-				"description": "Connect your bank account to import the transactions for the current month."
-			},
-			"sync": {
-				"title": "Automatic Bank Account Syncs",
-				"description": "Automatically syncs with the bank account to obtain transactions every start of the month."
-			},
-			"import": {
-				"title": "Import From Bank Statements",
-				"description": "You can also import the transactions from your bank statements"
-			},
-			"add" : {
-				"classical": " or be classical ",
-				"expense": "Expense",
-				"income": "Income",
-				"recurrence": {
-					"never": "Never",
-					"weekly": "Weekly",
-					"bimonthly": "Bi-Monthly",
-					"monthly": "Monthly"
-				},
-				"button": "Add Transaction"
-			}
-		},
-		"dynamic": {
-			"title": "Transactions",
-			"today": "Today",
-			"empty": {
-				"success": "Oh! Snap! You don't have any transactions yet."
-			},
-			"add": {
-				"amounterror": "Please fill the Amount.",
-				"nonzeroerror": "Amount cannot be zero.",
-				"recurerror": "Recurrence value selected is invalid",
-				"categoryerror": "Chosen category is not valid. Please select a valid one.",
-				"unableerror": "Unable to add this transaction.",
-				"success": "Successfully added the transaction.",
-				"tooltip": "Add Transactions"
-			},
-			"get": {
-				"unableerror": "There was an error while fetching the transactions. Please try again later!"
-			},
-			"chart": {
-				"empty": "Please fill in adequare data to build a chart",
-				"expense": "Total Income & Total Overspent as a percentage of Total Expense",
-				"income": "Total Spent & Total Available as a percentage of Total Income",
-				"labels": {
-					"income": "Income",
-					"spent": "Spent",
-					"available": "Available",
-					"overspent": "Overspent"
-				},
-				"available": "Total Available",
-				"overspent": "Total Overspent"
-			},
-			"card": {
-				"description": "No Description"
-			},
-			"sort": {
-				"creationdate": "Creation Date",
-				"category": "Category",
-				"account": "Account"
-			}
-		}
-	},
-	"budget": {
-		"page": {
-			"title": "Budget",
-			"card": {
-				"remaining": "Remaining (%)",
-				"remain": "Remaining"
-			},
-			"chart": {
-				"title": "Budget Visualization",
-				"total": "Total Budgeted",
-				"categories": " Categories",
-				"tobebudgeted": "To Be Budgeted"
-			},
-			"compensation": {
-				"title": "Compensate This Overspending With",
-				"choose": "Choose category"
-			}
-		},
-		"dynamic": {
-			"fetcherror": "Unable to fetch you budget at this moment. Please try again!",
-			"chart": {
-				"totalbudget": "Total Budgeted",
-				"tobebudgeted":"To Be Budgeted"
-			},
-			"card": {
-				"overspent": "Overspent (%)",
-				"tobebudgeted": "To Be Budgeted (%)",
-				"remaining": "Remaining (%)",
-				"remain": " Remaining",
-				"na": "NA",
-				"deleteerror": "Unable to delete the budget. Please refresh and try again.",
-				"empty": {
-					"plan": "Start Planning For ",
-					"hey": "Hey, Looks like you need a budget for ",
-					"create": "Creating budgets.."
-				}
-			},
-			"unableerror": "Unable to create the budgets. Please refresh and try again!",
-			"alreadyerror": "The selected category already has a budget. Please choose a different category!",
-			"changeerror": "Unable to change the budget category at this moment. Please try again!",
-			"allcategorieserror": "You have a budget for all the categories!",
-			"tooltip": "Add Budget",
-			"delete": "Delete budget",
-			"income": "Income",
-			"expense": "Expense"
-		}
-	},
-	"overview": {
-		"page": {
-			"title": "Overview",
-			"assets": "Assets",
-			"debt": "Debt",
-			"networth": "Networth",
-			"chart": {
-				"networth": "Income Overview",
-				"option": "One Year Overview",
-				"options": {
-					"income": "Income",
-					"expense": "Expense",
-					"assets": "Assets",
-					"debt": "Debt",
-					"networth": "Networth"
-				}
-			}
-		},
-		"dynamic": {
-			"oneyear": "One Year Overview",
-			"incomeparam": "Income",
-			"expenseparam": "Expense",
-			"title": "Overview",
-			"geterror": "Error fetching information for overview. Please try again later!",
-			"chart": {
-				"incomeoverview": "Income Overview",
-				"expenseoverview": "Expense Overview",
-				"assetoverview": "Asset Overview",
-				"debtoverview": "Debt Overview",
-				"networthoverview": "Networth Overview",
-				"expensebreakdown": "Expense Breakdown",
-				"incomebreakdown": "Income Breakdown",
-				"nodata": "There's not enough data! Start adding transactions..",
-				"onecategory": "There's not enough data! We need transactions in atleast 2 categories.."
-			}
-		}
-	},
-	"profile": {
-		"page": {
-			"title": "Profile",
-			"edit": "Edit",
-			"change": "Change",
-			"changepassword": "Change Password",
-			"nocards": "No Cards",
-			"joined": "Joined on",
-			"creditcard": "Add Credit Card",
-			"connected": "Connected Accounts",
-			"connect": {
-				"title": "Connect",
-				"description": "You can connect with your family members to have a better overview of your finances."	
-			},
-			"reset": {
-				"title": "Reset account",
-				"description": "Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.",
-				"button": "Reset my Blitz Budget user account"
-			},
-			"delete": {
-				"title": "Delete account",
-				"description": "Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.",
-				"button": "Delete my Blitz Budget user account"
-			},
-			"question": {
-				"title": "Got a question?",
-				"feature": "Send a feature request",
-				"ask": "Ask us directly",
-				"help": "Help center"
-			}
-		},
-		"dynamic": {
-			"title": "Profile",
-			"createerror": "There was an error while fetching user information!",
-			"mininumpassworderror": "The current password field should have a minimum length of 8 characters.",
-			"newminimumerror": "The new password should have a minimum length of 8 characters.",
-			"oldpassworderror": "The old password field should have a minimum length of 8 characters.",
-			"changenameerror": "There was an error while changing the name. Please try again later!",
-			"confirmpassword": {
-				"error": "The confirm password field should have a minimum length of 8 characters.",
-				"title": "Confirm Password"
-			},
-			"changepassword": {
-				"oldpassword": "Old Password",
-				"newpassword": "New Password",
-				"change": "Change Password",
-				"success": "Successfully changed the password!",
-				"button": "Change Password"
-			},
-			"reset": {
-				"title": "Reset your Blitz Budget user account",
-				"yes": "Yes, reset it!",
-				"no": "No, keep it",
-				"success": "Successfully reset your account. Your account is as good as new!",
-				"error": "There was an error while resetting the account. Please try again later!",
-				"swal": {
-					"title": "Do you want to reset your user account?",
-					"title2": " and ",
-					"title3": "delete all entries",
-					"title4": " from Blitz Budget?",
-					"transactions": "all transactions will be deleted",
-					"budgets": "all the budgets will be deleted",
-					"goals": "all goals will be deleted",
-					"bankaccounts": "all financial accounts will be deleted",
-					"wallets": "all wallets will be deleted",
-					"investments": "all investments will be deleted",
-					"premium": "Premium subscription will remain intact after the reset.",
-					"confirm": "Confirm Password"
-				}
-			},
-			"delete": {
-				"title": "Delete your Blitz Budget user account",
-				"yes": "Yes, delete it!",
-				"no": "No, keep it",
-				"error": "There was an error while deleting the account. Please try again later!",
-				"swal": {
-					"title": "Do you want to delete your user account",
-					"title2": " and ",
-					"title3": "delete all entries",
-					"title4": " from Blitz Budget?",
-					"alldata": "all your data, ",
-					"alldata2": "Everything!",
-					"alldata3": " will be deleted",
-					"premium": "premium subscription will be terminated",
-					"account": "your Blitz Budget user account will be deleted",
-					"consider": "Consider exporting your data!",
-					"confirm": "Confirm Password"
-				}
-			},
-			"email": {
-				"error": "Email field should have a valid entry",
-				"success": "Successfully changed the email!",
-				"verify": {
-					"title": "Verification Code",
-					"description": "Verification code has been sent to ",
-					"button": "Verify Email",
-					"emptyerror": "Verification code cannot be empty",
-					"lessthansixerror": "Verification code should be 6 characters in length",
-					"nanerror": "Verification code can only contain numbers"
-				}
-			}
-		}
-	},
-	"wallet": {
-		"page": {
-			"title": "Wallets",
-			"nav": {
-				"manage": "Manage wallets",
-				"done": "Done",
-				"delete": "Delete wallet"
-			},
-			"main": {
-				"title": "Which wallet?",
-				"add": {
-					"title": "Add wallet",
-					"withWallet": "Currencies with wallet",
-					"withoutWallet": "Currencies without wallet",
-					"button": "Add",
-					"cancel": "Cancel"
-				},
-				"manage": {
-					"title": "Manage wallet",
-					"name": "Give it a name",
-					"preference": "What is your currency preference?",
-					"withWallet": "Currencies with wallet",
-					"withoutWallet": "Currencies without wallet",
-					"save": "Save",
-					"cancel": "Cancel"
-				}
-			}
-		},
-		"dynamic": {
-			"add": {
-				"error": "Unexpected error occured while adding the wallet."
-			},
-			"fetcherror": "Unexpected error occured while fetching the wallets",
-			"noactivecurrency": "No Active Currency",
-			"deletewallet": "Delete wallet",
-			"yesdelete": "Yes, delete it!",
-			"nodelete": "No, keep it",
-			"deleteerror": "There was an error while deleteing your wallet. Please try again later!",
-			"delete": {
-				"text": "Do you want to delete your wallet associated with ",
-				"text2": " and ",
-				"text3": "delete all entries",
-				"text4": " associated with this wallet from Blitz Budget?",
-				"transactions": "all transactions from this wallet will be deleted",
-				"budgets": "all the budgets from this wallet will be deleted",
-				"goals": "all goals within this wallet will be deleted",
-				"bankaccounts": "all financial accounts associated with this wallet will be deleted",
-				"investments": "all investments associated with this wallet will be deleted",
-				"premium": "Premium subscription will remain intact after the reset.",
-				"confirmpassword": "Confirm Password"
-			},
-			"patcherror": "Unexpected error occured while updating the wallet.",
-			"noresults": "No Results",
-			"choosecurrency": "Choose Currency"
-		}
-	},
-	"account": {
-		"dynamic": {
-			"feature": "This feature is coming soon!",
-			"create": "Create Account",
-			"addtitle": "Add Unsynced Account",
-			"invalidtype": "Invalid account type. Please try again!",
-			"unsynacc": "Unsynced account '",
-			"unsyncacc2": "' has been created successfully",
-			"adderror": "Unable to add the account at this moment. Please try again!",
-			"selecterror": "Unable to select the account at this moment. Please try again!",
-			"accounttype": "Account Types",
-			"add": {
-				"unsync": {
-					"description": "You will always have the option to unsync or sync the accounts at any time.",
-					"connect": "Connect to your Financial Institution",
-					"import": "Import from a file *",
-					"manual": "Manually Enter Transactions",
-					"available": "International Availability *",
-					"mobile": "Mobile Apps Availability",
-					"desc": "Unsync"
-				},
-				"sync": {
-					"description": "Sync"
-				},
-				"accstart": "Let's get your account started! you can always sync it later on.",
-				"typeacc": "What is the type of your account?",
-				"cash": "Cash",
-				"savings": "Savings",
-				"savingsacc": "Savings Account",
-				"currentacc": "Current Account",
-				"assets": "Assets",
-				"borrowing": "Borrowing",
-				"creditcard": "Credit Card",
-				"liability": "Liability",
-				"accounttype": "Account type is not valid",
-				"giveitname": "Give it a name",
-				"accbalance": "What is your account balance?",
-				"numanddot": "Account balance can contain only numbers and dot.",
-				"or": "or"
-			},
-			"know": {
-				"back": "Back"
-			},
-			"manage": "Account",
-			"populate": {
-				"name": "Accounts",
-				"viewall": "view all",
-				"accsync": "Automatically Sync Accounts",
-				"unsyncacc": "Unsynced Accounts",
-				"syncorunsync": "Synced or Unsynced?",
-				"knowmore": "Know more",
-				"helpdecide": " to help you decide"
-			}
-		}
-	},
-	"common": {
-		"fetcherror": "Error Redirecting",
-		"tryagain": "Please try again later",
-		"redirecting": "Redirecting Not Possible",
-		"invalidcategory": "The category chosen is invalid. Please refresh the page and try again!",
-		"verify": {
-			"title": "Email Verification"
-		}
-	},
-	"month": {
-		"short": {
-			"january": "Jan",
-			"february": "Feb",
-			"march": "Mar",
-			"april": "Apr",
-			"may": "May",
-			"june": "Jun",
-			"july": "Jul",
-			"august": "Aug",
-			"september": "Sep",
-			"october": "Oct",
-			"november": "Nov",
-			"december": "Dec"
-		},
-		"january": "January",
-		"february": "February",
-		"march": "March",
-		"april": "April",
-		"may": "May",
-		"june": "June",
-		"july": "July",
-		"august": "August",
-		"september": "September",
-		"october": "October",
-		"november": "November",
-		"december": "December"
-	},
-	"categories": {
-		"Beauty": "Beauty",
-		"Bills & Fees": "Bills & Fees",
-		"Car": "Car",
-		"Education": "Education",
-		"Entertainment": "Entertainment",
-		"Family & Personal": "Family & Personal",
-		"Food & Drink": "Food & Drink",
-		"Gifts": "Gifts",
-		"Groceries": "Groceries",
-		"Healthcare": "Healthcare",
-		"Home": "Home",
-		"Other": "Other",
-		"Shopping": "Shopping",
-		"Sport & Hobbies": "Sport & Hobbies",
-		"Transport": "Transport",
-		"Travel": "Travel",
-		"Work": "Work",
-		"Business": "Business",
-		"Extra Income": "Extra Income",
-		"Gift": "Gift",
-		"Insurance Payout": "Insurance Payout",
-		"Loan": "Loan",
-		"Others": "Others",
-		"Parential Leave": "Parential Leave",
-		"Salary": "Salary"
-	},
-	"placeholder": {
-		"email": "Email...",
-		"password": "Password...",
-		"required": "Required",
-		"confirmpassword": "Confirm Password",
-		"search": "Search...",
-		"amount": "Amount",
-		"note": "Write a note",
-		"searcharticle": "Search for articles..."
-	},
-	"tooltip": {
-		"logout": "Logout",
-		"fullscreen": "FullScreen",
-		"settings": "Settings"
-	}
+    "login": {
+        "popup": {
+            "header": "Login",
+            "subtitle": "Or be classical",
+            "continue": "Continue",
+            "forgot": "I Forgot My Password",
+            "resend": "Resend code",
+            "account": "Already have an account",
+            "signup": "Signup",
+            "verify": {
+                "title": "Verify",
+                "subtitle": "We've sent the verification email to "
+            },
+            "notme": "not me"
+        },
+        "dynamic": {
+            "emptyallerror": "Email & Password fields cannot be empty",
+            "emptyemailerror": "Email field cannot be empty",
+            "emptypassworderror": "Password field cannot be empty",
+            "passwordlengtherror": "Password should have a minimum length of 8 characters",
+            "passwordnomatcherror": "Passwords do not match",
+            "emptyallnewerror": "Email & Password fields cannot be empty, Enter the new password in the password field",
+            "emptynewpassworderror": "Enter the new password in the password field",
+            "newpasswordlengtherror": "The new password should have a minimum length of 8 characters"
+        }
+    },
+    "support": {
+        "popup": {
+            "header": "How Can We Help?",
+            "rating": "Was this answer helpful?",
+            "happy": "We are happy to help! ",
+            "ask": "Ask us directly",
+            "yes": "Yes",
+            "no": "No"
+        },
+        "askusdirectly": {
+            "title": "Ask Us Directly",
+            "customersupport": "Customer Support: Requesting More Information within 24 hours",
+            "message": "Message",
+            "text": "The article with the url ",
+            "text2": " could have more information to be most useful. I would appreciate if the article contained.. ",
+            "texterror": "Please enter a minimum of 80 characters.",
+            "success": "Thanks for the email. We'll respond with in the next 24 hours!",
+            "error": "Unable to send the email at the moment. Please try again!",
+            "confirm": "Send"
+        },
+        "helpcenter": {
+            "redirect": "Redirecting Not Possible",
+            "tryagain": "Please try again later",
+            "noresults": "No Results",
+            "unableurl": "Unable to fetch the requested url",
+            "thanks": "Thanks for the feedback."
+        }
+    },
+    "unlock": {
+        "popup": {
+            "password": "Enter Password",
+            "button": "Unlock"
+        }
+    },
+    "nav": {
+        "dropdown": {
+            "logout": "Log out",
+            "settings": "Settings",
+            "profile": "Profile"
+        },
+        "account": "Account",
+        "support": "Support"
+    },
+    "sidebar": {
+        "overview": "Overview",
+        "goals": "Goals",
+        "budget": "Budget",
+        "transaction": "Transactions"
+    },
+    "home": {
+        "title": "Dashboard Home | BlitzBudget"
+    },
+    "settings": {
+        "page": {
+            "title": "Settings",
+            "general": "General",
+            "notifications": "Notifications",
+            "devices": "Devices",
+            "region": {
+                "title": "Regional preferences",
+                "subtitle": "Select your preferred language, currency and country for appropriate regional formatting."
+            },
+            "country": {
+                "title": "Country",
+                "subtitle": "Choose your country for appropriate regional currency formatting.",
+                "withWallet": "Countries with wallet",
+                "withoutWallet": "Countries without wallet"
+            },
+            "currency": {
+                "title": "Currency",
+                "subtitle": "The currency of preferrence for this wallet. Your transactions and overviews will be in this currency.",
+                "withWallet": "Currencies with wallet",
+                "withoutWallet": "Currencies without wallet"
+            },
+            "language": {
+                "title": "Language",
+                "subtitle": "We are working on providing more than English (US) as your language option."
+            },
+            "export": {
+                "title": "Export",
+                "subtitle": "Select your preferred file format for the exportation of data.",
+                "file": {
+                    "title": "File Format",
+                    "subtitle": "We currently support Excel, Google Docs & Comma Separated Values (CSV)."
+                }
+            }
+        }
+    },
+    "transactions": {
+        "page": {
+            "table": {
+                "title": "Transactions",
+                "sortby": {
+                    "category": "Category",
+                    "title": " Sort By",
+                    "account": "Account",
+                    "creationdate": "Creation Date"
+                }
+            },
+            "chart": {
+                "title": "Financial Position",
+                "income": "Total Income",
+                "spent": "Total Spent",
+                "available": "Total Available"
+            },
+            "account": {
+                "remaining": "Remaining (%)",
+                "remainingtext": "Remaining",
+                "transaction": "Transactions"
+            }
+        },
+        "modal": {
+            "title": "Choose Your Preference",
+            "connect": {
+                "title": "Connect With Your Bank",
+                "description": "Connect your bank account to import the transactions for the current month."
+            },
+            "sync": {
+                "title": "Automatic Bank Account Syncs",
+                "description": "Automatically syncs with the bank account to obtain transactions every start of the month."
+            },
+            "import": {
+                "title": "Import From Bank Statements",
+                "description": "You can also import the transactions from your bank statements"
+            },
+            "add": {
+                "classical": " or be classical ",
+                "expense": "Expense",
+                "income": "Income",
+                "recurrence": {
+                    "never": "Never",
+                    "weekly": "Weekly",
+                    "bimonthly": "Bi-Monthly",
+                    "monthly": "Monthly"
+                },
+                "button": "Add Transaction"
+            }
+        },
+        "dynamic": {
+            "title": "Transactions",
+            "today": "Today",
+            "empty": {
+                "success": "Oh! Snap! You don't have any transactions yet."
+            },
+            "add": {
+                "amounterror": "Please fill the Amount.",
+                "nonzeroerror": "Amount cannot be zero.",
+                "recurerror": "Recurrence value selected is invalid",
+                "categoryerror": "Chosen category is not valid. Please select a valid one.",
+                "unableerror": "Unable to add this transaction.",
+                "success": "Successfully added the transaction.",
+                "tooltip": "Add Transactions"
+            },
+            "get": {
+                "unableerror": "There was an error while fetching the transactions. Please try again later!"
+            },
+            "chart": {
+                "empty": "Please fill in adequare data to build a chart",
+                "expense": "Total Income & Total Overspent as a percentage of Total Expense",
+                "income": "Total Spent & Total Available as a percentage of Total Income",
+                "labels": {
+                    "income": "Income",
+                    "spent": "Spent",
+                    "available": "Available",
+                    "overspent": "Overspent"
+                },
+                "available": "Total Available",
+                "overspent": "Total Overspent"
+            },
+            "card": {
+                "description": "No Description"
+            },
+            "sort": {
+                "creationdate": "Creation Date",
+                "category": "Category",
+                "account": "Account"
+            }
+        }
+    },
+    "budget": {
+        "page": {
+            "title": "Budget",
+            "card": {
+                "remaining": "Remaining (%)",
+                "remain": "Remaining"
+            },
+            "chart": {
+                "title": "Budget Visualization",
+                "total": "Total Budgeted",
+                "categories": " Categories",
+                "tobebudgeted": "To Be Budgeted"
+            },
+            "compensation": {
+                "title": "Compensate This Overspending With",
+                "choose": "Choose category"
+            }
+        },
+        "dynamic": {
+            "fetcherror": "Unable to fetch you budget at this moment. Please try again!",
+            "chart": {
+                "totalbudget": "Total Budgeted",
+                "tobebudgeted": "To Be Budgeted"
+            },
+            "card": {
+                "overspent": "Overspent (%)",
+                "tobebudgeted": "To Be Budgeted (%)",
+                "remaining": "Remaining (%)",
+                "remain": " Remaining",
+                "na": "NA",
+                "deleteerror": "Unable to delete the budget. Please refresh and try again.",
+                "empty": {
+                    "plan": "Start Planning For ",
+                    "hey": "Hey, Looks like you need a budget for ",
+                    "create": "Creating budgets.."
+                }
+            },
+            "unableerror": "Unable to create the budgets. Please refresh and try again!",
+            "alreadyerror": "The selected category already has a budget. Please choose a different category!",
+            "changeerror": "Unable to change the budget category at this moment. Please try again!",
+            "allcategorieserror": "You have a budget for all the categories!",
+            "tooltip": "Add Budget",
+            "delete": "Delete budget",
+            "income": "Income",
+            "expense": "Expense"
+        }
+    },
+    "overview": {
+        "page": {
+            "title": "Overview",
+            "assets": "Assets",
+            "debt": "Debt",
+            "networth": "Networth",
+            "chart": {
+                "networth": "Income Overview",
+                "option": "One Year Overview",
+                "options": {
+                    "income": "Income",
+                    "expense": "Expense",
+                    "assets": "Assets",
+                    "debt": "Debt",
+                    "networth": "Networth"
+                }
+            }
+        },
+        "dynamic": {
+            "oneyear": "One Year Overview",
+            "incomeparam": "Income",
+            "expenseparam": "Expense",
+            "expensebreakdown": "Expense Breakdown",
+            "incomebreakdown": "Income Breakdown",
+            "title": "Overview",
+            "geterror": "Error fetching information for overview. Please try again later!",
+            "chart": {
+                "incomeoverview": "Income Overview",
+                "expenseoverview": "Expense Overview",
+                "assetoverview": "Asset Overview",
+                "debtoverview": "Debt Overview",
+                "networthoverview": "Networth Overview",
+                "expensebreakdown": "Expense Breakdown",
+                "incomebreakdown": "Income Breakdown",
+                "nodata": "There's not enough data! Start adding transactions..",
+                "onecategory": "There's not enough data! We need transactions in atleast 2 categories.."
+            }
+        }
+    },
+    "profile": {
+        "page": {
+            "title": "Profile",
+            "edit": "Edit",
+            "change": "Change",
+            "changepassword": "Change Password",
+            "nocards": "No Cards",
+            "joined": "Joined on",
+            "creditcard": "Add Credit Card",
+            "connected": "Connected Accounts",
+            "connect": {
+                "title": "Connect",
+                "description": "You can connect with your family members to have a better overview of your finances."
+            },
+            "reset": {
+                "title": "Reset account",
+                "description": "Your user account will remain, but all the data will be deleted so you can start from a blank slate. Consider exporting all your data.",
+                "button": "Reset my Blitz Budget user account"
+            },
+            "delete": {
+                "title": "Delete account",
+                "description": "Be careful. This will delete your user account and all the information you entered. We recommend that you export all your data.",
+                "button": "Delete my Blitz Budget user account"
+            },
+            "question": {
+                "title": "Got a question?",
+                "feature": "Send a feature request",
+                "ask": "Ask us directly",
+                "help": "Help center"
+            }
+        },
+        "dynamic": {
+            "title": "Profile",
+            "createerror": "There was an error while fetching user information!",
+            "mininumpassworderror": "The current password field should have a minimum length of 8 characters.",
+            "newminimumerror": "The new password should have a minimum length of 8 characters.",
+            "oldpassworderror": "The old password field should have a minimum length of 8 characters.",
+            "changenameerror": "There was an error while changing the name. Please try again later!",
+            "confirmpassword": {
+                "error": "The confirm password field should have a minimum length of 8 characters.",
+                "title": "Confirm Password"
+            },
+            "changepassword": {
+                "oldpassword": "Old Password",
+                "newpassword": "New Password",
+                "change": "Change Password",
+                "success": "Successfully changed the password!",
+                "button": "Change Password"
+            },
+            "reset": {
+                "title": "Reset your Blitz Budget user account",
+                "yes": "Yes, reset it!",
+                "no": "No, keep it",
+                "success": "Successfully reset your account. Your account is as good as new!",
+                "error": "There was an error while resetting the account. Please try again later!",
+                "swal": {
+                    "title": "Do you want to reset your user account?",
+                    "title2": " and ",
+                    "title3": "delete all entries",
+                    "title4": " from Blitz Budget?",
+                    "transactions": "all transactions will be deleted",
+                    "budgets": "all the budgets will be deleted",
+                    "goals": "all goals will be deleted",
+                    "bankaccounts": "all financial accounts will be deleted",
+                    "wallets": "all wallets will be deleted",
+                    "investments": "all investments will be deleted",
+                    "premium": "Premium subscription will remain intact after the reset.",
+                    "confirm": "Confirm Password"
+                }
+            },
+            "delete": {
+                "title": "Delete your Blitz Budget user account",
+                "yes": "Yes, delete it!",
+                "no": "No, keep it",
+                "error": "There was an error while deleting the account. Please try again later!",
+                "swal": {
+                    "title": "Do you want to delete your user account",
+                    "title2": " and ",
+                    "title3": "delete all entries",
+                    "title4": " from Blitz Budget?",
+                    "alldata": "all your data, ",
+                    "alldata2": "Everything!",
+                    "alldata3": " will be deleted",
+                    "premium": "premium subscription will be terminated",
+                    "account": "your Blitz Budget user account will be deleted",
+                    "consider": "Consider exporting your data!",
+                    "confirm": "Confirm Password"
+                }
+            },
+            "email": {
+                "error": "Email field should have a valid entry",
+                "success": "Successfully changed the email!",
+                "verify": {
+                    "title": "Verification Code",
+                    "description": "Verification code has been sent to ",
+                    "button": "Verify Email",
+                    "emptyerror": "Verification code cannot be empty",
+                    "lessthansixerror": "Verification code should be 6 characters in length",
+                    "nanerror": "Verification code can only contain numbers"
+                }
+            }
+        }
+    },
+    "wallet": {
+        "page": {
+            "title": "Wallets",
+            "nav": {
+                "manage": "Manage wallets",
+                "done": "Done",
+                "delete": "Delete wallet"
+            },
+            "main": {
+                "title": "Which wallet?",
+                "add": {
+                    "title": "Add wallet",
+                    "withWallet": "Currencies with wallet",
+                    "withoutWallet": "Currencies without wallet",
+                    "button": "Add",
+                    "cancel": "Cancel"
+                },
+                "manage": {
+                    "title": "Manage wallet",
+                    "name": "Give it a name",
+                    "preference": "What is your currency preference?",
+                    "withWallet": "Currencies with wallet",
+                    "withoutWallet": "Currencies without wallet",
+                    "save": "Save",
+                    "cancel": "Cancel"
+                }
+            }
+        },
+        "dynamic": {
+            "add": {
+                "error": "Unexpected error occured while adding the wallet."
+            },
+            "fetcherror": "Unexpected error occured while fetching the wallets",
+            "noactivecurrency": "No Active Currency",
+            "deletewallet": "Delete wallet",
+            "yesdelete": "Yes, delete it!",
+            "nodelete": "No, keep it",
+            "deleteerror": "There was an error while deleteing your wallet. Please try again later!",
+            "delete": {
+                "text": "Do you want to delete your wallet associated with ",
+                "text2": " and ",
+                "text3": "delete all entries",
+                "text4": " associated with this wallet from Blitz Budget?",
+                "transactions": "all transactions from this wallet will be deleted",
+                "budgets": "all the budgets from this wallet will be deleted",
+                "goals": "all goals within this wallet will be deleted",
+                "bankaccounts": "all financial accounts associated with this wallet will be deleted",
+                "investments": "all investments associated with this wallet will be deleted",
+                "premium": "Premium subscription will remain intact after the reset.",
+                "confirmpassword": "Confirm Password"
+            },
+            "patcherror": "Unexpected error occured while updating the wallet.",
+            "noresults": "No Results",
+            "choosecurrency": "Choose Currency"
+        }
+    },
+    "account": {
+        "dynamic": {
+            "feature": "This feature is coming soon!",
+            "create": "Create Account",
+            "addtitle": "Add Unsynced Account",
+            "invalidtype": "Invalid account type. Please try again!",
+            "unsynacc": "Unsynced account '",
+            "unsyncacc2": "' has been created successfully",
+            "adderror": "Unable to add the account at this moment. Please try again!",
+            "selecterror": "Unable to select the account at this moment. Please try again!",
+            "accounttype": "Account Types",
+            "add": {
+                "unsync": {
+                    "description": "You will always have the option to unsync or sync the accounts at any time.",
+                    "connect": "Connect to your Financial Institution",
+                    "import": "Import from a file *",
+                    "manual": "Manually Enter Transactions",
+                    "available": "International Availability *",
+                    "mobile": "Mobile Apps Availability",
+                    "desc": "Unsync"
+                },
+                "sync": {
+                    "description": "Sync"
+                },
+                "accstart": "Let's get your account started! you can always sync it later on.",
+                "typeacc": "What is the type of your account?",
+                "cash": "Cash",
+                "savings": "Savings",
+                "savingsacc": "Savings Account",
+                "currentacc": "Current Account",
+                "assets": "Assets",
+                "borrowing": "Borrowing",
+                "creditcard": "Credit Card",
+                "liability": "Liability",
+                "accounttype": "Account type is not valid",
+                "giveitname": "Give it a name",
+                "accbalance": "What is your account balance?",
+                "numanddot": "Account balance can contain only numbers and dot.",
+                "or": "or"
+            },
+            "know": {
+                "back": "Back"
+            },
+            "manage": "Account",
+            "populate": {
+                "name": "Accounts",
+                "viewall": "view all",
+                "accsync": "Automatically Sync Accounts",
+                "unsyncacc": "Unsynced Accounts",
+                "syncorunsync": "Synced or Unsynced?",
+                "knowmore": "Know more",
+                "helpdecide": " to help you decide"
+            }
+        }
+    },
+    "common": {
+        "fetcherror": "Error Redirecting",
+        "tryagain": "Please try again later",
+        "redirecting": "Redirecting Not Possible",
+        "invalidcategory": "The category chosen is invalid. Please refresh the page and try again!",
+        "verify": {
+            "title": "Email Verification"
+        }
+    },
+    "month": {
+        "short": {
+            "january": "Jan",
+            "february": "Feb",
+            "march": "Mar",
+            "april": "Apr",
+            "may": "May",
+            "june": "Jun",
+            "july": "Jul",
+            "august": "Aug",
+            "september": "Sep",
+            "october": "Oct",
+            "november": "Nov",
+            "december": "Dec"
+        },
+        "january": "January",
+        "february": "February",
+        "march": "March",
+        "april": "April",
+        "may": "May",
+        "june": "June",
+        "july": "July",
+        "august": "August",
+        "september": "September",
+        "october": "October",
+        "november": "November",
+        "december": "December"
+    },
+    "categories": {
+        "Beauty": "Beauty",
+        "Bills & Fees": "Bills & Fees",
+        "Car": "Car",
+        "Education": "Education",
+        "Entertainment": "Entertainment",
+        "Family & Personal": "Family & Personal",
+        "Food & Drink": "Food & Drink",
+        "Gifts": "Gifts",
+        "Groceries": "Groceries",
+        "Healthcare": "Healthcare",
+        "Home": "Home",
+        "Other": "Other",
+        "Shopping": "Shopping",
+        "Sport & Hobbies": "Sport & Hobbies",
+        "Transport": "Transport",
+        "Travel": "Travel",
+        "Work": "Work",
+        "Business": "Business",
+        "Extra Income": "Extra Income",
+        "Gift": "Gift",
+        "Insurance Payout": "Insurance Payout",
+        "Loan": "Loan",
+        "Others": "Others",
+        "Parential Leave": "Parential Leave",
+        "Salary": "Salary"
+    },
+    "placeholder": {
+        "email": "Email...",
+        "password": "Password...",
+        "required": "Required",
+        "confirmpassword": "Confirm Password",
+        "search": "Search...",
+        "amount": "Amount",
+        "note": "Write a note",
+        "searcharticle": "Search for articles..."
+    },
+    "tooltip": {
+        "logout": "Logout",
+        "fullscreen": "FullScreen",
+        "settings": "Settings"
+    }
 }
