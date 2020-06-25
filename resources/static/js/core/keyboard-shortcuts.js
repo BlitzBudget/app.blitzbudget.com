@@ -78,7 +78,11 @@
             case "a":
                 /* While pressing "a" */
                 /* Add a new element */
-                document.getElementById('genericAddFnc').click();
+                let genericAdd = document.getElementById('genericAddFnc');
+                // Only if the class "d-none" is not present
+                if (!genericAdd.classList.contains('d-none')) {
+                    genericAdd.click();
+                }
                 break;
             default:
                 break;
