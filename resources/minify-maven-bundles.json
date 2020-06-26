@@ -89,7 +89,8 @@
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
                 "/dashboard/module/settings.js",
                 "/dashboard/overview/overview.js",
-                "/dashboard/module/profile.js"
+                "/dashboard/module/profile.js",
+                "/dashboard/module/goals.js"
             ]
         },
         {

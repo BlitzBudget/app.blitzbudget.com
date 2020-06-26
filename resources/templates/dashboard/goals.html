@@ -2,19 +2,83 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>
-	    Goals
-	</title>
+    <title>
+        Goals
+    </title>
 </head>
 
-<body class="savings-dashboard" >
-      
-      <div class="content">
+<body class="savings-dashboard">
+
+    <div class="content">
         <div class="container-fluid">
         </div>
-      </div>
-      
-  
+    </div>
+
+    <!-- Vertically Centered Modal -->
+    <div class="modal" id="addGoals" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="addGoals">
+        <div class="modal-dialog modal-signup" role="document">
+            <div class="modal-content">
+                <div class="card card-signup card-plain">
+                    <div class="modal-header">
+                        <h5 class="modal-title card-title noselect" data-i18n="transactions.modal.title">Choose a goal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="material-icons noselect">clear</i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mr-auto">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6 text-center p-2">
+                                            <strong>Pay off credit card</strong>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <strong>Pay off loans</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 text-center p-2">
+                                            <strong>Save for an emergency</strong>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <strong>Save for retirement</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 text-center p-2">
+                                            <strong>Buy a home</strong>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <strong>Buy a car</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 text-center p-2">
+                                            <strong>Save for college</strong>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <strong>Take a trip</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 text-center p-2">
+                                            <strong>Improve my home</strong>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <strong>Create a custom goal</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </body>
 
 </html>
