@@ -16,3 +16,16 @@
 .goal-title {
     font-weight: 800;
 }
+
+.choosable img {
+    transition: transform .1s;
+}
+
+.choosable:hover h5 {
+    color: #ff9800;
+    cursor: pointer;
+}
+
+.choosable:hover img {
+    transform: scale(1.1);
+}
