@@ -57,6 +57,13 @@
             ]
         },
         {
+            "type": "css",
+            "name": "goals.css",
+            "files": [
+                "/dashboard/module/goals.css"
+            ]
+        },
+        {
             "type": "js",
             "name": "core.js",
             "files": [

@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+#addGoals .picture {
+    max-width: 150px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.rounded {
+    border-radius: 0.4rem !important;
+}
+
+.goal-title {
+    font-weight: 800;
+}
