@@ -60,7 +60,8 @@
             "type": "css",
             "name": "goals.css",
             "files": [
-                "/dashboard/module/goals.css"
+                "/dashboard/module/goals.css",
+                "/dashboard/build/nouislider.css"
             ]
         },
         {
