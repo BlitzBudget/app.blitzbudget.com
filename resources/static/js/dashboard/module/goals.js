@@ -81,14 +81,27 @@
         document.getElementById('choose-a-goal').classList.add('d-none');
         // no ui slider initialize
         window.emergencyFundMonths = document.getElementById('emergency-fund-months');
+        let sliderValue - document.getElementById("emergency-fund-value");
         noUiSlider.create(emergencyFundMonths, {
             start: 3,
             connect: 'lower',
+            behaviour: 'tap',
+            keyboardSupport: true, // Default true
+            keywordPageMultiplier: 2, // Default 5
+            keywordDefaultStep: 1, // Default 10
             step: 1,
             range: {
                 min: 1,
                 max: 12
+            },
+            pips: {
+                mode: 'steps',
+                density: 1
             }
+        });
+
+        window.emergencyFundMonths.noUiSlider.on('update', function (values, handle) {
+            updateSliderValue.value = values[handle];
         });
     }
 
