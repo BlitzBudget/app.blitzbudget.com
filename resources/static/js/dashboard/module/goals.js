@@ -81,7 +81,7 @@
         document.getElementById('choose-a-goal').classList.add('d-none');
         // no ui slider initialize
         window.emergencyFundMonths = document.getElementById('emergency-fund-months');
-        let sliderValue - document.getElementById("emergency-fund-value");
+        let updateSliderValue = document.getElementById("emergency-fund-value");
         noUiSlider.create(emergencyFundMonths, {
             start: 3,
             connect: 'lower',
@@ -93,10 +93,6 @@
             range: {
                 min: 1,
                 max: 12
-            },
-            pips: {
-                mode: 'steps',
-                density: 1
             }
         });
 
