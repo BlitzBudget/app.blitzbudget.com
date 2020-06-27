@@ -63,4 +63,18 @@
         });
     }
 
+    /*
+     * On Click Choose a goal
+     */
+    $('body').on("click", "#addGoals .chooseable", function (event) {
+        let target = this.dataset.target;
+        switch (target) {
+            case "save-for-emergency":
+                document.getElementById('choose-a-goal').classList.add('d-none');
+                break;
+            default:
+                break;
+        }
+    });
+
 }(jQuery));

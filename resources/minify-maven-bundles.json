@@ -74,6 +74,7 @@
                 "/core/bootstrap-material-design.min.js",
                 "/plugins/perfect-scrollbar.jquery.min.js",
                 "/plugins/moment.min.js",
+                "/plugins/nouislider.min.js",
                 "/dashboard/material-dashboard/material-dashboard.js",
                 "/profile/config.js",
                 "/dashboard/sidebar/sidebar.js",
