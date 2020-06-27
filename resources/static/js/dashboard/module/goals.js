@@ -33,6 +33,8 @@
             let currentPage = document.getElementById('currentPage');
             currentPage.setAttribute('data-i18n', 'goals.page.title');
             currentPage.textContent = 'Goals';
+            // Initial Load
+            initialLoad();
         });
 
         /**
@@ -79,6 +81,15 @@
 
     function saveForEmergency() {
         document.getElementById('choose-a-goal').classList.add('d-none');
+    }
+
+    /*
+     * Initial Load of goals page
+     */
+    function initialLoad() {
+        /*
+         * save For Emergency
+         */
         // no ui slider initialize
         window.emergencyFundMonths = document.getElementById('emergency-fund-months');
         let updateSliderValue = document.getElementById("emergency-fund-value");
