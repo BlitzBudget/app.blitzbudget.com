@@ -1,6 +1,5 @@
 "use strict";
 (function scopeWrapper($) {
-    let emergencyFundMonths = document.getElementById('emergency-fund-months');
 
     /**
      * START loading the page
@@ -34,17 +33,6 @@
             let currentPage = document.getElementById('currentPage');
             currentPage.setAttribute('data-i18n', 'goals.page.title');
             currentPage.textContent = 'Goals';
-
-            // no ui slider initialize
-            noUiSlider.create(emergencyFundMonths, {
-                start: 3,
-                connect: [!0, !1],
-                step: 1,
-                range: {
-                    min: 1,
-                    max: 12
-                }
-            });
         });
 
         /**
@@ -82,11 +70,26 @@
         let target = this.dataset.target;
         switch (target) {
             case "save-for-emergency":
-                document.getElementById('choose-a-goal').classList.add('d-none');
+                saveForEmergency();
                 break;
             default:
                 break;
         }
     });
+
+    function saveForEmergency() {
+        document.getElementById('choose-a-goal').classList.add('d-none');
+        // no ui slider initialize
+        window.emergencyFundMonths = document.getElementById('emergency-fund-months');
+        noUiSlider.create(emergencyFundMonths, {
+            start: 3,
+            connect: 'lower',
+            step: 1,
+            range: {
+                min: 1,
+                max: 12
+            }
+        });
+    }
 
 }(jQuery));
