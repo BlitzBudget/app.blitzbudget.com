@@ -17,15 +17,22 @@
     font-weight: 800;
 }
 
-.choosable img {
+.chooseable img {
     transition: transform .1s;
 }
 
-.choosable:hover h5 {
-    color: #ff9800;
+.chooseable:hover {
     cursor: pointer;
 }
 
-.choosable:hover img {
+.chooseable:hover h5 {
+    color: #ff9800;
+}
+
+.chooseable:hover .description {
+    color: #797979;
+}
+
+.chooseable:hover img {
     transform: scale(1.1);
 }
