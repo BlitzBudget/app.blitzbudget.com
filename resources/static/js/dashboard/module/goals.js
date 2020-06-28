@@ -106,6 +106,12 @@
             range: {
                 min: 1,
                 max: 12
+            },
+            format: {
+                from: Number,
+                to: function (value) {
+                    return (parseInt(value) + " month/s");
+                }
             }
         });
 

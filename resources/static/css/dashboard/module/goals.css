@@ -41,3 +41,12 @@
 .is-focused #average-expense-emergency.form-control {
     background-image: linear-gradient(to top, #ff9800 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
 }
+
+.noUi-tooltip {
+    white-space: nowrap;
+    margin-top: 1rem;
+}
+
+.emergency-preference {
+    margin-top: 3rem;
+}
