@@ -82,6 +82,7 @@
     function saveForEmergency() {
         document.getElementById('choose-a-goal').classList.add('d-none');
         document.getElementById('save-for-emergency').classList.remove('d-none');
+        document.getElementById('choose-goal-footer').classList.remove('d-none');
     }
 
     /*
@@ -119,5 +120,14 @@
             updateSliderValue.textContent = values[handle];
         });
     }
+
+    /*
+     * Click Back Button
+     */
+    $('body').on("click", "#back-goals", function (event) {
+        document.getElementById('choose-a-goal').classList.remove('d-none');
+        document.getElementById('save-for-emergency').classList.add('d-none');
+        document.getElementById('choose-goal-footer').classList.add('d-none');
+    });
 
 }(jQuery));
