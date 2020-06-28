@@ -32,7 +32,7 @@
             // Set Current Page
             let currentPage = document.getElementById('currentPage');
             currentPage.setAttribute('data-i18n', 'goals.page.title');
-            currentPage.textContent = 'Goals';
+            currentPage.textContent = window.translationData ? window.translationData.goals.page.title : 'Goals';
             // Initial Load
             initialLoad();
         });
@@ -81,6 +81,7 @@
 
     function saveForEmergency() {
         document.getElementById('choose-a-goal').classList.add('d-none');
+        document.getElementById('save-for-emergency').classList.remove('d-none');
     }
 
     /*

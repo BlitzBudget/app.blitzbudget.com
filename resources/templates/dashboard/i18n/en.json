@@ -582,5 +582,58 @@
         "logout": "Logout",
         "fullscreen": "FullScreen",
         "settings": "Settings"
+    },
+    "goals": {
+        "page": {
+            "title": "Goals"
+        },
+        "choose": {
+            "title": "Choose a goal",
+            "custom": {
+                "description": "Everything else that requires financial planning goes in here.",
+                "title": "Create a custom goal"
+            },
+            "improve": {
+                "title": "Improve my home",
+                "description": "If refurbishing your home could be the right move, where will you get the money to do it?"
+            },
+            "trip": {
+                "title": "Take a trip",
+                "description": "Have you saved enough for the next trip? Do you know how much you might need for it?"
+            },
+            "college": {
+                "title": "Save for college",
+                "description": "Graduating without a debt can be satisfying. Put your dreams to action, plan your goal."
+            },
+            "automobile": {
+                "title": "Buy an automobile",
+                "description": "Why not save first enough before buying you car or motorbike? We'll help you track your savings."
+            },
+            "home": {
+                "title": "Buy a home",
+                "description": "A lot of thing's can go south when you make a mid term savings startegy. We can help you keep your plan feasible."
+            },
+            "retirement": {
+                "title": "Save for retirement",
+                "description": "It's time to start planning for your retirement, If you have't. We'll do the math, so you dont have to."
+            },
+            "emergency": {
+                "title": "Save for an emergency",
+                "description": "Why not have some money for an emergency? Be prepared now."
+            },
+            "creditcard": {
+                "title": "Pay off credit card",
+                "description": "We recommend that you start with the credit card with the highest interest rates."
+            }
+        },
+        "add": {
+            "emergencyfund": {
+                "average": "Your average expenses per month",
+                "howmany": "How many months without income do you want to be prepared for?",
+                "result": "Based on your preferences, You are setting a goal of ",
+                "result2": "for an ",
+                "result3": "Emergency Fund"
+            }
+        }
     }
 }
