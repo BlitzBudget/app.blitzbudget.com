@@ -624,6 +624,10 @@
             "creditcard": {
                 "title": "Pay off credit card",
                 "description": "We recommend that you start with the credit card with the highest interest rates."
+            },
+            "loans": {
+                "title": "Pay off loans",
+                "description": "Housing loans, Car Loans, Education Loans, and others go in here."
             }
         },
         "add": {
@@ -632,7 +636,11 @@
                 "howmany": "How many months without income do you want to be prepared for?",
                 "result": "Based on your preferences, You are setting a goal of ",
                 "result2": "for an ",
-                "result3": "Emergency Fund"
+                "result3": "Emergency Fund",
+                "result4": ".By saving",
+                "result5": " every month. You'll reach your planned goals by <strong>June 2020",
+                "date": "Your planned date",
+                "plan": "Plan"
             }
         }
     }
