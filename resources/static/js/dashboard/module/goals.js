@@ -98,6 +98,9 @@
             start: 3,
             connect: 'lower',
             behaviour: 'tap',
+            tooltips: wNumb({
+                decimals: 1
+            }),
             keyboardSupport: true, // Default true
             keywordPageMultiplier: 2, // Default 5
             keywordDefaultStep: 1, // Default 10
