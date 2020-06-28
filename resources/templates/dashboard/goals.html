@@ -32,7 +32,7 @@
                                 <div class="card-body">
                                     <div id="choose-a-goal">
                                         <div class="row">
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Pay off credit card</h5>
@@ -43,7 +43,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Pay off loans</h5>
@@ -56,7 +56,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Save for an emergency</h5>
@@ -67,7 +67,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Save for retirement</h5>
@@ -80,7 +80,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Buy a home</h5>
@@ -91,7 +91,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Buy an automobile</h5>
@@ -104,7 +104,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Save for college</h5>
@@ -115,7 +115,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Take a trip</h5>
@@ -128,7 +128,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Improve my home</h5>
@@ -139,7 +139,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 text-center p-2">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
                                                 <div class="row chooseable" data-target="save-for-emergency">
                                                     <div class="col-7">
                                                         <h5 class="goal-title">Create a custom goal</h5>
@@ -153,9 +153,22 @@
                                         </div>
                                     </div>
                                     <div id="save-for-emergency">
-                                        <input id="emergency-fund-value" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left"></input>
-                                        <!-- Slider Dynamic -->
-                                        <div id="emergency-fund-months" class="slider slider-warning">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <div class="form-group bmd-form-group mt-4">
+                                                    <label for="emergency-fund-value" class="bmd-label-floating" data-i18n="unlock.popup.password">Your average expenses per month</label>
+                                                    <input id="average-expense-emergency" class="form-control" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left" />
+                                                </div>
+                                                <!-- Slider Dynamic -->
+                                                <label> How many months without income do you want to be prepared for?</label>
+                                                <div id="emergency-fund-months" class="slider slider-warning">
+                                                </div>
+                                                <p> Based on your preferences, You are setting a goal of <strong id="emergency-fund-value">$2000</strong> for an <strong>Emergency Fund</strong>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -166,9 +179,6 @@
             </div>
         </div>
     </div>
-    </div>
-
-
 </body>
 
 </html>

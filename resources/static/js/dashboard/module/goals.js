@@ -108,7 +108,7 @@
         });
 
         window.emergencyFundMonths.noUiSlider.on('update', function (values, handle) {
-            updateSliderValue.value = values[handle];
+            updateSliderValue.textContent = values[handle];
         });
     }
 
