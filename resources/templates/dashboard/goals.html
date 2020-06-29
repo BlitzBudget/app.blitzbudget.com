@@ -164,13 +164,21 @@
                                             </div>
                                             <div class="col-md-6 col-sm-12">
                                                 <h5 class="mb-3" data-i18n="goals.add.emergencyfund.date">Your planned date</h5>
-                                                <div class="row">
-                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="data-picker-month-emergency">
+                                                <div id="data-picker-month-emergency" class="dropdown bootstrap-select show-tick mt-2 d-inline-block">
+                                                    <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose Sorting Option" aria-expanded="false">
+                                                        <div class="filter-option">
+                                                            <div class="filter-option-inner">
+                                                                <div id="sortByBtnTit" class="filter-option-inner-inner text-right mr-4" data-i18n="goals.add.emergencyfund.choosemonth">Choose Month</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ripple-container"></div>
+                                                    </button>
+                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start">
                                                         <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
-                                                            <ul class="dropdown-menu inner show" id="list-of-year-emergency">
+                                                            <ul class="dropdown-menu inner show">
                                                                 <li class="disabled">
                                                                     <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
-                                                                        <span class="text" data-i18n="transactions.page.table.sortby.title"> Month</span>
+                                                                        <span class="text" data-i18n="goals.add.emergencyfund.month">Month</span>
                                                                     </span>
                                                                 </li>
                                                                 <li>
@@ -236,12 +244,22 @@
                                                             </ul>
                                                         </div>
                                                     </div>
-                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="data-picker-emergency">
+                                                </div>
+                                                <div id="data-picker-emergency" class="dropdown bootstrap-select show-tick mt-2 d-inline-block">
+                                                    <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose Sorting Option" aria-expanded="false">
+                                                        <div class="filter-option">
+                                                            <div class="filter-option-inner">
+                                                                <div id="sortByBtnTit" class="filter-option-inner-inner text-right mr-4" data-i18n="goals.add.emergencyfund.chooseyear">Choose Year</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ripple-container"></div>
+                                                    </button>
+                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start">
                                                         <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
                                                             <ul class="dropdown-menu inner show" id="list-of-year-emergency">
                                                                 <li class="disabled">
                                                                     <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
-                                                                        <span class="text" data-i18n="transactions.page.table.sortby.title"> Year</span>
+                                                                        <span class="text" data-i18n="goals.add.emergencyfund.year">Year</span>
                                                                     </span>
                                                                 </li>
                                                                 <!-- Dynamically created dates -->
@@ -253,9 +271,9 @@
                                                 <input id="your-monthly-contribution" class="form-control" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left" />
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row mt-5">
                                             <div class="col-12">
-                                                <p class="emergency-preference"> <span data-i18n="goals.add.emergencyfund.result">Based on your preferences, You are setting a goal of</span><strong id="emergency-fund-value">$2000</strong> <span data-i18n="goals.add.emergencyfund.result2">for an </span><strong data-i18n="goals.add.emergencyfund.result3">Emergency Fund</strong><span data-i18n="goals.add.emergencyfund.result4">.By saving </span><strong>$200</strong><span data-i18n="goals.add.emergencyfund.result5"> every month. You'll reach your planned goals by </span><strong>June 2020</strong>
+                                                <p class="emergency-preference mb-0"> <span data-i18n="goals.add.emergencyfund.result">Based on your preferences, You are setting a goal of</span><strong id="emergency-fund-value">$2000</strong> <span data-i18n="goals.add.emergencyfund.result2">for an </span><strong data-i18n="goals.add.emergencyfund.result3">Emergency Fund</strong><span data-i18n="goals.add.emergencyfund.result4">.By saving </span><strong>$200</strong><span data-i18n="goals.add.emergencyfund.result5"> every month. You'll reach your planned goals by </span><strong>June 2020</strong>
                                                 </p>
                                             </div>
                                         </div>

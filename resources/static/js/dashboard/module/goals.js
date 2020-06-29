@@ -211,7 +211,7 @@
      */
     function initialLoad() {
         /*
-         * save For Emergency
+         * Save For Emergency
          */
         // no ui slider initialize
         window.emergencyFundMonths = document.getElementById('emergency-fund-months');

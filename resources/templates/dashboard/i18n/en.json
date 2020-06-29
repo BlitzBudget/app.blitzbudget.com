@@ -638,10 +638,14 @@
                 "result2": "for an ",
                 "result3": "Emergency Fund",
                 "result4": ".By saving",
-                "result5": " every month. You'll reach your planned goals by <strong>June 2020",
+                "result5": " every month. You'll reach your planned goals by ",
                 "date": "Your planned date",
                 "plan": "Plan",
-                "contribution": "Your monthly contribution"
+                "contribution": "Your monthly contribution",
+                "chooseyear": "Choose Year",
+                "year": "Year",
+                "choosemonth": "Choose Month",
+                "month": "Month"
             }
         }
     }
