@@ -51,12 +51,20 @@
         document.getElementById('choose-goal-footer').classList.remove('d-none');
         // Focus the avergae expense input on click save for emergency
         document.getElementById('average-expense-emergency').focus();
-        // choose month for emergency
-        document.getElementById('choose-month-title').textContent = window.months[window.today.getMonth()];
-        document.getElementById('choose-month-title').setAttribute('data-selected', (Number(window.today.getMonth()) + 1));
+        // choose month for emergency ( + 3 months)
+        let currentDate = new Date();
+        currentDate.setMonth(currentDate.getMonth() + 3);
+        let cmt = document.getElementById('choose-month-title');
+        cmt.textContent = window.months[currentDate.getMonth()];
+        cmt.setAttribute('data-selected', (currentDate.getMonth() + 4));
         // Choose year for emergency
-        document.getElementById('choose-year-title').textContent = this.dataset.year;
-        document.getElementById('choose-year-title').setAttribute('data-selected', this.dataset.year);
+        let cyt = document.getElementById('choose-year-title');
+        cyt.textContent = currentDate.getFullYear();
+        cyt.setAttribute('data-selected', currentDate.getFullYear());
+        // Populate average expense
+        populateAverageExpense();
+        // Populate calculated total fund required
+        calculatedEmergencyFundRequired();
     }
 
     /*
@@ -168,4 +176,32 @@
         document.getElementById('choose-goal-title').textContent = window.translationData ? window.translationData.goals.choose.title : "Choose a goal";
     });
 
+    /*
+     * Populates the average Expense for the emergency fund
+     */
+    function populateAverageExpense() {
+        let averageExpense = 0;
+        if (isNotEmpty(window.datesCreated)) {
+            let totalExpense = 0;
+            for (let i = 0, len = window.datesCreated.length; i < len; i++) {
+                totalExpense += Math.abs(window.datesCreated[i]['expense_total']);
+            }
+
+            if (totalExpense > 0) {
+                averageExpense = totalExpense / window.datesCreated.length;
+            }
+        }
+
+        document.getElementById('average-expense-emergency').value = formatToCurrency(averageExpense);
+    }
+
+    // Calculated emergency funds required
+    function calculatedEmergencyFundRequired() {
+        // Planned date
+        let ple = document.getElementById('planned-date-emergency');
+        let currentDate = new Date();
+        let ytd = window.months[currentDate.getMonth() + 3] + currentDate.getFullYear();
+        ple.textContent = ytd;
+        ple.setAttribute('data-date-chosen', ytd);
+    }
 }(jQuery));

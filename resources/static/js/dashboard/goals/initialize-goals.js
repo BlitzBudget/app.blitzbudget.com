@@ -107,8 +107,9 @@
         /*
          * On update of the slider, Update values in a text field
          */
-        window.emergencyFundMonths.noUiSlider.on('update', function (values, handle) {
-            updateSliderValue.textContent = values[handle];
+        window.emergencyFundMonths.noUiSlider.on('update', function (values, handle, unencoded) {
+            // Months * average expense = total emergency fund
+            updateSliderValue.textContent = unencoded * document.getElementById('average-expense-emergency').value;
         });
 
         /*
@@ -173,6 +174,10 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
+                // Dates Cache
+                window.datesCreated = result.Date;
+
+                er_a.populateBankInfo(result.BankAccount);
 
             },
             ajaxData.onFailure = function (thrownError) {
