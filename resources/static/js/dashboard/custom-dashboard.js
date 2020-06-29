@@ -744,6 +744,7 @@ er = {
 
     //convert from currency format to number
     convertToNumberFromCurrency(amount, currentCurrencyPreference) {
+        // Always convert to number as en-US
         return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount, currentCurrencyPreference))), "en-US")), 2);
     },
 

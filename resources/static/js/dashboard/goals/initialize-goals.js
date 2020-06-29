@@ -108,8 +108,15 @@
          * On update of the slider, Update values in a text field
          */
         window.emergencyFundMonths.noUiSlider.on('update', function (values, handle, unencoded) {
+            // Convert average expense emergency to number
+            let avEmergencyExp = document.getElementById('average-expense-emergency').value;
+            if (isEmpty(avEmergencyExp)) {
+                avEmergencyExp = 0;
+            } else {
+                avEmergencyExp = er.convertToNumberFromCurrency(avEmergencyExp, currentCurrencyPreference);
+            }
             // Months * average expense = total emergency fund
-            updateSliderValue.textContent = unencoded * document.getElementById('average-expense-emergency').value;
+            updateSliderValue.textContent = unencoded * avEmergencyExp;
         });
 
         /*

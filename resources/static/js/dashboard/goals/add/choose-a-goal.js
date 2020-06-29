@@ -200,8 +200,9 @@
         // Planned date
         let ple = document.getElementById('planned-date-emergency');
         let currentDate = new Date();
-        let ytd = window.months[currentDate.getMonth() + 3] + currentDate.getFullYear();
+        let ytd = window.months[currentDate.getMonth() + 3] + ' ' + currentDate.getFullYear();
         ple.textContent = ytd;
-        ple.setAttribute('data-date-chosen', ytd);
+        ple.setAttribute('data-date-chosen-month', currentDate.getMonth() + 1);
+        ple.setAttribute('data-date-chosen-year', currentDate.getFullYear());
     }
 }(jQuery));
