@@ -63,6 +63,8 @@
         cyt.setAttribute('data-selected', currentDate.getFullYear());
         // Populate average expense
         populateAverageExpense();
+        // Set Slider Values of months
+        window.emergencyFundMonths.noUiSlider.set(3);
         // Populate calculated total fund required
         calculatedEmergencyFundRequired();
     }

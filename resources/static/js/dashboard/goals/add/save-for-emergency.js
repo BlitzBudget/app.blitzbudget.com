@@ -17,4 +17,18 @@
         document.getElementById('choose-year-title').setAttribute('data-selected', this.dataset.year);
     });
 
+    /*
+     * Average Expense emergency change updates the emergency fund value
+     */
+    $("body").on("change paste keyup", "#average-expense-emergency", function () {
+        // Convert average expense emergency to number
+        let avEmergencyExp = this.value;
+        if (isEmpty(avEmergencyExp)) {
+            avEmergencyExp = 0;
+        } else {
+            avEmergencyExp = er.convertToNumberFromCurrency(avEmergencyExp, currentCurrencyPreference);
+        }
+        document.getElementById("emergency-fund-value").textContent = formatToCurrency(window.emergencyFundMonths.noUiSlider.get().charAt(0) * avEmergencyExp);
+    });
+
 }(jQuery));

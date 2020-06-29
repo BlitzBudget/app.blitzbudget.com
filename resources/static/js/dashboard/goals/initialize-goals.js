@@ -116,7 +116,7 @@
                 avEmergencyExp = er.convertToNumberFromCurrency(avEmergencyExp, currentCurrencyPreference);
             }
             // Months * average expense = total emergency fund
-            updateSliderValue.textContent = unencoded * avEmergencyExp;
+            updateSliderValue.textContent = formatToCurrency(unencoded * avEmergencyExp);
         });
 
         /*
