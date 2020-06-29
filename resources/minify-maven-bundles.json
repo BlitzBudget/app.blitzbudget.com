@@ -1,4 +1,3 @@
-
 {
     "bundles": [
         {
@@ -58,15 +57,25 @@
             ]
         },
         {
+            "type": "css",
+            "name": "goals.css",
+            "files": [
+                "/dashboard/module/goals.css",
+                "/dashboard/build/nouislider.css"
+            ]
+        },
+        {
             "type": "js",
             "name": "core.js",
             "files": [
                 "/core/translator.js",
                 "/core/jquery.min.js",
                 "/core/popper.min.js",
+                "/core/keyboard-shortcuts.js",
                 "/core/bootstrap-material-design.min.js",
                 "/plugins/perfect-scrollbar.jquery.min.js",
                 "/plugins/moment.min.js",
+                "/plugins/nouislider.min.js",
                 "/dashboard/material-dashboard/material-dashboard.js",
                 "/profile/config.js",
                 "/dashboard/sidebar/sidebar.js",
@@ -89,14 +98,14 @@
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
                 "/dashboard/module/settings.js",
                 "/dashboard/overview/overview.js",
-                "/dashboard/module/profile.js"
-
+                "/dashboard/module/profile.js",
+                "/dashboard/module/goals.js"
             ]
         },
         {
             "type": "js",
             "name": "wallets.js",
-            "files": [        
+            "files": [
                 "/dashboard/module/wallet.js"
             ]
         }

@@ -2,19 +2,314 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>
-	    Goals
-	</title>
+    <title>
+        Goals
+    </title>
+    <link href="/css/goals.min.css" rel="stylesheet preload" as="style">
 </head>
 
-<body class="savings-dashboard" >
-      
-      <div class="content">
+<body class="savings-dashboard">
+
+    <div class="content">
         <div class="container-fluid">
         </div>
-      </div>
-      
-  
+    </div>
+
+    <!-- Vertically Centered Modal -->
+    <div class="modal noselect" id="addGoals" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true" aria-labelledby="addGoals">
+        <div class="modal-dialog modal-signup" role="document">
+            <div class="modal-content">
+                <div class="card card-signup card-plain">
+                    <div class="modal-header">
+                        <h5 class="modal-title card-title noselect" data-i18n="goals.choose.title" id="choose-goal-title">Choose a goal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="material-icons noselect">clear</i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 mr-auto">
+                                <div class="card-body">
+                                    <div id="choose-a-goal">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="pay-off-credit-card">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.creditcard.title">Pay off credit card</h5>
+                                                        <p class="description" data-i18n="goals.choose.creditcard.description">We recommend that you start with the credit card with the highest interest rates.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/credit-card.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="pay-off-loans">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.loans.title">Pay off loans</h5>
+                                                        <p class="description" data-i18n="goals.choose.loans.description">Housing loans, Car Loans, Education Loans, and others go in here.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/pay-off-loans.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="save-for-emergency">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.emergency.title">Save for an emergency</h5>
+                                                        <p class="description" data-i18n="goals.choose.emergency.description">Why not have some money for an emergency? Be prepared now.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/emergency-fund.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="save-for-retirement">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.retirement.title">Save for retirement</h5>
+                                                        <p class="description" data-i18n="goals.choose.retirement.description">It's time to start planning for your retirement, If you have't. We'll do the math, so you dont have to.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/retirement.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="buy-a-home">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.home.title">Buy a home</h5>
+                                                        <p class="description" data-i18n="goals.choose.home.description">A lot of thing's can go south when you make a mid term savings startegy. We can help you keep your plan feasible.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/buy-a-home.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="buy-an-automobile">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.automobile.title">Buy an automobile</h5>
+                                                        <p class="description" data-i18n="goals.choose.automobile.description">Why not save first enough before buying you car or motorbike? We'll help you track your savings.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/buy-a-car.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="save-for-college">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.college.title">Save for college</h5>
+                                                        <p class="description" data-i18n="goals.choose.college.description">Graduating without a debt can be satisfying. Put your dreams to action, plan your goal.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/save-for-college.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="take-a-trip">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.trip.title">Take a trip</h5>
+                                                        <p class="description" data-i18n="goals.choose.trip.description">Have you saved enough for the next trip? Do you know how much you might need for it?</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/plan-a-trip.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="improve-my-home">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.improve.title">Improve my home</h5>
+                                                        <p class="description" data-i18n="goals.choose.improve.description">If refurbishing your home could be the right move, where will you get the money to do it?</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/improve-my-home.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 text-center p-2">
+                                                <div class="row chooseable" data-target="create-a-custom-goal">
+                                                    <div class="col-7">
+                                                        <h5 class="goal-title" data-i18n="goals.choose.custom.title">Create a custom goal</h5>
+                                                        <p class="description" data-i18n="goals.choose.custom.description">Everything else that requires financial planning goes in here.</p>
+                                                    </div>
+                                                    <div class="col-5 picture">
+                                                        <img src="../img/dashboard/goals/custom-goals.jpg" class="rounded img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="save-for-emergency">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-12">
+                                                <h5 data-i18n="goals.add.emergencyfund.average" class="mb-3">Your average expenses per month</h5>
+                                                <input id="average-expense-emergency" class="form-control" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left" />
+                                                <!-- Slider Dynamic -->
+                                                <h5 data-i18n="goals.add.emergencyfund.howmany" class="mt-3 mb-5"> How many months without income do you want to be prepared for?</h5>
+                                                <div id="emergency-fund-months" class="slider slider-warning">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+                                                <h5 class="mb-3" data-i18n="goals.add.emergencyfund.date">Your planned date</h5>
+                                                <div id="data-picker-month-emergency" class="dropdown bootstrap-select show-tick mt-2 d-inline-block">
+                                                    <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose Sorting Option" aria-expanded="false">
+                                                        <div class="filter-option">
+                                                            <div class="filter-option-inner">
+                                                                <div id="sortByBtnTit" class="filter-option-inner-inner text-right mr-4" data-i18n="goals.add.emergencyfund.choosemonth">Choose Month</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ripple-container"></div>
+                                                    </button>
+                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start">
+                                                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                                            <ul class="dropdown-menu inner show">
+                                                                <li class="disabled">
+                                                                    <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
+                                                                        <span class="text" data-i18n="goals.add.emergencyfund.month">Month</span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="01">
+                                                                        <span class="text" data-i18n="month.short.january">Jan</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="02">
+                                                                        <span class="text" data-i18n="month.short.february">Feb</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="03">
+                                                                        <span class="text" data-i18n="month.short.march">Mar</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="04">
+                                                                        <span class="text" data-i18n="month.short.april">Apr</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="05">
+                                                                        <span class="text" data-i18n="month.short.may">May</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="06">
+                                                                        <span class="text" data-i18n="month.short.june">Jun</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="07">
+                                                                        <span class="text" data-i18n="month.short.july">Jul</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="08">
+                                                                        <span class="text" data-i18n="month.short.august">Aug</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="09">
+                                                                        <span class="text" data-i18n="month.short.september">Sep</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="10">
+                                                                        <span class="text" data-i18n="month.short.october">Oct</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="11">
+                                                                        <span class="text" data-i18n="month.short.november">Nov</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="12">
+                                                                        <span class="text" data-i18n="month.short.december">Dec</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="data-picker-emergency" class="dropdown bootstrap-select show-tick mt-2 d-inline-block">
+                                                    <button type="button" class="btn dropdown-toggle bs-placeholder select-with-transition pr-0 pl-3" data-toggle="dropdown" role="button" title="Choose Sorting Option" aria-expanded="false">
+                                                        <div class="filter-option">
+                                                            <div class="filter-option-inner">
+                                                                <div id="sortByBtnTit" class="filter-option-inner-inner text-right mr-4" data-i18n="goals.add.emergencyfund.chooseyear">Choose Year</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ripple-container"></div>
+                                                    </button>
+                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start">
+                                                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                                            <ul class="dropdown-menu inner show" id="list-of-year-emergency">
+                                                                <li class="disabled">
+                                                                    <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
+                                                                        <span class="text" data-i18n="goals.add.emergencyfund.year">Year</span>
+                                                                    </span>
+                                                                </li>
+                                                                <!-- Dynamically created dates -->
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h5 class="mb-3" data-i18n="goals.add.emergencyfund.contribution">Your monthly contribution</h5>
+                                                <input id="your-monthly-contribution" class="form-control" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left" />
+                                            </div>
+                                        </div>
+                                        <div class="row mt-5">
+                                            <div class="col-12">
+                                                <p class="emergency-preference mb-0"> <span data-i18n="goals.add.emergencyfund.result">Based on your preferences, You are setting a goal of</span><strong id="emergency-fund-value">$2000</strong> <span data-i18n="goals.add.emergencyfund.result2">for an </span><strong data-i18n="goals.add.emergencyfund.result3">Emergency Fund</strong><span data-i18n="goals.add.emergencyfund.result4">.By saving </span><strong>$200</strong><span data-i18n="goals.add.emergencyfund.result5"> every month. You'll reach your planned goals by </span><strong>June 2020</strong>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="pay-off-credit-card">
+                                    </div>
+                                    <div id="pay-off-loans">
+                                    </div>
+                                    <div id="save-for-retirement">
+                                    </div>
+                                    <div id="buy-a-home">
+                                    </div>
+                                    <div id="buy-an-automobile">
+                                    </div>
+                                    <div id="save-for-college">
+                                    </div>
+                                    <div id="take-a-trip">
+                                    </div>
+                                    <div id="improve-my-home">
+                                    </div>
+                                    <div id="create-a-custom-goal">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer mb-0 mt-4">
+                        <div class="ml-auto d-none" id="choose-goal-footer">
+                            <button id="back-goals" type="button" class="btn btn-next btn-fill btn-secondary btn-wd mr-2">Back</button>
+                            <button id="save-goals" type="button" class="btn btn-next btn-fill btn-warning btn-wd mr-5">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
