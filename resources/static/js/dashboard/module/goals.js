@@ -295,6 +295,7 @@
         document.getElementById('improve-my-home').classList.add('d-none');
         document.getElementById('create-a-custom-goal').classList.add('d-none');
         document.getElementById('choose-goal-footer').classList.add('d-none');
+        document.getElementById('choose-goal-title').textContent = window.translationData ? window.translationData.goals.choose.title : "Choose a goal";
     });
 
 }(jQuery));
