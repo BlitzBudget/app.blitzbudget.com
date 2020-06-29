@@ -647,6 +647,9 @@
                 "choosemonth": "Choose Month",
                 "month": "Month"
             }
+        },
+        "dynamic": {
+            "geterror": "Error fetching information for goals. Please try again later!"
         }
     }
 }
