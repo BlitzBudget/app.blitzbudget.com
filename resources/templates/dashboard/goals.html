@@ -21,7 +21,7 @@
             <div class="modal-content">
                 <div class="card card-signup card-plain">
                     <div class="modal-header">
-                        <h5 class="modal-title card-title noselect" data-i18n="goals.choose.title">Choose a goal</h5>
+                        <h5 class="modal-title card-title noselect" data-i18n="goals.choose.title" id="choose-goal-title">Choose a goal</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i class="material-icons noselect">clear</i>
                         </button>
@@ -164,9 +164,98 @@
                                             </div>
                                             <div class="col-md-6 col-sm-12">
                                                 <h5 class="mb-3" data-i18n="goals.add.emergencyfund.date">Your planned date</h5>
-                                                <input id="total-planned-emergency" class="form-control" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left" />
-                                                <h5 class="my-3" data-i18n="goals.add.emergencyfund.plan">Plan</h5>
-                                                <p class="emergency-preference"> <span data-i18n="goals.add.emergencyfund.result">Based on your preferences, You are setting a goal of</span><strong id="emergency-fund-value">$2000</strong> <span data-i18n="goals.add.emergencyfund.result2">for an </span><strong data-i18n="goals.add.emergencyfund.result3">Emergency Fund</strong><span data-i18n="goals.add.emergencyfund.result4">.By saving</span> <strong>$200</strong><span data-i18n="goals.add.emergencyfund.result5"> every month. You'll reach your planned goals by <strong>June 2020</strong></span>
+                                                <div class="row">
+                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="data-picker-month-emergency">
+                                                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                                            <ul class="dropdown-menu inner show" id="list-of-year-emergency">
+                                                                <li class="disabled">
+                                                                    <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
+                                                                        <span class="text" data-i18n="transactions.page.table.sortby.title"> Month</span>
+                                                                    </span>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="01">
+                                                                        <span class="text" data-i18n="month.short.january">Jan</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="02">
+                                                                        <span class="text" data-i18n="month.short.february">Feb</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="03">
+                                                                        <span class="text" data-i18n="month.short.march">Mar</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="04">
+                                                                        <span class="text" data-i18n="month.short.april">Apr</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="05">
+                                                                        <span class="text" data-i18n="month.short.may">May</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="06">
+                                                                        <span class="text" data-i18n="month.short.june">Jun</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="07">
+                                                                        <span class="text" data-i18n="month.short.july">Jul</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="08">
+                                                                        <span class="text" data-i18n="month.short.august">Aug</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="09">
+                                                                        <span class="text" data-i18n="month.short.september">Sep</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="10">
+                                                                        <span class="text" data-i18n="month.short.october">Oct</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="11">
+                                                                        <span class="text" data-i18n="month.short.november">Nov</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" data-month="12">
+                                                                        <span class="text" data-i18n="month.short.december">Dec</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dropdown-menu" role="combobox" x-placement="bottom-start" id="data-picker-emergency">
+                                                        <div class="inner show" role="listbox" aria-expanded="false" tabindex="-1">
+                                                            <ul class="dropdown-menu inner show" id="list-of-year-emergency">
+                                                                <li class="disabled">
+                                                                    <span role="option" class="dropdown-item disabled" aria-disabled="true" tabindex="-1" aria-selected="false">
+                                                                        <span class="text" data-i18n="transactions.page.table.sortby.title"> Year</span>
+                                                                    </span>
+                                                                </li>
+                                                                <!-- Dynamically created dates -->
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <h5 class="mb-3" data-i18n="goals.add.emergencyfund.contribution">Your monthly contribution</h5>
+                                                <input id="your-monthly-contribution" class="form-control" type="text" autocapitalize="off" spellcheck="false" autocorrect="off" class="float-left" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <p class="emergency-preference"> <span data-i18n="goals.add.emergencyfund.result">Based on your preferences, You are setting a goal of</span><strong id="emergency-fund-value">$2000</strong> <span data-i18n="goals.add.emergencyfund.result2">for an </span><strong data-i18n="goals.add.emergencyfund.result3">Emergency Fund</strong><span data-i18n="goals.add.emergencyfund.result4">.By saving </span><strong>$200</strong><span data-i18n="goals.add.emergencyfund.result5"> every month. You'll reach your planned goals by </span><strong>June 2020</strong>
                                                 </p>
                                             </div>
                                         </div>
@@ -193,10 +282,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer d-none mb-0 mt-4" id="choose-goal-footer">
-                        <div class="ml-auto d-block">
+                    <div class="modal-footer mb-0 mt-4">
+                        <div class="ml-auto d-none" id="choose-goal-footer">
                             <button id="back-goals" type="button" class="btn btn-next btn-fill btn-secondary btn-wd mr-2">Back</button>
-                            <button id="save-goals" type="button" class="btn btn-next btn-fill btn-warning btn-wd mr-5">Save Goal</button>
+                            <button id="save-goals" type="button" class="btn btn-next btn-fill btn-warning btn-wd mr-5">Next</button>
                         </div>
                     </div>
                 </div>
