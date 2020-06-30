@@ -46,7 +46,7 @@
         }
 
         // See the text value in resume
-        document.getElementById("emergency-fund-value").textContent = formatToCurrency(window.emergencyFundMonths.noUiSlider.get().charAt(0) * avEmergencyExp);
+        document.getElementById("emergency-fund-value").textContent = formatToCurrency(window.emergencyFundMonths.noUiSlider.get().substring(0, 2) * avEmergencyExp);
 
         /*
          * Calculate Total Planned Date
@@ -91,10 +91,9 @@
     $("body").on("focusout", "#your-monthly-contribution", function () {
         // Convert average expense emergency to number
         let monthlyCtb = this.value;
+        monthlyCtb = isEmpty(monthlyCtb) ? 0 : er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference);
         // If Empty or Not a Number then 0
-        if (isEmpty(monthlyCtb) || isNaN(er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference))) {
-            monthlyCtb = 0;
-        }
+        monthlyCtb = isNaN(monthlyCtb) ? 0 : monthlyCtb;
 
         this.value = formatToCurrency(monthlyCtb);
     });
@@ -105,10 +104,9 @@
     $("body").on("focusout", "#average-expense-emergency", function () {
         // Convert average expense emergency to number
         let avExp = this.value;
+        avExp = isEmpty(avExp) ? 0 : er.convertToNumberFromCurrency(avExp, currentCurrencyPreference);
         // If Empty or Not a Number then 0
-        if (isEmpty(avExp) || isNaN(er.convertToNumberFromCurrency(avExp, currentCurrencyPreference))) {
-            avExp = 0;
-        }
+        avExp = isNaN(avExp) ? 0 : avExp;
 
         this.value = formatToCurrency(avExp);
     });
@@ -126,7 +124,7 @@ function calculateTotalPlannedDate() {
     let monthlyCtb = document.getElementById('your-monthly-contribution').value;
     averageExpenseEmergency = er.convertToNumberFromCurrency(averageExpenseEmergency, currentCurrencyPreference);
     monthlyCtb = er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference);
-    let totalEmergencyFund = averageExpenseEmergency * Number(window.emergencyFundMonths.noUiSlider.get().charAt(0));
+    let totalEmergencyFund = averageExpenseEmergency * Number(window.emergencyFundMonths.noUiSlider.get().substring(0, 2));
     let numberOfMonthsRequired = totalEmergencyFund / monthlyCtb;
     // Rounding the numbers
     numberOfMonthsRequired = (numberOfMonthsRequired <= 1) ? 1 : Math.round(numberOfMonthsRequired);
