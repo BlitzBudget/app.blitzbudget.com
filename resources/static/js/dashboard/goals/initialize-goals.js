@@ -117,6 +117,11 @@
             }
             // Months * average expense = total emergency fund
             updateSliderValue.textContent = formatToCurrency(unencoded * avEmergencyExp);
+
+            /*
+             * Calculate Total Planned Date
+             */
+            calculateTotalPlannedDate();
         });
 
         /*

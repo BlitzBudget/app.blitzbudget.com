@@ -47,6 +47,11 @@
 
         // See the text value in resume
         document.getElementById("emergency-fund-value").textContent = formatToCurrency(window.emergencyFundMonths.noUiSlider.get().charAt(0) * avEmergencyExp);
+
+        /*
+         * Calculate Total Planned Date
+         */
+        calculateTotalPlannedDate();
     });
 
     /*
@@ -63,10 +68,11 @@
          * Disable or enable NEXT button
          */
         let averageExpenseEmergency = document.getElementById('average-expense-emergency').value;
+        averageExpenseEmergency = er.convertToNumberFromCurrency(averageExpenseEmergency, currentCurrencyPreference);
         // If is not a number then
         if (isNaN(er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference))) {
             document.getElementById('save-goals').setAttribute('disabled', 'disabled');
-        } else if (!isNaN(er.convertToNumberFromCurrency(averageExpenseEmergency, currentCurrencyPreference))) {
+        } else if (!isNaN(averageExpenseEmergency)) {
             document.getElementById('save-goals').removeAttribute('disabled');
         }
 
@@ -74,33 +80,74 @@
         document.getElementById("monthly-contribution-display").textContent = formatToCurrency(monthlyCtb);
 
         /*
-         * Calculate the Dates before which one could pay it off
+         * Calculate Total Planned Date
          */
-        let totalEmergencyFund = averageExpenseEmergency * window.emergencyFundMonths.noUiSlider.get().charAt(0);
-        let monthlyContribution = er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference);
-        let numberOfMonthsRequired = totalEmergencyFund / monthlyContribution;
-        // Rounding the numbers
-        numberOfMonthsRequired = (numberOfMonthsRequired <= 1) ? 1 : Math.round(numberOfMonthsRequired);
+        calculateTotalPlannedDate();
+    });
 
-        /*
-         * Date calculated
-         */
-        let currentDate = new Date();
-        currentDate.setMonth(numberOfMonthsRequired);
+    /*
+     * Your Monthly Contribution on focus out
+     */
+    $("body").on("focusout", "#your-monthly-contribution", function () {
+        // Convert average expense emergency to number
+        let monthlyCtb = this.value;
+        // If Empty or Not a Number then 0
+        if (isEmpty(monthlyCtb) || isNaN(er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference))) {
+            monthlyCtb = 0;
+        }
 
-        /*
-         * Display in date picker
-         */
-        document.getElementById('choose-month-title').textContent = window.months[currentDate.getMonth()];
-        document.getElementById('choose-year-title').textContent = currentDate.getFullYear();
+        this.value = formatToCurrency(monthlyCtb);
+    });
 
-        /*
-         * Displayed Years and Months
-         */
-        let ple = document.getElementById('planned-date-emergency');
-        ple.textContent = window.months[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
-        ple.setAttribute('data-date-chosen-month', currentMonth);
-        ple.setAttribute('data-date-chosen-year', this.dataset.year);
+    /*
+     * Average Expense emergency on focus out
+     */
+    $("body").on("focusout", "#average-expense-emergency", function () {
+        // Convert average expense emergency to number
+        let avExp = this.value;
+        // If Empty or Not a Number then 0
+        if (isEmpty(avExp) || isNaN(er.convertToNumberFromCurrency(avExp, currentCurrencyPreference))) {
+            avExp = 0;
+        }
+
+        this.value = formatToCurrency(avExp);
     });
 
 }(jQuery));
+
+/*
+ * Calculate Total Planned Date
+ */
+function calculateTotalPlannedDate() {
+    /*
+     * Calculate the Dates before which one could pay it off
+     */
+    let averageExpenseEmergency = document.getElementById('average-expense-emergency').value;
+    let monthlyCtb = document.getElementById('your-monthly-contribution').value;
+    averageExpenseEmergency = er.convertToNumberFromCurrency(averageExpenseEmergency, currentCurrencyPreference);
+    monthlyCtb = er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference);
+    let totalEmergencyFund = averageExpenseEmergency * Number(window.emergencyFundMonths.noUiSlider.get().charAt(0));
+    let numberOfMonthsRequired = totalEmergencyFund / monthlyCtb;
+    // Rounding the numbers
+    numberOfMonthsRequired = (numberOfMonthsRequired <= 1) ? 1 : Math.round(numberOfMonthsRequired);
+
+    /*
+     * Date calculated
+     */
+    let currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() + numberOfMonthsRequired);
+
+    /*
+     * Display in date picker
+     */
+    document.getElementById('choose-month-title').textContent = window.months[currentDate.getMonth()];
+    document.getElementById('choose-year-title').textContent = currentDate.getFullYear();
+
+    /*
+     * Displayed Years and Months
+     */
+    let ple = document.getElementById('planned-date-emergency');
+    ple.textContent = window.months[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
+    ple.setAttribute('data-date-chosen-month', currentDate.getMonth());
+    ple.setAttribute('data-date-chosen-year', currentDate.getFullYear());
+}
