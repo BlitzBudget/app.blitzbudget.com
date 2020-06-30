@@ -51,12 +51,12 @@
         document.getElementById('choose-goal-footer').classList.remove('d-none');
         // Focus the avergae expense input on click save for emergency
         document.getElementById('average-expense-emergency').focus();
-        // choose month for emergency ( + 3 months)
+        // choose month for emergency ( + 30 months)
         let currentDate = new Date();
-        currentDate.setMonth(currentDate.getMonth() + 3);
+        currentDate.setMonth(currentDate.getMonth() + 30);
         let cmt = document.getElementById('choose-month-title');
         cmt.textContent = window.months[currentDate.getMonth()];
-        cmt.setAttribute('data-selected', (currentDate.getMonth() + 4));
+        cmt.setAttribute('data-selected', (currentDate.getMonth() + 1));
         // Choose year for emergency
         let cyt = document.getElementById('choose-year-title');
         cyt.textContent = currentDate.getFullYear();
@@ -195,6 +195,8 @@
         }
 
         document.getElementById('average-expense-emergency').value = formatToCurrency(averageExpense);
+        // Your monthly contribution is 10% of the average expense
+        document.getElementById('your-monthly-contribution').value = formatToCurrency(averageExpense / 10);
     }
 
     // Calculated emergency funds required
@@ -202,7 +204,9 @@
         // Planned date
         let ple = document.getElementById('planned-date-emergency');
         let currentDate = new Date();
-        let ytd = window.months[currentDate.getMonth() + 3] + ' ' + currentDate.getFullYear();
+        // Set Date to 30 months in the future
+        currentDate.setMonth(currentDate.getMonth() + 30);
+        let ytd = window.months[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
         ple.textContent = ytd;
         ple.setAttribute('data-date-chosen-month', currentDate.getMonth() + 1);
         ple.setAttribute('data-date-chosen-year', currentDate.getFullYear());
