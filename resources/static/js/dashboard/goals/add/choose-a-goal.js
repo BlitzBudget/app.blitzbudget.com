@@ -196,7 +196,9 @@
 
         document.getElementById('average-expense-emergency').value = formatToCurrency(averageExpense);
         // Your monthly contribution is 10% of the average expense
-        document.getElementById('your-monthly-contribution').value = formatToCurrency(averageExpense / 10);
+        let tenPercentOfAverageIncome = formatToCurrency(averageExpense / 10);
+        document.getElementById('your-monthly-contribution').value = tenPercentOfAverageIncome;
+        document.getElementById("monthly-contribution-display").textContent = tenPercentOfAverageIncome;
     }
 
     // Calculated emergency funds required
