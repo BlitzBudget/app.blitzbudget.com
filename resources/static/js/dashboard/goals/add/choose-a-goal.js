@@ -56,11 +56,9 @@
         currentDate.setMonth(currentDate.getMonth() + 30);
         let cmt = document.getElementById('choose-month-title');
         cmt.textContent = window.months[currentDate.getMonth()];
-        cmt.setAttribute('data-selected', (currentDate.getMonth() + 1));
         // Choose year for emergency
         let cyt = document.getElementById('choose-year-title');
         cyt.textContent = currentDate.getFullYear();
-        cyt.setAttribute('data-selected', currentDate.getFullYear());
         // Populate average expense
         populateAverageExpense();
         // Set Slider Values of months

@@ -7,7 +7,6 @@
     $('body').on("click", "#data-picker-month-emergency .dropdown-item", function (event) {
         let currentMonth = (Number(this.dataset.month) + 1);
         document.getElementById('choose-month-title').textContent = window.months[this.dataset.month];
-        document.getElementById('choose-month-title').setAttribute('data-selected', currentMonth);
         let ple = document.getElementById('planned-date-emergency');
         ple.textContent = window.months[this.dataset.month] + ' ' + ple.dataset.dateChosenYear;
         ple.setAttribute('data-date-chosen-month', currentMonth);
@@ -18,7 +17,6 @@
      */
     $('body').on("click", "#data-picker-emergency .dropdown-item", function (event) {
         document.getElementById('choose-year-title').textContent = this.dataset.year;
-        document.getElementById('choose-year-title').setAttribute('data-selected', this.dataset.year);
         let ple = document.getElementById('planned-date-emergency');
         ple.textContent = window.months[Number(ple.dataset.dateChosenMonth) - 1] + ' ' + this.dataset.year;
         ple.setAttribute('data-date-chosen-year', this.dataset.year);
@@ -74,6 +72,35 @@
 
         // Change in the display as well
         document.getElementById("monthly-contribution-display").textContent = formatToCurrency(monthlyCtb);
+
+        /*
+         * Calculate the Dates before which one could pay it off
+         */
+        let totalEmergencyFund = averageExpenseEmergency * window.emergencyFundMonths.noUiSlider.get().charAt(0);
+        let monthlyContribution = er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference);
+        let numberOfMonthsRequired = totalEmergencyFund / monthlyContribution;
+        // Rounding the numbers
+        numberOfMonthsRequired = (numberOfMonthsRequired <= 1) ? 1 : Math.round(numberOfMonthsRequired);
+
+        /*
+         * Date calculated
+         */
+        let currentDate = new Date();
+        currentDate.setMonth(numberOfMonthsRequired);
+
+        /*
+         * Display in date picker
+         */
+        document.getElementById('choose-month-title').textContent = window.months[currentDate.getMonth()];
+        document.getElementById('choose-year-title').textContent = currentDate.getFullYear();
+
+        /*
+         * Displayed Years and Months
+         */
+        let ple = document.getElementById('planned-date-emergency');
+        ple.textContent = window.months[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
+        ple.setAttribute('data-date-chosen-month', currentMonth);
+        ple.setAttribute('data-date-chosen-year', this.dataset.year);
     });
 
 }(jQuery));
