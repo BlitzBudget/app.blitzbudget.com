@@ -352,7 +352,6 @@ function formatNumber(num, locale) {
     }
 
     return new Intl.NumberFormat(locale, {
-        style: 'currency',
         minimumFractionDigits: '2',
         maximumFractionDigits: '2'
     }).format(num);
