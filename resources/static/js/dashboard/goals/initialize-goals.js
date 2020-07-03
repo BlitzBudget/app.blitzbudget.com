@@ -191,6 +191,11 @@
 
                 er_a.populateBankInfo(result.BankAccount);
 
+                /*
+                 * Replace With Currency
+                 */
+                replaceWithCurrency(result.Wallet);
+
             },
             ajaxData.onFailure = function (thrownError) {
                 manageErrors(thrownError, window.translationData.goals.dynamic.geterror, ajaxData);

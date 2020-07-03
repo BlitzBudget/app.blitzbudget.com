@@ -744,8 +744,8 @@ er = {
 
     //convert from currency format to number
     convertToNumberFromCurrency(amount, currentCurrencyPreference) {
-        // Always convert to number as en-US
-        return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount, currentCurrencyPreference))), "en-US")), 2);
+        // Always convert to number as en-US and replace formatting from "," to "" empty space.
+        return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount.replace(",", ""), currentCurrencyPreference))), "en-US")), 2);
     },
 
     // Security check to ensure that the category is present in the map

@@ -351,10 +351,11 @@ function formatNumber(num, locale) {
         locale = "en-US";
     }
 
-    return num.toLocaleString(locale, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        minimumFractionDigits: '2',
+        maximumFractionDigits: '2'
+    }).format(num);
 }
 
 // Get the weekdays name
