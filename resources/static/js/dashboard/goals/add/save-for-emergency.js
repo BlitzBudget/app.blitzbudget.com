@@ -111,6 +111,36 @@
         this.value = formatToCurrency(avExp);
     });
 
+    $('body').on("click", "#save-emergency-goals.emergency-add", function (event) {
+        let plannedDate = document.getElementById('planned-date-emergency');
+        let newDate = new Date();
+        newDate.setMonth(Number(plannedDate['data-date-chosen-month']) + 1);
+        newDate.setFullYear(plannedDate['data-date-chosen-year']);
+        let averageExp = document.getElementById('average-expense-emergency').value;
+
+        /*
+         * Build params for add goals
+         */
+        let walletId = window.currentUser.walletId;
+        let goalType = "EmergencyFund";
+        let targetAmount = averageExp * window.emergencyFundMonths.noUiSlider.get().substring(0, 2);
+        let targetDate = newDate;
+        let targetType = "Wallet";
+        let targetId = window.currentUser.walletId;
+
+        let values = {};
+        values['walletId'] = walletId;
+        values['goalType'] = goalType;
+        values['targetAmount'] = targetAmount;
+        values['targetDate'] = targetDate;
+        values['targetId'] = targetId;
+        values['targetType'] = targetType;
+
+        // Add a goal
+        addAGoal(values);
+
+    });
+
 }(jQuery));
 
 /*

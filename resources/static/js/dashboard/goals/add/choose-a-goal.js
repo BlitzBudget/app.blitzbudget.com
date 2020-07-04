@@ -49,6 +49,7 @@
         document.getElementById('choose-goal-title').textContent = window.translationData ? window.translationData.goals.choose.emergency.title : "Save for an emergency";
         document.getElementById('save-for-emergency').classList.remove('d-none');
         document.getElementById('choose-goal-footer').classList.remove('d-none');
+        document.getElementById('save-emergency-goals').classList.remove('d-none');
         // Focus the avergae expense input on click save for emergency
         document.getElementById('average-expense-emergency').focus();
         // choose month for emergency ( + 30 months)

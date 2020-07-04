@@ -101,7 +101,8 @@
                 "/dashboard/module/profile.js",
                 "/dashboard/goals/initialize-goals.js",
                 "/dashboard/goals/add/save-for-emergency.js",
-                "/dashboard/goals/add/choose-a-goal.js"
+                "/dashboard/goals/add/choose-a-goal.js",
+                "/dashboard/goals/add/add-a-goal.js",
             ]
         },
         {
