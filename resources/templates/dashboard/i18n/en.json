@@ -645,7 +645,9 @@
                 "chooseyear": "Choose Year",
                 "year": "Year",
                 "choosemonth": "Choose Month",
-                "month": "Month"
+                "month": "Month",
+                "chooseanaccount": "Choose an account",
+                "chooseaccount": "Choose Account"
             }
         },
         "dynamic": {
