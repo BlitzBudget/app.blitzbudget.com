@@ -40,9 +40,9 @@
         let monthlyContribution = document.getElementById('your-monthly-contribution').value;
         // If is not a number then
         if (isNaN(avEmergencyExp)) {
-            document.getElementById('save-goals').setAttribute('disabled', 'disabled');
+            document.getElementById('save-emergency-goals').setAttribute('disabled', 'disabled');
         } else if (!isNaN(er.convertToNumberFromCurrency(monthlyContribution, currentCurrencyPreference))) {
-            document.getElementById('save-goals').removeAttribute('disabled');
+            document.getElementById('save-emergency-goals').removeAttribute('disabled');
         }
 
         // See the text value in resume
@@ -71,9 +71,9 @@
         averageExpenseEmergency = er.convertToNumberFromCurrency(averageExpenseEmergency, currentCurrencyPreference);
         // If is not a number then
         if (isNaN(er.convertToNumberFromCurrency(monthlyCtb, currentCurrencyPreference))) {
-            document.getElementById('save-goals').setAttribute('disabled', 'disabled');
+            document.getElementById('save-emergency-goals').setAttribute('disabled', 'disabled');
         } else if (!isNaN(averageExpenseEmergency)) {
-            document.getElementById('save-goals').removeAttribute('disabled');
+            document.getElementById('save-emergency-goals').removeAttribute('disabled');
         }
 
         // Change in the display as well
@@ -112,11 +112,19 @@
     });
 
     $('body').on("click", "#save-emergency-goals.emergency-add", function (event) {
+        // Choose Planned Date
         let plannedDate = document.getElementById('planned-date-emergency');
         let newDate = new Date();
-        newDate.setMonth(Number(plannedDate['data-date-chosen-month']) + 1);
-        newDate.setFullYear(plannedDate['data-date-chosen-year']);
+        newDate.setMonth(Number(plannedDate.dataset.dateChosenMonth) + 1);
+        newDate.setFullYear(plannedDate.dataset.dateChosenYear);
+
+        // Average Expense
         let averageExp = document.getElementById('average-expense-emergency').value;
+        if (isEmpty(averageExp)) {
+            averageExp = 0;
+        } else {
+            averageExp = er.convertToNumberFromCurrency(averageExp, currentCurrencyPreference);
+        }
 
         /*
          * Build params for add goals
