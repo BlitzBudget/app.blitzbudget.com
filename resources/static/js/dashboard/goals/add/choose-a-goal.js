@@ -1,70 +1,5 @@
 "use strict";
 (function scopeWrapper($) {
-
-    /**
-     * START loading the page
-     *
-     */
-    let currentPageInCookie = er.getCookie('currentPage');
-    if (isEqual(currentPageInCookie, 'goalsPage')) {
-        if (isEqual(window.location.href, window._config.app.invokeUrl)) {
-            populateCurrentPage('goalsPage');
-        }
-    }
-
-    /*
-     * On Click goals
-     */
-    let goalsPage = document.getElementById('goalsPage');
-    if (isNotEmpty(settingsPage)) {
-        goalsPage.addEventListener("click", function (e) {
-            populateCurrentPage('goalsPage');
-        });
-    }
-
-    function populateCurrentPage(page) {
-        er.refreshCookiePageExpiry(page);
-        er.fetchCurrentPage('/goals', function (data) {
-            // Load the new HTML
-            $('#mutableDashboard').html(data);
-            // Translate current Page
-            translatePage(getLanguage());
-            // Set Current Page
-            let currentPage = document.getElementById('currentPage');
-            currentPage.setAttribute('data-i18n', 'goals.page.title');
-            currentPage.textContent = window.translationData ? window.translationData.goals.page.title : 'Goals';
-            // Initial Load
-            initialLoad();
-        });
-
-        /**
-         *  Add Functionality Generic + Btn
-         **/
-
-        // Register Tooltips
-        let ttinit = $("#addFncTT");
-        ttinit.attr('data-original-title', 'Add Goals');
-        ttinit.tooltip({
-            delay: {
-                "show": 300,
-                "hide": 100
-            }
-        });
-
-        // Generic Add Functionality
-        let genericAddFnc = document.getElementById('genericAddFnc');
-        document.getElementById('addFncTT').textContent = 'add';
-        genericAddFnc.classList = 'btn btn-round btn-warning btn-just-icon bottomFixed float-right addNewGoals';
-        $(genericAddFnc).unbind('click').click(function () {
-            if (!this.classList.contains('addNewGoals')) {
-                return;
-            }
-
-            // Create goals
-            $('#addGoals').modal('toggle');
-        });
-    }
-
     /*
      * On Click Choose a goal
      */
@@ -114,6 +49,23 @@
         document.getElementById('choose-goal-title').textContent = window.translationData ? window.translationData.goals.choose.emergency.title : "Save for an emergency";
         document.getElementById('save-for-emergency').classList.remove('d-none');
         document.getElementById('choose-goal-footer').classList.remove('d-none');
+        document.getElementById('save-emergency-goals').classList.remove('d-none');
+        // Focus the avergae expense input on click save for emergency
+        document.getElementById('average-expense-emergency').focus();
+        // choose month for emergency ( + 30 months)
+        let currentDate = new Date();
+        currentDate.setMonth(currentDate.getMonth() + 30);
+        let cmt = document.getElementById('choose-month-title');
+        cmt.textContent = window.months[currentDate.getMonth()];
+        // Choose year for emergency
+        let cyt = document.getElementById('choose-year-title');
+        cyt.textContent = currentDate.getFullYear();
+        // Populate average expense
+        populateAverageExpense();
+        // Set Slider Values of months
+        window.emergencyFundMonths.noUiSlider.set(3);
+        // Populate calculated total fund required
+        calculatedEmergencyFundRequired();
     }
 
     /*
@@ -207,79 +159,6 @@
     }
 
     /*
-     * Initial Load of goals page
-     */
-    function initialLoad() {
-        /*
-         * Save For Emergency
-         */
-        // no ui slider initialize
-        window.emergencyFundMonths = document.getElementById('emergency-fund-months');
-        let updateSliderValue = document.getElementById("emergency-fund-value");
-        noUiSlider.create(emergencyFundMonths, {
-            start: 3,
-            connect: 'lower',
-            behaviour: 'tap',
-            tooltips: true,
-            keyboardSupport: true, // Default true
-            keywordPageMultiplier: 2, // Default 5
-            keywordDefaultStep: 1, // Default 10
-            step: 1,
-            range: {
-                min: 1,
-                max: 12
-            },
-            format: {
-                from: Number,
-                to: function (value) {
-                    return (parseInt(value) + " month/s");
-                }
-            }
-        });
-
-        window.emergencyFundMonths.noUiSlider.on('update', function (values, handle) {
-            updateSliderValue.textContent = values[handle];
-        });
-
-        loadDatePickerForEmergency();
-    }
-
-    /*
-     * Load Date Picker Year for emergency
-     */
-    function loadDatePickerForEmergency() {
-        let currentYear = new Date().getFullYear();
-        let yearFragment = document.createDocumentFragment();
-        for (let i = 0; i < 15; i++) {
-            yearFragment.appendChild(createOneDate(currentYear++));
-        }
-        document.getElementById('list-of-year-emergency').append(yearFragment);
-    }
-
-    /*
-     * Create One Date
-     */
-    function createOneDate(year) {
-        let liElement = document.createElement('li');
-
-        let anchorTag = document.createElement('a');
-        anchorTag.setAttribute('role', 'option');
-        anchorTag.classList = 'dropdown-item';
-        anchorTag.setAttribute('aria-disabled', 'false');
-        anchorTag.setAttribute('tabindex', '0');
-        anchorTag.setAttribute('aria-selected', 'false');
-        anchorTag.setAttribute('data-year', year);
-
-        let spanText = document.createElement('span');
-        spanText.classList = 'text';
-        spanText.textContent = year;
-        anchorTag.appendChild(spanText);
-        liElement.appendChild(anchorTag);
-
-        return liElement;
-    }
-
-    /*
      * Click Back Button
      */
     $('body').on("click", "#back-goals", function (event) {
@@ -295,6 +174,42 @@
         document.getElementById('improve-my-home').classList.add('d-none');
         document.getElementById('create-a-custom-goal').classList.add('d-none');
         document.getElementById('choose-goal-footer').classList.add('d-none');
+        document.getElementById('choose-goal-title').textContent = window.translationData ? window.translationData.goals.choose.title : "Choose a goal";
     });
 
+    /*
+     * Populates the average Expense for the emergency fund
+     */
+    function populateAverageExpense() {
+        let averageExpense = 0;
+        if (isNotEmpty(window.datesCreated)) {
+            let totalExpense = 0;
+            for (let i = 0, len = window.datesCreated.length; i < len; i++) {
+                totalExpense += Math.abs(window.datesCreated[i]['expense_total']);
+            }
+
+            if (totalExpense > 0) {
+                averageExpense = totalExpense / window.datesCreated.length;
+            }
+        }
+
+        document.getElementById('average-expense-emergency').value = formatToCurrency(averageExpense);
+        // Your monthly contribution is 10% of the average expense
+        let tenPercentOfAverageIncome = formatToCurrency(averageExpense / 10);
+        document.getElementById('your-monthly-contribution').value = tenPercentOfAverageIncome;
+        document.getElementById("monthly-contribution-display").textContent = tenPercentOfAverageIncome;
+    }
+
+    // Calculated emergency funds required
+    function calculatedEmergencyFundRequired() {
+        // Planned date
+        let ple = document.getElementById('planned-date-emergency');
+        let currentDate = new Date();
+        // Set Date to 30 months in the future
+        currentDate.setMonth(currentDate.getMonth() + 30);
+        let ytd = window.months[currentDate.getMonth()] + ' ' + currentDate.getFullYear();
+        ple.textContent = ytd;
+        ple.setAttribute('data-date-chosen-month', currentDate.getMonth() + 1);
+        ple.setAttribute('data-date-chosen-year', currentDate.getFullYear());
+    }
 }(jQuery));

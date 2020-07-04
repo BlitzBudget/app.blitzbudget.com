@@ -1,23 +1,24 @@
 window._config = {
     api: {
         invokeUrl: 'https://api.blitzbudget.com', // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod,
-        sendEmailUrl : '/send-email',
+        sendEmailUrl: '/send-email',
         profile: {
-            refreshToken : '/profile/refresh-token',
-            signin : '/profile/sign-in',
-            signup : '/profile/sign-up',
-            confirmSignup : '/profile/confirm-sign-up',
-            resendConfirmationCode : '/profile/resend-confirmation-code',
+            refreshToken: '/profile/refresh-token',
+            signin: '/profile/sign-in',
+            signup: '/profile/sign-up',
+            confirmSignup: '/profile/confirm-sign-up',
+            resendConfirmationCode: '/profile/resend-confirmation-code',
             forgotPassword: '/profile/forgot-password',
             confirmForgotPassword: '/profile/confirm-forgot-password',
             deleteUser: '/profile/delete-user',
             changePassword: '/profile/change-password',
         },
         deleteItem: '/delete-item',
-        deleteBatch: '/delete-batch'
+        deleteBatch: '/delete-batch',
+        goals: '/goals'
     },
     home: {
-    	invokeUrl: 'https://www.blitzbudget.com'
+        invokeUrl: 'https://www.blitzbudget.com'
     },
     help: {
         invokeUrl: 'https://help.blitzbudget.com',

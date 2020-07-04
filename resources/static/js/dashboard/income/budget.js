@@ -509,7 +509,7 @@
             enteredText = 0;
         } else if (enteredText < 0) {
             // Replace negative sign to positive sign if entered by the user
-            enteredText = parseFloat(Math.abs(enteredText), 2);
+            enteredText = Math.abs(enteredText);
         }
 
         // Test if the previous value is valid

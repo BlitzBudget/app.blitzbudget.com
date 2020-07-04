@@ -637,7 +637,7 @@
                 "result": "Based on your preferences, You are setting a goal of ",
                 "result2": "for an ",
                 "result3": "Emergency Fund",
-                "result4": ".By saving",
+                "result4": ". By saving ",
                 "result5": " every month. You'll reach your planned goals by ",
                 "date": "Your planned date",
                 "plan": "Plan",
@@ -645,8 +645,13 @@
                 "chooseyear": "Choose Year",
                 "year": "Year",
                 "choosemonth": "Choose Month",
-                "month": "Month"
+                "month": "Month",
+                "chooseanaccount": "Choose an account",
+                "chooseaccount": "Choose Account"
             }
+        },
+        "dynamic": {
+            "geterror": "Error fetching information for goals. Please try again later!"
         }
     }
 }
