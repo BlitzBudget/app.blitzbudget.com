@@ -196,6 +196,11 @@
                  */
                 replaceWithCurrency(result.Wallet);
 
+                /*
+                 * Display Goals
+                 */
+                displayGoals(result.Goal);
+
             },
             ajaxData.onFailure = function (thrownError) {
                 manageErrors(thrownError, window.translationData.goals.dynamic.geterror, ajaxData);
@@ -216,4 +221,122 @@
         });
     }
 
+    /*
+     * Display goal
+     */
+    function displayGoals(goalArray) {
+        /*
+         * Goal is Empty
+         */
+        if (isEmpty(goalArray)) {
+            return;
+        }
+
+        // Fragment Goal
+        let fragmentGoal = document.createDocumentFragment();
+        for (let i = 0, len = goalArray.length; i < len; i++) {
+            let goal = goalArray[i];
+            fragmentGoal.appendChild(buildAGoal(goal, i));
+        }
+        document.getElementById('goal-displayed').appendChild(fragmentGoal);
+    }
+
+    /*
+     * Build a goal
+     */
+    function buildAGoal(oneGoal, count) {
+        let cardProduct = document.createElement('div');
+        cardProduct.classList = 'card card-product';
+        cardProduct.setAttribute('data-count', count);
+
+        let cardHeader = document.createElement('div');
+        cardHeader.classList = 'card-header card-header-image animated';
+        cardHeader.setAttribute('data-header-animation', 'true');
+
+        let imageAnchor = document.createElement('a');
+        imageAnchor.href = 'Javascript:void(0);';
+
+        let imageElement = document.createElement('img');
+        imageElement.classList = 'img';
+        imageElement.src = '../img/dashboard/goals/emergency-fund.jpg';
+        imageAnchor.appendChild(imageElement);
+        cardHeader.appendChild(imageAnchor);
+        cardProduct.appendChild(cardHeader);
+
+
+        /*
+         * Build Card Body
+         */
+        let cardBody = document.createElement('div');
+        cardBody.classList = 'card-body';
+
+        let cardActions = document.createElement('div');
+        cardActions.classList = 'card-actions text-center';
+
+        let viewButton = document.createElement('div');
+        viewButton.type = 'button';
+        viewButton.classList = 'btn btn-default btn-link';
+        viewButton.setAttribute('rel', 'tooltip');
+        viewButton.setAttribute('data-placement', 'bottom');
+        viewButton.setAttribute('data-original-title', 'View');
+        cardActions.appendChild(viewButton);
+
+        let editButton = document.createElement('div');
+        editButton.type = 'button';
+        editButton.classList = 'btn btn-success btn-link';
+        editButton.setAttribute('rel', 'tooltip');
+        editButton.setAttribute('data-placement', 'bottom');
+        editButton.setAttribute('data-original-title', 'Edit');
+        cardActions.appendChild(editButton);
+
+        let removeButton = document.createElement('div');
+        removeButton.type = 'button';
+        removeButton.classList = 'btn btn-danger btn-link';
+        removeButton.setAttribute('rel', 'tooltip');
+        removeButton.setAttribute('data-placement', 'bottom');
+        removeButton.setAttribute('data-original-title', 'Remove');
+        cardActions.appendChild(removeButton);
+        cardBody.appendChild(cardActions);
+
+        let cardTitle = document.createElement('h3');
+        cardTitle.classList = 'card-title';
+
+        let anchorTitle = document.createElement('a');
+        anchorTitle.href = 'Javascript:void(0);';
+        anchorTitle.textContent = oneGoal['goal_type'];
+        cardTitle.appendChild(anchorTitle);
+        cardBody.appendChild(cardTitle);
+
+
+        let cardDescription = document.createElement('div');
+        cardDescription.classList = 'card-description';
+        cardBody.appendChild(cardDescription);
+        cardProduct.appendChild(cardBody);
+
+        /*
+         * Card Footer
+         */
+        let cardFooter = document.createElement('div');
+        cardFooter.classList = 'card-footer';
+
+        let footerPrice = document.createElement('div');
+        footerPrice.classList = 'price';
+
+        let footerAmount = document.createElement('div');
+        footerAmount.classList = 'description';
+        footerAmount.textContent = oneGoal['monthly_contribution'] + '/month';
+        footerPrice.appendChild(footerAmount);
+        cardFooter.appendChild(footerPrice);
+
+        let stats = document.createElement('div');
+        stats.classList = 'stats';
+
+        let cardCategory = document.createElement('p');
+        cardCategory.classList = 'card-category';
+        stats.appendChild(cardCategory);
+        cardFooter.appendChild(stats);
+        cardProduct.appendChild(cardFooter);
+
+        return cardProduct;
+    }
 }(jQuery));
