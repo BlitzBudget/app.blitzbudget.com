@@ -285,23 +285,28 @@
         let viewButton = document.createElement('div');
         viewButton.type = 'button';
         viewButton.classList = 'btn btn-default btn-link';
-        viewButton.setAttribute('rel', 'tooltip');
+        viewButton.setAttribute('data-toggle', 'tooltip');
         viewButton.setAttribute('data-placement', 'bottom');
-        viewButton.setAttribute('data-original-title', 'View');
+        viewButton.setAttribute('data-original-title', 'View goal');
 
         let artIcon = document.createElement('i');
         artIcon.classList = 'material-icons';
         artIcon.textContent = 'art_track';
         viewButton.appendChild(artIcon);
+
+        // ripple Container
+        let rippleContainer = document.createElement('div');
+        rippleContainer.classList = 'ripple-container';
+        viewButton.appendChild(rippleContainer);
         cardActions.appendChild(viewButton);
 
         // Edit Button
         let editButton = document.createElement('div');
         editButton.type = 'button';
         editButton.classList = 'btn btn-success btn-link';
-        editButton.setAttribute('rel', 'tooltip');
+        editButton.setAttribute('data-toggle', 'tooltip');
         editButton.setAttribute('data-placement', 'bottom');
-        editButton.setAttribute('data-original-title', 'Edit');
+        editButton.setAttribute('data-original-title', 'Edit goal');
 
         let editIcon = document.createElement('i');
         editIcon.classList = 'material-icons';
@@ -313,9 +318,9 @@
         let removeButton = document.createElement('div');
         removeButton.type = 'button';
         removeButton.classList = 'btn btn-danger btn-link';
-        removeButton.setAttribute('rel', 'tooltip');
+        removeButton.setAttribute('data-toggle', 'tooltip');
         removeButton.setAttribute('data-placement', 'bottom');
-        removeButton.setAttribute('data-original-title', 'Remove');
+        removeButton.setAttribute('data-original-title', 'Delete goal');
 
         let removeIcon = document.createElement('i');
         removeIcon.classList = 'material-icons';
