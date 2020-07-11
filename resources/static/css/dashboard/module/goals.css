@@ -128,3 +128,9 @@
     font-size: 0.8rem;
     font-weight: 300;
 }
+
+.card-product .card-category,
+.card-product .card-description,
+.card-product .card-title {
+    text-align: center;
+}

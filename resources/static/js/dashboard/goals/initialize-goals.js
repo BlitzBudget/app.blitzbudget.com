@@ -364,6 +364,12 @@
 
         let cardCategory = document.createElement('p');
         cardCategory.classList = 'card-category';
+        cardCategory.textContent = 'inprogress'
+
+        let tickIcon = document.createElement('i');
+        tickIcon.classList = 'material-icons';
+        tickIcon.textContent = 'autorenew';
+        cardCategory.appendChild(tickIcon);
         stats.appendChild(cardCategory);
         cardFooter.appendChild(stats);
         cardProduct.appendChild(cardFooter);
