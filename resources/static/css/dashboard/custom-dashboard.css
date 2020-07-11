@@ -1408,7 +1408,8 @@ textarea:disabled {
 .nav-link:hover .material-icons,
 #dashboard-util-logout:hover .material-icons,
 .card-icon .material-icons,
-.nav-link:hover svg {
+.nav-link:hover svg,
+.card.card-product:hover .material-icons {
     -webkit-transform: scale(1) rotate(5deg);
     -ms-transform: scale(1) rotate(5deg);
     -o-transform: scale(1) rotate(5deg);

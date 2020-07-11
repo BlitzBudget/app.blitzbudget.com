@@ -70,3 +70,61 @@
     border-color: #ff9800;
     box-shadow: 0 2px 2px 0 rgba(255, 152, 0, 0.14), 0 3px 1px -2px rgba(255, 152, 0, 0.2), 0 1px 5px 0 rgba(255, 152, 0, 0.12);
 }
+
+/*
+* Goal Cards
+*/
+.card-actions .btn.btn-default {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.card-actions .btn.btn-default:hover {
+    background: #fafafa radial-gradient(circle, transparent 1%, #fafafa 1%) center/15000%;
+}
+
+.card-actions .btn.btn-default:active {
+    background-color: #fafafa;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.card-actions .btn.btn-success {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.card-actions .btn.btn-success:hover {
+    background: #f5fcf6 radial-gradient(circle, transparent 1%, #f5fcf6 1%) center/15000%;
+}
+
+.card-actions .btn.btn-success:active {
+    background-color: #f5fcf6;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.card-actions .btn.btn-danger {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.card-actions .btn.btn-danger:hover {
+    background: #fbf3f2 radial-gradient(circle, transparent 1%, #fbf3f2 1%) center/15000%;
+}
+
+.card-actions .btn.btn-danger:active {
+    background-color: #fbf3f2;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.card.card-product .card-title {
+    font-size: 1.125rem;
+    font-weight: 300;
+}
+
+.card.card-product .card-footer .price {
+    font-size: 0.8rem;
+    font-weight: 300;
+}
