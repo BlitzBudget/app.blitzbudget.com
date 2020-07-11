@@ -273,28 +273,46 @@
         let cardActions = document.createElement('div');
         cardActions.classList = 'card-actions text-center';
 
+        // View Button
         let viewButton = document.createElement('div');
         viewButton.type = 'button';
         viewButton.classList = 'btn btn-default btn-link';
         viewButton.setAttribute('rel', 'tooltip');
         viewButton.setAttribute('data-placement', 'bottom');
         viewButton.setAttribute('data-original-title', 'View');
+
+        let artIcon = document.createElement('i');
+        artIcon.classList = 'material-icons';
+        artIcon.textContent = 'art_track';
+        viewButton.appendChild(artIcon);
         cardActions.appendChild(viewButton);
 
+        // Edit Button
         let editButton = document.createElement('div');
         editButton.type = 'button';
         editButton.classList = 'btn btn-success btn-link';
         editButton.setAttribute('rel', 'tooltip');
         editButton.setAttribute('data-placement', 'bottom');
         editButton.setAttribute('data-original-title', 'Edit');
+
+        let editIcon = document.createElement('i');
+        editIcon.classList = 'material-icons';
+        editIcon.textContent = 'edit';
+        editButton.appendChild(editIcon);
         cardActions.appendChild(editButton);
 
+        // Remove Button
         let removeButton = document.createElement('div');
         removeButton.type = 'button';
         removeButton.classList = 'btn btn-danger btn-link';
         removeButton.setAttribute('rel', 'tooltip');
         removeButton.setAttribute('data-placement', 'bottom');
         removeButton.setAttribute('data-original-title', 'Remove');
+
+        let removeIcon = document.createElement('i');
+        removeIcon.classList = 'material-icons';
+        removeIcon.textContent = 'close';
+        removeButton.appendChild(removeIcon);
         cardActions.appendChild(removeButton);
         cardBody.appendChild(cardActions);
 
