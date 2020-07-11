@@ -238,13 +238,21 @@
             let goal = goalArray[i];
             fragmentGoal.appendChild(buildAGoal(goal, i));
         }
-        document.getElementById('goal-displayed').appendChild(fragmentGoal);
+        let goalDisplayed = document.getElementById('goal-displayed');
+        goalDisplayed.appendChild(fragmentGoal);
+
+        // Initialize tooltip
+        activateTooltip();
     }
 
     /*
      * Build a goal
      */
     function buildAGoal(oneGoal, count) {
+        // Divided Column
+        let mdColumn = document.createElement('div');
+        mdColumn.classList = 'col-md-4';
+
         let cardProduct = document.createElement('div');
         cardProduct.classList = 'card card-product';
         cardProduct.setAttribute('data-count', count);
@@ -354,7 +362,8 @@
         stats.appendChild(cardCategory);
         cardFooter.appendChild(stats);
         cardProduct.appendChild(cardFooter);
+        mdColumn.appendChild(cardProduct);
 
-        return cardProduct;
+        return mdColumn;
     }
 }(jQuery));

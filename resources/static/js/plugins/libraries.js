@@ -418,3 +418,13 @@ function animateValue(element, start, end, postfix, duration) {
 function isABootstrapModalOpen() {
     return document.querySelectorAll('.modal.show').length > 0;
 }
+
+/* Activate Tooltip */
+function activateTooltip() {
+    $('[data-toggle="tooltip"]').tooltip({
+        delay: {
+            "show": 300,
+            "hide": 100
+        }
+    });
+}
