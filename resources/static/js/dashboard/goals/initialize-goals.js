@@ -333,6 +333,7 @@
         cardTitle.classList = 'card-title';
 
         let anchorTitle = document.createElement('a');
+        anchorTitle.classList = 'goal-title';
         anchorTitle.href = 'Javascript:void(0);';
         anchorTitle.textContent = oneGoal['goal_type'];
         cardTitle.appendChild(anchorTitle);
