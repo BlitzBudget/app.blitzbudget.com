@@ -1409,7 +1409,7 @@ textarea:disabled {
 #dashboard-util-logout:hover .material-icons,
 .card-icon .material-icons,
 .nav-link:hover svg,
-.card.card-product:hover .material-icons {
+.card.card-product .card-actions .btn.btn-link:hover .material-icons {
     -webkit-transform: scale(1) rotate(5deg);
     -ms-transform: scale(1) rotate(5deg);
     -o-transform: scale(1) rotate(5deg);

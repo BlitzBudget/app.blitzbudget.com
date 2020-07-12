@@ -134,3 +134,8 @@
 .card-product .card-title {
     text-align: center;
 }
+
+#goal-displayed .card .card-body + .card-footer .stats .material-icons,
+#goal-displayed .card .card-footer .stats .material-icons {
+    top: 1px;
+}
