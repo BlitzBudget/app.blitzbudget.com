@@ -130,7 +130,7 @@
          * Build params for add goals
          */
         let walletId = window.currentUser.walletId;
-        let goalType = "EmergencyFund";
+        let goalType = window.goalType.emergency;
         let targetAmount = averageExp * window.emergencyFundMonths.noUiSlider.get().substring(0, 2);
         let targetDate = newDate;
         let targetType = "Wallet";

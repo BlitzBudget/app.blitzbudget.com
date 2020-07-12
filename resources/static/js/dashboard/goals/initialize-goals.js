@@ -1,6 +1,36 @@
 "use strict";
 (function scopeWrapper($) {
 
+    /*
+     * Images from goal
+     */
+    let imageFromGoalType = {};
+    imageFromGoalType[window.goalType.emergency] = '../img/dashboard/goals/emergency-fund-display.jpg';
+    imageFromGoalType[window.goalType.creditcard] = '../img/dashboard/goals/credit-card-display.jpg';
+    imageFromGoalType[window.goalType.buyacar] = '../img/dashboard/goals/buy-a-car-display.jpg';
+    imageFromGoalType[window.goalType.buyahome] = '../img/dashboard/goals/buy-a-home-display.jpg';
+    imageFromGoalType[window.goalType.customgoal] = '../img/dashboard/goals/custom-goal-display.jpg';
+    imageFromGoalType[window.goalType.improvemyhome] = '../img/dashboard/goals/improve-my-home-display.jpg';
+    imageFromGoalType[window.goalType.payloan] = '../img/dashboard/goals/pay-loan-display.jpg';
+    imageFromGoalType[window.goalType.planatrip] = '../img/dashboard/goals/plan-a-trip-display.jpg';
+    imageFromGoalType[window.goalType.retirement] = '../img/dashboard/goals/retirement-display.jpg';
+    imageFromGoalType[window.goalType.university] = '../img/dashboard/goals/university-display.jpg';
+
+    /*
+     * Type to name
+     */
+    let typeToName = {};
+    typeToName[window.goalType.emergency] = 'Emergency Fund';
+    typeToName[window.goalType.creditcard] = 'Credit card debt';
+    typeToName[window.goalType.buyacar] = 'Buy A Car';
+    typeToName[window.goalType.buyahome] = 'Buy A Home';
+    typeToName[window.goalType.customgoal] = 'Custom goal';
+    typeToName[window.goalType.improvemyhome] = 'Improve My Home';
+    typeToName[window.goalType.payloan] = 'Pay Off Loan';
+    typeToName[window.goalType.planatrip] = 'Travel';
+    typeToName[window.goalType.retirement] = 'Retirement';
+    typeToName[window.goalType.university] = 'Save For College';
+
     /**
      * START loading the page
      *
@@ -266,11 +296,10 @@
 
         let imageElement = document.createElement('img');
         imageElement.classList = 'img';
-        imageElement.src = '../img/dashboard/goals/emergency-fund.jpg';
+        imageElement.src = getImageForGoals(oneGoal['goal_type']);
         imageAnchor.appendChild(imageElement);
         cardHeader.appendChild(imageAnchor);
         cardProduct.appendChild(cardHeader);
-
 
         /*
          * Build Card Body
@@ -335,7 +364,7 @@
         let anchorTitle = document.createElement('a');
         anchorTitle.classList = 'goal-title';
         anchorTitle.href = 'Javascript:void(0);';
-        anchorTitle.textContent = oneGoal['goal_type'];
+        anchorTitle.textContent = typeToName[oneGoal['goal_type']];
         cardTitle.appendChild(anchorTitle);
         cardBody.appendChild(cardTitle);
 
@@ -378,4 +407,12 @@
 
         return mdColumn;
     }
+
+    /*
+     * Goals for Image
+     */
+    function getImageForGoals(goalType) {
+        return imageFromGoalType[goalType];
+    }
+
 }(jQuery));
