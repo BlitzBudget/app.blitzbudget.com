@@ -123,22 +123,29 @@
         if (isEmpty(averageExp)) {
             averageExp = 0;
         } else {
-            averageExp = er.convertToNumberFromCurrency(averageExp, currentCurrencyPreference);
+            averageExp = er.convertToNumberFromCurrency(averageExp, window.currentCurrencyPreference);
         }
 
         /*
          * Build params for add goals
          */
         let walletId = window.currentUser.walletId;
-        let goalType = "EmergencyFund";
+        let goalType = window.goalType.emergency;
         let targetAmount = averageExp * window.emergencyFundMonths.noUiSlider.get().substring(0, 2);
         let targetDate = newDate;
         let targetType = "Wallet";
         let targetId = window.currentUser.walletId;
+        let monthlyContribution = document.getElementById('your-monthly-contribution').value;
+        if (isEmpty(monthlyContribution)) {
+            monthlyContribution = 0;
+        } else {
+            monthlyContribution = er.convertToNumberFromCurrency(monthlyContribution, window.currentCurrencyPreference);
+        }
 
         let values = {};
         values['walletId'] = walletId;
         values['goalType'] = goalType;
+        values['monthlyContribution'] = monthlyContribution;
         values['targetAmount'] = targetAmount;
         values['targetDate'] = targetDate;
         values['targetId'] = targetId;
