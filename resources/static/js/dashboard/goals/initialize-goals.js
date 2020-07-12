@@ -1,5 +1,16 @@
 "use strict";
 (function scopeWrapper($) {
+    window.goalType = {};
+    window.goalType.emergency = 'EmergencyFund';
+    window.goalType.creditcard = 'CreditCard';
+    window.goalType.buyacar = 'BuyACar';
+    window.goalType.buyahome = 'BuyAHome';
+    window.goalType.customgoal = 'CustomGoal';
+    window.goalType.improvemyhome = 'ImproveMyHome';
+    window.goalType.payloan = 'PayLoan';
+    window.goalType.planatrip = 'PlanATrip';
+    window.goalType.retirement = 'Retirement';
+    window.goalType.university = 'University';
 
     /*
      * Images from goal
@@ -332,7 +343,7 @@
         // Edit Button
         let editButton = document.createElement('div');
         editButton.type = 'button';
-        editButton.classList = 'btn btn-success btn-link';
+        editButton.classList = 'btn btn-warning btn-link';
         editButton.setAttribute('data-toggle', 'tooltip');
         editButton.setAttribute('data-placement', 'bottom');
         editButton.setAttribute('data-original-title', 'Edit goal');
