@@ -17,13 +17,15 @@ function addAGoal(values) {
          */
         let displayedGoals = document.getElementsByClassName('displayed-goals');
         // Build Result
-        result['target_type'] = result.targetType;
-        result['monthly_contribution'] = result.monthlyContribution;
-        result['goal_type'] = result.goalType;
-        result['final_amount'] = result.targetAmount;
-        result['preferable_target_date'] = result.targetDate;
-        result.goalId = result.id;
-        buildAGoal(result, displayedGoals.length);
+        result['target_type'] = result['body-json'].targetType;
+        result['monthly_contribution'] = result['body-json'].monthlyContribution;
+        result['goal_type'] = result['body-json'].goalType;
+        result['final_amount'] = result['body-json'].targetAmount;
+        result['preferable_target_date'] = result['body-json'].targetDate;
+        result.goalId = result['body-json'].id;
+        // Display a goal
+        let goalDisplayed = document.getElementById('goal-displayed');
+        goalDisplayed.appendChild(buildAGoal(result, displayedGoals.length));
     }
     ajaxData.onFailure = function (thrownError) {
         manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
