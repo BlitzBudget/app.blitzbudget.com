@@ -651,7 +651,8 @@
             }
         },
         "dynamic": {
-            "geterror": "Error fetching information for goals. Please try again later!"
+            "geterror": "Error fetching information for goals. Please try again later!",
+            "deleteerror": "Error deleting the selected goal. Please try again!"
         }
     }
 }

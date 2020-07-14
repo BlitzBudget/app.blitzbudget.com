@@ -357,7 +357,8 @@
         // Remove Button
         let removeButton = document.createElement('div');
         removeButton.type = 'button';
-        removeButton.classList = 'btn btn-danger btn-link';
+        removeButton.classList = 'btn btn-danger btn-link delete-a-goal';
+        removeButton.setAttribute('data-target', oneGoal.goalId);
         removeButton.setAttribute('data-toggle', 'tooltip');
         removeButton.setAttribute('data-placement', 'bottom');
         removeButton.setAttribute('data-original-title', 'Delete goal');
@@ -424,6 +425,83 @@
      */
     function getImageForGoals(goalType) {
         return imageFromGoalType[goalType];
+    }
+
+    /*
+     * Trigger Delete Goal
+     */
+    $("body").on("click", ".delete-a-goal", function () {
+        deleteGoalFireSwal(this);
+    });
+
+    /*
+     * Delete Goals
+     */
+    function deleteGoalFireSwal(event) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            customClass: {
+                confirmButton: 'btn btn-warning',
+                cancelButton: 'btn btn-danger'
+            },
+            confirmButtonText: 'Yes, delete it!',
+            showCloseButton: true,
+            showCancelButton: false,
+            focusConfirm: true,
+            buttonsStyling: false
+        }).then(function (result) {
+            // If confirm button is clicked
+            if (result.value) {
+                deleteAGoal(event);
+            }
+        }).catch(swal.noop)
+    }
+
+    /*
+     * Delete goal API
+     */
+    function deleteAGoal(event) {
+
+        // Fade Out
+        event.classList.add('fadeOut');
+
+        let values = {};
+        values.walletId = window.currentUser.walletId;
+        values.itemId = event.dataset.target;
+
+        // Ajax Requests on Error
+        let ajaxData = {};
+        ajaxData.isAjaxReq = true;
+        ajaxData.type = 'POST';
+        ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+        ajaxData.dataType = "json";
+        ajaxData.contentType = "application/json;charset=UTF-8";
+        ajaxData.data = JSON.stringify(values);
+        ajaxData.onSuccess = function (result) {
+                // delete the item
+                event.remove();
+            },
+            ajaxData.onFailure = function (thrownError) {
+                manageErrors(thrownError, window.translationData.goals.dynamic.deleteerror, ajaxData);
+                // Fade in
+                event.classList.add('fadeIn');
+            }
+
+        // Load all user transaction from API
+        jQuery.ajax({
+            url: ajaxData.url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authHeader);
+            },
+            type: ajaxData.type,
+            dataType: ajaxData.dataType,
+            contentType: ajaxData.contentType,
+            data: ajaxData.data,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
+        });
     }
 
 }(jQuery));
