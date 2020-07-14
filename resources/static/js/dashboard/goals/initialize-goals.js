@@ -293,10 +293,10 @@
         // Divided Column
         let mdColumn = document.createElement('div');
         mdColumn.classList = 'col-md-4';
+        cardProduct.id = 'goal-' + oneGoal.goalId;
 
         let cardProduct = document.createElement('div');
         cardProduct.classList = 'card card-product';
-        cardProduct.id = 'goal-' + oneGoal.goalId;
         cardProduct.setAttribute('data-count', count);
 
         let cardHeader = document.createElement('div');
@@ -468,7 +468,7 @@
         // Fade Out
         let targetId = event.dataset.target;
         let goalElement = document.getElementById('goal-' + targetId);
-        $(goalElement).fadout();
+        $(goalElement).fadeOut();
 
         let values = {};
         values.walletId = window.currentUser.walletId;
