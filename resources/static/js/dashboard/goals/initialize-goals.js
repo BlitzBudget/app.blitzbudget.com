@@ -468,7 +468,7 @@
         // Fade Out
         let targetId = event.dataset.target;
         let goalElement = document.getElementById('goal-' + targetId);
-        goalElement.classList.add('fadeOut');
+        $(goalElement).fadout();
 
         let values = {};
         values.walletId = window.currentUser.walletId;
@@ -489,7 +489,7 @@
             ajaxData.onFailure = function (thrownError) {
                 manageErrors(thrownError, window.translationData.goals.dynamic.deleteerror, ajaxData);
                 // Fade in
-                goalElement.classList.add('fadeIn');
+                $(goalElement).fadeIn();
             }
 
         // Load all user transaction from API
