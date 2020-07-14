@@ -398,7 +398,7 @@
 
         let footerAmount = document.createElement('div');
         footerAmount.classList = 'description';
-        footerAmount.textContent = oneGoal['monthly_contribution'] + '/month';
+        footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']) + '/month';
         footerPrice.appendChild(footerAmount);
         cardFooter.appendChild(footerPrice);
 
