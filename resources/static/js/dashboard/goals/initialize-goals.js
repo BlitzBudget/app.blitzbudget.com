@@ -296,6 +296,7 @@
 
         let cardProduct = document.createElement('div');
         cardProduct.classList = 'card card-product';
+        cardProduct.id = 'goal-' + oneGoal.goalId;
         cardProduct.setAttribute('data-count', count);
 
         let cardHeader = document.createElement('div');
@@ -465,7 +466,9 @@
     function deleteAGoal(event) {
 
         // Fade Out
-        event.classList.add('fadeOut');
+        let targetId = event.dataset.target;
+        let goalElement = document.getElementById('goal-' + targetId);
+        goalElement.classList.add('fadeOut');
 
         let values = {};
         values.walletId = window.currentUser.walletId;
@@ -481,12 +484,12 @@
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
                 // delete the item
-                event.remove();
+                goalElement.remove();
             },
             ajaxData.onFailure = function (thrownError) {
                 manageErrors(thrownError, window.translationData.goals.dynamic.deleteerror, ajaxData);
                 // Fade in
-                event.classList.add('fadeIn');
+                goalElement.classList.add('fadeIn');
             }
 
         // Load all user transaction from API
