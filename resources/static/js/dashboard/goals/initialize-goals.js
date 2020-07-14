@@ -293,7 +293,7 @@
         // Divided Column
         let mdColumn = document.createElement('div');
         mdColumn.classList = 'col-md-4';
-        cardProduct.id = 'goal-' + oneGoal.goalId;
+        mdColumn.id = 'goal-' + oneGoal.goalId;
 
         let cardProduct = document.createElement('div');
         cardProduct.classList = 'card card-product';
