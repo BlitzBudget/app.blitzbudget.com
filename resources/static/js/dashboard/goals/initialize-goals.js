@@ -287,148 +287,6 @@
     }
 
     /*
-     * Build a goal
-     */
-    function buildAGoal(oneGoal, count) {
-        // Divided Column
-        let mdColumn = document.createElement('div');
-        mdColumn.classList = 'col-md-4';
-        mdColumn.id = 'goal-' + oneGoal.goalId;
-
-        let cardProduct = document.createElement('div');
-        cardProduct.classList = 'card card-product';
-        cardProduct.setAttribute('data-count', count);
-
-        let cardHeader = document.createElement('div');
-        cardHeader.classList = 'card-header card-header-image animated';
-        cardHeader.setAttribute('data-header-animation', 'true');
-
-        let imageAnchor = document.createElement('a');
-        imageAnchor.href = 'Javascript:void(0);';
-
-        let imageElement = document.createElement('img');
-        imageElement.classList = 'img';
-        imageElement.src = getImageForGoals(oneGoal['goal_type']);
-        imageAnchor.appendChild(imageElement);
-        cardHeader.appendChild(imageAnchor);
-        cardProduct.appendChild(cardHeader);
-
-        /*
-         * Build Card Body
-         */
-        let cardBody = document.createElement('div');
-        cardBody.classList = 'card-body';
-
-        let cardActions = document.createElement('div');
-        cardActions.classList = 'card-actions text-center';
-
-        // View Button
-        let viewButton = document.createElement('div');
-        viewButton.type = 'button';
-        viewButton.classList = 'btn btn-default btn-link';
-        viewButton.setAttribute('data-toggle', 'tooltip');
-        viewButton.setAttribute('data-placement', 'bottom');
-        viewButton.setAttribute('data-original-title', 'View goal');
-
-        let artIcon = document.createElement('i');
-        artIcon.classList = 'material-icons';
-        artIcon.textContent = 'art_track';
-        viewButton.appendChild(artIcon);
-
-        // ripple Container
-        let rippleContainer = document.createElement('div');
-        rippleContainer.classList = 'ripple-container';
-        viewButton.appendChild(rippleContainer);
-        cardActions.appendChild(viewButton);
-
-        // Edit Button
-        let editButton = document.createElement('div');
-        editButton.type = 'button';
-        editButton.classList = 'btn btn-warning btn-link';
-        editButton.setAttribute('data-toggle', 'tooltip');
-        editButton.setAttribute('data-placement', 'bottom');
-        editButton.setAttribute('data-original-title', 'Edit goal');
-
-        let editIcon = document.createElement('i');
-        editIcon.classList = 'material-icons';
-        editIcon.textContent = 'edit';
-        editButton.appendChild(editIcon);
-        cardActions.appendChild(editButton);
-
-        // Remove Button
-        let removeButton = document.createElement('div');
-        removeButton.type = 'button';
-        removeButton.classList = 'btn btn-danger btn-link delete-a-goal';
-        removeButton.setAttribute('data-target', oneGoal.goalId);
-        removeButton.setAttribute('data-toggle', 'tooltip');
-        removeButton.setAttribute('data-placement', 'bottom');
-        removeButton.setAttribute('data-original-title', 'Delete goal');
-
-        let removeIcon = document.createElement('i');
-        removeIcon.classList = 'material-icons';
-        removeIcon.textContent = 'close';
-        removeButton.appendChild(removeIcon);
-        cardActions.appendChild(removeButton);
-        cardBody.appendChild(cardActions);
-
-        let cardTitle = document.createElement('h3');
-        cardTitle.classList = 'card-title';
-
-        let anchorTitle = document.createElement('a');
-        anchorTitle.classList = 'goal-title';
-        anchorTitle.href = 'Javascript:void(0);';
-        anchorTitle.textContent = typeToName[oneGoal['goal_type']];
-        cardTitle.appendChild(anchorTitle);
-        cardBody.appendChild(cardTitle);
-
-
-        let cardDescription = document.createElement('div');
-        cardDescription.classList = 'card-description';
-        cardBody.appendChild(cardDescription);
-        cardProduct.appendChild(cardBody);
-
-        /*
-         * Card Footer
-         */
-        let cardFooter = document.createElement('div');
-        cardFooter.classList = 'card-footer';
-
-        let footerPrice = document.createElement('div');
-        footerPrice.classList = 'price';
-
-        let footerAmount = document.createElement('div');
-        footerAmount.classList = 'description';
-        footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']) + '/month';
-        footerPrice.appendChild(footerAmount);
-        cardFooter.appendChild(footerPrice);
-
-        let stats = document.createElement('div');
-        stats.classList = 'stats';
-
-        let cardCategory = document.createElement('p');
-        cardCategory.classList = 'card-category';
-        cardCategory.textContent = 'inprogress'
-
-        let tickIcon = document.createElement('i');
-        tickIcon.classList = 'material-icons';
-        tickIcon.textContent = 'autorenew';
-        cardCategory.appendChild(tickIcon);
-        stats.appendChild(cardCategory);
-        cardFooter.appendChild(stats);
-        cardProduct.appendChild(cardFooter);
-        mdColumn.appendChild(cardProduct);
-
-        return mdColumn;
-    }
-
-    /*
-     * Goals for Image
-     */
-    function getImageForGoals(goalType) {
-        return imageFromGoalType[goalType];
-    }
-
-    /*
      * Trigger Delete Goal
      */
     $("body").on("click", ".delete-a-goal", function () {
@@ -508,3 +366,145 @@
     }
 
 }(jQuery));
+
+/*
+ * Build a goal
+ */
+function buildAGoal(oneGoal, count) {
+    // Divided Column
+    let mdColumn = document.createElement('div');
+    mdColumn.classList = 'col-md-4 displayed-goals';
+    mdColumn.id = 'goal-' + oneGoal.goalId;
+    mdColumn.setAttribute('data-count', count);
+
+    let cardProduct = document.createElement('div');
+    cardProduct.classList = 'card card-product';
+
+    let cardHeader = document.createElement('div');
+    cardHeader.classList = 'card-header card-header-image animated';
+    cardHeader.setAttribute('data-header-animation', 'true');
+
+    let imageAnchor = document.createElement('a');
+    imageAnchor.href = 'Javascript:void(0);';
+
+    let imageElement = document.createElement('img');
+    imageElement.classList = 'img';
+    imageElement.src = getImageForGoals(oneGoal['goal_type']);
+    imageAnchor.appendChild(imageElement);
+    cardHeader.appendChild(imageAnchor);
+    cardProduct.appendChild(cardHeader);
+
+    /*
+     * Build Card Body
+     */
+    let cardBody = document.createElement('div');
+    cardBody.classList = 'card-body';
+
+    let cardActions = document.createElement('div');
+    cardActions.classList = 'card-actions text-center';
+
+    // View Button
+    let viewButton = document.createElement('div');
+    viewButton.type = 'button';
+    viewButton.classList = 'btn btn-default btn-link';
+    viewButton.setAttribute('data-toggle', 'tooltip');
+    viewButton.setAttribute('data-placement', 'bottom');
+    viewButton.setAttribute('data-original-title', 'View goal');
+
+    let artIcon = document.createElement('i');
+    artIcon.classList = 'material-icons';
+    artIcon.textContent = 'art_track';
+    viewButton.appendChild(artIcon);
+
+    // ripple Container
+    let rippleContainer = document.createElement('div');
+    rippleContainer.classList = 'ripple-container';
+    viewButton.appendChild(rippleContainer);
+    cardActions.appendChild(viewButton);
+
+    // Edit Button
+    let editButton = document.createElement('div');
+    editButton.type = 'button';
+    editButton.classList = 'btn btn-warning btn-link';
+    editButton.setAttribute('data-toggle', 'tooltip');
+    editButton.setAttribute('data-placement', 'bottom');
+    editButton.setAttribute('data-original-title', 'Edit goal');
+
+    let editIcon = document.createElement('i');
+    editIcon.classList = 'material-icons';
+    editIcon.textContent = 'edit';
+    editButton.appendChild(editIcon);
+    cardActions.appendChild(editButton);
+
+    // Remove Button
+    let removeButton = document.createElement('div');
+    removeButton.type = 'button';
+    removeButton.classList = 'btn btn-danger btn-link delete-a-goal';
+    removeButton.setAttribute('data-target', oneGoal.goalId);
+    removeButton.setAttribute('data-toggle', 'tooltip');
+    removeButton.setAttribute('data-placement', 'bottom');
+    removeButton.setAttribute('data-original-title', 'Delete goal');
+
+    let removeIcon = document.createElement('i');
+    removeIcon.classList = 'material-icons';
+    removeIcon.textContent = 'close';
+    removeButton.appendChild(removeIcon);
+    cardActions.appendChild(removeButton);
+    cardBody.appendChild(cardActions);
+
+    let cardTitle = document.createElement('h3');
+    cardTitle.classList = 'card-title';
+
+    let anchorTitle = document.createElement('a');
+    anchorTitle.classList = 'goal-title';
+    anchorTitle.href = 'Javascript:void(0);';
+    anchorTitle.textContent = typeToName[oneGoal['goal_type']];
+    cardTitle.appendChild(anchorTitle);
+    cardBody.appendChild(cardTitle);
+
+
+    let cardDescription = document.createElement('div');
+    cardDescription.classList = 'card-description';
+    cardBody.appendChild(cardDescription);
+    cardProduct.appendChild(cardBody);
+
+    /*
+     * Card Footer
+     */
+    let cardFooter = document.createElement('div');
+    cardFooter.classList = 'card-footer';
+
+    let footerPrice = document.createElement('div');
+    footerPrice.classList = 'price';
+
+    let footerAmount = document.createElement('div');
+    footerAmount.classList = 'description';
+    footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']) + '/month';
+    footerPrice.appendChild(footerAmount);
+    cardFooter.appendChild(footerPrice);
+
+    let stats = document.createElement('div');
+    stats.classList = 'stats';
+
+    let cardCategory = document.createElement('p');
+    cardCategory.classList = 'card-category';
+    cardCategory.textContent = 'inprogress'
+
+    let tickIcon = document.createElement('i');
+    tickIcon.classList = 'material-icons';
+    tickIcon.textContent = 'autorenew';
+    cardCategory.appendChild(tickIcon);
+    stats.appendChild(cardCategory);
+    cardFooter.appendChild(stats);
+    cardProduct.appendChild(cardFooter);
+    mdColumn.appendChild(cardProduct);
+
+    return mdColumn;
+}
+
+/*
+ * Goals for Image
+ */
+function getImageForGoals(goalType) {
+    return imageFromGoalType[goalType];
+}

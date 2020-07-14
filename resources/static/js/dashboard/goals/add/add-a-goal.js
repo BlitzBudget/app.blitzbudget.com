@@ -11,7 +11,13 @@ function addAGoal(values) {
     ajaxData.dataType = "json";
     ajaxData.contentType = "application/json;charset=UTF-8";
     ajaxData.data = JSON.stringify(values);
-    ajaxData.onSuccess = function (result) {}
+    ajaxData.onSuccess = function (result) {
+        /*
+         * Build a goal
+         */
+        let displayedGoals = document.getElementsByClassName('displayed-goals');
+        buildAGoal(result, displayedGoals.length);
+    }
     ajaxData.onFailure = function (thrownError) {
         manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
     }
