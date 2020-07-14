@@ -16,6 +16,13 @@ function addAGoal(values) {
          * Build a goal
          */
         let displayedGoals = document.getElementsByClassName('displayed-goals');
+        // Build Result
+        result['target_type'] = result.targetType;
+        result['monthly_contribution'] = result.monthlyContribution;
+        result['goal_type'] = result.goalType;
+        result['final_amount'] = result.targetAmount;
+        result['preferable_target_date'] = result.targetDate;
+        result.goalId = result.id;
         buildAGoal(result, displayedGoals.length);
     }
     ajaxData.onFailure = function (thrownError) {
