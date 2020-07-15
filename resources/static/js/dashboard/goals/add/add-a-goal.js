@@ -27,7 +27,7 @@ function addAGoal(values) {
         let emptyGoals = document.createElement('empty-goal');
         if (isNotEmpty(emptyGoals)) {
             $(emptyGoals).fadeOut('slow', function () {
-                this.remove();
+                emptyGoals.remove();
             });
         }
         // Display a goal
