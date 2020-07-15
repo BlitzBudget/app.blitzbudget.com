@@ -270,6 +270,8 @@
          * Goal is Empty
          */
         if (isEmpty(goalArray)) {
+            let goalDisplayed = document.getElementById('goal-displayed');
+            goalDisplayed.appendChild(emptyGoals());
             return;
         }
 
@@ -284,6 +286,15 @@
 
         // Initialize tooltip
         activateTooltip();
+    }
+
+    /*
+     * Empty Goals
+     */
+    function emptyGoals() {
+        let emptyImage = document.createElement('img');
+        emptyImage.src = '../img/dashboard/goals/goal-empty.svg';
+        return emptyImage;
     }
 
     /*
