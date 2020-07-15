@@ -292,9 +292,13 @@
      * Empty Goals
      */
     function emptyGoals() {
+        let mxauto = document.createElement('div');
+        mxauto.classList = 'mx-auto';
+
         let emptyImage = document.createElement('img');
-        emptyImage.src = '../img/dashboard/goals/goal-empty.svg';
-        return emptyImage;
+        emptyImage.src = '../img/dashboard/goals/goals-empty.svg';
+        mxauto.appendChild(emptyImage);
+        return mxauto;
     }
 
     /*
