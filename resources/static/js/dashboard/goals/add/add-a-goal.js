@@ -24,10 +24,11 @@ function addAGoal(values) {
         result['preferable_target_date'] = result['body-json'].targetDate;
         result.goalId = result['body-json'].id;
         // Remove goals
-        let emptyGoals = document.createElement('empty-goal');
+        let emptyGoals = document.getElementById('empty-goal');
         if (isNotEmpty(emptyGoals)) {
             $(emptyGoals).fadeOut('slow', function () {
-                emptyGoals.remove();
+                // Fadeout and remove goals
+                this.remove();
             });
         }
         // Display a goal
