@@ -23,6 +23,14 @@ function addAGoal(values) {
         result['final_amount'] = result['body-json'].targetAmount;
         result['preferable_target_date'] = result['body-json'].targetDate;
         result.goalId = result['body-json'].id;
+        // Remove goals
+        let emptyGoals = document.createElement('empty-goal');
+        if (isNotEmpty(emptyGoals)) {
+            $(emptyGoals).fadeOut(300, function () {
+                // Fadeout and remove
+                this.remove();
+            });
+        }
         // Display a goal
         let goalDisplayed = document.getElementById('goal-displayed');
         goalDisplayed.appendChild(buildAGoal(result, displayedGoals.length));

@@ -293,13 +293,32 @@
      */
     function emptyGoals() {
         let mxauto = document.createElement('div');
-        mxauto.classList = 'mx-auto';
+        mxauto.classList = 'mx-auto text-center';
+        mxauto.id = "empty-goal";
 
         let emptyImage = document.createElement('img');
         emptyImage.src = '../img/dashboard/goals/goals-empty.svg';
         mxauto.appendChild(emptyImage);
+
+        let title = document.createElement('h3');
+        title.textContent = "You haven't added a goal yet!";
+        mxauto.appendChild(title);
+
+        let actionButton = document.createElement('button');
+        actionButton.classList = "btn btn-warning my-5";
+        actionButton.id = "addAGoal";
+        actionButton.textContent = 'Add A New Goal';
+        mxauto.appendChild(actionButton);
         return mxauto;
     }
+
+    /*
+     * Trigger Add a Goal
+     */
+    $("body").on("click", "#addAGoal", function () {
+        // Create goals
+        $('#addGoals').modal('toggle');
+    });
 
     /*
      * Trigger Delete Goal
