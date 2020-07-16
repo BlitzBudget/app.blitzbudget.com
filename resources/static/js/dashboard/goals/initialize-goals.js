@@ -516,8 +516,8 @@ function buildAGoal(oneGoal, count) {
     progressBar.setAttribute('role', 'progressbar');
     progressBar.setAttribute('aria-valuemin', '0');
     // Set the value and percentage of the progress bar
-    progressBarCategoryModal.setAttribute('aria-valuenow', '51');
-    progressBarCategoryModal.style.width = '51' + '%';
+    progressBar.setAttribute('aria-valuenow', '51');
+    progressBar.style.width = '51' + '%';
     progressBar.setAttribute('aria-valuemax', '100');
     progressDiv.appendChild(progressBar);
     cardDescription.appendChild(progressDiv);
