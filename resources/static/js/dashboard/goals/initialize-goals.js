@@ -512,7 +512,7 @@ function buildAGoal(oneGoal, count) {
     progressDiv.classList = 'progress my-3';
 
     let progressBar = document.createElement('div');
-    progressBar.classList = 'progress-bar';
+    progressBar.classList = 'progress-bar progress-bar-warning-striped';
     progressBar.setAttribute('role', 'progressbar');
     progressBar.setAttribute('aria-valuemin', '0');
     // Set the value and percentage of the progress bar
@@ -535,7 +535,7 @@ function buildAGoal(oneGoal, count) {
 
     let footerAmount = document.createElement('div');
     footerAmount.classList = 'description';
-    footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']) + '/month';
+    footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']) + ' /month';
     footerPrice.appendChild(footerAmount);
     cardFooter.appendChild(footerPrice);
 
