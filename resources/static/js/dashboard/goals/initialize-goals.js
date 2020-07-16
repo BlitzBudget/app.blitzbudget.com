@@ -377,6 +377,14 @@
         ajaxData.onSuccess = function (result) {
                 // delete the item
                 goalElement.remove();
+                // Card Prod ucts
+                let cardProducts = document.getElementsByClassName('card-product');
+                if (cardProducts == null || cardProducts.length == 0) {
+                    // Append Empty Goals if all the goals are removed
+                    let goalDisplayed = document.getElementById('goal-displayed');
+                    goalDisplayed.appendChild(emptyGoals());
+                }
+
             },
             ajaxData.onFailure = function (thrownError) {
                 manageErrors(thrownError, window.translationData.goals.dynamic.deleteerror, ajaxData);
@@ -499,6 +507,20 @@ function buildAGoal(oneGoal, count) {
 
     let cardDescription = document.createElement('div');
     cardDescription.classList = 'card-description';
+
+    let progressDiv = document.createElement('div');
+    progressDiv.classList = 'progress my-3';
+
+    let progressBar = document.createElement('div');
+    progressBar.classList = 'progress-bar';
+    progressBar.setAttribute('role', 'progressbar');
+    progressBar.setAttribute('aria-valuemin', '0');
+    // Set the value and percentage of the progress bar
+    progressBarCategoryModal.setAttribute('aria-valuenow', '51');
+    progressBarCategoryModal.style.width = '51' + '%';
+    progressBar.setAttribute('aria-valuemax', '100');
+    progressDiv.appendChild(progressBar);
+    cardDescription.appendChild(progressDiv);
     cardBody.appendChild(cardDescription);
     cardProduct.appendChild(cardBody);
 

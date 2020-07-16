@@ -31,9 +31,10 @@ function addAGoal(values) {
                 this.remove();
             });
         }
+
         // Display a goal
         let goalDisplayed = document.getElementById('goal-displayed');
-        goalDisplayed.appendChild(buildAGoal(result, displayedGoals.length));
+        $(goalDisplayed).append(buildAGoal(result, displayedGoals.length)).hide().fadeIn();
     }
     ajaxData.onFailure = function (thrownError) {
         manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
