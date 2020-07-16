@@ -240,7 +240,7 @@
                 /*
                  * Display Goals
                  */
-                displayGoals(result.Goal);
+                displayGoals(result.Goal, result.Wallet);
 
             },
             ajaxData.onFailure = function (thrownError) {
@@ -265,7 +265,7 @@
     /*
      * Display goal
      */
-    function displayGoals(goalArray) {
+    function displayGoals(goalArray, currentWalletData) {
         /*
          * Goal is Empty
          */
@@ -279,7 +279,7 @@
         let fragmentGoal = document.createDocumentFragment();
         for (let i = 0, len = goalArray.length; i < len; i++) {
             let goal = goalArray[i];
-            fragmentGoal.appendChild(buildAGoal(goal, i));
+            fragmentGoal.appendChild(buildAGoal(goal, i, currentWalletData));
         }
         let goalDisplayed = document.getElementById('goal-displayed');
         goalDisplayed.appendChild(fragmentGoal);
@@ -412,7 +412,7 @@
 /*
  * Build a goal
  */
-function buildAGoal(oneGoal, count) {
+function buildAGoal(oneGoal, count, currentWalletData) {
     // Divided Column
     let mdColumn = document.createElement('div');
     mdColumn.classList = 'col-md-4 displayed-goals';
@@ -516,6 +516,7 @@ function buildAGoal(oneGoal, count) {
     progressBar.setAttribute('role', 'progressbar');
     progressBar.setAttribute('aria-valuemin', '0');
     // Set the value and percentage of the progress bar
+    let progressBarPercentage = calculatePercentageForGoals(oneGoal, currentWalletData);
     progressBar.setAttribute('aria-valuenow', '51');
     progressBar.style.width = '51' + '%';
     progressBar.setAttribute('aria-valuemax', '100');
@@ -556,6 +557,26 @@ function buildAGoal(oneGoal, count) {
     mdColumn.appendChild(cardProduct);
 
     return mdColumn;
+}
+
+/*
+ * Calculate Percentage for goals
+ */
+function calculatePercentageForGoals(oneGoal, currentWalletData) {
+    let percentage = 0;
+    let finalAmount = oneGoal['final_amount'];
+    let currentAmount = 0;
+
+    switch (oneGoal['target_type']) {
+        case 'Wallet':
+            currentAmount = currentWalletData['wallet_balance'];
+            break;
+        default:
+            break;
+    }
+
+    // Return percentage
+    return (currentAmount / finalAmount) * 100;
 }
 
 /*
