@@ -450,13 +450,7 @@
         progressDiv.classList = 'progress mt-3';
 
         let progressBar = document.createElement('div');
-        progressBar.classList = 'progress-bar progress-bar-warning-striped';
-        progressBar.setAttribute('role', 'progressbar');
-        progressBar.setAttribute('aria-valuemin', '0');
-        // Set the value and percentage of the progress bar
-        progressBar.setAttribute('aria-valuenow', '10');
-        progressBar.style.width = '10%';
-        progressBar.setAttribute('aria-valuemax', '100');
+        progressBar.classList = 'indeterminate';
         progressDiv.appendChild(progressBar);
         cardDescription.appendChild(progressDiv);
 
