@@ -210,6 +210,10 @@
      * Fetch Goals
      */
     function fetchGoals() {
+
+        let goalDisplayed = document.getElementById('goal-displayed');
+        goalDisplayed.appendChild(buildLoadingGoals());
+
         let values = {};
         if (isNotEmpty(window.currentUser.walletId)) {
             values.walletId = window.currentUser.walletId;
@@ -405,6 +409,115 @@
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
         });
+    }
+
+    /*
+     * Build Loading Goals
+     */
+    function buildLoadingGoals() {
+        // Divided Column
+        let mdColumn = document.createElement('div');
+        mdColumn.classList = 'col-md-4';
+        mdColumn.id = "loading-goal";
+
+        let cardProduct = document.createElement('div');
+        cardProduct.classList = 'card card-product';
+
+        let cardHeader = document.createElement('div');
+        cardHeader.classList = 'card-header card-header-image animated';
+        cardHeader.setAttribute('data-header-animation', 'true');
+
+        let imageAnchor = document.createElement('a');
+        imageAnchor.href = 'Javascript:void(0);';
+
+        let imageElement = document.createElement('img');
+        imageElement.classList = 'img';
+        imageElement.src = "";
+        imageAnchor.appendChild(imageElement);
+        cardHeader.appendChild(imageAnchor);
+        cardProduct.appendChild(cardHeader);
+
+        /*
+         * Build Card Body
+         */
+        let cardBody = document.createElement('div');
+        cardBody.classList = 'card-body';
+
+        let cardDescription = document.createElement('div');
+        cardDescription.classList = 'card-description';
+
+        let progressDiv = document.createElement('div');
+        progressDiv.classList = 'progress mt-3';
+
+        let progressBar = document.createElement('div');
+        progressBar.classList = 'progress-bar progress-bar-warning-striped';
+        progressBar.setAttribute('role', 'progressbar');
+        progressBar.setAttribute('aria-valuemin', '0');
+        // Set the value and percentage of the progress bar
+        progressBar.setAttribute('aria-valuenow', '10');
+        progressBar.style.width = '10%';
+        progressBar.setAttribute('aria-valuemax', '100');
+        progressDiv.appendChild(progressBar);
+        cardDescription.appendChild(progressDiv);
+
+        /*
+         * Description for progress bar
+         */
+        let finalAmount = document.createElement('div');
+        finalAmount.classList = 'row small';
+
+        let zeroDescription = document.createElement('p');
+        zeroDescription.classList = 'description col-6 text-left';
+        zeroDescription.textContent = formatToCurrency('0');
+        finalAmount.appendChild(zeroDescription);
+
+        let finalDescription = document.createElement('p');
+        finalDescription.classList = 'description col-6 text-right';
+        finalDescription.textContent = '0';
+        finalAmount.appendChild(finalDescription);
+        cardDescription.appendChild(finalAmount);
+        cardBody.appendChild(cardDescription);
+        cardProduct.appendChild(cardBody);
+
+
+        /*
+         * Card Footer
+         */
+        let cardFooter = document.createElement('div');
+        cardFooter.classList = 'card-footer';
+
+        let footerPrice = document.createElement('div');
+        footerPrice.classList = 'price';
+
+        let footerAmount = document.createElement('span');
+        footerAmount.classList = 'card-title';
+        footerAmount.textContent = '0';
+        footerPrice.appendChild(footerAmount);
+
+        let footerPerMonth = document.createElement('span');
+        footerPerMonth.classList = 'description';
+        footerPerMonth.textContent = ' / month';
+        footerPrice.appendChild(footerPerMonth);
+        cardFooter.appendChild(footerPrice);
+
+        let stats = document.createElement('div');
+        stats.classList = 'stats';
+
+        let cardCategory = document.createElement('p');
+        cardCategory.classList = 'card-category card-title';
+        cardCategory.textContent = 'loading'
+
+        let tickIcon = document.createElement('i');
+        tickIcon.classList = 'material-icons';
+        tickIcon.textContent = 'autorenew';
+        cardCategory.appendChild(tickIcon);
+        stats.appendChild(cardCategory);
+        cardFooter.appendChild(stats);
+        cardProduct.appendChild(cardFooter);
+        mdColumn.appendChild(cardProduct);
+
+        return mdColumn;
+
     }
 
 }(jQuery));

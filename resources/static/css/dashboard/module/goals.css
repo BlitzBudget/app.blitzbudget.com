@@ -89,17 +89,17 @@
     transition: background 0s;
 }
 
-.card-actions .btn.btn-success {
+.card-actions .btn.btn-warning {
     background-position: center;
     transition: background 0.8s;
 }
 
-.card-actions .btn.btn-success:hover {
-    background: #f5fcf6 radial-gradient(circle, transparent 1%, #f5fcf6 1%) center/15000%;
+.card-actions .btn.btn-warning:hover {
+    background: #fff4e4 radial-gradient(circle, transparent 1%, #fff4e4 1%) center/15000%;
 }
 
-.card-actions .btn.btn-success:active {
-    background-color: #f5fcf6;
+.card-actions .btn.btn-warning:active {
+    background-color: #fff4e4;
     background-size: 100%;
     transition: background 0s;
 }
@@ -143,4 +143,8 @@
 a.goal-title:hover {
     color: #f08f00;
     text-decoration: none;
+}
+
+.overviewDateWrapper {
+    display: none;
 }
