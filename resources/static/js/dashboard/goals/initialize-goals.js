@@ -270,6 +270,13 @@
      * Display goal
      */
     function displayGoals(goalArray, currentWalletData) {
+
+        /*
+         * Remove Loading Goals
+         */
+        let loadingGoal = document.getElementById('loading-goal');
+        loadingGoal.remove();
+
         /*
          * Goal is Empty
          */
