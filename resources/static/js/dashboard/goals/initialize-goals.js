@@ -446,33 +446,23 @@
         let cardDescription = document.createElement('div');
         cardDescription.classList = 'card-description';
 
-        let progressDiv = document.createElement('div');
-        progressDiv.classList = 'progress mt-3';
+        let wSeventy = document.createElement('div');
+        wSeventy.classList = 'w-70 animationCard';
+        cardDescription.appendChild(wSeventy);
 
-        let progressBar = document.createElement('div');
-        progressBar.classList = 'indeterminate';
-        progressDiv.appendChild(progressBar);
-        cardDescription.appendChild(progressDiv);
+        let wFifty = document.createElement('div');
+        wFifty.classList = 'w-50 animationCard';
+        cardDescription.appendChild(wFifty);
 
-        /*
-         * Description for progress bar
-         */
-        let finalAmount = document.createElement('div');
-        finalAmount.classList = 'row small';
+        let wThrity = document.createElement('p');
+        wThrity.classList = 'w-30 animationCard';
+        cardDescription.appendChild(wThrity);
 
-        let zeroDescription = document.createElement('p');
-        zeroDescription.classList = 'description col-6 text-left';
-        zeroDescription.textContent = formatToCurrency('0');
-        finalAmount.appendChild(zeroDescription);
-
-        let finalDescription = document.createElement('p');
-        finalDescription.classList = 'description col-6 text-right';
-        finalDescription.textContent = '0';
-        finalAmount.appendChild(finalDescription);
-        cardDescription.appendChild(finalAmount);
+        let wTen = document.createElement('p');
+        wTen.classList = 'w-10 animationCard';
+        cardDescription.appendChild(wTen);
         cardBody.appendChild(cardDescription);
         cardProduct.appendChild(cardBody);
-
 
         /*
          * Card Footer
@@ -480,19 +470,9 @@
         let cardFooter = document.createElement('div');
         cardFooter.classList = 'card-footer';
 
-        let footerPrice = document.createElement('div');
-        footerPrice.classList = 'price';
-
-        let footerAmount = document.createElement('span');
-        footerAmount.classList = 'card-title';
-        footerAmount.textContent = '0';
-        footerPrice.appendChild(footerAmount);
-
-        let footerPerMonth = document.createElement('span');
-        footerPerMonth.classList = 'description';
-        footerPerMonth.textContent = ' / month';
-        footerPrice.appendChild(footerPerMonth);
-        cardFooter.appendChild(footerPrice);
+        let price = document.createElement('div');
+        price.classList = 'price';
+        cardFooter.appendChild(price);
 
         let stats = document.createElement('div');
         stats.classList = 'stats';
@@ -502,7 +482,7 @@
         cardCategory.textContent = 'loading'
 
         let tickIcon = document.createElement('i');
-        tickIcon.classList = 'material-icons';
+        tickIcon.classList = 'material-icons rotating';
         tickIcon.textContent = 'autorenew';
         cardCategory.appendChild(tickIcon);
         stats.appendChild(cardCategory);
@@ -674,10 +654,10 @@ function buildAGoal(oneGoal, count, currentWalletData) {
 
     let cardCategory = document.createElement('p');
     cardCategory.classList = 'card-category card-title';
-    cardCategory.textContent = 'inprogress'
+    cardCategory.textContent = 'on track'
 
     let tickIcon = document.createElement('i');
-    tickIcon.classList = 'material-icons';
+    tickIcon.classList = 'material-icons rotating';
     tickIcon.textContent = 'autorenew';
     cardCategory.appendChild(tickIcon);
     stats.appendChild(cardCategory);
