@@ -509,7 +509,7 @@ function buildAGoal(oneGoal, count, currentWalletData) {
     cardDescription.classList = 'card-description';
 
     let progressDiv = document.createElement('div');
-    progressDiv.classList = 'progress my-3';
+    progressDiv.classList = 'progress mt-3';
 
     let progressBar = document.createElement('div');
     progressBar.classList = 'progress-bar progress-bar-warning-striped';
@@ -517,11 +517,28 @@ function buildAGoal(oneGoal, count, currentWalletData) {
     progressBar.setAttribute('aria-valuemin', '0');
     // Set the value and percentage of the progress bar
     let progressBarPercentage = calculatePercentageForGoals(oneGoal, currentWalletData);
-    progressBar.setAttribute('aria-valuenow', '51');
-    progressBar.style.width = '51' + '%';
+    progressBar.setAttribute('aria-valuenow', progressBarPercentage);
+    progressBar.style.width = progressBarPercentage + '%';
     progressBar.setAttribute('aria-valuemax', '100');
     progressDiv.appendChild(progressBar);
     cardDescription.appendChild(progressDiv);
+
+    /*
+     * Description for progress bar
+     */
+    let finalAmount = document.createElement('div');
+    finalAmount.classList = 'row small';
+
+    let zeroDescription = document.createElement('p');
+    zeroDescription.classList = 'description col-6 text-left';
+    zeroDescription.textContent = formatToCurrency('0');
+    finalAmount.appendChild(zeroDescription);
+
+    let finalDescription = document.createElement('p');
+    finalDescription.classList = 'description col-6 text-right';
+    finalDescription.textContent = formatToCurrency(oneGoal['final_amount']);
+    finalAmount.appendChild(finalDescription);
+    cardDescription.appendChild(finalAmount);
     cardBody.appendChild(cardDescription);
     cardProduct.appendChild(cardBody);
 
@@ -534,17 +551,22 @@ function buildAGoal(oneGoal, count, currentWalletData) {
     let footerPrice = document.createElement('div');
     footerPrice.classList = 'price';
 
-    let footerAmount = document.createElement('div');
-    footerAmount.classList = 'description';
-    footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']) + ' /month';
+    let footerAmount = document.createElement('span');
+    footerAmount.classList = 'card-title';
+    footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']);
     footerPrice.appendChild(footerAmount);
+
+    let footerPerMonth = document.createElement('span');
+    footerPerMonth.classList = 'description';
+    footerPerMonth.textContent = ' / month';
+    footerPrice.appendChild(footerPerMonth);
     cardFooter.appendChild(footerPrice);
 
     let stats = document.createElement('div');
     stats.classList = 'stats';
 
     let cardCategory = document.createElement('p');
-    cardCategory.classList = 'card-category';
+    cardCategory.classList = 'card-category card-title';
     cardCategory.textContent = 'inprogress'
 
     let tickIcon = document.createElement('i');
