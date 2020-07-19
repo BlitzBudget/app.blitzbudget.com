@@ -52,37 +52,49 @@
      * Edit a goal
      */
     function editAGoal(event) {
-        let dataType = event['data-type'];
+        let dataType = event.dataset.type;
         // Click Add Goals
         document.getElementById('addFncTT').click();
 
         switch (dataType) {
             case window.goalType.emergency:
+                document.getElementById('choose-save-emergency').click();
                 saveForEmergency();
                 break;
             case window.goalType.buyacar:
+                document.getElementById('choose-buy-automobile').click();
                 buyAnAutomobile();
                 break;
             case window.goalType.buyahome:
+                document.getElementById('choose-buy-home').click();
                 buyAHome();
                 break;
             case window.goalType.creditcard:
+                document.getElementById('choose-credit-card').click();
                 payOffCreditCard();
                 break;
             case window.goalType.customgoal:
+                document.getElementById('choose-custom-goal').click();
                 createACustomGoal();
                 break;
             case window.goalType.improvemyhome:
+                document.getElementById('choose-improve-home').click();
+                improveMyHome();
                 break;
             case window.goalType.payloan:
+                document.getElementById('choose-loans').click();
                 payOffLoans();
                 break;
             case window.goalType.planatrip:
+                document.getElementById('choose-take-trip').click();
+                takeATrip();
                 break;
             case window.goalType.retirement:
+                document.getElementById('choose-retirement').click();
                 saveForRetirement()
                 break;
             case window.goalType.university:
+                document.getElementById('choose-college').click();
                 saveForCollege();
                 break;
         }
