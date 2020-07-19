@@ -106,6 +106,18 @@
 
             // Create goals
             $('#addGoals').modal('toggle');
+            // Display choose a goal and hide others
+            document.getElementById('save-for-emergency').classList.add('d-none');
+            document.getElementById('pay-off-credit-card').classList.add('d-none');
+            document.getElementById('pay-off-loans').classList.add('d-none');
+            document.getElementById('save-for-retirement').classList.add('d-none');
+            document.getElementById('buy-a-home').classList.add('d-none');
+            document.getElementById('buy-an-automobile').classList.add('d-none');
+            document.getElementById('save-for-college').classList.add('d-none');
+            document.getElementById('take-a-trip').classList.add('d-none');
+            document.getElementById('improve-my-home').classList.add('d-none');
+            document.getElementById('create-a-custom-goal').classList.add('d-none');
+            document.getElementById('choose-a-goal').classList.remove('d-none');
         });
     }
 
