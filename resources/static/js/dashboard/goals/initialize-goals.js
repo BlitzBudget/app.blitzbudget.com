@@ -685,9 +685,14 @@ function calculatePercentageForGoals(oneGoal, currentWalletData) {
     let finalAmount = oneGoal['final_amount'];
     let currentAmount = 0;
 
+    // Wallet Balance
+    if (isNotEmpty(currentWalletData['wallet_balance'])) {
+        window.currentUser.walletBalance = currentWalletData['wallet_balance'];
+    }
+
     switch (oneGoal['target_type']) {
         case 'Wallet':
-            currentAmount = currentWalletData['wallet_balance'];
+            currentAmount = isEmpty(window.currentUser.walletBalance) ? currentWalletData['wallet_balance'] : window.currentUser.walletBalance;
             break;
         default:
             break;

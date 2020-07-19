@@ -34,7 +34,7 @@ function addAGoal(values) {
 
         // Display a goal
         let goalDisplayed = document.getElementById('goal-displayed');
-        $(goalDisplayed).append(buildAGoal(result, displayedGoals.length)).hide().fadeIn();
+        $(goalDisplayed).append(buildAGoal(result, displayedGoals.length, window.currentUser)).hide().fadeIn();
     }
     ajaxData.onFailure = function (thrownError) {
         manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
