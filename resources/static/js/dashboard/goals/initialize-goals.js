@@ -561,7 +561,9 @@ function buildAGoal(oneGoal, count, currentWalletData) {
     // Edit Button
     let editButton = document.createElement('div');
     editButton.type = 'button';
-    editButton.classList = 'btn btn-warning btn-link';
+    editButton.classList = 'btn btn-warning btn-link edit-a-goal';
+    editButton.setAttribute('data-target', oneGoal.goalId);
+    editButton.setAttribute('data-type', oneGoal['goal_type']);
     editButton.setAttribute('data-toggle', 'tooltip');
     editButton.setAttribute('data-placement', 'bottom');
     editButton.setAttribute('data-original-title', 'Edit goal');

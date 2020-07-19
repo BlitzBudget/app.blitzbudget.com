@@ -42,6 +42,54 @@
     });
 
     /*
+     * Trigger edit a Goal
+     */
+    $("body").on("click", ".edit-a-goal", function () {
+        editAGoal(this);
+    });
+
+    /*
+     * Edit a goal
+     */
+    function editAGoal(event) {
+        let dataType = event['data-type'];
+        // Click Add Goals
+        document.getElementById('addFncTT').click();
+
+        switch (dataType) {
+            case window.goalType.emergency:
+                saveForEmergency();
+                break;
+            case window.goalType.buyacar:
+                buyAnAutomobile();
+                break;
+            case window.goalType.buyahome:
+                buyAHome();
+                break;
+            case window.goalType.creditcard:
+                payOffCreditCard();
+                break;
+            case window.goalType.customgoal:
+                createACustomGoal();
+                break;
+            case window.goalType.improvemyhome:
+                break;
+            case window.goalType.payloan:
+                payOffLoans();
+                break;
+            case window.goalType.planatrip:
+                break;
+            case window.goalType.retirement:
+                saveForRetirement()
+                break;
+            case window.goalType.university:
+                saveForCollege();
+                break;
+        }
+    }
+
+
+    /*
      * Save for Emergency
      */
     function saveForEmergency() {
