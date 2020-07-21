@@ -98,6 +98,7 @@
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
                 "/dashboard/module/settings.js",
                 "/dashboard/overview/overview.js",
+                "/dashboard/overview/categorize-by-account.js",
                 "/dashboard/module/profile.js",
                 "/dashboard/goals/initialize-goals.js",
                 "/dashboard/goals/add/save-for-emergency.js",

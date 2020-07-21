@@ -8,6 +8,7 @@
     let oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
     let incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
     let expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
+    let categorizeByAccount = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebyaccount : 'Account';
     // Lifetime Income Transactions cache
     window.liftimeTransactionsCache = {};
     // populate category breakdown for income or expense
@@ -146,7 +147,7 @@
                 }
 
                 // Global Transactions Cache
-                window.overviewTransactionsCache = result.Transactions;
+                window.overviewTransactionsCache = result.Transaction;
                 // Replace currentCurrencySymbol with currency symbol
                 replaceWithCurrency(result.Wallet);
                 /**
