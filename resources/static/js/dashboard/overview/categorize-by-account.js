@@ -1,11 +1,11 @@
 "use strict";
 (function scopeWrapper($) {
-    let categorizeByAccount = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebyaccount : 'Account';
     let incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
 
     // Chart Income Breakdown Chart
     $("body").on("click", "#chooseCategoryDD .accountOverview", function () {
-        replaceChartChosenLabel(categorizeByAccount);
+        let accountLabel = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebyaccount : 'Account';
+        replaceChartChosenLabel(accountLabel);
         // Fetch Income
         let fetchIncome = isEqual(this.dataset.target, incomeparam);
         // Populate Categorize By Account

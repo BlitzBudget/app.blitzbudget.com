@@ -8,7 +8,6 @@
     let oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
     let incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
     let expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
-    let categorizeByAccount = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebyaccount : 'Account';
     // Lifetime Income Transactions cache
     window.liftimeTransactionsCache = {};
     // populate category breakdown for income or expense
@@ -518,7 +517,7 @@
 
         let categoryLabelDiv2 = document.createElement('div');
         categoryLabelDiv2.classList = 'font-weight-bold';
-        categoryLabelDiv2.textContent = categorizeByAccount;
+        categoryLabelDiv2.textContent = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebyaccount : 'Account';
         anchorDropdownItem2.appendChild(categoryLabelDiv2);
         anchorFragment.appendChild(anchorDropdownItem2);
 
