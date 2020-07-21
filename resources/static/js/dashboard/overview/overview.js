@@ -9,7 +9,7 @@
     let incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
     let expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
     // Lifetime Income Transactions cache
-    let liftimeTransactionsCache = {};
+    window.liftimeTransactionsCache = {};
     // populate category breakdown for income or expense
     let fetchIncomeBreakDownCache = true;
     // Doughnut breakdown open
@@ -508,6 +508,17 @@
         anchorDropdownItem1.appendChild(categoryLabelDiv1);
         anchorFragment.appendChild(anchorDropdownItem1);
 
+        // By Account
+        let anchorDropdownItem2 = document.createElement('a');
+        anchorDropdownItem2.classList = 'dropdown-item accountOverview';
+        anchorDropdownItem2.setAttribute('data-target', incomeOrExpenseParam);
+
+        let categoryLabelDiv2 = document.createElement('div');
+        categoryLabelDiv2.classList = 'font-weight-bold';
+        categoryLabelDiv2.textContent = categorizeByAccount;
+        anchorDropdownItem2.appendChild(categoryLabelDiv2);
+        anchorFragment.appendChild(anchorDropdownItem2);
+
         let chooseCategoryDD = document.getElementById('chooseCategoryDD');
         // Replace inner HTML with EMPTY
         while (chooseCategoryDD.firstChild) {
@@ -727,12 +738,6 @@
             incomeOrExpenseOverviewChart(expenseparam, dateAndTimeAsList);
         }
 
-    }
-
-    // Replaces the text of the chart chosen
-    function replaceChartChosenLabel(chosenChartText) {
-        let chosenChartLabel = document.getElementsByClassName('chosenChart');
-        chosenChartLabel[0].textContent = chosenChartText;
     }
 
     /**
@@ -956,3 +961,9 @@
     }
 
 }(jQuery));
+
+// Replaces the text of the chart chosen
+function replaceChartChosenLabel(chosenChartText) {
+    let chosenChartLabel = document.getElementsByClassName('chosenChart');
+    chosenChartLabel[0].textContent = chosenChartText;
+}
