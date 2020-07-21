@@ -273,6 +273,7 @@
             "oneyear": "Resumen de un año",
             "incomeparam": "Ingresos",
             "expenseparam": "Gasto",
+            "categorizebyaccount": "Cuenta",
             "expensebreakdown": "Desglose de gastos",
             "incomebreakdown": "Desglose de ingresos",
             "title": "Visión general",

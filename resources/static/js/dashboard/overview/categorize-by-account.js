@@ -1,12 +1,15 @@
 "use strict";
 (function scopeWrapper($) {
     let categorizeByAccount = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebyaccount : 'Account';
+    let incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
 
     // Chart Income Breakdown Chart
     $("body").on("click", "#chooseCategoryDD .accountOverview", function () {
         replaceChartChosenLabel(categorizeByAccount);
+        // Fetch Income
+        let fetchIncome = isEqual(this.dataset.target, incomeparam);
         // Populate Categorize By Account
-        populateCategorizeByAccount(true, window.overviewTransactionsCache);
+        populateCategorizeByAccount(fetchIncome, window.overviewTransactionsCache);
     });
 
     // Populate Categorize By Account
@@ -40,9 +43,9 @@
             if (incomeCategory == fetchIncome) {
                 // Check if already present in map
                 if (isNotEmpty(transactionByAccount[accountId])) {
-                    transactionByAccount += Math.abs(transaction.amount);
+                    transactionByAccount[accountId] += Math.abs(transaction.amount);
                 } else {
-                    transactionByAccount = Math.abs(transaction.amount);
+                    transactionByAccount[accountId] = Math.abs(transaction.amount);
                 }
                 // Add the transaction amount to absolute total
                 absoluteTotal += Math.abs(transaction.amount);
@@ -50,6 +53,7 @@
         }
 
         // Build the legend and the series array
+        let bankAccounts = window.allBankAccountInfoCache;
         for (let count = 0, length = bankAccounts.length; count < length; count++) {
             let account = bankAccounts[count];
             let accountId = account.accountId;
@@ -97,7 +101,7 @@
 
         }
 
-        buildPieChart(dataSimpleBarChart, 'colouredAccountPieChart', absoluteTotal);
+        buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal);
     }
 
     // Introduce Chartist pie chart

@@ -140,7 +140,7 @@
                 fetchJSONForCategories(result.Category);
 
                 // Upon refresh call the income overview chart
-                incomeOrExpenseOverviewChart(incomeTotalParam, result.Date);
+                populateLineChart(result.Date, true);
                 // Populate category brakdown
                 if (doughnutBreakdownOpen) {
                     populateCategoryBreakdown(fetchIncomeBreakDownCache);
@@ -202,6 +202,9 @@
             isEmpty(incomeTotalParameter)) {
             return;
         }
+
+        // Replace the Drop down with one year view
+        replaceChartChosenLabel(oneyearoverview);
 
         // Store it in a cache
         liftimeTransactionsCache = dateAndAmountAsList;
@@ -316,8 +319,6 @@
                 // Replace the Drop down with one year view
                 replaceChartChosenLabel(window.translationData.overview.dynamic.incomebreakdown);
             } else {
-                // Replace the Drop down with one year view
-                replaceChartChosenLabel(oneyearoverview);
                 populateLineChart(liftimeTransactionsCache, true);
             }
             document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.incomeoverview;
@@ -335,8 +336,6 @@
                 replaceChartChosenLabel(window.translationData.overview.dynamic.expensebreakdown);
             } else {
                 populateLineChart(liftimeTransactionsCache, false);
-                // Replace the Drop down with one year view
-                replaceChartChosenLabel(oneyearoverview);
             }
             document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.expenseoverview;
             // Replace the drop down for chart options
@@ -535,7 +534,6 @@
     $("body").on("click", "#chooseCategoryDD .chartOverviewIncome", function () {
         // Dough nut breakdown open cache
         doughnutBreakdownOpen = false;
-        replaceChartChosenLabel(oneyearoverview);
         // populate the income line chart from cache
         populateLineChart(liftimeTransactionsCache, true);
     });
@@ -555,7 +553,6 @@
     $("body").on("click", "#chooseCategoryDD .chartOverviewExpense", function () {
         // Dough nut breakdown open cache
         doughnutBreakdownOpen = false;
-        replaceChartChosenLabel(oneyearoverview);
         // Populate the expense line chart from cache
         populateLineChart(liftimeTransactionsCache, false);
     });

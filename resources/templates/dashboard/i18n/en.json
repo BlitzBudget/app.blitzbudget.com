@@ -273,6 +273,7 @@
             "oneyear": "One Year Overview",
             "incomeparam": "Income",
             "expenseparam": "Expense",
+            "categorizebyaccount": "Account",
             "expensebreakdown": "Expense Breakdown",
             "incomebreakdown": "Income Breakdown",
             "title": "Overview",

@@ -273,6 +273,7 @@
             "oneyear": "Résumé d'un an",
             "incomeparam": "Revenu",
             "expenseparam": "Je dépense",
+            "categorizebyaccount": "Compte",
             "expensebreakdown": "Répartition des dépenses",
             "incomebreakdown": "Répartition des revenus",
             "title": "Vue d'ensemble",
