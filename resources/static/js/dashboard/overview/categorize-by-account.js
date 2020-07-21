@@ -6,11 +6,11 @@
     $("body").on("click", "#chooseCategoryDD .accountOverview", function () {
         replaceChartChosenLabel(categorizeByAccount);
         // Populate Categorize By Account
-        populateCategorizeByAccount(true);
+        populateCategorizeByAccount(true, window.overviewTransactionsCache);
     });
 
     // Populate Categorize By Account
-    function populateCategorizeByAccount(fetchIncome) {
+    function populateCategorizeByAccount(fetchIncome, transactions) {
         let labelsArray = [];
         let seriesArray = [];
         let absoluteTotal = 0;
@@ -164,6 +164,28 @@
             er.startAnimationDonutChart(categoryBreakdownChart);
         }
 
+    }
+
+    // Build Empty chart
+    function buildEmptyChartMessage() {
+        let emptyChartMessage = document.createElement('div');
+        emptyChartMessage.classList = 'text-center align-middle h-20';
+
+        let divIconWrapper = document.createElement('div');
+        divIconWrapper.classList = 'icon-center';
+
+        let iconChart = document.createElement('i');
+        iconChart.classList = 'material-icons noDataChartIcon';
+        iconChart.textContent = 'multiline_chart';
+        divIconWrapper.appendChild(iconChart);
+        emptyChartMessage.appendChild(divIconWrapper);
+
+        let emptyMessage = document.createElement('div');
+        emptyMessage.classList = 'font-weight-bold tripleNineColor';
+        emptyMessage.textContent = window.translationData.overview.dynamic.chart.nodata;
+        emptyChartMessage.appendChild(emptyMessage);
+
+        return emptyChartMessage;
     }
 
 }(jQuery));

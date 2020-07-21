@@ -144,6 +144,9 @@
                 if (doughnutBreakdownOpen) {
                     populateCategoryBreakdown(fetchIncomeBreakDownCache);
                 }
+
+                // Global Transactions Cache
+                window.overviewTransactionsCache = result.Transactions;
                 // Replace currentCurrencySymbol with currency symbol
                 replaceWithCurrency(result.Wallet);
                 /**
