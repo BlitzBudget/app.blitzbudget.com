@@ -15,32 +15,32 @@
     /*
      * Images from goal
      */
-    let imageFromGoalType = {};
-    imageFromGoalType[window.goalType.emergency] = '../img/dashboard/goals/emergency-fund-display.jpg';
-    imageFromGoalType[window.goalType.creditcard] = '../img/dashboard/goals/credit-card-display.jpg';
-    imageFromGoalType[window.goalType.buyacar] = '../img/dashboard/goals/buy-a-car-display.jpg';
-    imageFromGoalType[window.goalType.buyahome] = '../img/dashboard/goals/buy-a-home-display.jpg';
-    imageFromGoalType[window.goalType.customgoal] = '../img/dashboard/goals/custom-goal-display.jpg';
-    imageFromGoalType[window.goalType.improvemyhome] = '../img/dashboard/goals/improve-my-home-display.jpg';
-    imageFromGoalType[window.goalType.payloan] = '../img/dashboard/goals/pay-loan-display.jpg';
-    imageFromGoalType[window.goalType.planatrip] = '../img/dashboard/goals/plan-a-trip-display.jpg';
-    imageFromGoalType[window.goalType.retirement] = '../img/dashboard/goals/retirement-display.jpg';
-    imageFromGoalType[window.goalType.university] = '../img/dashboard/goals/university-display.jpg';
+    window.imageFromGoalType = {};
+    window.imageFromGoalType[window.goalType.emergency] = '../img/dashboard/goals/emergency-fund-display.jpg';
+    window.imageFromGoalType[window.goalType.creditcard] = '../img/dashboard/goals/credit-card-display.jpg';
+    window.imageFromGoalType[window.goalType.buyacar] = '../img/dashboard/goals/buy-a-car-display.jpg';
+    window.imageFromGoalType[window.goalType.buyahome] = '../img/dashboard/goals/buy-a-home-display.jpg';
+    window.imageFromGoalType[window.goalType.customgoal] = '../img/dashboard/goals/custom-goal-display.jpg';
+    window.imageFromGoalType[window.goalType.improvemyhome] = '../img/dashboard/goals/improve-my-home-display.jpg';
+    window.imageFromGoalType[window.goalType.payloan] = '../img/dashboard/goals/pay-loan-display.jpg';
+    window.imageFromGoalType[window.goalType.planatrip] = '../img/dashboard/goals/plan-a-trip-display.jpg';
+    window.imageFromGoalType[window.goalType.retirement] = '../img/dashboard/goals/retirement-display.jpg';
+    window.imageFromGoalType[window.goalType.university] = '../img/dashboard/goals/university-display.jpg';
 
     /*
      * Type to name
      */
-    let typeToName = {};
-    typeToName[window.goalType.emergency] = 'Emergency Fund';
-    typeToName[window.goalType.creditcard] = 'Credit card debt';
-    typeToName[window.goalType.buyacar] = 'Buy A Car';
-    typeToName[window.goalType.buyahome] = 'Buy A Home';
-    typeToName[window.goalType.customgoal] = 'Custom goal';
-    typeToName[window.goalType.improvemyhome] = 'Improve My Home';
-    typeToName[window.goalType.payloan] = 'Pay Off Loan';
-    typeToName[window.goalType.planatrip] = 'Travel';
-    typeToName[window.goalType.retirement] = 'Retirement';
-    typeToName[window.goalType.university] = 'Save For College';
+    window.typeToName = {};
+    window.typeToName[window.goalType.emergency] = 'Emergency Fund';
+    window.typeToName[window.goalType.creditcard] = 'Credit card debt';
+    window.typeToName[window.goalType.buyacar] = 'Buy A Car';
+    window.typeToName[window.goalType.buyahome] = 'Buy A Home';
+    window.typeToName[window.goalType.customgoal] = 'Custom goal';
+    window.typeToName[window.goalType.improvemyhome] = 'Improve My Home';
+    window.typeToName[window.goalType.payloan] = 'Pay Off Loan';
+    window.typeToName[window.goalType.planatrip] = 'Travel';
+    window.typeToName[window.goalType.retirement] = 'Retirement';
+    window.typeToName[window.goalType.university] = 'Save For College';
 
     /**
      * START loading the page
@@ -106,6 +106,18 @@
 
             // Create goals
             $('#addGoals').modal('toggle');
+            // Display choose a goal and hide others
+            document.getElementById('save-for-emergency').classList.add('d-none');
+            document.getElementById('pay-off-credit-card').classList.add('d-none');
+            document.getElementById('pay-off-loans').classList.add('d-none');
+            document.getElementById('save-for-retirement').classList.add('d-none');
+            document.getElementById('buy-a-home').classList.add('d-none');
+            document.getElementById('buy-an-automobile').classList.add('d-none');
+            document.getElementById('save-for-college').classList.add('d-none');
+            document.getElementById('take-a-trip').classList.add('d-none');
+            document.getElementById('improve-my-home').classList.add('d-none');
+            document.getElementById('create-a-custom-goal').classList.add('d-none');
+            document.getElementById('choose-a-goal').classList.remove('d-none');
         });
     }
 
@@ -210,6 +222,10 @@
      * Fetch Goals
      */
     function fetchGoals() {
+
+        let goalDisplayed = document.getElementById('goal-displayed');
+        goalDisplayed.appendChild(buildLoadingGoals());
+
         let values = {};
         if (isNotEmpty(window.currentUser.walletId)) {
             values.walletId = window.currentUser.walletId;
@@ -240,7 +256,7 @@
                 /*
                  * Display Goals
                  */
-                displayGoals(result.Goal);
+                displayGoals(result.Goal, result.Wallet);
 
             },
             ajaxData.onFailure = function (thrownError) {
@@ -265,11 +281,20 @@
     /*
      * Display goal
      */
-    function displayGoals(goalArray) {
+    function displayGoals(goalArray, currentWalletData) {
+
+        /*
+         * Remove Loading Goals
+         */
+        let loadingGoal = document.getElementById('loading-goal');
+        loadingGoal.remove();
+
         /*
          * Goal is Empty
          */
         if (isEmpty(goalArray)) {
+            let goalDisplayed = document.getElementById('goal-displayed');
+            goalDisplayed.appendChild(emptyGoals());
             return;
         }
 
@@ -277,7 +302,7 @@
         let fragmentGoal = document.createDocumentFragment();
         for (let i = 0, len = goalArray.length; i < len; i++) {
             let goal = goalArray[i];
-            fragmentGoal.appendChild(buildAGoal(goal, i));
+            fragmentGoal.appendChild(buildAGoal(goal, i, currentWalletData));
         }
         let goalDisplayed = document.getElementById('goal-displayed');
         goalDisplayed.appendChild(fragmentGoal);
@@ -287,16 +312,135 @@
     }
 
     /*
-     * Build a goal
+     * Empty Goals
      */
-    function buildAGoal(oneGoal, count) {
+    function emptyGoals() {
+        let mxauto = document.createElement('div');
+        mxauto.classList = 'mx-auto text-center';
+        mxauto.id = "empty-goal";
+
+        let emptyImage = document.createElement('img');
+        emptyImage.src = '../img/dashboard/goals/goals-empty.svg';
+        mxauto.appendChild(emptyImage);
+
+        let title = document.createElement('h3');
+        title.textContent = "You haven't added a goal yet!";
+        mxauto.appendChild(title);
+
+        let actionButton = document.createElement('button');
+        actionButton.classList = "btn btn-warning my-5";
+        actionButton.id = "addAGoal";
+        actionButton.textContent = 'Add A New Goal';
+        mxauto.appendChild(actionButton);
+        return mxauto;
+    }
+
+    /*
+     * Trigger Add a Goal
+     */
+    $("body").on("click", "#addAGoal", function () {
+        // Create goals
+        $('#addGoals').modal('toggle');
+    });
+
+    /*
+     * Trigger Delete Goal
+     */
+    $("body").on("click", ".delete-a-goal", function () {
+        deleteGoalFireSwal(this);
+    });
+
+    /*
+     * Delete Goals
+     */
+    function deleteGoalFireSwal(event) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            customClass: {
+                confirmButton: 'btn btn-warning',
+                cancelButton: 'btn btn-danger'
+            },
+            confirmButtonText: 'Yes, delete it!',
+            showCloseButton: true,
+            showCancelButton: false,
+            focusConfirm: true,
+            buttonsStyling: false
+        }).then(function (result) {
+            // If confirm button is clicked
+            if (result.value) {
+                deleteAGoal(event);
+            }
+        }).catch(swal.noop)
+    }
+
+    /*
+     * Delete goal API
+     */
+    function deleteAGoal(event) {
+
+        // Fade Out
+        let targetId = event.dataset.target;
+        let goalElement = document.getElementById('goal-' + targetId);
+        $(goalElement).fadeOut();
+
+        let values = {};
+        values.walletId = window.currentUser.walletId;
+        values.itemId = event.dataset.target;
+
+        // Ajax Requests on Error
+        let ajaxData = {};
+        ajaxData.isAjaxReq = true;
+        ajaxData.type = 'POST';
+        ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+        ajaxData.dataType = "json";
+        ajaxData.contentType = "application/json;charset=UTF-8";
+        ajaxData.data = JSON.stringify(values);
+        ajaxData.onSuccess = function (result) {
+                // delete the item
+                goalElement.remove();
+                // Card Prod ucts
+                let cardProducts = document.getElementsByClassName('card-product');
+                if (cardProducts == null || cardProducts.length == 0) {
+                    // Append Empty Goals if all the goals are removed
+                    let goalDisplayed = document.getElementById('goal-displayed');
+                    goalDisplayed.appendChild(emptyGoals());
+                }
+
+            },
+            ajaxData.onFailure = function (thrownError) {
+                manageErrors(thrownError, window.translationData.goals.dynamic.deleteerror, ajaxData);
+                // Fade in
+                $(goalElement).fadeIn();
+            }
+
+        // Load all user transaction from API
+        jQuery.ajax({
+            url: ajaxData.url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authHeader);
+            },
+            type: ajaxData.type,
+            dataType: ajaxData.dataType,
+            contentType: ajaxData.contentType,
+            data: ajaxData.data,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
+        });
+    }
+
+    /*
+     * Build Loading Goals
+     */
+    function buildLoadingGoals() {
         // Divided Column
         let mdColumn = document.createElement('div');
         mdColumn.classList = 'col-md-4';
+        mdColumn.id = "loading-goal";
 
         let cardProduct = document.createElement('div');
         cardProduct.classList = 'card card-product';
-        cardProduct.setAttribute('data-count', count);
 
         let cardHeader = document.createElement('div');
         cardHeader.classList = 'card-header card-header-image animated';
@@ -307,7 +451,7 @@
 
         let imageElement = document.createElement('img');
         imageElement.classList = 'img';
-        imageElement.src = getImageForGoals(oneGoal['goal_type']);
+        imageElement.src = "";
         imageAnchor.appendChild(imageElement);
         cardHeader.appendChild(imageAnchor);
         cardProduct.appendChild(cardHeader);
@@ -318,70 +462,24 @@
         let cardBody = document.createElement('div');
         cardBody.classList = 'card-body';
 
-        let cardActions = document.createElement('div');
-        cardActions.classList = 'card-actions text-center';
-
-        // View Button
-        let viewButton = document.createElement('div');
-        viewButton.type = 'button';
-        viewButton.classList = 'btn btn-default btn-link';
-        viewButton.setAttribute('data-toggle', 'tooltip');
-        viewButton.setAttribute('data-placement', 'bottom');
-        viewButton.setAttribute('data-original-title', 'View goal');
-
-        let artIcon = document.createElement('i');
-        artIcon.classList = 'material-icons';
-        artIcon.textContent = 'art_track';
-        viewButton.appendChild(artIcon);
-
-        // ripple Container
-        let rippleContainer = document.createElement('div');
-        rippleContainer.classList = 'ripple-container';
-        viewButton.appendChild(rippleContainer);
-        cardActions.appendChild(viewButton);
-
-        // Edit Button
-        let editButton = document.createElement('div');
-        editButton.type = 'button';
-        editButton.classList = 'btn btn-warning btn-link';
-        editButton.setAttribute('data-toggle', 'tooltip');
-        editButton.setAttribute('data-placement', 'bottom');
-        editButton.setAttribute('data-original-title', 'Edit goal');
-
-        let editIcon = document.createElement('i');
-        editIcon.classList = 'material-icons';
-        editIcon.textContent = 'edit';
-        editButton.appendChild(editIcon);
-        cardActions.appendChild(editButton);
-
-        // Remove Button
-        let removeButton = document.createElement('div');
-        removeButton.type = 'button';
-        removeButton.classList = 'btn btn-danger btn-link';
-        removeButton.setAttribute('data-toggle', 'tooltip');
-        removeButton.setAttribute('data-placement', 'bottom');
-        removeButton.setAttribute('data-original-title', 'Delete goal');
-
-        let removeIcon = document.createElement('i');
-        removeIcon.classList = 'material-icons';
-        removeIcon.textContent = 'close';
-        removeButton.appendChild(removeIcon);
-        cardActions.appendChild(removeButton);
-        cardBody.appendChild(cardActions);
-
-        let cardTitle = document.createElement('h3');
-        cardTitle.classList = 'card-title';
-
-        let anchorTitle = document.createElement('a');
-        anchorTitle.classList = 'goal-title';
-        anchorTitle.href = 'Javascript:void(0);';
-        anchorTitle.textContent = typeToName[oneGoal['goal_type']];
-        cardTitle.appendChild(anchorTitle);
-        cardBody.appendChild(cardTitle);
-
-
         let cardDescription = document.createElement('div');
         cardDescription.classList = 'card-description';
+
+        let wSeventy = document.createElement('div');
+        wSeventy.classList = 'w-70 animationCard';
+        cardDescription.appendChild(wSeventy);
+
+        let wFifty = document.createElement('div');
+        wFifty.classList = 'w-50 animationCard';
+        cardDescription.appendChild(wFifty);
+
+        let wThrity = document.createElement('p');
+        wThrity.classList = 'w-30 animationCard';
+        cardDescription.appendChild(wThrity);
+
+        let wTen = document.createElement('p');
+        wTen.classList = 'w-10 animationCard';
+        cardDescription.appendChild(wTen);
         cardBody.appendChild(cardDescription);
         cardProduct.appendChild(cardBody);
 
@@ -391,24 +489,19 @@
         let cardFooter = document.createElement('div');
         cardFooter.classList = 'card-footer';
 
-        let footerPrice = document.createElement('div');
-        footerPrice.classList = 'price';
-
-        let footerAmount = document.createElement('div');
-        footerAmount.classList = 'description';
-        footerAmount.textContent = oneGoal['monthly_contribution'] + '/month';
-        footerPrice.appendChild(footerAmount);
-        cardFooter.appendChild(footerPrice);
+        let price = document.createElement('div');
+        price.classList = 'price';
+        cardFooter.appendChild(price);
 
         let stats = document.createElement('div');
         stats.classList = 'stats';
 
         let cardCategory = document.createElement('p');
-        cardCategory.classList = 'card-category';
-        cardCategory.textContent = 'inprogress'
+        cardCategory.classList = 'card-category card-title';
+        cardCategory.textContent = 'loading'
 
         let tickIcon = document.createElement('i');
-        tickIcon.classList = 'material-icons';
+        tickIcon.classList = 'material-icons rotating';
         tickIcon.textContent = 'autorenew';
         cardCategory.appendChild(tickIcon);
         stats.appendChild(cardCategory);
@@ -417,13 +510,213 @@
         mdColumn.appendChild(cardProduct);
 
         return mdColumn;
-    }
 
-    /*
-     * Goals for Image
-     */
-    function getImageForGoals(goalType) {
-        return imageFromGoalType[goalType];
     }
 
 }(jQuery));
+
+/*
+ * Build a goal
+ */
+function buildAGoal(oneGoal, count, currentWalletData) {
+    // Divided Column
+    let mdColumn = document.createElement('div');
+    mdColumn.classList = 'col-md-4 displayed-goals';
+    mdColumn.id = 'goal-' + oneGoal.goalId;
+    mdColumn.setAttribute('data-count', count);
+
+    let cardProduct = document.createElement('div');
+    cardProduct.classList = 'card card-product';
+
+    let cardHeader = document.createElement('div');
+    cardHeader.classList = 'card-header card-header-image animated';
+    cardHeader.setAttribute('data-header-animation', 'true');
+
+    let imageAnchor = document.createElement('a');
+    imageAnchor.href = 'Javascript:void(0);';
+
+    let imageElement = document.createElement('img');
+    imageElement.classList = 'img';
+    imageElement.src = getImageForGoals(oneGoal['goal_type']);
+    imageAnchor.appendChild(imageElement);
+    cardHeader.appendChild(imageAnchor);
+    cardProduct.appendChild(cardHeader);
+
+    /*
+     * Build Card Body
+     */
+    let cardBody = document.createElement('div');
+    cardBody.classList = 'card-body';
+
+    let cardActions = document.createElement('div');
+    cardActions.classList = 'card-actions text-center';
+
+    // View Button
+    let viewButton = document.createElement('div');
+    viewButton.type = 'button';
+    viewButton.classList = 'btn btn-default btn-link';
+    viewButton.setAttribute('data-toggle', 'tooltip');
+    viewButton.setAttribute('data-placement', 'bottom');
+    viewButton.setAttribute('data-original-title', 'View goal');
+
+    let artIcon = document.createElement('i');
+    artIcon.classList = 'material-icons';
+    artIcon.textContent = 'art_track';
+    viewButton.appendChild(artIcon);
+
+    // ripple Container
+    let rippleContainer = document.createElement('div');
+    rippleContainer.classList = 'ripple-container';
+    viewButton.appendChild(rippleContainer);
+    cardActions.appendChild(viewButton);
+
+    // Edit Button
+    let editButton = document.createElement('div');
+    editButton.type = 'button';
+    editButton.classList = 'btn btn-warning btn-link edit-a-goal';
+    editButton.setAttribute('data-target', oneGoal.goalId);
+    editButton.setAttribute('data-type', oneGoal['goal_type']);
+    editButton.setAttribute('data-toggle', 'tooltip');
+    editButton.setAttribute('data-placement', 'bottom');
+    editButton.setAttribute('data-original-title', 'Edit goal');
+
+    let editIcon = document.createElement('i');
+    editIcon.classList = 'material-icons';
+    editIcon.textContent = 'edit';
+    editButton.appendChild(editIcon);
+    cardActions.appendChild(editButton);
+
+    // Remove Button
+    let removeButton = document.createElement('div');
+    removeButton.type = 'button';
+    removeButton.classList = 'btn btn-danger btn-link delete-a-goal';
+    removeButton.setAttribute('data-target', oneGoal.goalId);
+    removeButton.setAttribute('data-toggle', 'tooltip');
+    removeButton.setAttribute('data-placement', 'bottom');
+    removeButton.setAttribute('data-original-title', 'Delete goal');
+
+    let removeIcon = document.createElement('i');
+    removeIcon.classList = 'material-icons';
+    removeIcon.textContent = 'close';
+    removeButton.appendChild(removeIcon);
+    cardActions.appendChild(removeButton);
+    cardBody.appendChild(cardActions);
+
+    let cardTitle = document.createElement('h3');
+    cardTitle.classList = 'card-title';
+
+    let anchorTitle = document.createElement('a');
+    anchorTitle.classList = 'goal-title';
+    anchorTitle.href = 'Javascript:void(0);';
+    anchorTitle.textContent = window.typeToName[oneGoal['goal_type']];
+    cardTitle.appendChild(anchorTitle);
+    cardBody.appendChild(cardTitle);
+
+
+    let cardDescription = document.createElement('div');
+    cardDescription.classList = 'card-description';
+
+    let progressDiv = document.createElement('div');
+    progressDiv.classList = 'progress mt-3';
+
+    let progressBar = document.createElement('div');
+    progressBar.classList = 'progress-bar progress-bar-warning-striped';
+    progressBar.setAttribute('role', 'progressbar');
+    progressBar.setAttribute('aria-valuemin', '0');
+    // Set the value and percentage of the progress bar
+    let progressBarPercentage = calculatePercentageForGoals(oneGoal, currentWalletData);
+    progressBar.setAttribute('aria-valuenow', progressBarPercentage);
+    progressBar.style.width = progressBarPercentage + '%';
+    progressBar.setAttribute('aria-valuemax', '100');
+    progressDiv.appendChild(progressBar);
+    cardDescription.appendChild(progressDiv);
+
+    /*
+     * Description for progress bar
+     */
+    let finalAmount = document.createElement('div');
+    finalAmount.classList = 'row small';
+
+    let zeroDescription = document.createElement('p');
+    zeroDescription.classList = 'description col-6 text-left';
+    zeroDescription.textContent = formatToCurrency('0');
+    finalAmount.appendChild(zeroDescription);
+
+    let finalDescription = document.createElement('p');
+    finalDescription.classList = 'description col-6 text-right';
+    finalDescription.textContent = formatToCurrency(oneGoal['final_amount']);
+    finalAmount.appendChild(finalDescription);
+    cardDescription.appendChild(finalAmount);
+    cardBody.appendChild(cardDescription);
+    cardProduct.appendChild(cardBody);
+
+    /*
+     * Card Footer
+     */
+    let cardFooter = document.createElement('div');
+    cardFooter.classList = 'card-footer';
+
+    let footerPrice = document.createElement('div');
+    footerPrice.classList = 'price';
+
+    let footerAmount = document.createElement('span');
+    footerAmount.classList = 'card-title';
+    footerAmount.textContent = formatToCurrency(oneGoal['monthly_contribution']);
+    footerPrice.appendChild(footerAmount);
+
+    let footerPerMonth = document.createElement('span');
+    footerPerMonth.classList = 'description';
+    footerPerMonth.textContent = ' / month';
+    footerPrice.appendChild(footerPerMonth);
+    cardFooter.appendChild(footerPrice);
+
+    let stats = document.createElement('div');
+    stats.classList = 'stats';
+
+    let cardCategory = document.createElement('p');
+    cardCategory.classList = 'card-category card-title';
+    cardCategory.textContent = 'on track'
+
+    let tickIcon = document.createElement('i');
+    tickIcon.classList = 'material-icons rotating';
+    tickIcon.textContent = 'autorenew';
+    cardCategory.appendChild(tickIcon);
+    stats.appendChild(cardCategory);
+    cardFooter.appendChild(stats);
+    cardProduct.appendChild(cardFooter);
+    mdColumn.appendChild(cardProduct);
+
+    return mdColumn;
+}
+
+/*
+ * Calculate Percentage for goals
+ */
+function calculatePercentageForGoals(oneGoal, currentWalletData) {
+    let percentage = 0;
+    let finalAmount = oneGoal['final_amount'];
+    let currentAmount = 0;
+
+    // Wallet Balance
+    if (isNotEmpty(currentWalletData['wallet_balance'])) {
+        window.currentUser.walletBalance = currentWalletData['wallet_balance'];
+    }
+
+    switch (oneGoal['target_type']) {
+        case 'Wallet':
+            currentAmount = isEmpty(window.currentUser.walletBalance) ? currentWalletData['wallet_balance'] : window.currentUser.walletBalance;
+            break;
+        default:
+            break;
+    }
+
+    // Return percentage
+    return (currentAmount / finalAmount) * 100;
+}
+
+/*
+ * Goals for Image
+ */
+function getImageForGoals(goalType) {
+    return window.imageFromGoalType[goalType];
+}

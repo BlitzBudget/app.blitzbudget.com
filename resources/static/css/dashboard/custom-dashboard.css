@@ -1723,6 +1723,45 @@ textarea:disabled {
     cursor: not-allowed;
 }
 
+.w-70 {
+    width: 70%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.animationCard {
+    height: 10px;
+    animation-duration: 1.25s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function: linear;
+    background: linear-gradient(to right, #f2f2f2 8%, #f9f9f9 18%, #f6f6f6 33%);
+    background-size: 800px 104px;
+    position: relative;
+    margin: .25rem 0;
+}
+
+@keyframes placeHolderShimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;
