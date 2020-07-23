@@ -664,73 +664,7 @@
 
         }
 
-        buildPieChart(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal);
-    }
-
-    // Introduce Chartist pie chart
-    function buildPieChart(dataPreferences, id, absoluteTotal) {
-        /*  **************** Public Preferences - Pie Chart ******************** */
-
-        let optionsPreferences = {
-            donut: true,
-            donutWidth: 50,
-            startAngle: 270,
-            showLabel: true,
-            height: '300px'
-        };
-
-        let responsiveOptions = [
-    	  ['screen and (min-width: 640px)', {
-                chartPadding: 40,
-                labelOffset: 50,
-                labelDirection: 'explode',
-                labelInterpolationFnc: function (value, idx) {
-                    // Calculates the percentage of category total vs absolute total
-                    let percentage = round((dataPreferences.series[idx] / absoluteTotal * 100), 2) + '%';
-                    return value + ': ' + percentage;
-                }
-    	  }],
-    	  ['screen and (min-width: 1301px)', {
-                labelOffset: 30,
-                chartPadding: 10
-    	  }],
-    	  ['screen and (min-width: 992px)', {
-                labelOffset: 45,
-                chartPadding: 40,
-      	  }],
-
-    	];
-
-        // Reset the chart
-        replaceHTML(id, '');
-        $("#" + id).tooltip('dispose');
-
-        // Append Tooltip for Doughnut chart
-        if (isNotEmpty(dataPreferences)) {
-            let categoryBreakdownChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences, responsiveOptions).on('draw', function (data) {
-                if (data.type === 'slice') {
-                    let sliceValue = data.element._node.getAttribute('ct:value');
-                    data.element._node.setAttribute("title", dataPreferences.labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
-                    data.element._node.setAttribute("data-chart-tooltip", id);
-                }
-            }).on("created", function () {
-                // Initiate Tooltip
-                $("#" + id).tooltip({
-                    selector: '[data-chart-tooltip="' + id + '"]',
-                    container: "#" + id,
-                    html: true,
-                    placement: 'auto',
-                    delay: {
-                        "show": 300,
-                        "hide": 100
-                    }
-                });
-            });
-
-            // Animate the doughnut chart
-            er.startAnimationDonutChart(categoryBreakdownChart);
-        }
-
+        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal);
     }
 
     // Populate the line chart from cache
@@ -982,4 +916,77 @@
 function replaceChartChosenLabel(chosenChartText) {
     let chosenChartLabel = document.getElementsByClassName('chosenChart');
     chosenChartLabel[0].textContent = chosenChartText;
+}
+
+// Introduce Chartist pie chart
+function buildPieChartForOverview(dataPreferences, id, absoluteTotal) {
+    /*  **************** Public Preferences - Pie Chart ******************** */
+
+    let optionsPreferences = {
+        donut: true,
+        donutWidth: 50,
+        startAngle: 270,
+        showLabel: true,
+        height: '300px'
+    };
+
+    let responsiveOptions = [
+    	  ['screen and (min-width: 640px)', {
+            chartPadding: 40,
+            labelOffset: 50,
+            labelDirection: 'explode',
+            labelInterpolationFnc: function (value, idx) {
+                // Calculates the percentage of category total vs absolute total
+                let percentage = round((dataPreferences.series[idx] / absoluteTotal * 100), 2) + '%';
+                return value + ': ' + percentage;
+            }
+    	  }],
+    	  ['screen and (min-width: 1301px)', {
+            labelOffset: 30,
+            chartPadding: 10
+    	  }],
+    	  ['screen and (min-width: 992px)', {
+            labelOffset: 45,
+            chartPadding: 40,
+      	  }],
+
+    	];
+
+    // Reset the chart
+    replaceHTML(id, '');
+    $("#" + id).tooltip('dispose');
+
+    // Append Tooltip for Doughnut chart
+    if (isNotEmpty(dataPreferences)) {
+        let categoryBreakdownChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences, responsiveOptions).on('draw', function (data) {
+            if (data.type === 'slice') {
+                let sliceValue = data.element._node.getAttribute('ct:value');
+                data.element._node.setAttribute("title", dataPreferences.labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+                data.element._node.setAttribute("data-chart-tooltip", id);
+                data.element._node.onclick = function () {
+                    Swal.fire(
+                        'Good job!',
+                        'You clicked the button!',
+                        'success'
+                    )
+                }
+            }
+        }).on("created", function () {
+            // Initiate Tooltip
+            $("#" + id).tooltip({
+                selector: '[data-chart-tooltip="' + id + '"]',
+                container: "#" + id,
+                html: true,
+                placement: 'auto',
+                delay: {
+                    "show": 300,
+                    "hide": 100
+                }
+            });
+        });
+
+        // Animate the doughnut chart
+        er.startAnimationDonutChart(categoryBreakdownChart);
+    }
+
 }
