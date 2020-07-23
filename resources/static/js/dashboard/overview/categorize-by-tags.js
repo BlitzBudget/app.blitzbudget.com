@@ -50,26 +50,26 @@
                     } else {
                         transactionByTags[tag] = Math.abs(transaction.amount);
                     }
+                    // Add the transaction amount to absolute total
+                    absoluteTotal += Math.abs(transaction.amount);
                 }
-                // Add the transaction amount to absolute total
-                absoluteTotal += Math.abs(transaction.amount);
             }
         }
 
         // Build the legend and the series array
-        for (let count = 0, length = transactionByTags.length; count < length; count++) {
-            let tag = transactionByTags[count];
+        for (let key in transactionByTags) {
+            let value = transactionByTags[key];
 
-            if (isNotEmpty(transactionBytags[tag])) {
+            if (isNotEmpty(transactionByTags[key])) {
 
-                let percentageOfTotal = (transactionBytags[tag] / absoluteTotal) * 100;
+                let percentageOfTotal = (transactionByTags[key] / absoluteTotal) * 100;
                 // If the total is greater than 5 % then print it separate else accumulate it with others
                 if (percentageOfTotal > 5) {
-                    labelsArray.push(tag);
-                    seriesArray.push(transactionBytags[tag]);
+                    labelsArray.push(value);
+                    seriesArray.push(transactionByTags[key]);
                 } else {
-                    othersTotal += transactionBytags[tag];
-                    otherLabels.push(tag);
+                    othersTotal += transactionByTags[key];
+                    otherLabels.push(value);
                 }
 
             }
