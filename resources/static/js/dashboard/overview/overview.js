@@ -1009,7 +1009,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                         let tag = tags[i];
                         // Check tag matches the label
                         if (isEqual(tag, label)) {
-                            docFrag.appendChild(transaction);
+                            docFrag.appendChild(buildTransactionRow(transaction));
                         }
                     }
                 }

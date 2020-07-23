@@ -958,52 +958,6 @@
 
     }
 
-    // Raw Plus Svg
-    function plusRawSvg() {
-        let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        svgElement.setAttribute('class', 'align-middle plusRawSvg');
-        svgElement.setAttribute('x', '0px');
-        svgElement.setAttribute('y', '0px');
-        svgElement.setAttribute('width', '24');
-        svgElement.setAttribute('height', '24');
-        svgElement.setAttribute('viewBox', '0 0 25 29');
-        svgElement.setAttribute('fill', '#000000');
-
-        let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-        pathElement.setAttribute('class', 'plusRawPath');
-        pathElement.setAttribute('overflow', 'visible');
-        pathElement.setAttribute('white-space', 'normal');
-        pathElement.setAttribute('font-family', 'sans-serif');
-        pathElement.setAttribute('font-weight', '400');
-        pathElement.setAttribute('d', 'M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z');
-
-        svgElement.appendChild(pathElement);
-
-        return svgElement;
-
-    }
-
-    // Credit card SVG Image
-    function creditCardSvg() {
-        let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        svgElement.setAttribute('class', 'align-middle creditCardSvg');
-        svgElement.setAttribute('x', '0px');
-        svgElement.setAttribute('y', '0px');
-        svgElement.setAttribute('width', '30');
-        svgElement.setAttribute('height', '30');
-        svgElement.setAttribute('viewBox', '0 0 80 90');
-        svgElement.setAttribute('fill', '#000000');
-
-        let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-        pathElement.setAttribute('class', 'creditCardPath');
-        pathElement.setAttribute('d', 'M 11 16 C 8.2504839 16 6 18.250484 6 21 L 6 59 C 6 61.749516 8.2504839 64 11 64 L 69 64 C 71.749516 64 74 61.749516 74 59 L 74 21 C 74 18.250484 71.749516 16 69 16 L 11 16 z M 11 18 L 69 18 C 70.668484 18 72 19.331516 72 21 L 72 26 L 8 26 L 8 21 C 8 19.331516 9.3315161 18 11 18 z M 8 30 L 72 30 L 72 59 C 72 60.668484 70.668484 62 69 62 L 11 62 C 9.3315161 62 8 60.668484 8 59 L 8 30 z M 12 35 A 1 1 0 0 0 11 36 A 1 1 0 0 0 12 37 A 1 1 0 0 0 13 36 A 1 1 0 0 0 12 35 z M 16 35 A 1 1 0 0 0 15 36 A 1 1 0 0 0 16 37 A 1 1 0 0 0 17 36 A 1 1 0 0 0 16 35 z M 20 35 A 1 1 0 0 0 19 36 A 1 1 0 0 0 20 37 A 1 1 0 0 0 21 36 A 1 1 0 0 0 20 35 z M 24 35 A 1 1 0 0 0 23 36 A 1 1 0 0 0 24 37 A 1 1 0 0 0 25 36 A 1 1 0 0 0 24 35 z M 28 35 A 1 1 0 0 0 27 36 A 1 1 0 0 0 28 37 A 1 1 0 0 0 29 36 A 1 1 0 0 0 28 35 z M 32 35 A 1 1 0 0 0 31 36 A 1 1 0 0 0 32 37 A 1 1 0 0 0 33 36 A 1 1 0 0 0 32 35 z M 36 35 A 1 1 0 0 0 35 36 A 1 1 0 0 0 36 37 A 1 1 0 0 0 37 36 A 1 1 0 0 0 36 35 z M 52 43 C 48.145666 43 45 46.145666 45 50 C 45 53.854334 48.145666 57 52 57 C 53.485878 57 54.862958 56.523344 55.996094 55.730469 A 7 7 0 0 0 60 57 A 7 7 0 0 0 67 50 A 7 7 0 0 0 60 43 A 7 7 0 0 0 55.990234 44.265625 C 54.858181 43.47519 53.483355 43 52 43 z M 52 45 C 52.915102 45 53.75982 45.253037 54.494141 45.681641 A 7 7 0 0 0 53 50 A 7 7 0 0 0 54.498047 54.314453 C 53.762696 54.74469 52.916979 55 52 55 C 49.226334 55 47 52.773666 47 50 C 47 47.226334 49.226334 45 52 45 z');
-
-        svgElement.appendChild(pathElement);
-
-        return svgElement;
-
-    }
-
     // Empty Transactions SVG
     function buildEmptyTransactionsSvg() {
 
@@ -1363,3 +1317,47 @@
     }
 
 }(jQuery));
+
+// Raw Plus Svg
+function plusRawSvg() {
+    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+    svgElement.setAttribute('class', 'align-middle plusRawSvg');
+    svgElement.setAttribute('x', '0px');
+    svgElement.setAttribute('y', '0px');
+    svgElement.setAttribute('width', '24');
+    svgElement.setAttribute('height', '24');
+    svgElement.setAttribute('viewBox', '0 0 25 29');
+    svgElement.setAttribute('fill', '#000000');
+
+    let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    pathElement.setAttribute('class', 'plusRawPath');
+    pathElement.setAttribute('overflow', 'visible');
+    pathElement.setAttribute('white-space', 'normal');
+    pathElement.setAttribute('font-family', 'sans-serif');
+    pathElement.setAttribute('font-weight', '400');
+    pathElement.setAttribute('d', 'M 11 2 L 11 11 L 2 11 L 2 13 L 11 13 L 11 22 L 13 22 L 13 13 L 22 13 L 22 11 L 13 11 L 13 2 Z');
+
+    svgElement.appendChild(pathElement);
+
+    return svgElement;
+}
+
+// Credit card SVG Image
+function creditCardSvg() {
+    let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+    svgElement.setAttribute('class', 'align-middle creditCardSvg');
+    svgElement.setAttribute('x', '0px');
+    svgElement.setAttribute('y', '0px');
+    svgElement.setAttribute('width', '30');
+    svgElement.setAttribute('height', '30');
+    svgElement.setAttribute('viewBox', '0 0 80 90');
+    svgElement.setAttribute('fill', '#000000');
+
+    let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
+    pathElement.setAttribute('class', 'creditCardPath');
+    pathElement.setAttribute('d', 'M 11 16 C 8.2504839 16 6 18.250484 6 21 L 6 59 C 6 61.749516 8.2504839 64 11 64 L 69 64 C 71.749516 64 74 61.749516 74 59 L 74 21 C 74 18.250484 71.749516 16 69 16 L 11 16 z M 11 18 L 69 18 C 70.668484 18 72 19.331516 72 21 L 72 26 L 8 26 L 8 21 C 8 19.331516 9.3315161 18 11 18 z M 8 30 L 72 30 L 72 59 C 72 60.668484 70.668484 62 69 62 L 11 62 C 9.3315161 62 8 60.668484 8 59 L 8 30 z M 12 35 A 1 1 0 0 0 11 36 A 1 1 0 0 0 12 37 A 1 1 0 0 0 13 36 A 1 1 0 0 0 12 35 z M 16 35 A 1 1 0 0 0 15 36 A 1 1 0 0 0 16 37 A 1 1 0 0 0 17 36 A 1 1 0 0 0 16 35 z M 20 35 A 1 1 0 0 0 19 36 A 1 1 0 0 0 20 37 A 1 1 0 0 0 21 36 A 1 1 0 0 0 20 35 z M 24 35 A 1 1 0 0 0 23 36 A 1 1 0 0 0 24 37 A 1 1 0 0 0 25 36 A 1 1 0 0 0 24 35 z M 28 35 A 1 1 0 0 0 27 36 A 1 1 0 0 0 28 37 A 1 1 0 0 0 29 36 A 1 1 0 0 0 28 35 z M 32 35 A 1 1 0 0 0 31 36 A 1 1 0 0 0 32 37 A 1 1 0 0 0 33 36 A 1 1 0 0 0 32 35 z M 36 35 A 1 1 0 0 0 35 36 A 1 1 0 0 0 36 37 A 1 1 0 0 0 37 36 A 1 1 0 0 0 36 35 z M 52 43 C 48.145666 43 45 46.145666 45 50 C 45 53.854334 48.145666 57 52 57 C 53.485878 57 54.862958 56.523344 55.996094 55.730469 A 7 7 0 0 0 60 57 A 7 7 0 0 0 67 50 A 7 7 0 0 0 60 43 A 7 7 0 0 0 55.990234 44.265625 C 54.858181 43.47519 53.483355 43 52 43 z M 52 45 C 52.915102 45 53.75982 45.253037 54.494141 45.681641 A 7 7 0 0 0 53 50 A 7 7 0 0 0 54.498047 54.314453 C 53.762696 54.74469 52.916979 55 52 55 C 49.226334 55 47 52.773666 47 50 C 47 47.226334 49.226334 45 52 45 z');
+
+    svgElement.appendChild(pathElement);
+
+    return svgElement;
+}
