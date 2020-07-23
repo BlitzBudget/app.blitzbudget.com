@@ -883,7 +883,7 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
     -webkit-transition: stroke-width 0.3s ease-out;
 }
 
-#GSCCModal .input-group {
+.input-group.onerow {
     flex-wrap: nowrap;
     overflow-x: scroll;
     white-space: nowrap;

@@ -310,6 +310,7 @@
         if (firstChildClassList.contains('income')) {
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
+            document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
             // Populate Category Break down Chart if present
             if (doughnutBreakdownOpen) {
                 // Fetch the expense cache
@@ -326,6 +327,7 @@
         } else if (firstChildClassList.contains('expense')) {
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
+            document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
             // Populate Category Break down Chart if present
             if (doughnutBreakdownOpen) {
                 // Fetch the expense cache
@@ -342,6 +344,7 @@
         } else if (firstChildClassList.contains('assets')) {
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.add('d-none');
+            document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
             // Populate Asset Chart
             populateAssetBarChart(true);
             // Change Label
@@ -349,6 +352,7 @@
         } else if (firstChildClassList.contains('debt')) {
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.add('d-none');
+            document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
             // Populate Debt Chart
             populateAssetBarChart(false);
             // Change Label
@@ -356,6 +360,7 @@
         } else if (firstChildClassList.contains('networth')) {
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.add('d-none');
+            document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
             populateNetworthBarChart();
             // Change Label
             document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.networthoverview;
