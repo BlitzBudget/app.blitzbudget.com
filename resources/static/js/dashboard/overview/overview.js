@@ -664,7 +664,7 @@
 
         }
 
-        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal);
+        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'category', fetchIncome);
     }
 
     // Populate the line chart from cache
@@ -919,7 +919,7 @@ function replaceChartChosenLabel(chosenChartText) {
 }
 
 // Introduce Chartist pie chart
-function buildPieChartForOverview(dataPreferences, id, absoluteTotal) {
+function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetchIncome) {
     /*  **************** Public Preferences - Pie Chart ******************** */
 
     let optionsPreferences = {
@@ -963,12 +963,12 @@ function buildPieChartForOverview(dataPreferences, id, absoluteTotal) {
                 let sliceValue = data.element._node.getAttribute('ct:value');
                 data.element._node.setAttribute("title", dataPreferences.labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
                 data.element._node.setAttribute("data-chart-tooltip", id);
+                // On click listener to show all transactions
                 data.element._node.onclick = function () {
-                    Swal.fire(
-                        'Good job!',
-                        'You clicked the button!',
-                        'success'
-                    )
+                    Swal.fire({
+                        title: dataPreferences.labels[data.index],
+                        html: buildTransactionsForOverview(dataPreferences.labels[data.index], type, fetchIncome),
+                    })
                 }
             }
         }).on("created", function () {
@@ -988,5 +988,97 @@ function buildPieChartForOverview(dataPreferences, id, absoluteTotal) {
         // Animate the doughnut chart
         er.startAnimationDonutChart(categoryBreakdownChart);
     }
+
+}
+
+// Build Transactions for overview
+function buildTransactionsForOverview(label, type, fetchIncome) {
+    let docFrag = document.createDocumentFragment();
+
+    switch (type) {
+        case 'category':
+            break;
+        case 'tag':
+            for (let count = 0, length = window.overviewTransactionsCache.length; count < length; count++) {
+                let transaction = window.overviewTransactionsCache[count];
+                let tags = transaction.tags;
+                let incomeCategory = transaction.amount > 0 ? true : false;
+                if (incomeCategory == fetchIncome && isNotEmpty(tags)) {
+                    // Add the amount for all the tags
+                    for (let i = 0, len = tags.length; i < len; i++) {
+                        let tag = tags[i];
+                        // Check tag matches the label
+                        if (isEqual(tag, label)) {
+                            docFrag.appendChild(transaction);
+                        }
+                    }
+                }
+            }
+            break;
+        case 'account':
+            break;
+    }
+
+    return docFrag;
+
+}
+
+// Builds the rows for recent transactions
+function buildTransactionRow(userTransaction) {
+    // Convert date from UTC to user specific dates
+    let creationDateUserRelevant = new Date(userTransaction['creation_date']);
+    // Category Map
+    let categoryMapForUT = window.categoryMap[userTransaction.category];
+
+    let tableRowTransaction = document.createElement('div');
+    tableRowTransaction.id = 'overview-transaction' + '-' + userTransaction.transactionId;
+    tableRowTransaction.setAttribute('data-target', userTransaction.transactionId);
+    tableRowTransaction.classList = 'recentTransactionEntry d-table-row';
+
+    // Cell 1
+    let tableCellImagesWrapper = document.createElement('div');
+    tableCellImagesWrapper.classList = 'd-table-cell align-middle imageWrapperCell text-center';
+
+    let circleWrapperDiv = document.createElement('div');
+    circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
+
+    // Append a - sign if it is an expense
+    if (categoryMapForUT.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+        circleWrapperDiv.appendChild(creditCardSvg());
+    } else {
+        circleWrapperDiv.appendChild(plusRawSvg());
+    }
+
+    tableCellImagesWrapper.appendChild(circleWrapperDiv);
+    tableRowTransaction.appendChild(tableCellImagesWrapper);
+
+    // Cell 2
+    let tableCellTransactionDescription = document.createElement('div');
+    tableCellTransactionDescription.classList = 'descriptionCellRT d-table-cell';
+
+    let elementWithDescription = document.createElement('div');
+    elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
+    elementWithDescription.textContent = isEmpty(userTransaction.description) ? window.translationData.transactions.dynamic.card.description : userTransaction.description.length < 25 ? userTransaction.description : userTransaction.description.slice(0, 26) + '...';
+    tableCellTransactionDescription.appendChild(elementWithDescription);
+
+    let elementWithCategoryName = document.createElement('div');
+    elementWithCategoryName.classList = 'small categoryNameRT w-100';
+    elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+    tableCellTransactionDescription.appendChild(elementWithCategoryName);
+    tableRowTransaction.appendChild(tableCellTransactionDescription);
+
+    // Cell 3
+    let transactionAmount = document.createElement('div');
+
+    // Append a - sign if it is an expense
+    if (categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+        transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
+    } else {
+        transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
+    }
+    transactionAmount.textContent = formatToCurrency(userTransaction.amount);
+    tableRowTransaction.appendChild(transactionAmount);
+
+    return tableRowTransaction;
 
 }

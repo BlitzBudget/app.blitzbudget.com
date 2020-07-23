@@ -101,7 +101,7 @@
 
         }
 
-        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal);
+        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'account', fetchIncome);
     }
 
     // Build Empty chart
