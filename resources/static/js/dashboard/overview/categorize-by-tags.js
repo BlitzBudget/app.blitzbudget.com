@@ -65,11 +65,11 @@
                 let percentageOfTotal = (transactionByTags[key] / absoluteTotal) * 100;
                 // If the total is greater than 5 % then print it separate else accumulate it with others
                 if (percentageOfTotal > 5) {
-                    labelsArray.push(value);
+                    labelsArray.push(key);
                     seriesArray.push(transactionByTags[key]);
                 } else {
                     othersTotal += transactionByTags[key];
-                    otherLabels.push(value);
+                    otherLabels.push(key);
                 }
 
             }
