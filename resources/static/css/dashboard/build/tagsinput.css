@@ -14,13 +14,6 @@
     display: inline-block
 }
 
-.tagsinput input,
-.tagsinput input:focus {
-    border: none;
-    box-shadow: none;
-    background-image: none
-}
-
 .tagsinput.form-control input::-moz-placeholder {
     color: #777;
     opacity: 1

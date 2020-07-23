@@ -24,10 +24,16 @@
 
         let removeButton = document.createElement('span');
         removeButton.setAttribute('data-role', 'remove');
+        removeButton.classList = 'badge-remove';
         badge.appendChild(removeButton);
 
         let parentElement = document.getElementById(id);
         parentElement.insertBefore(badge, parentElement.childNodes[0]);
     }
+
+    $('body').on("click", ".tag.badge .badge-remove", function (e) {
+        // Remove the parent element
+        this.parentNode.remove();
+    });
 
 }(jQuery));

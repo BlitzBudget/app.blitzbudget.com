@@ -883,6 +883,12 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
     -webkit-transition: stroke-width 0.3s ease-out;
 }
 
+#GSCCModal .input-group {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {}
 
