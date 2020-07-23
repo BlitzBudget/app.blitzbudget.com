@@ -274,6 +274,7 @@
             "incomeparam": "收入",
             "expenseparam": "我花了",
             "categorizebyaccount": "帐户",
+            "categorizebytags": "标签",
             "expensebreakdown": "支出明细",
             "incomebreakdown": "收入明细",
             "title": "概述",
@@ -577,11 +578,84 @@
         "search": "搜索...",
         "amount": "数量",
         "note": "写一张笔记",
-        "searcharticle": "搜索文章..."
+        "searcharticle": "搜索文章...",
+        "tags": "标签"
     },
     "tooltip": {
         "logout": "注销",
         "fullscreen": "全屏",
         "settings": "配置"
+    },
+    "goals": {
+        "page": {
+            "title": "目标"
+        },
+        "choose": {
+            "title": "选择一个目标",
+            "custom": {
+                "description": "其他所有需要财务规划的东西都在这里。",
+                "title": "创建一个自定义目标"
+            },
+            "improve": {
+                "title": "改善我的家",
+                "description": "如果翻新你的家是正确的举动， 你将在哪里得到钱去做？"
+            },
+            "trip": {
+                "title": "去旅行",
+                "description": "你为下一次旅行存够钱了吗? 你知道你可能需要多少钱吗？"
+            },
+            "college": {
+                "title": "攒钱上大学",
+                "description": "毕业不欠债就能满足。把梦想付诸行动，规划好自己的目标。"
+            },
+            "automobile": {
+                "title": "买汽车",
+                "description": "为什么不先存够钱再买车或摩托车？我们会帮你跟踪你的储蓄情况。"
+            },
+            "home": {
+                "title": "买房",
+                "description": "当你进行中期储蓄时，很多事情都会变得很糟糕。我们可以帮助你保持计划的可行性。"
+            },
+            "retirement": {
+                "title": "为退休储蓄",
+                "description": "是时候开始计划你的退休生活了，如果你还没有， 我们会做的数学，所以你不必。"
+            },
+            "emergency": {
+                "title": "救急",
+                "description": "为什么不备点钱以备不时之需？现在就做好准备吧。"
+            },
+            "creditcard": {
+                "title": "还信用卡",
+                "description": "我们建议你先从利率最高的信用卡开始。"
+            },
+            "loans": {
+                "title": "还清贷款",
+                "description": "房贷、车贷、教育贷等都在这里面。"
+            }
+        },
+        "add": {
+            "emergencyfund": {
+                "average": "你每月的平均开支",
+                "howmany": "你想为多少个月没有收入做准备？",
+                "result": "根据你的喜好，你的目标是 ",
+                "result2": "对于一个 ",
+                "result3": "紧急基金",
+                "result4": ". 通过保存 ",
+                "result5": " 每个月， 你会在之前达到你的计划目标 ",
+                "date": "你计划的日期",
+                "plan": "计划",
+                "contribution": "你的月供",
+                "chooseyear": "选择年份",
+                "year": "年",
+                "choosemonth": "选择月份",
+                "month": "月",
+                "chooseanaccount": "选择一个账户",
+                "chooseaccount": "选择账户"
+            }
+        },
+        "dynamic": {
+            "geterror": "获取目标信息出错，请稍后再试！",
+            "deleteerror": "删除所选目标时出错，请稍后再试！"
+        }
     }
 }

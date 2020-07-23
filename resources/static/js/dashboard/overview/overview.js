@@ -521,6 +521,17 @@
         anchorDropdownItem2.appendChild(categoryLabelDiv2);
         anchorFragment.appendChild(anchorDropdownItem2);
 
+        // By Tags
+        let anchorDropdownItem3 = document.createElement('a');
+        anchorDropdownItem3.classList = 'dropdown-item tagsOverview';
+        anchorDropdownItem3.setAttribute('data-target', incomeOrExpenseParam);
+
+        let categoryLabelDiv3 = document.createElement('div');
+        categoryLabelDiv3.classList = 'font-weight-bold';
+        categoryLabelDiv3.textContent = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.categorizebytags : 'Tags';
+        anchorDropdownItem3.appendChild(categoryLabelDiv3);
+        anchorFragment.appendChild(anchorDropdownItem3);
+
         let chooseCategoryDD = document.getElementById('chooseCategoryDD');
         // Replace inner HTML with EMPTY
         while (chooseCategoryDD.firstChild) {
