@@ -40,7 +40,7 @@
             let transaction = transactions[count];
             let tags = transaction.tags;
             let incomeCategory = transaction.amount > 0 ? true : false;
-            if (incomeCategory == fetchIncome) {
+            if (incomeCategory == fetchIncome && isNotEmpty(tags)) {
                 // Add the amount for all the tags
                 for (let i = 0, len = tags.length; i < len; i++) {
                     let tag = tags[i];
