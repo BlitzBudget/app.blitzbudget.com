@@ -735,13 +735,16 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
     color: #333;
 }
 
+#categoryOptions .dropdown-toggle {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+}
+
 #categoryOptions .dropdown-menu {
     height: auto;
     max-height: 20rem;
     overflow-x: hidden;
     width: 20rem;
-    -webkit-appearance: none;
-    -webkit-border-radius: 0;
 }
 
 #categoryOptions .autocomplete-items .dropdown-item {

@@ -577,7 +577,8 @@
         "search": "Search...",
         "amount": "Amount",
         "note": "Write a note",
-        "searcharticle": "Search for articles..."
+        "searcharticle": "Search for articles...",
+        "tags": "Tags"
     },
     "tooltip": {
         "logout": "Logout",

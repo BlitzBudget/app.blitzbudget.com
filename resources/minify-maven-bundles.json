@@ -46,7 +46,8 @@
             "files": [
                 "/dashboard/income/transactions.css",
                 "/dashboard/income/transactions/accountModal.css",
-                "/dashboard/income/transactions/dragAndDropTransInAcc.css"
+                "/dashboard/income/transactions/dragAndDropTransInAcc.css",
+                "/dashboard/build/tagsinput.css"
             ]
         },
         {
@@ -94,6 +95,7 @@
                 "/dashboard/income/budget.js",
                 "/dashboard/income/transactions/accountModal.js",
                 "/plugins/dragster.js",
+                "/dashboard/income/transactions/tagsinput.js",
                 "/dashboard/income/transactions.js",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.js",
                 "/dashboard/module/settings.js",
