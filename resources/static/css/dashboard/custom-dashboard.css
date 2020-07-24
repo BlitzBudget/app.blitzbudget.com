@@ -1881,6 +1881,10 @@ textarea:disabled {
     mix-blend-mode: normal
 }
 
+.font-size-70 {
+    font-size: 70%;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;

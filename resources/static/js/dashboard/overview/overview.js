@@ -969,7 +969,7 @@ function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetc
                         title: dataPreferences.labels[data.index],
                         html: buildTransactionsForOverview(dataPreferences.labels[data.index], type, fetchIncome),
                         customClass: {
-                            confirmButton: 'btn btn-success',
+                            confirmButton: 'btn btn-info',
                         },
                         buttonsStyling: false,
                         confirmButtonText: 'Got it!',
@@ -1104,22 +1104,31 @@ function buildTransactionRow(userTransaction) {
     tableCellTransactionDescription.appendChild(elementWithDescription);
 
     let elementWithCategoryName = document.createElement('div');
-    elementWithCategoryName.classList = 'small categoryNameRT w-100';
+    elementWithCategoryName.classList = 'font-size-70 categoryNameRT w-100';
     elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
     tableCellTransactionDescription.appendChild(elementWithCategoryName);
     tableRowTransaction.appendChild(tableCellTransactionDescription);
 
     // Cell 3
+    let surCell = document.createElement('div');
+    surCell.classList = 'd-table-cell';
+
     let transactionAmount = document.createElement('div');
 
     // Append a - sign if it is an expense
     if (categoryMap[userTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-        transactionAmount.classList = 'transactionAmountRT expenseCategory font-weight-bold d-table-cell text-right align-middle';
+        transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
     } else {
-        transactionAmount.classList = 'transactionAmountRT incomeCategory font-weight-bold d-table-cell text-right align-middle';
+        transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
+
     }
     transactionAmount.textContent = formatToCurrency(userTransaction.amount);
-    tableRowTransaction.appendChild(transactionAmount);
+    surCell.appendChild(transactionAmount);
+
+    let accountBalDiv = document.createElement('div');
+    accountBalDiv.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
+    surCell.appendChild(accountBalDiv);
+    tableRowTransaction.appendChild(surCell);
 
     return tableRowTransaction;
 
