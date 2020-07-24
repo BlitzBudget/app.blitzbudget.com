@@ -1000,6 +1000,37 @@ function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetc
 function buildTransactionsForOverview(label, type, fetchIncome) {
     let docFrag = document.createDocumentFragment();
 
+    /*
+     * Table Responsive
+     */
+    let tableResponsive = document.createElement('div');
+    tableResponsive.classList = 'table-responsive';
+
+    let tableFixed = document.createElement('div');
+    tableFixed.classList = 'table table-fixed d-table';
+
+    /*
+     * Table Heading
+     */
+    let tableHeading = document.createElement('div');
+    tableHeading.classList = 'tableHeadingDiv';
+
+    let widthFifteen = document.createElement('div');
+    widthFifteen.classList = 'w-15 d-table-cell';
+    tableHeading.appendChild(widthFifteen);
+
+    let widthSixtyFive = document.createElement('div');
+    widthSixtyFive.classList = 'w-65 d-table-cell';
+    tableHeading.appendChild(widthSixtyFive);
+
+    let widthThirty = document.createElement('div');
+    widthThirty.classList = 'text-right d-table-cell';
+    tableHeading.appendChild(widthThirty);
+    tableFixed.appendChild(tableHeading);
+
+    let tableBody = document.createElement('div');
+    tableBody.classList = 'tableBodyDiv text-left';
+
     switch (type) {
         case 'category':
             break;
@@ -1014,7 +1045,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                         let tag = tags[i];
                         // Check tag matches the label
                         if (isEqual(tag, label)) {
-                            docFrag.appendChild(buildTransactionRow(transaction));
+                            tableBody.appendChild(buildTransactionRow(transaction));
                         }
                     }
                 }
@@ -1024,6 +1055,12 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
             break;
     }
 
+    /*
+     * Append Table Body
+     */
+    tableFixed.appendChild(tableBody);
+    tableResponsive.appendChild(tableFixed);
+    docFrag.appendChild(tableResponsive);
     return docFrag;
 
 }
