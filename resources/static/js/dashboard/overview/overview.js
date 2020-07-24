@@ -1035,6 +1035,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
         case 'category':
             break;
         case 'tag':
+            let transactionsToShow = [];
             for (let count = 0, length = window.overviewTransactionsCache.length; count < length; count++) {
                 let transaction = window.overviewTransactionsCache[count];
                 let tags = transaction.tags;
@@ -1045,9 +1046,29 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                         let tag = tags[i];
                         // Check tag matches the label
                         if (isEqual(tag, label)) {
-                            tableBody.appendChild(buildTransactionRow(transaction));
+                            transactionsToShow[transaction.account] = transaction;
                         }
                     }
+                }
+            }
+
+            // Build the legend and the series array
+            let bankAccounts = window.allBankAccountInfoCache;
+            let createdAccIds = [];
+            for (let count = 0, length = bankAccounts.length; count < length; count++) {
+                let account = bankAccounts[count];
+                let accountId = account.accountId;
+
+                if (!includesStr(createdAccIds, accountId)) {
+                    tableBody.appendChild(buildAccountHeader(accountId));
+                    tableBody.getElementById('accountTitle-' + bankAcc.accountId).textContent = account['bank_account_name'];
+                    // Add Created Accounts ID to the array
+                    createdAccIds.push(accountId);
+                }
+
+                let transaction = transactionsToShow[accountId];
+                if (isNotEmpty(transaction)) {
+                    tableBody.appendChild(buildTransactionRow(transaction));
                 }
             }
             break;
