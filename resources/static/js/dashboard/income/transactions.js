@@ -776,8 +776,6 @@
         } else {
             // Populate Transaction
             popTransByAccWOAJAX();
-            // If fetch all bank account flag is true then
-            fetchAllBankAccountInformation();
             // If Account Table is hidden then add d-none
             if (!document.getElementById('transactionsTable').classList.contains('d-none') ||
                 !document.getElementById('recentTransactions').classList.contains('d-none')) {
@@ -1184,70 +1182,6 @@
         return docFrag;
     }
 
-    // Fetch all bank account information
-    function fetchAllBankAccountInformation() {
-
-        // Cache all the account headers to replace
-        let accHeadersToReplace = [];
-        // Fetch all replacable elements
-        let replaceAbleEl = document.getElementsByClassName('pendingAccInfo');
-        // Check if the element is empty
-        if (isNotEmpty(replaceAbleEl)) {
-            // Fetch all replaceable account info
-            for (let i = 0, length = replaceAbleEl.length; i < length; i++) {
-                let replacEl = replaceAbleEl[i];
-                // if the element is not empty then proceed
-                if (isNotEmpty(replacEl)) {
-                    let accountId = replacEl.getAttribute('data-target');
-                    accHeadersToReplace.push(accountId);
-                }
-            }
-        }
-
-        // Fetch all bank account information
-        let accountAggreDiv = document.getElementById('recTransAndAccTable');
-        let accHeadFrag = document.createDocumentFragment();
-        // Iterate all bank accounts
-        for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
-            let bankAcc = window.allBankAccountInfoCache[i];
-            // If the ID corresponding wiht the bank account is not populated then
-            if (includesStr(accHeadersToReplace, bankAcc.accountId)) {
-                let accHeading = document.getElementById('accountTitle-' + bankAcc.accountId);
-                let accountBalance = document.getElementById('accountBalance-' + bankAcc.accountId);
-                // Replace HTML with Empty
-                while (accHeading.firstChild) {
-                    accHeading.removeChild(accHeading.firstChild);
-                }
-                accHeading.textContent = bankAcc['bank_account_name'];
-                if (bankAcc['account_balance'] < 0) {
-                    accountBalance.classList.add('expenseCategory');
-                } else {
-                    accountBalance.classList.add('incomeCategory');
-                }
-                accountBalance.textContent = formatToCurrency(bankAcc['account_balance']);
-            } else {
-                // A new header for the rest
-                let accountHeaderNew = buildAccountHeader(bankAcc.accountId);
-                accountHeaderNew.getElementById('accountTitle-' + bankAcc.accountId).textContent = bankAcc['bank_account_name'];
-                let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
-                if (bankAcc['account_balance'] < 0) {
-                    accBal.classList.add('expenseCategory');
-                } else {
-                    accBal.classList.add('incomeCategory');
-                }
-                accBal.textContent = formatToCurrency(bankAcc['account_balance']);
-                // Append Empty Table to child
-                accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
-                // Append to the transaction view
-                accHeadFrag.appendChild(accountHeaderNew);
-            }
-        }
-
-        // Append the account transactions to the table
-        accountAggreDiv.appendChild(accHeadFrag);
-
-    }
-
     // Populate the account sort by section
     function populateTransactionsByCategory(userTransactionsList) {
         window.transactionsCache = {};
@@ -1300,12 +1234,22 @@
         let accountAggreDiv = document.getElementById('recTransAndAccTable');
         let recentTransactionsFragment = document.createDocumentFragment();
         let createdAccIds = [];
+
+        // Iterate all bank accounts
+        let bankAccountMap = {};
+        for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+            let bankAcc = window.allBankAccountInfoCache[i];
+            // Bank account ID to map
+            bankAccountMap[bankAcc.accountId] = bankAcc;
+        }
+
+        // Transactions Cache
         for (var key of Object.keys(window.transactionsCache)) {
             let userTransaction = window.transactionsCache[key];
             let accountId = userTransaction.account;
 
-            if (!includesStr(createdAccIds, accountId)) {
-                recentTransactionsFragment.appendChild(buildAccountHeader(accountId));
+            if (notIncludesStr(createdAccIds, accountId)) {
+                recentTransactionsFragment.appendChild(buildAccountHeader(bankAccountMap[accountId]));
                 // Add Created Accounts ID to the array
                 createdAccIds.push(accountId);
             }
@@ -1314,6 +1258,33 @@
 
         document.getElementById('accountTable').classList.add('d-none');
         accountAggreDiv.appendChild(recentTransactionsFragment);
+
+        // Fetch all bank account information To populate EMPTY Account
+        let accHeadFrag = document.createDocumentFragment();
+        // Iterate all bank accounts
+        for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+            let bankAcc = window.allBankAccountInfoCache[i];
+            // If the ID corresponding wiht the bank account is not populated then
+            if (notIncludesStr(createdAccIds, bankAcc.accountId)) {
+                // A new header for the rest
+                let accountHeaderNew = buildAccountHeader(bankAcc);
+                let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
+                if (bankAcc['account_balance'] < 0) {
+                    accBal.classList.add('expenseCategory');
+                } else {
+                    accBal.classList.add('incomeCategory');
+                }
+                accBal.textContent = formatToCurrency(bankAcc['account_balance']);
+                // Append Empty Table to child
+                accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
+                // Append to the transaction view
+                accHeadFrag.appendChild(accountHeaderNew);
+            }
+        }
+
+        // Append the account transactions to the table
+        accountAggreDiv.appendChild(accHeadFrag);
+
     }
 
 }(jQuery));

@@ -217,15 +217,7 @@ let tickIconSVG = tickIcon();
                     }
 
                     // A new header for the rest
-                    let accountHeaderNew = buildAccountHeader(result.accountId);
-                    accountHeaderNew.getElementById('accountTitle-' + result.accountId).textContent = result['bank_account_name'];
-                    let accBal = accountHeaderNew.getElementById('accountBalance-' + result.accountId);
-                    if (result['account_balance'] < 0) {
-                        accBal.classList.add('expenseCategory');
-                    } else {
-                        accBal.classList.add('incomeCategory');
-                    }
-                    accBal.textContent = formatToCurrency(Math.abs(result['account_balance']));
+                    let accountHeaderNew = buildAccountHeader(result);
                     // Append Empty Table to child
                     accountHeaderNew.getElementById('accountSB-' + result.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + result.accountId));
                     // Append to the transaction view
@@ -747,7 +739,8 @@ function buildEmptyAccTransactionsSvg() {
 }
 
 // Appends the date header for recent transactions
-function buildAccountHeader(accountId) {
+function buildAccountHeader(account) {
+    let accountId = account.accountId;
     let docFrag = document.createDocumentFragment();
     let accountHeader = document.createElement('div');
     accountHeader.id = 'accountSB-' + accountId;
@@ -771,7 +764,7 @@ function buildAccountHeader(accountId) {
     let accountTitle = document.createElement('a');
     accountTitle.id = 'accountTitle-' + accountId;
     accountTitle.classList = 'pl-4 accTitleAnchor';
-    accountTitle.appendChild(buildSmallMaterialSpinner(accountId));
+    accountTitle.textContent = account['bank_account_name'];
     titleWrapper.appendChild(accountTitle);
     accountTit.appendChild(titleWrapper);
 
@@ -783,22 +776,18 @@ function buildAccountHeader(accountId) {
     // Account Balance
     let accountBalance = document.createElement('div');
     accountBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
+    if (bankAcc['account_balance'] < 0) {
+        accountBalance.classList.add('expenseCategory');
+    } else {
+        accountBalance.classList.add('incomeCategory');
+    }
     accountBalance.id = 'accountBalance-' + accountId;
+    accountBalance.textContent = formatToCurrency(account['account_balance']);
     accountTit.appendChild(accountBalance);
 
     accountHeader.appendChild(accountTit);
     docFrag.appendChild(accountHeader);
     return docFrag;
-}
-
-// Build small material spinner
-function buildSmallMaterialSpinner(accountId) {
-    // Add small Material Spinner
-    let divMaterialSpinner = document.createElement('div');
-    divMaterialSpinner.classList = 'material-spinner-small mx-auto pendingAccInfo';
-    divMaterialSpinner.id = 'spinAcc-' + accountId;
-    divMaterialSpinner.setAttribute('data-target', accountId);
-    return divMaterialSpinner;
 }
 
 //Build a tick icon

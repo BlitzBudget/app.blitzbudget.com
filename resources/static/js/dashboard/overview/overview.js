@@ -1060,8 +1060,8 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                 let accountId = account.accountId;
 
                 if (!includesStr(createdAccIds, accountId)) {
-                    tableBody.appendChild(buildAccountHeader(accountId));
-                    tableBody.getElementById('accountTitle-' + bankAcc.accountId).textContent = account['bank_account_name'];
+                    tableBody.appendChild(buildAccountHeader(account));
+                    tableBody.getElementById('accountTitle-' + account.accountId).textContent = account['bank_account_name'];
                     // Add Created Accounts ID to the array
                     createdAccIds.push(accountId);
                 }
