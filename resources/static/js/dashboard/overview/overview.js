@@ -968,6 +968,11 @@ function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetc
                     Swal.fire({
                         title: dataPreferences.labels[data.index],
                         html: buildTransactionsForOverview(dataPreferences.labels[data.index], type, fetchIncome),
+                        customClass: {
+                            confirmButton: 'btn btn-success',
+                        },
+                        buttonsStyling: false,
+                        confirmButtonText: 'Got it!',
                     })
                 }
             }
