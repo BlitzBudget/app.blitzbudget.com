@@ -12,14 +12,17 @@
     window.liftimeTransactionsCache = {};
     // populate category breakdown for income or expense
     let fetchIncomeBreakDownCache = true;
+    // One year Overview
+    let oneYearOverviewOption = 'oneyearoverview';
+    // Category Breakdown
+    let categoryBreakdownOption = 'categorybreakdown';
     // Doughnut breakdown open
-    let doughnutBreakdownOpen = false;
+    window.whichChartIsOpen = oneYearOverviewOption;
     // Cache the previous year picker date
     let currentYearSelect = new Date().getFullYear();
     let previousDateYearPicker = currentYearSelect - 2;
     // Cache the next year Picker data
     let nextDateYearPicker = currentYearSelect + 2;
-    let materialSpinnerClone = buildMaterialSpinner();
 
     /**
      * Get Overview
@@ -138,12 +141,7 @@
 
                 fetchJSONForCategories(result.Category);
 
-                // Upon refresh call the income overview chart
-                populateLineChart(result.Date, true);
-                // Populate category brakdown
-                if (doughnutBreakdownOpen) {
-                    populateCategoryBreakdown(fetchIncomeBreakDownCache);
-                }
+                populateAppropriateChart(result.Date);
 
                 // Global Transactions Cache
                 window.overviewTransactionsCache = result.Transaction;
@@ -174,6 +172,23 @@
         });
     }
 
+    /*
+     * Populate appropriate chart
+     */
+    function populateAppropriateChart(dateLineChart) {
+        // Which Chart is open
+        switch (window.whichChartIsOpen) {
+            case categoryBreakdownOption:
+                // Populate category brakdown
+                populateCategoryBreakdown(fetchIncomeBreakDownCache);
+                break;
+            case oneYearOverviewOption:
+                // Upon refresh call the income overview chart
+                populateLineChart(dateLineChart, true);
+                break;
+        }
+    }
+
     // Populate Income Average
     function populateTotalAssetLiabilityAndNetworth(wallet) {
 
@@ -196,9 +211,8 @@
      */
 
     function incomeOrExpenseOverviewChart(incomeTotalParameter, dateAndAmountAsList) {
-        // If donut chart is open then do nothing or If income Total Param is empty
-        if (doughnutBreakdownOpen ||
-            isEmpty(incomeTotalParameter)) {
+        // If income Total Param is empty
+        if (isEmpty(incomeTotalParameter)) {
             return;
         }
 
@@ -311,16 +325,12 @@
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
             document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
-            // Populate Category Break down Chart if present
-            if (doughnutBreakdownOpen) {
-                // Fetch the expense cache
-                fetchIncomeBreakDownCache = true;
-                populateCategoryBreakdown(fetchIncomeBreakDownCache);
-                // Replace the Drop down with one year view
-                replaceChartChosenLabel(window.translationData.overview.dynamic.incomebreakdown);
-            } else {
-                populateLineChart(liftimeTransactionsCache, true);
-            }
+            // Fetch the expense cache
+            fetchIncomeBreakDownCache = true;
+
+            // Populate appropriate chart
+            populateAppropriateChart(liftimeTransactionsCache);
+
             document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.incomeoverview;
             // Replace the drop down for chart options
             appendChartOptionsForIncomeOrExpense("Income", window.translationData.overview.dynamic.chart.incomeoverview);
@@ -328,16 +338,11 @@
             // Show the button to choose charts
             document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
             document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
-            // Populate Category Break down Chart if present
-            if (doughnutBreakdownOpen) {
-                // Fetch the expense cache
-                fetchIncomeBreakDownCache = false;
-                populateCategoryBreakdown(fetchIncomeBreakDownCache);
-                // Replace the Drop down with one year view
-                replaceChartChosenLabel(window.translationData.overview.dynamic.expensebreakdown);
-            } else {
-                populateLineChart(liftimeTransactionsCache, false);
-            }
+            // Fetch the expense cache
+            fetchIncomeBreakDownCache = false;
+            // Populate appropriate chart
+            populateAppropriateChart(liftimeTransactionsCache);
+
             document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.expenseoverview;
             // Replace the drop down for chart options
             appendChartOptionsForIncomeOrExpense("Expense", window.translationData.overview.dynamic.chart.expenseoverview);
@@ -548,7 +553,7 @@
     // Chart Income One Year Overview
     $("body").on("click", "#chooseCategoryDD .chartOverviewIncome", function () {
         // Dough nut breakdown open cache
-        doughnutBreakdownOpen = false;
+        window.whichChartIsOpen = oneYearOverviewOption;
         // populate the income line chart from cache
         populateLineChart(liftimeTransactionsCache, true);
     });
@@ -556,7 +561,7 @@
     // Chart Income Breakdown Chart
     $("body").on("click", "#chooseCategoryDD .chartBreakdownIncome", function () {
         // Dough nut breakdown open cache
-        doughnutBreakdownOpen = true;
+        window.whichChartIsOpen = categoryBreakdownOption;
         replaceChartChosenLabel(window.translationData.overview.dynamic.chart.incomeoverview);
         // Populate Breakdown Category
         populateCategoryBreakdown(true);
@@ -567,7 +572,7 @@
     // Chart Expense One Year Overview
     $("body").on("click", "#chooseCategoryDD .chartOverviewExpense", function () {
         // Dough nut breakdown open cache
-        doughnutBreakdownOpen = false;
+        window.whichChartIsOpen = oneYearOverviewOption;
         // Populate the expense line chart from cache
         populateLineChart(liftimeTransactionsCache, false);
     });
@@ -575,7 +580,7 @@
     // Chart Expense  Breakdown Chart
     $("body").on("click", "#chooseCategoryDD .chartBreakdownExpense", function () {
         // Dough nut breakdown open cache
-        doughnutBreakdownOpen = true;
+        window.whichChartIsOpen = categoryBreakdownOption;
         replaceChartChosenLabel(window.translationData.overview.dynamic.chart.expenseoverview);
         // Populate Breakdown Category
         populateCategoryBreakdown(false);
@@ -585,6 +590,14 @@
 
     // Populate Breakdown Category
     function populateCategoryBreakdown(fetchIncome) {
+        if (fetchIncome) {
+            // Replace the Drop down with one year view
+            replaceChartChosenLabel(window.translationData.overview.dynamic.incomebreakdown);
+        } else {
+            // Replace the Drop down with one year view
+            replaceChartChosenLabel(window.translationData.overview.dynamic.expensebreakdown);
+        }
+
         let labelsArray = [];
         let seriesArray = [];
         let absoluteTotal = 0;
@@ -1035,7 +1048,6 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
         case 'category':
             break;
         case 'tag':
-            let transactionsToShow = [];
             for (let count = 0, length = window.overviewTransactionsCache.length; count < length; count++) {
                 let transaction = window.overviewTransactionsCache[count];
                 let tags = transaction.tags;
@@ -1046,29 +1058,9 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                         let tag = tags[i];
                         // Check tag matches the label
                         if (isEqual(tag, label)) {
-                            transactionsToShow[transaction.account] = transaction;
+                            tableBody.appendChild(buildTransactionRow(transaction));
                         }
                     }
-                }
-            }
-
-            // Build the legend and the series array
-            let bankAccounts = window.allBankAccountInfoCache;
-            let createdAccIds = [];
-            for (let count = 0, length = bankAccounts.length; count < length; count++) {
-                let account = bankAccounts[count];
-                let accountId = account.accountId;
-
-                if (!includesStr(createdAccIds, accountId)) {
-                    tableBody.appendChild(buildAccountHeader(account));
-                    tableBody.getElementById('accountTitle-' + account.accountId).textContent = account['bank_account_name'];
-                    // Add Created Accounts ID to the array
-                    createdAccIds.push(accountId);
-                }
-
-                let transaction = transactionsToShow[accountId];
-                if (isNotEmpty(transaction)) {
-                    tableBody.appendChild(buildTransactionRow(transaction));
                 }
             }
             break;

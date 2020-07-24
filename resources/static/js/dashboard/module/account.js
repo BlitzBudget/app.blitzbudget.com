@@ -776,7 +776,7 @@ function buildAccountHeader(account) {
     // Account Balance
     let accountBalance = document.createElement('div');
     accountBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
-    if (bankAcc['account_balance'] < 0) {
+    if (account['account_balance'] < 0) {
         accountBalance.classList.add('expenseCategory');
     } else {
         accountBalance.classList.add('incomeCategory');
