@@ -16,7 +16,7 @@
     let oneYearOverviewOption = 'oneyearoverview';
     // Category Breakdown
     let categoryBreakdownOption = 'categorybreakdown';
-    // Doughnut breakdown open
+    // One Year Overview option
     window.whichChartIsOpen = oneYearOverviewOption;
     // Cache the previous year picker date
     let currentYearSelect = new Date().getFullYear();
@@ -191,10 +191,12 @@
             case categoryBreakdownOption:
                 // Populate category brakdown
                 populateCategoryBreakdown(fetchIncomeBreakDownCache);
+                document.getElementById('chartDisplayTitle').firstChild.nodeValue = labelForCategory;
                 break;
             case oneYearOverviewOption:
                 // Upon refresh call the income overview chart
                 populateLineChart(dateLineChart, true);
+                document.getElementById('chartDisplayTitle').firstChild.nodeValue = labelForCategory;
                 break;
             case 'categorizebytags':
                 // Populate Categorize By tags
@@ -563,7 +565,6 @@
 
         // Replace the Drop down with category options label
         replaceChartChosenLabel(labelForCategory);
-        document.getElementById('chartDisplayTitle').firstChild.nodeValue = labelForCategory;
 
         let labelsArray = [];
         let seriesArray = [];
