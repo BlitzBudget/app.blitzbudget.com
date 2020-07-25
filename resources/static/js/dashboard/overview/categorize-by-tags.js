@@ -110,7 +110,7 @@ function populateCategorizeByTags(fetchIncome, transactions) {
     // Build the data for the line chart
     let dataSimpleBarChart = {
         labels: labelsArray,
-        series: seriesArray
+        series: seriesArray,
         ids: idArray
     }
 
