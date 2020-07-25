@@ -77,6 +77,8 @@
         if (document.getElementsByClassName('highlightOverviewSelected').length == 0) {
             // Add highlighted element to the income
             document.getElementsByClassName('income')[0].classList.add('highlightOverviewSelected');
+            // Choose one year overview
+            window.whichChartIsOpen = oneYearOverviewOption;
         }
 
         /**
