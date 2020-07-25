@@ -176,6 +176,11 @@
      * Populate appropriate chart
      */
     function populateAppropriateChart(dateLineChart) {
+        // Replace the drop down for chart options
+        let incomeOrExpenseLabel = fetchIncomeBreakDownCache ? "Income" : "Expense";
+        // Label For Category
+        let labelForCategory = fetchIncomeBreakDownCache ? window.translationData.overview.dynamic.incomebreakdown : window.translationData.overview.dynamic.expensebreakdown;
+        appendChartOptionsForIncomeOrExpense(incomeOrExpenseLabel, labelForCategory);
         // Which Chart is open
         switch (window.whichChartIsOpen) {
             case categoryBreakdownOption:
@@ -185,6 +190,14 @@
             case oneYearOverviewOption:
                 // Upon refresh call the income overview chart
                 populateLineChart(dateLineChart, true);
+                break;
+            case 'categorizebytags':
+                // Populate Categorize By tags
+                populateCategorizeByTags(fetchIncomeBreakDownCache, window.overviewTransactionsCache);
+                break;
+            case 'categorizebyaccounts':
+                // Populate Categorize By Account
+                populateCategorizeByAccount(fetchIncomeBreakDownCache, window.overviewTransactionsCache);
                 break;
         }
     }
@@ -230,7 +243,6 @@
 
         if (isEqual(incomeparam, incomeTotalParameter)) {
 
-
             incomeOrExpense = 'Income';
             translatedText = window.translationData.overview.dynamic.chart.incomeoverview;
 
@@ -259,7 +271,7 @@
         }
         // Replace with empty chart message
         if (isEmpty(dateAndAmountAsList)) {
-            chartAppendingDiv.appendChild(buildEmptyChartMessage());
+            chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
             return;
         }
 
@@ -283,7 +295,7 @@
 
         // Replace with empty chart message
         if (isEmpty(seriesArray)) {
-            chartAppendingDiv.appendChild(buildEmptyChartMessage());
+            chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
             return;
         } else if (seriesArray.length == 1) {
             chartAppendingDiv.appendChild(buildInsufficientInfoMessage());
@@ -321,43 +333,15 @@
 
         // Start requesting the chart
         let firstChildClassList = this.classList;
-        if (firstChildClassList.contains('income')) {
-            // Show the button to choose charts
-            document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
-            document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
-            // Fetch the expense cache
-            fetchIncomeBreakDownCache = true;
-
+        if (firstChildClassList.contains('income') || firstChildClassList.contains('expense')) {
             // Populate appropriate chart
             populateAppropriateChart(liftimeTransactionsCache);
-
-            document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.incomeoverview;
-            // Replace the drop down for chart options
-            appendChartOptionsForIncomeOrExpense("Income", window.translationData.overview.dynamic.chart.incomeoverview);
-        } else if (firstChildClassList.contains('expense')) {
-            // Show the button to choose charts
-            document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
-            document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
-            // Fetch the expense cache
-            fetchIncomeBreakDownCache = false;
-            // Populate appropriate chart
-            populateAppropriateChart(liftimeTransactionsCache);
-
-            document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.expenseoverview;
-            // Replace the drop down for chart options
-            appendChartOptionsForIncomeOrExpense("Expense", window.translationData.overview.dynamic.chart.expenseoverview);
         } else if (firstChildClassList.contains('assets')) {
-            // Show the button to choose charts
-            document.getElementById('chosenChartIncAndExp').classList.add('d-none');
-            document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
             // Populate Asset Chart
             populateAssetBarChart(true);
             // Change Label
             document.getElementById('chartDisplayTitle').firstChild.nodeValue = window.translationData.overview.dynamic.chart.assetoverview;
         } else if (firstChildClassList.contains('debt')) {
-            // Show the button to choose charts
-            document.getElementById('chosenChartIncAndExp').classList.add('d-none');
-            document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
             // Populate Debt Chart
             populateAssetBarChart(false);
             // Change Label
@@ -450,29 +434,6 @@
         return materialSpinnerDiv;
     }
 
-    // Build Empty chart
-    function buildEmptyChartMessage() {
-        let emptyChartMessage = document.createElement('div');
-        emptyChartMessage.classList = 'text-center align-middle h-20';
-
-        let divIconWrapper = document.createElement('div');
-        divIconWrapper.classList = 'icon-center';
-
-        let iconChart = document.createElement('i');
-        iconChart.classList = 'material-icons noDataChartIcon';
-        iconChart.textContent = 'multiline_chart';
-        divIconWrapper.appendChild(iconChart);
-        emptyChartMessage.appendChild(divIconWrapper);
-
-        let emptyMessage = document.createElement('div');
-        emptyMessage.classList = 'font-weight-bold tripleNineColor';
-        emptyMessage.textContent = window.translationData.overview.dynamic.chart.nodata;
-        emptyChartMessage.appendChild(emptyMessage);
-
-        return emptyChartMessage;
-
-    }
-
     // Build Insufficient Information Message
     function buildInsufficientInfoMessage() {
         let emptyChartMessage = document.createElement('div');
@@ -562,11 +523,8 @@
     $("body").on("click", "#chooseCategoryDD .chartBreakdownIncome", function () {
         // Dough nut breakdown open cache
         window.whichChartIsOpen = categoryBreakdownOption;
-        replaceChartChosenLabel(window.translationData.overview.dynamic.chart.incomeoverview);
         // Populate Breakdown Category
         populateCategoryBreakdown(true);
-        // Populate cache for income or expense breakdown
-        fetchIncomeBreakDownCache = true;
     });
 
     // Chart Expense One Year Overview
@@ -581,22 +539,24 @@
     $("body").on("click", "#chooseCategoryDD .chartBreakdownExpense", function () {
         // Dough nut breakdown open cache
         window.whichChartIsOpen = categoryBreakdownOption;
-        replaceChartChosenLabel(window.translationData.overview.dynamic.chart.expenseoverview);
         // Populate Breakdown Category
         populateCategoryBreakdown(false);
-        // Populate cache for income or expense breakdown
-        fetchIncomeBreakDownCache = false;
     });
 
     // Populate Breakdown Category
     function populateCategoryBreakdown(fetchIncome) {
-        if (fetchIncome) {
-            // Replace the Drop down with one year view
-            replaceChartChosenLabel(window.translationData.overview.dynamic.incomebreakdown);
-        } else {
-            // Replace the Drop down with one year view
-            replaceChartChosenLabel(window.translationData.overview.dynamic.expensebreakdown);
-        }
+        // Show the button to choose charts
+        document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
+        document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
+        // Fetch the expense cache
+        fetchIncomeBreakDownCache = fetchIncome;
+
+        // Label For Category
+        let labelForCategory = fetchIncome ? window.translationData.overview.dynamic.incomebreakdown : window.translationData.overview.dynamic.expensebreakdown;
+
+        // Replace the Drop down with category options label
+        replaceChartChosenLabel(labelForCategory);
+        document.getElementById('chartDisplayTitle').firstChild.nodeValue = labelForCategory;
 
         let labelsArray = [];
         let seriesArray = [];
@@ -666,7 +626,7 @@
         }
         // Replace with empty chart message
         if (isEmpty(seriesArray)) {
-            chartAppendingDiv.appendChild(buildEmptyChartMessage());
+            chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
             return;
         }
 
@@ -707,6 +667,9 @@
      * Build Total Assets / liability
      **/
     function populateAssetBarChart(fetchAssets) {
+        // Show the button to choose charts
+        document.getElementById('chosenChartIncAndExp').classList.add('d-none');
+        document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
         // Fetch asset or liability
         let accType = fetchAssets ? 'ASSET' : 'DEBT';
 
@@ -753,7 +716,7 @@
         }
         // If series array is empty then
         if (isEmpty(seriesArray)) {
-            chartAppendingDiv.appendChild(buildEmptyChartMessage());
+            chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
             return;
         }
 
@@ -784,7 +747,7 @@
     function populateEmptyChartInfo() {
         let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
         let emptyMessageDocumentFragment = document.createDocumentFragment();
-        emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+        emptyMessageDocumentFragment.appendChild(buildEmptyChartMessageForOverview());
         // Replace inner HTML with EMPTY
         while (chartAppendingDiv.firstChild) {
             chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
@@ -892,7 +855,7 @@
         if (isEmpty(seriesArray)) {
             let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
             let emptyMessageDocumentFragment = document.createDocumentFragment();
-            emptyMessageDocumentFragment.appendChild(buildEmptyChartMessage());
+            emptyMessageDocumentFragment.appendChild(buildEmptyChartMessageForOverview());
             // Replace inner HTML with EMPTY
             while (chartAppendingDiv.firstChild) {
                 chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
@@ -1145,4 +1108,26 @@ function buildTransactionRow(userTransaction) {
 
     return tableRowTransaction;
 
+}
+
+// Build Empty chart
+function buildEmptyChartMessageForOverview() {
+    let emptyChartMessage = document.createElement('div');
+    emptyChartMessage.classList = 'text-center align-middle h-20';
+
+    let divIconWrapper = document.createElement('div');
+    divIconWrapper.classList = 'icon-center';
+
+    let iconChart = document.createElement('i');
+    iconChart.classList = 'material-icons noDataChartIcon';
+    iconChart.textContent = 'multiline_chart';
+    divIconWrapper.appendChild(iconChart);
+    emptyChartMessage.appendChild(divIconWrapper);
+
+    let emptyMessage = document.createElement('div');
+    emptyMessage.classList = 'font-weight-bold tripleNineColor';
+    emptyMessage.textContent = window.translationData.overview.dynamic.chart.nodata;
+    emptyChartMessage.appendChild(emptyMessage);
+
+    return emptyChartMessage;
 }
