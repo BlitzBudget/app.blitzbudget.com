@@ -333,7 +333,12 @@
 
         // Start requesting the chart
         let firstChildClassList = this.classList;
-        if (firstChildClassList.contains('income') || firstChildClassList.contains('expense')) {
+        if (firstChildClassList.contains('income')) {
+            fetchIncomeBreakDownCache = true;
+            // Populate appropriate chart
+            populateAppropriateChart(liftimeTransactionsCache);
+        } else if (firstChildClassList.contains('expense')) {
+            fetchIncomeBreakDownCache = false;
             // Populate appropriate chart
             populateAppropriateChart(liftimeTransactionsCache);
         } else if (firstChildClassList.contains('assets')) {
