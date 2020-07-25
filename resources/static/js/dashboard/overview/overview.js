@@ -599,11 +599,11 @@
                 if (percentageOfTotal > 5) {
                     labelsArray.push(categoryObject.name);
                     seriesArray.push(Math.abs(categoryObject.categoryTotal));
-                    idArray.push(accountId);
+                    idArray.push(categoryId);
                 } else {
                     othersTotal += Math.abs(categoryObject.categoryTotal);
                     otherLabels.push(categoryObject.name);
-                    otherIdArray.push(accountId);
+                    otherIdArray.push(categoryId);
                 }
 
             }

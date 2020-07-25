@@ -22,6 +22,8 @@ function populateCategorizeByTags(fetchIncome, transactions) {
 
     let labelsArray = [];
     let seriesArray = [];
+    let idArray = [];
+    let otherIdArray = [];
     let absoluteTotal = 0;
     let othersTotal = 0;
     let otherLabels = [];
@@ -73,9 +75,11 @@ function populateCategorizeByTags(fetchIncome, transactions) {
             if (percentageOfTotal > 5) {
                 labelsArray.push(key);
                 seriesArray.push(transactionByTags[key]);
+                idArray.push(accountId);
             } else {
                 othersTotal += transactionByTags[key];
                 otherLabels.push(key);
+                otherIdArray.push(accountId);
             }
 
         }
@@ -89,6 +93,7 @@ function populateCategorizeByTags(fetchIncome, transactions) {
             labelsArray.push(otherLabels[0]);
         }
         seriesArray.push(Math.abs(othersTotal));
+        idArray.push(otherIdArray);
     }
 
     let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
