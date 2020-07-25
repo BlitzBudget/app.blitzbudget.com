@@ -111,7 +111,7 @@ function populateCategorizeByTags(fetchIncome, transactions) {
     let dataSimpleBarChart = {
         labels: labelsArray,
         series: seriesArray
-
+        ids: idArray
     }
 
     buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'tag', fetchIncome);

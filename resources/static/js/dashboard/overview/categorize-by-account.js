@@ -109,7 +109,6 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
         labels: labelsArray,
         series: seriesArray,
         ids: idArray
-
     }
 
     buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'account', fetchIncome);
