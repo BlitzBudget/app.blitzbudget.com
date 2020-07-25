@@ -136,6 +136,8 @@
                 expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
                 // Dates Cache
                 window.datesCreated = result.Date;
+                // Global Transactions Cache
+                window.overviewTransactionsCache = result.Transaction;
 
                 er_a.populateBankInfo(result.BankAccount);
 
@@ -143,8 +145,6 @@
 
                 populateAppropriateChart(result.Date);
 
-                // Global Transactions Cache
-                window.overviewTransactionsCache = result.Transaction;
                 // Replace currentCurrencySymbol with currency symbol
                 replaceWithCurrency(result.Wallet);
                 /**
@@ -181,6 +181,9 @@
         // Label For Category
         let labelForCategory = fetchIncomeBreakDownCache ? window.translationData.overview.dynamic.incomebreakdown : window.translationData.overview.dynamic.expensebreakdown;
         appendChartOptionsForIncomeOrExpense(incomeOrExpenseLabel, labelForCategory);
+        // Show the button to choose charts
+        document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
+        document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
         // Which Chart is open
         switch (window.whichChartIsOpen) {
             case categoryBreakdownOption:
@@ -550,9 +553,6 @@
 
     // Populate Breakdown Category
     function populateCategoryBreakdown(fetchIncome) {
-        // Show the button to choose charts
-        document.getElementById('chosenChartIncAndExp').classList.remove('d-none');
-        document.getElementById('chosenChartIncAndExp').classList.add('d-lg-block');
         // Fetch the expense cache
         fetchIncomeBreakDownCache = fetchIncome;
 
