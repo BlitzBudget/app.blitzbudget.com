@@ -564,20 +564,6 @@
         let othersTotal = 0;
         let otherLabels = [];
 
-        // Reset the line chart with spinner
-        let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-        // Replace HTML with Empty
-        while (colouredRoundedLineChart.firstChild) {
-            colouredRoundedLineChart.removeChild(colouredRoundedLineChart.firstChild);
-        }
-        let h20 = document.createElement('div');
-        h20.classList = 'h-20';
-        let materialSpinnerElement = document.createElement('div');
-        materialSpinnerElement.classList = 'material-spinner rtSpinner';
-        h20.appendChild(materialSpinnerElement);
-        colouredRoundedLineChart.appendChild(h20);
-
-
         // Build the Absolute total
         let incomeCategory = fetchIncome ? CUSTOM_DASHBOARD_CONSTANTS.incomeCategory : CUSTOM_DASHBOARD_CONSTANTS.expenseCategory;
         let categoryKeys = Object.keys(window.categoryMap);
@@ -617,17 +603,6 @@
                 labelsArray.push(otherLabels[0]);
             }
             seriesArray.push(Math.abs(othersTotal));
-        }
-
-        let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-        // Replace inner HTML with EMPTY
-        while (chartAppendingDiv.firstChild) {
-            chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-        }
-        // Replace with empty chart message
-        if (isEmpty(seriesArray)) {
-            chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
-            return;
         }
 
         // Build the data for the line chart
@@ -672,19 +647,6 @@
         document.getElementById('chosenChartIncAndExp').classList.remove('d-lg-block');
         // Fetch asset or liability
         let accType = fetchAssets ? 'ASSET' : 'DEBT';
-
-        // Reset the line chart with spinner
-        let colouredRoundedLineChart = document.getElementById('colouredRoundedLineChart');
-        // Replace HTML with Empty
-        while (colouredRoundedLineChart.firstChild) {
-            colouredRoundedLineChart.removeChild(colouredRoundedLineChart.firstChild);
-        }
-        let h20 = document.createElement('div');
-        h20.classList = 'h-20';
-        let materialSpinnerElement = document.createElement('div');
-        materialSpinnerElement.classList = 'material-spinner rtSpinner';
-        h20.appendChild(materialSpinnerElement);
-        colouredRoundedLineChart.appendChild(h20);
 
         buildBarchartForAssetOrDebt(window.allBankAccountInfoCache, accType);
     }
@@ -896,6 +858,20 @@ function replaceChartChosenLabel(chosenChartText) {
 
 // Introduce Chartist pie chart
 function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetchIncome) {
+
+    let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
+
+    // Replace inner HTML with EMPTY
+    while (chartAppendingDiv.firstChild) {
+        chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
+    }
+
+    // Replace with empty chart message
+    if (isEmpty(dataPreferences.series)) {
+        chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
+        return;
+    }
+
     /*  **************** Public Preferences - Pie Chart ******************** */
 
     let optionsPreferences = {

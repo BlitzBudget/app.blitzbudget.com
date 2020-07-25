@@ -98,7 +98,7 @@ function populateCategorizeByTags(fetchIncome, transactions) {
     }
     // Replace with empty chart message
     if (isEmpty(seriesArray)) {
-        chartAppendingDiv.appendChild(buildEmptyChartMessage());
+        chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
         return;
     }
 
