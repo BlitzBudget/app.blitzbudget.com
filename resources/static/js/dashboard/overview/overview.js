@@ -73,8 +73,11 @@
         let genericAddFnc = document.getElementById('genericAddFnc');
         genericAddFnc.classList.add('d-none');
 
-        // Add highlighted element to the income
-        document.getElementsByClassName('income')[0].classList.add('highlightOverviewSelected');
+        // If highlight is not present
+        if (document.getElementsByClassName('highlightOverviewSelected').length == 0) {
+            // Add highlighted element to the income
+            document.getElementsByClassName('income')[0].classList.add('highlightOverviewSelected');
+        }
 
         /**
          * Date Picker
@@ -150,7 +153,6 @@
                 /**
                  * Populate total Asset, Liability & Networth
                  */
-
                 populateTotalAssetLiabilityAndNetworth(result.Wallet);
             },
             ajaxData.onFailure = function (thrownError) {
