@@ -75,11 +75,11 @@ function populateCategorizeByTags(fetchIncome, transactions) {
             if (percentageOfTotal > 5) {
                 labelsArray.push(key);
                 seriesArray.push(transactionByTags[key]);
-                idArray.push(accountId);
+                idArray.push(key);
             } else {
                 othersTotal += transactionByTags[key];
                 otherLabels.push(key);
-                otherIdArray.push(accountId);
+                otherIdArray.push(key);
             }
 
         }
