@@ -570,6 +570,8 @@
 
         let labelsArray = [];
         let seriesArray = [];
+        let idArray = [];
+        let otherIdArray = [];
         let absoluteTotal = 0;
         let othersTotal = 0;
         let otherLabels = [];
@@ -597,9 +599,11 @@
                 if (percentageOfTotal > 5) {
                     labelsArray.push(categoryObject.name);
                     seriesArray.push(Math.abs(categoryObject.categoryTotal));
+                    idArray.push(accountId);
                 } else {
                     othersTotal += Math.abs(categoryObject.categoryTotal);
                     otherLabels.push(categoryObject.name);
+                    otherIdArray.push(accountId);
                 }
 
             }
@@ -613,12 +617,14 @@
                 labelsArray.push(otherLabels[0]);
             }
             seriesArray.push(Math.abs(othersTotal));
+            idArray.push(otherIdArray);
         }
 
         // Build the data for the line chart
         let dataSimpleBarChart = {
             labels: labelsArray,
-            series: seriesArray
+            series: seriesArray,
+            ids: idArray
 
         }
 
@@ -929,7 +935,7 @@ function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetc
                 data.element._node.onclick = function () {
                     Swal.fire({
                         title: dataPreferences.labels[data.index],
-                        html: buildTransactionsForOverview(dataPreferences.labels[data.index], type, fetchIncome),
+                        html: buildTransactionsForOverview(dataPreferences.ids[data.index], type, fetchIncome),
                         customClass: {
                             confirmButton: 'btn btn-info',
                         },
@@ -995,6 +1001,17 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
 
     switch (type) {
         case 'category':
+            for (let count = 0, length = window.overviewTransactionsCache.length; count < length; count++) {
+                let transaction = window.overviewTransactionsCache[count];
+                let category = transaction.category;
+                let incomeCategory = transaction.amount > 0 ? true : false;
+                if (incomeCategory == fetchIncome && isNotEmpty(category)) {
+                    // Check tag matches the label
+                    if (isEqual(category, label)) {
+                        tableBody.appendChild(buildTransactionRow(transaction));
+                    }
+                }
+            }
             break;
         case 'tag':
             for (let count = 0, length = window.overviewTransactionsCache.length; count < length; count++) {
@@ -1014,6 +1031,17 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
             }
             break;
         case 'account':
+            for (let count = 0, length = window.overviewTransactionsCache.length; count < length; count++) {
+                let transaction = window.overviewTransactionsCache[count];
+                let account = transaction.account;
+                let incomeCategory = transaction.amount > 0 ? true : false;
+                if (incomeCategory == fetchIncome && isNotEmpty(account)) {
+                    // Check tag matches the label
+                    if (isEqual(account, label)) {
+                        tableBody.appendChild(buildTransactionRow(transaction));
+                    }
+                }
+            }
             break;
     }
 

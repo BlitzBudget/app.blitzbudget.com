@@ -21,6 +21,8 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
 
     let labelsArray = [];
     let seriesArray = [];
+    let idArray = [];
+    let otherIdArray = [];
     let absoluteTotal = 0;
     let othersTotal = 0;
     let otherLabels = [];
@@ -70,9 +72,11 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
             if (percentageOfTotal > 5) {
                 labelsArray.push(account['bank_account_name']);
                 seriesArray.push(transactionByAccount[accountId]);
+                idArray.push(accountId);
             } else {
                 othersTotal += transactionByAccount[accountId];
                 otherLabels.push(transactionByAccount[accountId]);
+                otherIdArray.push(accountId);
             }
 
         }
@@ -86,6 +90,7 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
             labelsArray.push(otherLabels[0]);
         }
         seriesArray.push(Math.abs(othersTotal));
+        idArray.push(otherIdArray);
     }
 
     let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
@@ -102,7 +107,8 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
     // Build the data for the line chart
     let dataSimpleBarChart = {
         labels: labelsArray,
-        series: seriesArray
+        series: seriesArray,
+        ids: idArray
 
     }
 
