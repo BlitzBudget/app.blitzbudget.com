@@ -480,129 +480,8 @@ a.manageBA.text-dynamic-color:focus {
     box-shadow: 0 0 3px rgba(76, 175, 80, 0.42);
 }
 
-
-
-/**
-*
-* Recent Transactions CSS
-*
-*/
-.tableBodyDiv {
-    display: table-row-group;
-}
-
-.recentTransactionDescription,
-.overviewHeading {
-    color: #2e4369;
-    letter-spacing: 0;
-    clear: both;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.categoryNameRT {
-    margin-bottom: 0;
-    color: #5d7079;
-}
-
-.descriptionCellRT {
-    border-top: 1px solid #f6f6f6;
-    padding-top: 0.25rem;
-}
-
-.transactionAmountRT {
-    border-top: 1px solid #f6f6f6;
-    padding-top: 0.25rem;
-    padding-right: 1rem;
-}
-
-.overviewEntryRow {
-    cursor: pointer;
-    border-top: 1px solid #f6f6f6;
-}
-
-.recentTransactionTitle,
-.optimizationTitle,
-.overviewHeadingTab {
-    color: #829ca9;
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 30px;
-}
-
-.expenseCategory {
-    color: #fc695f;
-}
-
-.incomeCategory {
-    color: #58c65c;
-}
-
-#transactionsTable .dropdown-toggle::after {
-    color: #495257;
-}
-
-.recentTransactionsBody,
-.optimizationsBody {
-    overflow-y: auto;
-}
-
-.recentTransactionCard,
-.optimizationBudgetAndGoal {
-    height: 35rem;
-}
-
 .w-15 {
     width: 15%;
-}
-
-.imageWrapperCell {
-    border-top: 1px solid #f6f6f6;
-    padding: 0.25rem;
-}
-
-.circleWrapperImageRT {
-    background-color: #f2f5f7;
-    font-size: 16px;
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
-}
-
-.recentTransactionEntry {
-    letter-spacing: 0.016em;
-}
-
-.recentTransactionEntry:hover {
-    background-color: #f2f5f7;
-}
-
-.recentTransactionEntry:hover .circleWrapperImageRT {
-    background-color: #fff;
-}
-
-.imagesTransactionEmpty {
-    padding-top: 6rem;
-}
-
-.rtSpinner {
-    position: absolute;
-    left: 45%;
-    top: 40%;
-}
-
-.creditCardPath,
-.plusRawPath {
-    line-height: normal;
-    text-indent: 0;
-    text-align: start;
-    text-decoration-line: none;
-    text-decoration-style: solid;
-    text-decoration-color: #000;
-    text-transform: none;
-    block-progression: tb;
-    isolation: auto;
-    mix-blend-mode: normal
 }
 
 #bootstrap-combobox.dropdown-menu .dropdown-item:hover,
@@ -733,6 +612,11 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
 
 #categoryOptions .dropdown-toggle::after {
     color: #333;
+}
+
+#categoryOptions .dropdown-toggle {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
 }
 
 #categoryOptions .dropdown-menu {
@@ -876,6 +760,12 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
     stroke-width: 2px;
     transition: stroke-width 0.3s ease-out;
     -webkit-transition: stroke-width 0.3s ease-out;
+}
+
+.input-group.onerow {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    white-space: nowrap;
 }
 
 /** Change the size of the text if the width and height of the screen are less **/

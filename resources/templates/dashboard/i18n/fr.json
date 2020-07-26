@@ -274,6 +274,7 @@
             "incomeparam": "Revenu",
             "expenseparam": "Je dépense",
             "categorizebyaccount": "Compte",
+            "categorizebytags": "Tags",
             "expensebreakdown": "Répartition des dépenses",
             "incomebreakdown": "Répartition des revenus",
             "title": "Vue d'ensemble",
@@ -577,11 +578,84 @@
         "search": "Recherche...",
         "amount": "Quantité",
         "note": "Rédiger une note",
-        "searcharticle": "Recherche d'articles..."
+        "searcharticle": "Recherche d'articles...",
+        "tags": "Tags"
     },
     "tooltip": {
         "logout": "Déconnexion",
         "fullscreen": "Plein écran",
         "settings": "Configuration"
+    },
+    "goals": {
+        "page": {
+            "title": "Objectifs"
+        },
+        "choose": {
+            "title": "Choisissez un objectif",
+            "custom": {
+                "description": "Tout ce qui nécessite une planification financière entre ici.",
+                "title": "Créer un objectif personnalisé"
+            },
+            "improve": {
+                "title": "Améliorer ma maison",
+                "description": "Si la rénovation de votre maison peut être une bonne chose, où trouverez-vous l'argent pour la faire ?"
+            },
+            "trip": {
+                "title": "Faire un voyage",
+                "description": "Avez-vous économisé suffisamment pour le prochain voyage ? Savez-vous de combien vous pourriez avoir besoin pour cela ?"
+            },
+            "college": {
+                "title": "Sauf pour l'université",
+                "description": "Obtenir un diplôme sans dette peut être satisfaisant. Mettez vos rêves en action, planifiez votre objectif."
+            },
+            "automobile": {
+                "title": "Acheter une automobile",
+                "description": "Pourquoi ne pas économiser suffisamment avant d'acheter une voiture ou une moto ? Nous vous aiderons à suivre vos économies."
+            },
+            "home": {
+                "title": "Acheter une maison",
+                "description": "Beaucoup de choses peuvent mal tourner quand on fait une stratégie d'épargne à moyen terme. Nous pouvons vous aider à maintenir la faisabilité de votre plan."
+            },
+            "retirement": {
+                "title": "Économiser pour la retraite",
+                "description": "Il est temps de commencer à planifier votre retraite, si vous n'avez pas. On fera le calcul, pour que vous n'ayez pas à le faire."
+            },
+            "emergency": {
+                "title": "Sauf en cas d'urgence",
+                "description": "Pourquoi ne pas avoir de l'argent pour une urgence ? Soyez prêt maintenant."
+            },
+            "creditcard": {
+                "title": "Remboursement de la carte de crédit",
+                "description": "Nous vous recommandons de commencer par la carte de crédit ayant les taux d'intérêt les plus élevés."
+            },
+            "loans": {
+                "title": "Remboursement des prêts",
+                "description": "Les prêts au logement, les prêts automobiles, les prêts à l'éducation et autres entrent ici."
+            }
+        },
+        "add": {
+            "emergencyfund": {
+                "average": "Vos dépenses moyennes par mois",
+                "howmany": "Combien de mois sans revenu voulez-vous être préparé ?",
+                "result": "En fonction de vos préférences, vous vous fixez un objectif de ",
+                "result2": "pour un ",
+                "result3": "Fonds d'urgence",
+                "result4": ". En sauvant ",
+                "result5": " tous les mois. Vous atteindrez les objectifs prévus en ",
+                "date": "Votre date prévue",
+                "plan": "Plan",
+                "contribution": "Votre contribution mensuelle",
+                "chooseyear": "Choisir l'année",
+                "year": "Année",
+                "choosemonth": "Choisir le mois",
+                "month": "Mois",
+                "chooseanaccount": "Choisissez un compte",
+                "chooseaccount": "Choisir un compte"
+            }
+        },
+        "dynamic": {
+            "geterror": "Error fetching information for goals. Veuillez réessayer plus tard!",
+            "deleteerror": "Erreur d'effacement du but sélectionné. Veuillez réessayer plus tard !"
+        }
     }
 }

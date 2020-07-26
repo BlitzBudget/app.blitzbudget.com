@@ -274,6 +274,7 @@
             "incomeparam": "Ingresos",
             "expenseparam": "Gasto",
             "categorizebyaccount": "Cuenta",
+            "categorizebytags": "Etiquetas",
             "expensebreakdown": "Desglose de gastos",
             "incomebreakdown": "Desglose de ingresos",
             "title": "Visión general",
@@ -577,11 +578,84 @@
         "search": "Buscar...",
         "amount": "Cantidad",
         "note": "Escriba una nota",
-        "searcharticle": "Buscar artículos..."
+        "searcharticle": "Buscar artículos...",
+        "tags": "Etiquetas"
     },
     "tooltip": {
         "logout": "Cerrar sesión",
         "fullscreen": "Pantalla completa",
         "settings": "Configuración"
+    },
+    "goals": {
+        "page": {
+            "title": "Metas"
+        },
+        "choose": {
+            "title": "Elija un objetivo",
+            "custom": {
+                "description": "Todo lo demás que requiere planificación financiera va aquí.",
+                "title": "Crear un objetivo personalizado"
+            },
+            "improve": {
+                "title": "Mejorar mi casa",
+                "description": "Si reformar su casa es lo correcto, ¿de dónde sacará el dinero para hacerlo?"
+            },
+            "trip": {
+                "title": "Hacer un viaje",
+                "description": "¿Ha ahorrado lo suficiente para el próximo viaje? ¿Sabes cuánto podrías necesitar para ello?"
+            },
+            "college": {
+                "title": "Ahorrar para la universidad",
+                "description": "Graduarse sin deudas puede ser satisfactorio. Ponga sus sueños en acción, planee su meta."
+            },
+            "automobile": {
+                "title": "Comprar un automóvil",
+                "description": "¿Por qué no ahorra primero lo suficiente antes de comprar su coche o moto? Te ayudaremos a hacer un seguimiento de tus ahorros."
+            },
+            "home": {
+                "title": "Comprar una casa",
+                "description": "Muchas cosas pueden ir mal cuando se hace una estrategia de ahorro a medio plazo. Podemos ayudarte a mantener tu plan factible."
+            },
+            "retirement": {
+                "title": "Ahorrar para la jubilación",
+                "description": "Es hora de empezar a planear tu retiro, si no lo has hecho. Haremos las cuentas, así que no tienes que hacerlo."
+            },
+            "emergency": {
+                "title": "Guardar para una emergencia",
+                "description": "¿Por qué no tener algo de dinero para una emergencia? Prepárate ahora."
+            },
+            "creditcard": {
+                "title": "Pagar la tarjeta de crédito",
+                "description": "Recomendamos que empiece con la tarjeta de crédito con los tipos de interés más altos."
+            },
+            "loans": {
+                "title": "Pagar los préstamos",
+                "description": "Préstamos para la vivienda, préstamos para el coche, préstamos para la educación, y otros van aquí."
+            }
+        },
+        "add": {
+            "emergencyfund": {
+                "average": "Sus gastos promedio por mes",
+                "howmany": "¿Para cuántos meses sin ingresos quieres estar preparado?",
+                "result": "Basado en sus preferencias, usted está estableciendo un objetivo de ",
+                "result2": "para un ",
+                "result3": "Fondo de Emergencia",
+                "result4": ". Salvando ",
+                "result5": " cada mes. Alcanzarás tus metas planeadas por ",
+                "date": "Tu fecha prevista",
+                "plan": "Plan",
+                "contribution": "Su contribución mensual",
+                "chooseyear": "Elija el año",
+                "year": "Año",
+                "choosemonth": "Elija el mes",
+                "month": "Mes",
+                "chooseanaccount": "Elija una cuenta",
+                "chooseaccount": "Elija cuenta"
+            }
+        },
+        "dynamic": {
+            "geterror": "Error al buscar información para los objetivos. Por favor, inténtalo de nuevo más tarde!",
+            "deleteerror": "Error al borrar el gol seleccionado. Por favor, inténtelo de nuevo!"
+        }
     }
 }

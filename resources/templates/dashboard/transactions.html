@@ -265,16 +265,16 @@
                                 <div class="card-body">
                                     <div class="form-group bmd-form-group">
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Amount">money</i></div>
+                                            <div class="input-group-prepend" data-toggle="tooltip" title="Amount">
+                                                <div class="input-group-text"><i class="material-icons noselect">money</i></div>
                                             </div>
                                             <input id="amount" name="amount" type="number" class="form-control small-input" required aria-required="true" aria-invalid="true" data-placeholder-i18n="placeholder.amount" placeholder="Amount" />
                                         </div>
                                     </div>
                                     <div class="form-group bmd-form-group">
                                         <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Transaction category">category</i></div>
+                                            <div class="input-group-prepend" data-toggle="tooltip" title="Transaction category">
+                                                <div class="input-group-text"><i class="material-icons noselect">category</i></div>
                                             </div>
                                             <div id="categoryOptions" class="btn-group btnGroup-1">
                                                 <div class="w-md-15 w-8" disabled="">Bills & Fees</div>
@@ -299,21 +299,33 @@
                                     <div class="form-group bmd-form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Write a note">description</i></div>
+                                                <div class="input-group-text" data-toggle="tooltip" title="Write a note"><i class="material-icons noselect">description</i></div>
                                             </div>
                                             <input id="description" name="description" type="text" class="form-control" data-placeholder-i18n="placeholder.note" placeholder="Write a note" />
                                         </div>
                                     </div>
                                     <div class="form-group bmd-form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <div class="input-group-text"><i class="material-icons noselect" data-toggle="tooltip" title="Transaction Recurrence">repeat</i></div>
+                                        <div class="input-group onerow">
+                                            <div class="input-group-prepend" data-toggle="tooltip" title="Transaction Recurrence">
+                                                <div class="input-group-text"><i class="material-icons noselect">repeat</i></div>
                                             </div>
                                             <div id="recurrenceForm" class="text-left" data-gramm_editor="false">
                                                 <button class="btn btn-secondary btn-lg register-recurrence mr-2 my-3 active" data-target="NEVER" data-i18n="transactions.modal.add.recurrence.never">Never</button>
                                                 <button class="btn btn-secondary btn-lg register-recurrence weeklyR mr-2 my-3" data-target="WEEKLY" data-i18n="transactions.modal.add.recurrence.weekly">Weekly</button>
                                                 <button class="btn btn-secondary btn-lg register-recurrence biMonthlyR mr-2 my-3" data-target="BI-MONTHLY" data-i18n="transactions.modal.add.recurrence.bimonthly">Bi-Monthly</button>
                                                 <button class="btn btn-secondary btn-lg register-recurrence monthlyR mr-2 my-3" data-target="MONTHLY" data-i18n="transactions.modal.add.recurrence.monthly">Monthly</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group bmd-form-group">
+                                        <div class="input-group onerow">
+                                            <div class="input-group-prepend" data-toggle="tooltip" title="Tags">
+                                                <div class="input-group-text"><i class="material-icons noselect">local_offer</i></div>
+                                            </div>
+                                            <div id="add-transaction-tags" class="tagsinput success-badge info-badge">
+                                                <span class="bmd-form-group">
+                                                    <input id="add-transaction-value" type="text" class="form-control" size="1" data-role="tagsinput" data-placeholder-i18n="placeholder.tags" placeholder="Tags">
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

@@ -274,6 +274,7 @@
             "incomeparam": "Receitas",
             "expenseparam": "Eu gasto",
             "categorizebyaccount": "Conta",
+            "categorizebytags": "Etiquetas",
             "expensebreakdown": "Repartição das despesas",
             "incomebreakdown": "Repartição dos rendimentos",
             "title": "Resumo",
@@ -577,11 +578,84 @@
         "search": "Pesquisar...",
         "amount": "Quantidade",
         "note": "Escreva uma nota",
-        "searcharticle": "Procura de artigos..."
+        "searcharticle": "Procura de artigos...",
+        "tags": "Etiquetas"
     },
     "tooltip": {
         "logout": "Sair",
         "fullscreen": "Ecrã inteiro",
         "settings": "Configuração"
+    },
+    "goals": {
+        "page": {
+            "title": "Objectivos"
+        },
+        "choose": {
+            "title": "Escolher um objectivo",
+            "custom": {
+                "description": "Tudo o resto que requer planeamento financeiro entra aqui.",
+                "title": "Criar um objectivo personalizado"
+            },
+            "improve": {
+                "title": "Melhorar a minha casa",
+                "description": "Se remodelar a sua casa pode ser a jogada certa, onde vai arranjar o dinheiro para o fazer?"
+            },
+            "trip": {
+                "title": "Faça uma viagem",
+                "description": "Já guardou o suficiente para a próxima viagem? Sabe quanto pode precisar para ela?"
+            },
+            "college": {
+                "title": "Excepto para a faculdade",
+                "description": "Graduar sem uma dívida pode ser satisfatório. Ponha os seus sonhos em acção, planeie o seu objectivo."
+            },
+            "automobile": {
+                "title": "Comprar um automóvel",
+                "description": "Porque não poupar primeiro o suficiente antes de lhe comprar carro ou moto? Ajudá-lo-emos a seguir as suas poupanças."
+            },
+            "home": {
+                "title": "Comprar uma casa",
+                "description": "Muitas coisas podem correr mal quando se faz uma poupança a médio prazo. Podemos ajudá-lo a manter o seu plano viável."
+            },
+            "retirement": {
+                "title": "Excepto para a reforma",
+                "description": "É tempo de começar a planear a sua reforma, se não o fez. Faremos as contas, por isso não tem de o fazer."
+            },
+            "emergency": {
+                "title": "Excepto para uma emergência",
+                "description": "Porque não ter algum dinheiro para uma emergência? Esteja preparado agora."
+            },
+            "creditcard": {
+                "title": "Pagar com cartão de crédito",
+                "description": "Recomendamos que comece com o cartão de crédito com as taxas de juro mais altas."
+            },
+            "loans": {
+                "title": "Pagar os empréstimos",
+                "description": "Empréstimos para habitação, empréstimos para automóveis, empréstimos para educação, e outros entram aqui."
+            }
+        },
+        "add": {
+            "emergencyfund": {
+                "average": "As suas despesas médias por mês",
+                "howmany": "Para quantos meses sem rendimentos queres estar preparado?",
+                "result": "Com base nas suas preferências, está a estabelecer um objectivo de ",
+                "result2": "para um ",
+                "result3": "Fundo de Emergência",
+                "result4": ". Ao salvar ",
+                "result5": " todos os meses. Atingirá os seus objectivos planeados por ",
+                "date": "A sua data prevista",
+                "plan": "Plano",
+                "contribution": "A sua contribuição mensal",
+                "chooseyear": "Escolher Ano",
+                "year": "Ano",
+                "choosemonth": "Escolher Mês",
+                "month": "Mês",
+                "chooseanaccount": "Escolher uma conta",
+                "chooseaccount": "Escolher conta"
+            }
+        },
+        "dynamic": {
+            "geterror": "Error fetching information for goals. Por favor, tente novamente mais tarde",
+            "deleteerror": "Error ao apagar a baliza seleccionada. Por favor, tente de novo"
+        }
     }
 }

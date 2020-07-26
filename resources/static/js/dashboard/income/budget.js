@@ -253,12 +253,12 @@
         cardAmountWrapperDiv.classList = 'col-lg-3';
 
         // Budget Amount Div
-        let cardBudgetAmountDiv = document.createElement('div');
+        let cardBudgetAmountDiv = document.createElement('input');
         cardBudgetAmountDiv.id = 'budgetAmountEntered-' + userBudget.budgetId;
         cardBudgetAmountDiv.classList = 'text-left budgetAmountEntered font-weight-bold form-control';
         cardBudgetAmountDiv.setAttribute('contenteditable', true);
         cardBudgetAmountDiv.setAttribute('data-target', userBudget.budgetId);
-        cardBudgetAmountDiv.textContent = formatToCurrency(userBudget.planned);
+        cardBudgetAmountDiv.value = formatToCurrency(userBudget.planned);
         cardAmountWrapperDiv.appendChild(cardBudgetAmountDiv);
         cardRowPercentage.appendChild(cardAmountWrapperDiv);
 
@@ -500,7 +500,7 @@
     // Post the newly entered budget amount and convert the auto generation to false
     function postNewBudgetAmount(element) {
         // If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-        let enteredText = er.convertToNumberFromCurrency(element.textContent, currentCurrencyPreference);
+        let enteredText = er.convertToNumberFromCurrency(element.value, currentCurrencyPreference);
         let previousText = er.convertToNumberFromCurrency(budgetAmountEditedPreviously, currentCurrencyPreference);
 
         // Test if the entered value is valid
@@ -538,7 +538,7 @@
             ajaxData.onSuccess = function registerSuccess(result) {
                 let userBudget = result['body-json'];
                 // on success then replace the entered text
-                element.textContent = formatToCurrency(enteredText);
+                element.value = formatToCurrency(enteredText);
                 // Update the budget cache
                 userBudgetCache[userBudget.budgetId].planned = userBudget.planned;
                 // Update the modal
@@ -549,7 +549,7 @@
 
                 // update the current element with the previous amount
                 let formattedBudgetAmount = formatToCurrency(previousText);
-                element.textContent = formattedBudgetAmount;
+                element.value = formattedBudgetAmount;
             }
             $.ajax({
                 type: ajaxData.type,
@@ -565,7 +565,7 @@
             });
         } else {
             // previous text and entered text is the same then simy replace the text
-            element.textContent = formatToCurrency(enteredText);
+            element.value = formatToCurrency(enteredText);
         }
     }
 

@@ -274,6 +274,7 @@
             "incomeparam": "収入 です",
             "expenseparam": "私は使う",
             "categorizebyaccount": "アカウント",
+            "categorizebytags": "タグ",
             "expensebreakdown": "経費の内訳",
             "incomebreakdown": "収入の内訳",
             "title": "概要",
@@ -577,11 +578,84 @@
         "search": "検索...",
         "amount": "量",
         "note": "ノートを書く",
-        "searcharticle": "記事の検索..."
+        "searcharticle": "記事の検索...",
+        "tags": "タグ"
     },
     "tooltip": {
         "logout": "ログアウト",
         "fullscreen": "フルスクリーン",
         "settings": "設定"
+    },
+    "goals": {
+        "page": {
+            "title": "目標"
+        },
+        "choose": {
+            "title": "目標を選ぶ",
+            "custom": {
+                "description": "財務計画を必要とする他のすべてのものはここに入る.",
+                "title": "カスタムゴールを作成する"
+            },
+            "improve": {
+                "title": "マイホームの改善",
+                "description": "あなたの家を改装することが正しい動きである可能性がある場合は、どこでそれを行うためにお金を取得しますか？"
+            },
+            "trip": {
+                "title": "旅に出よう",
+                "description": "次の旅行のために十分な貯蓄をしましたか？そのためにどれくらい必要か知っていますか？"
+            },
+            "college": {
+                "title": "大学のために貯金する",
+                "description": "借金をせずに卒業することで満足感を得ることができます。あなたの夢を行動に移して、あなたの目標を計画してください。"
+            },
+            "automobile": {
+                "title": "自動車を買う",
+                "description": "なぜあなたの車やバイクを購入する前に、最初に十分な貯蓄をしないのですか？私たちはあなたの貯蓄を追跡するのに役立ちます。"
+            },
+            "home": {
+                "title": "家を買う",
+                "description": "物事の多くは、あなたが中期的な貯蓄startegyを作るときに南に行くことができます。我々はあなたの計画が実現可能な維持を支援することができます。"
+            },
+            "retirement": {
+                "title": "老後のための貯蓄",
+                "description": "それはあなたの退職のための計画を開始する時間です あなたがしていない場合。我々は数学を行いますので、あなたがする必要はありません。"
+            },
+            "emergency": {
+                "title": "いざという時のために貯めておく",
+                "description": "いざという時のためにお金を持っていませんか？今から準備しておきましょう"
+            },
+            "creditcard": {
+                "title": "クレジットカードの支払い",
+                "description": "最も金利の高いクレジットカードから始めることをお勧めします"
+            },
+            "loans": {
+                "title": "ローンの返済",
+                "description": "住宅ローン、車のローン、教育ローンなどがここに入る"
+            }
+        },
+        "add": {
+            "emergencyfund": {
+                "average": "一ヶ月あたりの平均的な支出",
+                "howmany": "無収入の状態で何ヶ月間準備したいですか？",
+                "result": "あなたの希望に基づいて、あなたは の目標を設定しています ",
+                "result2": "のための です ",
+                "result3": "緊急基金",
+                "result4": ". を保存することで、 ",
+                "result5": " 毎月 までに計画した目標を達成することができます ",
+                "date": "あなたの予定日",
+                "plan": "プラン",
+                "contribution": "あなたの毎月の貢献度",
+                "chooseyear": "年を選択してください",
+                "year": "年 です",
+                "choosemonth": "月を選択してください",
+                "month": "月 です",
+                "chooseanaccount": "アカウントを選択してください",
+                "chooseaccount": "アカウントの選択"
+            }
+        },
+        "dynamic": {
+            "geterror": "ゴールの情報の取得にエラーが発生しました。後でもう一度お試しください",
+            "deleteerror": "選択したゴールの削除にエラーが発生しました。もう一度お試しください!"
+        }
     }
 }
