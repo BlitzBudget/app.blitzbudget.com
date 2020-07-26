@@ -180,6 +180,11 @@ let tickIconSVG = tickIcon();
                 let accountBalance = parseInt(document.getElementById('accountBal').value);
                 let accountType = accountSubTypeToType[accountSubType];
 
+                if (isEqual(accountType, 'DEBT')) {
+                    // Account Balance as negative
+                    accountBalance *= -1;
+                }
+
                 // Populate the JSON form data
                 var values = {};
                 values['linked'] = false;
