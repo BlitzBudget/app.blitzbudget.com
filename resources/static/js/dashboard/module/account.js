@@ -179,10 +179,7 @@ let tickIconSVG = tickIcon();
                 let accountSubType = document.getElementsByClassName('accountChosen')[0].getAttribute('data-target');
                 let accountBalance = parseInt(document.getElementById('accountBal').value);
                 let accountType = accountSubTypeToType[accountSubType];
-                // Account Balance
-                if (isEqual(accountType, 'DEBT')) {
-                    accountBalance *= -1;
-                }
+
                 // Populate the JSON form data
                 var values = {};
                 values['linked'] = false;
