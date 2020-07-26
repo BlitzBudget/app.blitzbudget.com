@@ -1,12 +1,21 @@
 "use strict";
 // Populate Detailed Overview For Chart
-function populateDetailedOverviewForChart(dataSeries) {
-    for (let i = 0, len < dataSeries.series.length; i < len; i++) {
+function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
+    let docFrag = document.createDocumentFragment();
+    for (let i = 0, len = dataSeries.labels.length; i < len; i++) {
         let value = dataSeries.series[i];
         let label = dataSeries.labels[i];
+
+        // If it is a bar chart then
+        if (isSeriesAnArray) {
+            value = dataSeries.series[0][i];
+        }
         // Build One Detailed Overview
-        buildOneDetailedOverview(value, label);
+        docFrag.appendChild(buildOneDetailedOverview(value, label));
     }
+
+    // Append to detailed overview
+    document.getElementById('detailedOverviewOfChart').appendChild(docFrag);
 }
 
 // Builds the rows for recent transactions

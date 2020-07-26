@@ -387,7 +387,7 @@
 
     function coloredRounedLineChart(dataColouredRoundedLineChart) {
         // Populate the data in detail
-        populateDetailedOverviewForChart(dataColouredRoundedLineChart);
+        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true);
 
         optionsColouredRoundedLineChart = {
             lineSmooth: Chartist.Interpolation.cardinal({

@@ -102,6 +102,7 @@
                 "/dashboard/overview/overview.js",
                 "/dashboard/overview/categorize-by-account.js",
                 "/dashboard/overview/categorize-by-tags.js",
+                "/dashboard/overview/detailed-overview.js",
                 "/dashboard/module/profile.js",
                 "/dashboard/goals/initialize-goals.js",
                 "/dashboard/goals/add/save-for-emergency.js",
