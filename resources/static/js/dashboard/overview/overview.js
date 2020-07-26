@@ -386,6 +386,9 @@
     /*  **************** Coloured Rounded Line Chart - Line Chart ******************** */
 
     function coloredRounedLineChart(dataColouredRoundedLineChart) {
+        // Populate the data in detail
+        populateDetailedOverviewForChart(dataColouredRoundedLineChart);
+
         optionsColouredRoundedLineChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
                 tension: 10
