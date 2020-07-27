@@ -74,7 +74,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
     document.getElementById('minimumWhateverAmount').textContent = formatToCurrency(minwhatever);
     document.getElementById('minimumWhateverDate').textContent = minWhateverDate;
     document.getElementById('averageWhateverAmount').textContent = formatToCurrency(totalWhatever / dataSeries.labels.length);
-    document.getElementById('averageWhateverDate').textContent = dataSeries.labels[0] + ' to ' + dataSeries.labels[dataSeries.labels.length];
+    document.getElementById('averageWhateverDate').textContent = dataSeries.labels[0] + ' to ' + dataSeries.labels[dataSeries.labels.length - 1];
 
     /*
      * Append Table Body
