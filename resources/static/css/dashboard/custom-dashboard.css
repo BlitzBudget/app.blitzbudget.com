@@ -1889,6 +1889,10 @@ textarea:disabled {
     width: 35%;
 }
 
+.tableFooterDiv {
+    display: table-footer-group;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;

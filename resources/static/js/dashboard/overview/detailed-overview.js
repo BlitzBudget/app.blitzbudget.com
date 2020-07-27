@@ -80,6 +80,14 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
      * Append Table Body
      */
     tableFixed.appendChild(tableBody);
+
+    /*
+     * Table Footer
+     */
+    let tableFooter = document.createElement('div');
+    tableFooter.classList = 'tableFooterDiv';
+    tableFooter.appendChild(buildOneDetailedOverview(totalWhatever, 'Total'));
+    tableFixed.appendChild(tableFooter);
     tableResponsive.appendChild(tableFixed);
     docFrag.appendChild(tableResponsive);
     // Append to detailed overview
