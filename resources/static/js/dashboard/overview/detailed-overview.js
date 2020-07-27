@@ -8,7 +8,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
      * Table Responsive
      */
     let tableResponsive = document.createElement('div');
-    tableResponsive.classList = 'table-responsive';
+    tableResponsive.classList = 'table-responsive noselect';
 
     let tableFixed = document.createElement('div');
     tableFixed.classList = 'table table-fixed d-table';
@@ -87,6 +87,22 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     let tableFooter = document.createElement('div');
     tableFooter.classList = 'tableFooterDiv';
     tableFooter.appendChild(buildOneDetailedOverview(totalWhatever, 'Total'));
+
+    /*
+     * Export as CSV
+     */
+    let anchorFooter = document.createElement('div');
+    anchorFooter.classList = 'd-table-row';
+
+    let anchorCell1 = document.createElement('div');
+    anchorCell1.classList = 'd-table-cell';
+    anchorFooter.appendChild(anchorCell1);
+
+    let anchorCell2 = document.createElement('div');
+    anchorCell2.classList = 'd-table-cell';
+    anchorFooter.appendChild(anchorCell2);
+    tableFooter.appendChild(anchorFooter);
+
     tableFixed.appendChild(tableFooter);
     tableResponsive.appendChild(tableFixed);
     docFrag.appendChild(tableResponsive);
