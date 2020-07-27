@@ -1,6 +1,6 @@
 "use strict";
 // Populate Detailed Overview For Chart
-function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
+function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhateverTitle, minWhateverTitle, avWhateverTitle, tableTitle) {
 
     let docFrag = document.createDocumentFragment();
 
@@ -19,16 +19,12 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
     let tableHeading = document.createElement('div');
     tableHeading.classList = 'tableHeadingDiv';
 
-    let widthFifteen = document.createElement('div');
-    widthFifteen.classList = 'w-15 d-table-cell';
-    tableHeading.appendChild(widthFifteen);
-
     let widthSixtyFive = document.createElement('div');
     widthSixtyFive.classList = 'w-65 d-table-cell';
     tableHeading.appendChild(widthSixtyFive);
 
     let widthThirty = document.createElement('div');
-    widthThirty.classList = 'text-right d-table-cell';
+    widthThirty.classList = 'w-35 text-right d-table-cell';
     tableHeading.appendChild(widthThirty);
     tableFixed.appendChild(tableHeading);
 
@@ -69,6 +65,10 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
     }
 
     // Update Detailed insights
+    document.getElementById('mostWhatever').textContent = mostWhateverTitle;
+    document.getElementById('minimumWhatever').textContent = minWhateverTitle;
+    document.getElementById('averageWhatever').textContent = avWhateverTitle;
+    document.getElementById('yourWhateverTitle').textContent = tableTitle;
     document.getElementById('mostWhateverAmount').textContent = formatToCurrency(mostwhatever);
     document.getElementById('mostWhateverDate').textContent = mostWhateverDate;
     document.getElementById('minimumWhateverAmount').textContent = formatToCurrency(minwhatever);
@@ -97,7 +97,7 @@ function buildOneDetailedOverview(value, label) {
     tableCellTransactionDescription.classList = 'descriptionCellRT d-table-cell';
 
     let elementWithDescription = document.createElement('div');
-    elementWithDescription.classList = 'font-weight-bold recentTransactionDescription';
+    elementWithDescription.classList = 'font-weight-bold recentTransactionDescription p-2';
     elementWithDescription.textContent = label;
     tableCellTransactionDescription.appendChild(elementWithDescription);
 
@@ -111,7 +111,7 @@ function buildOneDetailedOverview(value, label) {
     surCell.classList = 'd-table-cell';
 
     let transactionAmount = document.createElement('div');
-    transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
+    transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle p-2 tripleNineColor';
     transactionAmount.textContent = formatToCurrency(value);
     surCell.appendChild(transactionAmount);
 

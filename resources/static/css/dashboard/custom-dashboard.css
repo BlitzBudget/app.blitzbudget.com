@@ -1885,6 +1885,10 @@ textarea:disabled {
     font-size: 70%;
 }
 
+.w-35 {
+    width: 35%;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;

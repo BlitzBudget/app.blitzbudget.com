@@ -387,7 +387,7 @@
 
     function coloredRounedLineChart(dataColouredRoundedLineChart) {
         // Populate the data in detail
-        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true);
+        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true, "Highest Income", "Lowest Income", "Average Income", "Your Income");
 
         optionsColouredRoundedLineChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
