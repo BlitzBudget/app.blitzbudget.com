@@ -1,9 +1,44 @@
 "use strict";
 // Populate Detailed Overview For Chart
 function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
+
     let docFrag = document.createDocumentFragment();
+
+    /*
+     * Table Responsive
+     */
+    let tableResponsive = document.createElement('div');
+    tableResponsive.classList = 'table-responsive';
+
+    let tableFixed = document.createElement('div');
+    tableFixed.classList = 'table table-fixed d-table';
+
+    /*
+     * Table Heading
+     */
+    let tableHeading = document.createElement('div');
+    tableHeading.classList = 'tableHeadingDiv';
+
+    let widthFifteen = document.createElement('div');
+    widthFifteen.classList = 'w-15 d-table-cell';
+    tableHeading.appendChild(widthFifteen);
+
+    let widthSixtyFive = document.createElement('div');
+    widthSixtyFive.classList = 'w-65 d-table-cell';
+    tableHeading.appendChild(widthSixtyFive);
+
+    let widthThirty = document.createElement('div');
+    widthThirty.classList = 'text-right d-table-cell';
+    tableHeading.appendChild(widthThirty);
+    tableFixed.appendChild(tableHeading);
+
+    let tableBody = document.createElement('div');
+    tableBody.classList = 'tableBodyDiv text-left';
+
     let mostwhatever = 0;
     let minwhatever = 0;
+    let mostWhateverDate = today;
+    let minWhateverDate = today;
     let totalWhatever = 0;
     for (let i = 0, len = dataSeries.labels.length; i < len; i++) {
         let value = dataSeries.series[i];
@@ -17,25 +52,36 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
         // Calculate Most Spent
         if (mostwhatever < value) {
             mostwhatever = value;
+            mostWhateverDate = label;
         }
 
-        // Minimum Spent
-        if (minwhatever > value) {
+        // Minimum Spent ( Assign the first element by default )
+        if (minwhatever > value || i == 0) {
             minwhatever = value;
+            minWhateverDate = label;
         }
 
         // Calculate Average Spent
         totalWhatever += value;
 
         // Build One Detailed Overview
-        docFrag.appendChild(buildOneDetailedOverview(value, label));
+        tableBody.appendChild(buildOneDetailedOverview(value, label));
     }
 
     // Update Detailed insights
-    document.getElementById('mostWhatever').textContent = formatToCurrency(mostwhatever);
-    document.getElementById('minimumWhatever').textContent = formatToCurrency(minwhatever);
-    document.getElementById('averageWhatever').textContent = formatToCurrency(totalWhatever / dataSeries.labels.length);
+    document.getElementById('mostWhateverAmount').textContent = formatToCurrency(mostwhatever);
+    document.getElementById('mostWhateverDate').textContent = mostWhateverDate;
+    document.getElementById('minimumWhateverAmount').textContent = formatToCurrency(minwhatever);
+    document.getElementById('minimumWhateverDate').textContent = minWhateverDate;
+    document.getElementById('averageWhateverAmount').textContent = formatToCurrency(totalWhatever / dataSeries.labels.length);
+    document.getElementById('averageWhateverDate').textContent = dataSeries.labels[0] + ' to ' + dataSeries.labels[dataSeries.labels.length];
 
+    /*
+     * Append Table Body
+     */
+    tableFixed.appendChild(tableBody);
+    tableResponsive.appendChild(tableFixed);
+    docFrag.appendChild(tableResponsive);
     // Append to detailed overview
     document.getElementById('detailedOverviewOfChart').appendChild(docFrag);
 }
