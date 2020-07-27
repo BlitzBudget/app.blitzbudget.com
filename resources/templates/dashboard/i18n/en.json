@@ -289,6 +289,12 @@
                 "incomebreakdown": "Income Breakdown",
                 "nodata": "There's not enough data! Start adding transactions..",
                 "onecategory": "There's not enough data! We need transactions in atleast 2 categories.."
+            },
+            "detailed": {
+                "yourincome": "Your Income",
+                "mostspent": "Most Spent",
+                "minimumspent": "Minimum Spent",
+                "averagespent": "Average Spent"
             }
         }
     },

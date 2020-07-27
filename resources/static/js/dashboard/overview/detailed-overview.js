@@ -2,6 +2,9 @@
 // Populate Detailed Overview For Chart
 function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
     let docFrag = document.createDocumentFragment();
+    let mostwhatever = 0;
+    let minwhatever = 0;
+    let totalWhatever = 0;
     for (let i = 0, len = dataSeries.labels.length; i < len; i++) {
         let value = dataSeries.series[i];
         let label = dataSeries.labels[i];
@@ -10,9 +13,28 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray) {
         if (isSeriesAnArray) {
             value = dataSeries.series[0][i];
         }
+
+        // Calculate Most Spent
+        if (mostwhatever < value) {
+            mostwhatever = value;
+        }
+
+        // Minimum Spent
+        if (minwhatever > value) {
+            minwhatever = value;
+        }
+
+        // Calculate Average Spent
+        totalWhatever += value;
+
         // Build One Detailed Overview
         docFrag.appendChild(buildOneDetailedOverview(value, label));
     }
+
+    // Update Detailed insights
+    document.getElementById('mostWhatever').textContent = formatToCurrency(mostwhatever);
+    document.getElementById('minimumWhatever').textContent = formatToCurrency(minwhatever);
+    document.getElementById('averageWhatever').textContent = formatToCurrency(totalWhatever / dataSeries.labels.length);
 
     // Append to detailed overview
     document.getElementById('detailedOverviewOfChart').appendChild(docFrag);
@@ -44,7 +66,7 @@ function buildOneDetailedOverview(value, label) {
 
     let transactionAmount = document.createElement('div');
     transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
-    transactionAmount.textContent = value;
+    transactionAmount.textContent = formatToCurrency(value);
     surCell.appendChild(transactionAmount);
 
     let accountBalDiv = document.createElement('div');
