@@ -840,34 +840,6 @@
         return dateHeader;
     }
 
-    // Build EmptyRecTransTable
-    function buildEmptyTransactionsTab() {
-
-        let rowEmpty = document.createElement('div');
-        rowEmpty.classList = 'd-table-row';
-
-        let cell1 = document.createElement('div');
-        cell1.classList = 'd-table-cell';
-        rowEmpty.appendChild(cell1);
-
-        let cell2 = document.createElement('div');
-        cell2.classList = 'd-table-cell text-center';
-        cell2.appendChild(buildEmptyTransactionsSvg());
-
-        let emptyMessageRow = document.createElement('div');
-        emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
-        emptyMessageRow.setAttribute('data-i18n', 'transactions.dynamic.empty.success');
-        emptyMessageRow.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.empty.success : "Oh! Snap! You don't have any transactions yet.";
-        cell2.appendChild(emptyMessageRow);
-        rowEmpty.appendChild(cell2);
-
-        let cell3 = document.createElement('div');
-        cell3.classList = 'd-table-cell';
-        rowEmpty.appendChild(cell3);
-
-        return rowEmpty;
-    }
-
     // Builds the rows for recent transactions
     function buildTransactionRow(userTransaction, idName) {
         // Convert date from UTC to user specific dates
@@ -1288,6 +1260,34 @@
     }
 
 }(jQuery));
+
+// Build EmptyRecTransTable
+function buildEmptyTransactionsTab() {
+
+    let rowEmpty = document.createElement('div');
+    rowEmpty.classList = 'd-table-row';
+
+    let cell1 = document.createElement('div');
+    cell1.classList = 'd-table-cell';
+    rowEmpty.appendChild(cell1);
+
+    let cell2 = document.createElement('div');
+    cell2.classList = 'd-table-cell text-center';
+    cell2.appendChild(buildEmptyTransactionsSvg());
+
+    let emptyMessageRow = document.createElement('div');
+    emptyMessageRow.classList = 'text-center tripleNineColor font-weight-bold';
+    emptyMessageRow.setAttribute('data-i18n', 'transactions.dynamic.empty.success');
+    emptyMessageRow.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.empty.success : "Oh! Snap! You don't have any transactions yet.";
+    cell2.appendChild(emptyMessageRow);
+    rowEmpty.appendChild(cell2);
+
+    let cell3 = document.createElement('div');
+    cell3.classList = 'd-table-cell';
+    rowEmpty.appendChild(cell3);
+
+    return rowEmpty;
+}
 
 // Raw Plus Svg
 function plusRawSvg() {

@@ -2,6 +2,18 @@
 // Populate Detailed Overview For Chart
 function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhateverTitle, minWhateverTitle, avWhateverTitle, tableTitle) {
 
+    let detailedOverviewOfChart = document.getElementById('detailedOverviewOfChart');
+    // Replace HTML with Empty
+    while (detailedOverviewOfChart.firstChild) {
+        detailedOverviewOfChart.removeChild(detailedOverviewOfChart.firstChild);
+    }
+
+    // If the data series is empty then
+    if (isEmpty(dataSeries)) {
+        detailedOverviewOfChart.appendChild(buildEmptyTransactionsTab());
+        return;
+    }
+
     let docFrag = document.createDocumentFragment();
 
     /*
@@ -108,7 +120,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     tableResponsive.appendChild(tableFixed);
     docFrag.appendChild(tableResponsive);
     // Append to detailed overview
-    document.getElementById('detailedOverviewOfChart').appendChild(docFrag);
+    detailedOverviewOfChart.appendChild(docFrag);
 }
 
 // Builds the rows for recent transactions

@@ -302,6 +302,17 @@
 
         }
 
+        // Build the data for the line chart
+        dataColouredRoundedLineChart = {
+            labels: labelsArray,
+            series: [
+		        	seriesArray
+		         ]
+        };
+
+        // Populate the data in detail
+        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true, "Highest Income", "Lowest Income", "Average Income", "Your Income");
+
         // Replace with empty chart message
         if (isEmpty(seriesArray)) {
             chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
@@ -310,14 +321,6 @@
             chartAppendingDiv.appendChild(buildInsufficientInfoMessage());
             return;
         }
-
-        // Build the data for the line chart
-        dataColouredRoundedLineChart = {
-            labels: labelsArray,
-            series: [
-		        	seriesArray
-		         ]
-        };
 
         // Display the line chart
         coloredRounedLineChart(dataColouredRoundedLineChart);
@@ -386,8 +389,6 @@
     /*  **************** Coloured Rounded Line Chart - Line Chart ******************** */
 
     function coloredRounedLineChart(dataColouredRoundedLineChart) {
-        // Populate the data in detail
-        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true, "Highest Income", "Lowest Income", "Average Income", "Your Income");
 
         optionsColouredRoundedLineChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
