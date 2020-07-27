@@ -281,6 +281,8 @@
         // Replace with empty chart message
         if (isEmpty(dateAndAmountAsList)) {
             chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
+            // Populate the empty data in detail
+            populateDetailedOverviewForChart(seriesArray, true, "Highest Income", "Lowest Income", "Average Income", "Your Income");
             return;
         }
 
