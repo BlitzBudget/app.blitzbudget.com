@@ -509,6 +509,12 @@ a.manageBA.text-dynamic-color:focus {
     color: #6b6e75;
 }
 
+.tableFooterDiv .recentTransactionDescription,
+.tableFooterDiv .transactionAmountRT {
+    font-size: 1.2rem;
+    color: #2e4369;
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {}
 
