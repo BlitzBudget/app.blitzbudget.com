@@ -519,6 +519,10 @@ a.manageBA.text-dynamic-color:focus {
     fill: #00bcd4;
 }
 
+#detailedOverviewOfChart {
+    min-height: 8rem;
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {}
 
