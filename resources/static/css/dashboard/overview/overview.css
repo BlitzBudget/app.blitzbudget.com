@@ -46,12 +46,6 @@
     padding: 0.25rem;
 }
 
-.rtSpinner {
-    position: absolute;
-    left: 45%;
-    top: 40%;
-}
-
 .creditCardPath,
 .plusRawPath {
     line-height: normal;
@@ -520,7 +514,7 @@ a.manageBA.text-dynamic-color:focus {
 }
 
 #detailedOverviewOfChart {
-    min-height: 6rem;
+    min-height: 12rem;
 }
 
 /** Change the size of the text if the width and height of the screen are less **/
