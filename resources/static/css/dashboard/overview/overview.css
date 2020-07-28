@@ -517,6 +517,15 @@ a.manageBA.text-dynamic-color:focus {
     min-height: 12rem;
 }
 
+a#export-as-csv {
+    cursor: pointer;
+}
+
+a#export-as-csv:hover {
+    text-decoration: underline;
+}
+
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {}
 

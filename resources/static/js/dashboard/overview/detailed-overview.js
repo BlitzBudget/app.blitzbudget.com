@@ -112,6 +112,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
 
     let anchorCell2 = document.createElement('a');
     anchorCell2.classList = 'd-table-cell text-info text-right';
+    anchorCell2.id = "export-as-csv";
     anchorCell2.textContent = 'Export as CSV';
     anchorFooter.appendChild(anchorCell2);
     tableFooter.appendChild(anchorFooter);
