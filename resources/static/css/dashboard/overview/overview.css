@@ -520,7 +520,7 @@ a.manageBA.text-dynamic-color:focus {
 }
 
 #detailedOverviewOfChart {
-    min-height: 8rem;
+    min-height: 6rem;
 }
 
 /** Change the size of the text if the width and height of the screen are less **/
