@@ -516,7 +516,7 @@ a.manageBA.text-dynamic-color:focus {
 }
 
 .coloredTransactionLine {
-    fill: linear-gradient(60deg, #26c6da, #00acc1);
+    fill: #00bcd4;
 }
 
 /** Change the size of the text if the width and height of the screen are less **/
