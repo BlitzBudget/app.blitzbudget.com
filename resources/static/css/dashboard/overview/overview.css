@@ -515,6 +515,15 @@ a.manageBA.text-dynamic-color:focus {
     color: #2e4369;
 }
 
+.transactions-empty-svg {
+    fill: #D9D9D9;
+    margin-top: 0;
+}
+
+.coloredTransactionLine {
+    fill: linear-gradient(60deg, #26c6da, #00acc1);
+}
+
 /** Change the size of the text if the width and height of the screen are less **/
 @media (min-width:1301px) {}
 
