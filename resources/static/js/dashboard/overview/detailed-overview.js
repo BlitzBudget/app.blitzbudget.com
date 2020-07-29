@@ -3,6 +3,12 @@
 function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhateverTitle, minWhateverTitle, avWhateverTitle, tableTitle) {
 
     let detailedOverviewOfChart = document.getElementById('detailedOverviewOfChart');
+    // Title for cards
+    document.getElementById('mostWhatever').textContent = mostWhateverTitle;
+    document.getElementById('minimumWhatever').textContent = minWhateverTitle;
+    document.getElementById('averageWhatever').textContent = avWhateverTitle;
+    document.getElementById('yourWhateverTitle').textContent = tableTitle;
+
     // Replace HTML with Empty
     while (detailedOverviewOfChart.firstChild) {
         detailedOverviewOfChart.removeChild(detailedOverviewOfChart.firstChild);
@@ -11,6 +17,14 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     // If the data series is empty then
     if (isEmpty(dataSeries)) {
         detailedOverviewOfChart.appendChild(buildEmptyTransactionsTab());
+        // Replace with Empty Values
+        document.getElementById('mostWhateverAmount').textContent = '-';
+        document.getElementById('mostWhateverDate').textContent = '-';
+        document.getElementById('minimumWhateverAmount').textContent = '-';
+        document.getElementById('minimumWhateverDate').textContent = '-';
+        document.getElementById('averageWhateverAmount').textContent = '-';
+        document.getElementById('averageWhateverDate').textContent = '-';
+
         return;
     }
 
@@ -77,10 +91,6 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     }
 
     // Update Detailed insights
-    document.getElementById('mostWhatever').textContent = mostWhateverTitle;
-    document.getElementById('minimumWhatever').textContent = minWhateverTitle;
-    document.getElementById('averageWhatever').textContent = avWhateverTitle;
-    document.getElementById('yourWhateverTitle').textContent = tableTitle;
     document.getElementById('mostWhateverAmount').textContent = formatToCurrency(mostwhatever);
     document.getElementById('mostWhateverDate').textContent = mostWhateverDate;
     document.getElementById('minimumWhateverAmount').textContent = formatToCurrency(minwhatever);

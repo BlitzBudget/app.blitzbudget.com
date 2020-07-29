@@ -634,7 +634,7 @@
 
         }
 
-        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'category', fetchIncome);
+        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'category', fetchIncome, "Biggest Amount", "Smallest Amount", "Average Amount", "Your Categories");
     }
 
     // Populate the line chart from cache
@@ -741,6 +741,16 @@
 
     // build line chart
     function buildBarChart(dataSimpleBarChart, optionsSimpleBarChart) {
+
+        // Populate the empty data in detail
+        populateDetailedOverviewForChart(dataSimpleBarChart, false, "Biggest Balance", "Smallest Balance", "Average Balance", "Your Accounts");
+
+        // If series array is empty then
+        if (isEmpty(seriesArray)) {
+            populateEmptyChartInfo();
+            return;
+        }
+
         /*  **************** Simple Bar Chart - barchart ******************** */
 
         let responsiveOptionsSimpleBarChart = [
@@ -835,19 +845,6 @@
             series: seriesArray
         };
 
-        // If series array is empty then
-        if (isEmpty(seriesArray)) {
-            let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-            let emptyMessageDocumentFragment = document.createDocumentFragment();
-            emptyMessageDocumentFragment.appendChild(buildEmptyChartMessageForOverview());
-            // Replace inner HTML with EMPTY
-            while (chartAppendingDiv.firstChild) {
-                chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-            }
-            chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
-            return;
-        }
-
         let optionsSimpleBarChart = {
             distributeSeries: true,
             seriesBarDistance: 10,
@@ -879,7 +876,10 @@ function replaceChartChosenLabel(chosenChartText) {
 }
 
 // Introduce Chartist pie chart
-function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetchIncome) {
+function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetchIncome, highestWhatever, lowestWhatever, averageWhatever, yourTitle) {
+
+    // Populate the empty data in detail
+    populateDetailedOverviewForChart(dataPreferences, false, highestWhatever, lowestWhatever, averageWhatever, yourTitle);
 
     let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 

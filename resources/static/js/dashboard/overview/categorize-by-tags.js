@@ -96,17 +96,6 @@ function populateCategorizeByTags(fetchIncome, transactions) {
         idArray.push(otherIdArray);
     }
 
-    let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    // Replace inner HTML with EMPTY
-    while (chartAppendingDiv.firstChild) {
-        chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    }
-    // Replace with empty chart message
-    if (isEmpty(seriesArray)) {
-        chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
-        return;
-    }
-
     // Build the data for the line chart
     let dataSimpleBarChart = {
         labels: labelsArray,
@@ -114,5 +103,5 @@ function populateCategorizeByTags(fetchIncome, transactions) {
         ids: idArray
     }
 
-    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'tag', fetchIncome);
+    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'tag', fetchIncome, "Biggest Amount", "Smallest Amount", "Average Amount", "Your Tags");
 }

@@ -93,17 +93,6 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
         idArray.push(otherIdArray);
     }
 
-    let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-    // Replace inner HTML with EMPTY
-    while (chartAppendingDiv.firstChild) {
-        chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-    }
-    // Replace with empty chart message
-    if (isEmpty(seriesArray)) {
-        chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
-        return;
-    }
-
     // Build the data for the line chart
     let dataSimpleBarChart = {
         labels: labelsArray,
@@ -111,5 +100,5 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
         ids: idArray
     }
 
-    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'account', fetchIncome);
+    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'account', fetchIncome, "Highest Amount", "Lowest Amount", "Average Amount", "Your Accounts");
 }
