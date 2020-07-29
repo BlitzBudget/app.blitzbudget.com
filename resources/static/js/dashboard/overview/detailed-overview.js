@@ -95,7 +95,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     document.getElementById('mostWhateverDate').textContent = mostWhateverDate;
     document.getElementById('minimumWhateverAmount').textContent = formatToCurrency(minwhatever);
     document.getElementById('minimumWhateverDate').textContent = minWhateverDate;
-    document.getElementById('averageWhateverAmount').textContent = formatToCurrency(totalWhatever / dataSeries.labels.length);
+    document.getElementById('averageWhateverAmount').textContent = formatToCurrency(Math.abs(totalWhatever) / dataSeries.labels.length);
     document.getElementById('averageWhateverDate').textContent = dataSeries.labels[0] + ' to ' + dataSeries.labels[dataSeries.labels.length - 1];
 
     /*
