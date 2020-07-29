@@ -255,14 +255,14 @@
             incomeOrExpense = 'Income';
             translatedText = window.translationData.overview.dynamic.chart.incomeoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'income_total', "Highest Income", "Lowest Income", "Average Income", "Your Income");
+            calcAndBuildLineChart(dateAndAmountAsList, 'income_total', window.translationData.overview.dynamic.detailed.highestincome, window.translationData.overview.dynamic.detailed.lowestincome, window.translationData.overview.dynamic.detailed.averageincome, window.translationData.overview.dynamic.detailed.yourincome);
 
         } else {
 
             incomeOrExpense = 'Expense';
             translatedText = window.translationData.overview.dynamic.chart.expenseoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total', "Highest Expense", "Lowest Expense", "Average Expense", "Your Expense");
+            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total', window.translationData.overview.dynamic.detailed.highestexpense, window.translationData.overview.dynamic.detailed.lowestexpense, window.translationData.overview.dynamic.detailed.averageexpense, window.translationData.overview.dynamic.detailed.yourexpense);
         }
 
         appendChartOptionsForIncomeOrExpense(incomeOrExpense, translatedText);
@@ -313,7 +313,7 @@
         };
 
         // Populate the data in detail
-        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true, "Highest Income", "Lowest Income", "Average Income", "Your Income");
+        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true, highestWhatever, lowestWhatever, averageWhatever, yourWhateverTitle);
 
         // Replace with empty chart message
         if (isEmpty(seriesArray)) {
@@ -743,7 +743,7 @@
     function buildBarChart(dataSimpleBarChart, optionsSimpleBarChart) {
 
         // Populate the empty data in detail
-        populateDetailedOverviewForChart(dataSimpleBarChart, false, "Biggest Balance", "Smallest Balance", "Average Balance", "Your Accounts");
+        populateDetailedOverviewForChart(dataSimpleBarChart, false, window.translationData.overview.dynamic.detailed.biggestbalance, window.translationData.overview.dynamic.detailed.smallestbalance, window.translationData.overview.dynamic.detailed.averagebalance, window.translationData.overview.dynamic.detailed.youraccounts);
 
         // If series array is empty then
         if (isEmpty(dataSimpleBarChart)) {

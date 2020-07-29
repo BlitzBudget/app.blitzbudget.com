@@ -100,5 +100,5 @@ function populateCategorizeByAccount(fetchIncome, transactions) {
         ids: idArray
     }
 
-    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'account', fetchIncome, "Highest Amount", "Lowest Amount", "Average Amount", "Your Accounts");
+    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'account', fetchIncome, window.translationData.overview.dynamic.detailed.biggestamount, window.translationData.overview.dynamic.detailed.smallestamount, window.translationData.overview.dynamic.detailed.averageamount, window.translationData.overview.dynamic.detailed.youraccounts);
 }

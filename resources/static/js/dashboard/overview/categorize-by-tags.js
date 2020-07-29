@@ -103,5 +103,5 @@ function populateCategorizeByTags(fetchIncome, transactions) {
         ids: idArray
     }
 
-    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'tag', fetchIncome, "Biggest Amount", "Smallest Amount", "Average Amount", "Your Tags");
+    buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'tag', fetchIncome, window.translationData.overview.dynamic.detailed.biggestamount, window.translationData.overview.dynamic.detailed.smallestamount, window.translationData.overview.dynamic.detailed.averageamount, window.translationData.overview.dynamic.detailed.yourtags);
 }
