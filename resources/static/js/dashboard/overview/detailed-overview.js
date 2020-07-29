@@ -108,7 +108,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
      */
     let tableFooter = document.createElement('div');
     tableFooter.classList = 'tableFooterDiv';
-    tableFooter.appendChild(buildOneDetailedOverview(totalWhatever, 'Total'));
+    tableFooter.appendChild(buildOneDetailedOverview(totalWhatever, window.translationData.overview.dynamic.detailed.total));
 
     /*
      * Export as CSV
@@ -123,7 +123,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     let anchorCell2 = document.createElement('a');
     anchorCell2.classList = 'd-table-cell text-info text-right';
     anchorCell2.id = "export-as-csv";
-    anchorCell2.textContent = 'Export as CSV';
+    anchorCell2.textContent = window.translationData.overview.dynamic.detailed.exportascsv;
     anchorFooter.appendChild(anchorCell2);
     tableFooter.appendChild(anchorFooter);
 

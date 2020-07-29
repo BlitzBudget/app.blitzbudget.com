@@ -315,7 +315,9 @@
                 "smallestamount": "Smallest Amount",
                 "averageamount": "Average Amount",
                 "yourtags": "Your Tags",
-                "youraccounts": "Your Accounts"
+                "youraccounts": "Your Accounts",
+                "exportascsv": "Export as CSV",
+                "total": "Total"
             }
         }
     },
