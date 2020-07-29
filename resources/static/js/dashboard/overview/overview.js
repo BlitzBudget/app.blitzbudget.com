@@ -255,21 +255,21 @@
             incomeOrExpense = 'Income';
             translatedText = window.translationData.overview.dynamic.chart.incomeoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
+            calcAndBuildLineChart(dateAndAmountAsList, 'income_total', "Highest Income", "Lowest Income", "Average Income", "Your Income");
 
         } else {
 
             incomeOrExpense = 'Expense';
             translatedText = window.translationData.overview.dynamic.chart.expenseoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total');
+            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total', "Highest Expense", "Lowest Expense", "Average Expense", "Your Expense");
         }
 
         appendChartOptionsForIncomeOrExpense(incomeOrExpense, translatedText);
     }
 
     // Calculate and build line chart for income / expense
-    function calcAndBuildLineChart(dateAndAmountAsList, totalAm) {
+    function calcAndBuildLineChart(dateAndAmountAsList, totalAm, highestWhatever, lowestWhatever, averageWhatever, yourWhateverTitle) {
         let labelsArray = [];
         let seriesArray = [];
 
@@ -282,7 +282,7 @@
         if (isEmpty(dateAndAmountAsList)) {
             chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
             // Populate the empty data in detail
-            populateDetailedOverviewForChart(seriesArray, true, "Highest Income", "Lowest Income", "Average Income", "Your Income");
+            populateDetailedOverviewForChart(seriesArray, true, highestWhatever, lowestWhatever, averageWhatever, yourWhateverTitle);
             return;
         }
 
