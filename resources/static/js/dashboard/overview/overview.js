@@ -197,7 +197,7 @@
                 break;
             case oneYearOverviewOption:
                 // Upon refresh call the income overview chart
-                populateLineChart(dateLineChart, true);
+                populateLineChart(dateLineChart, fetchIncomeBreakDownCache);
                 document.getElementById('chartDisplayTitle').firstChild.nodeValue = labelForCategory;
                 break;
             case 'categorizebytags':
@@ -746,7 +746,7 @@
         populateDetailedOverviewForChart(dataSimpleBarChart, false, "Biggest Balance", "Smallest Balance", "Average Balance", "Your Accounts");
 
         // If series array is empty then
-        if (isEmpty(seriesArray)) {
+        if (isEmpty(dataSimpleBarChart)) {
             populateEmptyChartInfo();
             return;
         }
