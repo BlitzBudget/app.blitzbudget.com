@@ -73,13 +73,13 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
 
         // Calculate Most Spent
         if (mostwhatever < Math.abs(value)) {
-            mostwhatever = value;
+            mostwhatever = Math.abs(value);
             mostWhateverDate = label;
         }
 
         // Minimum Spent ( Assign the first element by default )
         if (minwhatever > Math.abs(value) || i == 0) {
-            minwhatever = value;
+            minwhatever = Math.abs(value);
             minWhateverDate = label;
         }
 
