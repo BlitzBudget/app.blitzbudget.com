@@ -31,9 +31,6 @@
             row += '"' + window.translationData.overview.dynamic.detailed.label + '","' +
                 window.translationData.overview.dynamic.detailed.value + '"';
 
-
-            row = row.slice(0, -1);
-
             //append Label row with line break
             CSV += row + '\r\n';
         }
