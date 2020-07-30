@@ -317,7 +317,13 @@
                 "yourtags": "あなたのタグ",
                 "youraccounts": "アカウント",
                 "exportascsv": "CSVとしてエクスポート",
-                "total": "合計"
+                "total": "合計",
+                "downloadedtocsv": "CSVへのダウンロードに成功しました。",
+                "invaliddata": "無効なデータです。リフレッシュしてから再度お試しください",
+                "nodataavailable": "ダウンロード可能なデータがありません。リフレッシュしてからもう一度お試しください",
+                "csvtitle": "詳細概要",
+                "label": "ラベル",
+                "value": "値"
             }
         }
     },

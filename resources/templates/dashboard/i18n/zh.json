@@ -317,7 +317,13 @@
                 "yourtags": "您的标签",
                 "youraccounts": "您的账户",
                 "exportascsv": "导出为CSV",
-                "total": "总数"
+                "total": "总数",
+                "downloadedtocsv": "成功下载到CSV!",
+                "invaliddata": "无效数据。请刷新并重试!",
+                "nodataavailable": "没有数据可供下载。请刷新并重试!",
+                "csvtitle": "详细概述",
+                "label": "标签",
+                "value": "价值"
             }
         }
     },

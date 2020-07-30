@@ -321,7 +321,7 @@
                 "downloadedtocsv": "Successfully downloaded to CSV!",
                 "invaliddata": "Invalid data. Please refresh and try again!",
                 "nodataavailable": "No data available to download. Please refresh and try again!",
-                "csvtitle": "detailed-overview",
+                "csvtitle": "detailed overview",
                 "label": "Label",
                 "value": "Value"
             }

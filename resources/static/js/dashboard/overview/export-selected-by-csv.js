@@ -1,6 +1,5 @@
 "use strict";
 (function scopeWrapper($) {
-
     $('body').on('click', '#detailedOverviewOfChart #export-as-csv', function (e) {
 
         if (isEmpty(window.dataSeriesForExport) || isEmpty(window.dataSeriesForExport.labels)) {

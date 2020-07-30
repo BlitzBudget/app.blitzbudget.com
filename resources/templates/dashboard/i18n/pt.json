@@ -317,7 +317,13 @@
                 "yourtags": "As suas etiquetas",
                 "youraccounts": "As suas contas",
                 "exportascsv": "Exportação como CSV",
-                "total": "Total"
+                "total": "Total",
+                "downloadedtocsv": "Descarregado com sucesso para CSV!",
+                "invaliddata": "Dados inválidos. Por favor, actualize e tente novamente!",
+                "nodataavailable": "Não há dados disponíveis para descarregar. Por favor, actualize e tente novamente!",
+                "csvtitle": "visão geral detalhada",
+                "label": "Etiqueta",
+                "value": "Valor"
             }
         }
     },
