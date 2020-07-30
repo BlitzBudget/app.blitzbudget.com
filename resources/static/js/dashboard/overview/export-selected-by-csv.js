@@ -43,6 +43,11 @@
             let value = dataSeries.series[i];
             let label = dataSeries.labels[i];
 
+            // if series is an array then
+            if (dataSeries.isSeriesAnArray) {
+                value = dataSeries.series[0][i];
+            }
+
             //2nd loop will extract each column and convert it in string comma-seprated
             row += '"' + label + '","' +
                 value + '"';

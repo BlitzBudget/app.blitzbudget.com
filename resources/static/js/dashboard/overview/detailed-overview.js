@@ -2,6 +2,8 @@
 // Populate Detailed Overview For Chart
 function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhateverTitle, minWhateverTitle, avWhateverTitle, tableTitle) {
 
+    // Is Series An Array
+    dataSeries.isSeriesAnArray = isSeriesAnArray;
     // Data Series for export
     window.dataSeriesForExport = dataSeries;
 
