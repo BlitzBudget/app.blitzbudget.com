@@ -262,7 +262,7 @@
             incomeOrExpense = 'Expense';
             translatedText = window.translationData.overview.dynamic.chart.expenseoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total', window.translationData.overview.dynamic.detailed.highestexpense, window.translationData.overview.dynamic.detailed.lowestexpense, window.translationData.overview.dynamic.detailed.averageexpense, window.translationData.overview.dynamic.detailed.yourexpense);
+            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total', window.translationData.overview.dynamic.detailed.lowestexpense, window.translationData.overview.dynamic.detailed.highestexpense, window.translationData.overview.dynamic.detailed.averageexpense, window.translationData.overview.dynamic.detailed.yourexpense);
         }
 
         appendChartOptionsForIncomeOrExpense(incomeOrExpense, translatedText);

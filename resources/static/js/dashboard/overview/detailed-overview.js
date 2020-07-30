@@ -72,14 +72,14 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
         }
 
         // Calculate Most Spent
-        if (mostwhatever < Math.abs(value)) {
-            mostwhatever = Math.abs(value);
+        if (mostwhatever < value || i == 0) {
+            mostwhatever = value;
             mostWhateverDate = label;
         }
 
         // Minimum Spent ( Assign the first element by default )
-        if (minwhatever > Math.abs(value) || i == 0) {
-            minwhatever = Math.abs(value);
+        if (minwhatever > value || i == 0) {
+            minwhatever = value;
             minWhateverDate = label;
         }
 
@@ -95,7 +95,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     document.getElementById('mostWhateverDate').textContent = mostWhateverDate;
     document.getElementById('minimumWhateverAmount').textContent = formatToCurrency(minwhatever);
     document.getElementById('minimumWhateverDate').textContent = minWhateverDate;
-    document.getElementById('averageWhateverAmount').textContent = formatToCurrency(Math.abs(totalWhatever) / dataSeries.labels.length);
+    document.getElementById('averageWhateverAmount').textContent = formatToCurrency(totalWhatever / dataSeries.labels.length);
     document.getElementById('averageWhateverDate').textContent = dataSeries.labels[0] + ' to ' + dataSeries.labels[dataSeries.labels.length - 1];
 
     /*
