@@ -2,6 +2,9 @@
 // Populate Detailed Overview For Chart
 function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhateverTitle, minWhateverTitle, avWhateverTitle, tableTitle) {
 
+    // Data Series for export
+    window.dataSeriesForExport = dataSeries;
+
     let detailedOverviewOfChart = document.getElementById('detailedOverviewOfChart');
     // Title for cards
     document.getElementById('mostWhatever').textContent = mostWhateverTitle;
@@ -24,7 +27,6 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
         document.getElementById('minimumWhateverDate').textContent = '-';
         document.getElementById('averageWhateverAmount').textContent = '-';
         document.getElementById('averageWhateverDate').textContent = '-';
-
         return;
     }
 

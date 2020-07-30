@@ -1,41 +1,20 @@
 "use strict";
 (function scopeWrapper($) {
 
-    $('body').on('click', '#downloadTransactionsData', function (e) {
-        // Check all check boxes by default
-        let transactionIds = [];
+    $('body').on('click', '#export-as-csv', function (e) {
 
-        let allCheckedItems = $("input[type=checkbox]:checked");
-        for (let i = 0, length = allCheckedItems.length; i < length; i++) {
-            // To remove the select all check box values
-            let transactionId = allCheckedItems[i].innerHTML;
-
-            // Remove the check all from the list
-            if (isEqual(allCheckedItems[i].id, 'checkAll')) {
-                continue;
-            }
-
-            // Google Chrome Compatibility
-            if (isEmpty(transactionId)) {
-                transactionId = allCheckedItems[i].childNodes[0].nodeValue;
-            }
-
-            if (transactionId != "on" && isNotBlank(transactionId)) {
-                transactionIds.push(transactionId);
-            }
+        if (isEmpty(window.dataSeriesForExport)) {
+            showNotification('No data available to download. Please refresh and try again!', window._constants.notification.error);
+            return;
         }
 
-        transactionIds.join(",");
-
         // Json to csv convertor
-        JSONToCSVConvertor(JSON.stringify(transactionIds), "transactions", true);
+        JSONToCSVConvertor(dataSeries, "transactions", true);
 
     });
 
     // Convert JSON to CSV
-    function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
-        //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
-        let arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+    function JSONToCSVConvertor(dataSeries, ReportTitle, ShowLabel) {
 
         let CSV = '';
         //Set Report title in first row or line
@@ -48,13 +27,8 @@
 
 
             //Now convert each value to string and comma-seprated
-            row += '"Date Meant For"' + ',' +
-                '"Description"' + ',' +
-                '"Category Name"' + ',' +
-                '"Amount"' + ',' +
-                '"Recurrence"' + ',' +
-                '"Account Id"' + ',' +
-                '"Budget Amount"' + ',';
+            row += '"Label"' + ',' +
+                '"Value"' + ',';
 
 
             row = row.slice(0, -1);
@@ -64,26 +38,14 @@
         }
 
         //1st loop is to extract each row
-        for (let i = 0; i < arrData.length; i++) {
+        for (let i = 0; i < dataSeries.length; i++) {
             let row = "";
-            // Fetch the transaction cached
-            let transactionCached = window.transactionsCache[parseInt(arrData[i])];
-            // Current Category for transaction
-            let currentCategory = window.categoryMap[transactionCached.categoryId];
-            // Fetch the budgeted amount
-            let budgetCategory = window.userBudgetMap[transactionCached.categoryId];
-            let budgetAmount = isNotEmpty(budgetCategory) ? formatToCurrency(budgetCategory.planned) : formatToCurrency(0);
-            // Fetch the transaction amount
-            let transactionAmount = formatToCurrency(transactionCached.amount);
+            let value = dataSeries.series[i];
+            let label = dataSeries.labels[i];
 
             //2nd loop will extract each column and convert it in string comma-seprated
-            row += '"' + new Date(transactionCached.dateMeantFor) + '","' +
-                transactionCached.description + '","' +
-                currentCategory.categoryName + '","' +
-                transactionAmount + '","' +
-                transactionCached.recurrence + '","' +
-                transactionCached.accountId + '","' +
-                budgetAmount + '"';
+            row += '"' + label + '","' +
+                value + '"';
 
             row.slice(0, row.length - 1);
 
