@@ -50,13 +50,8 @@
     // and I would prefer to simply use `datevalue`
     // ... you could even add the formula in here.
     JsonObjFormat = {
-        "Date": "String",
-        "Description": "String",
-        "Category": "String",
-        "Amount": "String",
-        "Recurrence": "String",
-        "Account": "String",
-        "Budget": "String"
+        "Label": "String",
+        "Value": "String"
     };
 
     emitXmlHeader = function () {
