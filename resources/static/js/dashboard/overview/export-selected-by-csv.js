@@ -2,6 +2,11 @@
 (function scopeWrapper($) {
     $('body').on('click', '#detailedOverviewOfChart #export-as-csv', function (e) {
 
+        // Check if the CSV is the selected option
+        if (isNotEqual(window.currentUser.exportFileFormat, 'CSV')) {
+            return;
+        }
+
         if (isEmpty(window.dataSeriesForExport) || isEmpty(window.dataSeriesForExport.labels)) {
             showNotification(window.translationData.overview.dynamic.detailed.nodataavailable, window._constants.notification.error);
             return;
