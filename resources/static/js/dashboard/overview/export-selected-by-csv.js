@@ -68,7 +68,7 @@
         }
 
         // Total Whatever
-        let row = '"Total,' +
+        let row = '"Total","' +
             formatToCurrency(totalWhatever) + '"';
         row.slice(0, row.length - 1);
         // add a line break after each row
