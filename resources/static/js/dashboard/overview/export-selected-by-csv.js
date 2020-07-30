@@ -17,6 +17,7 @@
     function JSONToCSVConvertor(dataSeries, ReportTitle, ShowLabel) {
 
         let CSV = '';
+        let totalWhatever = 0;
         //Set Report title in first row or line
 
         CSV += ReportTitle + '\r\n\n';
@@ -50,9 +51,12 @@
 
             //2nd loop will extract each column and convert it in string comma-seprated
             row += '"' + label + '","' +
-                value + '"';
+                formatToCurrency(value) + '"';
 
             row.slice(0, row.length - 1);
+
+            // Calculate Average Spent
+            totalWhatever += value;
 
             //add a line break after each row
             CSV += row + '\r\n';
@@ -62,6 +66,13 @@
             showNotification('Invalid data. Please refresh and try again!', window._constants.notification.error);
             return;
         }
+
+        // Total Whatever
+        let row += '"Total","' +
+            formatToCurrency(totalWhatever) + '"';
+        row.slice(0, row.length - 1);
+        // add a line break after each row
+        CSV += row + '\r\n';
 
         //Generate a file name
         let fileName = "";
