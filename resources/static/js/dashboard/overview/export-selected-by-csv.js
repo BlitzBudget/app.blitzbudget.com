@@ -1,15 +1,15 @@
 "use strict";
 (function scopeWrapper($) {
 
-    $('body').on('click', '#export-as-csv', function (e) {
+    $('body').on('click', '#detailedOverviewOfChart #export-as-csv', function (e) {
 
-        if (isEmpty(window.dataSeriesForExport)) {
+        if (isEmpty(window.dataSeriesForExport) || isEmpty(window.dataSeriesForExport.labels)) {
             showNotification('No data available to download. Please refresh and try again!', window._constants.notification.error);
             return;
         }
 
         // Json to csv convertor
-        JSONToCSVConvertor(dataSeries, "transactions", true);
+        JSONToCSVConvertor(window.dataSeriesForExport, "transactions", true);
 
     });
 
@@ -38,7 +38,7 @@
         }
 
         //1st loop is to extract each row
-        for (let i = 0; i < dataSeries.length; i++) {
+        for (let i = 0; i < dataSeries.labels.length; i++) {
             let row = "";
             let value = dataSeries.series[i];
             let label = dataSeries.labels[i];
