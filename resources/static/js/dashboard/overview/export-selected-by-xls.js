@@ -25,8 +25,8 @@
 
         let allCheckedItems = $("input[type=checkbox]:checked");
         for (let i = 0, length = window.dataSeriesForExport.labels.length; i < length; i++) {
-            let value = dataSeries.series[i];
-            let label = dataSeries.labels[i];
+            let value = window.dataSeriesForExport.series[i];
+            let label = window.dataSeriesForExport.labels[i];
 
             // Build object
             transJsonObj["Label"] = label;
