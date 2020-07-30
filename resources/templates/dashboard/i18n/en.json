@@ -317,7 +317,13 @@
                 "yourtags": "Your Tags",
                 "youraccounts": "Your Accounts",
                 "exportascsv": "Export as CSV",
-                "total": "Total"
+                "total": "Total",
+                "downloadedtocsv": "Successfully downloaded to CSV!",
+                "invaliddata": "Invalid data. Please refresh and try again!",
+                "nodataavailable": "No data available to download. Please refresh and try again!",
+                "csvtitle": "detailed-overview",
+                "label": "Label",
+                "value": "Value"
             }
         }
     },

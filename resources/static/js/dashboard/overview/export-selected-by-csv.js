@@ -4,12 +4,12 @@
     $('body').on('click', '#detailedOverviewOfChart #export-as-csv', function (e) {
 
         if (isEmpty(window.dataSeriesForExport) || isEmpty(window.dataSeriesForExport.labels)) {
-            showNotification('No data available to download. Please refresh and try again!', window._constants.notification.error);
+            showNotification(window.translationData.overview.dynamic.detailed.nodataavailable, window._constants.notification.error);
             return;
         }
 
         // Json to csv convertor
-        JSONToCSVConvertor(window.dataSeriesForExport, "transactions", true);
+        JSONToCSVConvertor(window.dataSeriesForExport, window.translationData.overview.dynamic.detailed.csvtitle, true);
 
     });
 
@@ -28,8 +28,8 @@
 
 
             //Now convert each value to string and comma-seprated
-            row += '"Label"' + ',' +
-                '"Value"' + ',';
+            row += '"' + window.translationData.overview.dynamic.detailed.label + '","' +
+                window.translationData.overview.dynamic.detailed.value + '"';
 
 
             row = row.slice(0, -1);
@@ -63,12 +63,12 @@
         }
 
         if (CSV == '') {
-            showNotification('Invalid data. Please refresh and try again!', window._constants.notification.error);
+            showNotification(window.translationData.overview.dynamic.detailed.invaliddata, window._constants.notification.error);
             return;
         }
 
         // Total Whatever
-        let row = '"Total","' +
+        let row = '"' + window.translationData.overview.dynamic.detailed.total + '","' +
             formatToCurrency(totalWhatever) + '"';
         row.slice(0, row.length - 1);
         // add a line break after each row
@@ -107,7 +107,7 @@
     // Revert back to sort by functionality
     function succesfullyDownloadedContent() {
         // Successfully downloaded the excel
-        showNotification('Successfully downloaded the selected transactions', window._constants.notification.success);
+        showNotification(window.translationData.overview.dynamic.detailed.downloadedtocsv, window._constants.notification.success);
 
         // Hide the export button in conjunction with delete button
         let expDataCL = document.getElementById('exportData').classList;
