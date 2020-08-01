@@ -127,7 +127,17 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     let anchorCell2 = document.createElement('a');
     anchorCell2.classList = 'd-table-cell text-info text-right';
     anchorCell2.id = "export-as-csv";
-    anchorCell2.textContent = window.translationData.overview.dynamic.detailed.exportascsv;
+    let exportTitle = window.translationData.overview.dynamic.detailed.exportascsv;
+    switch (window.currentUser.exportFileFormat) {
+        case 'XLS':
+            exportTitle = window.translationData.overview.dynamic.detailed.exportasxls;
+            break;
+        case 'DOC':
+            exportTitle = window.translationData.overview.dynamic.detailed.exportasdoc;
+            break;
+
+    }
+    anchorCell2.textContent = exportTitle;
     anchorFooter.appendChild(anchorCell2);
     tableFooter.appendChild(anchorFooter);
 

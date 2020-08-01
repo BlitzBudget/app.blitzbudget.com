@@ -19,14 +19,19 @@
         // Check all check boxes by default
         let transactionData = [];
         // Update Heading for sheet
-        transJsonObj["Label"] = "Label";
-        transJsonObj["Value"] = "Value";
+        transJsonObj["Label"] = window.translationData.overview.dynamic.detailed.label;
+        transJsonObj["Value"] = window.translationData.overview.dynamic.detailed.value;
         transactionData.push(transJsonObj);
 
         let allCheckedItems = $("input[type=checkbox]:checked");
         for (let i = 0, length = window.dataSeriesForExport.labels.length; i < length; i++) {
             let value = window.dataSeriesForExport.series[i];
             let label = window.dataSeriesForExport.labels[i];
+
+            // if series is an array then
+            if (window.dataSeriesForExport.isSeriesAnArray) {
+                value = window.dataSeriesForExport.series[0][i];
+            }
 
             // Build object
             transJsonObj["Label"] = label;
@@ -38,7 +43,7 @@
         transactionData.join(",");
 
         // Json to csv convertor
-        JSONToXLSConvertor(JSON.stringify(transactionData), "transactions");
+        JSONToXLSConvertor(JSON.stringify(transactionData), window.translationData.overview.dynamic.detailed.csvtitle);
 
     });
 
@@ -115,7 +120,7 @@
     // Revert back to sort by functionality
     function succesfullyDownloadedContent() {
         // Successfully downloaded the excel
-        showNotification('Successfully downloaded the selected transactions', window._constants.notification.success);
+        showNotification(window.translationData.overview.dynamic.detailed.downloadedtocsv, window._constants.notification.success);
 
         // Hide the export button in conjunction with delete button
         let expDataCL = document.getElementById('exportData').classList;

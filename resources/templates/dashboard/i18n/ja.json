@@ -323,7 +323,9 @@
                 "nodataavailable": "ダウンロード可能なデータがありません。リフレッシュしてからもう一度お試しください",
                 "csvtitle": "詳細概要",
                 "label": "ラベル",
-                "value": "値"
+                "value": "値",
+                "exportasxls": "XLSとしてエクスポート",
+                "exportasdoc": "輸出業者とDOC"
             }
         }
     },

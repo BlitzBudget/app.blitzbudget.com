@@ -323,7 +323,9 @@
                 "nodataavailable": "Aucune donnée disponible pour le téléchargement. Veuillez actualiser et réessayer !",
                 "csvtitle": "aperçu détaillé",
                 "label": "Label",
-                "value": "Valeur"
+                "value": "Valeur",
+                "exportasxls": "Exporter en XLS",
+                "exportasdoc": "Exporter en DOC"
             }
         }
     },

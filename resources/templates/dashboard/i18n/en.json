@@ -323,7 +323,9 @@
                 "nodataavailable": "No data available to download. Please refresh and try again!",
                 "csvtitle": "detailed overview",
                 "label": "Label",
-                "value": "Value"
+                "value": "Value",
+                "exportasxls": "Export as XLS",
+                "exportasdoc": "Export as DOC"
             }
         }
     },

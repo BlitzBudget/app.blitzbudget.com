@@ -323,7 +323,9 @@
                 "nodataavailable": "没有数据可供下载。请刷新并重试!",
                 "csvtitle": "详细概述",
                 "label": "标签",
-                "value": "价值"
+                "value": "价值",
+                "exportasxls": "导出为XLS",
+                "exportasdoc": "导出为DOC"
             }
         }
     },

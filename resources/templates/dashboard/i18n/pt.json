@@ -323,7 +323,9 @@
                 "nodataavailable": "Não há dados disponíveis para descarregar. Por favor, actualize e tente novamente!",
                 "csvtitle": "visão geral detalhada",
                 "label": "Etiqueta",
-                "value": "Valor"
+                "value": "Valor",
+                "exportasxls": "Exportação como XLS",
+                "exportasdoc": "Exportação como DOC"
             }
         }
     },
