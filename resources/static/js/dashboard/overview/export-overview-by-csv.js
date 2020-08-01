@@ -13,12 +13,12 @@
         }
 
         // Json to csv convertor
-        JSONToCSVConvertor(window.dataSeriesForExport, window.translationData.overview.dynamic.detailed.csvtitle, true);
+        downloadAsCSV(window.dataSeriesForExport, window.translationData.overview.dynamic.detailed.csvtitle, true);
 
     });
 
     // Convert JSON to CSV
-    function JSONToCSVConvertor(dataSeries, ReportTitle, ShowLabel) {
+    function downloadAsCSV(dataSeries, ReportTitle, ShowLabel) {
 
         let CSV = '';
         let totalWhatever = 0;
@@ -110,15 +110,6 @@
         // Successfully downloaded the excel
         showNotification(window.translationData.overview.dynamic.detailed.downloadedtocsv, window._constants.notification.success);
 
-        // Hide the export button in conjunction with delete button
-        let expDataCL = document.getElementById('exportData').classList;
-        expDataCL.add('d-none');
-        expDataCL.remove('d-inline-block');
-
-        // show the Sort Options wrapper
-        let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
-        sortOptionsWrapper.remove('d-none');
-        sortOptionsWrapper.add('d-inline-block');
     }
 
 }(jQuery));

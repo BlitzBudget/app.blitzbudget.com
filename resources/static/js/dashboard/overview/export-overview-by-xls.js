@@ -14,52 +14,14 @@
             return;
         }
 
-        // Define Transaction Obj
-        let transJsonObj = {};
-        // Check all check boxes by default
-        let transactionData = [];
-        // Update Heading for sheet
-        transJsonObj["Label"] = window.translationData.overview.dynamic.detailed.label;
-        transJsonObj["Value"] = window.translationData.overview.dynamic.detailed.value;
-        transactionData.push(transJsonObj);
-
-        let allCheckedItems = $("input[type=checkbox]:checked");
-        for (let i = 0, length = window.dataSeriesForExport.labels.length; i < length; i++) {
-            // Define Transaction Obj
-            let transferJsonObj = {};
-            let value = window.dataSeriesForExport.series[i];
-            let label = window.dataSeriesForExport.labels[i];
-
-            // if series is an array then
-            if (window.dataSeriesForExport.isSeriesAnArray) {
-                value = window.dataSeriesForExport.series[0][i];
-            }
-
-            // Build object
-            transferJsonObj["Label"] = label;
-            transferJsonObj["Value"] = value;
-            transactionData.push(transferJsonObj);
-
-        }
-
-        transactionData.join(",");
-
         // Json to csv convertor
-        JSONToXLSConvertor(JSON.stringify(transactionData), window.translationData.overview.dynamic.detailed.csvtitle);
+        downloadAsXLS(window.translationData.overview.dynamic.detailed.csvtitle);
 
     });
 
-    function JSONToXLSConvertor(data, fileName) {
-        download(jsonToSsXml(data), fileName + '.xls', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    function downloadAsXLS(fileName) {
+        download(convertToXLS(), fileName + '.xls', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
-
-    // Simple type mapping; dates can be hard
-    // and I would prefer to simply use `datevalue`
-    // ... you could even add the formula in here.
-    JsonObjFormat = {
-        "Label": "String",
-        "Value": "String"
-    };
 
     emitXmlHeader = function () {
         return '<?xml version="1.0"?>\n' +
@@ -74,27 +36,54 @@
             '</ss:Workbook>\n';
     };
 
-    jsonToSsXml = function (jsonObject) {
+    convertToXLS = function () {
         var row;
         var col;
         var xml;
-        var data = typeof jsonObject != "object" ?
-            JSON.parse(jsonObject) :
-            jsonObject;
 
         xml = emitXmlHeader();
 
-        for (row = 0; row < data.length; row++) {
-            xml += '<ss:Row>\n';
+        // Labels Header
+        xml += '<ss:Row>\n';
+        xml += '  <ss:Cell>\n';
+        xml += '    <ss:Data ss:Type="String">';
+        xml += window.translationData.overview.dynamic.detailed.label + '</ss:Data>\n';
+        xml += '  </ss:Cell>\n';
+        xml += '</ss:Row>\n';
 
-            for (col in data[row]) {
-                xml += '  <ss:Cell>\n';
-                xml += '    <ss:Data ss:Type="' + JsonObjFormat[col] + '">';
-                xml += data[row][col] + '</ss:Data>\n';
-                xml += '  </ss:Cell>\n';
+        // Value Header
+        xml += '<ss:Row>\n';
+        xml += '  <ss:Cell>\n';
+        xml += '    <ss:Data ss:Type="String">';
+        xml += window.translationData.overview.dynamic.detailed.value + '</ss:Data>\n';
+        xml += '  </ss:Cell>\n';
+        xml += '</ss:Row>\n';
+
+        for (let i = 0, length = window.dataSeriesForExport.labels.length; i < length; i++) {
+            let value = window.dataSeriesForExport.series[i];
+            let label = window.dataSeriesForExport.labels[i];
+
+            // if series is an array then
+            if (window.dataSeriesForExport.isSeriesAnArray) {
+                value = window.dataSeriesForExport.series[0][i];
             }
 
+            // Labels Value
+            xml += '<ss:Row>\n';
+            xml += '  <ss:Cell>\n';
+            xml += '    <ss:Data ss:Type="String">';
+            xml += label + '</ss:Data>\n';
+            xml += '  </ss:Cell>\n';
             xml += '</ss:Row>\n';
+
+            // Value
+            xml += '<ss:Row>\n';
+            xml += '  <ss:Cell>\n';
+            xml += '    <ss:Data ss:Type="String">';
+            xml += value + '</ss:Data>\n';
+            xml += '  </ss:Cell>\n';
+            xml += '</ss:Row>\n';
+
         }
 
         xml += emitXmlFooter();
@@ -124,15 +113,6 @@
         // Successfully downloaded the excel
         showNotification(window.translationData.overview.dynamic.detailed.downloadedtocsv, window._constants.notification.success);
 
-        // Hide the export button in conjunction with delete button
-        let expDataCL = document.getElementById('exportData').classList;
-        expDataCL.add('d-none');
-        expDataCL.remove('d-inline-block');
-
-        // show the Sort Options wrapper
-        let sortOptionsWrapper = document.getElementById('sortOptionsWrapper').classList;
-        sortOptionsWrapper.remove('d-none');
-        sortOptionsWrapper.add('d-inline-block');
     }
 
 }(jQuery));
