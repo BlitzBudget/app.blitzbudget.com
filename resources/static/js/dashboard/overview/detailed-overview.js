@@ -132,8 +132,8 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
         case 'XLS':
             exportTitle = window.translationData.overview.dynamic.detailed.exportasxls;
             break;
-        case 'DOC':
-            exportTitle = window.translationData.overview.dynamic.detailed.exportasdoc;
+        default:
+            exportTitle = window.translationData.overview.dynamic.detailed.exportasxls;
             break;
 
     }

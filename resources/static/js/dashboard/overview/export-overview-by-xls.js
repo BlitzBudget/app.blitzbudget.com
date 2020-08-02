@@ -80,7 +80,7 @@
             xml += '<ss:Row>\n';
             xml += '  <ss:Cell>\n';
             xml += '    <ss:Data ss:Type="String">';
-            xml += value + '</ss:Data>\n';
+            xml += formatToCurrency(value) + '</ss:Data>\n';
             xml += '  </ss:Cell>\n';
             xml += '</ss:Row>\n';
 
