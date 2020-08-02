@@ -5,7 +5,7 @@
     $('body').on('click', '#detailedOverviewOfChart #export-as-csv', function (e) {
 
         // Check if the CSV is the selected option
-        if (isNotEqual(window.currentUser.exportFileFormat, 'XLS')) {
+        if (isEqual(window.currentUser.exportFileFormat, 'CSV')) {
             return;
         }
 
