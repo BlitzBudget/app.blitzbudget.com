@@ -94,6 +94,7 @@
                 "/dashboard/support/support.js",
                 "/dashboard/income/budget.js",
                 "/dashboard/income/transactions/accountModal.js",
+                "/dashboard/income/transactions/categoryModal.js",
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions/tagsinput.js",
                 "/dashboard/income/transactions.js",
