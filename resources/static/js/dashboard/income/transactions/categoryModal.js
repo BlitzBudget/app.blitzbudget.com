@@ -24,9 +24,13 @@
         // Set the value and percentage of the progress bar
         let amountAccumulatedCat = document.getElementById('amountAccumulatedCat');
         // Progress Bar percentage
-        let progressBarPercentage = ((window.categoryMap[categoryId] / window.userBudgetMap[categoryId]) * 100);
-        if (isNaN(progressBarPercentage)) {
-            progressBarPercentage = 0;
+        let progressBarPercentage = 0;
+        if (isNotEmpty(window.userBudgetMap[categoryId])) {
+            progressBarPercentage = ((Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100);
+            // Is Not A Number then
+            if (isNaN(progressBarPercentage)) {
+                progressBarPercentage = 0;
+            }
         }
         amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
         amountAccumulatedCat.style.width = progressBarPercentage + '%';
