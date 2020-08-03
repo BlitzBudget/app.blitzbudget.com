@@ -2,7 +2,7 @@
 (function scopeWrapper($) {
 
     // On Click Category Header display information
-    $('body').on('click', '.categoryInfoTable .recentTransactionDateGrp', function (e) {
+    $('body').on('click', '.categoryInfoTable .categorySortGrp', function (e) {
         // Account modal id
         let categoryInfoTable = this.closest('.categoryInfoTable');
         let categoryId = categoryInfoTable.getAttribute('data-target');
@@ -12,9 +12,9 @@
         let numberOfTransactionsDiv = document.getElementById('numberOfTransInCat');
         numberOfTransactionsDiv.textContent = isEmpty(recentTransactionEntry) ? 0 : recentTransactionEntry.length;
         // Set Account Title
-        document.getElementById('categoryLabelInModal').textContent = document.getElementById('categoryTitle-' + accountId).textContent;
+        document.getElementById('categoryLabelInModal').textContent = document.getElementById('categoryTitle-' + categoryId).textContent;
         // Account Balance Update
-        document.getElementById('categoryAmountEntry').textContent = document.getElementById('categoryBalance-' + accountId).textContent;
+        document.getElementById('categoryAmountEntry').textContent = document.getElementById('categoryBalance-' + categoryId).textContent;
         // Close Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close  Financial Position
