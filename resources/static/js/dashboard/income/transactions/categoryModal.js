@@ -37,7 +37,7 @@
         }
         amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
         amountAccumulatedCat.style.width = progressBarPercentage + '%';
-        document.getElementById('remainingBalanceCat').textContent = remainingAmount;
+        document.getElementById('remainingBalanceCat').textContent = formatToCurrency(remainingAmount);
     });
 
     // Close Accoount modal
