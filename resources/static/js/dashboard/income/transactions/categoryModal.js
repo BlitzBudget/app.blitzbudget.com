@@ -33,10 +33,14 @@
                 progressBarPercentage = 0;
             }
             // Remaining Amount
-            remainingAmount = (Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned));
+            remainingAmount = (Math.abs(window.userBudgetMap[categoryId].planned) - Math.abs(window.userBudgetMap[categoryId].used));
         }
+        // Progress bar percentage
         amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
         amountAccumulatedCat.style.width = progressBarPercentage + '%';
+        // Remaining Percentage
+        document.getElementById('percentageAchievedCat').textContent = progressBarPercentage + '%';
+        // Remaining in currencys
         document.getElementById('remainingBalanceCat').textContent = formatToCurrency(remainingAmount);
     });
 
