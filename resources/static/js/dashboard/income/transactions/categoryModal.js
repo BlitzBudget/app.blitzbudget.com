@@ -23,4 +23,12 @@
         document.getElementById('categoryInformationMdl').classList.remove('d-none');
     });
 
+    // Close Accoount modal
+    $('body').on('click', '#categoryHeaderClose', function (e) {
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // Open  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+    });
+
 }(jQuery));

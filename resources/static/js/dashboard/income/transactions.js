@@ -950,6 +950,8 @@
         $('.accountInfoTable').addClass('d-none');
         // Open Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
         // If a new transaction is registered then population is necessary
@@ -981,6 +983,8 @@
         transactionsTable.classList.remove('d-none');
         // Open Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
 
@@ -1018,6 +1022,8 @@
         sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
         // hide the recent transactions
         document.getElementById(recentTransactionsId).classList.add('d-none');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
         // hide the transactions table
         let transactionsTable = document.getElementById('transactionsTable');
         transactionsTable.classList.remove('d-table');

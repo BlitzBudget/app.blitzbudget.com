@@ -57,12 +57,6 @@
     line-height: 1;
 }
 
-#categoryAmountEntry:hover,
-#categoryAmountEntry:focus,
-#categoryAmountEntry:active {
-    background: linear-gradient(#d5d9db, #d5d9db) 0 calc(100% - .025rem)/100% .050rem no-repeat, transparent;
-}
-
 #categoryInformationMdl .material-icons:hover {
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
