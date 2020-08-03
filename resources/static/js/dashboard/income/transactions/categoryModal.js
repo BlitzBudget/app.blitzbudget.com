@@ -25,15 +25,19 @@
         let amountAccumulatedCat = document.getElementById('amountAccumulatedCat');
         // Progress Bar percentage
         let progressBarPercentage = 0;
+        let remainingAmount = 0;
         if (isNotEmpty(window.userBudgetMap[categoryId])) {
             progressBarPercentage = ((Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100);
             // Is Not A Number then
             if (isNaN(progressBarPercentage)) {
                 progressBarPercentage = 0;
             }
+            // Remaining Amount
+            remainingAmount = (Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned));
         }
         amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
         amountAccumulatedCat.style.width = progressBarPercentage + '%';
+        document.getElementById('remainingBalanceCat').textContent = remainingAmount;
     });
 
     // Close Accoount modal
