@@ -21,6 +21,15 @@
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
         // Open Category Modal
         document.getElementById('categoryInformationMdl').classList.remove('d-none');
+        // Set the value and percentage of the progress bar
+        let amountAccumulatedCat = document.getElementById('amountAccumulatedCat');
+        // Progress Bar percentage
+        let progressBarPercentage = ((window.categoryMap[categoryId] / window.userBudgetMap[categoryId]) * 100);
+        if (isNaN(progressBarPercentage)) {
+            progressBarPercentage = 0;
+        }
+        amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
+        amountAccumulatedCat.style.width = progressBarPercentage + '%';
     });
 
     // Close Accoount modal

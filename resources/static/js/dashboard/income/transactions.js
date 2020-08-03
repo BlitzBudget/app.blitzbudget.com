@@ -460,20 +460,7 @@
             let value = data[count];
             // Update user budget to global map (Exportation)
             window.userBudgetMap[value.category] = value;
-
-            if (isEmpty(value)) {
-                continue;
-            }
-
-            let categoryRowToUpdate = document.getElementById('budgetCategory-' + value.category);
-
-            if (categoryRowToUpdate == null) {
-                continue;
-            }
-
-            categoryRowToUpdate.textContent = formatToCurrency(value.planned);
         }
-
     }
 
     // Updates the total income and total expenses
@@ -1024,6 +1011,8 @@
         document.getElementById(recentTransactionsId).classList.add('d-none');
         // Close Category Modal
         document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // Toggle  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
         // hide the transactions table
         let transactionsTable = document.getElementById('transactionsTable');
         transactionsTable.classList.remove('d-table');
