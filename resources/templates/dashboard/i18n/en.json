@@ -615,8 +615,7 @@
         "search": "Search...",
         "amount": "Amount",
         "note": "Write a note",
-        "searcharticle": "Search for articles...",
-        "tags": "Tags"
+        "searcharticle": "Search for articles..."
     },
     "tooltip": {
         "logout": "Logout",

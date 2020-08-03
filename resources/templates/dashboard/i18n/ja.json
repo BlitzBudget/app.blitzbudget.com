@@ -615,8 +615,7 @@
         "search": "検索...",
         "amount": "量",
         "note": "ノートを書く",
-        "searcharticle": "記事の検索...",
-        "tags": "タグ"
+        "searcharticle": "記事の検索..."
     },
     "tooltip": {
         "logout": "ログアウト",

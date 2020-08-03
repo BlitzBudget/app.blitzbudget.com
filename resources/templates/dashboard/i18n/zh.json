@@ -615,8 +615,7 @@
         "search": "搜索...",
         "amount": "数量",
         "note": "写一张笔记",
-        "searcharticle": "搜索文章...",
-        "tags": "标签"
+        "searcharticle": "搜索文章..."
     },
     "tooltip": {
         "logout": "注销",

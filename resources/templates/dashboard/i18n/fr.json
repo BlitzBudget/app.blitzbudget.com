@@ -615,8 +615,7 @@
         "search": "Recherche...",
         "amount": "Quantité",
         "note": "Rédiger une note",
-        "searcharticle": "Recherche d'articles...",
-        "tags": "Tags"
+        "searcharticle": "Recherche d'articles..."
     },
     "tooltip": {
         "logout": "Déconnexion",
