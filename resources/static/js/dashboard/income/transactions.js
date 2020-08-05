@@ -705,7 +705,9 @@
             }
             // If Account Table is shown then remove d-none
             if (document.getElementById('transactionsTable').classList.contains('d-none') &&
-                document.getElementById('recentTransactions').classList.contains('d-none')) {
+                document.getElementById('recentTransactions').classList.contains('d-none') &&
+                document.getElementById('futureTransactionsEntry').classList.contains('d-none') &&
+                document.getElementById('tagsTable').classList.contains('d-none')) {
                 accountTable.classList.remove('d-none');
             }
         } else {
@@ -713,7 +715,9 @@
             popTransByAccWOAJAX();
             // If Account Table is hidden then add d-none
             if (!document.getElementById('transactionsTable').classList.contains('d-none') ||
-                !document.getElementById('recentTransactions').classList.contains('d-none')) {
+                !document.getElementById('recentTransactions').classList.contains('d-none') ||
+                !document.getElementById('futureTransactionsEntry').classList.contains('d-none') &&
+                !document.getElementById('tagsTable').classList.contains('d-none')) {
                 $('.accountInfoTable').addClass('d-none');
             }
         }
