@@ -26,7 +26,9 @@
          // show the future transactions
          document.getElementById('futureTransactionsEntry').classList.remove('d-none');
          // show the tags sortby
-         document.getElementById('tagsTransactionsEntry').classList.add('d-none');
+         let tabsTable = document.getElementById('tagsTable');
+         tabsTable.classList.add('d-none');
+         tabsTable.classList.remove('d-table');
      });
 
  }(jQuery));
