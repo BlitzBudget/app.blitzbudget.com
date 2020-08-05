@@ -955,7 +955,9 @@
         // show the future transactions
         document.getElementById('futureTransactionsEntry').classList.add('d-none');
         // show the tags sortby
-        document.getElementById('tagsTransactionsEntry').classList.add('d-none');
+        let tabsTable = document.getElementById('tagsTable');
+        tabsTable.classList.add('d-none');
+        tabsTable.classList.remove('d-table');
     });
 
     // Sort Options Wrapper
@@ -996,7 +998,9 @@
         // show the future transactions
         document.getElementById('futureTransactionsEntry').classList.add('d-none');
         // show the tags sortby
-        document.getElementById('tagsTransactionsEntry').classList.add('d-none');
+        let tabsTable = document.getElementById('tagsTable');
+        tabsTable.classList.add('d-none');
+        tabsTable.classList.remove('d-table');
     });
 
     // Sorts the table by aggregating transactions by category
@@ -1027,7 +1031,9 @@
         // show the future transactions
         document.getElementById('futureTransactionsEntry').classList.add('d-none');
         // show the tags sortby
-        document.getElementById('tagsTransactionsEntry').classList.add('d-none');
+        let tabsTable = document.getElementById('tagsTable');
+        tabsTable.classList.add('d-none');
+        tabsTable.classList.remove('d-table');
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
         // hide the transactions table
