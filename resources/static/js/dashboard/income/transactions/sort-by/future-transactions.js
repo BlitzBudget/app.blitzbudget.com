@@ -44,9 +44,8 @@
          for (let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
              let key = resultKeySet[countGrouped];
              let recurringTransaction = recurringTransactionsList[key];
-             let creationDate = new Date(recurringTransaction['creation_date']);
 
-             futureTransactionsFragment.appendChild(buildFutureTransactionRow(recurringTransactionsList));
+             futureTransactionsFragment.appendChild(buildFutureTransactionRow(recurringTransaction));
          }
      }
 
@@ -61,11 +60,9 @@
  function buildFutureTransactionRow(recurringTransaction) {
      // Convert date from UTC to user specific dates
      let nextScheduledDate = new Date(recurringTransaction['next_scheduled']);
-     // Category Map
-     let categoryMapForUT = categoryMap[recurringTransaction.category];
 
      let tableRowTransaction = document.createElement('div');
-     tableRowTransaction.id = idName + '-' + recurringTransaction.recurringTransactionsId;
+     tableRowTransaction.id = 'recurTransaction-' + recurringTransaction.recurringTransactionsId;
      tableRowTransaction.setAttribute('data-target', recurringTransaction.recurringTransactionsId);
      tableRowTransaction.classList = 'recentTransactionEntry d-table-row';
 
@@ -77,11 +74,8 @@
      circleWrapperDiv.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
 
      // Append a - sign if it is an expense
-     if (categoryMapForUT.type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-         circleWrapperDiv.appendChild(creditCardSvg());
-     } else {
-         circleWrapperDiv.appendChild(plusRawSvg());
-     }
+     circleWrapperDiv.appendChild(cachedIcons());
+
 
      tableCellImagesWrapper.appendChild(circleWrapperDiv);
      tableRowTransaction.appendChild(tableCellImagesWrapper);
@@ -97,7 +91,7 @@
 
      let elementWithCategoryName = document.createElement('div');
      elementWithCategoryName.classList = 'small categoryNameRT w-100';
-     elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + nextScheduledDate.getDate()).slice(-2) + ' ' + months[nextScheduledDate.getMonth()].slice(0, 3) + ' ' + nextScheduledDate.getFullYear() + ' ' + ("0" + nextScheduledDate.getHours()).slice(-2) + ':' + ("0" + nextScheduledDate.getMinutes()).slice(-2);
+     elementWithCategoryName.textContent = (recurringTransaction.recurrence) + ' • ' + ("0" + nextScheduledDate.getDate()).slice(-2) + ' ' + months[nextScheduledDate.getMonth()].slice(0, 3) + ' ' + nextScheduledDate.getFullYear() + ' ' + ("0" + nextScheduledDate.getHours()).slice(-2) + ':' + ("0" + nextScheduledDate.getMinutes()).slice(-2);
      tableCellTransactionDescription.appendChild(elementWithCategoryName);
      tableRowTransaction.appendChild(tableCellTransactionDescription);
 
@@ -106,22 +100,22 @@
      surCell.classList = 'd-table-cell';
 
      let transactionAmount = document.createElement('div');
-
-     // Append a - sign if it is an expense
-     if (categoryMap[recurringTransaction.category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
-         transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
-     } else {
-         transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
-
-     }
+     transactionAmount.classList = 'transactionAmountRT font-weight-bold text-right align-middle';
      transactionAmount.textContent = formatToCurrency(recurringTransaction.amount);
      surCell.appendChild(transactionAmount);
 
      let recurrencePeriod = document.createElement('div');
      recurrencePeriod.classList = 'accBalSubAmount pl-2 font-weight-bold text-right align-middle small';
-     recurrencePeriod.textContent = recurringTransaction.recurrence;
      surCell.appendChild(recurrencePeriod);
      tableRowTransaction.appendChild(surCell);
 
      return tableRowTransaction;
+ }
+
+ // Cache Icons For Recurring Icons
+ function cachedIcons() {
+     let materialIconsCache = document.createElement('span');
+     materialIconsCache.classList = 'material-icons';
+     materialIconsCache.textContent = 'cached';
+     return materialIconsCache;
  }
