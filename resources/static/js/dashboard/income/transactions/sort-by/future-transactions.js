@@ -115,7 +115,7 @@
  // Cache Icons For Recurring Icons
  function cachedIcons() {
      let materialIconsCache = document.createElement('span');
-     materialIconsCache.classList = 'material-icons';
+     materialIconsCache.classList = 'material-icons align-middle creditCardSvg';
      materialIconsCache.textContent = 'cached';
      return materialIconsCache;
  }
