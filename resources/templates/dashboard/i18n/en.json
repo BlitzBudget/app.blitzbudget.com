@@ -121,7 +121,9 @@
                     "category": "Category",
                     "title": " Sort By",
                     "account": "Account",
-                    "creationdate": "Creation Date"
+                    "creationdate": "Creation Date",
+                    "tags": "Tags",
+                    "futuretransactions": "Future Transactions"
                 }
             },
             "chart": {

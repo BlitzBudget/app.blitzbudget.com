@@ -121,7 +121,9 @@
                     "category": "カテゴリー",
                     "title": " ソート順",
                     "account": "アカウント",
-                    "creationdate": "作成日"
+                    "creationdate": "作成日",
+                    "tags": "タグ",
+                    "futuretransactions": "今後の取引について"
                 }
             },
             "chart": {

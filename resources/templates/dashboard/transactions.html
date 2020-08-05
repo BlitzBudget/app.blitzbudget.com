@@ -38,8 +38,8 @@
                                                     </span>
                                                 </li>
                                                 <li>
-                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="categorySortBy">
-                                                        <span class="text" data-i18n="transactions.page.table.sortby.category">Category</span>
+                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="tagsSortBy">
+                                                        <span class="text" data-i18n="transactions.page.table.sortby.tags">Tags</span>
                                                     </a>
                                                 </li>
                                                 <li>
@@ -48,8 +48,18 @@
                                                     </a>
                                                 </li>
                                                 <li>
+                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="categorySortBy">
+                                                        <span class="text" data-i18n="transactions.page.table.sortby.category">Category</span>
+                                                    </a>
+                                                </li>
+                                                <li>
                                                     <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="creationDateSortBy">
                                                         <span class="text" data-i18n="transactions.page.table.sortby.creationdate">Creation Date</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a role="option" class="dropdown-item" aria-disabled="false" tabindex="0" aria-selected="false" id="futureTransactionsSortBy">
+                                                        <span class="text" data-i18n="transactions.page.table.sortby.futuretransactions">Future Transactions</span>
                                                     </a>
                                                 </li>
                                             </ul>
@@ -103,6 +113,40 @@
                                         </div>
                                     </div>
                                     <!-- Account Sort dynamic load -->
+                                </div>
+                                <div id="futureTransactionsTable" class="table table-fixed d-table">
+                                    <div class="tableHeadingDiv">
+                                        <div class="w-15 d-table-cell" title=""></div>
+                                        <div class="w-65 d-table-cell" title=""></div>
+                                        <div class="text-right d-table-cell" title=""></div>
+                                    </div>
+                                    <div id="futureTransactionsEntry" class="tableBodyDiv d-none">
+                                        <div class="d-table-row">
+                                            <div class='d-table-cell'></div>
+                                            <div class='d-table-cell'>
+                                                <div class="material-spinner mx-auto"></div>
+                                            </div>
+                                            <div class='d-table-cell'></div>
+                                        </div>
+                                        <!-- Filled with Javascript dynamically -->
+                                    </div>
+                                </div>
+                                <div id="tagsTable" class="table table-fixed d-table">
+                                    <div class="tableHeadingDiv">
+                                        <div class="w-15 d-table-cell" title=""></div>
+                                        <div class="w-65 d-table-cell" title=""></div>
+                                        <div class="text-right d-table-cell" title=""></div>
+                                    </div>
+                                    <div id="tagsTransactionsEntry" class="tableBodyDiv d-none">
+                                        <div class="d-table-row">
+                                            <div class='d-table-cell'></div>
+                                            <div class='d-table-cell'>
+                                                <div class="material-spinner mx-auto"></div>
+                                            </div>
+                                            <div class='d-table-cell'></div>
+                                        </div>
+                                        <!-- Filled with Javascript dynamically -->
+                                    </div>
                                 </div>
                             </div>
                         </div>

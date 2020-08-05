@@ -121,7 +121,9 @@
                     "category": "Categoría",
                     "title": " Ordenar por",
                     "account": "Cuenta",
-                    "creationdate": "Fecha de creación"
+                    "creationdate": "Fecha de creación",
+                    "tags": "Etiquetas",
+                    "futuretransactions": "Transacciones futuras"
                 }
             },
             "chart": {

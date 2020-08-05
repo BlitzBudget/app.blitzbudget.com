@@ -382,6 +382,7 @@
              * Replace With Currency
              */
             replaceWithCurrency(result.Wallet);
+            // Populate Category Sort
             populateCategorySort(result);
 
             // update the Total Available Section
@@ -392,6 +393,10 @@
             er.tableSortMechanism();
             // Call Account / Recent Transactions
             populateRecentTransactions(result.Transaction);
+            // Populate Recurring Transactions
+            populateRecurringTransactions(result.RecurringTransactions);
+            // Populate Tags Transactions
+            populateTagsTransactions(result.Transaction);
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
@@ -788,6 +793,12 @@
             tableRowTransaction.draggable = 'true';
         }
 
+        // Category Sorted being draggable
+        if (isEqual(idName, 'categorySorted')) {
+            tableRowTransaction.classList.add('catTransEntry');
+            tableRowTransaction.draggable = 'true';
+        }
+
         // Cell 1
         let tableCellImagesWrapper = document.createElement('div');
         tableCellImagesWrapper.classList = 'd-table-cell align-middle imageWrapperCell text-center';
@@ -941,6 +952,14 @@
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // show the future transactions
+        document.getElementById('futureTransactionsEntry').classList.add('d-none');
+        // show the tags sortby
+        document.getElementById('tagsTransactionsEntry').classList.add('d-none');
+    });
+
+    // Sort Options Wrapper
+    $('body').on('click', '#sortOptionsWrapper .dropdown-item', function (e) {
         // If a new transaction is registered then population is necessary
         if (registeredNewTransaction) {
             registeredNewTransaction = false;
@@ -974,16 +993,10 @@
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
-
-        // If a new transaction is registered then population is necessary
-        if (registeredNewTransaction) {
-            registeredNewTransaction = false;
-            // Replace Transactions Table with empty spinner
-            replaceTransactionsWithMSpinner();
-            replacePieChartWithMSpinner();
-            // Fetch JSOn for transactions and populate pie chart
-            fetchJSONForTransactions();
-        }
+        // show the future transactions
+        document.getElementById('futureTransactionsEntry').classList.add('d-none');
+        // show the tags sortby
+        document.getElementById('tagsTransactionsEntry').classList.add('d-none');
     });
 
     // Sorts the table by aggregating transactions by category
@@ -1011,6 +1024,10 @@
         document.getElementById(recentTransactionsId).classList.add('d-none');
         // Close Category Modal
         document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // show the future transactions
+        document.getElementById('futureTransactionsEntry').classList.add('d-none');
+        // show the tags sortby
+        document.getElementById('tagsTransactionsEntry').classList.add('d-none');
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
         // hide the transactions table

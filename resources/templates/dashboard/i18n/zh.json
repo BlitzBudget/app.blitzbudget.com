@@ -121,7 +121,9 @@
                     "category": "类别",
                     "title": " 排序",
                     "account": "账户",
-                    "creationdate": "创建日期"
+                    "creationdate": "创建日期",
+                    "tags": "标签",
+                    "futuretransactions": "未来交易"
                 }
             },
             "chart": {

@@ -121,7 +121,9 @@
                     "category": "категория",
                     "title": " Сортировать по",
                     "account": "учетная запись",
-                    "creationdate": "Дата создания"
+                    "creationdate": "Дата создания",
+                    "tags": "Теги",
+                    "futuretransactions": "Будущие сделки"
                 }
             },
             "chart": {
