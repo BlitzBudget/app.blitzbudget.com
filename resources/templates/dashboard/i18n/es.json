@@ -202,7 +202,9 @@
             "sort": {
                 "creationdate": "Fecha de creación",
                 "category": "Categoría",
-                "account": "Cuenta"
+                "account": "Cuenta",
+                "tags": "Etiquetas",
+                "futuretransactions": "Transacciones futuras"
             }
         }
     },

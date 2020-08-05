@@ -202,7 +202,9 @@
             "sort": {
                 "creationdate": "创建日期",
                 "category": "类别",
-                "account": "账户"
+                "account": "账户",
+                "tags": "标签",
+                "futuretransactions": "未来交易"
             }
         }
     },

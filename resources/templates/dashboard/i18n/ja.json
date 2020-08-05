@@ -202,7 +202,9 @@
             "sort": {
                 "creationdate": "作成日",
                 "category": "カテゴリー",
-                "account": "アカウント"
+                "account": "アカウント",
+                "tags": "タグ",
+                "futuretransactions": "今後の取引について"
             }
         }
     },

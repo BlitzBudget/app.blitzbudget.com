@@ -202,7 +202,9 @@
             "sort": {
                 "creationdate": "Дата создания",
                 "category": "категория",
-                "account": "учетная запись"
+                "account": "учетная запись",
+                "tags": "Теги",
+                "futuretransactions": "Будущие сделки"
             }
         }
     },
