@@ -31,6 +31,12 @@
          let accSortedTable = document.getElementById('accSortedTable');
          accSortedTable.classList.add('d-none');
          accSortedTable.classList.remove('d-table');
+     });
+
+     /*
+      * Tag Info Table header on click
+      */
+     $('body').on('click', '.tagInfoTable .tagSortGrp', function (e) {
          // Rotate the arrow
          let arrowIndicator = this.firstElementChild.firstElementChild;
          arrowIndicator.classList.toggle('rotateZero');
