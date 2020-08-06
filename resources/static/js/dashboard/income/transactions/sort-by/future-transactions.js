@@ -33,7 +33,8 @@
 
  // Populate Recurring transactions
  function populateRecurringTransactions(recurringTransactionsList) {
-     let recurringTransactionsDiv = document.getElementById('recurTransInfoTable');
+     let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+     let recurringTransactionsDiv = document.getElementsByClassName('recurTransInfoTable');
      let futureTransactionsFragment = document.createDocumentFragment();
 
      if (isEmpty(recurringTransactionsList)) {
@@ -60,7 +61,7 @@
      while (recurringTransactionsDiv[0]) {
          recurringTransactionsDiv[0].parentNode.removeChild(recurringTransactionsDiv[0]);
      }
-     recurringTransactionsDiv.appendChild(futureTransactionsFragment);
+     futureTransactionsTable.appendChild(futureTransactionsFragment);
  }
 
  // Recurring transactions headers
