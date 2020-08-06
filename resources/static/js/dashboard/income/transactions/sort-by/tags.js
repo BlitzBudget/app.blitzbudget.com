@@ -22,7 +22,7 @@
          // Toggle  Financial Position
          document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
          // show the future transactions
-         document.getElementById('futureTransactionsEntry').classList.add('d-none');
+         document.getElementById('futureTransactionsTable').classList.add('d-none');
          // show the tags sortby
          let tabsTable = document.getElementById('tagsTable');
          tabsTable.classList.remove('d-none');

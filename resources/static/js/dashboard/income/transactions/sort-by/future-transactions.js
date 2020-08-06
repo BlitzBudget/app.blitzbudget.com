@@ -22,9 +22,9 @@
          // Toggle  Financial Position
          document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
          // show the future transactions
-         document.getElementById('futureTransactionsEntry').classList.remove('d-none');
+         document.getElementById('futureTransactionsTable').classList.remove('d-none');
          // show the recurTranss sortby
-         let tabsTable = document.getElementById('recurTranssTable');
+         let tabsTable = document.getElementById('tagsTable');
          tabsTable.classList.add('d-none');
          tabsTable.classList.remove('d-table');
      });
@@ -33,11 +33,11 @@
 
  // Populate Recurring transactions
  function populateRecurringTransactions(recurringTransactionsList) {
-     let recurringTransactionsDiv = document.getElementById('futureTransactionsEntry');
+     let recurringTransactionsDiv = document.getElementById('recurTransInfoTable');
      let futureTransactionsFragment = document.createDocumentFragment();
 
      if (isEmpty(recurringTransactionsList)) {
-         futureTransactionsFragment.appendChild(buildEmptyTransactionsTab('futureTransactionsEntry'));
+         futureTransactionsFragment.appendChild(buildEmptyTransactionsTab('recurTransInfoTable'));
      } else {
 
          let resultKeySet = Object.keys(recurringTransactionsList);
