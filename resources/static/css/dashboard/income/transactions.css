@@ -533,7 +533,8 @@ a.manageBA.text-dynamic-color:focus {
 
 .recentTransactionDateGrp,
 .categorySortGrp,
-.tagSortGrp {
+.tagSortGrp,
+.recurTransSortGrp {
     line-height: 3rem;
     color: #5d7079;
 }
@@ -565,7 +566,8 @@ a.manageBA.text-dynamic-color:focus {
 
 .accountInfoTable .recentTransactionDateGrp,
 .categoryInfoTable .categorySortGrp,
-.tagInfoTable .tagSortGrp {
+.tagInfoTable .tagSortGrp,
+.futureTransactionsTable .recurTransSortGrp {
     cursor: pointer;
 }
 
