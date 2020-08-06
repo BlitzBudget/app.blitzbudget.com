@@ -260,7 +260,7 @@
                 catDiv.classList.remove('expenseCategory');
             }
             // Remove empty entries for the category
-            let emptyEntriesNewCat = document.getElementById('emptyCategoryEntry-' + categoryId);
+            let emptyEntriesNewCat = document.getElementById('emptyCategoryItem-' + categoryId);
             if (isNotEmpty(emptyEntriesNewCat)) {
                 emptyEntriesNewCat.remove();
             }
@@ -293,7 +293,7 @@
     function buildEmptyCategoryEntry(catId) {
         let rowEmpty = document.createElement('div');
         rowEmpty.classList = 'd-table-row recentTransactionDateGrp';
-        rowEmpty.id = 'emptyCategoryEntry-' + catId;
+        rowEmpty.id = 'emptyCategoryItem-' + catId;
 
         let cell1 = document.createElement('div');
         cell1.classList = 'd-table-cell align-middle imageWrapperCell text-center';
