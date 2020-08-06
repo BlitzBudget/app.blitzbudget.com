@@ -1216,10 +1216,10 @@
 }(jQuery));
 
 // Build EmptyRecTransTable
-function buildEmptyTransactionsTab() {
+function buildEmptyTransactionsTab(className) {
 
     let rowEmpty = document.createElement('div');
-    rowEmpty.classList = 'd-table-row';
+    rowEmpty.classList = 'd-table-row ' + className;
 
     let cell1 = document.createElement('div');
     cell1.classList = 'd-table-cell';

@@ -27,6 +27,10 @@
          let tabsTable = document.getElementById('tagsTable');
          tabsTable.classList.add('d-none');
          tabsTable.classList.remove('d-table');
+         // Hide all account tables loaded
+         let accSortedTable = document.getElementById('accSortedTable');
+         accSortedTable.classList.add('d-none');
+         accSortedTable.classList.remove('d-table');
      });
 
  }(jQuery));
@@ -37,7 +41,7 @@
      let futureTransactionsFragment = document.createDocumentFragment();
 
      if (isEmpty(recurringTransactionsList)) {
-         futureTransactionsFragment.appendChild(buildEmptyTransactionsTab());
+         futureTransactionsFragment.appendChild(buildEmptyTransactionsTab('futureTransactionsEntry'));
      } else {
 
          let resultKeySet = Object.keys(recurringTransactionsList);
