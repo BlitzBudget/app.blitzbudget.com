@@ -703,23 +703,9 @@
             while (accountInfoTable[0]) {
                 accountInfoTable[0].parentNode.removeChild(accountInfoTable[0]);
             }
-            // If Account Table is shown then remove d-none
-            if (document.getElementById('transactionsTable').classList.contains('d-none') &&
-                document.getElementById('recentTransactions').classList.contains('d-none') &&
-                document.getElementById('futureTransactionsEntry').classList.contains('d-none') &&
-                document.getElementById('tagsTable').classList.contains('d-none')) {
-                accountTable.classList.remove('d-none');
-            }
         } else {
             // Populate Transaction
             popTransByAccWOAJAX();
-            // If Account Table is hidden then add d-none
-            if (!document.getElementById('transactionsTable').classList.contains('d-none') ||
-                !document.getElementById('recentTransactions').classList.contains('d-none') ||
-                !document.getElementById('futureTransactionsEntry').classList.contains('d-none') ||
-                !document.getElementById('tagsTable').classList.contains('d-none')) {
-                $('.accountInfoTable').addClass('d-none');
-            }
         }
     }
 
@@ -949,7 +935,9 @@
         // show the recent transactions
         document.getElementById(recentTransactionsId).classList.remove('d-none');
         // Hide all account tables loaded
-        $('.accountInfoTable').addClass('d-none');
+        let accSortedTable = document.getElementById('accSortedTable');
+        accSortedTable.classList.add('d-none');
+        accSortedTable.classList.remove('d-table');
         // Open Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close Category Modal
@@ -988,7 +976,9 @@
         // hide the accountTable
         document.getElementById('accountTable').classList.add('d-none');
         // Hide all account tables loaded
-        $('.accountInfoTable').addClass('d-none');
+        let accSortedTable = document.getElementById('accSortedTable');
+        accSortedTable.classList.add('d-none');
+        accSortedTable.classList.remove('d-table');
         // show the category view
         let transactionsTable = document.getElementById('transactionsTable');
         transactionsTable.classList.add('d-table');
@@ -1030,6 +1020,10 @@
         sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
         // hide the recent transactions
         document.getElementById(recentTransactionsId).classList.add('d-none');
+        // Show the account Table
+        let accSortedTable = document.getElementById('accSortedTable');
+        accSortedTable.classList.remove('d-none');
+        accSortedTable.classList.add('d-table');
         // Close Category Modal
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // show the future transactions
@@ -1053,14 +1047,9 @@
             for (let i = 0, len = popAccInfoTab.length; i < len; i++) {
                 let elementInArray = popAccInfoTab[i];
 
-                if (elementInArray.classList.contains('recentTransactionEntry')) {
-                    elementInArray.classList.add('d-table-row');
-                    elementInArray.classList.remove('d-none');
-                } else if (elementInArray.classList.contains('rotateZero')) {
+                if (elementInArray.classList.contains('rotateZero')) {
                     elementInArray.classList.remove('rotateZero');
                     elementInArray.classList.add('rotateNinty');
-                } else {
-                    elementInArray.classList.remove('d-none');
                 }
             }
         }
@@ -1168,7 +1157,7 @@
     function popTransByAccWOAJAX() {
         // Remove all the transactions
         $('.accountInfoTable').remove();
-        let accountAggreDiv = document.getElementById('recTransAndAccTable');
+        let accountAggreDiv = document.getElementById('accSortedTable');
         let recentTransactionsFragment = document.createDocumentFragment();
         let createdAccIds = [];
 

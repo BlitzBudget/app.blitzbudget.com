@@ -11,8 +11,6 @@
          document.getElementById('recentTransactions').classList.add('d-none');
          // hide the accountTable
          document.getElementById('accountTable').classList.add('d-none');
-         // Hide all account tables loaded
-         $('.accountInfoTable').addClass('d-none');
          // show the category view
          let transactionsTable = document.getElementById('transactionsTable');
          transactionsTable.classList.remove('d-table');

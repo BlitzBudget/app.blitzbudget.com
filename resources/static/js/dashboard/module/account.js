@@ -229,7 +229,7 @@ let tickIconSVG = tickIcon();
                     // Append Empty Table to child
                     accountHeaderNew.getElementById('accountSB-' + result.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + result.accountId));
                     // Append to the transaction view
-                    document.getElementById('recTransAndAccTable').appendChild(accountHeaderNew);
+                    document.getElementById('accSortedTable').appendChild(accountHeaderNew);
                 }
                 ajaxData.onFailure = function (thrownError) {
                     manageErrors(thrownError, window.translationData.account.dynamic.adderror, ajaxData);
