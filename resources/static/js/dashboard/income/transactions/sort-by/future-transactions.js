@@ -31,6 +31,22 @@
          tabsTable.classList.remove('d-table');
      });
 
+     /*
+      * Tag Info Table header on click
+      */
+     $('body').on('click', '.recurTransInfoTable .recurTransSortGrp', function (e) {
+         // Rotate the arrow
+         let arrowIndicator = this.firstElementChild.firstElementChild;
+         arrowIndicator.classList.toggle('rotateZero');
+         arrowIndicator.classList.toggle('rotateNinty');
+         let childElementWrappers = this.parentNode.childNodes;
+         for (let i = 1, len = childElementWrappers.length; i < len; i++) {
+             let childElementWrapper = childElementWrappers[i];
+             childElementWrapper.classList.toggle('d-none');
+             childElementWrapper.classList.toggle('d-table-row');
+         }
+     });
+
  }(jQuery));
 
  // Populate Recurring transactions

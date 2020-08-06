@@ -43,9 +43,12 @@
          let arrowIndicator = this.firstElementChild.firstElementChild;
          arrowIndicator.classList.toggle('rotateZero');
          arrowIndicator.classList.toggle('rotateNinty');
-         let tableRowsToHide = $('.tagInfoTable .recentTransactionEntry');
-         tableRowsToHide.toggleClass('d-none');
-         tableRowsToHide.toggleClass('d-table-row');
+         let childElementWrappers = this.parentNode.childNodes;
+         for (let i = 1, len = childElementWrappers.length; i < len; i++) {
+             let childElementWrapper = childElementWrappers[i];
+             childElementWrapper.classList.toggle('d-none');
+             childElementWrapper.classList.toggle('d-table-row');
+         }
      });
 
  }(jQuery));
