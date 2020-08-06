@@ -564,7 +564,8 @@ a.manageBA.text-dynamic-color:focus {
 }
 
 .accountInfoTable .recentTransactionDateGrp,
-.categoryInfoTable .categorySortGrp {
+.categoryInfoTable .categorySortGrp,
+.tagInfoTable .tagSortGrp {
     cursor: pointer;
 }
 

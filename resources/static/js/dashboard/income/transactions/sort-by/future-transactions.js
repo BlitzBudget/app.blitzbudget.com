@@ -31,6 +31,10 @@
          let accSortedTable = document.getElementById('accSortedTable');
          accSortedTable.classList.add('d-none');
          accSortedTable.classList.remove('d-table');
+         // Rotate the arrow
+         let arrowIndicator = this.firstElementChild.firstElementChild;
+         arrowIndicator.classList.toggle('rotateZero');
+         arrowIndicator.classList.toggle('rotateNinty');
      });
 
  }(jQuery));
