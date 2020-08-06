@@ -56,9 +56,9 @@
          }
      }
 
-     // Empty HTML
-     while (recurringTransactionsDiv.firstChild) {
-         recurringTransactionsDiv.removeChild(recurringTransactionsDiv.firstChild);
+     // Replace HTML with Empty
+     while (recurringTransactionsDiv[0]) {
+         recurringTransactionsDiv[0].parentNode.removeChild(recurringTransactionsDiv[0]);
      }
      recurringTransactionsDiv.appendChild(futureTransactionsFragment);
  }
