@@ -22,7 +22,9 @@
          // Toggle  Financial Position
          document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
          // show the future transactions
-         document.getElementById('futureTransactionsTable').classList.remove('d-none');
+         let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+         futureTransactionsTable.classList.remove('d-none');
+         futureTransactionsTable.classList.add('d-table');
          // show the recurTranss sortby
          let tabsTable = document.getElementById('tagsTable');
          tabsTable.classList.add('d-none');

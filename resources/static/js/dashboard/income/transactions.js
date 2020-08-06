@@ -945,7 +945,9 @@
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
         // show the future transactions
-        document.getElementById('futureTransactionsTable').classList.add('d-none');
+        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+        futureTransactionsTable.classList.add('d-none');
+        futureTransactionsTable.classList.remove('d-table');
         // show the tags sortby
         let tabsTable = document.getElementById('tagsTable');
         tabsTable.classList.add('d-none');
@@ -990,7 +992,9 @@
         // Toggle  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
         // show the future transactions
-        document.getElementById('futureTransactionsTable').classList.add('d-none');
+        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+        futureTransactionsTable.classList.add('d-none');
+        futureTransactionsTable.classList.remove('d-table');
         // show the tags sortby
         let tabsTable = document.getElementById('tagsTable');
         tabsTable.classList.add('d-none');
@@ -1027,7 +1031,9 @@
         // Close Category Modal
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // show the future transactions
-        document.getElementById('futureTransactionsTable').classList.add('d-none');
+        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+        futureTransactionsTable.classList.add('d-none');
+        futureTransactionsTable.classList.remove('d-table');
         // show the tags sortby
         let tabsTable = document.getElementById('tagsTable');
         tabsTable.classList.add('d-none');
