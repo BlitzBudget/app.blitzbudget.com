@@ -23,8 +23,8 @@
          document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
          // show the future transactions
          document.getElementById('futureTransactionsEntry').classList.remove('d-none');
-         // show the tags sortby
-         let tabsTable = document.getElementById('tagsTable');
+         // show the recurTranss sortby
+         let tabsTable = document.getElementById('recurTranssTable');
          tabsTable.classList.add('d-none');
          tabsTable.classList.remove('d-table');
      });
@@ -41,11 +41,18 @@
      } else {
 
          let resultKeySet = Object.keys(recurringTransactionsList);
+         let createdRecurTransRecurrence = [];
          for (let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
              let key = resultKeySet[countGrouped];
              let recurringTransaction = recurringTransactionsList[key];
 
-             futureTransactionsFragment.appendChild(buildFutureTransactionRow(recurringTransaction));
+             if (!includesStr(createdRecurTransRecurrence, recurringTransaction.recurrence)) {
+                 futureTransactionsFragment.appendChild(buildRecurTransHeaders(recurringTransaction.recurrence));
+                 // Add Created recurTrans ID to the array
+                 createdRecurTransRecurrence.push(recurringTransaction.recurrence);
+             }
+
+             futureTransactionsFragment.getElementById('recurTransSB-' + recurringTransaction.recurrence).appendChild(buildFutureTransactionRow(recurringTransaction));
          }
      }
 
@@ -54,6 +61,50 @@
          recurringTransactionsDiv.removeChild(recurringTransactionsDiv.firstChild);
      }
      recurringTransactionsDiv.appendChild(futureTransactionsFragment);
+ }
+
+ // Recurring transactions headers
+ function buildRecurTransHeaders(recurringTransaction) {
+     let docFrag = document.createDocumentFragment();
+     let recurTransHeader = document.createElement('div');
+     recurTransHeader.id = 'recurTransSB-' + recurringTransaction;
+     recurTransHeader.setAttribute('data-target', recurringTransaction);
+     recurTransHeader.classList = 'tableBodyDiv recurTransInfoTable noselect';
+
+     let recurTransTit = document.createElement('div');
+     recurTransTit.classList = 'recurTransSortGrp d-table-row ml-3 font-weight-bold';
+
+     // Title Wrapper
+     let titleWrapper = document.createElement('div');
+     titleWrapper.classList = 'd-table-cell text-nowrap';
+
+     // Right Arrow
+     let rightArrow = document.createElement('div');
+     rightArrow.classList = 'material-icons rotateNinty';
+     rightArrow.textContent = 'keyboard_arrow_right';
+     titleWrapper.appendChild(rightArrow);
+
+     // Title
+     let recurTransTitle = document.createElement('a');
+     recurTransTitle.id = 'recurTransTitle-' + recurringTransaction;
+     recurTransTitle.classList = 'pl-4 accTitleAnchor';
+     recurTransTitle.textContent = recurringTransaction;
+     titleWrapper.appendChild(recurTransTitle);
+     recurTransTit.appendChild(titleWrapper);
+
+     // Empty Cell
+     let emptyCell = document.createElement('div');
+     emptyCell.classList = 'd-table-cell';
+     recurTransTit.appendChild(emptyCell);
+
+     // Empty Cell
+     let recurTransBalance = document.createElement('div');
+     recurTransBalance.classList = 'd-table-cell text-right text-nowrap pr-3';
+     recurTransTit.appendChild(recurTransBalance);
+
+     recurTransHeader.appendChild(recurTransTit);
+     docFrag.appendChild(recurTransHeader);
+     return docFrag;
  }
 
  // Builds the rows for recent transactions
