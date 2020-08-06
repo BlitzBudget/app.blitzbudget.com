@@ -41,6 +41,9 @@
          let arrowIndicator = this.firstElementChild.firstElementChild;
          arrowIndicator.classList.toggle('rotateZero');
          arrowIndicator.classList.toggle('rotateNinty');
+         let tableRowsToHide = $('.tagInfoTable .recentTransactionEntry');
+         tableRowsToHide.toggleClass('d-none');
+         tableRowsToHide.toggleClass('d-table-row');
      });
 
  }(jQuery));
