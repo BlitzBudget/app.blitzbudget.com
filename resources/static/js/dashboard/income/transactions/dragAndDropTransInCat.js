@@ -216,7 +216,6 @@
         transactionId = document.getElementById(transactionId).getAttribute('data-target');
 
         let values = {};
-        values['oldCategory'] = oldCategoryId;
         values['category'] = categoryId;
         values['transactionId'] = transactionId;
         values['walletId'] = window.currentUser.walletId;
