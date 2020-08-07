@@ -1014,7 +1014,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                 if (incomeCategory == fetchIncome && isNotEmpty(category)) {
                     // Check tag matches the label
                     if (isEqual(category, label)) {
-                        tableBody.appendChild(buildTransactionRow(transaction));
+                        tableBody.appendChild(buildTransactionRow(transaction, type));
                     }
                 }
             }
@@ -1030,7 +1030,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                         let tag = tags[i];
                         // Check tag matches the label
                         if (isEqual(tag, label)) {
-                            tableBody.appendChild(buildTransactionRow(transaction));
+                            tableBody.appendChild(buildTransactionRow(transaction, type));
                         }
                     }
                 }
@@ -1044,7 +1044,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                 if (incomeCategory == fetchIncome && isNotEmpty(account)) {
                     // Check tag matches the label
                     if (isEqual(account, label)) {
-                        tableBody.appendChild(buildTransactionRow(transaction));
+                        tableBody.appendChild(buildTransactionRow(transaction, type));
                     }
                 }
             }
@@ -1062,7 +1062,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
 }
 
 // Builds the rows for recent transactions
-function buildTransactionRow(userTransaction) {
+function buildTransactionRow(userTransaction, type) {
     // Convert date from UTC to user specific dates
     let creationDateUserRelevant = new Date(userTransaction['creation_date']);
     // Category Map
@@ -1101,7 +1101,18 @@ function buildTransactionRow(userTransaction) {
 
     let elementWithCategoryName = document.createElement('div');
     elementWithCategoryName.classList = 'font-size-70 categoryNameRT w-100';
-    elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+
+    if (isEqual(type, 'category')) {
+        for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+            let bankAcc = window.allBankAccountInfoCache[i];
+            if (isEqual(bankAcc.accountId, userTransaction.account)) {
+                elementWithCategoryName.textContent = (bankAcc['bank_account_name']) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+            }
+        }
+    } else {
+        elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+    }
+
     tableCellTransactionDescription.appendChild(elementWithCategoryName);
     tableRowTransaction.appendChild(tableCellTransactionDescription);
 
