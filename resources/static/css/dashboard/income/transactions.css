@@ -532,7 +532,9 @@ a.manageBA.text-dynamic-color:focus {
 }
 
 .recentTransactionDateGrp,
-.categorySortGrp {
+.categorySortGrp,
+.tagSortGrp,
+.recurTransSortGrp {
     line-height: 3rem;
     color: #5d7079;
 }
@@ -563,7 +565,9 @@ a.manageBA.text-dynamic-color:focus {
 }
 
 .accountInfoTable .recentTransactionDateGrp,
-.categoryInfoTable .categorySortGrp {
+.categoryInfoTable .categorySortGrp,
+.tagInfoTable .tagSortGrp,
+.recurTransInfoTable .recurTransSortGrp {
     cursor: pointer;
 }
 
@@ -766,6 +770,14 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
     flex-wrap: nowrap;
     overflow-x: scroll;
     white-space: nowrap;
+}
+
+span.align-middle.recur-transactions {
+    x: 0px;
+    y: 0px;
+    width: 30px;
+    height: 30px;
+    fill: rgb(0, 0, 0);
 }
 
 /** Change the size of the text if the width and height of the screen are less **/

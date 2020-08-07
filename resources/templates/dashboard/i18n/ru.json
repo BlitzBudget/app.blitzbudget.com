@@ -121,7 +121,9 @@
                     "category": "категория",
                     "title": " Сортировать по",
                     "account": "учетная запись",
-                    "creationdate": "Дата создания"
+                    "creationdate": "Дата создания",
+                    "tags": "Теги",
+                    "futuretransactions": "Будущие сделки"
                 }
             },
             "chart": {
@@ -200,7 +202,9 @@
             "sort": {
                 "creationdate": "Дата создания",
                 "category": "категория",
-                "account": "учетная запись"
+                "account": "учетная запись",
+                "tags": "Теги",
+                "futuretransactions": "Будущие сделки"
             }
         }
     },
@@ -289,6 +293,43 @@
                 "incomebreakdown": "разбивка доходов",
                 "nodata": "не хватает данных! Начните добавлять транзакции...",
                 "onecategory": "недостаточно данных! Нам нужны транзакции как минимум в 2 категориях..."
+            },
+            "detailed": {
+                "yourincome": "Ваш доход",
+                "mostspent": "Большая часть потраченных",
+                "minimumspent": "Минимальные затраты",
+                "averagespent": "Средняя потраченная сумма",
+                "highestincome": "Самый высокий доход",
+                "lowestincome": "Самый низкий доход",
+                "averageincome": "Средний доход",
+                "yourincome": "Ваш доход",
+                "biggestbalance": "Самый большой баланс",
+                "smallestbalance": "Наименьший баланс",
+                "averagebalance": "Средний баланс",
+                "youraccounts": "Ваши счета",
+                "highestincome": "Самый высокий доход",
+                "lowestincome": "Самый низкий доход",
+                "averageincome": "Средний доход",
+                "yourincome": "Ваш доход",
+                "highestexpense": "Наибольшие расходы",
+                "lowestexpense": "Самые низкие расходы",
+                "averageexpense": "Средние расходы",
+                "yourexpense": "Ваши расходы",
+                "biggestamount": "Самая большая сумма",
+                "smallestamount": "Наименьшее количество",
+                "averageamount": "Средняя сумма",
+                "yourtags": "Твои метки",
+                "youraccounts": "Ваши счета",
+                "exportascsv": "Экспорт как CSV",
+                "total": "Всего",
+                "downloadedtocsv": "Успешно скачано в CSV!",
+                "invaliddata": "Недействительные данные. Пожалуйста, обновите и попробуйте еще раз!",
+                "nodataavailable": "Нет данных для скачивания. Пожалуйста, обновите и попробуйте еще раз!",
+                "csvtitle": "подробный обзор",
+                "label": "Ярлык",
+                "value": "Значение",
+                "exportasxls": "Экспорт как XLS",
+                "exportasdoc": "Экспорт как DOC"
             }
         }
     },
@@ -578,8 +619,7 @@
         "search": "Поиск...",
         "amount": "Количество",
         "note": "напишите заметку",
-        "searcharticle": "Поиск статей...",
-        "tags": "Теги"
+        "searcharticle": "Поиск статей..."
     },
     "tooltip": {
         "logout": "выйти из системы",

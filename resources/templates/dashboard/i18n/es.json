@@ -121,7 +121,9 @@
                     "category": "Categoría",
                     "title": " Ordenar por",
                     "account": "Cuenta",
-                    "creationdate": "Fecha de creación"
+                    "creationdate": "Fecha de creación",
+                    "tags": "Etiquetas",
+                    "futuretransactions": "Transacciones futuras"
                 }
             },
             "chart": {
@@ -200,7 +202,9 @@
             "sort": {
                 "creationdate": "Fecha de creación",
                 "category": "Categoría",
-                "account": "Cuenta"
+                "account": "Cuenta",
+                "tags": "Etiquetas",
+                "futuretransactions": "Transacciones futuras"
             }
         }
     },
@@ -289,6 +293,43 @@
                 "incomebreakdown": "Desglose de ingresos",
                 "nodata": "¡No hay suficientes datos! Comienza a agregar transacciones...",
                 "onecategory": "¡No hay suficientes datos! Necesitamos transacciones en al menos 2 categorías ..."
+            },
+            "detailed": {
+                "yourincome": "Sus ingresos",
+                "mostspent": "Más gastado",
+                "minimumspent": "Mínimo Gasto",
+                "averagespent": "Promedio gastad",
+                "highestincome": "Ingresos más altos",
+                "lowestincome": "Los ingresos más bajos",
+                "averageincome": "Ingreso promedio",
+                "yourincome": "Sus ingresos",
+                "biggestbalance": "El mayor equilibrio",
+                "smallestbalance": "El equilibrio más pequeño",
+                "averagebalance": "Balance promedio",
+                "youraccounts": "Sus cuentas",
+                "highestincome": "Ingresos más altos",
+                "lowestincome": "Los ingresos más bajos",
+                "averageincome": "Ingreso promedio",
+                "yourincome": "Sus ingresos",
+                "highestexpense": "El mayor gasto",
+                "lowestexpense": "El gasto más bajo",
+                "averageexpense": "Gasto promedio",
+                "yourexpense": "Tu gasto",
+                "biggestamount": "La mayor cantidad",
+                "smallestamount": "Menor cantidad",
+                "averageamount": "Monto promedio",
+                "yourtags": "Tus etiquetas",
+                "youraccounts": "Sus cuentas",
+                "exportascsv": "Exportar como CSV",
+                "total": "Total",
+                "downloadedtocsv": "¡Descargado con éxito a CSV!",
+                "invaliddata": "Datos inválidos. ¡Por favor, refresque y vuelva a intentarlo!",
+                "nodataavailable": "No hay datos disponibles para descargar. ¡Por favor, actualícelo e inténtelo de nuevo!",
+                "csvtitle": "resumen detallado",
+                "label": "Etiqueta",
+                "value": "Valor",
+                "exportasxls": "Exportar como XLS",
+                "exportasdoc": "Exportar como DOC"
             }
         }
     },
@@ -578,8 +619,7 @@
         "search": "Buscar...",
         "amount": "Cantidad",
         "note": "Escriba una nota",
-        "searcharticle": "Buscar artículos...",
-        "tags": "Etiquetas"
+        "searcharticle": "Buscar artículos..."
     },
     "tooltip": {
         "logout": "Cerrar sesión",

@@ -121,7 +121,9 @@
                     "category": "カテゴリー",
                     "title": " ソート順",
                     "account": "アカウント",
-                    "creationdate": "作成日"
+                    "creationdate": "作成日",
+                    "tags": "タグ",
+                    "futuretransactions": "今後の取引について"
                 }
             },
             "chart": {
@@ -200,7 +202,9 @@
             "sort": {
                 "creationdate": "作成日",
                 "category": "カテゴリー",
-                "account": "アカウント"
+                "account": "アカウント",
+                "tags": "タグ",
+                "futuretransactions": "今後の取引について"
             }
         }
     },
@@ -289,6 +293,43 @@
                 "incomebreakdown": "収入の内訳",
                 "nodata": "データが足りない! 取引の追加を開始して...",
                 "onecategory": "データが足りない! 最低でも2つのカテゴリーでの取引が必要です..."
+            },
+            "detailed": {
+                "yourincome": "あなたの収入",
+                "mostspent": "最も多く使用された",
+                "minimumspent": "最小消費金額",
+                "averagespent": "平均支出額",
+                "highestincome": "最高所得",
+                "lowestincome": "最低所得",
+                "averageincome": "平均収入",
+                "yourincome": "あなたの収入",
+                "biggestbalance": "最大のバランス",
+                "smallestbalance": "最小のバランス",
+                "averagebalance": "平均残高",
+                "youraccounts": "アカウント",
+                "highestincome": "最高所得",
+                "lowestincome": "最低所得",
+                "averageincome": "平均収入",
+                "yourincome": "あなたの収入",
+                "highestexpense": "最高額の費用",
+                "lowestexpense": "最低限の費用",
+                "averageexpense": "平均費用",
+                "yourexpense": "あなたの費用",
+                "biggestamount": "最大金額",
+                "smallestamount": "最小金額",
+                "averageamount": "平均金額",
+                "yourtags": "あなたのタグ",
+                "youraccounts": "アカウント",
+                "exportascsv": "CSVとしてエクスポート",
+                "total": "合計",
+                "downloadedtocsv": "CSVへのダウンロードに成功しました。",
+                "invaliddata": "無効なデータです。リフレッシュしてから再度お試しください",
+                "nodataavailable": "ダウンロード可能なデータがありません。リフレッシュしてからもう一度お試しください",
+                "csvtitle": "詳細概要",
+                "label": "ラベル",
+                "value": "値",
+                "exportasxls": "XLSとしてエクスポート",
+                "exportasdoc": "輸出業者とDOC"
             }
         }
     },
@@ -578,8 +619,7 @@
         "search": "検索...",
         "amount": "量",
         "note": "ノートを書く",
-        "searcharticle": "記事の検索...",
-        "tags": "タグ"
+        "searcharticle": "記事の検索..."
     },
     "tooltip": {
         "logout": "ログアウト",

@@ -121,7 +121,9 @@
                     "category": "类别",
                     "title": " 排序",
                     "account": "账户",
-                    "creationdate": "创建日期"
+                    "creationdate": "创建日期",
+                    "tags": "标签",
+                    "futuretransactions": "未来交易"
                 }
             },
             "chart": {
@@ -200,7 +202,9 @@
             "sort": {
                 "creationdate": "创建日期",
                 "category": "类别",
-                "account": "账户"
+                "account": "账户",
+                "tags": "标签",
+                "futuretransactions": "未来交易"
             }
         }
     },
@@ -289,6 +293,43 @@
                 "incomebreakdown": "收入明细",
                 "nodata": "数据不够用！开始添加交易...",
                 "onecategory": "数据不够用！。我们至少需要2类交易。"
+            },
+            "detailed": {
+                "yourincome": "您的收入",
+                "mostspent": "花费最多",
+                "minimumspent": "最低消费",
+                "averagespent": "平均支出",
+                "highestincome": "最高收入",
+                "lowestincome": "最低收入",
+                "averageincome": "平均收入",
+                "yourincome": "您的收入",
+                "biggestbalance": "最大的平衡",
+                "smallestbalance": "最小余额",
+                "averagebalance": "平均余额",
+                "youraccounts": "您的账户",
+                "highestincome": "最高收入",
+                "lowestincome": "最低收入",
+                "averageincome": "平均收入",
+                "yourincome": "您的收入",
+                "highestexpense": "支出最高",
+                "lowestexpense": "最低费用",
+                "averageexpense": "平均费用",
+                "yourexpense": "您的费用",
+                "biggestamount": "最大金额",
+                "smallestamount": "最小金额",
+                "averageamount": "平均金额",
+                "yourtags": "您的标签",
+                "youraccounts": "您的账户",
+                "exportascsv": "导出为CSV",
+                "total": "总数",
+                "downloadedtocsv": "成功下载到CSV!",
+                "invaliddata": "无效数据。请刷新并重试!",
+                "nodataavailable": "没有数据可供下载。请刷新并重试!",
+                "csvtitle": "详细概述",
+                "label": "标签",
+                "value": "价值",
+                "exportasxls": "导出为XLS",
+                "exportasdoc": "导出为DOC"
             }
         }
     },
@@ -578,8 +619,7 @@
         "search": "搜索...",
         "amount": "数量",
         "note": "写一张笔记",
-        "searcharticle": "搜索文章...",
-        "tags": "标签"
+        "searcharticle": "搜索文章..."
     },
     "tooltip": {
         "logout": "注销",

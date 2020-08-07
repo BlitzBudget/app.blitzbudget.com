@@ -197,7 +197,7 @@
                 break;
             case oneYearOverviewOption:
                 // Upon refresh call the income overview chart
-                populateLineChart(dateLineChart, true);
+                populateLineChart(dateLineChart, fetchIncomeBreakDownCache);
                 document.getElementById('chartDisplayTitle').firstChild.nodeValue = labelForCategory;
                 break;
             case 'categorizebytags':
@@ -255,21 +255,21 @@
             incomeOrExpense = 'Income';
             translatedText = window.translationData.overview.dynamic.chart.incomeoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'income_total');
+            calcAndBuildLineChart(dateAndAmountAsList, 'income_total', window.translationData.overview.dynamic.detailed.highestincome, window.translationData.overview.dynamic.detailed.lowestincome, window.translationData.overview.dynamic.detailed.averageincome, window.translationData.overview.dynamic.detailed.yourincome);
 
         } else {
 
             incomeOrExpense = 'Expense';
             translatedText = window.translationData.overview.dynamic.chart.expenseoverview;
 
-            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total');
+            calcAndBuildLineChart(dateAndAmountAsList, 'expense_total', window.translationData.overview.dynamic.detailed.lowestexpense, window.translationData.overview.dynamic.detailed.highestexpense, window.translationData.overview.dynamic.detailed.averageexpense, window.translationData.overview.dynamic.detailed.yourexpense);
         }
 
         appendChartOptionsForIncomeOrExpense(incomeOrExpense, translatedText);
     }
 
     // Calculate and build line chart for income / expense
-    function calcAndBuildLineChart(dateAndAmountAsList, totalAm) {
+    function calcAndBuildLineChart(dateAndAmountAsList, totalAm, highestWhatever, lowestWhatever, averageWhatever, yourWhateverTitle) {
         let labelsArray = [];
         let seriesArray = [];
 
@@ -281,6 +281,8 @@
         // Replace with empty chart message
         if (isEmpty(dateAndAmountAsList)) {
             chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
+            // Populate the empty data in detail
+            populateDetailedOverviewForChart(seriesArray, true, highestWhatever, lowestWhatever, averageWhatever, yourWhateverTitle);
             return;
         }
 
@@ -302,6 +304,17 @@
 
         }
 
+        // Build the data for the line chart
+        dataColouredRoundedLineChart = {
+            labels: labelsArray,
+            series: [
+		        	seriesArray
+		         ]
+        };
+
+        // Populate the data in detail
+        populateDetailedOverviewForChart(dataColouredRoundedLineChart, true, highestWhatever, lowestWhatever, averageWhatever, yourWhateverTitle);
+
         // Replace with empty chart message
         if (isEmpty(seriesArray)) {
             chartAppendingDiv.appendChild(buildEmptyChartMessageForOverview());
@@ -310,14 +323,6 @@
             chartAppendingDiv.appendChild(buildInsufficientInfoMessage());
             return;
         }
-
-        // Build the data for the line chart
-        dataColouredRoundedLineChart = {
-            labels: labelsArray,
-            series: [
-		        	seriesArray
-		         ]
-        };
 
         // Display the line chart
         coloredRounedLineChart(dataColouredRoundedLineChart);
@@ -386,6 +391,7 @@
     /*  **************** Coloured Rounded Line Chart - Line Chart ******************** */
 
     function coloredRounedLineChart(dataColouredRoundedLineChart) {
+
         optionsColouredRoundedLineChart = {
             lineSmooth: Chartist.Interpolation.cardinal({
                 tension: 10
@@ -628,7 +634,7 @@
 
         }
 
-        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'category', fetchIncome);
+        buildPieChartForOverview(dataSimpleBarChart, 'colouredRoundedLineChart', absoluteTotal, 'category', fetchIncome, "Biggest Amount", "Smallest Amount", "Average Amount", "Your Categories");
     }
 
     // Populate the line chart from cache
@@ -735,6 +741,16 @@
 
     // build line chart
     function buildBarChart(dataSimpleBarChart, optionsSimpleBarChart) {
+
+        // Populate the empty data in detail
+        populateDetailedOverviewForChart(dataSimpleBarChart, false, window.translationData.overview.dynamic.detailed.biggestbalance, window.translationData.overview.dynamic.detailed.smallestbalance, window.translationData.overview.dynamic.detailed.averagebalance, window.translationData.overview.dynamic.detailed.youraccounts);
+
+        // If series array is empty then
+        if (isEmpty(dataSimpleBarChart)) {
+            populateEmptyChartInfo();
+            return;
+        }
+
         /*  **************** Simple Bar Chart - barchart ******************** */
 
         let responsiveOptionsSimpleBarChart = [
@@ -829,19 +845,6 @@
             series: seriesArray
         };
 
-        // If series array is empty then
-        if (isEmpty(seriesArray)) {
-            let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
-            let emptyMessageDocumentFragment = document.createDocumentFragment();
-            emptyMessageDocumentFragment.appendChild(buildEmptyChartMessageForOverview());
-            // Replace inner HTML with EMPTY
-            while (chartAppendingDiv.firstChild) {
-                chartAppendingDiv.removeChild(chartAppendingDiv.firstChild);
-            }
-            chartAppendingDiv.appendChild(emptyMessageDocumentFragment);
-            return;
-        }
-
         let optionsSimpleBarChart = {
             distributeSeries: true,
             seriesBarDistance: 10,
@@ -873,7 +876,10 @@ function replaceChartChosenLabel(chosenChartText) {
 }
 
 // Introduce Chartist pie chart
-function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetchIncome) {
+function buildPieChartForOverview(dataPreferences, id, absoluteTotal, type, fetchIncome, highestWhatever, lowestWhatever, averageWhatever, yourTitle) {
+
+    // Populate the empty data in detail
+    populateDetailedOverviewForChart(dataPreferences, false, highestWhatever, lowestWhatever, averageWhatever, yourTitle);
 
     let chartAppendingDiv = document.getElementById('colouredRoundedLineChart');
 
@@ -1008,7 +1014,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                 if (incomeCategory == fetchIncome && isNotEmpty(category)) {
                     // Check tag matches the label
                     if (isEqual(category, label)) {
-                        tableBody.appendChild(buildTransactionRow(transaction));
+                        tableBody.appendChild(buildTransactionRow(transaction, type));
                     }
                 }
             }
@@ -1024,7 +1030,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                         let tag = tags[i];
                         // Check tag matches the label
                         if (isEqual(tag, label)) {
-                            tableBody.appendChild(buildTransactionRow(transaction));
+                            tableBody.appendChild(buildTransactionRow(transaction, type));
                         }
                     }
                 }
@@ -1038,7 +1044,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
                 if (incomeCategory == fetchIncome && isNotEmpty(account)) {
                     // Check tag matches the label
                     if (isEqual(account, label)) {
-                        tableBody.appendChild(buildTransactionRow(transaction));
+                        tableBody.appendChild(buildTransactionRow(transaction, type));
                     }
                 }
             }
@@ -1056,7 +1062,7 @@ function buildTransactionsForOverview(label, type, fetchIncome) {
 }
 
 // Builds the rows for recent transactions
-function buildTransactionRow(userTransaction) {
+function buildTransactionRow(userTransaction, type) {
     // Convert date from UTC to user specific dates
     let creationDateUserRelevant = new Date(userTransaction['creation_date']);
     // Category Map
@@ -1095,7 +1101,18 @@ function buildTransactionRow(userTransaction) {
 
     let elementWithCategoryName = document.createElement('div');
     elementWithCategoryName.classList = 'font-size-70 categoryNameRT w-100';
-    elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+
+    if (isEqual(type, 'category')) {
+        for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+            let bankAcc = window.allBankAccountInfoCache[i];
+            if (isEqual(bankAcc.accountId, userTransaction.account)) {
+                elementWithCategoryName.textContent = (bankAcc['bank_account_name']) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+            }
+        }
+    } else {
+        elementWithCategoryName.textContent = (categoryMapForUT.name.length < 25 ? categoryMapForUT.name : (categoryMapForUT.name.slice(0, 26) + '...')) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
+    }
+
     tableCellTransactionDescription.appendChild(elementWithCategoryName);
     tableRowTransaction.appendChild(tableCellTransactionDescription);
 

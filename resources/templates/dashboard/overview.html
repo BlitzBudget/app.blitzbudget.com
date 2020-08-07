@@ -10,9 +10,9 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6 noselect">
                     <div class="card card-stats">
-                        <div class="card-header card-header-rose card-header-icon">
+                        <div class="card-header card-header-success card-header-icon">
                             <div class="card-icon">
                                 <i class="material-icons noselect">store</i>
                             </div>
@@ -26,9 +26,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6 noselect">
                     <div class="card card-stats">
-                        <div class="card-header card-header-success card-header-icon">
+                        <div class="card-header card-header-danger card-header-icon">
                             <div class="card-icon">
                                 <i class="material-icons noselect">credit_card</i>
                             </div>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6 noselect">
                     <div class="card card-stats">
                         <div class="card-header card-header-info card-header-icon">
                             <div class="card-icon">
@@ -92,6 +92,69 @@
                                 <button class="btn btn-secondary btn-lg chart-option assets mr-2 my-3" data-i18n="overview.page.chart.options.assets">Assets</button>
                                 <button class="btn btn-secondary btn-lg chart-option debt mr-2 my-3" data-i18n="overview.page.chart.options.debt">Debt</button>
                                 <button class="btn btn-secondary btn-lg chart-option networth mr-2 my-3" data-i18n="overview.page.chart.options.networth">Networth</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card chartDisplayCard">
+                        <div class="card-header card-header-icon card-header-info">
+                            <div class="card-icon">
+                                <i class="material-icons noselect">date_range</i>
+                            </div>
+                            <h5 id="yourWhateverTitle" class="card-title d-inline-block noselect text-nowrap" data-i18n="overview.dynamic.detailed.yourincome">Your Income
+                            </h5>
+                        </div>
+                        <div class="card-body" id="detailedOverviewOfChart">
+                            <!-- Dynamic Details -->
+                            <div class="material-spinner rtSpinner"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-stats noselect">
+                        <div class="card-header card-header-rose card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons noselect">trending_up</i>
+                            </div>
+                            <p id="mostWhatever" class="card-category" data-i18n="overview.dynamic.detailed.mostspent">Most Spent</p>
+                            <h3 id="mostWhateverAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                        </div>
+                        <div class="card-footer">
+                            <div class="stats">
+                                <i class="material-icons noselect">av_timer</i> <span id="mostWhateverDate">Just Updated</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card card-stats noselect">
+                        <div class="card-header card-header-info card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons noselect">trending_flat</i>
+                            </div>
+                            <p id="averageWhatever" class="card-category" data-i18n="overview.dynamic.detailed.averagespent">Average Spent</p>
+                            <h3 id="averageWhateverAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                        </div>
+                        <div class="card-footer">
+                            <div class="stats">
+                                <i class="material-icons noselect">av_timer</i> <span id="averageWhateverDate">Just Updated</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="card card-stats noselect">
+                        <div class="card-header card-header-success card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons noselect">trending_down</i>
+                            </div>
+                            <p id="minimumWhatever" class="card-category" data-i18n="overview.dynamic.detailed.minimumspent">Minimum Spent</p>
+                            <h3 id="minimumWhateverAmount" class="card-title">0.00<span class="currentCurrencySymbol"></span></h3>
+                        </div>
+                        <div class="card-footer">
+                            <div class="stats">
+                                <i class="material-icons noselect">av_timer</i> <span id="minimumWhateverDate">Just Updated</span>
                             </div>
                         </div>
                     </div>

@@ -177,12 +177,20 @@ let tickIconSVG = tickIcon();
             // If confirm button is clicked
             if (result.value) {
                 let accountSubType = document.getElementsByClassName('accountChosen')[0].getAttribute('data-target');
+                let accountBalance = parseInt(document.getElementById('accountBal').value);
+                let accountType = accountSubTypeToType[accountSubType];
+
+                if (isEqual(accountType, 'DEBT')) {
+                    // Account Balance as negative
+                    accountBalance *= -1;
+                }
+
                 // Populate the JSON form data
                 var values = {};
                 values['linked'] = false;
                 values['bankAccountName'] = document.getElementById('accountName').value;
-                values['accountBalance'] = parseInt(document.getElementById('accountBal').value);
-                values['accountType'] = accountSubTypeToType[accountSubType];
+                values['accountBalance'] = accountBalance;
+                values['accountType'] = accountType;
                 values['accountSubType'] = accountSubType;
                 values['walletId'] = window.currentUser.walletId;
                 values['primaryWallet'] = window.currentUser.financialPortfolioId;
@@ -221,7 +229,7 @@ let tickIconSVG = tickIcon();
                     // Append Empty Table to child
                     accountHeaderNew.getElementById('accountSB-' + result.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + result.accountId));
                     // Append to the transaction view
-                    document.getElementById('recTransAndAccTable').appendChild(accountHeaderNew);
+                    document.getElementById('accSortedTable').appendChild(accountHeaderNew);
                 }
                 ajaxData.onFailure = function (thrownError) {
                     manageErrors(thrownError, window.translationData.account.dynamic.adderror, ajaxData);

@@ -121,7 +121,9 @@
                     "category": "Catégorie",
                     "title": " Trier par",
                     "account": "Compte",
-                    "creationdate": "Date de création"
+                    "creationdate": "Date de création",
+                    "tags": "Tags",
+                    "futuretransactions": "Transactions futures"
                 }
             },
             "chart": {
@@ -200,7 +202,9 @@
             "sort": {
                 "creationdate": "Date de création",
                 "category": "Catégorie",
-                "account": "Compte"
+                "account": "Compte",
+                "tags": "Tags",
+                "futuretransactions": "Transactions futures"
             }
         }
     },
@@ -289,6 +293,43 @@
                 "incomebreakdown": "Répartition des revenus",
                 "nodata": "Pas assez de données ! Commencez à ajouter des transactions..",
                 "onecategory": "Pas assez de données ! Nous avons besoin de transactions dans au moins 2 catégories..."
+            },
+            "detailed": {
+                "yourincome": "Vos revenus",
+                "mostspent": "Les plus dépensés",
+                "minimumspent": "Dépenses minimales",
+                "averagespent": "Moyenne des dépenses",
+                "highestincome": "Revenu le plus élevé",
+                "lowestincome": "Revenu le plus bas",
+                "averageincome": "Revenu moyen",
+                "yourincome": "Vos revenus",
+                "biggestbalance": "Le plus grand équilibre",
+                "smallestbalance": "Le plus petit solde",
+                "averagebalance": "Solde moyen",
+                "youraccounts": "Vos comptes",
+                "highestincome": "Revenu le plus élevé",
+                "lowestincome": "Revenu le plus bas",
+                "averageincome": "Revenu moyen",
+                "yourincome": "Vos revenus",
+                "highestexpense": "Dépenses les plus élevées",
+                "lowestexpense": "Les dépenses les plus faibles",
+                "averageexpense": "Dépenses moyennes",
+                "yourexpense": "Vos dépenses",
+                "biggestamount": "Le plus gros montant",
+                "smallestamount": "Le plus petit montant",
+                "averageamount": "Montant moyen",
+                "yourtags": "Vos Tags",
+                "youraccounts": "Vos comptes",
+                "exportascsv": "Exporter en CSV",
+                "total": "Total",
+                "downloadedtocsv": "Téléchargé avec succès en CSV !",
+                "invaliddata": "Données non valides. Veuillez rafraîchir et réessayer !",
+                "nodataavailable": "Aucune donnée disponible pour le téléchargement. Veuillez actualiser et réessayer !",
+                "csvtitle": "aperçu détaillé",
+                "label": "Label",
+                "value": "Valeur",
+                "exportasxls": "Exporter en XLS",
+                "exportasdoc": "Exporter en DOC"
             }
         }
     },
@@ -578,8 +619,7 @@
         "search": "Recherche...",
         "amount": "Quantité",
         "note": "Rédiger une note",
-        "searcharticle": "Recherche d'articles...",
-        "tags": "Tags"
+        "searcharticle": "Recherche d'articles..."
     },
     "tooltip": {
         "logout": "Déconnexion",

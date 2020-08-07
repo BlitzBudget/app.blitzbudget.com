@@ -7,22 +7,22 @@
     let currentPosInd = null;
 
     // On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
-    $('body').on('dragstart', '#accSortedTable .accTransEntry', function (e) {
+    $('body').on('dragstart', '#transactionsTable .catTransEntry', function (e) {
         handleDragStart(e);
     });
 
     // On DRAG END (The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key)).
-    $('body').on('dragend', '#accSortedTable .accTransEntry', function (e) {
+    $('body').on('dragend', '#transactionsTable .catTransEntry', function (e) {
         handleDragEnd(e);
     });
 
     // On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
-    $('body').on('dragenter', '#accSortedTable .accountInfoTable', function (e) {
+    $('body').on('dragenter', '#transactionsTable .categoryInfoTable', function (e) {
 
         // Don't do anything if dragged on the same wrapper.
-        let closestParentWrapper = e.target.closest('.accountInfoTable');
+        let closestParentWrapper = e.target.closest('.categoryInfoTable');
 
-        // Allow to be dropped only on different accounts
+        // Allow to be dropped only on different category
         if (dragSrcEl != closestParentWrapper) {
             e.preventDefault();
         }
@@ -45,15 +45,15 @@
                 recTransEntry.classList.add('d-table-row');
             }
         }
-        // Set the parent event as the account table
+        // Set the parent event as the category table
         parentElementDragEnterAndLeave = closestParentWrapper;
         return false;
     });
 
     // On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
-    $('body').on('dragover', '#accSortedTable .accountInfoTable', function (e) {
-        // Allow to be dropped only on different accounts
-        let closestParentWrapper = e.target.closest('.accountInfoTable');
+    $('body').on('dragover', '#transactionsTable .categoryInfoTable', function (e) {
+        // Allow to be dropped only on different category
+        let closestParentWrapper = e.target.closest('.categoryInfoTable');
         // Scroll the window
         scrollWindow(e);
         // Drag element comparison with closest parent
@@ -65,7 +65,7 @@
     });
 
     // On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
-    $('body').on('drop', '#accSortedTable .accountInfoTable', function (e) {
+    $('body').on('drop', '#transactionsTable .categoryInfoTable', function (e) {
         handleDrop(e);
     });
 
@@ -127,15 +127,15 @@
         // this / e.target is the source node.
         e.target.classList.add('op-50');
         // Set the drag start element
-        dragSrcEl = e.target.closest('.accountInfoTable');
+        dragSrcEl = e.target.closest('.categoryInfoTable');
         // Set Drag effects
         e.originalEvent.dataTransfer.effectAllowed = 'move';
         e.originalEvent.dataTransfer.dropEffect = 'move';
         e.originalEvent.dataTransfer.setData('text/plain', e.target.id);
-        // Register dragster for Account Info Table
-        let accountInfoTables = document.getElementsByClassName('accountInfoTable');
-        for (let i = 0, l = accountInfoTables.length; i < l; i++) {
-            dragsterList.push(new Dragster(accountInfoTables[i]));
+        // Register dragster for Category Info Table
+        let categoryInfoTables = document.getElementsByClassName('categoryInfoTable');
+        for (let i = 0, l = categoryInfoTables.length; i < l; i++) {
+            dragsterList.push(new Dragster(categoryInfoTables[i]));
         }
     }
 
@@ -164,15 +164,15 @@
         }
 
         // Don't do anything if dropped on the same wrapper div we're dragging.
-        let closestParentWrapper = e.target.closest('.accountInfoTable');
+        let closestParentWrapper = e.target.closest('.categoryInfoTable');
         if (dragSrcEl != closestParentWrapper) {
             // Set the source column's HTML to the HTML of the column we dropped on.
             let transId = e.originalEvent.dataTransfer.getData('text/plain');
             let a = document.getElementById(transId);
             // Find the closest parent element and drop. (Should never be null)
             insertAfterElement(a, e.target);
-            // Update the transaction with the new account ID
-            updateTransactionWithAccId(transId, closestParentWrapper.getAttribute('data-target'), dragSrcEl.getAttribute('data-target'));
+            // Update the transaction with the new category ID
+            updateTransactionWithCatId(transId, closestParentWrapper.getAttribute('data-target'), dragSrcEl.getAttribute('data-target'));
         }
 
         return false;
@@ -203,20 +203,20 @@
             // Insert the element after the dropped element
             insertAfter.parentNode.insertBefore(dropped, insertAfter.nextSibling);
         } else {
-            // Fetch the closest account table wrapper
-            insertAfter = target.closest('.accountInfoTable');
+            // Fetch the closest category table wrapper
+            insertAfter = target.closest('.categoryInfoTable');
             // Drop the element at the end of the table
             insertAfter.appendChild(dropped);
         }
     }
 
-    // Update the transaction with the account ID
-    function updateTransactionWithAccId(transactionId, accountId, oldAccountId) {
+    // Update the transaction with the category ID
+    function updateTransactionWithCatId(transactionId, categoryId, oldCategoryId) {
         // obtain the transaction id of the table row
         transactionId = document.getElementById(transactionId).getAttribute('data-target');
 
         let values = {};
-        values['account'] = accountId;
+        values['category'] = categoryId;
         values['transactionId'] = transactionId;
         values['walletId'] = window.currentUser.walletId;
 
@@ -230,45 +230,45 @@
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
             let userTransaction = result['body-json'];
-            // Fetch the current account balance
-            let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
-            let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.textContent, currentCurrencyPreference);
-            let accDiv = document.getElementById('accountBalance-' + accountId);
-            let accBal = er.convertToNumberFromCurrency(accDiv.textContent, currentCurrencyPreference);
-            let currAccBal = 0;
-            let currNewAccBal = 0;
+            // Fetch the current category balance
+            let oldCatDiv = document.getElementById('categoryBalance-' + oldCategoryId);
+            let oldCatBal = er.convertToNumberFromCurrency(oldCatDiv.textContent, currentCurrencyPreference);
+            let catDiv = document.getElementById('categoryBalance-' + categoryId);
+            let catBal = er.convertToNumberFromCurrency(catDiv.textContent, currentCurrencyPreference);
+            let currCatBal = 0;
+            let currNewCatBal = 0;
             // Append a - sign if it is an expense
-            currAccBal = oldAccBal - userTransaction.amount
-            currNewAccBal = accBal + userTransaction.amount;
+            currCatBal = oldCatBal - userTransaction.amount
+            currNewCatBal = catBal + userTransaction.amount;
             // Append the new amount to the front
-            oldAccDiv.textContent = formatToCurrency(currAccBal);
-            accDiv.textContent = formatToCurrency(currNewAccBal);
-            // If the account balance is negative then change color
-            if (currAccBal < 0) {
-                oldAccDiv.classList.add('expenseCategory');
-                oldAccDiv.classList.remove('incomeCategory');
+            oldCatDiv.textContent = formatToCurrency(currCatBal);
+            catDiv.textContent = formatToCurrency(currNewCatBal);
+            // If the category balance is negative then change color
+            if (currCatBal < 0) {
+                oldCatDiv.classList.add('expenseCategory');
+                oldCatDiv.classList.remove('incomeCategory');
             } else {
-                oldAccDiv.classList.add('incomeCategory');
-                oldAccDiv.classList.remove('expenseCategory');
+                oldCatDiv.classList.add('incomeCategory');
+                oldCatDiv.classList.remove('expenseCategory');
             }
-            if (currNewAccBal < 0) {
-                accDiv.classList.add('expenseCategory');
-                accDiv.classList.remove('incomeCategory');
+            if (currNewCatBal < 0) {
+                catDiv.classList.add('expenseCategory');
+                catDiv.classList.remove('incomeCategory');
             } else {
-                accDiv.classList.add('incomeCategory');
-                accDiv.classList.remove('expenseCategory');
+                catDiv.classList.add('incomeCategory');
+                catDiv.classList.remove('expenseCategory');
             }
-            // Remove empty entries for the account
-            let emptyEntriesNewAcc = document.getElementById('emptyAccountEntry-' + accountId);
-            if (isNotEmpty(emptyEntriesNewAcc)) {
-                emptyEntriesNewAcc.remove();
+            // Remove empty entries for the category
+            let emptyEntriesNewCat = document.getElementById('emptyCategoryItem-' + categoryId);
+            if (isNotEmpty(emptyEntriesNewCat)) {
+                emptyEntriesNewCat.remove();
             }
-            // Replace with Empty Acc Trans
-            let oldAccTable = document.getElementById('accountSB-' + oldAccountId);
-            let oldRecentTransactionEntry = oldAccTable.getElementsByClassName('recentTransactionEntry');
+            // Replace with Empty Cat Trans
+            let oldCatTable = document.getElementById('categorySB-' + oldCategoryId);
+            let oldRecentTransactionEntry = oldCatTable.getElementsByClassName('recentTransactionEntry');
             if (oldRecentTransactionEntry.length == 0) {
-                // Build empty account entry
-                oldAccTable.appendChild(buildEmptyAccountEntry(oldAccountId));
+                // Build empty category entry
+                oldCatTable.appendChild(buildEmptyCategoryEntry(oldCategoryId));
             }
         }
         ajaxData.onFailure = function (thrownError) {
@@ -288,18 +288,18 @@
         });
     }
 
-    // Populate Empty account entry
-    function buildEmptyAccountEntry(accId) {
+    // Populate Empty category entry
+    function buildEmptyCategoryEntry(catId) {
         let rowEmpty = document.createElement('div');
         rowEmpty.classList = 'd-table-row recentTransactionDateGrp';
-        rowEmpty.id = 'emptyAccountEntry-' + accId;
+        rowEmpty.id = 'emptyCategoryItem-' + catId;
 
         let cell1 = document.createElement('div');
         cell1.classList = 'd-table-cell align-middle imageWrapperCell text-center';
 
         let roundedCircle = document.createElement('div');
         roundedCircle.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
-        roundedCircle.appendChild(buildEmptyAccTransactionsSvg());
+        roundedCircle.appendChild(buildEmptyCatTransactionsSvg());
         cell1.appendChild(roundedCircle);
         rowEmpty.appendChild(cell1);
 
@@ -320,7 +320,7 @@
     }
 
     // Empty Transactions SVG
-    function buildEmptyAccTransactionsSvg() {
+    function buildEmptyCatTransactionsSvg() {
 
         let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
         svgElement.setAttribute('width', '32');

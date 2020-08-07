@@ -121,7 +121,9 @@
                     "category": "Category",
                     "title": " Sort By",
                     "account": "Account",
-                    "creationdate": "Creation Date"
+                    "creationdate": "Creation Date",
+                    "tags": "Tags",
+                    "futuretransactions": "Future Transactions"
                 }
             },
             "chart": {
@@ -200,7 +202,9 @@
             "sort": {
                 "creationdate": "Creation Date",
                 "category": "Category",
-                "account": "Account"
+                "account": "Account",
+                "tags": "Tags",
+                "futuretransactions": "Future Transactions"
             }
         }
     },
@@ -289,6 +293,43 @@
                 "incomebreakdown": "Income Breakdown",
                 "nodata": "There's not enough data! Start adding transactions..",
                 "onecategory": "There's not enough data! We need transactions in atleast 2 categories.."
+            },
+            "detailed": {
+                "yourincome": "Your Income",
+                "mostspent": "Most Spent",
+                "minimumspent": "Minimum Spent",
+                "averagespent": "Average Spent",
+                "highestincome": "Highest Income",
+                "lowestincome": "Lowest Income",
+                "averageincome": "Average Income",
+                "yourincome": "Your Income",
+                "biggestbalance": "Biggest Balance",
+                "smallestbalance": "Smallest Balance",
+                "averagebalance": "Average Balance",
+                "youraccounts": "Your Accounts",
+                "highestincome": "Highest Income",
+                "lowestincome": "Lowest Income",
+                "averageincome": "Average Income",
+                "yourincome": "Your Income",
+                "highestexpense": "Highest Expense",
+                "lowestexpense": "Lowest Expense",
+                "averageexpense": "Average Expense",
+                "yourexpense": "Your Expense",
+                "biggestamount": "Biggest Amount",
+                "smallestamount": "Smallest Amount",
+                "averageamount": "Average Amount",
+                "yourtags": "Your Tags",
+                "youraccounts": "Your Accounts",
+                "exportascsv": "Export as CSV",
+                "total": "Total",
+                "downloadedtocsv": "Successfully downloaded to CSV!",
+                "invaliddata": "Invalid data. Please refresh and try again!",
+                "nodataavailable": "No data available to download. Please refresh and try again!",
+                "csvtitle": "detailed overview",
+                "label": "Label",
+                "value": "Value",
+                "exportasxls": "Export as XLS",
+                "exportasdoc": "Export as DOC"
             }
         }
     },
@@ -578,8 +619,7 @@
         "search": "Search...",
         "amount": "Amount",
         "note": "Write a note",
-        "searcharticle": "Search for articles...",
-        "tags": "Tags"
+        "searcharticle": "Search for articles..."
     },
     "tooltip": {
         "logout": "Logout",
