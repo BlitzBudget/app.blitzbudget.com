@@ -277,6 +277,56 @@
                             </div>
                         </div>
                     </div>
+                    <div id="transactionInformationMdl" class="card d-none noselect">
+                        <div class="row">
+                            <div id="" class="col-lg-6">
+                                <span class=""></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <button type="button" id="transactionHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i class="material-icons noselect float-right">clear</i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-header card-header-icon card-header-danger">
+                            <div id="transactionLabelInModal" class="text-center card-title"></div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row">
+                                <div id="categoryInfoLabelInModal" class="col-lg-12 text-right headingDiv justify-content-center align-self-center" data-i18n="transactions.page.account.remaining">Remaining (%)</div>
+                            </div>
+                            <div class="row">
+                                <span id="percentageAchievedTrans" class="col-lg-12 text-right">
+                                    NA
+                                </span>
+                            </div>
+                            <div class="text-left headingDiv">
+                                <div class="progress">
+                                    <div id="amountAccumulatedTrans" class="progress-bar progress-bar-success-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Category Balance"></div>
+                                </div>
+                                <span id="remainingBalanceTrans" class="text-success" data-toggle="tooltip" data-placement="bottom" title="Remaining transation balance to max the category">
+                                    <span class="currentCurrencySymbol"></span>0.00
+                                </span>
+                                <span data-i18n="transactions.page.account.remainingtext">Remaining</span>
+                            </div>
+                            <hr>
+                            <div class="row accountAmountDiv">
+                                <div class="col-lg-3 d-inline-block h-100">
+                                    <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Transaction Balance">category</i>
+                                </div>
+                                <span id="transactionAmountEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false">
+                                    <span class="currentCurrencySymbol"></span>0.00</span>
+                            </div>
+                        </div>
+                        <div id="" class="card-footer row">
+                            <div class="pl-0 col-lg-6 text-left">
+                                <span id="transCreationDate"></span>
+                            </div>
+                            <div class="pr-0 col-lg-6 text-right">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- end row -->

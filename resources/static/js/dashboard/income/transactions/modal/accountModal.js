@@ -295,7 +295,7 @@
 
         });
 
-        // Disable Change Password button 
+        // Disable Change Password button
         let deleteBBBtn = document.getElementsByClassName('swal2-confirm')[0];
         if (!deleteBBBtn.disabled) {
             deleteBBBtn.setAttribute('disabled', 'disabled');
