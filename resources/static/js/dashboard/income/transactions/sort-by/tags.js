@@ -103,7 +103,7 @@
      }
 
      // Contains Tags
-     if (containsTags) {
+     if (!containsTags) {
          populateTransactionsFragment.appendChild(buildEmptyTransactionsTab('tagInfoTable'))
      }
 
