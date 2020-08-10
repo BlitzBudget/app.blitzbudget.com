@@ -77,6 +77,7 @@
  function populateTransactionsByTags(transactions) {
      let populateTransactionsFragment = document.createDocumentFragment();
      let createdTagIds = [];
+     let containsTags = false;
 
      for (let i = 0, len = transactions.length; i < len; i++) {
          let userTransaction = transactions[i];
@@ -97,6 +98,13 @@
              }
              populateTransactionsFragment.getElementById('tagSB-' + oneTag).appendChild(buildTransactionRow(userTransaction, 'tagsSorted'));
          }
+         // Contains Tags
+         containsTags = true;
+     }
+
+     // Contains Tags
+     if (containsTags) {
+         populateTransactionsFragment.appendChild(buildEmptyTransactionsTab('tagInfoTable'))
      }
 
      // Upload to tags table

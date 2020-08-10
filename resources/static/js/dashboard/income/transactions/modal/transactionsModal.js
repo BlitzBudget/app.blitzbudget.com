@@ -28,10 +28,24 @@
         document.getElementById('deleteSvgTransactions').setAttribute('data-target', transactionsId);
     });
 
+    // Delete Transactions
     $('body').on('click', '#deleteSvgTransactions', function (e) {
+        let transactionId = this.dataset.target;
+        // Click the close button
+        document.getElementById('transactionHeaderClose').click();
+        // Remove transactions
+        let categorySortedTrans = document.getElementById('categorySorted-' + transactionId);
+        let accountAggre = document.getElementById('accountAggre-' + transactionId);
+        let recentTransaction = document.getElementById('recentTransaction-' + transactionId);
+        let recurTransaction = document.getElementById('recurTransaction-' + transactionId);
+        categorySortedTrans.classList.add('d-none');
+        accountAggre.classList.add('d-none');
+        recentTransaction.classList.add('d-none');
+        recurTransaction.classList.add('d-none');
+
         let values = {};
         values.walletId = window.currentUser.walletId;
-        values.itemId = this.dataset.target;
+        values.itemId = transactionId;
 
         // Ajax Requests on Error
         let ajaxData = {};
@@ -42,10 +56,19 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (jsonObj) {
-
+            // Transactions are removed.
+            categorySortedTrans.remove();
+            accountAggre.remove();
+            recentTransaction.remove();
+            recurTransaction.remove();
         }
         ajaxData.onFailure = function (thrownError) {
-            manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!", ajaxData);
+            manageErrors(thrownError, "There was an error while deleting the transaction. Please try again later!", ajaxData);
+            // Un hide the transactions
+            categorySortedTrans.classList.remove('d-none');
+            accountAggre.classList.remove('d-none');
+            recentTransaction.classList.remove('d-none');
+            recurTransaction.classList.remove('d-none');
         }
 
         jQuery.ajax({
@@ -60,6 +83,13 @@
             success: ajaxData.onSuccess,
             error: ajaxData.onFailure
         });
+    });
+
+    $('body').on('click', '#transactionHeaderClose', function (e) {
+        // Close Category Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
+        // Open  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
     });
 
 }(jQuery));
