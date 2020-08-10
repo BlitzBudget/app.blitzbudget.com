@@ -47,6 +47,7 @@
                 "/dashboard/income/transactions.css",
                 "/dashboard/income/transactions/accountModal.css",
                 "/dashboard/income/transactions/categoryModal.css",
+                "/dashboard/income/transactions/transactionsModal.css",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.css",
                 "/dashboard/build/tagsinput.css"
             ]
