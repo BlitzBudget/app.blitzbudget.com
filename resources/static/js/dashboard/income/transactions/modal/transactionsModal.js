@@ -8,7 +8,7 @@
         // transaction Balance Update
         document.getElementById('transactionAmountEntry').textContent = formatToCurrency(window.transactionsCache[transactionsId].amount);
         // Transaction Category Update
-        document.getElementById('transactionCategoryEntry').textContent = window.categoryMap[window.transactionsCache[transactionsId].category]['category_name'];
+        document.getElementById('transactionCategoryEntry').textContent = window.categoryMap[window.transactionsCache[transactionsId].category].name;
         // Transaction Description Update
         document.getElementById('transactionDescriptionEntry').textContent = window.transactionsCache[transactionsId].description;
         // Transaction Tags Update
