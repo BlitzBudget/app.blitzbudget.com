@@ -24,6 +24,42 @@
         // Transaction Creation Date
         let creationDateUserRelevant = new Date(window.transactionsCache[transactionsId]['creation_date']);
         document.getElementById('transactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();
+        // Set Data Target for delete svg transactions
+        document.getElementById('deleteSvgTransactions').setAttribute('data-target', transactionsId);
+    });
+
+    $('body').on('click', '#deleteSvgTransactions', function (e) {
+        let values = {};
+        values.walletId = window.currentUser.walletId;
+        values.itemId = this.dataset.target;
+
+        // Ajax Requests on Error
+        let ajaxData = {};
+        ajaxData.isAjaxReq = true;
+        ajaxData.type = "POST";
+        ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+        ajaxData.dataType = "json";
+        ajaxData.contentType = "application/json;charset=UTF-8";
+        ajaxData.data = JSON.stringify(values);
+        ajaxData.onSuccess = function (jsonObj) {
+
+        }
+        ajaxData.onFailure = function (thrownError) {
+            manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!", ajaxData);
+        }
+
+        jQuery.ajax({
+            url: ajaxData.url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authHeader);
+            },
+            type: ajaxData.type,
+            dataType: ajaxData.dataType,
+            contentType: ajaxData.contentType,
+            data: ajaxData.data,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
+        });
     });
 
 }(jQuery));

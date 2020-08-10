@@ -96,6 +96,7 @@
     width: calc(100%+1.6rem);
     resize: none;
     line-height: 1;
+    border: none;
 }
 
 #transactionAmountEntry:hover,
