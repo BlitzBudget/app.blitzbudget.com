@@ -78,3 +78,42 @@
     visibility: visible;
     opacity: 1;
 }
+
+#transactionAmountEntry,
+#transactionDescriptionEntry,
+#transactionTagsEntry {
+    padding-top: .25rem;
+    font-weight: 400;
+    padding-bottom: .5rem;
+    color: #686969;
+    display: block;
+    -webkit-transition: border-color .3s ease;
+    -moz-transition: border-color .3s ease;
+    -ms-transition: border-color .3s ease;
+    -o-transition: border-color .3s ease;
+    transition: border-color .3s ease;
+    margin-right: -.8rem;
+    width: calc(100%+1.6rem);
+    resize: none;
+    line-height: 1;
+}
+
+#transactionAmountEntry:hover,
+#transactionAmountEntry:focus,
+#transactionAmountEntry:active,
+#transactionDescriptionEntry:hover,
+#transactionDescriptionEntry:focus,
+#transactionDescriptionEntry:active,
+#transactionTagsEntry:hover,
+#transactionTagsEntry:focus,
+#transactionTagsEntry:active {
+    background: linear-gradient(#d5d9db, #d5d9db) 0 calc(100% - .025rem)/100% .050rem no-repeat, transparent;
+}
+
+.transactionAmountDiv .material-icons,
+.transactionCategoryDiv .material-icons,
+.transactionDescriptionDiv .material-icons,
+.transactionTagsDiv .material-icons {
+    color: #666e77;
+    cursor: default;
+}
