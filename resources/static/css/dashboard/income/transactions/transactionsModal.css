@@ -74,7 +74,7 @@
     font-weight: 600;
 }
 
-#transactionInformationMdl:hover .deleteIconAccountWrapper {
+#transactionInformationMdl:hover .deleteIconTransactionsWrapper {
     visibility: visible;
     opacity: 1;
 }
