@@ -1,7 +1,7 @@
 "use strict";
 (function scopeWrapper($) {
 
-    $('body').on('click', '#transactionsTable .recentTransactionEntry', function (e) {
+    $('body').on('click', '#transactionsTable .recentTransactionEntry, #recTransTable .recentTransactionEntry, #accSortedTable .recentTransactionEntry, #tagsTable .recentTransactionEntry', function (e) {
         let transactionsId = this.dataset.target;
         // Set transaction Title
         document.getElementById('transactionLabelInModal').textContent = window.transactionsCache[transactionsId].description;
@@ -26,6 +26,25 @@
         document.getElementById('transactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();
         // Set Data Target for delete svg transactions
         document.getElementById('deleteSvgTransactions').setAttribute('data-target', transactionsId);
+        // Set the value and percentage of the progress bar
+        let amountAccumulatedCat = document.getElementById('amountAccumulatedTrans');
+        // Progress Bar percentage
+        let progressBarPercentage = 0;
+        let remainingAmount = 0;
+        if (isNotEmpty(window.userBudgetMap[categoryId])) {
+            progressBarPercentage = ((Math.abs(window.transactionsCache[transactionsId].amount) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100);
+            // Is Not A Number then
+            if (isNaN(progressBarPercentage)) {
+                progressBarPercentage = 0;
+            }
+            // Remaining Amount
+            remainingAmount = (Math.abs(window.userBudgetMap[categoryId].planned) - Math.abs(window.transactionsCache[transactionsId].amount));
+        }
+        // Progress bar percentage
+        amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
+        amountAccumulatedCat.style.width = progressBarPercentage + '%';
+        // Remaining Percentage
+        document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
     });
 
     // Delete Transactions
