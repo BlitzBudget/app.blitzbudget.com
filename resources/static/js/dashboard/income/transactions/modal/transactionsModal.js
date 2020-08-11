@@ -115,4 +115,34 @@
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
     });
 
+    // On hit enter
+    $('body').on("keyup", "#add-transaction-value, #transactionTagsEntry", function (e) {
+        var keyCode = e.key;
+        if (isEqual(keyCode, 'Enter')) {
+            e.preventDefault();
+            // Create a new tag
+            createANewTag('transactionTagsEntry', this.value);
+            // Empty the input value
+            this.value = '';
+            return false;
+        }
+    });
+
+    /*
+     * Creates a new tag
+     */
+    function createANewTag(id, content) {
+        let badge = document.createElement('span');
+        badge.classList = 'tag badge';
+        badge.textContent = content;
+
+        let removeButton = document.createElement('span');
+        removeButton.setAttribute('data-role', 'remove');
+        removeButton.classList = 'badge-remove';
+        badge.appendChild(removeButton);
+
+        let parentElement = document.getElementById(id);
+        parentElement.insertBefore(badge, parentElement.childNodes[0]);
+    }
+
 }(jQuery));
