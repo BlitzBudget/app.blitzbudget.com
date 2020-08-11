@@ -621,12 +621,19 @@
         "search": "Search...",
         "amount": "Amount",
         "note": "Write a note",
-        "searcharticle": "Search for articles..."
+        "searcharticle": "Search for articles...",
+        "notags": "No Tags",
+        "nodescription": "No Description",
+        "noamount": "No Amount"
     },
     "tooltip": {
         "logout": "Logout",
         "fullscreen": "FullScreen",
-        "settings": "Settings"
+        "settings": "Settings",
+        "transactionbalance": "Transaction Balance",
+        "category": "Category",
+        "description": "Description",
+        "tags": "Tags"
     },
     "goals": {
         "page": {

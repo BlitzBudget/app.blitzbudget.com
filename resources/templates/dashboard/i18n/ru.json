@@ -621,12 +621,19 @@
         "search": "Поиск...",
         "amount": "Количество",
         "note": "напишите заметку",
-        "searcharticle": "Поиск статей..."
+        "searcharticle": "Поиск статей...",
+        "notags": "Без тегов",
+        "nodescription": "Нет Описание",
+        "noamount": "Нет Сумма"
     },
     "tooltip": {
         "logout": "выйти из системы",
         "fullscreen": "полный экран",
-        "settings": "Настройки"
+        "settings": "Настройки",
+        "transactionbalance": "Баланс транзакций",
+        "category": "Категория",
+        "description": "Описание",
+        "tags": "Теги"
     },
     "goals": {
         "page": {

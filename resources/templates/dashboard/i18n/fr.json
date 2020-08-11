@@ -621,12 +621,19 @@
         "search": "Recherche...",
         "amount": "Quantité",
         "note": "Rédiger une note",
-        "searcharticle": "Recherche d'articles..."
+        "searcharticle": "Recherche d'articles...",
+        "notags": "Pas de tags",
+        "nodescription": "No Description",
+        "noamount": "Pas de montant"
     },
     "tooltip": {
         "logout": "Déconnexion",
         "fullscreen": "Plein écran",
-        "settings": "Configuration"
+        "settings": "Configuration",
+        "transactionbalance": "Solde des transactions",
+        "category": "Catégorie",
+        "description": "Description",
+        "tags": "Tags"
     },
     "goals": {
         "page": {

@@ -621,12 +621,19 @@
         "search": "Buscar...",
         "amount": "Cantidad",
         "note": "Escriba una nota",
-        "searcharticle": "Buscar artículos..."
+        "searcharticle": "Buscar artículos...",
+        "notags": "No hay etiquetas",
+        "nodescription": "No Descripción",
+        "noamount": "No Cantidad"
     },
     "tooltip": {
         "logout": "Cerrar sesión",
         "fullscreen": "Pantalla completa",
-        "settings": "Configuración"
+        "settings": "Configuración",
+        "transactionbalance": "Balance de la transacción",
+        "category": "Categoría",
+        "description": "Descripción",
+        "tags": "Etiquetas"
     },
     "goals": {
         "page": {
