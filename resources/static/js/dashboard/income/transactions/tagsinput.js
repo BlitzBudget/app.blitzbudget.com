@@ -2,7 +2,7 @@
 (function scopeWrapper($) {
 
     // Onn hit enter
-    $('body').on("keyup", "#add-transaction-value", function (e) {
+    $('body').on("keyup", "#add-transaction-value, #transactionTagsEntry", function (e) {
         var keyCode = e.key;
         if (isEqual(keyCode, 'Enter')) {
             e.preventDefault();

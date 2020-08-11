@@ -21,6 +21,8 @@
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
         // Open Category Modal
         document.getElementById('categoryInformationMdl').classList.remove('d-none');
+        // Close  Transaction Information Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
         // Set the value and percentage of the progress bar
         let amountAccumulatedCat = document.getElementById('amountAccumulatedCat');
         // Progress Bar percentage

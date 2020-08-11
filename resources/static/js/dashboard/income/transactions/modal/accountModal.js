@@ -32,6 +32,8 @@
         document.getElementById('accountInformationMdl').classList.remove('d-none');
         // Close  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
+        // Close  Transaction Information Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
         // Rotate the arrow indicator
         let emptyTransInAcc = document.getElementById('emptyAccountEntry-' + accountId);
         if (isEmpty(emptyTransInAcc)) {
