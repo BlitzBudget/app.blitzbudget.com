@@ -3,16 +3,18 @@
 
     $('body').on('click', '#transactionsTable .recentTransactionEntry, #recTransTable .recentTransactionEntry, #accSortedTable .recentTransactionEntry, #tagsTable .recentTransactionEntry', function (e) {
         let transactionsId = this.dataset.target;
+        let currentTransaction = window.transactionsCache[transactionsId];
+        let categoryId = currentTransaction.category;
         // Set transaction Title
-        document.getElementById('transactionLabelInModal').textContent = window.transactionsCache[transactionsId].description;
+        document.getElementById('transactionLabelInModal').textContent = currentTransaction.description;
         // transaction Balance Update
-        document.getElementById('transactionAmountEntry').value = formatToCurrency(window.transactionsCache[transactionsId].amount);
+        document.getElementById('transactionAmountEntry').value = formatToCurrency(currentTransaction.amount);
         // Transaction Category Update
-        document.getElementById('transactionCategoryEntry').textContent = window.categoryMap[window.transactionsCache[transactionsId].category].name;
+        document.getElementById('transactionCategoryEntry').textContent = window.categoryMap[currentTransaction.category].name;
         // Transaction Description Update
-        document.getElementById('transactionDescriptionEntry').value = window.transactionsCache[transactionsId].description;
+        document.getElementById('transactionDescriptionEntry').value = currentTransaction.description;
         // Transaction Tags Update
-        document.getElementById('transactionTagsEntry').value = isNotEmpty(window.transactionsCache[transactionsId].tags) ? window.transactionsCache[transactionsId].tags[0] : "";
+        document.getElementById('transactionTagsEntry').value = isNotEmpty(currentTransaction.tags) ? currentTransaction.tags[0] : "";
         // Close Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close  Financial Position
@@ -22,27 +24,27 @@
         // Close Transaction Modal
         document.getElementById('transactionInformationMdl').classList.remove('d-none');
         // Transaction Creation Date
-        let creationDateUserRelevant = new Date(window.transactionsCache[transactionsId]['creation_date']);
+        let creationDateUserRelevant = new Date(currentTransaction['creation_date']);
         document.getElementById('transactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();
         // Set Data Target for delete svg transactions
         document.getElementById('deleteSvgTransactions').setAttribute('data-target', transactionsId);
         // Set the value and percentage of the progress bar
-        let amountAccumulatedCat = document.getElementById('amountAccumulatedTrans');
+        let amountAccumulatedTrans = document.getElementById('amountAccumulatedTrans');
         // Progress Bar percentage
         let progressBarPercentage = 0;
         let remainingAmount = 0;
-        if (isNotEmpty(window.userBudgetMap[categoryId])) {
-            progressBarPercentage = ((Math.abs(window.transactionsCache[transactionsId].amount) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100);
+        if (isNotEmpty(window.categoryMap[categoryId])) {
+            progressBarPercentage = ((Math.abs(currentTransaction.amount) / Math.abs(window.categoryMap[categoryId].planned)) * 100);
             // Is Not A Number then
             if (isNaN(progressBarPercentage)) {
                 progressBarPercentage = 0;
             }
             // Remaining Amount
-            remainingAmount = (Math.abs(window.userBudgetMap[categoryId].planned) - Math.abs(window.transactionsCache[transactionsId].amount));
+            remainingAmount = (Math.abs(window.categoryMap[categoryId].planned) - Math.abs(currentTransaction.amount));
         }
         // Progress bar percentage
-        amountAccumulatedCat.setAttribute('aria-valuenow', progressBarPercentage);
-        amountAccumulatedCat.style.width = progressBarPercentage + '%';
+        amountAccumulatedTrans.setAttribute('aria-valuenow', progressBarPercentage);
+        amountAccumulatedTrans.style.width = progressBarPercentage + '%';
         // Remaining Percentage
         document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
     });
