@@ -163,7 +163,9 @@
                     "monthly": "マンスリー"
                 },
                 "button": "トランザクションの追加"
-            }
+            },
+            "ofcategorytotal": "(%) 区分 合計",
+            "others": "その他"
         },
         "dynamic": {
             "title": "取引",

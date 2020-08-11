@@ -47,6 +47,8 @@
         amountAccumulatedTrans.style.width = progressBarPercentage + '%';
         // Remaining Percentage
         document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
+        // Remaining in currencys
+        document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
     });
 
     // Delete Transactions

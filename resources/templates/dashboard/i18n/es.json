@@ -163,7 +163,9 @@
                     "monthly": "Mensual"
                 },
                 "button": "Agregar transacción"
-            }
+            },
+            "ofcategorytotal": "(%) De la categoría Total",
+            "others": "Otros"
         },
         "dynamic": {
             "title": "Transacciones",
