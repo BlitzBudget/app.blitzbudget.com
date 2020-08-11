@@ -34,13 +34,13 @@
         let progressBarPercentage = 0;
         let remainingAmount = 0;
         if (isNotEmpty(window.categoryMap[categoryId])) {
-            progressBarPercentage = ((Math.abs(currentTransaction.amount) / Math.abs(window.categoryMap[categoryId].planned)) * 100);
+            progressBarPercentage = ((Math.abs(currentTransaction.amount) / Math.abs(window.categoryMap[categoryId].categoryTotal)) * 100);
             // Is Not A Number then
             if (isNaN(progressBarPercentage)) {
                 progressBarPercentage = 0;
             }
             // Remaining Amount
-            remainingAmount = (Math.abs(window.categoryMap[categoryId].planned) - Math.abs(currentTransaction.amount));
+            remainingAmount = (Math.abs(window.categoryMap[categoryId].categoryTotal) - Math.abs(currentTransaction.amount));
         }
         // Progress bar percentage
         amountAccumulatedTrans.setAttribute('aria-valuenow', progressBarPercentage);
