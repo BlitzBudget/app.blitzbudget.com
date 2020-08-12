@@ -111,10 +111,22 @@
     background: linear-gradient(#d5d9db, #d5d9db) 0 calc(100% - .025rem)/100% .050rem no-repeat, transparent;
 }
 
+.transaction-selected {
+    background-color: #f2f5f7;
+}
+
+.transaction-selected .circleWrapperImageRT {
+    background-color: #fff;
+}
+
 .transactionAmountDiv .material-icons,
 .transactionCategoryDiv .material-icons,
 .transactionDescriptionDiv .material-icons,
 .transactionTagsDiv .material-icons {
     color: #666e77;
     cursor: default;
+}
+
+#edit-transaction-tags.tagsinput {
+    padding-left: 0.95rem;
 }

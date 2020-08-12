@@ -2,6 +2,20 @@
 (function scopeWrapper($) {
 
     $('body').on('click', '#transactionsTable .recentTransactionEntry, #recTransTable .recentTransactionEntry, #accSortedTable .recentTransactionEntry, #tagsTable .recentTransactionEntry', function (e) {
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
+
+        // Make the transactions selected
+        this.classList.add('transaction-selected');
+
         /*
          * Delete all tags
          */
@@ -36,15 +50,15 @@
         // Transaction Creation Date
         let creationDateUserRelevant = new Date(currentTransaction['creation_date']);
         document.getElementById('transactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();
-        // Set Data Target for delete svg transactions
-        document.getElementById('deleteSvgTransactions').setAttribute('data-target', transactionsId);
+        // Transaction Modal
+        document.getElementById('transactionInformationMdl').setAttribute('data-target', transactionsId);
         // Set the value and percentage of the progress bar
         let amountAccumulatedTrans = document.getElementById('amountAccumulatedTrans');
         // Progress Bar percentage
         let progressBarPercentage = 0;
         let remainingAmount = 0;
         if (isNotEmpty(window.categoryMap[categoryId])) {
-            progressBarPercentage = ((Math.abs(currentTransaction.amount) / Math.abs(window.categoryMap[categoryId].categoryTotal)) * 100);
+            progressBarPercentage = round(((Math.abs(currentTransaction.amount) / Math.abs(window.categoryMap[categoryId].categoryTotal)) * 100), 2);
             // Is Not A Number then
             if (isNaN(progressBarPercentage)) {
                 progressBarPercentage = 0;
@@ -63,18 +77,22 @@
 
     // Delete Transactions
     $('body').on('click', '#deleteSvgTransactions', function (e) {
-        let transactionId = this.dataset.target;
+        let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
         // Click the close button
         document.getElementById('transactionHeaderClose').click();
         // Remove transactions
         let categorySortedTrans = document.getElementById('categorySorted-' + transactionId);
         let accountAggre = document.getElementById('accountAggre-' + transactionId);
         let recentTransaction = document.getElementById('recentTransaction-' + transactionId);
-        let recurTransaction = document.getElementById('recurTransaction-' + transactionId);
-        categorySortedTrans.classList.add('d-none');
-        accountAggre.classList.add('d-none');
-        recentTransaction.classList.add('d-none');
-        recurTransaction.classList.add('d-none');
+        if (isNotEmpty(categorySortedTrans)) {
+            categorySortedTrans.classList.add('d-none');
+        }
+        if (isNotEmpty(categorySortedTrans)) {
+            accountAggre.classList.add('d-none');
+        }
+        if (isNotEmpty(recentTransaction)) {
+            recentTransaction.classList.add('d-none');
+        }
 
         let values = {};
         values.walletId = window.currentUser.walletId;
@@ -123,6 +141,16 @@
         document.getElementById('transactionInformationMdl').classList.add('d-none');
         // Open  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
     });
 
     // On hit enter
@@ -134,6 +162,21 @@
             createANewTag('edit-transaction-tags', this.value);
             // Empty the input value
             this.value = '';
+            /*
+             * Tags Array update
+             */
+            let tagsChosen = document.querySelectorAll('#edit-transaction-tags .badge');
+            let tagsArray = [];
+
+            // Tags Chosen
+            for (let i = 0, len = tagsChosen.length; i < len; i++) {
+                let currentTag = tagsChosen[i];
+                let badgeText = currentTag.innerText;
+                // Push tags to the array
+                tagsArray.push(badgeText);
+            }
+            // Update Tags
+            updateTransaction('tags', tagsArray);
             return false;
         }
     });
@@ -167,6 +210,104 @@
 
         let parentElement = document.getElementById(id);
         parentElement.insertBefore(badge, parentElement.childNodes[0]);
+    }
+
+    /*
+     * Remove the tag
+     */
+    $('body').on("click", "#edit-transaction-tags .tag.badge .badge-remove", function (e) {
+        // Remove the parent element
+        this.parentNode.remove();
+        // Tags Array update
+        let tagsChosen = document.querySelectorAll('#edit-transaction-tags .badge');
+        let tagsArray = [];
+
+        // Tags Chosen
+        for (let i = 0, len = tagsChosen.length; i < len; i++) {
+            let currentTag = tagsChosen[i];
+            let badgeText = currentTag.innerText;
+            // Push tags to the array
+            tagsArray.push(badgeText);
+        }
+        // Update Tags
+        updateTransaction('tags', tagsArray);
+
+    });
+
+    /*
+     * Save Description
+     */
+    // On hit enter
+    $('body').on("keyup", "#transactionDescriptionEntry", function (e) {
+        var keyCode = e.key;
+        if (isEqual(keyCode, 'Enter')) {
+            e.preventDefault();
+            // Edit Description
+            updateTransaction('description', this.value);
+            return false;
+        }
+    });
+
+    /*
+     * Save Amount
+     */
+    $('body').on("keyup", "#transactionAmountEntry", function (e) {
+        var keyCode = e.key;
+        if (isEqual(keyCode, 'Enter')) {
+            e.preventDefault();
+            let amount = this.value;
+            if (isBlank(amount)) {
+                return false;
+            }
+            // Convert to Number from Currency
+            amount = Math.abs(er.convertToNumberFromCurrency(amount, currentCurrencyPreference));
+            if (amount == 0) {
+                return false;
+            }
+            let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
+            // If expense category then convert to negative
+            if (window.categoryMap[window.transactionsCache[transactionId].category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+                // Update as negative amount
+                amount *= -1;
+            }
+            // Edit Amount
+            updateTransaction('amount', amount);
+        }
+    });
+
+    /*
+     * Updte Transaction
+     */
+    function updateTransaction(type, value) {
+        values['walletId'] = window.currentUser.walletId;
+        values['transactionId'] = document.getElementById('transactionInformationMdl').dataset.target;
+        values[type] = value;
+
+        // Ajax Requests on Error
+        let ajaxData = {};
+        ajaxData.isAjaxReq = true;
+        ajaxData.type = "PATCH";
+        ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
+        ajaxData.dataType = "json";
+        ajaxData.contentType = "application/json;charset=UTF-8";
+        ajaxData.data = JSON.stringify(values);
+        ajaxData.onSuccess = function (result) {}
+        ajaxData.onFailure = function (thrownError) {
+            manageErrors(thrownError, "There was an error while updating the transaction. Please try again later!", ajaxData);
+        }
+
+        jQuery.ajax({
+            url: ajaxData.url,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", authHeader);
+            },
+            type: ajaxData.type,
+            dataType: ajaxData.dataType,
+            contentType: ajaxData.contentType,
+            data: ajaxData.data,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
+        });
     }
 
 }(jQuery));

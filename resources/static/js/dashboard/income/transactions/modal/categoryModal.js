@@ -29,7 +29,7 @@
         let progressBarPercentage = 0;
         let remainingAmount = 0;
         if (isNotEmpty(window.userBudgetMap[categoryId])) {
-            progressBarPercentage = ((Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100);
+            progressBarPercentage = round(((Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100), 2);
             // Is Not A Number then
             if (isNaN(progressBarPercentage)) {
                 progressBarPercentage = 0;
@@ -44,6 +44,16 @@
         document.getElementById('percentageAchievedCat').textContent = progressBarPercentage + '%';
         // Remaining in currencys
         document.getElementById('remainingBalanceCat').textContent = formatToCurrency(remainingAmount);
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
     });
 
     // Close Accoount modal

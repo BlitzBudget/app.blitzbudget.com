@@ -396,6 +396,8 @@
             populateRecurringTransactions(result.RecurringTransactions);
             // Populate Tags Transactions
             populateTagsTransactions(result.Transaction);
+            // hide other modals
+            hideOtherModals();
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
@@ -1226,6 +1228,28 @@
         // Append the account transactions to the table
         accountAggreDiv.appendChild(accHeadFrag);
 
+    }
+
+    // Hide Other Modals
+    function hideOtherModals() {
+        // Close Account Modal
+        document.getElementById('accountInformationMdl').classList.add('d-none');
+        // Close  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // Close Transaction Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
     }
 
 }(jQuery));
