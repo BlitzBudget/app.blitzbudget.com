@@ -622,7 +622,7 @@
         "amount": "Quantité",
         "note": "Rédiger une note",
         "searcharticle": "Recherche d'articles...",
-        "notags": "Pas de tags",
+        "tags": "Tags",
         "nodescription": "No Description",
         "noamount": "Pas de montant"
     },

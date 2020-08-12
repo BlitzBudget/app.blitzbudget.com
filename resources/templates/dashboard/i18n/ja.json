@@ -622,7 +622,7 @@
         "amount": "量",
         "note": "ノートを書く",
         "searcharticle": "記事の検索...",
-        "notags": "タグなし",
+        "tags": "タグ",
         "nodescription": "説明はありません。",
         "noamount": "金額はありません。"
     },

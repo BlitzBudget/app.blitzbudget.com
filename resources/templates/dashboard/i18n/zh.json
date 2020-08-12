@@ -622,7 +622,7 @@
         "amount": "数量",
         "note": "写一张笔记",
         "searcharticle": "搜索文章...",
-        "notags": "没有标签",
+        "tags": "标签",
         "nodescription": "没有说明",
         "noamount": "无金额"
     },

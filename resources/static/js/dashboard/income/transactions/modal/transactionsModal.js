@@ -24,7 +24,7 @@
         // Transaction Description Update
         document.getElementById('transactionDescriptionEntry').value = currentTransaction.description;
         // Transaction Tags Update
-        document.getElementById('edit-transaction-tags').appendChild(createAllTags(currentTransaction.tags));
+        createAllTags(currentTransaction.tags);
         // Close Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close  Financial Position
@@ -142,18 +142,14 @@
      * Create Tags
      */
     function createAllTags(tagsCreated) {
-        let documentFrag = document.createDocumentFragment();
 
         if (isEmpty(tagsCreated)) {
-            return documentFrag;
+            return;
         }
 
         for (let i = 0, len = tagsCreated.length; i < len; i++) {
-            let oneTag = tagsCreated[i];
-            documentFrag.appendChild(createANewTag('edit-transaction-tags', oneTag));
+            createANewTag('edit-transaction-tags', tagsCreated[i]);
         }
-
-        return documentFrag;
     }
 
     /*
