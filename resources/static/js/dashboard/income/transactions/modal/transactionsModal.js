@@ -14,7 +14,7 @@
         // Transaction Description Update
         document.getElementById('transactionDescriptionEntry').value = currentTransaction.description;
         // Transaction Tags Update
-        document.getElementById('transactionTagsEntry').value = isNotEmpty(currentTransaction.tags) ? currentTransaction.tags[0] : "";
+        document.getElementById('edit-transaction-tags').appendChild(createAllTags(currentTransaction.tags));
         // Close Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close  Financial Position
@@ -116,17 +116,35 @@
     });
 
     // On hit enter
-    $('body').on("keyup", "#add-transaction-value, #transactionTagsEntry", function (e) {
+    $('body').on("keyup", "#transactionTagsEntry", function (e) {
         var keyCode = e.key;
         if (isEqual(keyCode, 'Enter')) {
             e.preventDefault();
             // Create a new tag
-            createANewTag('transactionTagsEntry', this.value);
+            createANewTag('edit-transaction-tags', this.value);
             // Empty the input value
             this.value = '';
             return false;
         }
     });
+
+    /*
+     * Create Tags
+     */
+    function createAllTags(tagsCreated) {
+        let documentFrag = document.createDocumentFragment();
+
+        if (isEmpty(tagsCreated)) {
+            return documentFrag;
+        }
+
+        for (let i = 0, len = tagsCreated.length; i < len; i++) {
+            let oneTag = tagsCreated[i];
+            documentFrag.appendChild(createANewTag('edit-transaction-tags', oneTag));
+        }
+
+        return documentFrag;
+    }
 
     /*
      * Creates a new tag
