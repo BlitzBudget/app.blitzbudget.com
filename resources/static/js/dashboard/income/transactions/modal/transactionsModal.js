@@ -2,6 +2,16 @@
 (function scopeWrapper($) {
 
     $('body').on('click', '#transactionsTable .recentTransactionEntry, #recTransTable .recentTransactionEntry, #accSortedTable .recentTransactionEntry, #tagsTable .recentTransactionEntry', function (e) {
+        /*
+         * Delete all tags
+         */
+        let editTagsChosen = document.querySelectorAll('#edit-transaction-tags .badge');
+        // Tags Chosen
+        for (let i = 0, len = editTagsChosen.length; i < len; i++) {
+            // Push tags to the array
+            editTagsChosen[i].remove();
+        }
+
         let transactionsId = this.dataset.target;
         let currentTransaction = window.transactionsCache[transactionsId];
         let categoryId = currentTransaction.category;
