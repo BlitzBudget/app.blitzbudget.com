@@ -279,6 +279,7 @@
      * Updte Transaction
      */
     function updateTransaction(type, value) {
+        let values = {};
         values['walletId'] = window.currentUser.walletId;
         values['transactionId'] = document.getElementById('transactionInformationMdl').dataset.target;
         values[type] = value;
