@@ -111,7 +111,6 @@
             categorySortedTrans.remove();
             accountAggre.remove();
             recentTransaction.remove();
-            recurTransaction.remove();
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, "There was an error while deleting the transaction. Please try again later!", ajaxData);
@@ -119,7 +118,6 @@
             categorySortedTrans.classList.remove('d-none');
             accountAggre.classList.remove('d-none');
             recentTransaction.classList.remove('d-none');
-            recurTransaction.classList.remove('d-none');
         }
 
         jQuery.ajax({
@@ -231,7 +229,6 @@
         }
         // Update Tags
         updateTransaction('tags', tagsArray);
-
     });
 
     /*
@@ -244,7 +241,28 @@
             e.preventDefault();
             // Edit Description
             updateTransaction('description', this.value);
-            return false;
+        }
+        /*
+         * Transactions Description
+         */
+        let transactionAmountEntry = document.getElementById('transactionDescriptionEntry');
+        let formattedAmount = formatToCurrency(amount);
+        transactionAmountEntry.textContent = formattedAmount;
+        let categorySorted = document.querySelectorAll('#categorySorted-' + transactionId + ' .recentTransactionDescription');
+        if (isNotEmpty(categorySorted)) {
+            categorySorted.textContent = formattedAmount;
+        }
+        let tagsSorted = document.querySelectorAll('#overview-transaction-' + transactionId + ' .recentTransactionDescription');
+        if (isNotEmpty(tagsSorted)) {
+            tagsSorted.textContent = formattedAmount;
+        }
+        let accountAggre = document.querySelectorAll('#accountAggre-' + transactionId + ' .recentTransactionDescription');
+        if (isNotEmpty(accountAggre)) {
+            accountAggre.textContent = formattedAmount;
+        }
+        let recentTransaction = document.querySelectorAll('#recentTransaction-' + transactionId + ' .recentTransactionDescription');
+        if (isNotEmpty(recentTransaction)) {
+            recentTransaction.textContent = formattedAmount;
         }
     });
 
@@ -252,7 +270,9 @@
      * Save Amount
      */
     $('body').on("keyup", "#transactionAmountEntry", function (e) {
+        let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
         var keyCode = e.key;
+
         if (isEqual(keyCode, 'Enter')) {
             e.preventDefault();
             let amount = this.value;
@@ -264,7 +284,6 @@
             if (amount == 0) {
                 return false;
             }
-            let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
             // If expense category then convert to negative
             if (window.categoryMap[window.transactionsCache[transactionId].category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
                 // Update as negative amount
@@ -272,6 +291,28 @@
             }
             // Edit Amount
             updateTransaction('amount', amount);
+        }
+        /*
+         * Transactions Amount
+         */
+        let transactionAmountEntry = document.getElementById('transactionAmountEntry');
+        let formattedAmount = formatToCurrency(amount);
+        transactionAmountEntry.textContent = formattedAmount;
+        let categorySorted = document.querySelectorAll('#categorySorted-' + transactionId + ' .transactionAmountRT');
+        if (isNotEmpty(categorySorted)) {
+            categorySorted.textContent = formattedAmount;
+        }
+        let tagsSorted = document.querySelectorAll('#overview-transaction-' + transactionId + ' .transactionAmountRT');
+        if (isNotEmpty(tagsSorted)) {
+            tagsSorted.textContent = formattedAmount;
+        }
+        let accountAggre = document.querySelectorAll('#accountAggre-' + transactionId + ' .transactionAmountRT');
+        if (isNotEmpty(accountAggre)) {
+            accountAggre.textContent = formattedAmount;
+        }
+        let recentTransaction = document.querySelectorAll('#recentTransaction-' + transactionId + ' .transactionAmountRT');
+        if (isNotEmpty(recentTransaction)) {
+            recentTransaction.textContent = formattedAmount;
         }
     });
 
