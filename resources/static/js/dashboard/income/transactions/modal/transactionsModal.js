@@ -250,28 +250,30 @@
             e.preventDefault();
             // Edit Description
             updateTransaction('description', this.value);
-        }
-        /*
-         * Transactions Description
-         */
-        let transactionAmountEntry = document.getElementById('transactionDescriptionEntry');
-        let formattedAmount = formatToCurrency(amount);
-        transactionAmountEntry.textContent = formattedAmount;
-        let categorySorted = document.querySelectorAll('#categorySorted-' + transactionId + ' .recentTransactionDescription');
-        if (isNotEmpty(categorySorted)) {
-            categorySorted.textContent = formattedAmount;
-        }
-        let tagsSorted = document.querySelectorAll('#overview-transaction-' + transactionId + ' .recentTransactionDescription');
-        if (isNotEmpty(tagsSorted)) {
-            tagsSorted.textContent = formattedAmount;
-        }
-        let accountAggre = document.querySelectorAll('#accountAggre-' + transactionId + ' .recentTransactionDescription');
-        if (isNotEmpty(accountAggre)) {
-            accountAggre.textContent = formattedAmount;
-        }
-        let recentTransaction = document.querySelectorAll('#recentTransaction-' + transactionId + ' .recentTransactionDescription');
-        if (isNotEmpty(recentTransaction)) {
-            recentTransaction.textContent = formattedAmount;
+            /*
+             * Transactions Description
+             */
+            let transactionAmountEntry = document.getElementById('transactionDescriptionEntry');
+            let formattedAmount = formatToCurrency(amount);
+            transactionAmountEntry.textContent = formattedAmount;
+            let categorySorted = document.querySelectorAll('#categorySorted-' + transactionId + ' .recentTransactionDescription');
+            if (isNotEmpty(categorySorted)) {
+                categorySorted.textContent = formattedAmount;
+            }
+            let tagsSorted = document.querySelectorAll('#overview-transaction-' + transactionId + ' .recentTransactionDescription');
+            if (isNotEmpty(tagsSorted)) {
+                tagsSorted.textContent = formattedAmount;
+            }
+            let accountAggre = document.querySelectorAll('#accountAggre-' + transactionId + ' .recentTransactionDescription');
+            if (isNotEmpty(accountAggre)) {
+                accountAggre.textContent = formattedAmount;
+            }
+            let recentTransaction = document.querySelectorAll('#recentTransaction-' + transactionId + ' .recentTransactionDescription');
+            if (isNotEmpty(recentTransaction)) {
+                recentTransaction.textContent = formattedAmount;
+            }
+            // Focus out
+            this.blur();
         }
     });
 
@@ -300,28 +302,30 @@
             }
             // Edit Amount
             updateTransaction('amount', amount);
-        }
-        /*
-         * Transactions Amount
-         */
-        let transactionAmountEntry = document.getElementById('transactionAmountEntry');
-        let formattedAmount = formatToCurrency(amount);
-        transactionAmountEntry.textContent = formattedAmount;
-        let categorySorted = document.querySelectorAll('#categorySorted-' + transactionId + ' .transactionAmountRT');
-        if (isNotEmpty(categorySorted)) {
-            categorySorted.textContent = formattedAmount;
-        }
-        let tagsSorted = document.querySelectorAll('#overview-transaction-' + transactionId + ' .transactionAmountRT');
-        if (isNotEmpty(tagsSorted)) {
-            tagsSorted.textContent = formattedAmount;
-        }
-        let accountAggre = document.querySelectorAll('#accountAggre-' + transactionId + ' .transactionAmountRT');
-        if (isNotEmpty(accountAggre)) {
-            accountAggre.textContent = formattedAmount;
-        }
-        let recentTransaction = document.querySelectorAll('#recentTransaction-' + transactionId + ' .transactionAmountRT');
-        if (isNotEmpty(recentTransaction)) {
-            recentTransaction.textContent = formattedAmount;
+            /*
+             * Transactions Amount
+             */
+            let transactionAmountEntry = document.getElementById('transactionAmountEntry');
+            let formattedAmount = formatToCurrency(amount);
+            transactionAmountEntry.textContent = formattedAmount;
+            let categorySorted = document.querySelectorAll('#categorySorted-' + transactionId + ' .transactionAmountRT');
+            if (isNotEmpty(categorySorted)) {
+                categorySorted.textContent = formattedAmount;
+            }
+            let tagsSorted = document.querySelectorAll('#overview-transaction-' + transactionId + ' .transactionAmountRT');
+            if (isNotEmpty(tagsSorted)) {
+                tagsSorted.textContent = formattedAmount;
+            }
+            let accountAggre = document.querySelectorAll('#accountAggre-' + transactionId + ' .transactionAmountRT');
+            if (isNotEmpty(accountAggre)) {
+                accountAggre.textContent = formattedAmount;
+            }
+            let recentTransaction = document.querySelectorAll('#recentTransaction-' + transactionId + ' .transactionAmountRT');
+            if (isNotEmpty(recentTransaction)) {
+                recentTransaction.textContent = formattedAmount;
+            }
+            // Focus out
+            this.blur();
         }
     });
 
