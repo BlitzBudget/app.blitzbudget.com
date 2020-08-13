@@ -34,7 +34,8 @@
         // transaction Balance Update
         document.getElementById('transactionAmountEntry').value = formatToCurrency(currentTransaction.amount);
         // Transaction Category Update
-        document.getElementById('transactionCategoryEntry').textContent = window.categoryMap[currentTransaction.category].name;
+        let editCategory = document.getElementById('editCategory');
+        editCategory.firstElementChild.textContent = window.categoryMap[currentTransaction.category].name;
         // Transaction Description Update
         document.getElementById('transactionDescriptionEntry').value = currentTransaction.description;
         // Transaction Tags Update
@@ -111,6 +112,14 @@
             categorySortedTrans.remove();
             accountAggre.remove();
             recentTransaction.remove();
+            // Fix category balance
+            let userTransaction = window.transactionsCache[transactionsId];
+            let categoryId = userTransaction.category;
+            let catDiv = document.getElementById('categoryBalance-' + categoryId);
+            let catBal = er.convertToNumberFromCurrency(catDiv.textContent, currentCurrencyPreference);
+            // Calculate current category balance
+            let currNewCatBal = catBal - userTransaction.amount;
+            catDiv.textContent = formatToCurrency(currNewCatBal);
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, "There was an error while deleting the transaction. Please try again later!", ajaxData);

@@ -321,6 +321,24 @@
                                     <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Category" data-title-i18n="tooltip.category">category</i>
                                 </div>
                                 <span id="transactionCategoryEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false"></span>
+                                <div id="editCategory" class="btn-group btnGroup-1">
+                                    <div class="w-md-15 w-8" disabled="">Bills & Fees</div>
+                                    <div type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </div>
+                                    <div class="dropdown-menu">
+                                        <!-- Drop down dynamic load -->
+                                        <div class="input-group">
+                                            <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
+                                            <input id="editCategoryInp" class="form-control w-75 mr-2" type="text" data-placeholder-i18n="placeholder.search" placeholder="Search...">
+                                            <h6 class="dropdown-header" data-i18n="transactions.modal.add.expense">Expense</h6>
+                                            <div id="editExpenseSelection" class="w-100"></div>
+                                            <div class="dropdown-divider"></div>
+                                            <h6 class="dropdown-header" data-i18n="transactions.modal.add.income">Income</h6>
+                                            <div id="editIncomeSelection" class="w-100"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row transactionDescriptionDiv py-1">
                                 <div class="col-lg-3 d-inline-block h-100">

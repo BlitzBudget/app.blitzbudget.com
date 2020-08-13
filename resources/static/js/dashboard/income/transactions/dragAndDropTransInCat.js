@@ -270,6 +270,9 @@
                 // Build empty category entry
                 oldCatTable.appendChild(buildEmptyCategoryEntry(oldCategoryId));
             }
+            // Transaction Modal - Edit Categories Name
+            let editCategory = document.getElementById('editCategory');
+            editCategory.firstElementChild.textContent = window.categoryMap[categoryId].name;
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, 'Unable to change the transacition amount.', ajaxData);
