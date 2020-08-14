@@ -113,7 +113,7 @@
             accountAggre.remove();
             recentTransaction.remove();
             // Fix category balance
-            let userTransaction = window.transactionsCache[transactionsId];
+            let userTransaction = window.transactionsCache[transactionId];
             let categoryId = userTransaction.category;
             let catDiv = document.getElementById('categoryBalance-' + categoryId);
             let catBal = er.convertToNumberFromCurrency(catDiv.textContent, currentCurrencyPreference);
@@ -344,9 +344,12 @@
              */
             let currentTransaction = window.transactionsCache[transactionId];
             let categoryId = currentTransaction.category;
+            // Delete the old balance
             window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal - currentTransaction.amount;
             // Set the new amount to the cache
             window.transactionsCache[transactionId].amount = amount;
+            // Add the new balance
+            window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal + window.transactionsCache[transactionId].amount;
             // Set the value and percentage of the progress bar
             let amountAccumulatedTrans = document.getElementById('amountAccumulatedTrans');
             // Progress Bar percentage
@@ -368,7 +371,6 @@
             document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
             // Remaining in currencys
             document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
-
             // Focus out
             this.blur();
         }
