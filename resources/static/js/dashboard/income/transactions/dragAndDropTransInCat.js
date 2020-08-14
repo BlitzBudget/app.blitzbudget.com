@@ -273,6 +273,8 @@
             // Transaction Modal - Edit Categories Name
             let editCategory = document.getElementById('editCategory');
             editCategory.firstElementChild.textContent = window.categoryMap[categoryId].name;
+            // Window Transactions Map Category
+            window.transactionsCache[transactionId].category = categoryId;
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, 'Unable to change the transacition amount.', ajaxData);
