@@ -120,6 +120,12 @@
             // Calculate current category balance
             let currNewCatBal = catBal - userTransaction.amount;
             catDiv.textContent = formatToCurrency(currNewCatBal);
+            /*
+             * Update the category total
+             */
+            window.categoryMap[categoryId].categoryTotal = catBal;
+            // Remove transaction from cache
+            window.transactionsCache.remove(transactionId);
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, "There was an error while deleting the transaction. Please try again later!", ajaxData);
@@ -333,6 +339,36 @@
             if (isNotEmpty(recentTransaction)) {
                 recentTransaction.textContent = formattedAmount;
             }
+            /*
+             * Update the category total in transaction modal
+             */
+            let currentTransaction = window.transactionsCache[transactionId];
+            let categoryId = currentTransaction.category;
+            window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal - currentTransaction.amount;
+            // Set the new amount to the cache
+            window.transactionsCache[transactionId].amount = amount;
+            // Set the value and percentage of the progress bar
+            let amountAccumulatedTrans = document.getElementById('amountAccumulatedTrans');
+            // Progress Bar percentage
+            let progressBarPercentage = 0;
+            let remainingAmount = 0;
+            if (isNotEmpty(window.categoryMap[categoryId])) {
+                progressBarPercentage = round(((Math.abs(currentTransaction.amount) / Math.abs(window.categoryMap[categoryId].categoryTotal)) * 100), 2);
+                // Is Not A Number then
+                if (isNaN(progressBarPercentage)) {
+                    progressBarPercentage = 0;
+                }
+                // Remaining Amount
+                remainingAmount = (Math.abs(window.categoryMap[categoryId].categoryTotal) - Math.abs(currentTransaction.amount));
+            }
+            // Progress bar percentage
+            amountAccumulatedTrans.setAttribute('aria-valuenow', progressBarPercentage);
+            amountAccumulatedTrans.style.width = progressBarPercentage + '%';
+            // Remaining Percentage
+            document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
+            // Remaining in currencys
+            document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
+
             // Focus out
             this.blur();
         }

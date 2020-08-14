@@ -130,3 +130,8 @@
 #edit-transaction-tags.tagsinput {
     padding-left: 0.95rem;
 }
+
+#editCategory .dropdown-toggle {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+}
