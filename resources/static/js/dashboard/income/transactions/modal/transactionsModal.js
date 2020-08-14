@@ -258,7 +258,7 @@
             let transactionDescriptionEntry = document.getElementById('transactionDescriptionEntry');
             transactionDescriptionEntry.value = desc;
             let categorySorted = document.getElementById('categorySorted-' + transactionId);
-            categorySorted = categorySorted.getElementsByClassName('recentTransactionDescription');
+            categorySorted = categorySorted.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(categorySorted)) {
                 categorySorted.textContent = desc;
             }
@@ -314,22 +314,22 @@
             let formattedAmount = formatToCurrency(amount);
             transactionAmountEntry.value = formattedAmount;
             let categorySorted = document.getElementById('categorySorted-' + transactionId);
-            categorySorted = categorySorted.getElementsByClassName('recentTransactionDescription');
+            categorySorted = categorySorted.getElementsByClassName('transactionAmountRT')[0];
             if (isNotEmpty(categorySorted)) {
                 categorySorted.textContent = formattedAmount;
             }
             let tagsSorted = document.getElementById('overview-transaction-' + transactionId);
-            tagsSorted = tagsSorted.getElementsByClassName('recentTransactionDescription')[0];
+            tagsSorted = tagsSorted.getElementsByClassName('transactionAmountRT')[0];
             if (isNotEmpty(tagsSorted)) {
                 tagsSorted.textContent = formattedAmount;
             }
             let accountAggre = document.getElementById('accountAggre-' + transactionId);
-            accountAggre = accountAggre.getElementsByClassName('recentTransactionDescription')[0];
+            accountAggre = accountAggre.getElementsByClassName('transactionAmountRT')[0];
             if (isNotEmpty(accountAggre)) {
                 accountAggre.textContent = formattedAmount;
             }
             let recentTransaction = document.getElementById('recentTransaction-' + transactionId);
-            recentTransaction = recentTransaction.getElementsByClassName('recentTransactionDescription')[0];
+            recentTransaction = recentTransaction.getElementsByClassName('transactionAmountRT')[0];
             if (isNotEmpty(recentTransaction)) {
                 recentTransaction.textContent = formattedAmount;
             }
