@@ -248,34 +248,34 @@
         var keyCode = e.key;
         if (isEqual(keyCode, 'Enter')) {
             let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
+            let desc = this.value;
             e.preventDefault();
             // Edit Description
-            updateTransaction('description', this.value);
+            updateTransaction('description', desc);
             /*
              * Transactions Description
              */
-            let transactionAmountEntry = document.getElementById('transactionDescriptionEntry');
-            let formattedAmount = formatToCurrency(amount);
-            transactionAmountEntry.value = formattedAmount;
-            let categorySorted = document.getElementById('#categorySorted-' + transactionId);
-            categorySorted = categorySorted.getElementsByClassName('.recentTransactionDescription');
+            let transactionDescriptionEntry = document.getElementById('transactionDescriptionEntry');
+            transactionDescriptionEntry.value = desc;
+            let categorySorted = document.getElementById('categorySorted-' + transactionId);
+            categorySorted = categorySorted.getElementsByClassName('recentTransactionDescription');
             if (isNotEmpty(categorySorted)) {
-                categorySorted.textContent = formattedAmount;
+                categorySorted.textContent = desc;
             }
-            let tagsSorted = document.getElementById('#overview-transaction-' + transactionId);
-            tagsSorted = tagsSorted.getElementsByClassName('.recentTransactionDescription')[0];
+            let tagsSorted = document.getElementById('overview-transaction-' + transactionId);
+            tagsSorted = tagsSorted.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(tagsSorted)) {
-                tagsSorted.textContent = formattedAmount;
+                tagsSorted.textContent = desc;
             }
-            let accountAggre = document.getElementById('#accountAggre-' + transactionId);
-            accountAggre = accountAggre.getElementsByClassName('.recentTransactionDescription')[0];
+            let accountAggre = document.getElementById('accountAggre-' + transactionId);
+            accountAggre = accountAggre.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(accountAggre)) {
-                accountAggre.textContent = formattedAmount;
+                accountAggre.textContent = desc;
             }
-            let recentTransaction = document.getElementById('#recentTransaction-' + transactionId);
-            recentTransaction = recentTransaction.getElementsByClassName('.recentTransactionDescription')[0];
+            let recentTransaction = document.getElementById('recentTransaction-' + transactionId);
+            recentTransaction = recentTransaction.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(recentTransaction)) {
-                recentTransaction.textContent = formattedAmount;
+                recentTransaction.textContent = desc;
             }
             // Focus out
             this.blur();
@@ -313,24 +313,23 @@
             let transactionAmountEntry = document.getElementById('transactionAmountEntry');
             let formattedAmount = formatToCurrency(amount);
             transactionAmountEntry.value = formattedAmount;
-            let categorySortedPath = '#categorySorted-' + transactionId + ' .transactionAmountRT';
-            let categorySorted = document.getElementById('#categorySorted-' + transactionId);
-            categorySorted = categorySorted.getElementsByClassName('.recentTransactionDescription');
+            let categorySorted = document.getElementById('categorySorted-' + transactionId);
+            categorySorted = categorySorted.getElementsByClassName('recentTransactionDescription');
             if (isNotEmpty(categorySorted)) {
                 categorySorted.textContent = formattedAmount;
             }
-            let tagsSorted = document.getElementById('#overview-transaction-' + transactionId);
-            tagsSorted = tagsSorted.getElementsByClassName('.recentTransactionDescription')[0];
+            let tagsSorted = document.getElementById('overview-transaction-' + transactionId);
+            tagsSorted = tagsSorted.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(tagsSorted)) {
                 tagsSorted.textContent = formattedAmount;
             }
-            let accountAggre = document.getElementById('#accountAggre-' + transactionId);
-            accountAggre = accountAggre.getElementsByClassName('.recentTransactionDescription')[0];
+            let accountAggre = document.getElementById('accountAggre-' + transactionId);
+            accountAggre = accountAggre.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(accountAggre)) {
                 accountAggre.textContent = formattedAmount;
             }
-            let recentTransaction = document.getElementById('#recentTransaction-' + transactionId);
-            recentTransaction = recentTransaction.getElementsByClassName('.recentTransactionDescription')[0];
+            let recentTransaction = document.getElementById('recentTransaction-' + transactionId);
+            recentTransaction = recentTransaction.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(recentTransaction)) {
                 recentTransaction.textContent = formattedAmount;
             }
