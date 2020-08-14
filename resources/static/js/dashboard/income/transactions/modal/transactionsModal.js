@@ -125,7 +125,7 @@
              */
             window.categoryMap[categoryId].categoryTotal = catBal;
             // Remove transaction from cache
-            window.transactionsCache.delete(transactionId);
+            delete window.transactionsCache[transactionId];
             // Check if there are any transactions in the category header
             let categoryHeader = document.getElementById('categorySB-' + categoryId);
             if (categoryHeader.childNodes.length == 1) {
