@@ -123,7 +123,7 @@
             /*
              * Update the category total
              */
-            window.categoryMap[categoryId].categoryTotal = catBal;
+            window.categoryMap[categoryId].categoryTotal = currNewCatBal;
             // Remove transaction from cache
             delete window.transactionsCache[transactionId];
             // Check if there are any transactions in the category header

@@ -243,6 +243,9 @@
             // Append the new amount to the front
             oldCatDiv.textContent = formatToCurrency(currCatBal);
             catDiv.textContent = formatToCurrency(currNewCatBal);
+            // Update Category Total
+            window.categoryMap[oldCategoryId].categoryTotal = currCatBal;
+            window.categoryMap[categoryId].categoryTotal = currNewCatBal;
             // If the category balance is negative then change color
             if (currCatBal < 0) {
                 oldCatDiv.classList.add('expenseCategory');
