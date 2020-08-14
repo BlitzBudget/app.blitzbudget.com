@@ -126,6 +126,12 @@
             window.categoryMap[categoryId].categoryTotal = catBal;
             // Remove transaction from cache
             window.transactionsCache.remove(transactionId);
+            // Check if there are any transactions in the category header
+            let categoryHeader = document.getElementById('categorySB-' + categoryId);
+            if (categoryHeader.childNodes.length == 1) {
+                // Ppopulate empty table transaction
+                categoryHeader.appendChild(buildEmptyTableEntry('emptyCategoryItem-' + categoryId));
+            }
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, "There was an error while deleting the transaction. Please try again later!", ajaxData);
@@ -350,6 +356,10 @@
             window.transactionsCache[transactionId].amount = amount;
             // Add the new balance
             window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal + window.transactionsCache[transactionId].amount;
+            // Update Category Total
+            let categoryHeader = document.getElementById('categorySB-' + categoryId);
+            // Format to currency and update category header
+            categoryHeader.firstElementChild.lastElementChild.textContent = formatToCurrency(window.categoryMap[categoryId].categoryTotal);
             // Set the value and percentage of the progress bar
             let amountAccumulatedTrans = document.getElementById('amountAccumulatedTrans');
             // Progress Bar percentage
