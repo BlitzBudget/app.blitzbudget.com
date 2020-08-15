@@ -30,7 +30,7 @@
     // Delete Transaction Button Inside TD
     const deleteButton = '<button class="btn btn-danger btn-sm removeRowTransaction">Remove</button>';
     // New Pie Chart Storage Variable
-    let transactionsChart = '';
+    window.transactionsChart = '';
     // Success SVG Fragment
     let successSVGFormed = successSvgMessage();
     // String Today
@@ -538,8 +538,8 @@
     // Replace Pie Chart with Material Spinner
     function replacePieChartWithMSpinner() {
         // Reset the chart
-        if (isNotEmpty(transactionsChart)) {
-            transactionsChart.detach();
+        if (isNotEmpty(window.transactionsChart)) {
+            window.transactionsChart.detach();
         }
 
         let chartFinPosition = document.getElementById('chartFinancialPosition');
@@ -1194,15 +1194,15 @@ tr = {
         };
 
         // Reset the chart
-        if (isNotEmpty(transactionsChart)) {
-            transactionsChart.detach();
+        if (isNotEmpty(window.transactionsChart)) {
+            window.transactionsChart.detach();
         }
         replaceHTML(id, '');
         // Dispose tooltips
         $("#" + id).tooltip('dispose');
 
         if (isNotEmpty(dataPreferences)) {
-            transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function (data) {
+            window.transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function (data) {
                 if (data.type === 'slice') {
                     let sliceValue = data.element._node.getAttribute('ct:value');
                     data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
@@ -1248,7 +1248,7 @@ tr = {
             });
 
             // Animate the doughnut chart
-            er.startAnimationDonutChart(transactionsChart);
+            er.startAnimationDonutChart(window.transactionsChart);
         }
 
     }
