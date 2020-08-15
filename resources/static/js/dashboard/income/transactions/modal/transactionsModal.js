@@ -349,9 +349,9 @@
              * Update total Balance
              */
             // Update total avalable balance
-            let totalIncomeTransactions = document.getElementById('totalIncomeTransactions');
+            let totalIncomeTransactions = document.getElementById('totalIncomeTransactions').textContent;
             totalIncomeTransactions = er.convertToNumberFromCurrency(totalIncomeTransactions, currentCurrencyPreference);
-            let totalExpensesTransactions = document.getElementById('totalExpensesTransactions');
+            let totalExpensesTransactions = document.getElementById('totalExpensesTransactions').textContent;
             totalExpensesTransactions = er.convertToNumberFromCurrency(totalExpensesTransactions, currentCurrencyPreference);
             /*
              * Update the category total in transaction modal
