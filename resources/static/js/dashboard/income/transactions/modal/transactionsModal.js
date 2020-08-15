@@ -74,6 +74,8 @@
         document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
         // Remaining in currencys
         document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
+        // Load Categories for all transactions
+        tr.loadCategoriesForTransaction('editCategory', 'editExpenseSelection', 'editIncomeSelection');
     });
 
     // Delete Transactions

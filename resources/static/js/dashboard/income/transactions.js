@@ -372,7 +372,7 @@
             er_a.populateBankInfo(result.BankAccount);
 
             fetchJSONForCategories(result.Category);
-            loadCategoriesForTransaction();
+            tr.loadCategoriesForTransaction('categoryOptions', 'expenseSelection', 'incomeSelection');
 
             // Dates Cache
             window.datesCreated = result.Date;
@@ -435,29 +435,6 @@
             populateTransactionsByCategory(result.Transaction);
             buildCategoryHeaders(result.Category);
         }
-    }
-
-    function loadCategoriesForTransaction() {
-        // set default category
-        let defaultCategory = window.defaultCategories[1];
-        if (isEmpty(defaultCategory.id)) {
-            document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.name);
-        } else {
-            document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.id);
-        }
-
-        // Load Expense category and income category
-        let expenseSelectionDiv = document.getElementById('expenseSelection');
-        while (expenseSelectionDiv.firstChild) {
-            expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
-        }
-        let incomeSelectionDiv = document.getElementById('incomeSelection');
-        while (incomeSelectionDiv.firstChild) {
-            incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
-        }
-        expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
-        incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
-
     }
 
     // Fetches the budget for all the category rows if present and updates the category row
@@ -1131,6 +1108,7 @@
 
 tr = {
 
+    // Total available section
     updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
 
         animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
@@ -1142,6 +1120,7 @@ tr = {
 
     },
 
+    // Update Totals for Transactions
     updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
         let dataPreferences = {};
         if (totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
@@ -1177,6 +1156,7 @@ tr = {
 
     },
 
+    // Build Pie Chart for transactions
     buildPieChart(dataPreferences, id) {
         /*  **************** Public Preferences - Pie Chart ******************** */
         let inc = window.translationData.transactions.dynamic.chart.labels.income;
@@ -1250,6 +1230,30 @@ tr = {
             // Animate the doughnut chart
             er.startAnimationDonutChart(window.transactionsChart);
         }
+
+    },
+
+    // Load Categories for transaction
+    loadCategoriesForTransaction(dropdownId, expenseId, incomeId) {
+        // set default category
+        let defaultCategory = window.defaultCategories[1];
+        if (isEmpty(defaultCategory.id)) {
+            document.getElementById(dropdownId).setAttribute('data-chosen', defaultCategory.name);
+        } else {
+            document.getElementById(dropdownId).setAttribute('data-chosen', defaultCategory.id);
+        }
+
+        // Load Expense category and income category
+        let expenseSelectionDiv = document.getElementById(expenseId);
+        while (expenseSelectionDiv.firstChild) {
+            expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
+        }
+        let incomeSelectionDiv = document.getElementById(incomeId);
+        while (incomeSelectionDiv.firstChild) {
+            incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
+        }
+        expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
+        incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
 
     }
 
