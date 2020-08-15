@@ -385,7 +385,7 @@
             // Populate Category Sort
             populateCategorySort(result);
             // update the Total Available Section
-            updateTotalAvailableSection(result.incomeTotal, result.expenseTotal, result.balance);
+            tr.updateTotalAvailableSection(result.incomeTotal, result.expenseTotal, result.balance);
             // Update Budget from API
             updateBudgetForIncome(result.Budget);
             // Change the table sorting on page load
@@ -467,131 +467,6 @@
             // Update user budget to global map (Exportation)
             window.userBudgetMap[value.category] = value;
         }
-    }
-
-    // Updates the total income and total expenses
-    function updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
-
-        animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
-        animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference, 1000);
-        animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference, 1000);
-
-        // Build Pie chart
-        buildPieChart(updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
-
-    }
-
-    // Update the pie chart with transactions data
-    function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
-        let dataPreferences = {};
-        if (totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
-            let empty = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.empty : "Please fill in adequare data to build a chart";
-            replaceHTML('legendPieChart', empty);
-        } else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
-            let exp = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.expense : "Total Income & Total Overspent as a percentage of Total Expense";
-            let overspent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.overspent : "Total Overspent";
-            replaceHTML('legendPieChart', exp);
-            replaceHTML('totalAvailableLabel', overspent);
-            let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100), 1);
-            let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100), 1);
-            // labels: [INCOME,EXPENSE,AVAILABLE]
-            dataPreferences = {
-                labels: [totalIncomeAsPercentageOfExpense + '%', " ", " ", totalDeficitAsPercentageOfExpense + '%'],
-                series: [totalIncomeTransactions, 0, 0, totalAvailableTransactions]
-            };
-        } else {
-            let income = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.income : "Total Spent & Total Available as a percentage of Total Income";
-            let available = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.available : "Total Available";
-            replaceHTML('legendPieChart', income);
-            replaceHTML('totalAvailableLabel', available);
-            let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100), 1);
-            let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100), 1);
-            // labels: [INCOME,EXPENSE,AVAILABLE]
-            dataPreferences = {
-                labels: [" ", totalExpenseAsPercentageOfIncome + '%', totalAvailableAsPercentageOfIncome + '%', " "],
-                series: [0, totalExpensesTransactions, totalAvailableTransactions, 0]
-            };
-        }
-
-        return dataPreferences;
-
-    }
-
-    // Introduce Chartist pie chart
-    function buildPieChart(dataPreferences, id) {
-        /*  **************** Public Preferences - Pie Chart ******************** */
-        let inc = window.translationData.transactions.dynamic.chart.labels.income;
-        let spent = window.translationData.transactions.dynamic.chart.labels.spent;
-        let avai = window.translationData.transactions.dynamic.chart.labels.available;
-        let oversp = window.translationData.transactions.dynamic.chart.labels.overspent;
-        let labels = [inc, spent, avai, oversp];
-
-        var optionsPreferences = {
-            donut: true,
-            donutWidth: 50,
-            startAngle: 270,
-            showLabel: true,
-            height: '230px'
-        };
-
-        // Reset the chart
-        if (isNotEmpty(transactionsChart)) {
-            transactionsChart.detach();
-        }
-        replaceHTML(id, '');
-        // Dispose tooltips
-        $("#" + id).tooltip('dispose');
-
-        if (isNotEmpty(dataPreferences)) {
-            transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function (data) {
-                if (data.type === 'slice') {
-                    let sliceValue = data.element._node.getAttribute('ct:value');
-                    data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
-                    data.element._node.setAttribute("data-chart-tooltip", id);
-                }
-            }).on("created", function () {
-                let chartLegend = document.getElementById('chartLegend');
-                let incomeAmount = document.getElementById('totalIncomeTransactions');
-                let expenseAmount = document.getElementById('totalExpensesTransactions');
-                let totalAvailable = document.getElementById('totalAvailableTransactions');
-
-                // Initiate Tooltip
-                $("#" + id).tooltip({
-                    selector: '[data-chart-tooltip="' + id + '"]',
-                    container: "#" + id,
-                    html: true,
-                    placement: 'auto',
-                    delay: {
-                        "show": 300,
-                        "hide": 100
-                    }
-                });
-
-                $('.ct-slice-donut').on('mouseover mouseout', function () {
-                    chartLegend.classList.toggle('hiddenAfterHalfASec');
-                    chartLegend.classList.toggle('visibleAfterHalfASec');
-                });
-
-                $('.ct-series-a').on('mouseover mouseout', function () {
-                    incomeAmount.classList.toggle('transitionTextToNormal');
-                    incomeAmount.classList.toggle('transitionTextTo120');
-                });
-
-                $('.ct-series-b').on('mouseover mouseout', function () {
-                    expenseAmount.classList.toggle('transitionTextToNormal');
-                    expenseAmount.classList.toggle('transitionTextTo120');
-                });
-
-                $('.ct-series-c').on('mouseover mouseout', function () {
-                    totalAvailable.classList.toggle('transitionTextToNormal');
-                    totalAvailable.classList.toggle('transitionTextTo120');
-                });
-            });
-
-            // Animate the doughnut chart
-            er.startAnimationDonutChart(transactionsChart);
-        }
-
     }
 
     // Generate SVG Tick Element and success element
@@ -1253,6 +1128,132 @@
     }
 
 }(jQuery));
+
+tr = {
+
+    updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
+
+        animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
+        animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference, 1000);
+        animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference, 1000);
+
+        // Build Pie chart
+        buildPieChart(updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
+
+    },
+
+    updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
+        let dataPreferences = {};
+        if (totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
+            let empty = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.empty : "Please fill in adequare data to build a chart";
+            replaceHTML('legendPieChart', empty);
+        } else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
+            let exp = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.expense : "Total Income & Total Overspent as a percentage of Total Expense";
+            let overspent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.overspent : "Total Overspent";
+            replaceHTML('legendPieChart', exp);
+            replaceHTML('totalAvailableLabel', overspent);
+            let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100), 1);
+            let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100), 1);
+            // labels: [INCOME,EXPENSE,AVAILABLE]
+            dataPreferences = {
+                labels: [totalIncomeAsPercentageOfExpense + '%', " ", " ", totalDeficitAsPercentageOfExpense + '%'],
+                series: [totalIncomeTransactions, 0, 0, totalAvailableTransactions]
+            };
+        } else {
+            let income = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.income : "Total Spent & Total Available as a percentage of Total Income";
+            let available = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.available : "Total Available";
+            replaceHTML('legendPieChart', income);
+            replaceHTML('totalAvailableLabel', available);
+            let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100), 1);
+            let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100), 1);
+            // labels: [INCOME,EXPENSE,AVAILABLE]
+            dataPreferences = {
+                labels: [" ", totalExpenseAsPercentageOfIncome + '%', totalAvailableAsPercentageOfIncome + '%', " "],
+                series: [0, totalExpensesTransactions, totalAvailableTransactions, 0]
+            };
+        }
+
+        return dataPreferences;
+
+    },
+
+    buildPieChart(dataPreferences, id) {
+        /*  **************** Public Preferences - Pie Chart ******************** */
+        let inc = window.translationData.transactions.dynamic.chart.labels.income;
+        let spent = window.translationData.transactions.dynamic.chart.labels.spent;
+        let avai = window.translationData.transactions.dynamic.chart.labels.available;
+        let oversp = window.translationData.transactions.dynamic.chart.labels.overspent;
+        let labels = [inc, spent, avai, oversp];
+
+        var optionsPreferences = {
+            donut: true,
+            donutWidth: 50,
+            startAngle: 270,
+            showLabel: true,
+            height: '230px'
+        };
+
+        // Reset the chart
+        if (isNotEmpty(transactionsChart)) {
+            transactionsChart.detach();
+        }
+        replaceHTML(id, '');
+        // Dispose tooltips
+        $("#" + id).tooltip('dispose');
+
+        if (isNotEmpty(dataPreferences)) {
+            transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function (data) {
+                if (data.type === 'slice') {
+                    let sliceValue = data.element._node.getAttribute('ct:value');
+                    data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+                    data.element._node.setAttribute("data-chart-tooltip", id);
+                }
+            }).on("created", function () {
+                let chartLegend = document.getElementById('chartLegend');
+                let incomeAmount = document.getElementById('totalIncomeTransactions');
+                let expenseAmount = document.getElementById('totalExpensesTransactions');
+                let totalAvailable = document.getElementById('totalAvailableTransactions');
+
+                // Initiate Tooltip
+                $("#" + id).tooltip({
+                    selector: '[data-chart-tooltip="' + id + '"]',
+                    container: "#" + id,
+                    html: true,
+                    placement: 'auto',
+                    delay: {
+                        "show": 300,
+                        "hide": 100
+                    }
+                });
+
+                $('.ct-slice-donut').on('mouseover mouseout', function () {
+                    chartLegend.classList.toggle('hiddenAfterHalfASec');
+                    chartLegend.classList.toggle('visibleAfterHalfASec');
+                });
+
+                $('.ct-series-a').on('mouseover mouseout', function () {
+                    incomeAmount.classList.toggle('transitionTextToNormal');
+                    incomeAmount.classList.toggle('transitionTextTo120');
+                });
+
+                $('.ct-series-b').on('mouseover mouseout', function () {
+                    expenseAmount.classList.toggle('transitionTextToNormal');
+                    expenseAmount.classList.toggle('transitionTextTo120');
+                });
+
+                $('.ct-series-c').on('mouseover mouseout', function () {
+                    totalAvailable.classList.toggle('transitionTextToNormal');
+                    totalAvailable.classList.toggle('transitionTextTo120');
+                });
+            });
+
+            // Animate the doughnut chart
+            er.startAnimationDonutChart(transactionsChart);
+        }
+
+    }
+
+}
 
 // Build EmptyRecTransTable
 function buildEmptyTransactionsTab(className) {

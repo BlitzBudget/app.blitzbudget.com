@@ -346,16 +346,34 @@
                 recentTransaction.textContent = formattedAmount;
             }
             /*
+             * Update total Balance
+             */
+            // Update total avalable balance
+            let totalIncomeTransactions = document.getElementById('totalIncomeTransactions');
+            totalIncomeTransactions = er.convertToNumberFromCurrency(totalIncomeTransactions, currentCurrencyPreference);
+            let totalExpensesTransactions = document.getElementById('totalExpensesTransactions');
+            totalExpensesTransactions = er.convertToNumberFromCurrency(totalExpensesTransactions, currentCurrencyPreference);
+            /*
              * Update the category total in transaction modal
              */
             let currentTransaction = window.transactionsCache[transactionId];
             let categoryId = currentTransaction.category;
             // Delete the old balance
             window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal - currentTransaction.amount;
+            if (isEqual(window.categoryMap[categoryId].type, CUSTOM_DASHBOARD_CONSTANTS.expenseCategory)) {
+                totalExpensesTransactions = totalExpensesTransactions - currentTransaction.amount;
+            } else {
+                totalIncomeTransactions = totalIncomeTransactions - currentTransaction.amount;
+            }
             // Set the new amount to the cache
             window.transactionsCache[transactionId].amount = amount;
             // Add the new balance
             window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal + window.transactionsCache[transactionId].amount;
+            if (isEqual(window.categoryMap[categoryId].type, CUSTOM_DASHBOARD_CONSTANTS.expenseCategory)) {
+                totalExpensesTransactions = totalExpensesTransactions + currentTransaction.amount;
+            } else {
+                totalIncomeTransactions = totalIncomeTransactions + currentTransaction.amount;
+            }
             // Update Category Total
             let categoryHeader = document.getElementById('categorySB-' + categoryId);
             // Format to currency and update category header
@@ -383,6 +401,9 @@
             document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
             // Focus out
             this.blur();
+            // Income and expense total
+            let totalAvailableTransactions = totalIncomeTransactions - totalExpensesTransactions;
+            tr.updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions);
         }
     });
 
