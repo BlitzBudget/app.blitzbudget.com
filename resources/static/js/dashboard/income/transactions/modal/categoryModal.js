@@ -62,6 +62,8 @@
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Open  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // Update the transactions pie chart
+        window.transactionsChart.update();
     });
 
 }(jQuery));

@@ -49,6 +49,8 @@
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Open  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // Update the transaction pie chart
+        window.transactionsChart.update();
     });
 
     // Focus in for the remaining account amount

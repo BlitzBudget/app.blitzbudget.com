@@ -170,6 +170,8 @@
             // remove the class
             selectedTransactions[i].classList.remove('transaction-selected');
         }
+        // Update the transactions pie chart
+        window.transactionsChart.update();
     });
 
     // On hit enter
