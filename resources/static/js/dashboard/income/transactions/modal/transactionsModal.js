@@ -402,7 +402,7 @@
             // Focus out
             this.blur();
             // Income and expense total
-            let totalAvailableTransactions = totalIncomeTransactions - totalExpensesTransactions;
+            let totalAvailableTransactions = totalIncomeTransactions + totalExpensesTransactions;
             tr.updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions);
         }
     });
