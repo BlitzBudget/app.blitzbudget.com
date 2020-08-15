@@ -1138,7 +1138,7 @@ tr = {
         animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference, 1000);
 
         // Build Pie chart
-        buildPieChart(updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
+        tr.buildPieChart(tr.updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
 
     },
 
