@@ -135,3 +135,57 @@
     -webkit-appearance: none;
     -webkit-border-radius: 0;
 }
+
+/*
+* Edit Categories
+*/
+#editCategory,
+#editCategory .btn-secondary {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+}
+
+#editCategory .dropdown-toggle::after {
+    color: #333;
+}
+
+#editCategory .dropdown-toggle {
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+}
+
+#editCategory .dropdown-menu {
+    height: auto;
+    max-height: 20rem;
+    overflow-x: hidden;
+    width: 20rem;
+}
+
+#editCategory .autocomplete-items .dropdown-item {
+    width: 100%;
+    cursor: pointer;
+    white-space: pre-wrap;
+}
+
+#editCategory .dropdown-menu .dropdown-item:hover,
+#editCategory .dropdown-menu .dropdown-item:focus,
+#editCategory .dropdown-menu a:hover,
+#editCategory .dropdown-menu a:focus,
+#editCategory .dropdown-menu a:active,
+#editCategory .autocomplete-active {
+    color: #fff;
+    background-color: #4caf50;
+    border-color: #4caf50;
+    box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);
+}
+
+#editCategory .dropdown-header,
+#editCategory .autocomplete-items {
+    width: 100%;
+}
+
+#editIncomeSelection,
+#editExpenseSelection {
+    cursor: pointer;
+}
