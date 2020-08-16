@@ -260,7 +260,7 @@
                 let bankAcc = window.allBankAccountInfoCache[i];
                 if (isEqual(bankAcc.accountId, oldAccountId)) {
                     bankAcc['account_balance'] = currAccBal;
-                } else if (isEqual(bankAcc.accountId, oldAccountId)) {
+                } else if (isEqual(bankAcc.accountId, accountId)) {
                     bankAcc['account_balance'] = currNewAccBal;
                 }
             }
@@ -293,7 +293,7 @@
             }
         }
         ajaxData.onFailure = function (thrownError) {
-            manageErrors(thrownError, 'Unable to change the transacition amount.', ajaxData);
+            manageErrors(thrownError, "Unable to change the transaction's account. Please try again!", ajaxData);
         }
         $.ajax({
             type: ajaxData.type,
