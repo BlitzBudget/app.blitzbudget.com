@@ -862,16 +862,21 @@ er = {
     tableSortMechanism() {
         let tableSortMech = window.sortingTransTable;
         if (isNotEmpty(tableSortMech != null)) {
+            var clickEvent = new MouseEvent("click", {
+                "view": window,
+                "bubbles": true,
+                "cancelable": false
+            });
 
             switch (tableSortMech) {
 
                 case 'Account':
                     // Click the account sorting mechanism
-                    document.getElementById('accountSortBy').click();
+                    document.getElementById('accountSortBy').dispatchEvent(clickEvent);
                     break;
                 case 'CreationDate':
                     // Click the creation date sorting mechanism
-                    document.getElementById('creationDateSortBy').click();
+                    document.getElementById('creationDateSortBy').dispatchEvent(clickEvent);
                     break;
             }
 
