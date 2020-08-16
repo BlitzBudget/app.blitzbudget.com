@@ -308,6 +308,8 @@
             }
             // Focus out
             this.blur();
+            // Update to cache
+            window.transactionsCache[transactionId].description = desc;
         }
     });
 
