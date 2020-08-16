@@ -292,9 +292,11 @@
                 categorySorted.textContent = desc;
             }
             let tagsSorted = document.getElementById('overview-transaction-' + transactionId);
-            tagsSorted = tagsSorted.getElementsByClassName('recentTransactionDescription')[0];
             if (isNotEmpty(tagsSorted)) {
-                tagsSorted.textContent = desc;
+                tagsSorted = tagsSorted.getElementsByClassName('recentTransactionDescription')[0];
+                if (isNotEmpty(tagsSorted)) {
+                    tagsSorted.textContent = desc;
+                }
             }
             let accountAggre = document.getElementById('accountAggre-' + transactionId);
             accountAggre = accountAggre.getElementsByClassName('recentTransactionDescription')[0];
