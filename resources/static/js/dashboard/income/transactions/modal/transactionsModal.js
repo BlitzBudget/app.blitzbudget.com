@@ -34,8 +34,7 @@
         // transaction Balance Update
         document.getElementById('transactionAmountEntry').value = formatToCurrency(currentTransaction.amount);
         // Transaction Category Update
-        let editCategory = document.getElementById('editCategory');
-        editCategory.firstElementChild.textContent = window.categoryMap[currentTransaction.category].name;
+        document.getElementById('transactionCategoryEntry').textContent = window.categoryMap[currentTransaction.category].name;
         // Transaction Description Update
         document.getElementById('transactionDescriptionEntry').value = currentTransaction.description;
         // Transaction Tags Update
@@ -74,8 +73,6 @@
         document.getElementById('percentageAchievedTrans').textContent = progressBarPercentage + '%';
         // Remaining in currencys
         document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
-        // Load Categories for all transactions
-        tr.loadCategoriesForTransaction('editCategory', 'editExpenseSelection', 'editIncomeSelection');
     });
 
     // Delete Transactions
