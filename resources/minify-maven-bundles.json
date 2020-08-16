@@ -103,6 +103,7 @@
                 "/dashboard/income/transactions.js",
                 "/dashboard/income/transactions/drag-and-drop/dragAndDropTransInAcc.js",
                 "/dashboard/income/transactions/drag-and-drop/dragAndDropTransInCat.js",
+                "/dashboard/income/transactions/drag-and-drop/dragAndDropRecurTrans.js",
                 "/dashboard/income/transactions/sort-by/future-transactions.js",
                 "/dashboard/income/transactions/sort-by/tags.js",
                 "/dashboard/module/settings.js",
