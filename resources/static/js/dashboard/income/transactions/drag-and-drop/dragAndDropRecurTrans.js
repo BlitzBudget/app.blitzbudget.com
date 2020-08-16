@@ -7,20 +7,20 @@
     let currentPosInd = null;
 
     // On DRAG START (The dragstart event is fired when the user starts dragging an element or text selection.)
-    $('body').on('dragstart', '#accSortedTable .accTransEntry', function (e) {
+    $('body').on('dragstart', '#futureTransactionsTable .recurTransEntry', function (e) {
         handleDragStart(e);
     });
 
     // On DRAG END (The dragend event is fired when a drag operation is being ended (by releasing a mouse button or hitting the escape key)).
-    $('body').on('dragend', '#accSortedTable .accTransEntry', function (e) {
+    $('body').on('dragend', '#futureTransactionsTable .recurTransEntry', function (e) {
         handleDragEnd(e);
     });
 
     // On DRAG ENTER (When the dragging has entered this div) (Triggers even for all child elements)
-    $('body').on('dragenter', '#accSortedTable .accountInfoTable', function (e) {
+    $('body').on('dragenter', '#futureTransactionsTable .recurTransInfoTable', function (e) {
 
         // Don't do anything if dragged on the same wrapper.
-        let closestParentWrapper = e.target.closest('.accountInfoTable');
+        let closestParentWrapper = e.target.closest('.recurTransInfoTable');
 
         // Allow to be dropped only on different accounts
         if (dragSrcEl != closestParentWrapper) {
@@ -51,9 +51,9 @@
     });
 
     // On DRAG OVER (The dragover event is fired when an element or text selection is being dragged over a valid drop target (every few hundred milliseconds)) (Triggers even for all child elements)
-    $('body').on('dragover', '#accSortedTable .accountInfoTable', function (e) {
+    $('body').on('dragover', '#futureTransactionsTable .recurTransInfoTable', function (e) {
         // Allow to be dropped only on different accounts
-        let closestParentWrapper = e.target.closest('.accountInfoTable');
+        let closestParentWrapper = e.target.closest('.recurTransInfoTable');
         // Scroll the window
         scrollWindow(e);
         // Drag element comparison with closest parent
@@ -65,7 +65,7 @@
     });
 
     // On DROP (The drop event is fired when an element or text selection is dropped on a valid drop target.)
-    $('body').on('drop', '#accSortedTable .accountInfoTable', function (e) {
+    $('body').on('drop', '#futureTransactionsTable .recurTransInfoTable', function (e) {
         handleDrop(e);
     });
 
@@ -127,15 +127,15 @@
         // this / e.target is the source node.
         e.target.classList.add('op-50');
         // Set the drag start element
-        dragSrcEl = e.target.closest('.accountInfoTable');
+        dragSrcEl = e.target.closest('.recurTransInfoTable');
         // Set Drag effects
         e.originalEvent.dataTransfer.effectAllowed = 'move';
         e.originalEvent.dataTransfer.dropEffect = 'move';
         e.originalEvent.dataTransfer.setData('text/plain', e.target.id);
         // Register dragster for Account Info Table
-        let accountInfoTables = document.getElementsByClassName('accountInfoTable');
-        for (let i = 0, l = accountInfoTables.length; i < l; i++) {
-            dragsterList.push(new Dragster(accountInfoTables[i]));
+        let recurTransInfoTables = document.getElementsByClassName('recurTransInfoTable');
+        for (let i = 0, l = recurTransInfoTables.length; i < l; i++) {
+            dragsterList.push(new Dragster(recurTransInfoTables[i]));
         }
     }
 
@@ -164,15 +164,15 @@
         }
 
         // Don't do anything if dropped on the same wrapper div we're dragging.
-        let closestParentWrapper = e.target.closest('.accountInfoTable');
+        let closestParentWrapper = e.target.closest('.recurTransInfoTable');
         if (dragSrcEl != closestParentWrapper) {
             // Set the source column's HTML to the HTML of the column we dropped on.
-            let transId = e.originalEvent.dataTransfer.getData('text/plain');
-            let a = document.getElementById(transId);
+            let recurTransId = e.originalEvent.dataTransfer.getData('text/plain');
+            let a = document.getElementById(recurTransId);
             // Find the closest parent element and drop. (Should never be null)
             insertAfterElement(a, e.target);
             // Update the transaction with the new account ID
-            updateTransactionWithAccId(transId, closestParentWrapper.getAttribute('data-target'), dragSrcEl.getAttribute('data-target'));
+            updateTransactionWithRecurrence(recurTransId, closestParentWrapper.getAttribute('data-target'));
         }
 
         return false;
@@ -204,75 +204,35 @@
             insertAfter.parentNode.insertBefore(dropped, insertAfter.nextSibling);
         } else {
             // Fetch the closest account table wrapper
-            insertAfter = target.closest('.accountInfoTable');
+            insertAfter = target.closest('.recurTransInfoTable');
             // Drop the element at the end of the table
             insertAfter.appendChild(dropped);
         }
     }
 
     // Update the transaction with the account ID
-    function updateTransactionWithAccId(transactionId, accountId, oldAccountId) {
+    function updateTransactionWithRecurrence(recurringTransactionId, recurrence) {
         // obtain the transaction id of the table row
-        transactionId = document.getElementById(transactionId).getAttribute('data-target');
+        recurringTransactionId = document.getElementById(recurringTransactionId).getAttribute('data-target');
 
         let values = {};
-        values['account'] = accountId;
-        values['transactionId'] = transactionId;
+        values['recurrence'] = recurrence;
+        values['recurringTransactionId'] = recurringTransactionId;
         values['walletId'] = window.currentUser.walletId;
 
         // Ajax Requests on Error
         let ajaxData = {};
         ajaxData.isAjaxReq = true;
         ajaxData.type = "PATCH";
-        ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
+        ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.recurringTransactionsAPIUrl;
         ajaxData.dataType = "json";
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
             let userTransaction = result['body-json'];
-            // Fetch the current account balance
-            let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
-            let oldAccBal = 0;
-            let accDiv = document.getElementById('accountBalance-' + accountId);
-            let accBal = 0;
-            let currAccBal = 0;
-            let currNewAccBal = 0;
-            // Append a - sign if it is an expense
-            currAccBal = oldAccBal - userTransaction.amount
-            currNewAccBal = accBal + userTransaction.amount;
-            // Append the new amount to the front
-            oldAccDiv.textContent = formatToCurrency(currAccBal);
-            accDiv.textContent = formatToCurrency(currNewAccBal);
-            // If the account balance is negative then change color
-            if (currAccBal < 0) {
-                oldAccDiv.classList.add('expenseCategory');
-                oldAccDiv.classList.remove('incomeCategory');
-            } else {
-                oldAccDiv.classList.add('incomeCategory');
-                oldAccDiv.classList.remove('expenseCategory');
-            }
-            if (currNewAccBal < 0) {
-                accDiv.classList.add('expenseCategory');
-                accDiv.classList.remove('incomeCategory');
-            } else {
-                accDiv.classList.add('incomeCategory');
-                accDiv.classList.remove('expenseCategory');
-            }
-            // Remove empty entries for the account
-            let emptyEntriesNewAcc = document.getElementById('emptyAccountEntry-' + accountId);
-            if (isNotEmpty(emptyEntriesNewAcc)) {
-                emptyEntriesNewAcc.remove();
-            }
-            // Replace with Empty Acc Trans
-            let oldAccTable = document.getElementById('accountSB-' + oldAccountId);
-            let oldRecentTransactionEntry = oldAccTable.getElementsByClassName('recentTransactionEntry');
-            if (oldRecentTransactionEntry.length == 0) {
-                // Build empty account entry
-                oldAccTable.appendChild(buildEmptyAccountEntry(oldAccountId));
-            }
         }
         ajaxData.onFailure = function (thrownError) {
-            manageErrors(thrownError, 'Unable to change the transacition amount.', ajaxData);
+            manageErrors(thrownError, 'Unable to change the recurrence. Please try again!', ajaxData);
         }
         $.ajax({
             type: ajaxData.type,
@@ -299,7 +259,7 @@
 
         let roundedCircle = document.createElement('div');
         roundedCircle.classList = 'rounded-circle align-middle circleWrapperImageRT mx-auto';
-        roundedCircle.appendChild(buildEmptyAccTransactionsSvg());
+        roundedCircle.appendChild(buildEmptyRecurringTransSvg());
         cell1.appendChild(roundedCircle);
         rowEmpty.appendChild(cell1);
 
@@ -320,7 +280,7 @@
     }
 
     // Empty Transactions SVG
-    function buildEmptyAccTransactionsSvg() {
+    function buildEmptyRecurringTransSvg() {
 
         let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
         svgElement.setAttribute('width', '32');

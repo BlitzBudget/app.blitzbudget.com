@@ -134,7 +134,8 @@
      let tableRowTransaction = document.createElement('div');
      tableRowTransaction.id = 'recurTransaction-' + recurringTransaction.recurringTransactionsId;
      tableRowTransaction.setAttribute('data-target', recurringTransaction.recurringTransactionsId);
-     tableRowTransaction.classList = 'recentTransactionEntry d-table-row';
+     tableRowTransaction.classList = 'recentTransactionEntry d-table-row recurTransEntry';
+     tableRowTransaction.draggable = 'true';
 
      // Cell 1
      let tableCellImagesWrapper = document.createElement('div');

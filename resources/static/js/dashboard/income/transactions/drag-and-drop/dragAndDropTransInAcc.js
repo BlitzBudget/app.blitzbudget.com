@@ -240,7 +240,7 @@
                 let bankAcc = window.allBankAccountInfoCache[i];
                 if (isEqual(bankAcc.accountId, oldAccountId)) {
                     oldAccBal = bankAcc['account_balance'];
-                } else if (isEqual(bankAcc.accountId, oldAccountId)) {
+                } else if (isEqual(bankAcc.accountId, accountId)) {
                     accBal = bankAcc['account_balance'];
                 }
             }

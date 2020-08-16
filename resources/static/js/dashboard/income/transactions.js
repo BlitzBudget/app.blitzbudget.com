@@ -1111,8 +1111,8 @@ tr = {
     // Total available section
     updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
         // Update the total income and expense cache
-        window.totalIncomeForDate = result.incomeTotal;
-        window.totalExpenseForDate = result.expenseTotal;
+        window.totalIncomeForDate = totalIncomeTransactions;
+        window.totalExpenseForDate = totalExpensesTransactions;
 
         animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
         animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference, 1000);

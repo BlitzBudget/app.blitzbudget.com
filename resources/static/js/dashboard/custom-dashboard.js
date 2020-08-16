@@ -36,6 +36,11 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
         writable: false,
         configurable: false
     },
+    'recurringTransactionsAPIUrl': {
+        value: window._config.api.invokeUrl + '/recurring-transaction',
+        writable: false,
+        configurable: false
+    },
     'overviewDashboardId': {
         value: 'overview-dashboard-sidebar',
         writable: false,
