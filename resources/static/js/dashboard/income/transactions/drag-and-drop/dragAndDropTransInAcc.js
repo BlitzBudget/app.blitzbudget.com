@@ -232,9 +232,19 @@
             let userTransaction = result['body-json'];
             // Fetch the current account balance
             let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
-            let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.textContent, currentCurrencyPreference);
             let accDiv = document.getElementById('accountBalance-' + accountId);
-            let accBal = er.convertToNumberFromCurrency(accDiv.textContent, currentCurrencyPreference);
+            let oldAccBal = 0;
+            let accBal = 0;
+            // Fetch Account Balance
+            for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                let bankAcc = window.allBankAccountInfoCache[i];
+                if (isEqual(bankAcc.accountId, oldAccountId)) {
+                    oldAccBal = bankAcc['account_balance'];
+                } else if (isEqual(bankAcc.accountId, oldAccountId)) {
+                    accBal = bankAcc['account_balance'];
+                }
+            }
+
             let currAccBal = 0;
             let currNewAccBal = 0;
             // Append a - sign if it is an expense
@@ -243,6 +253,17 @@
             // Append the new amount to the front
             oldAccDiv.textContent = formatToCurrency(currAccBal);
             accDiv.textContent = formatToCurrency(currNewAccBal);
+            /*
+             * Assign new account balance to cache
+             */
+            for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                let bankAcc = window.allBankAccountInfoCache[i];
+                if (isEqual(bankAcc.accountId, oldAccountId)) {
+                    bankAcc['account_balance'] = currAccBal;
+                } else if (isEqual(bankAcc.accountId, oldAccountId)) {
+                    bankAcc['account_balance'] = currNewAccBal;
+                }
+            }
             // If the account balance is negative then change color
             if (currAccBal < 0) {
                 oldAccDiv.classList.add('expenseCategory');

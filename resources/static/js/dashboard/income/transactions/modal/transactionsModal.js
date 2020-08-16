@@ -115,7 +115,7 @@
             let userTransaction = window.transactionsCache[transactionId];
             let categoryId = userTransaction.category;
             let catDiv = document.getElementById('categoryBalance-' + categoryId);
-            let catBal = er.convertToNumberFromCurrency(catDiv.textContent, currentCurrencyPreference);
+            let catBal = window.categoryMap[categoryId].categoryTotal;
             // Calculate current category balance
             let currNewCatBal = catBal - userTransaction.amount;
             catDiv.textContent = formatToCurrency(currNewCatBal);
@@ -131,6 +131,22 @@
                 // Ppopulate empty table transaction
                 categoryHeader.appendChild(buildEmptyTableEntry('emptyCategoryItem-' + categoryId));
             }
+            /*
+             * Calculate total income and total expense (minus deleted transaction)
+             */
+            let totalIncomeTransactions = window.totalIncomeForDate;
+            let totalExpensesTransactions = window.totalExpenseForDate;
+            if (isEqual(window.categoryMap[categoryId].type, CUSTOM_DASHBOARD_CONSTANTS.expenseCategory)) {
+                totalExpensesTransactions = totalExpensesTransactions - userTransaction.amount;
+            } else {
+                totalIncomeTransactions = totalIncomeTransactions - userTransaction.amount;
+            }
+            // Income and expense total
+            let totalAvailableTransactions = totalIncomeTransactions + totalExpensesTransactions;
+            /*
+             * Update Pie Chart
+             */
+            tr.updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions);
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, "There was an error while deleting the transaction. Please try again later!", ajaxData);
@@ -346,14 +362,16 @@
             if (isNotEmpty(recentTransaction)) {
                 recentTransaction.textContent = formattedAmount;
             }
+
             /*
              * Update total Balance
              */
             // Update total avalable balance
             let totalIncomeTransactions = document.getElementById('totalIncomeTransactions').textContent;
-            totalIncomeTransactions = er.convertToNumberFromCurrency(totalIncomeTransactions, currentCurrencyPreference);
+            totalIncomeTransactions = window.totalIncomeForDate;
             let totalExpensesTransactions = document.getElementById('totalExpensesTransactions').textContent;
-            totalExpensesTransactions = er.convertToNumberFromCurrency(totalExpensesTransactions, currentCurrencyPreference);
+            totalExpensesTransactions = window.totalExpenseForDate;
+
             /*
              * Update the category total in transaction modal
              */
@@ -381,7 +399,10 @@
             categoryHeader.firstElementChild.lastElementChild.textContent = formatToCurrency(window.categoryMap[categoryId].categoryTotal);
             // Set the value and percentage of the progress bar
             let amountAccumulatedTrans = document.getElementById('amountAccumulatedTrans');
-            // Progress Bar percentage
+
+            /*
+             * Progress Bar percentage
+             */
             let progressBarPercentage = 0;
             let remainingAmount = 0;
             if (isNotEmpty(window.categoryMap[categoryId])) {
@@ -402,7 +423,10 @@
             document.getElementById('remainingBalanceTrans').textContent = formatToCurrency(remainingAmount);
             // Focus out
             this.blur();
-            // Income and expense total
+
+            /*
+             * Update Pie Chart
+             */
             let totalAvailableTransactions = totalIncomeTransactions + totalExpensesTransactions;
             tr.updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions);
         }

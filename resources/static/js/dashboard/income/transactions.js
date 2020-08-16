@@ -674,7 +674,7 @@
         if (isEqual(idName, 'categorySorted')) {
             for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
                 let bankAcc = window.allBankAccountInfoCache[i];
-                if (isEqual(bankAcc.accountId, userTransaction.account)) {
+                if (isEqual(bankAxcc.accountId, userTransaction.account)) {
                     elementWithCategoryName.textContent = (bankAcc['bank_account_name']) + ' • ' + ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear() + ' ' + ("0" + creationDateUserRelevant.getHours()).slice(-2) + ':' + ("0" + creationDateUserRelevant.getMinutes()).slice(-2);
                 }
             }
@@ -1110,6 +1110,9 @@ tr = {
 
     // Total available section
     updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
+        // Update the total income and expense cache
+        window.totalIncomeForDate = result.incomeTotal;
+        window.totalExpenseForDate = result.expenseTotal;
 
         animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
         animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference, 1000);

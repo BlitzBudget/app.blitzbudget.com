@@ -742,7 +742,10 @@ er = {
         }
     },
 
-    //convert from currency format to number
+    /*
+     * Convert from currency format to number.
+     * DO NOT USE it for formatted currencies *
+     */
     convertToNumberFromCurrency(amount, currentCurrencyPreference) {
         // Always convert to number as en-US and replace formatting from "," to "" empty space.
         return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount, currentCurrencyPreference))), "en-US").replace(",", "")), 2);

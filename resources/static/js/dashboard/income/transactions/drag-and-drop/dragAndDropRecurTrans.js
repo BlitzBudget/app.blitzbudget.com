@@ -232,9 +232,9 @@
             let userTransaction = result['body-json'];
             // Fetch the current account balance
             let oldAccDiv = document.getElementById('accountBalance-' + oldAccountId);
-            let oldAccBal = er.convertToNumberFromCurrency(oldAccDiv.textContent, currentCurrencyPreference);
+            let oldAccBal = 0;
             let accDiv = document.getElementById('accountBalance-' + accountId);
-            let accBal = er.convertToNumberFromCurrency(accDiv.textContent, currentCurrencyPreference);
+            let accBal = 0;
             let currAccBal = 0;
             let currNewAccBal = 0;
             // Append a - sign if it is an expense
