@@ -286,8 +286,10 @@ let tickIconSVG = tickIcon();
             result = result['body-json'];
             // Append as Selected Account
             for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
-                if (isEqual(window.allBankAccountInfoCache[i].accountId, bnkAccountId)) {
-                    window.allBankAccountInfoCache[i]['selected_account'] = true;
+                let bankAccount = window.allBankAccountInfoCache[i];
+                if (isEqual(bankAccount.accountId, bnkAccountId)) {
+                    bankAccount['selected_account'] = true;
+                    window.selectedBankAccountId = bankAccount.accountId;
                 }
             }
 
