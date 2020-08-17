@@ -352,6 +352,63 @@
                             </div>
                         </div>
                     </div>
+                    <div id="recurringTransactionInformationMdl" class="card d-none noselect">
+                        <div class="row">
+                            <div id="" class="col-lg-6">
+                                <span class=""></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <button type="button" id="recurringTransactionHeaderClose" class="close" data-dismiss="modal" aria-label="Close">
+                                    <i class="material-icons noselect float-right">clear</i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-header card-header-icon card-header-danger">
+                            <div id="recurringTransactionLabelInModal" class="text-center card-title"></div>
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="row recurringTransactionAmountDiv py-1">
+                                <div class="col-lg-3 d-inline-block h-100">
+                                    <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Transaction Balance" data-title-i18n="tooltip.transactionbalance">money</i>
+                                </div>
+                                <input id="recurringTransactionAmountEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false" placeholder="No Amount" data-placeholder-i18n="placeholder.noamount">
+                            </div>
+                            <div class="row recurringTransactionCategoryDiv py-1">
+                                <div class="col-lg-3 d-inline-block h-100">
+                                    <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Category" data-title-i18n="tooltip.category">category</i>
+                                </div>
+                                <div id="recurringTransactionCategoryEntry" class="text-left col-lg-9 align-middle"> </div>
+                            </div>
+                            <div class="row recurringTransactionDescriptionDiv py-1">
+                                <div class="col-lg-3 d-inline-block h-100">
+                                    <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Description" data-title-i18n="tooltip.description">description</i>
+                                </div>
+                                <input id="recurringTransactionDescriptionEntry" class="text-left col-lg-9 align-middle" contenteditable="true" data-gramm_editor="false" placeholder="No Description" data-placeholder-i18n="placeholder.nodescription">
+                            </div>
+                            <div class="row recurringTransactionTagsDiv py-1">
+                                <div class="col-lg-3 d-inline-block h-100">
+                                    <i class="material-icons noselect" data-toggle="tooltip" data-placement="bottom" title="Tags" data-title-i18n="tooltip.tags">local_offer</i>
+                                </div>
+                                <div id="edit-recurring-transaction-tags" class="tagsinput success-badge info-badge col-lg-9 text-left">
+                                    <span class="bmd-form-group">
+                                        <input id="recurringTransactionTagsEntry" class="align-middle" contenteditable="true" data-gramm_editor="false" placeholder="No Tags" data-placeholder-i18n="placeholder.tags">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="" class="card-footer row">
+                            <div class="pl-0 col-lg-6 text-left">
+                                <span id="transactionCreationDate"></span>
+                            </div>
+                            <div class="pr-0 col-lg-6 text-right">
+                                <div class="svg-container deleteIconTransactionsWrapper d-inline-block" data-toggle="tooltip" data-placement="bottom" title="Delete account">
+                                    <svg id="deleteSvgRecurringTransactions" class="deleteAccount" height="16" width="16" viewBox="0 0 14 18">
+                                        <path fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="square" d="M4.273 3.727V2a1 1 0 0 1 1-1h3.454a1 1 0 0 1 1 1v1.727M13 5.91v10.455a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V5.909m6 2.727v5.455M4.273 8.636v5.455m5.454-5.455v5.455M13 3.727H1"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- end row -->
