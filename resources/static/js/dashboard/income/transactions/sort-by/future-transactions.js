@@ -69,8 +69,8 @@
          for (let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
              let key = resultKeySet[countGrouped];
              let recurringTransaction = recurringTransactionsList[key];
-             // Recurring Transactions Cache
-             window.recurringTransactionCache[key] = recurringTransaction;
+             // Recurring Transactions Cache with ID
+             window.recurringTransactionCache[recurringTransaction.recurringTransactionsId] = recurringTransaction;
 
              if (!includesStr(createdRecurTransRecurrence, recurringTransaction.recurrence)) {
                  futureTransactionsFragment.appendChild(buildRecurTransHeaders(recurringTransaction.recurrence));
