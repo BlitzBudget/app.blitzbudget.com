@@ -379,6 +379,11 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
+            /*
+             * Replace With Currency
+             */
+            replaceWithCurrency(result.Wallet);
+
             er_a.populateBankInfo(result.BankAccount);
 
             fetchJSONForCategories(result.Category);
@@ -388,10 +393,6 @@
             window.datesCreated = result.Date;
             populateCurrentDate(result.Date);
 
-            /*
-             * Replace With Currency
-             */
-            replaceWithCurrency(result.Wallet);
             // Populate Category Sort
             populateCategorySort(result);
             // update the Total Available Section
