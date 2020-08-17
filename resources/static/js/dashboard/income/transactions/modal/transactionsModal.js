@@ -108,9 +108,16 @@
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (jsonObj) {
             // Transactions are removed.
-            categorySortedTrans.remove();
-            accountAggre.remove();
-            recentTransaction.remove();
+            if (isNotEmpty(categorySortedTrans)) {
+                categorySortedTrans.remove();
+            }
+            if (isNotEmpty(accountAggre)) {
+                accountAggre.remove();
+            }
+            if (isNotEmpty(recentTransaction)) {
+                recentTransaction.remove();
+            }
+
             // Fix category balance
             let userTransaction = window.transactionsCache[transactionId];
             let categoryId = userTransaction.category;
