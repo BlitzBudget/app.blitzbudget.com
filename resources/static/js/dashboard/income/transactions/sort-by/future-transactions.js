@@ -65,9 +65,12 @@
 
          let resultKeySet = Object.keys(recurringTransactionsList);
          let createdRecurTransRecurrence = [];
+         window.recurringTransactionCache = {};
          for (let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
              let key = resultKeySet[countGrouped];
              let recurringTransaction = recurringTransactionsList[key];
+             // Recurring Transactions Cache
+             window.recurringTransactionCache[key] = recurringTransaction;
 
              if (!includesStr(createdRecurTransRecurrence, recurringTransaction.recurrence)) {
                  futureTransactionsFragment.appendChild(buildRecurTransHeaders(recurringTransaction.recurrence));

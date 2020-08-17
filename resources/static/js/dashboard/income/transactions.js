@@ -404,7 +404,6 @@
             // Call Account / Recent Transactions
             populateRecentTransactions(result.Transaction);
             // Populate Recurring Transactions
-            window.recurringTransactionCache = result.RecurringTransactions;
             populateRecurringTransactions(result.RecurringTransactions);
             // Populate Tags Transactions
             populateTagsTransactions(result.Transaction);
