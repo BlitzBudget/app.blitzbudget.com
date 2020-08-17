@@ -163,7 +163,9 @@
                     "monthly": "每月"
                 },
                 "button": "添加交易"
-            }
+            },
+            "ofcategorytotal": "(%) 类别 共计",
+            "others": "其他"
         },
         "dynamic": {
             "title": "交易",
@@ -619,12 +621,19 @@
         "search": "搜索...",
         "amount": "数量",
         "note": "写一张笔记",
-        "searcharticle": "搜索文章..."
+        "searcharticle": "搜索文章...",
+        "tags": "标签",
+        "nodescription": "没有说明",
+        "noamount": "无金额"
     },
     "tooltip": {
         "logout": "注销",
         "fullscreen": "全屏",
-        "settings": "配置"
+        "settings": "配置",
+        "transactionbalance": "交易余额",
+        "category": "种类",
+        "description": "说明",
+        "tags": "标签"
     },
     "goals": {
         "page": {

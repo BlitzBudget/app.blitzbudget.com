@@ -30,7 +30,7 @@
     // Delete Transaction Button Inside TD
     const deleteButton = '<button class="btn btn-danger btn-sm removeRowTransaction">Remove</button>';
     // New Pie Chart Storage Variable
-    let transactionsChart = '';
+    window.transactionsChart = '';
     // Success SVG Fragment
     let successSVGFormed = successSvgMessage();
     // String Today
@@ -235,6 +235,16 @@
             tagsArray.push(badgeText);
         }
 
+        /*
+         * If the input field in the tag is not empty then.
+         */
+        let badgeText = document.getElementById('add-transaction-value').value;
+        if (isNotBlank(badgeText)) {
+            // Push tags to the array
+            tagsArray.push(badgeText);
+        }
+
+
         let values = {};
         if (notIncludesStr(categoryOptions, 'Category#')) {
             let chosenCategory = window.categoryMap[categoryOptions];
@@ -369,23 +379,24 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
+            /*
+             * Replace With Currency
+             */
+            replaceWithCurrency(result.Wallet);
+
             er_a.populateBankInfo(result.BankAccount);
 
             fetchJSONForCategories(result.Category);
-            loadCategoriesForTransaction();
+            tr.loadCategoriesForTransaction('categoryOptions', 'expenseSelection', 'incomeSelection');
 
             // Dates Cache
             window.datesCreated = result.Date;
             populateCurrentDate(result.Date);
 
-            /*
-             * Replace With Currency
-             */
-            replaceWithCurrency(result.Wallet);
             // Populate Category Sort
             populateCategorySort(result);
             // update the Total Available Section
-            updateTotalAvailableSection(result.incomeTotal, result.expenseTotal, result.balance);
+            tr.updateTotalAvailableSection(result.incomeTotal, result.expenseTotal, result.balance);
             // Update Budget from API
             updateBudgetForIncome(result.Budget);
             // Change the table sorting on page load
@@ -396,6 +407,8 @@
             populateRecurringTransactions(result.RecurringTransactions);
             // Populate Tags Transactions
             populateTagsTransactions(result.Transaction);
+            // hide other modals
+            hideOtherModals();
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, window.translationData.transactions.dynamic.get.unableerror, ajaxData);
@@ -435,29 +448,6 @@
         }
     }
 
-    function loadCategoriesForTransaction() {
-        // set default category
-        let defaultCategory = window.defaultCategories[1];
-        if (isEmpty(defaultCategory.id)) {
-            document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.name);
-        } else {
-            document.getElementById('categoryOptions').setAttribute('data-chosen', defaultCategory.id);
-        }
-
-        // Load Expense category and income category
-        let expenseSelectionDiv = document.getElementById('expenseSelection');
-        while (expenseSelectionDiv.firstChild) {
-            expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
-        }
-        let incomeSelectionDiv = document.getElementById('incomeSelection');
-        while (incomeSelectionDiv.firstChild) {
-            incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
-        }
-        expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
-        incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
-
-    }
-
     // Fetches the budget for all the category rows if present and updates the category row
     function updateBudgetForIncome(data) {
         for (let count = 0, length = data.length; count < length; count++) {
@@ -465,131 +455,6 @@
             // Update user budget to global map (Exportation)
             window.userBudgetMap[value.category] = value;
         }
-    }
-
-    // Updates the total income and total expenses
-    function updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
-
-        animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
-        animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference, 1000);
-        animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference, 1000);
-
-        // Build Pie chart
-        buildPieChart(updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
-
-    }
-
-    // Update the pie chart with transactions data
-    function updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
-        let dataPreferences = {};
-        if (totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
-            let empty = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.empty : "Please fill in adequare data to build a chart";
-            replaceHTML('legendPieChart', empty);
-        } else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
-            let exp = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.expense : "Total Income & Total Overspent as a percentage of Total Expense";
-            let overspent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.overspent : "Total Overspent";
-            replaceHTML('legendPieChart', exp);
-            replaceHTML('totalAvailableLabel', overspent);
-            let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100), 1);
-            let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100), 1);
-            // labels: [INCOME,EXPENSE,AVAILABLE]
-            dataPreferences = {
-                labels: [totalIncomeAsPercentageOfExpense + '%', " ", " ", totalDeficitAsPercentageOfExpense + '%'],
-                series: [totalIncomeTransactions, 0, 0, totalAvailableTransactions]
-            };
-        } else {
-            let income = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.income : "Total Spent & Total Available as a percentage of Total Income";
-            let available = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.available : "Total Available";
-            replaceHTML('legendPieChart', income);
-            replaceHTML('totalAvailableLabel', available);
-            let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100), 1);
-            let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100), 1);
-            // labels: [INCOME,EXPENSE,AVAILABLE]
-            dataPreferences = {
-                labels: [" ", totalExpenseAsPercentageOfIncome + '%', totalAvailableAsPercentageOfIncome + '%', " "],
-                series: [0, totalExpensesTransactions, totalAvailableTransactions, 0]
-            };
-        }
-
-        return dataPreferences;
-
-    }
-
-    // Introduce Chartist pie chart
-    function buildPieChart(dataPreferences, id) {
-        /*  **************** Public Preferences - Pie Chart ******************** */
-        let inc = window.translationData.transactions.dynamic.chart.labels.income;
-        let spent = window.translationData.transactions.dynamic.chart.labels.spent;
-        let avai = window.translationData.transactions.dynamic.chart.labels.available;
-        let oversp = window.translationData.transactions.dynamic.chart.labels.overspent;
-        let labels = [inc, spent, avai, oversp];
-
-        var optionsPreferences = {
-            donut: true,
-            donutWidth: 50,
-            startAngle: 270,
-            showLabel: true,
-            height: '230px'
-        };
-
-        // Reset the chart
-        if (isNotEmpty(transactionsChart)) {
-            transactionsChart.detach();
-        }
-        replaceHTML(id, '');
-        // Dispose tooltips
-        $("#" + id).tooltip('dispose');
-
-        if (isNotEmpty(dataPreferences)) {
-            transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function (data) {
-                if (data.type === 'slice') {
-                    let sliceValue = data.element._node.getAttribute('ct:value');
-                    data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
-                    data.element._node.setAttribute("data-chart-tooltip", id);
-                }
-            }).on("created", function () {
-                let chartLegend = document.getElementById('chartLegend');
-                let incomeAmount = document.getElementById('totalIncomeTransactions');
-                let expenseAmount = document.getElementById('totalExpensesTransactions');
-                let totalAvailable = document.getElementById('totalAvailableTransactions');
-
-                // Initiate Tooltip
-                $("#" + id).tooltip({
-                    selector: '[data-chart-tooltip="' + id + '"]',
-                    container: "#" + id,
-                    html: true,
-                    placement: 'auto',
-                    delay: {
-                        "show": 300,
-                        "hide": 100
-                    }
-                });
-
-                $('.ct-slice-donut').on('mouseover mouseout', function () {
-                    chartLegend.classList.toggle('hiddenAfterHalfASec');
-                    chartLegend.classList.toggle('visibleAfterHalfASec');
-                });
-
-                $('.ct-series-a').on('mouseover mouseout', function () {
-                    incomeAmount.classList.toggle('transitionTextToNormal');
-                    incomeAmount.classList.toggle('transitionTextTo120');
-                });
-
-                $('.ct-series-b').on('mouseover mouseout', function () {
-                    expenseAmount.classList.toggle('transitionTextToNormal');
-                    expenseAmount.classList.toggle('transitionTextTo120');
-                });
-
-                $('.ct-series-c').on('mouseover mouseout', function () {
-                    totalAvailable.classList.toggle('transitionTextToNormal');
-                    totalAvailable.classList.toggle('transitionTextTo120');
-                });
-            });
-
-            // Animate the doughnut chart
-            er.startAnimationDonutChart(transactionsChart);
-        }
-
     }
 
     // Generate SVG Tick Element and success element
@@ -661,8 +526,8 @@
     // Replace Pie Chart with Material Spinner
     function replacePieChartWithMSpinner() {
         // Reset the chart
-        if (isNotEmpty(transactionsChart)) {
-            transactionsChart.detach();
+        if (isNotEmpty(window.transactionsChart)) {
+            window.transactionsChart.detach();
         }
 
         let chartFinPosition = document.getElementById('chartFinancialPosition');
@@ -1027,48 +892,7 @@
 
     // Sorts the table by aggregating transactions by account
     $('body').on('click', '#accountSortBy', function (e) {
-        // Change title of in the dropdown
-        let sortByDiv = document.getElementById('sortByBtnTit');
-        sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.account');
-        sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
-        // hide the recent transactions
-        document.getElementById(recentTransactionsId).classList.add('d-none');
-        // Show the account Table
-        let accSortedTable = document.getElementById('accSortedTable');
-        accSortedTable.classList.remove('d-none');
-        accSortedTable.classList.add('d-table');
-        // Close Category Modal
-        document.getElementById('categoryInformationMdl').classList.add('d-none');
-        // show the future transactions
-        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
-        futureTransactionsTable.classList.add('d-none');
-        futureTransactionsTable.classList.remove('d-table');
-        // show the tags sortby
-        let tabsTable = document.getElementById('tagsTable');
-        tabsTable.classList.add('d-none');
-        tabsTable.classList.remove('d-table');
-        // Toggle  Financial Position
-        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
-        // hide the transactions table
-        let transactionsTable = document.getElementById('transactionsTable');
-        transactionsTable.classList.remove('d-table');
-        transactionsTable.classList.add('d-none');
-        // Remove Account Table Class
-        let popAccInfoTab = document.getElementsByClassName('accountInfoTable');
-        if (isEmpty(popAccInfoTab)) {
-            // Show the accountTable
-            document.getElementById('accountTable').classList.remove('d-none');
-        } else {
-            for (let i = 0, len = popAccInfoTab.length; i < len; i++) {
-                let elementInArray = popAccInfoTab[i];
-
-                if (elementInArray.classList.contains('rotateZero')) {
-                    elementInArray.classList.remove('rotateZero');
-                    elementInArray.classList.add('rotateNinty');
-                }
-            }
-        }
-
+        tr.sortTransactionsByAccount();
     });
 
     // Appends the date header for recent transactions
@@ -1228,7 +1052,233 @@
 
     }
 
+    // Hide Other Modals
+    function hideOtherModals() {
+        // Close Account Modal
+        document.getElementById('accountInformationMdl').classList.add('d-none');
+        // Close  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // Close Transaction Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
+    }
+
 }(jQuery));
+
+tr = {
+
+    // Total available section
+    updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
+        // Update the total income and expense cache
+        window.totalIncomeForDate = totalIncomeTransactions;
+        window.totalExpenseForDate = totalExpensesTransactions;
+
+        animateValue(document.getElementById('totalAvailableTransactions'), 0, totalAvailableTransactions, currentCurrencyPreference, 1000);
+        animateValue(document.getElementById('totalIncomeTransactions'), 0, totalIncomeTransactions, currentCurrencyPreference, 1000);
+        animateValue(document.getElementById('totalExpensesTransactions'), 0, totalExpensesTransactions, currentCurrencyPreference, 1000);
+
+        // Build Pie chart
+        tr.buildPieChart(tr.updatePieChartTransactions(Math.abs(totalIncomeTransactions), Math.abs(totalExpensesTransactions), Math.abs(totalAvailableTransactions)), 'chartFinancialPosition');
+
+    },
+
+    // Update Totals for Transactions
+    updatePieChartTransactions(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions) {
+        let dataPreferences = {};
+        if (totalIncomeTransactions === 0 && totalExpensesTransactions === 0) {
+            let empty = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.empty : "Please fill in adequare data to build a chart";
+            replaceHTML('legendPieChart', empty);
+        } else if (totalIncomeTransactions < Math.abs(totalExpensesTransactions)) {
+            let exp = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.expense : "Total Income & Total Overspent as a percentage of Total Expense";
+            let overspent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.overspent : "Total Overspent";
+            replaceHTML('legendPieChart', exp);
+            replaceHTML('totalAvailableLabel', overspent);
+            let totalDeficitAsPercentageOfExpense = round(((totalAvailableTransactions / totalExpensesTransactions) * 100), 1);
+            let totalIncomeAsPercentageOfExpense = round(((totalIncomeTransactions / totalExpensesTransactions) * 100), 1);
+            // labels: [INCOME,EXPENSE,AVAILABLE]
+            dataPreferences = {
+                labels: [totalIncomeAsPercentageOfExpense + '%', " ", " ", totalDeficitAsPercentageOfExpense + '%'],
+                series: [totalIncomeTransactions, 0, 0, totalAvailableTransactions]
+            };
+        } else {
+            let income = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.income : "Total Spent & Total Available as a percentage of Total Income";
+            let available = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.chart.available : "Total Available";
+            replaceHTML('legendPieChart', income);
+            replaceHTML('totalAvailableLabel', available);
+            let totalAvailableAsPercentageOfIncome = round(((totalAvailableTransactions / totalIncomeTransactions) * 100), 1);
+            let totalExpenseAsPercentageOfIncome = round(((totalExpensesTransactions / totalIncomeTransactions) * 100), 1);
+            // labels: [INCOME,EXPENSE,AVAILABLE]
+            dataPreferences = {
+                labels: [" ", totalExpenseAsPercentageOfIncome + '%', totalAvailableAsPercentageOfIncome + '%', " "],
+                series: [0, totalExpensesTransactions, totalAvailableTransactions, 0]
+            };
+        }
+
+        return dataPreferences;
+
+    },
+
+    // Build Pie Chart for transactions
+    buildPieChart(dataPreferences, id) {
+        /*  **************** Public Preferences - Pie Chart ******************** */
+        let inc = window.translationData.transactions.dynamic.chart.labels.income;
+        let spent = window.translationData.transactions.dynamic.chart.labels.spent;
+        let avai = window.translationData.transactions.dynamic.chart.labels.available;
+        let oversp = window.translationData.transactions.dynamic.chart.labels.overspent;
+        let labels = [inc, spent, avai, oversp];
+
+        var optionsPreferences = {
+            donut: true,
+            donutWidth: 50,
+            startAngle: 270,
+            showLabel: true,
+            height: '230px'
+        };
+
+        // Reset the chart
+        if (isNotEmpty(window.transactionsChart)) {
+            window.transactionsChart.detach();
+        }
+        replaceHTML(id, '');
+        // Dispose tooltips
+        $("#" + id).tooltip('dispose');
+
+        if (isNotEmpty(dataPreferences)) {
+            window.transactionsChart = new Chartist.Pie('#' + id, dataPreferences, optionsPreferences).on('draw', function (data) {
+                if (data.type === 'slice') {
+                    let sliceValue = data.element._node.getAttribute('ct:value');
+                    data.element._node.setAttribute("title", labels[data.index] + ": <strong>" + formatToCurrency(Number(sliceValue)) + '</strong>');
+                    data.element._node.setAttribute("data-chart-tooltip", id);
+                }
+            }).on("created", function () {
+                let chartLegend = document.getElementById('chartLegend');
+                let incomeAmount = document.getElementById('totalIncomeTransactions');
+                let expenseAmount = document.getElementById('totalExpensesTransactions');
+                let totalAvailable = document.getElementById('totalAvailableTransactions');
+
+                // Initiate Tooltip
+                $("#" + id).tooltip({
+                    selector: '[data-chart-tooltip="' + id + '"]',
+                    container: "#" + id,
+                    html: true,
+                    placement: 'auto',
+                    delay: {
+                        "show": 300,
+                        "hide": 100
+                    }
+                });
+
+                $('.ct-slice-donut').on('mouseover mouseout', function () {
+                    chartLegend.classList.toggle('hiddenAfterHalfASec');
+                    chartLegend.classList.toggle('visibleAfterHalfASec');
+                });
+
+                $('.ct-series-a').on('mouseover mouseout', function () {
+                    incomeAmount.classList.toggle('transitionTextToNormal');
+                    incomeAmount.classList.toggle('transitionTextTo120');
+                });
+
+                $('.ct-series-b').on('mouseover mouseout', function () {
+                    expenseAmount.classList.toggle('transitionTextToNormal');
+                    expenseAmount.classList.toggle('transitionTextTo120');
+                });
+
+                $('.ct-series-c').on('mouseover mouseout', function () {
+                    totalAvailable.classList.toggle('transitionTextToNormal');
+                    totalAvailable.classList.toggle('transitionTextTo120');
+                });
+            });
+
+            // Animate the doughnut chart
+            er.startAnimationDonutChart(window.transactionsChart);
+        }
+
+    },
+
+    // Load Categories for transaction
+    loadCategoriesForTransaction(dropdownId, expenseId, incomeId) {
+        // set default category
+        let defaultCategory = window.defaultCategories[1];
+        if (isEmpty(defaultCategory.id)) {
+            document.getElementById(dropdownId).setAttribute('data-chosen', defaultCategory.name);
+        } else {
+            document.getElementById(dropdownId).setAttribute('data-chosen', defaultCategory.id);
+        }
+
+        // Load Expense category and income category
+        let expenseSelectionDiv = document.getElementById(expenseId);
+        while (expenseSelectionDiv.firstChild) {
+            expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
+        }
+        let incomeSelectionDiv = document.getElementById(incomeId);
+        while (incomeSelectionDiv.firstChild) {
+            incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
+        }
+        expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
+        incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
+
+    },
+
+
+    /*
+     * Sort Transactions by Account
+     */
+    sortTransactionsByAccount() {
+        // Change title of in the dropdown
+        let sortByDiv = document.getElementById('sortByBtnTit');
+        sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.account');
+        sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
+        // hide the recent transactions
+        document.getElementById('recentTransactions').classList.add('d-none');
+        // Show the account Table
+        let accSortedTable = document.getElementById('accSortedTable');
+        accSortedTable.classList.remove('d-none');
+        accSortedTable.classList.add('d-table');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // show the future transactions
+        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+        futureTransactionsTable.classList.add('d-none');
+        futureTransactionsTable.classList.remove('d-table');
+        // show the tags sortby
+        let tabsTable = document.getElementById('tagsTable');
+        tabsTable.classList.add('d-none');
+        tabsTable.classList.remove('d-table');
+        // Toggle  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // hide the transactions table
+        let transactionsTable = document.getElementById('transactionsTable');
+        transactionsTable.classList.remove('d-table');
+        transactionsTable.classList.add('d-none');
+        // Remove Account Table Class
+        let popAccInfoTab = document.getElementsByClassName('accountInfoTable');
+        if (isEmpty(popAccInfoTab)) {
+            // Show the accountTable
+            document.getElementById('accountTable').classList.remove('d-none');
+        } else {
+            for (let i = 0, len = popAccInfoTab.length; i < len; i++) {
+                let elementInArray = popAccInfoTab[i];
+
+                if (elementInArray.classList.contains('rotateZero')) {
+                    elementInArray.classList.remove('rotateZero');
+                    elementInArray.classList.add('rotateNinty');
+                }
+            }
+        }
+    }
+
+}
 
 // Build EmptyRecTransTable
 function buildEmptyTransactionsTab(className) {

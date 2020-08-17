@@ -163,7 +163,9 @@
                     "monthly": "Mensual"
                 },
                 "button": "Agregar transacción"
-            }
+            },
+            "ofcategorytotal": "(%) De la categoría Total",
+            "others": "Otros"
         },
         "dynamic": {
             "title": "Transacciones",
@@ -619,12 +621,19 @@
         "search": "Buscar...",
         "amount": "Cantidad",
         "note": "Escriba una nota",
-        "searcharticle": "Buscar artículos..."
+        "searcharticle": "Buscar artículos...",
+        "tags": "Etiquetas",
+        "nodescription": "No Descripción",
+        "noamount": "No Cantidad"
     },
     "tooltip": {
         "logout": "Cerrar sesión",
         "fullscreen": "Pantalla completa",
-        "settings": "Configuración"
+        "settings": "Configuración",
+        "transactionbalance": "Balance de la transacción",
+        "category": "Categoría",
+        "description": "Descripción",
+        "tags": "Etiquetas"
     },
     "goals": {
         "page": {

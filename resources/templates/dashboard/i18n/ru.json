@@ -163,7 +163,9 @@
                     "monthly": "Ежемесячно"
                 },
                 "button": "Агрегар трансакцион"
-            }
+            },
+            "ofcategorytotal": "(%) Из категории Всего",
+            "others": "Другие"
         },
         "dynamic": {
             "title": "транзакции",
@@ -619,12 +621,19 @@
         "search": "Поиск...",
         "amount": "Количество",
         "note": "напишите заметку",
-        "searcharticle": "Поиск статей..."
+        "searcharticle": "Поиск статей...",
+        "tags": "Теги",
+        "nodescription": "Нет Описание",
+        "noamount": "Нет Сумма"
     },
     "tooltip": {
         "logout": "выйти из системы",
         "fullscreen": "полный экран",
-        "settings": "Настройки"
+        "settings": "Настройки",
+        "transactionbalance": "Баланс транзакций",
+        "category": "Категория",
+        "description": "Описание",
+        "tags": "Теги"
     },
     "goals": {
         "page": {

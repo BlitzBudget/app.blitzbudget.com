@@ -232,9 +232,9 @@
             let userTransaction = result['body-json'];
             // Fetch the current category balance
             let oldCatDiv = document.getElementById('categoryBalance-' + oldCategoryId);
-            let oldCatBal = er.convertToNumberFromCurrency(oldCatDiv.textContent, currentCurrencyPreference);
+            let oldCatBal = window.categoryMap[oldCategoryId].categoryTotal;
             let catDiv = document.getElementById('categoryBalance-' + categoryId);
-            let catBal = er.convertToNumberFromCurrency(catDiv.textContent, currentCurrencyPreference);
+            let catBal = window.categoryMap[categoryId].categoryTotal;
             let currCatBal = 0;
             let currNewCatBal = 0;
             // Append a - sign if it is an expense
@@ -243,6 +243,9 @@
             // Append the new amount to the front
             oldCatDiv.textContent = formatToCurrency(currCatBal);
             catDiv.textContent = formatToCurrency(currNewCatBal);
+            // Update Category Total
+            window.categoryMap[oldCategoryId].categoryTotal = currCatBal;
+            window.categoryMap[categoryId].categoryTotal = currNewCatBal;
             // If the category balance is negative then change color
             if (currCatBal < 0) {
                 oldCatDiv.classList.add('expenseCategory');
@@ -270,6 +273,11 @@
                 // Build empty category entry
                 oldCatTable.appendChild(buildEmptyCategoryEntry(oldCategoryId));
             }
+            // Transaction Modal - Edit Categories Name
+            let editCategory = document.getElementById('editCategory');
+            editCategory.firstElementChild.textContent = window.categoryMap[categoryId].name;
+            // Window Transactions Map Category
+            window.transactionsCache[transactionId].category = categoryId;
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, 'Unable to change the transacition amount.', ajaxData);

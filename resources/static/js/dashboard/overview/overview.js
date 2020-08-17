@@ -139,6 +139,8 @@
                 oneyearoverview = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.oneyear : 'One Year Overview';
                 incomeparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.incomeparam : 'Income';
                 expenseparam = isNotEmpty(window.translationData) ? window.translationData.overview.dynamic.expenseparam : 'Expense';
+                // Replace currentCurrencySymbol with currency symbol
+                replaceWithCurrency(result.Wallet);
                 // Dates Cache
                 window.datesCreated = result.Date;
                 // Global Transactions Cache
@@ -150,8 +152,6 @@
 
                 populateAppropriateChart(result.Date);
 
-                // Replace currentCurrencySymbol with currency symbol
-                replaceWithCurrency(result.Wallet);
                 /**
                  * Populate total Asset, Liability & Networth
                  */

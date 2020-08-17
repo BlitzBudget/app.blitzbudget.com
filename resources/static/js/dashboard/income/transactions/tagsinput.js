@@ -34,7 +34,7 @@
     /*
      * Remove the tag
      */
-    $('body').on("click", ".tag.badge .badge-remove", function (e) {
+    $('body').on("click", "#add-transaction-tags .tag.badge .badge-remove", function (e) {
         // Remove the parent element
         this.parentNode.remove();
     });

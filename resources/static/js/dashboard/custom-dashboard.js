@@ -36,6 +36,11 @@ Object.defineProperties(CUSTOM_DASHBOARD_CONSTANTS, {
         writable: false,
         configurable: false
     },
+    'recurringTransactionsAPIUrl': {
+        value: window._config.api.invokeUrl + '/recurring-transaction',
+        writable: false,
+        configurable: false
+    },
     'overviewDashboardId': {
         value: 'overview-dashboard-sidebar',
         writable: false,
@@ -742,7 +747,10 @@ er = {
         }
     },
 
-    //convert from currency format to number
+    /*
+     * Convert from currency format to number.
+     * DO NOT USE it for formatted currencies *
+     */
     convertToNumberFromCurrency(amount, currentCurrencyPreference) {
         // Always convert to number as en-US and replace formatting from "," to "" empty space.
         return round(parseFloat(formatNumber(trimElement(firstElement(splitElement(amount, currentCurrencyPreference))), "en-US").replace(",", "")), 2);
@@ -854,16 +862,21 @@ er = {
     tableSortMechanism() {
         let tableSortMech = window.sortingTransTable;
         if (isNotEmpty(tableSortMech != null)) {
+            var clickEvent = new MouseEvent("click", {
+                "view": window,
+                "bubbles": true,
+                "cancelable": false
+            });
 
             switch (tableSortMech) {
 
                 case 'Account':
-                    // Click the account sorting mechanism
-                    document.getElementById('accountSortBy').click();
+                    // Switch to account sorting mechanism
+                    tr.sortTransactionsByAccount();
                     break;
                 case 'CreationDate':
                     // Click the creation date sorting mechanism
-                    document.getElementById('creationDateSortBy').click();
+                    document.getElementById('creationDateSortBy').dispatchEvent(clickEvent);
                     break;
             }
 

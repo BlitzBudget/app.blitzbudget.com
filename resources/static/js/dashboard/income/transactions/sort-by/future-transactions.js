@@ -29,6 +29,10 @@
          let tabsTable = document.getElementById('tagsTable');
          tabsTable.classList.add('d-none');
          tabsTable.classList.remove('d-table');
+         // Hide all account tables loaded
+         let accSortedTable = document.getElementById('accSortedTable');
+         accSortedTable.classList.add('d-none');
+         accSortedTable.classList.remove('d-table');
      });
 
      /*
@@ -134,7 +138,8 @@
      let tableRowTransaction = document.createElement('div');
      tableRowTransaction.id = 'recurTransaction-' + recurringTransaction.recurringTransactionsId;
      tableRowTransaction.setAttribute('data-target', recurringTransaction.recurringTransactionsId);
-     tableRowTransaction.classList = 'recentTransactionEntry d-table-row';
+     tableRowTransaction.classList = 'recentTransactionEntry d-table-row recurTransEntry';
+     tableRowTransaction.draggable = 'true';
 
      // Cell 1
      let tableCellImagesWrapper = document.createElement('div');

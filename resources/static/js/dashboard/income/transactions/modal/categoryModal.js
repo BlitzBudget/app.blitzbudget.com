@@ -21,13 +21,15 @@
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
         // Open Category Modal
         document.getElementById('categoryInformationMdl').classList.remove('d-none');
+        // Close  Transaction Information Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
         // Set the value and percentage of the progress bar
         let amountAccumulatedCat = document.getElementById('amountAccumulatedCat');
         // Progress Bar percentage
         let progressBarPercentage = 0;
         let remainingAmount = 0;
         if (isNotEmpty(window.userBudgetMap[categoryId])) {
-            progressBarPercentage = ((Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100);
+            progressBarPercentage = round(((Math.abs(window.userBudgetMap[categoryId].used) / Math.abs(window.userBudgetMap[categoryId].planned)) * 100), 2);
             // Is Not A Number then
             if (isNaN(progressBarPercentage)) {
                 progressBarPercentage = 0;
@@ -42,6 +44,16 @@
         document.getElementById('percentageAchievedCat').textContent = progressBarPercentage + '%';
         // Remaining in currencys
         document.getElementById('remainingBalanceCat').textContent = formatToCurrency(remainingAmount);
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
     });
 
     // Close Accoount modal
@@ -50,6 +62,8 @@
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Open  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // Update the transactions pie chart
+        window.transactionsChart.update();
     });
 
 }(jQuery));
