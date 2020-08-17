@@ -47,6 +47,8 @@
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Close Transaction Modal
         document.getElementById('transactionInformationMdl').classList.remove('d-none');
+        // Hide Recurring transactions modal
+        document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
         // Transaction Creation Date
         let creationDateUserRelevant = new Date(currentTransaction['creation_date']);
         document.getElementById('transactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();

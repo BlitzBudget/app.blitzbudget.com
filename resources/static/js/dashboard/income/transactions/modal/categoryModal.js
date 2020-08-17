@@ -23,6 +23,8 @@
         document.getElementById('categoryInformationMdl').classList.remove('d-none');
         // Close  Transaction Information Modal
         document.getElementById('transactionInformationMdl').classList.add('d-none');
+        // Hide Recurring transactions modal
+        document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
         // Set the value and percentage of the progress bar
         let amountAccumulatedCat = document.getElementById('amountAccumulatedCat');
         // Progress Bar percentage

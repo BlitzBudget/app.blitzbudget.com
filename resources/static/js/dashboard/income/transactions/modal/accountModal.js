@@ -34,6 +34,8 @@
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
         // Close  Transaction Information Modal
         document.getElementById('transactionInformationMdl').classList.add('d-none');
+        // Hide Recurring transactions modal
+        document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
         // Rotate the arrow indicator
         let emptyTransInAcc = document.getElementById('emptyAccountEntry-' + accountId);
         if (isEmpty(emptyTransInAcc)) {
