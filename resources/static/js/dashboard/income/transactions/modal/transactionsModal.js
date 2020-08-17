@@ -439,7 +439,7 @@
              * Update the bank balance
              */
             let bankAccountId = window.transactionsCache[transactionId].account;
-            bankAccEl = document.getElementById('accountSB-' + bankAccountId);
+            bankAccEl = document.getElementById('accountBalance-' + bankAccountId);
             for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
                 if (window.allBankAccountInfoCache[i].accountId == bankAccountId) {
                     let accBal = window.allBankAccountInfoCache[i]['account_balance'];
