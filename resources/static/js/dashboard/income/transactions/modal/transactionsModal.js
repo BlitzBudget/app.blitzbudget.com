@@ -449,6 +449,8 @@
                     accBal = accBal + window.transactionsCache[transactionId].amount;
                     // Update the bank account display
                     bankAccEl.textContent = formatToCurrency(accBal);
+                    // Update Cache
+                    window.allBankAccountInfoCache[i]['account_balance'] = accBal;
                 }
             }
         }
