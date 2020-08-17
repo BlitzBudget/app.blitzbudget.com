@@ -265,6 +265,8 @@ let tickIconSVG = tickIcon();
     $('#accountPickerWrapper').on('click', ".bARow", function () {
         let currentElem = this;
         let bnkAccountId = currentElem.getAttribute('data-target');
+        // Close the account Modal
+        closeAccountPopup();
 
         // Populate the JSON form data
         var values = {};
@@ -283,9 +285,9 @@ let tickIconSVG = tickIcon();
         ajaxData.onSuccess = function (result) {
             result = result['body-json'];
             // Append as Selected Account
-            for (let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-                if (allBankAccountInfoCache[i].id == bnkAccountId) {
-                    allBankAccountInfoCache[i]['selected_account'] = true;
+            for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                if (isEqual(window.allBankAccountInfoCache[i].accountId, bnkAccountId)) {
+                    window.allBankAccountInfoCache[i]['selected_account'] = true;
                 }
             }
 
@@ -295,14 +297,12 @@ let tickIconSVG = tickIcon();
                 let rowElem = bARows[i];
                 if (rowElem.classList.contains('selectedBA')) {
                     rowElem.classList.remove('selectedBA');
-                    allBankAccountInfoCache[i]['selected_account'] = false;
+                    window.allBankAccountInfoCache[i]['selected_account'] = false;
                 }
             }
 
             currentElem.classList.add('selectedBA');
 
-            // Close the account Modal
-            closeAccountPopup();
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, window.translationData.account.dynamic.selecterror, ajaxData);
