@@ -41,6 +41,16 @@
             arrowIndicator.classList.toggle('rotateZero');
             arrowIndicator.classList.toggle('rotateNinty');
         }
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
+        }
     });
 
     // Close Accoount modal
