@@ -447,9 +447,10 @@
                     accBal = accBal - oldTransactionAmount;
                     // Add the new balance
                     accBal = accBal + window.transactionsCache[transactionId].amount;
+                    // Update the bank account display
+                    bankAccEl.textContent = formatToCurrency(accBal);
                 }
             }
-            bankAccEl.textContent = formatToCurrency(accBal);
         }
     });
 
