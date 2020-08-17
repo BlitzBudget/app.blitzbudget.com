@@ -1239,7 +1239,7 @@ tr = {
         sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.account');
         sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
         // hide the recent transactions
-        document.getElementById(recentTransactionsId).classList.add('d-none');
+        document.getElementById('recentTransactions').classList.add('d-none');
         // Show the account Table
         let accSortedTable = document.getElementById('accSortedTable');
         accSortedTable.classList.remove('d-none');

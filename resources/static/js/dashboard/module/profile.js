@@ -954,8 +954,8 @@
             // Enter key
             document.activeElement.blur();
             e.preventDefault();
-            // Click the confirm button to continue
-            document.getElementById('userNameEdiBtn').click();
+            // Edit first name and last name
+            editUserDetailsFNAndLN();
         } else if (e.keyCode === 27) {
             // ESC key
             document.activeElement.blur();
