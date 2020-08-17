@@ -1005,8 +1005,18 @@
             return;
         }
 
-        let firstName = userNameLis[0];
-        let lastName = userNameLis.length > 1 ? userNameLis[1] : '';
+        /*
+         * Build first name and second name
+         */
+        let firstName, lastName;
+        if (Array.isArray(userNameLis)) {
+            firstName = userNameLis[0];
+            lastName = userNameLis.length > 1 ? userNameLis[1] : '';
+        } else {
+            firstName = userNameLis;
+            lastName = '';
+        }
+
 
         // If Authenticated User is present
         updateUserName(firstName, lastName);
