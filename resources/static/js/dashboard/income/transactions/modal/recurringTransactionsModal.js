@@ -224,7 +224,7 @@
              */
             let recurTransEl = document.getElementById('recurTransaction-' + recurringTransactionId);
             let recurTransDescEl = recurTransEl.getElementsByClassName('recentTransactionDescription');
-            recurTransDescEl.textContent = desc;
+            recurTransDescEl[0].textContent = desc;
 
             // Focus out
             this.blur();
@@ -268,7 +268,7 @@
              */
             let recurTransEl = document.getElementById('recurTransaction-' + recurringTransactionId);
             let transactionAmountRT = recurTransEl.getElementsByClassName('transactionAmountRT');
-            transactionAmountRT.textContent = formattedAmount;
+            transactionAmountRT[0].textContent = formattedAmount;
 
             // Focus out
             this.blur();
