@@ -389,6 +389,7 @@
                 totalIncomeTransactions = totalIncomeTransactions - currentTransaction.amount;
             }
             // Set the new amount to the cache
+            let oldTransactionAmount = currentTransaction.amount;
             window.transactionsCache[transactionId].amount = amount;
             // Add the new balance
             window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal + window.transactionsCache[transactionId].amount;
@@ -433,6 +434,22 @@
              */
             let totalAvailableTransactions = totalIncomeTransactions + totalExpensesTransactions;
             tr.updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions);
+
+            /*
+             * Update the bank balance
+             */
+            let bankAccountId = window.transactionsCache[transactionId].account;
+            bankAccEl = document.getElementById('accountSB-' + bankAccountId);
+            for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                if (window.allBankAccountInfoCache[i].accountId == currentAccountId) {
+                    let accBal = window.allBankAccountInfoCache[i]['account_balance'];
+                    // Remove the old balance
+                    accBal = accBal - oldTransactionAmount;
+                    // Add the new balance
+                    accBal = accBal + window.transactionsCache[transactionId].amount;
+                }
+            }
+            bankAccEl.textContent = formatToCurrency(accBal);
         }
     });
 
