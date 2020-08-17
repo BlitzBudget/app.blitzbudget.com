@@ -235,6 +235,16 @@
             tagsArray.push(badgeText);
         }
 
+        /*
+         * If the input field in the tag is not empty then.
+         */
+        let badgeText = document.getElementById('add-transaction-value').value;
+        if (isNotBlank(badgeText)) {
+            // Push tags to the array
+            tagsArray.push(badgeText);
+        }
+
+
         let values = {};
         if (notIncludesStr(categoryOptions, 'Category#')) {
             let chosenCategory = window.categoryMap[categoryOptions];
@@ -881,48 +891,7 @@
 
     // Sorts the table by aggregating transactions by account
     $('body').on('click', '#accountSortBy', function (e) {
-        // Change title of in the dropdown
-        let sortByDiv = document.getElementById('sortByBtnTit');
-        sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.account');
-        sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
-        // hide the recent transactions
-        document.getElementById(recentTransactionsId).classList.add('d-none');
-        // Show the account Table
-        let accSortedTable = document.getElementById('accSortedTable');
-        accSortedTable.classList.remove('d-none');
-        accSortedTable.classList.add('d-table');
-        // Close Category Modal
-        document.getElementById('categoryInformationMdl').classList.add('d-none');
-        // show the future transactions
-        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
-        futureTransactionsTable.classList.add('d-none');
-        futureTransactionsTable.classList.remove('d-table');
-        // show the tags sortby
-        let tabsTable = document.getElementById('tagsTable');
-        tabsTable.classList.add('d-none');
-        tabsTable.classList.remove('d-table');
-        // Toggle  Financial Position
-        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
-        // hide the transactions table
-        let transactionsTable = document.getElementById('transactionsTable');
-        transactionsTable.classList.remove('d-table');
-        transactionsTable.classList.add('d-none');
-        // Remove Account Table Class
-        let popAccInfoTab = document.getElementsByClassName('accountInfoTable');
-        if (isEmpty(popAccInfoTab)) {
-            // Show the accountTable
-            document.getElementById('accountTable').classList.remove('d-none');
-        } else {
-            for (let i = 0, len = popAccInfoTab.length; i < len; i++) {
-                let elementInArray = popAccInfoTab[i];
-
-                if (elementInArray.classList.contains('rotateZero')) {
-                    elementInArray.classList.remove('rotateZero');
-                    elementInArray.classList.add('rotateNinty');
-                }
-            }
-        }
-
+        tr.sortTransactionsByAccount();
     });
 
     // Appends the date header for recent transactions
@@ -1258,6 +1227,54 @@ tr = {
         expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
         incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
 
+    },
+
+
+    /*
+     * Sort Transactions by Account
+     */
+    sortTransactionsByAccount() {
+        // Change title of in the dropdown
+        let sortByDiv = document.getElementById('sortByBtnTit');
+        sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.account');
+        sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.account : "Account";
+        // hide the recent transactions
+        document.getElementById(recentTransactionsId).classList.add('d-none');
+        // Show the account Table
+        let accSortedTable = document.getElementById('accSortedTable');
+        accSortedTable.classList.remove('d-none');
+        accSortedTable.classList.add('d-table');
+        // Close Category Modal
+        document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // show the future transactions
+        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
+        futureTransactionsTable.classList.add('d-none');
+        futureTransactionsTable.classList.remove('d-table');
+        // show the tags sortby
+        let tabsTable = document.getElementById('tagsTable');
+        tabsTable.classList.add('d-none');
+        tabsTable.classList.remove('d-table');
+        // Toggle  Financial Position
+        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+        // hide the transactions table
+        let transactionsTable = document.getElementById('transactionsTable');
+        transactionsTable.classList.remove('d-table');
+        transactionsTable.classList.add('d-none');
+        // Remove Account Table Class
+        let popAccInfoTab = document.getElementsByClassName('accountInfoTable');
+        if (isEmpty(popAccInfoTab)) {
+            // Show the accountTable
+            document.getElementById('accountTable').classList.remove('d-none');
+        } else {
+            for (let i = 0, len = popAccInfoTab.length; i < len; i++) {
+                let elementInArray = popAccInfoTab[i];
+
+                if (elementInArray.classList.contains('rotateZero')) {
+                    elementInArray.classList.remove('rotateZero');
+                    elementInArray.classList.add('rotateNinty');
+                }
+            }
+        }
     }
 
 }

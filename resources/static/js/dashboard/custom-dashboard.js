@@ -871,8 +871,8 @@ er = {
             switch (tableSortMech) {
 
                 case 'Account':
-                    // Click the account sorting mechanism
-                    document.getElementById('accountSortBy').dispatchEvent(clickEvent);
+                    // Switch to account sorting mechanism
+                    tr.sortTransactionsByAccount();
                     break;
                 case 'CreationDate':
                     // Click the creation date sorting mechanism
