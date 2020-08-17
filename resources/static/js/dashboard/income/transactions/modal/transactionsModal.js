@@ -220,7 +220,6 @@
             }
             // Update Tags
             updateTransaction('tags', tagsArray);
-            return false;
         }
     });
 
@@ -317,8 +316,6 @@
             }
             // Focus out
             this.blur();
-            // Update to cache
-            window.transactionsCache[transactionId].description = desc;
         }
     });
 
@@ -467,6 +464,8 @@
      * Updte Transaction
      */
     function updateTransaction(type, value) {
+        // Update to cache
+        window.transactionsCache[transactionId][type] = value;
         let values = {};
         values['walletId'] = window.currentUser.walletId;
         values['transactionId'] = document.getElementById('transactionInformationMdl').dataset.target;

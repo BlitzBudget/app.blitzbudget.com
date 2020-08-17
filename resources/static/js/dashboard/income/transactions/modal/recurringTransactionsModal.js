@@ -146,7 +146,6 @@
             }
             // Update Tags
             updateRecurringTransaction('tags', tagsArray);
-            return false;
         }
     });
 
@@ -222,8 +221,6 @@
 
             // Focus out
             this.blur();
-            // Update to cache
-            window.recurringTransactionCache[recurringTransactionId].description = desc;
         }
     });
 
@@ -246,7 +243,7 @@
                 return false;
             }
             // If expense category then convert to negative
-            if (window.categoryMap[window.recurringTransactionCache[recurringTransactionId].category].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+            if (window.recurringTransactionCache[recurringTransactionId].amount < 0) {
                 // Update as negative amount
                 amount *= -1;
             }
@@ -259,10 +256,8 @@
             let formattedAmount = formatToCurrency(amount);
             recurringTransactionAmountEntry.value = formattedAmount;
 
-
             // Focus out
             this.blur();
-
         }
     });
 
@@ -270,6 +265,8 @@
      * Updte Transaction
      */
     function updateRecurringTransaction(type, value) {
+        // Update to cache
+        window.recurringTransactionCache[recurringTransactionId][type] = value;
         let values = {};
         values['walletId'] = window.currentUser.walletId;
         values['recurringTransactionId'] = document.getElementById('recurringTransactionInformationMdl').dataset.target;
