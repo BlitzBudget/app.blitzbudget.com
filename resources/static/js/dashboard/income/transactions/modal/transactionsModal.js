@@ -87,7 +87,7 @@
         if (isNotEmpty(categorySortedTrans)) {
             categorySortedTrans.classList.add('d-none');
         }
-        if (isNotEmpty(categorySortedTrans)) {
+        if (isNotEmpty(accountAggre)) {
             accountAggre.classList.add('d-none');
         }
         if (isNotEmpty(recentTransaction)) {
