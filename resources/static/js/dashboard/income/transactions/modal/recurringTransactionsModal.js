@@ -219,6 +219,13 @@
             let recurringTransactionDescriptionEntry = document.getElementById('recurringTransactionDescriptionEntry');
             recurringTransactionDescriptionEntry.value = desc;
 
+            /*
+             * Update Recurring transactions display
+             */
+            let recurTransEl = document.getElementById('recurTransaction-' + recurringTransactionId);
+            let recurTransDescEl = recurTransEl.getElementsByClassName('recentTransactionDescription');
+            recurTransDescEl.textContent = desc;
+
             // Focus out
             this.blur();
         }
@@ -255,6 +262,13 @@
             let recurringTransactionAmountEntry = document.getElementById('recurringTransactionAmountEntry');
             let formattedAmount = formatToCurrency(amount);
             recurringTransactionAmountEntry.value = formattedAmount;
+
+            /*
+             * Recurring Transaction Amount Display
+             */
+            let recurTransEl = document.getElementById('recurTransaction-' + recurringTransactionId);
+            let transactionAmountRT = recurTransEl.getElementsByClassName('transactionAmountRT');
+            transactionAmountRT.textContent = formattedAmount;
 
             // Focus out
             this.blur();
