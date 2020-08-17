@@ -48,9 +48,9 @@
         // Close Transaction Modal
         document.getElementById('transactionInformationMdl').classList.add('d-none');
         // Show Recurring transactions modal
-        document.getElementById('recurringTransactionLabelInModal').classList.remove('d-none');
+        document.getElementById('recurringTransactionInformationMdl').classList.remove('d-none');
         // Transaction Modal
-        document.getElementById('recurringTransactionLabelInModal').setAttribute('data-target', recurringTransactionsId);
+        document.getElementById('recurringTransactionInformationMdl').setAttribute('data-target', recurringTransactionsId);
     });
 
     // Delete Transactions
@@ -279,7 +279,7 @@
         let ajaxData = {};
         ajaxData.isAjaxReq = true;
         ajaxData.type = "PATCH";
-        ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.transactionAPIUrl;
+        ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.recurringTransactionsAPIUrl;
         ajaxData.dataType = "json";
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
