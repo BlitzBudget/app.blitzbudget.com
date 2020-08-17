@@ -441,7 +441,7 @@
             let bankAccountId = window.transactionsCache[transactionId].account;
             bankAccEl = document.getElementById('accountSB-' + bankAccountId);
             for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
-                if (window.allBankAccountInfoCache[i].accountId == currentAccountId) {
+                if (window.allBankAccountInfoCache[i].accountId == bankAccountId) {
                     let accBal = window.allBankAccountInfoCache[i]['account_balance'];
                     // Remove the old balance
                     accBal = accBal - oldTransactionAmount;
