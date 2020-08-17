@@ -1011,10 +1011,10 @@
         let firstName, lastName;
         if (Array.isArray(userNameLis)) {
             firstName = userNameLis[0];
-            lastName = userNameLis.length > 1 ? userNameLis[1] : '';
+            lastName = userNameLis.length > 1 ? userNameLis[1] : ' ';
         } else {
             firstName = userNameLis;
-            lastName = '';
+            lastName = ' ';
         }
 
 
