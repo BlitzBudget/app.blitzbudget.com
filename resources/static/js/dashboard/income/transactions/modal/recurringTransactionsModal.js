@@ -265,11 +265,13 @@
      * Updte Transaction
      */
     function updateRecurringTransaction(type, value) {
+        // Recurring transactions id
+        let recurringTransactionId = document.getElementById('recurringTransactionInformationMdl').dataset.target;
         // Update to cache
         window.recurringTransactionCache[recurringTransactionId][type] = value;
         let values = {};
         values['walletId'] = window.currentUser.walletId;
-        values['recurringTransactionId'] = document.getElementById('recurringTransactionInformationMdl').dataset.target;
+        values['recurringTransactionId'] = recurringTransactionId;
         values[type] = value;
 
         // Ajax Requests on Error

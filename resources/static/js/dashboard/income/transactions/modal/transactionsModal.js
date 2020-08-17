@@ -464,11 +464,13 @@
      * Updte Transaction
      */
     function updateTransaction(type, value) {
+        // Transactions ID
+        let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
         // Update to cache
         window.transactionsCache[transactionId][type] = value;
         let values = {};
         values['walletId'] = window.currentUser.walletId;
-        values['transactionId'] = document.getElementById('transactionInformationMdl').dataset.target;
+        values['transactionId'] = transactionId;
         values[type] = value;
 
         // Ajax Requests on Error
