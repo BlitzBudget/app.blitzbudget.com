@@ -201,7 +201,7 @@
     // On hit enter
     $('body').on("keyup", "#transactionTagsEntry", function (e) {
         var keyCode = e.key;
-        if (isEqual(keyCode, 'Enter')) {
+        if (isEqual(keyCode, 'Enter') && isNotBlank(this.value)) {
             e.preventDefault();
             // Create a new tag
             createANewTag('edit-transaction-tags', this.value);
