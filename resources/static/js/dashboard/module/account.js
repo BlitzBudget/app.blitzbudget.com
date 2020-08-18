@@ -171,10 +171,13 @@ er_a = {
         bAFragment.appendChild(bAHRow);
 
         // Populate the rest of the bank account
+        let bABody = document.createElement('div');
+        bABody.id = 'bank-account-list';
         for (let i = 0, length = bankAccountsInfo.length; i < length; i++) {
             let count = i + 1;
-            bAFragment.appendChild(er_a.populateBankAccountInfo(bankAccountsInfo[i], count));
+            bABody.appendChild(er_a.populateBankAccountInfo(bankAccountsInfo[i], count));
         }
+        bAFragment.appendChild(bABody);
 
         // Bank Account Footer
         let bAFooter = document.createElement('button');
@@ -795,7 +798,8 @@ window.syncSVG = er_a.syncSVGFc();
                     // Add Accounts to the preview mode if < 4
                     let bARows = document.getElementsByClassName('bARow');
                     if (bARows.length < 4) {
-                        er_a.populateBankAccountInfo(result, bARows.length + 1);
+                        let accountPickerWrapper = document.getElementById('bank-account-list');
+                        accountPickerWrapper.appendChild(er_a.populateBankAccountInfo(result, bARows.length + 1));
                     }
 
                     // A new header for the rest
