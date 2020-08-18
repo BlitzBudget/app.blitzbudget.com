@@ -214,6 +214,8 @@
     function updateTransactionWithRecurrence(recurringTransactionId, recurrence, oldRecurrence) {
         // obtain the transaction id of the table row
         recurringTransactionId = document.getElementById(recurringTransactionId).getAttribute('data-target');
+        let recurringTransaction = window.recurringTransactionCache[recurringTransactionId];
+        let nextScheduledDate = new Date(recurringTransaction['next_scheduled']);
 
         let values = {};
         values['recurrence'] = recurrence;
@@ -240,8 +242,15 @@
             let oldRecentTransactionEntry = oldRecurrenceEl.getElementsByClassName('recentTransactionEntry');
             if (oldRecentTransactionEntry.length == 0) {
                 // Build empty account entry
-                oldRecurrenceEl.appendChild(buildEmptyAccountEntry(oldRecurrenceEl));
+                oldRecurrenceEl.appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + oldRecurrence));
             }
+            // Update Recurrence in the cache
+            window.recurringTransactionCache[recurringTransactionId].recurrence = recurrence;
+            recurringTransaction = window.recurringTransactionCache[recurringTransactionId];
+            // Change the recurrence display
+            let recurTransactionEl = document.getElementById('recurTransaction-' + recurringTransactionId);
+            let categoryNameRT = recurTransactionEl.getElementsByClassName('categoryNameRT')[0];
+            categoryNameRT.textContent = (recurringTransaction.recurrence) + ' • ' + ("0" + nextScheduledDate.getDate()).slice(-2) + ' ' + months[nextScheduledDate.getMonth()].slice(0, 3) + ' ' + nextScheduledDate.getFullYear() + ' ' + ("0" + nextScheduledDate.getHours()).slice(-2) + ':' + ("0" + nextScheduledDate.getMinutes()).slice(-2);
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, 'Unable to change the recurrence. Please try again!', ajaxData);
