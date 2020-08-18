@@ -241,9 +241,7 @@
 
                     // Simulate a click on the first table heading (Show Account Modal)
                     let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-                    if (accountTableHeaders.length > 0) {
-                        accountTableHeaders.get(0).click();
-                    } else {
+                    if (accountTableHeaders.length == 0) {
                         // Append account Table empty information
                         let accountTable = document.getElementById('accountTable');
                         // Replace HTML with Empty
@@ -295,7 +293,7 @@
                     // Remove relevant bank account entry
                     let bARow = document.getElementsByClassName('bARow');
                     for (let i = 0, len = bARow.length; i < len; i++) {
-                        let bankAccount = bARow[0];
+                        let bankAccount = bARow[i];
                         if (isEqual(bankAccount.dataset.target, currentAccountId)) {
                             bankAccount.remove();
                             break;

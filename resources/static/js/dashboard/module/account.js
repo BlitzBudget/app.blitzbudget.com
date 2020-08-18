@@ -798,8 +798,7 @@ window.syncSVG = er_a.syncSVGFc();
                     // Add Accounts to the preview mode if < 4
                     let bARows = document.getElementsByClassName('bARow');
                     if (bARows.length < 4) {
-                        let accountPickerWrapper = document.getElementById('bank-account-list');
-                        accountPickerWrapper.appendChild(er_a.populateBankAccountInfo(result, bARows.length + 1));
+                        document.getElementById('bank-account-list').appendChild(er_a.populateBankAccountInfo(result, bARows.length + 1));
                     }
 
                     // A new header for the rest
