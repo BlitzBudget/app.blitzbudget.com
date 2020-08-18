@@ -85,6 +85,15 @@
             if (isNotEmpty(recurTransaction)) {
                 recurTransaction.remove();
             }
+
+            // Replace with Empty Recurrence
+            let recurrenceValue = window.recurringTransactionCache[recurringTransactionId].recurrence;
+            let recurrenceValueEl = document.getElementById('recurTransSB-' + recurrenceValue);
+            let recurrenceValueEntry = recurrenceValueEl.getElementsByClassName('recentTransactionEntry');
+            if (recurrenceValueEntry.length == 0) {
+                // Build empty account entry
+                recurrenceValueEl.appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + recurrenceValue));
+            }
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, "There was an error while deleting the recurring transaction. Please try again later!", ajaxData);
