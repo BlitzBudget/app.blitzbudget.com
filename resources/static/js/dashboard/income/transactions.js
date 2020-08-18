@@ -983,7 +983,7 @@
 
             if (isEmpty(document.getElementById('categorySB-' + category.categoryId))) {
                 populateTransactionsFragment.appendChild(buildCategoryHeader(category.categoryId));
-                populateTransactionsFragment.getElementById('categorySB-' + category.categoryId).appendChild(buildEmptyTableEntry('emptyCategoryItem-' + category.categoryId));
+                populateTransactionsFragment.getElementById('categorySB-' + category.categoryId).appendChild(er_a.buildEmptyTableEntry('emptyCategoryItem-' + category.categoryId));
             }
         }
 
@@ -1014,7 +1014,7 @@
             let accountId = userTransaction.account;
 
             if (notIncludesStr(createdAccIds, accountId)) {
-                recentTransactionsFragment.appendChild(buildAccountHeader(bankAccountMap[accountId]));
+                recentTransactionsFragment.appendChild(er_a.buildAccountHeader(bankAccountMap[accountId]));
                 // Add Created Accounts ID to the array
                 createdAccIds.push(accountId);
             }
@@ -1032,7 +1032,7 @@
             // If the ID corresponding wiht the bank account is not populated then
             if (notIncludesStr(createdAccIds, bankAcc.accountId)) {
                 // A new header for the rest
-                let accountHeaderNew = buildAccountHeader(bankAcc);
+                let accountHeaderNew = er_a.buildAccountHeader(bankAcc);
                 let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
                 if (bankAcc['account_balance'] < 0) {
                     accBal.classList.add('expenseCategory');
@@ -1041,7 +1041,7 @@
                 }
                 accBal.textContent = formatToCurrency(bankAcc['account_balance']);
                 // Append Empty Table to child
-                accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
+                accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(er_a.buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
                 // Append to the transaction view
                 accHeadFrag.appendChild(accountHeaderNew);
             }

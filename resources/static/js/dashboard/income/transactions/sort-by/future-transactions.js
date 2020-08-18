@@ -80,6 +80,19 @@
 
              futureTransactionsFragment.getElementById('recurTransSB-' + recurringTransaction.recurrence).appendChild(buildFutureTransactionRow(recurringTransaction));
          }
+
+         /*
+          * Populate Empty Recurrence Headers
+          */
+         let recurrenceValues = ['WEEKLY', 'BI-MONTHLY', 'MONTHLY']
+         for (let i = 0, len = recurrenceValues.length; i < len; i++) {
+             let recur = recurrenceValues[i];
+             let recurrenceHeader = futureTransactionsFragment.getElementById('recurTransSB-' + recur);
+             if (isEmpty(recurrenceHeader)) {
+                 futureTransactionsFragment.appendChild(buildRecurTransHeaders(recur));
+                 futureTransactionsFragment.getElementById('recurTransSB-' + category.categoryId).appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + category.categoryId));
+             }
+         }
      }
 
      // Replace HTML with Empty

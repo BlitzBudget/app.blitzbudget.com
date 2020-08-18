@@ -138,7 +138,7 @@
             let categoryHeader = document.getElementById('categorySB-' + categoryId);
             if (categoryHeader.childNodes.length == 1) {
                 // Ppopulate empty table transaction
-                categoryHeader.appendChild(buildEmptyTableEntry('emptyCategoryItem-' + categoryId));
+                categoryHeader.appendChild(er_a.buildEmptyTableEntry('emptyCategoryItem-' + categoryId));
             }
             /*
              * Calculate total income and total expense (minus deleted transaction)
