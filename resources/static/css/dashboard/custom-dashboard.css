@@ -1893,6 +1893,10 @@ textarea:disabled {
     display: table-footer-group;
 }
 
+.unsyncContainer .swal2-content {
+    z-index: 3;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;
