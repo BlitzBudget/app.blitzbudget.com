@@ -1,13 +1,12 @@
 "use strict";
-let unsyncSVG = er_a.unsyncSVGFc();
-let syncSVG = er_a.syncSVGFc();
-// Constants for reference
-window.allBankAccountInfoCache = '';
-// Tick Icon
-let tickIconSVG = er_a.tickIcon();
-
 // Account Information display
 (function scopeWrapper($) {
+    window.unsyncSVG = er_a.unsyncSVGFc();
+    window.syncSVG = er_a.syncSVGFc();
+    // Constants for reference
+    window.allBankAccountInfoCache = '';
+    // Tick Icon
+    let tickIconSVG = er_a.tickIcon();
 
     let accountSubTypeToType = {};
     let sadata = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.add.savingsacc : 'Savings Account';
