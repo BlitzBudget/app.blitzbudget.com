@@ -807,6 +807,8 @@ window.syncSVG = er_a.syncSVGFc();
                     accountHeaderNew.getElementById('accountSB-' + result.accountId).appendChild(er_a.buildEmptyTableEntry('emptyAccountEntry-' + result.accountId));
                     // Append to the transaction view
                     document.getElementById('accSortedTable').appendChild(accountHeaderNew);
+                    // Remove the account Modal
+                    document.getElementById('accountHeaderClose').click();
                 }
                 ajaxData.onFailure = function (thrownError) {
                     manageErrors(thrownError, window.translationData.account.dynamic.adderror, ajaxData);
