@@ -278,6 +278,10 @@
                         if (bankAccount.id == currentAccountId) {
                             // Update the position to remove
                             posToRemove = i;
+                            // Bank Account selected to empty
+                            if (bankAccount['selected_account']) {
+                                window.selectedBankAccountId = '';
+                            }
                             break;
                         }
                     }

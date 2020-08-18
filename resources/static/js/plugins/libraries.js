@@ -329,6 +329,17 @@ function showNotification(message, colorCode) {
     });
 }
 
+function showNotificationWithPosition(message, colorCode, pos) {
+    Toast.fire({
+        position: pos,
+        customClass: {
+            container: 'mixinSuccess',
+        },
+        icon: colorCode,
+        title: message
+    });
+}
+
 function replaceHTML(el, html) {
     var oldEl = typeof el === "string" ? document.getElementById(el) : el;
     /*@cc_on // Pure innerHTML is slightly faster in IE
