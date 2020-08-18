@@ -90,7 +90,7 @@
              let recurrenceHeader = futureTransactionsFragment.getElementById('recurTransSB-' + recur);
              if (isEmpty(recurrenceHeader)) {
                  futureTransactionsFragment.appendChild(buildRecurTransHeaders(recur));
-                 futureTransactionsFragment.getElementById('recurTransSB-' + category.categoryId).appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + category.categoryId));
+                 futureTransactionsFragment.getElementById('recurTransSB-' + recur).appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + recur));
              }
          }
      }
