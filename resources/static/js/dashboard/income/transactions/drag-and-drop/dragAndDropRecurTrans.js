@@ -172,7 +172,7 @@
             // Find the closest parent element and drop. (Should never be null)
             insertAfterElement(a, e.target);
             // Update the transaction with the new account ID
-            updateTransactionWithRecurrence(recurTransId, closestParentWrapper.getAttribute('data-target'));
+            updateTransactionWithRecurrence(recurTransId, closestParentWrapper.getAttribute('data-target'), dragSrcEl.getAttribute('data-target'));
         }
 
         return false;
@@ -211,7 +211,7 @@
     }
 
     // Update the transaction with the account ID
-    function updateTransactionWithRecurrence(recurringTransactionId, recurrence) {
+    function updateTransactionWithRecurrence(recurringTransactionId, recurrence, oldRecurrence) {
         // obtain the transaction id of the table row
         recurringTransactionId = document.getElementById(recurringTransactionId).getAttribute('data-target');
 
@@ -229,7 +229,19 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
-            let userTransaction = result['body-json'];
+            let recurrenceData = result['body-json'];
+            // Remove empty entries for the recurrence
+            let emptyRecurrenceItem = document.getElementById('emptyRecurrenceItem-' + recurrence);
+            if (isNotEmpty(emptyRecurrenceItem)) {
+                emptyRecurrenceItem.remove();
+            }
+            // Replace with Empty Recurrence
+            let oldRecurrenceEl = document.getElementById('recurTransSB-' + oldRecurrence);
+            let oldRecentTransactionEntry = oldRecurrenceEl.getElementsByClassName('recentTransactionEntry');
+            if (oldRecentTransactionEntry.length == 0) {
+                // Build empty account entry
+                oldRecurrenceEl.appendChild(buildEmptyAccountEntry(oldRecurrenceEl));
+            }
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, 'Unable to change the recurrence. Please try again!', ajaxData);
