@@ -27,18 +27,18 @@
         }
 
         let recurringTransactionsId = this.dataset.target;
-        let currentTransaction = window.recurringTransactionCache[recurringTransactionsId];
-        let categoryId = currentTransaction.category;
+        let currentRecurringTrans = window.recurringTransactionCache[recurringTransactionsId];
+        let categoryId = currentRecurringTrans.category;
         // Set transaction Title
-        document.getElementById('recurringTransactionLabelInModal').textContent = currentTransaction.description;
+        document.getElementById('recurringTransactionLabelInModal').textContent = currentRecurringTrans.description;
         // transaction Balance Update
-        document.getElementById('recurringTransactionAmountEntry').value = formatToCurrency(currentTransaction.amount);
+        document.getElementById('recurringTransactionAmountEntry').value = formatToCurrency(currentRecurringTrans.amount);
         // Transaction Category Update
         document.getElementById('recurringTransactionCategoryEntry').textContent = ' ';
         // Transaction Description Update
-        document.getElementById('recurringTransactionDescriptionEntry').value = currentTransaction.description;
+        document.getElementById('recurringTransactionDescriptionEntry').value = currentRecurringTrans.description;
         // Transaction Tags Update
-        createAllTags(currentTransaction.tags);
+        createAllTags(currentRecurringTrans.tags);
         // Close Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close  Financial Position
@@ -51,6 +51,9 @@
         document.getElementById('recurringTransactionInformationMdl').classList.remove('d-none');
         // Transaction Modal
         document.getElementById('recurringTransactionInformationMdl').setAttribute('data-target', recurringTransactionsId);
+        // Transaction Creation Date
+        let creationDateUserRelevant = new Date(currentRecurringTrans['creation_date']);
+        document.getElementById('recurringTransactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();
     });
 
     // Delete Transactions

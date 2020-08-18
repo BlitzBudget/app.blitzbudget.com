@@ -273,13 +273,9 @@
 
                     // Remove from preivew if present
                     let posToRemove = null;
-                    for (let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-                        if (allBankAccountInfoCache[i].id == currentAccountId) {
-                            let position = i + 1;
-                            // Remove the preview banka count
-                            let previewPos = document.getElementById('bAR-' + position);
-                            // remove the preview Pos if present
-                            if (isNotEmpty(previewPos)) previewPos.remove();
+                    for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                        let bankAccount = window.allBankAccountInfoCache[i];
+                        if (bankAccount.id == currentAccountId) {
                             // Update the position to remove
                             posToRemove = i;
                             break;
@@ -289,7 +285,17 @@
                     // Position to remove
                     if (isNotEmpty(posToRemove)) {
                         // Remove the bank account preview
-                        allBankAccountInfoCache.splice(posToRemove, 1);
+                        window.allBankAccountInfoCache.splice(posToRemove, 1);
+                    }
+
+                    // Remove relevant bank account entry
+                    let bARow = document.getElementsByClassName('bARow');
+                    for (let i = 0, len = bARow.length; i < len; i++) {
+                        let bankAccount = bARow[0];
+                        if (isEqual(bankAccount.dataset.target, currentAccountId)) {
+                            bankAccount.remove();
+                            break;
+                        }
                     }
                 }
                 ajaxData.onFailure = function (thrownError) {
