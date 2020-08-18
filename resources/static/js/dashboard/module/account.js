@@ -636,8 +636,16 @@ let tickIconSVG = tickIcon();
         // Store the account sorting in window.sortingTransTable
         let manageaccount = isNotEmpty(window.translationData) ? window.translationData.account.dynamic.manage : 'Account';
         window.sortingTransTable = manageaccount;
-        // Click the transactions page
-        document.getElementById('transactionsPage').click();
+        // Check if the transactions page is active
+        let sidebar = document.getElementById('transaction-dashboard-sidebar');
+        // If already in transactions page
+        if (sidebar.classList.contains('active')) {
+            // Change the table sorting to account
+            er.tableSortMechanism();
+        } else {
+            // Click the transactions page
+            document.getElementById('transactionsPage').click();
+        }
     });
 
 
