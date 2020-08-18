@@ -299,6 +299,8 @@
                             break;
                         }
                     }
+                    // Remove the account Modal
+                    document.getElementById('accountHeaderClose').click();
                 }
                 ajaxData.onFailure = function (thrownError) {
                     manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!", ajaxData);
