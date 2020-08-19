@@ -132,8 +132,13 @@
         let genericAddFnc = document.getElementById('genericAddFnc');
         genericAddFnc.classList = 'btn btn-round btn-success btn-just-icon bottomFixed float-right addNewTrans';
         $(genericAddFnc).unbind('click').click(function () {
-            genericAddFnc.classList.toggle('d-none');
-            $('#GSCCModal').modal('toggle');
+            if (isEmpty(window.selectedBankAccountId)) {
+                showNotificationWithPosition(window.translationData.account.dynamic.unsynacc, window._constants.notification.error, 'bottom-end');
+                $('showAccounts').click();
+            } else {
+                genericAddFnc.classList.toggle('d-none');
+                $('#GSCCModal').modal('toggle');
+            }
         });
 
         // refresh the transactions page on closing the modal
