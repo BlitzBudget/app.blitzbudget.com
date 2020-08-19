@@ -270,22 +270,17 @@
                     }
 
                     // Remove from preivew if present
-                    let posToRemove = null;
+                    let bankAccCaches = [];
                     for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
                         let bankAccount = window.allBankAccountInfoCache[i];
-                        if (bankAccount.accountId == currentAccountId) {
-                            // Update the position to remove
-                            posToRemove = i;
-                            break;
+                        if (bankAccount.accountId != currentAccountId) {
+                            bankAccCaches.push(bankAccount);
                         }
                     }
+                    // All Bank Account Info Cache
+                    window.allBankAccountInfoCache = bankAccCaches;
 
-                    // Position to remove
-                    if (isNotEmpty(posToRemove)) {
-                        // Remove the bank account preview
-                        window.allBankAccountInfoCache.splice(posToRemove, 1);
-                    }
-
+                    // Populate Account Modal Cache
                     er_a.populateBankInfo(window.allBankAccountInfoCache);
                     // Remove the account Modal
                     document.getElementById('accountHeaderClose').click();
