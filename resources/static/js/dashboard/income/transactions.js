@@ -1181,6 +1181,8 @@ tr = {
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Hide Recurring transactions modal
         document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
+        // Hide Transaction Inormation Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
         // show the future transactions
         let futureTransactionsTable = document.getElementById('futureTransactionsTable');
         futureTransactionsTable.classList.add('d-none');

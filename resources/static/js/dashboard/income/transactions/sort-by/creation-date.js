@@ -14,6 +14,8 @@
         document.getElementById('accountTable').classList.add('d-none');
         // Hide Recurring transactions modal
         document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
+        // Hide Transaction Inormation Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
         // show the recent transactions
         document.getElementById('recentTransactions').classList.remove('d-none');
         // Hide all account tables loaded
