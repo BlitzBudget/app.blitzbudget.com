@@ -276,10 +276,6 @@
                         if (bankAccount.id == currentAccountId) {
                             // Update the position to remove
                             posToRemove = i;
-                            // Bank Account selected to empty
-                            if (bankAccount['selected_account']) {
-                                window.selectedBankAccountId = '';
-                            }
                             break;
                         }
                     }
@@ -290,15 +286,7 @@
                         window.allBankAccountInfoCache.splice(posToRemove, 1);
                     }
 
-                    // Remove relevant bank account entry
-                    let bARow = document.getElementsByClassName('bARow');
-                    for (let i = 0, len = bARow.length; i < len; i++) {
-                        let bankAccount = bARow[i];
-                        if (isEqual(bankAccount.dataset.target, currentAccountId)) {
-                            bankAccount.remove();
-                            break;
-                        }
-                    }
+                    er_a.populateBankInfo(window.allBankAccountInfoCache);
                     // Remove the account Modal
                     document.getElementById('accountHeaderClose').click();
                 }

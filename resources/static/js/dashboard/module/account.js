@@ -5,6 +5,8 @@ er_a = {
     populateBankInfo(bankAccountsInfo) {
         // Assign value to constant
         window.allBankAccountInfoCache = bankAccountsInfo;
+        // Initialize Selected Bank Account
+        window.selectedBankAccountId = '';
         // Populate empty bank account info
         if (isEmpty(bankAccountsInfo)) {
             er_a.populateEmptyAccountInfo();
