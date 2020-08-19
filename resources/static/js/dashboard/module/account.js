@@ -795,11 +795,10 @@ window.syncSVG = er_a.syncSVGFc();
                     result['account_type'] = result.accountType;
                     result['selected_account'] = result.selectedAccount;
                     showNotification(window.translationData.account.dynamic.unsynacc + values['bankAccountName'] + window.translationData.account.dynamic.unsyncacc2, window._constants.notification.success);
-                    // Add Accounts to the preview mode if < 4
-                    let bARows = document.getElementsByClassName('bARow');
-                    if (bARows.length < 4) {
-                        //document.getElementById('accountPickerWrapper').appendChild(er_a.populateBankAccountInfo(result, bARows.length + 1));
-                    }
+
+                    // Bank account info cache
+                    window.allBankAccountInfoCache.push(result);
+                    er_a.populateBankInfo(window.allBankAccountInfoCache);
 
                     // A new header for the rest
                     let accountHeaderNew = er_a.buildAccountHeader(result);
