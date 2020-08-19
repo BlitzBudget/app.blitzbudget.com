@@ -273,7 +273,7 @@
                     let posToRemove = null;
                     for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
                         let bankAccount = window.allBankAccountInfoCache[i];
-                        if (bankAccount.id == currentAccountId) {
+                        if (bankAccount.accountId == currentAccountId) {
                             // Update the position to remove
                             posToRemove = i;
                             break;
