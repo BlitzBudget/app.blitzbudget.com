@@ -225,7 +225,7 @@
 
                 let values = {};
                 values.walletId = window.currentUser.walletId;
-                values.itemId = currentAccountId;
+                values.account = currentAccountId;
 
                 // Ajax Requests on Error
                 let ajaxData = {};
