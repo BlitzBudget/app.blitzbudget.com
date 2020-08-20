@@ -21,7 +21,7 @@
         // Set Account Title
         document.getElementById('accountLabelInModal').textContent = document.getElementById('accountTitle-' + accountId).textContent;
         // Account Balance Update
-        document.getElementById('accountAmountEntry').textContent = document.getElementById('accountBalance-' + accountId).textContent;
+        document.getElementById('accountAmountEntry').value = document.getElementById('accountBalance-' + accountId).textContent;
         // Toggle Account Transaction
         let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
         for (let i = 0, l = accTransEntry.length; i < l; i++) {
@@ -67,7 +67,7 @@
 
     // Focus in for the remaining account amount
     $('body').on('focusin', '#accountAmountEntry', function (e) {
-        amountEditedAccount = trimElement(this.textContent);
+        amountEditedAccount = trimElement(this.value);
     });
 
     // Change the remaining amount
@@ -83,7 +83,7 @@
     // Submit Amount Change
     function submitAmountChange(element) {
         // If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-        let enteredText = er.convertToNumberFromCurrency(element.textContent, currentCurrencyPreference);
+        let enteredText = er.convertToNumberFromCurrency(element.value, currentCurrencyPreference);
         let previousText = er.convertToNumberFromCurrency(amountEditedAccount, currentCurrencyPreference);
 
         // Test if the entered value is valid
@@ -117,7 +117,7 @@
                 bankAccount = bankAccount['body-json'];
                 // Update the budget amount in the category row
                 let formattedBudgetAmount = formatToCurrency(bankAccount.accountBalance);
-                element.textContent = formattedBudgetAmount;
+                element.value = formattedBudgetAmount;
 
                 // Account Balance for account Header
                 document.getElementById('accountBalance-' + bankAccount.accountId).textContent = formattedBudgetAmount;
@@ -140,7 +140,7 @@
 
                 // update the current element with the previous amount
                 let formattedAccountAmount = formatToCurrency(previousText);
-                element.textContent = formattedAccountAmount;
+                element.value = formattedAccountAmount;
             }
 
             $.ajax({
