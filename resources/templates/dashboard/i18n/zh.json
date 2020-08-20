@@ -633,7 +633,12 @@
         "transactionbalance": "交易余额",
         "category": "种类",
         "description": "说明",
-        "tags": "标签"
+        "tags": "标签",
+        "deletetransaction": "删除交易",
+        "deletecategory": "刪除類別",
+        "remainingcategorytomaxbudget": "最高预算的剩余类别余额",
+        "deleteaccount": "删除账户",
+        "remainingaccountbalance": "实现目标所需的账户余额"
     },
     "goals": {
         "page": {

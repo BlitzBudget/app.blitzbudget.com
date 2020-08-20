@@ -144,7 +144,6 @@
             replaceHTML('errorMessage', "");
 
             if (registeredNewTransaction) {
-
                 // Populate category based table
                 fetchJSONForTransactions();
                 // Do not refresh the transactions if no new transactions are added

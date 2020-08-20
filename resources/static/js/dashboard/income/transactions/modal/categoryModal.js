@@ -129,15 +129,6 @@
             }
 
         });
-
-        // Disable Change Password button
-        let deleteBBBtn = document.getElementsByClassName('swal2-confirm')[0];
-        if (!deleteBBBtn.disabled) {
-            deleteBBBtn.setAttribute('disabled', 'disabled');
-        }
-
-        // Change focus to old password
-        document.getElementById('oldPasswordDA').focus();
     });
 
 }(jQuery));

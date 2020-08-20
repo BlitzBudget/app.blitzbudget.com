@@ -633,7 +633,12 @@
         "transactionbalance": "Transaction Balance",
         "category": "Category",
         "description": "Description",
-        "tags": "Tags"
+        "tags": "Tags",
+        "deletetransaction": "Delete Transactions",
+        "deletecategory": "Delete Category",
+        "remainingcategorytomaxbudget": "Remaining category balance to max the budget",
+        "deleteaccount": "Delete Account",
+        "remainingaccountbalance": "Remaining account balance to achieve goal"
     },
     "goals": {
         "page": {

@@ -633,7 +633,12 @@
         "transactionbalance": "取引残高",
         "category": "カテゴリー",
         "description": "説明",
-        "tags": "タグ"
+        "tags": "タグ",
+        "deletetransaction": "取引の削除",
+        "deletecategory": "カテゴリの削除",
+        "remainingcategorytomaxbudget": "予算を最大にするための残りのカテゴリの残高",
+        "deleteaccount": "アカウントの削除",
+        "remainingaccountbalance": "目標達成のための口座残高"
     },
     "goals": {
         "page": {
