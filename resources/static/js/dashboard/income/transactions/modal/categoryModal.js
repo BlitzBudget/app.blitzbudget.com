@@ -85,7 +85,7 @@
             showCloseButton: true,
             confirmButtonText: 'Yes, delete it!',
             cancelButtonText: 'No, keep it',
-            confirmButtonClass: "btn btn-info",
+            confirmButtonClass: "btn btn-success",
             cancelButtonClass: "btn btn-secondary",
             buttonsStyling: false,
             showLoaderOnConfirm: true,
