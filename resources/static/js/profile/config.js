@@ -14,6 +14,7 @@ window._config = {
             changePassword: '/profile/change-password',
         },
         deleteItem: '/delete-item',
+        delete: '/delete',
         deleteBatch: '/delete-batch',
         goals: '/goals',
         deleteCategories: '/categories/delete'

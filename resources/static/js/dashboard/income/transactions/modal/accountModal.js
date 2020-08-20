@@ -231,7 +231,7 @@
                 let ajaxData = {};
                 ajaxData.isAjaxReq = true;
                 ajaxData.type = "POST";
-                ajaxData.url = window._config.api.invokeUrl + CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl;
+                ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + window._config.api.delete;
                 ajaxData.dataType = "json";
                 ajaxData.contentType = "application/json;charset=UTF-8";
                 ajaxData.data = JSON.stringify(values);
