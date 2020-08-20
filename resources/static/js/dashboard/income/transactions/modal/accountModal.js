@@ -231,45 +231,14 @@
                 let ajaxData = {};
                 ajaxData.isAjaxReq = true;
                 ajaxData.type = "POST";
-                ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+                ajaxData.url = window._config.api.invokeUrl + CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl;
                 ajaxData.dataType = "json";
                 ajaxData.contentType = "application/json;charset=UTF-8";
                 ajaxData.data = JSON.stringify(values);
                 ajaxData.onSuccess = function (jsonObj) {
                     jsonObj = jsonObj['body-json'];
-                    let accountSB = document.getElementById('accountSB-' + currentAccountId).remove();
 
-                    // Simulate a click on the first table heading (Show Account Modal)
-                    let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-                    if (accountTableHeaders.length == 0) {
-                        // Append account Table empty information
-                        let accountTable = document.getElementById('accountTable');
-                        // Replace HTML with Empty
-                        while (accountTable.firstChild) {
-                            accountTable.removeChild(accountTable.firstChild);
-                        }
-                        accountTable.appendChild(buildEmptyTransactionsTab());
-                        // Show the empty table
-                        accountTable.classList.remove('d-none');
-                        // Close the account info Modal
-                        document.getElementById('accountHeaderClose').click();
-                        // Replace the Transactions Table with empty entry
-                        let transactionsTable = document.getElementById(replaceTransactionsId);
-                        while (transactionsTable.firstChild) {
-                            transactionsTable.removeChild(transactionsTable.firstChild);
-                        }
-                        transactionsTable.appendChild(fetchEmptyTableMessage());
-                        // Replace recent transactions table with empty entry
-                        let recTransTable = document.getElementById('recentTransactions');
-                        // Replace HTML with Empty
-                        while (recTransTable.firstChild) {
-                            recTransTable.removeChild(recTransTable.firstChild);
-                        }
-                        recTransTable.appendChild(buildEmptyTransactionsTab());
-                        // Reset the Financial Position
-                    }
-
-                    // Remove from preivew if present
+                    // Remove from preivew bank account if present
                     let bankAccCaches = [];
                     for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
                         let bankAccount = window.allBankAccountInfoCache[i];
@@ -282,8 +251,8 @@
 
                     // Populate Account Modal Cache
                     er_a.populateBankInfo(window.allBankAccountInfoCache);
-                    // Remove the account Modal
-                    document.getElementById('accountHeaderClose').click();
+                    // Click the transactions page
+                    document.getElementById('transactionsPage').click();
                 }
                 ajaxData.onFailure = function (thrownError) {
                     manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!", ajaxData);
