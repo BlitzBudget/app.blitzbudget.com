@@ -15,7 +15,8 @@ window._config = {
         },
         deleteItem: '/delete-item',
         deleteBatch: '/delete-batch',
-        goals: '/goals'
+        goals: '/goals',
+        deleteCategories: '/categories/delete'
     },
     home: {
         invokeUrl: 'https://www.blitzbudget.com'
