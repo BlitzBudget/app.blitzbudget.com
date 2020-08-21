@@ -299,8 +299,12 @@
         ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
         let liOne = document.createElement('li');
-        liOne.textContent = 'all your transactions associated with ' + accountLabelInModal.textContent + ' will be deleted.';
+        liOne.textContent = 'All your transactions associated with ' + accountLabelInModal.textContent + ' will be deleted.';
         ulWarn.appendChild(liOne);
+
+        let liThree = document.createElement('li');
+        liThree.textContent = 'All your recurring transactions associated with the financial account will be deleted.';
+        ulWarn.appendChild(liThree);
 
         let liTwo = document.createElement('li');
         liTwo.textContent = accountLabelInModal.textContent + ' financial account will be deleted.';
