@@ -310,14 +310,16 @@
                 return;
             }
 
-            let responseError = JSON.parse(data);
-            if (isNotEmpty(responseError.responseText) && isNotEmpty(responseError.responseText.error) && responseError.responseText.error.includes("Unauthorized")) {
-                $('#GSCCModal').modal('hide');
-                er.sessionExpiredSwal(ajaxData);
-            } else if (isNotEmpty(responseError.errorMessage)) {
-                fadeoutMessage('#errorMessage', errorAddingTransactionDiv + responseError.errorMessage + '</p></div> <br/>', 2000);
+            if (isNotEmpty(data.errorMessage)) {
+                fadeoutMessage('#errorMessage', errorAddingTransactionDiv + data.errorMessage + '</p></div> <br/>', 2000);
             } else {
                 fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.unableerror + '</p></div> <br/>', 2000);
+
+                let responseError = JSON.parse(data.responseText);
+                if (isNotEmpty(responseError.responseText) && isNotEmpty(responseError.responseText.error) && responseError.responseText.error.includes("Unauthorized")) {
+                    $('#GSCCModal').modal('hide');
+                    er.sessionExpiredSwal(ajaxData);
+                }
             }
         }
 
