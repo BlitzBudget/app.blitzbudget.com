@@ -2172,12 +2172,6 @@ input::placeholder {
     white-space: pre-wrap;
 }
 
-#currentCountries .dropdown-item,
-#currentCurrencies .dropdown-item,
-#currentCurrenciesMW .dropdown-item {
-    cursor: not-allowed;
-}
-
 #currentCountries .dropdown-menu .dropdown-item:hover,
 #currentCountries .dropdown-menu .dropdown-item:focus,
 #currentCountries .dropdown-menu a:hover,
@@ -2192,7 +2186,10 @@ input::placeholder {
 #currentCurrenciesMW .dropdown-menu .dropdown-item:focus,
 #currentCurrenciesMW .dropdown-menu a:hover,
 #currentCurrenciesMW .dropdown-menu a:focus,
-#currentCurrenciesMW .dropdown-menu a:active {
+#currentCurrenciesMW .dropdown-menu a:active,
+#currentCountries .dropdown-item,
+#currentCurrencies .dropdown-item,
+#currentCurrenciesMW .dropdown-item {
     cursor: not-allowed;
     box-shadow: inherit;
     background-color: inherit;
