@@ -147,8 +147,11 @@
             let childElementWrappers = categoryInfoTable.childNodes;
             for (let i = 1, len = childElementWrappers.length; i < len; i++) {
                 let childElementWrapper = childElementWrappers[i];
-                childElementWrapper.classList.toggle('d-none');
-                childElementWrapper.classList.toggle('d-table-row');
+                let childClassList = childElementWrapper.classList;
+                if (childClassList.contains('d-none')) {
+                    childClassList.toggle('d-none');
+                    childClassList.toggle('d-table-row');
+                }
             }
         }
     }
