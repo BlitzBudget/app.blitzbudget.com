@@ -9,6 +9,8 @@
             document.getElementById('transactionInformationMdl').classList.add('d-none');
             // Open  Financial Position
             document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+            // Make the transactions selected
+            this.classList.remove('transaction-selected');
             return;
         }
 
