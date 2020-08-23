@@ -651,6 +651,7 @@
             let currentWallet = window.globalWallet[i];
             if (isEqual(window.currentUser.walletId, currentWallet.walletId)) {
                 window.currentUser.walletCurrency = cToS[currentWallet.currency];
+                window.currentUser.walletCurrencyName = currentWallet.currency;
             }
         }
 
@@ -903,6 +904,7 @@
                             // Reset Current User Wallet ID and CUrreny
                             delete window.currentUser.walletId;
                             delete window.currentUser.walletCurrency;
+                            delete window.currentUser.walletCurrencyName;
                             localStorage.setItem("currentUserSI", JSON.stringify(window.currentUser));
                         }
 

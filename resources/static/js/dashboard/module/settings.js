@@ -524,7 +524,7 @@
         for (let i = 0, l = curToSym.length; i < l; i++) {
             window.cToS[curToSym[i].currency] = curToSym[i].symbol;
             /* Update the default currency in Settings */
-            if (isEqual(currentUser.walletCurrency, curToSym[i].symbol)) {
+            if (isEqual(currentUser.walletCurrencyName, curToSym[i].currency)) {
                 document.getElementById('chosenCurrency').textContent = curToSym[i].currency;
                 // To be used to display "with wallet" section
                 document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
