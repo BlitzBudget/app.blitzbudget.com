@@ -141,7 +141,7 @@
              */
             let categoryInfoTable = categoryInfoTables[i];
             // Rotate the arrow
-            let arrowIndicator = categoryInfoTable.firstElementChild.firstElementChild;
+            let arrowIndicator = categoryInfoTable.firstElementChild.firstElementChild.firstElementChild;
             arrowIndicator.classList.toggle('rotateZero');
             arrowIndicator.classList.toggle('rotateNinty');
             let childElementWrappers = categoryInfoTable.childNodes;

@@ -141,7 +141,7 @@
              */
             let recurInfoTable = recurTransInfoTables[i];
             // Rotate the arrow
-            let arrowIndicator = recurInfoTable.firstElementChild.firstElementChild;
+            let arrowIndicator = recurInfoTable.firstElementChild.firstElementChild.firstElementChild;
             arrowIndicator.classList.toggle('rotateZero');
             arrowIndicator.classList.toggle('rotateNinty');
             let childElementWrappers = recurInfoTable.childNodes;

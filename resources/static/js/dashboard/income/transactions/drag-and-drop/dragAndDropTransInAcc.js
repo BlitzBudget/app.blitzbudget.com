@@ -141,7 +141,7 @@
              */
             let accountInfoTable = accountInfoTables[i];
             // Rotate the arrow
-            let arrowIndicator = accountInfoTable.firstElementChild.firstElementChild;
+            let arrowIndicator = accountInfoTable.firstElementChild.firstElementChild.firstElementChild;
             arrowIndicator.classList.toggle('rotateZero');
             arrowIndicator.classList.toggle('rotateNinty');
             let childElementWrappers = accountInfoTable.childNodes;
