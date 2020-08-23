@@ -2,6 +2,16 @@
 (function scopeWrapper($) {
 
     $('body').on('click', '#transactionsTable .recentTransactionEntry, #recTransTable .recentTransactionEntry, #accSortedTable .recentTransactionEntry, #tagsTable .recentTransactionEntry', function (e) {
+
+        // If the transaction is selected already then
+        if (this.classList.contains('transaction-selected')) {
+            // Close Transaction Modal
+            document.getElementById('transactionInformationMdl').classList.add('d-none');
+            // Open  Financial Position
+            document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+            return;
+        }
+
         // Remove all classlist that contains the selected transactions
         let selectedTransactions = document.querySelectorAll('.transaction-selected');
         /*
