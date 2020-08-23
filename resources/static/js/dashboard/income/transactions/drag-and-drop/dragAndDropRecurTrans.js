@@ -136,6 +136,20 @@
         let recurTransInfoTables = document.getElementsByClassName('recurTransInfoTable');
         for (let i = 0, l = recurTransInfoTables.length; i < l; i++) {
             dragsterList.push(new Dragster(recurTransInfoTables[i]));
+            /*
+             * Unhide the table elements
+             */
+            let recurInfoTable = recurTransInfoTables[i];
+            // Rotate the arrow
+            let arrowIndicator = recurInfoTable.firstElementChild.firstElementChild;
+            arrowIndicator.classList.toggle('rotateZero');
+            arrowIndicator.classList.toggle('rotateNinty');
+            let childElementWrappers = recurInfoTable.childNodes;
+            for (let i = 1, len = childElementWrappers.length; i < len; i++) {
+                let childElementWrapper = childElementWrappers[i];
+                childElementWrapper.classList.toggle('d-none');
+                childElementWrapper.classList.toggle('d-table-row');
+            }
         }
     }
 
