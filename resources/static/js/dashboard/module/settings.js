@@ -519,6 +519,10 @@
         getWallets();
 
         function getWallets() {
+
+            let values = {};
+            values.userId = window.currentUser.financialPortfolioId;
+
             jQuery.ajax({
                 url: window._config.api.invokeUrl + SETTINGS_CONSTANTS.walletUrl,
                 beforeSend: function (xhr) {
