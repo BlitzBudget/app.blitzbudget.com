@@ -520,7 +520,7 @@
 
         function getWallets() {
             jQuery.ajax({
-                url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
+                url: window._config.api.invokeUrl + SETTINGS_CONSTANTS.walletUrl,
                 beforeSend: function (xhr) {
                     xhr.setRequestHeader("Authorization", window.authHeader);
                 },
