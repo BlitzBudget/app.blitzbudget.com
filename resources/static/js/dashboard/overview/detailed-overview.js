@@ -153,7 +153,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
  */
 function buildEmptyTableOverview() {
     let emptyTable = document.createElement('div');
-    emptyTable.classList = 'table table-fixed d-table';
+    emptyTable.classList = 'table table-fixed d-table mt-4';
 
     emptyTable.appendChild(buildEmptyTransactionsTab());
 
