@@ -257,6 +257,7 @@
             values['category'] = chosenCategory.name;
             values['categoryName'] = chosenCategory.name;
         } else {
+            let chosenCategory = window.categoryMap[categoryOptions];
             values['category'] = categoryOptions;
             values['categoryType'] = chosenCategory.type;
             values['categoryName'] = chosenCategory.name;
