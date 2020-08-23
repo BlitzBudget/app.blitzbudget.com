@@ -232,6 +232,11 @@
             recurringTransactionDescriptionEntry.value = desc;
 
             /*
+             * Recurring Transactions Label In modal
+             */
+            document.getElementById('recurringTransactionLabelInModal').textContent = desc;
+
+            /*
              * Update Recurring transactions display
              */
             let recurTransEl = document.getElementById('recurTransaction-' + recurringTransactionId);
