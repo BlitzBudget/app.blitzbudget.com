@@ -57,7 +57,7 @@
      * On Click goals
      */
     let goalsPage = document.getElementById('goalsPage');
-    if (isNotEmpty(settingsPage)) {
+    if (isNotEmpty(goalsPage)) {
         goalsPage.addEventListener("click", function (e) {
             populateCurrentPage('goalsPage');
         });

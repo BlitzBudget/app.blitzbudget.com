@@ -2166,13 +2166,37 @@ input::placeholder {
     color: #fff;
 }
 
-.autocomplete-items .dropdown-item,
-#currentCountries .dropdown-item,
-#currentCurrencies .dropdown-item,
-#currentCurrenciesMW .dropdown-item {
+.autocomplete-items .dropdown-item {
     width: 100%;
     cursor: pointer;
     white-space: pre-wrap;
+}
+
+#currentCountries .dropdown-item,
+#currentCurrencies .dropdown-item,
+#currentCurrenciesMW .dropdown-item {
+    cursor: not-allowed;
+}
+
+#currentCountries .dropdown-menu .dropdown-item:hover,
+#currentCountries .dropdown-menu .dropdown-item:focus,
+#currentCountries .dropdown-menu a:hover,
+#currentCountries .dropdown-menu a:focus,
+#currentCountries .dropdown-menu a:active,
+#currentCurrencies .dropdown-menu .dropdown-item:hover,
+#currentCurrencies .dropdown-menu .dropdown-item:focus,
+#currentCurrencies .dropdown-menu a:hover,
+#currentCurrencies .dropdown-menu a:focus,
+#currentCurrencies .dropdown-menu a:active,
+#currentCurrenciesMW .dropdown-menu .dropdown-item:hover,
+#currentCurrenciesMW .dropdown-menu .dropdown-item:focus,
+#currentCurrenciesMW .dropdown-menu a:hover,
+#currentCurrenciesMW .dropdown-menu a:focus,
+#currentCurrenciesMW .dropdown-menu a:active {
+    cursor: not-allowed;
+    box-shadow: inherit;
+    background-color: inherit;
+    color: inherit;
 }
 
 .dropdown-divider {

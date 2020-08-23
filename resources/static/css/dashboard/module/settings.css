@@ -1,10 +1,10 @@
 @charset "UTF-8";
 
 .btn.btn-dynamic-color {
-     color: #fff;
-     background-color: #00bcd4;
-     border-color: #00bcd4;
-     box-shadow: 0 2px 2px 0 rgba(0,188,212,0.14), 0 3px 1px -2px rgba(0,188,212,0.2), 0 1px 5px 0 rgba(0,188,212,0.12);
+    color: #fff;
+    background-color: #00bcd4;
+    border-color: #00bcd4;
+    box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
 }
 
 .btn.btn-dynamic-color:focus,
@@ -13,17 +13,20 @@
     color: #fff;
     background-color: #009aae;
     border-color: #008fa1;
-    box-shadow: 0 14px 26px -12px rgba(0,188,212,0.42), 0 4px 23px 0 rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,188,212,0.2);
+    box-shadow: 0 14px 26px -12px rgba(0, 188, 212, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 188, 212, 0.2);
 }
 
-#loginModal .form-control,#loginModal .is-focused .form-control {
-    background-image: linear-gradient(to top,#00bcd4 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
+#loginModal .form-control,
+#loginModal .is-focused .form-control {
+    background-image: linear-gradient(to top, #00bcd4 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
 }
 
-.vcClassLP.swal2-file:focus, .vcClassLP.swal2-input:focus, .vcClassLP.swal2-textarea:focus {
+.vcClassLP.swal2-file:focus,
+.vcClassLP.swal2-input:focus,
+.vcClassLP.swal2-textarea:focus {
     border: 1px solid #008fa1;
     outline: 0;
-    box-shadow: 0 0 3px rgba(0,188,212,0.42);
+    box-shadow: 0 0 3px rgba(0, 188, 212, 0.42);
 }
 
 .nav-pills .nav-item i {
@@ -32,14 +35,16 @@
     padding: 15px 0;
 }
 
-#generalLink h4, #notificationLink h4 {
+#generalLink h4,
+#notificationLink h4 {
     font-size: 1.1rem;
     font-weight: 500;
     line-height: 1.5;
     color: #495257;
 }
 
-#generalLink .card-title, #notificationLink .card-title {
+#generalLink .card-title,
+#notificationLink .card-title {
     color: #7b7979;
 }
 
@@ -57,19 +62,20 @@
 .dropdown-menu .dropdown-item.accountSortBy:focus,
 .dropdown-menu .dropdown-item.creationDateSortBy:hover,
 .dropdown-menu .dropdown-item.creationDateSortBy:focus,
-.dropdown-menu a:not([href]):not([tabindex]).dropdown-item:hover, 
+.dropdown-menu a:not([href]):not([tabindex]).dropdown-item:hover,
 .dropdown-menu a:not([href]):not([tabindex]).dropdown-item:focus {
-    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4);
     background-color: #00bcd4;
     color: #fff;
 }
 
-#chooseSortByDD, #chosenExportFileFormatDD {
+#chooseSortByDD,
+#chosenExportFileFormatDD {
     cursor: pointer;
 }
 
-.overview-dashboard .form-check .form-check-input:checked+.form-check-sign .check {
-  background: #00bcd4;
+.overview-dashboard .form-check .form-check-input:checked + .form-check-sign .check {
+    background: #00bcd4;
 }
 
 .editSettings {
@@ -85,8 +91,8 @@
 }
 
 .playstoreIcon {
-  width:auto; 
-  height:56px;
+    width: auto;
+    height: 56px;
 }
 
 .appHeading {
@@ -102,11 +108,13 @@
     content: "\E93A";
 }
 
-.form-control, .is-focused .form-control {
-    background-image: linear-gradient(to top,#00aec5 2px,rgba(156,39,176,0) 2px),linear-gradient(to top,#d2d2d2 1px,rgba(210,210,210,0) 1px);
+.form-control,
+.is-focused .form-control {
+    background-image: linear-gradient(to top, #00aec5 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
 }
 
-.text-ellipses, .text-ellipsis {
+.text-ellipses,
+.text-ellipsis {
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -119,35 +127,58 @@
     white-space: nowrap;
 }
 
-#chooseCountryInp.w-75, #chooseCurrencyInp.w-75 {
+#chooseCountryInp.w-75,
+#chooseCurrencyInp.w-75 {
     width: 75%;
 }
 
-#chooseCountryDD, #chooseCurrencyDD {
+#chooseCountryDD,
+#chooseCurrencyDD {
     height: auto;
     max-height: 20rem;
     overflow-x: hidden;
     width: 20rem;
 }
 
-.autocomplete-items .dropdown-item, #currentCountries .dropdown-item, #currentCurrencies .dropdown-item {
+.autocomplete-items .dropdown-item {
     width: 100%;
     cursor: pointer;
     white-space: pre-wrap;
 }
 
-.dropdown-menu .dropdown-item:hover, 
-.dropdown-menu .dropdown-item:focus, 
-.dropdown-menu a:hover, 
-.dropdown-menu a:focus, 
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu a:hover,
+.dropdown-menu a:focus,
 .dropdown-menu a:active,
 .autocomplete-active {
-    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 10px -5px rgba(0,188,212,0.4);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(0, 188, 212, 0.4);
     background-color: #00bcd4;
     color: #fff;
 }
 
-.dropdown-header, .autocomplete-items, #currentCountries, #currentCurrencies {
+#currentCountries .dropdown-menu .dropdown-item:hover,
+#currentCountries .dropdown-menu .dropdown-item:focus,
+#currentCountries .dropdown-menu a:hover,
+#currentCountries .dropdown-menu a:focus,
+#currentCountries .dropdown-menu a:active,
+#currentCurrencies .dropdown-menu .dropdown-item:hover,
+#currentCurrencies .dropdown-menu .dropdown-item:focus,
+#currentCurrencies .dropdown-menu a:hover,
+#currentCurrencies .dropdown-menu a:focus,
+#currentCurrencies .dropdown-menu a:active,
+#currentCountries .dropdown-item,
+#currentCurrencies .dropdown-item {
+    cursor: not-allowed;
+    box-shadow: inherit;
+    background-color: inherit;
+    color: inherit;
+}
+
+.dropdown-header,
+.autocomplete-items,
+#currentCountries,
+#currentCurrencies {
     width: 100%;
 }
 

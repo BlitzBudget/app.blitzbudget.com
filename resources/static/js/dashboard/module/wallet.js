@@ -336,7 +336,7 @@
     }
 
     // On click drop down btn of country search
-    $(document).on("click", ".dropdown-item", function (event) {
+    $(document).on("click", ".autocomplete-items .dropdown-item", function (event) {
         let chooseCrncyId = 'chosenCurrencyWInpautocomplete-list';
         let chooseCrncyMWId = 'chosenCurrencyWInpMWautocomplete-list';
         let id = this.parentElement.id;
