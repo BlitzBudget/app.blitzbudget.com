@@ -144,7 +144,6 @@
             replaceHTML('errorMessage', "");
 
             if (registeredNewTransaction) {
-
                 // Populate category based table
                 fetchJSONForTransactions();
                 // Do not refresh the transactions if no new transactions are added
@@ -256,8 +255,12 @@
             }
             values['categoryType'] = chosenCategory.type;
             values['category'] = chosenCategory.name;
+            values['categoryName'] = chosenCategory.name;
         } else {
+            let chosenCategory = window.categoryMap[categoryOptions];
             values['category'] = categoryOptions;
+            values['categoryType'] = chosenCategory.type;
+            values['categoryName'] = chosenCategory.name;
         }
 
         if (window.categoryMap[categoryOptions].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
@@ -304,7 +307,6 @@
             addTransactionsButton.removeAttribute("disabled");
         }
         ajaxData.onFailure = function (data) {
-            fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.unableerror + '</p></div> <br/>', 2000);
             registeredNewTransaction = false;
             addTransactionsButton.removeAttribute("disabled");
 
@@ -312,11 +314,14 @@
                 return;
             }
 
-            let responseError = JSON.parse(data.responseText);
-            if (responseError.error.includes("Unauthorized")) {
+            let responseError = data.responseJSON;
+            if (isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")) {
                 $('#GSCCModal').modal('hide');
                 er.sessionExpiredSwal(ajaxData);
+            } else if (isNotEmpty(responseError.errorMessage)) {
+                fadeoutMessage('#errorMessage', errorAddingTransactionDiv + responseError.errorMessage + '</p></div> <br/>', 2000);
             }
+
         }
 
         $.ajax({
@@ -794,40 +799,6 @@
      * Sort By Functionality
      */
 
-    // Click on sort by creation date
-    $('body').on('click', '#creationDateSortBy', function (e) {
-        // Change title of in the dropdown
-        let sortByDiv = document.getElementById('sortByBtnTit');
-        sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.creationdate');
-        sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.creationdate : "Creation Date";
-        // hide the category view
-        let transactionsTable = document.getElementById('transactionsTable');
-        transactionsTable.classList.remove('d-table');
-        transactionsTable.classList.add('d-none');
-        // hide the accountTable
-        document.getElementById('accountTable').classList.add('d-none');
-        // show the recent transactions
-        document.getElementById(recentTransactionsId).classList.remove('d-none');
-        // Hide all account tables loaded
-        let accSortedTable = document.getElementById('accSortedTable');
-        accSortedTable.classList.add('d-none');
-        accSortedTable.classList.remove('d-table');
-        // Open Account Modal
-        document.getElementById('accountInformationMdl').classList.add('d-none');
-        // Close Category Modal
-        document.getElementById('categoryInformationMdl').classList.add('d-none');
-        // Toggle  Financial Position
-        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
-        // show the future transactions
-        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
-        futureTransactionsTable.classList.add('d-none');
-        futureTransactionsTable.classList.remove('d-table');
-        // show the tags sortby
-        let tabsTable = document.getElementById('tagsTable');
-        tabsTable.classList.add('d-none');
-        tabsTable.classList.remove('d-table');
-    });
-
     // Sort Options Wrapper
     $('body').on('click', '#sortOptionsWrapper .dropdown-item', function (e) {
         // If a new transaction is registered then population is necessary
@@ -839,40 +810,6 @@
             fetchJSONForTransactions();
             return;
         }
-    });
-
-    // Click on sort by creation date
-    $('body').on('click', '#categorySortBy', function (e) {
-        // Change title of in the dropdown
-        let sortByDiv = document.getElementById('sortByBtnTit');
-        sortByDiv.setAttribute('data-i18n', 'transactions.dynamic.sort.category');
-        sortByDiv.textContent = isNotEmpty(window.translationData) ? window.translationData.transactions.dynamic.sort.category : "Category";
-        // hide the recent transactions
-        document.getElementById(recentTransactionsId).classList.add('d-none');
-        // hide the accountTable
-        document.getElementById('accountTable').classList.add('d-none');
-        // Hide all account tables loaded
-        let accSortedTable = document.getElementById('accSortedTable');
-        accSortedTable.classList.add('d-none');
-        accSortedTable.classList.remove('d-table');
-        // show the category view
-        let transactionsTable = document.getElementById('transactionsTable');
-        transactionsTable.classList.add('d-table');
-        transactionsTable.classList.remove('d-none');
-        // Open Account Modal
-        document.getElementById('accountInformationMdl').classList.add('d-none');
-        // Close Category Modal
-        document.getElementById('categoryInformationMdl').classList.add('d-none');
-        // Toggle  Financial Position
-        document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
-        // show the future transactions
-        let futureTransactionsTable = document.getElementById('futureTransactionsTable');
-        futureTransactionsTable.classList.add('d-none');
-        futureTransactionsTable.classList.remove('d-table');
-        // show the tags sortby
-        let tabsTable = document.getElementById('tagsTable');
-        tabsTable.classList.add('d-none');
-        tabsTable.classList.remove('d-table');
     });
 
     // Sorts the table by aggregating transactions by category
@@ -983,7 +920,7 @@
 
             if (isEmpty(document.getElementById('categorySB-' + category.categoryId))) {
                 populateTransactionsFragment.appendChild(buildCategoryHeader(category.categoryId));
-                populateTransactionsFragment.getElementById('categorySB-' + category.categoryId).appendChild(buildEmptyTableEntry('emptyCategoryItem-' + category.categoryId));
+                populateTransactionsFragment.getElementById('categorySB-' + category.categoryId).appendChild(er_a.buildEmptyTableEntry('emptyCategoryItem-' + category.categoryId));
             }
         }
 
@@ -1014,7 +951,7 @@
             let accountId = userTransaction.account;
 
             if (notIncludesStr(createdAccIds, accountId)) {
-                recentTransactionsFragment.appendChild(buildAccountHeader(bankAccountMap[accountId]));
+                recentTransactionsFragment.appendChild(er_a.buildAccountHeader(bankAccountMap[accountId]));
                 // Add Created Accounts ID to the array
                 createdAccIds.push(accountId);
             }
@@ -1032,7 +969,7 @@
             // If the ID corresponding wiht the bank account is not populated then
             if (notIncludesStr(createdAccIds, bankAcc.accountId)) {
                 // A new header for the rest
-                let accountHeaderNew = buildAccountHeader(bankAcc);
+                let accountHeaderNew = er_a.buildAccountHeader(bankAcc);
                 let accBal = accountHeaderNew.getElementById('accountBalance-' + bankAcc.accountId);
                 if (bankAcc['account_balance'] < 0) {
                     accBal.classList.add('expenseCategory');
@@ -1041,7 +978,7 @@
                 }
                 accBal.textContent = formatToCurrency(bankAcc['account_balance']);
                 // Append Empty Table to child
-                accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
+                accountHeaderNew.getElementById('accountSB-' + bankAcc.accountId).appendChild(er_a.buildEmptyTableEntry('emptyAccountEntry-' + bankAcc.accountId));
                 // Append to the transaction view
                 accHeadFrag.appendChild(accountHeaderNew);
             }
@@ -1247,6 +1184,10 @@ tr = {
         accSortedTable.classList.add('d-table');
         // Close Category Modal
         document.getElementById('categoryInformationMdl').classList.add('d-none');
+        // Hide Recurring transactions modal
+        document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
+        // Hide Transaction Inormation Modal
+        document.getElementById('transactionInformationMdl').classList.add('d-none');
         // show the future transactions
         let futureTransactionsTable = document.getElementById('futureTransactionsTable');
         futureTransactionsTable.classList.add('d-none');
@@ -1284,7 +1225,11 @@ tr = {
 function buildEmptyTransactionsTab(className) {
 
     let rowEmpty = document.createElement('div');
-    rowEmpty.classList = 'd-table-row ' + className;
+    rowEmpty.classList = 'd-table-row';
+    // Add Class Name
+    if (isNotEmpty(className)) {
+        rowEmpty.classList.add(className);
+    }
 
     let cell1 = document.createElement('div');
     cell1.classList = 'd-table-cell';

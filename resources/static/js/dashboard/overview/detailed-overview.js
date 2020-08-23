@@ -21,7 +21,7 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
 
     // If the data series is empty then
     if (isEmpty(dataSeries)) {
-        detailedOverviewOfChart.appendChild(buildEmptyTransactionsTab());
+        detailedOverviewOfChart.appendChild(buildEmptyTableOverview());
         // Replace with Empty Values
         document.getElementById('mostWhateverAmount').textContent = '-';
         document.getElementById('mostWhateverDate').textContent = '-';
@@ -146,6 +146,18 @@ function populateDetailedOverviewForChart(dataSeries, isSeriesAnArray, mostWhate
     docFrag.appendChild(tableResponsive);
     // Append to detailed overview
     detailedOverviewOfChart.appendChild(docFrag);
+}
+
+/*
+ * Build Empty Table Overview
+ */
+function buildEmptyTableOverview() {
+    let emptyTable = document.createElement('div');
+    emptyTable.classList = 'table table-fixed d-table mt-4';
+
+    emptyTable.appendChild(buildEmptyTransactionsTab());
+
+    return emptyTable;
 }
 
 // Builds the rows for recent transactions

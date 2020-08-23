@@ -21,7 +21,7 @@
         // Set Account Title
         document.getElementById('accountLabelInModal').textContent = document.getElementById('accountTitle-' + accountId).textContent;
         // Account Balance Update
-        document.getElementById('accountAmountEntry').textContent = document.getElementById('accountBalance-' + accountId).textContent;
+        document.getElementById('accountAmountEntry').value = document.getElementById('accountBalance-' + accountId).textContent;
         // Toggle Account Transaction
         let accTransEntry = this.parentNode.getElementsByClassName('accTransEntry');
         for (let i = 0, l = accTransEntry.length; i < l; i++) {
@@ -34,12 +34,24 @@
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
         // Close  Transaction Information Modal
         document.getElementById('transactionInformationMdl').classList.add('d-none');
+        // Hide Recurring transactions modal
+        document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
         // Rotate the arrow indicator
         let emptyTransInAcc = document.getElementById('emptyAccountEntry-' + accountId);
         if (isEmpty(emptyTransInAcc)) {
             let arrowIndicator = this.firstElementChild.firstElementChild;
             arrowIndicator.classList.toggle('rotateZero');
             arrowIndicator.classList.toggle('rotateNinty');
+        }
+        /*
+         * Delete all classlist with transactions selected
+         */
+        // Remove all classlist that contains the selected transactions
+        let selectedTransactions = document.querySelectorAll('.transaction-selected');
+        // Tags Chosen
+        for (let i = 0, len = selectedTransactions.length; i < len; i++) {
+            // remove the class
+            selectedTransactions[i].classList.remove('transaction-selected');
         }
     });
 
@@ -55,7 +67,7 @@
 
     // Focus in for the remaining account amount
     $('body').on('focusin', '#accountAmountEntry', function (e) {
-        amountEditedAccount = trimElement(this.textContent);
+        amountEditedAccount = trimElement(this.value);
     });
 
     // Change the remaining amount
@@ -71,7 +83,7 @@
     // Submit Amount Change
     function submitAmountChange(element) {
         // If the text is not changed then do nothing (Remove currency locale and minus sign, remove currency formatting and take only the number and convert it into decimals) and round to 2 decimal places
-        let enteredText = er.convertToNumberFromCurrency(element.textContent, currentCurrencyPreference);
+        let enteredText = er.convertToNumberFromCurrency(element.value, currentCurrencyPreference);
         let previousText = er.convertToNumberFromCurrency(amountEditedAccount, currentCurrencyPreference);
 
         // Test if the entered value is valid
@@ -105,7 +117,7 @@
                 bankAccount = bankAccount['body-json'];
                 // Update the budget amount in the category row
                 let formattedBudgetAmount = formatToCurrency(bankAccount.accountBalance);
-                element.textContent = formattedBudgetAmount;
+                element.value = formattedBudgetAmount;
 
                 // Account Balance for account Header
                 document.getElementById('accountBalance-' + bankAccount.accountId).textContent = formattedBudgetAmount;
@@ -128,7 +140,7 @@
 
                 // update the current element with the previous amount
                 let formattedAccountAmount = formatToCurrency(previousText);
-                element.textContent = formattedAccountAmount;
+                element.value = formattedAccountAmount;
             }
 
             $.ajax({
@@ -213,72 +225,34 @@
 
                 let values = {};
                 values.walletId = window.currentUser.walletId;
-                values.itemId = currentAccountId;
+                values.account = currentAccountId;
 
                 // Ajax Requests on Error
                 let ajaxData = {};
                 ajaxData.isAjaxReq = true;
                 ajaxData.type = "POST";
-                ajaxData.url = window._config.api.invokeUrl + window._config.api.deleteItem;
+                ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.bankAccountUrl + window._config.api.delete;
                 ajaxData.dataType = "json";
                 ajaxData.contentType = "application/json;charset=UTF-8";
                 ajaxData.data = JSON.stringify(values);
                 ajaxData.onSuccess = function (jsonObj) {
                     jsonObj = jsonObj['body-json'];
-                    let accountSB = document.getElementById('accountSB-' + currentAccountId).remove();
 
-                    // Simulate a click on the first table heading (Show Account Modal)
-                    let accountTableHeaders = $('.accountInfoTable .recentTransactionDateGrp')
-                    if (accountTableHeaders.length > 0) {
-                        accountTableHeaders.get(0).click();
-                    } else {
-                        // Append account Table empty information
-                        let accountTable = document.getElementById('accountTable');
-                        // Replace HTML with Empty
-                        while (accountTable.firstChild) {
-                            accountTable.removeChild(accountTable.firstChild);
-                        }
-                        accountTable.appendChild(buildEmptyTransactionsTab());
-                        // Show the empty table
-                        accountTable.classList.remove('d-none');
-                        // Close the account info Modal
-                        document.getElementById('accountHeaderClose').click();
-                        // Replace the Transactions Table with empty entry
-                        let transactionsTable = document.getElementById(replaceTransactionsId);
-                        while (transactionsTable.firstChild) {
-                            transactionsTable.removeChild(transactionsTable.firstChild);
-                        }
-                        transactionsTable.appendChild(fetchEmptyTableMessage());
-                        // Replace recent transactions table with empty entry
-                        let recTransTable = document.getElementById('recentTransactions');
-                        // Replace HTML with Empty
-                        while (recTransTable.firstChild) {
-                            recTransTable.removeChild(recTransTable.firstChild);
-                        }
-                        recTransTable.appendChild(buildEmptyTransactionsTab());
-                        // Reset the Financial Position
-                    }
-
-                    // Remove from preivew if present
-                    let posToRemove = null;
-                    for (let i = 0, length = allBankAccountInfoCache.length; i < length; i++) {
-                        if (allBankAccountInfoCache[i].id == currentAccountId) {
-                            let position = i + 1;
-                            // Remove the preview banka count
-                            let previewPos = document.getElementById('bAR-' + position);
-                            // remove the preview Pos if present
-                            if (isNotEmpty(previewPos)) previewPos.remove();
-                            // Update the position to remove
-                            posToRemove = i;
-                            break;
+                    // Remove from preivew bank account if present
+                    let bankAccCaches = [];
+                    for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                        let bankAccount = window.allBankAccountInfoCache[i];
+                        if (bankAccount.accountId != currentAccountId) {
+                            bankAccCaches.push(bankAccount);
                         }
                     }
+                    // All Bank Account Info Cache
+                    window.allBankAccountInfoCache = bankAccCaches;
 
-                    // Position to remove
-                    if (isNotEmpty(posToRemove)) {
-                        // Remove the bank account preview
-                        allBankAccountInfoCache.splice(posToRemove, 1);
-                    }
+                    // Populate Account Modal Cache
+                    er_a.populateBankInfo(window.allBankAccountInfoCache);
+                    // Click the transactions page
+                    document.getElementById('transactionsPage').click();
                 }
                 ajaxData.onFailure = function (thrownError) {
                     manageErrors(thrownError, "There was an error while deleting the financial account. Please try again later!", ajaxData);
@@ -325,8 +299,12 @@
         ulWarn.classList = 'noselect text-left mb-3 fs-90';
 
         let liOne = document.createElement('li');
-        liOne.textContent = 'all your transactions associated with ' + accountLabelInModal.textContent + ' will be deleted.';
+        liOne.textContent = 'All your transactions associated with ' + accountLabelInModal.textContent + ' will be deleted.';
         ulWarn.appendChild(liOne);
+
+        let liThree = document.createElement('li');
+        liThree.textContent = 'All your recurring transactions associated with the financial account will be deleted.';
+        ulWarn.appendChild(liThree);
 
         let liTwo = document.createElement('li');
         liTwo.textContent = accountLabelInModal.textContent + ' financial account will be deleted.';

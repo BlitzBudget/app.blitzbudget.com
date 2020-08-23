@@ -633,7 +633,12 @@
         "transactionbalance": "Solde des transactions",
         "category": "Catégorie",
         "description": "Description",
-        "tags": "Tags"
+        "tags": "Tags",
+        "deletetransaction": "Supprimer des transactions",
+        "deletecategory": "Supprimer une catégorie",
+        "remainingcategorytomaxbudget": "Solde de la catégorie restante pour maximiser le budget",
+        "deleteaccount": "Supprimer un compte",
+        "remainingaccountbalance": "Solde de compte restant pour atteindre l'objectif"
     },
     "goals": {
         "page": {

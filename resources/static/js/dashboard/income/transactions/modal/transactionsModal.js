@@ -47,6 +47,8 @@
         document.getElementById('categoryInformationMdl').classList.add('d-none');
         // Close Transaction Modal
         document.getElementById('transactionInformationMdl').classList.remove('d-none');
+        // Hide Recurring transactions modal
+        document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
         // Transaction Creation Date
         let creationDateUserRelevant = new Date(currentTransaction['creation_date']);
         document.getElementById('transactionCreationDate').textContent = ("0" + creationDateUserRelevant.getDate()).slice(-2) + ' ' + months[creationDateUserRelevant.getMonth()].slice(0, 3) + ' ' + creationDateUserRelevant.getFullYear();
@@ -87,7 +89,7 @@
         if (isNotEmpty(categorySortedTrans)) {
             categorySortedTrans.classList.add('d-none');
         }
-        if (isNotEmpty(categorySortedTrans)) {
+        if (isNotEmpty(accountAggre)) {
             accountAggre.classList.add('d-none');
         }
         if (isNotEmpty(recentTransaction)) {
@@ -108,9 +110,16 @@
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (jsonObj) {
             // Transactions are removed.
-            categorySortedTrans.remove();
-            accountAggre.remove();
-            recentTransaction.remove();
+            if (isNotEmpty(categorySortedTrans)) {
+                categorySortedTrans.remove();
+            }
+            if (isNotEmpty(accountAggre)) {
+                accountAggre.remove();
+            }
+            if (isNotEmpty(recentTransaction)) {
+                recentTransaction.remove();
+            }
+
             // Fix category balance
             let userTransaction = window.transactionsCache[transactionId];
             let categoryId = userTransaction.category;
@@ -129,7 +138,7 @@
             let categoryHeader = document.getElementById('categorySB-' + categoryId);
             if (categoryHeader.childNodes.length == 1) {
                 // Ppopulate empty table transaction
-                categoryHeader.appendChild(buildEmptyTableEntry('emptyCategoryItem-' + categoryId));
+                categoryHeader.appendChild(er_a.buildEmptyTableEntry('emptyCategoryItem-' + categoryId));
             }
             /*
              * Calculate total income and total expense (minus deleted transaction)
@@ -192,7 +201,7 @@
     // On hit enter
     $('body').on("keyup", "#transactionTagsEntry", function (e) {
         var keyCode = e.key;
-        if (isEqual(keyCode, 'Enter')) {
+        if (isEqual(keyCode, 'Enter') && isNotBlank(this.value)) {
             e.preventDefault();
             // Create a new tag
             createANewTag('edit-transaction-tags', this.value);
@@ -213,7 +222,6 @@
             }
             // Update Tags
             updateTransaction('tags', tagsArray);
-            return false;
         }
     });
 
@@ -310,8 +318,6 @@
             }
             // Focus out
             this.blur();
-            // Update to cache
-            window.transactionsCache[transactionId].description = desc;
         }
     });
 
@@ -389,6 +395,7 @@
                 totalIncomeTransactions = totalIncomeTransactions - currentTransaction.amount;
             }
             // Set the new amount to the cache
+            let oldTransactionAmount = currentTransaction.amount;
             window.transactionsCache[transactionId].amount = amount;
             // Add the new balance
             window.categoryMap[categoryId].categoryTotal = window.categoryMap[categoryId].categoryTotal + window.transactionsCache[transactionId].amount;
@@ -433,6 +440,25 @@
              */
             let totalAvailableTransactions = totalIncomeTransactions + totalExpensesTransactions;
             tr.updateTotalAvailableSection(totalIncomeTransactions, totalExpensesTransactions, totalAvailableTransactions);
+
+            /*
+             * Update the bank balance
+             */
+            let bankAccountId = window.transactionsCache[transactionId].account;
+            bankAccEl = document.getElementById('accountBalance-' + bankAccountId);
+            for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+                if (window.allBankAccountInfoCache[i].accountId == bankAccountId) {
+                    let accBal = window.allBankAccountInfoCache[i]['account_balance'];
+                    // Remove the old balance
+                    accBal = accBal - oldTransactionAmount;
+                    // Add the new balance
+                    accBal = accBal + window.transactionsCache[transactionId].amount;
+                    // Update the bank account display
+                    bankAccEl.textContent = formatToCurrency(accBal);
+                    // Update Cache
+                    window.allBankAccountInfoCache[i]['account_balance'] = accBal;
+                }
+            }
         }
     });
 
@@ -440,9 +466,13 @@
      * Updte Transaction
      */
     function updateTransaction(type, value) {
+        // Transactions ID
+        let transactionId = document.getElementById('transactionInformationMdl').dataset.target;
+        // Update to cache
+        window.transactionsCache[transactionId][type] = value;
         let values = {};
         values['walletId'] = window.currentUser.walletId;
-        values['transactionId'] = document.getElementById('transactionInformationMdl').dataset.target;
+        values['transactionId'] = transactionId;
         values[type] = value;
 
         // Ajax Requests on Error

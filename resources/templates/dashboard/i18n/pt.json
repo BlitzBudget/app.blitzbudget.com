@@ -633,7 +633,12 @@
         "transactionbalance": "Balanço das transacções",
         "category": "Categoria",
         "description": "Descrição",
-        "tags": "Etiquetas"
+        "tags": "Etiquetas",
+        "deletetransaction": "Eliminar Transacções",
+        "deletecategory": "Eliminar Categoria",
+        "remainingcategorytomaxbudget": "Saldo restante da categoria até ao máximo do orçamento",
+        "deleteaccount": "Apagar conta",
+        "remainingaccountbalance": "Saldo remanescente da conta para alcançar o objectivo"
     },
     "goals": {
         "page": {

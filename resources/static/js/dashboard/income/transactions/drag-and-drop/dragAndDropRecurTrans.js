@@ -136,6 +136,29 @@
         let recurTransInfoTables = document.getElementsByClassName('recurTransInfoTable');
         for (let i = 0, l = recurTransInfoTables.length; i < l; i++) {
             dragsterList.push(new Dragster(recurTransInfoTables[i]));
+            /*
+             * Unhide the table elements
+             */
+            let recurInfoTable = recurTransInfoTables[i];
+            let childElementWrappers = recurInfoTable.childNodes;
+
+            // Recur Transactions contains d-none
+            if (childElementWrappers[1].classList.contains('d-none')) {
+                // Rotate the arrow
+                let arrowIndicator = recurInfoTable.firstElementChild.firstElementChild.firstElementChild;
+                arrowIndicator.classList.toggle('rotateZero');
+                arrowIndicator.classList.toggle('rotateNinty');
+            }
+
+            // Child Elements Wrapper
+            for (let i = 1, len = childElementWrappers.length; i < len; i++) {
+                let childElementWrapper = childElementWrappers[i];
+                let childClassList = childElementWrapper.classList;
+                if (childClassList.contains('d-none')) {
+                    childClassList.toggle('d-none');
+                    childClassList.toggle('d-table-row');
+                }
+            }
         }
     }
 
@@ -172,7 +195,7 @@
             // Find the closest parent element and drop. (Should never be null)
             insertAfterElement(a, e.target);
             // Update the transaction with the new account ID
-            updateTransactionWithRecurrence(recurTransId, closestParentWrapper.getAttribute('data-target'));
+            updateTransactionWithRecurrence(recurTransId, closestParentWrapper.getAttribute('data-target'), dragSrcEl.getAttribute('data-target'));
         }
 
         return false;
@@ -211,9 +234,11 @@
     }
 
     // Update the transaction with the account ID
-    function updateTransactionWithRecurrence(recurringTransactionId, recurrence) {
+    function updateTransactionWithRecurrence(recurringTransactionId, recurrence, oldRecurrence) {
         // obtain the transaction id of the table row
         recurringTransactionId = document.getElementById(recurringTransactionId).getAttribute('data-target');
+        let recurringTransaction = window.recurringTransactionCache[recurringTransactionId];
+        let nextScheduledDate = new Date(recurringTransaction['next_scheduled']);
 
         let values = {};
         values['recurrence'] = recurrence;
@@ -229,7 +254,26 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {
-            let userTransaction = result['body-json'];
+            let recurrenceData = result['body-json'];
+            // Remove empty entries for the recurrence
+            let emptyRecurrenceItem = document.getElementById('emptyRecurrenceItem-' + recurrence);
+            if (isNotEmpty(emptyRecurrenceItem)) {
+                emptyRecurrenceItem.remove();
+            }
+            // Replace with Empty Recurrence
+            let oldRecurrenceEl = document.getElementById('recurTransSB-' + oldRecurrence);
+            let oldRecentTransactionEntry = oldRecurrenceEl.getElementsByClassName('recentTransactionEntry');
+            if (oldRecentTransactionEntry.length == 0) {
+                // Build empty account entry
+                oldRecurrenceEl.appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + oldRecurrence));
+            }
+            // Update Recurrence in the cache
+            window.recurringTransactionCache[recurringTransactionId].recurrence = recurrence;
+            recurringTransaction = window.recurringTransactionCache[recurringTransactionId];
+            // Change the recurrence display
+            let recurTransactionEl = document.getElementById('recurTransaction-' + recurringTransactionId);
+            let categoryNameRT = recurTransactionEl.getElementsByClassName('categoryNameRT')[0];
+            categoryNameRT.textContent = (recurringTransaction.recurrence) + ' • ' + ("0" + nextScheduledDate.getDate()).slice(-2) + ' ' + months[nextScheduledDate.getMonth()].slice(0, 3) + ' ' + nextScheduledDate.getFullYear() + ' ' + ("0" + nextScheduledDate.getHours()).slice(-2) + ':' + ("0" + nextScheduledDate.getMinutes()).slice(-2);
         }
         ajaxData.onFailure = function (thrownError) {
             manageErrors(thrownError, 'Unable to change the recurrence. Please try again!', ajaxData);

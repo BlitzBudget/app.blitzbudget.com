@@ -21,6 +21,10 @@
          document.getElementById('categoryInformationMdl').classList.add('d-none');
          // Toggle  Financial Position
          document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+         // Hide Recurring transactions modal
+         document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
+         // Hide Transaction Inormation Modal
+         document.getElementById('transactionInformationMdl').classList.add('d-none');
          // show the future transactions
          let futureTransactionsTable = document.getElementById('futureTransactionsTable');
          futureTransactionsTable.classList.remove('d-none');
@@ -65,9 +69,12 @@
 
          let resultKeySet = Object.keys(recurringTransactionsList);
          let createdRecurTransRecurrence = [];
+         window.recurringTransactionCache = {};
          for (let countGrouped = 0; countGrouped < resultKeySet.length; countGrouped++) {
              let key = resultKeySet[countGrouped];
              let recurringTransaction = recurringTransactionsList[key];
+             // Recurring Transactions Cache with ID
+             window.recurringTransactionCache[recurringTransaction.recurringTransactionsId] = recurringTransaction;
 
              if (!includesStr(createdRecurTransRecurrence, recurringTransaction.recurrence)) {
                  futureTransactionsFragment.appendChild(buildRecurTransHeaders(recurringTransaction.recurrence));
@@ -76,6 +83,19 @@
              }
 
              futureTransactionsFragment.getElementById('recurTransSB-' + recurringTransaction.recurrence).appendChild(buildFutureTransactionRow(recurringTransaction));
+         }
+
+         /*
+          * Populate Empty Recurrence Headers
+          */
+         let recurrenceValues = ['WEEKLY', 'BI-MONTHLY', 'MONTHLY']
+         for (let i = 0, len = recurrenceValues.length; i < len; i++) {
+             let recur = recurrenceValues[i];
+             let recurrenceHeader = futureTransactionsFragment.getElementById('recurTransSB-' + recur);
+             if (isEmpty(recurrenceHeader)) {
+                 futureTransactionsFragment.appendChild(buildRecurTransHeaders(recur));
+                 futureTransactionsFragment.getElementById('recurTransSB-' + recur).appendChild(er_a.buildEmptyTableEntry('emptyRecurrenceItem-' + recur));
+             }
          }
      }
 

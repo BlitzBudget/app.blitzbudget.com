@@ -14,8 +14,10 @@ window._config = {
             changePassword: '/profile/change-password',
         },
         deleteItem: '/delete-item',
+        delete: '/delete',
         deleteBatch: '/delete-batch',
-        goals: '/goals'
+        goals: '/goals',
+        deleteCategories: '/categories/delete'
     },
     home: {
         invokeUrl: 'https://www.blitzbudget.com'

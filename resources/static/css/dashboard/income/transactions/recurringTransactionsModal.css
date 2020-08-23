@@ -1,0 +1,132 @@
+/**
+*	recurringTransactions Modal
+**/
+#recurringTransactionHeaderClose > i {
+    color: #999;
+}
+
+#recurringTransactionInformationMdl {
+    padding: .5rem;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+}
+
+#recurringTransactionLabelInModal {
+    display: block;
+    margin-bottom: .8rem;
+    line-height: 1;
+    color: #495257;
+    font-weight: 600;
+    text-align: left;
+}
+
+#recurringTransactionInformationMdl .card-footer .text-left {
+    color: #999;
+    white-space: nowrap;
+}
+
+.deleteIconrecurringTransactionsWrapper {
+    color: #999;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 600ms, visibility 600ms;
+    -webkit-transition: opacity 600ms, visibility 600ms;
+}
+
+.deleteIconrecurringTransactionsWrapper:hover {
+    color: #f44336;
+}
+
+#categoryAmountEntry {
+    font-size: 1.2rem;
+    padding-top: .25rem;
+    font-weight: 400;
+    padding-bottom: .5rem;
+    color: #686969;
+    display: block;
+    -webkit-transition: border-color .3s ease;
+    -moz-transition: border-color .3s ease;
+    -ms-transition: border-color .3s ease;
+    -o-transition: border-color .3s ease;
+    transition: border-color .3s ease;
+    margin-right: -.8rem;
+    width: calc(100%+1.6rem);
+    resize: none;
+    line-height: 1;
+}
+
+#recurringTransactionInformationMdl .material-icons:hover {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
+
+#percentageAchieved {
+    color: #333a3d;
+    font-weight: 400;
+    font-size: 1.1rem;
+}
+
+#remainingBalance {
+    font-weight: 600;
+}
+
+#recurringTransactionInformationMdl:hover .deleteIconTransactionsWrapper {
+    visibility: visible;
+    opacity: 1;
+}
+
+#recurringTransactionAmountEntry,
+#recurringTransactionDescriptionEntry,
+#recurringTransactionTagsEntry {
+    padding-top: .25rem;
+    font-weight: 400;
+    padding-bottom: .5rem;
+    color: #686969;
+    display: block;
+    -webkit-transition: border-color .3s ease;
+    -moz-transition: border-color .3s ease;
+    -ms-transition: border-color .3s ease;
+    -o-transition: border-color .3s ease;
+    transition: border-color .3s ease;
+    margin-right: -.8rem;
+    width: calc(100%+1.6rem);
+    resize: none;
+    line-height: 1;
+    border: none;
+}
+
+#recurringTransactionAmountEntry:hover,
+#recurringTransactionAmountEntry:focus,
+#recurringTransactionAmountEntry:active,
+#recurringTransactionDescriptionEntry:hover,
+#recurringTransactionDescriptionEntry:focus,
+#recurringTransactionDescriptionEntry:active,
+#recurringTransactionTagsEntry:hover,
+#recurringTransactionTagsEntry:focus,
+#recurringTransactionTagsEntry:active {
+    background: linear-gradient(#d5d9db, #d5d9db) 0 calc(100% - .025rem)/100% .050rem no-repeat, transparent;
+}
+
+.transaction-selected {
+    background-color: #f2f5f7;
+}
+
+.transaction-selected .circleWrapperImageRT {
+    background-color: #fff;
+}
+
+.recurringTransactionAmountDiv .material-icons,
+.recurringTransactionCategoryDiv .material-icons,
+.recurringTransactionDescriptionDiv .material-icons,
+.recurringTransactionTagsDiv .material-icons {
+    color: #666e77;
+    cursor: default;
+}
+
+#edit-recurring-transaction-tags.tagsinput {
+    padding-left: 0.95rem;
+}

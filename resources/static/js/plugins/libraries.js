@@ -307,7 +307,7 @@ function getAllUrlParams(url) {
 // Manage errors
 function manageErrors(thrownError, message, ajaxData) {
     showNotification(message, window._constants.notification.error);
-    let responseError = JSON.parse(thrownError.responseText);
+    let responseError = thrownError.responseJSON;
     if (isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")) {
         er.sessionExpiredSwal(ajaxData);
     }
@@ -321,6 +321,17 @@ function round(value, decimals) {
 
 function showNotification(message, colorCode) {
     Toast.fire({
+        customClass: {
+            container: 'mixinSuccess',
+        },
+        icon: colorCode,
+        title: message
+    });
+}
+
+function showNotificationWithPosition(message, colorCode, pos) {
+    Toast.fire({
+        position: pos,
         customClass: {
             container: 'mixinSuccess',
         },

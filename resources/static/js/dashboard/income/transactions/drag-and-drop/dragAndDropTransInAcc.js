@@ -136,6 +136,29 @@
         let accountInfoTables = document.getElementsByClassName('accountInfoTable');
         for (let i = 0, l = accountInfoTables.length; i < l; i++) {
             dragsterList.push(new Dragster(accountInfoTables[i]));
+            /*
+             * Unhide the table elements
+             */
+            let accountInfoTable = accountInfoTables[i];
+            let childElementWrappers = accountInfoTable.childNodes;
+
+            // Account Info Table if it contains none
+            if (childElementWrappers[1].classList.contains('d-none')) {
+                // Rotate the arrow
+                let arrowIndicator = accountInfoTable.firstElementChild.firstElementChild.firstElementChild;
+                arrowIndicator.classList.toggle('rotateZero');
+                arrowIndicator.classList.toggle('rotateNinty');
+            }
+
+            // Unhide all the child nodes
+            for (let i = 1, len = childElementWrappers.length; i < len; i++) {
+                let childElementWrapper = childElementWrappers[i];
+                let childClassList = childElementWrapper.classList;
+                if (childClassList.contains('d-none')) {
+                    childClassList.toggle('d-none');
+                    childClassList.toggle('d-table-row');
+                }
+            }
         }
     }
 

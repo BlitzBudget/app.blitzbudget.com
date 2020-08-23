@@ -4,7 +4,7 @@
     // Onn hit enter
     $('body').on("keyup", "#add-transaction-value", function (e) {
         var keyCode = e.key;
-        if (isEqual(keyCode, 'Enter')) {
+        if (isEqual(keyCode, 'Enter') && isNotBlank(this.value)) {
             e.preventDefault();
             // Create a new tag
             createANewTag('add-transaction-tags', this.value);

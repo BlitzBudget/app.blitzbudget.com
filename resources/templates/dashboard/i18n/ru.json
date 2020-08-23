@@ -633,7 +633,12 @@
         "transactionbalance": "Баланс транзакций",
         "category": "Категория",
         "description": "Описание",
-        "tags": "Теги"
+        "tags": "Теги",
+        "deletetransaction": "Удаление операций",
+        "deletecategory": "Категория удаления",
+        "remainingcategorytomaxbudget": "Остаток средств по категориям до максимального уровня бюджета",
+        "deleteaccount": "Удалить учетную запись",
+        "remainingaccountbalance": "Остаток средств на счете для достижения цели"
     },
     "goals": {
         "page": {

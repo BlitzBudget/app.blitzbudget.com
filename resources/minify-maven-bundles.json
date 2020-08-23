@@ -48,6 +48,7 @@
                 "/dashboard/income/transactions/accountModal.css",
                 "/dashboard/income/transactions/categoryModal.css",
                 "/dashboard/income/transactions/transactionsModal.css",
+                "/dashboard/income/transactions/recurringTransactionsModal.css",
                 "/dashboard/income/transactions/dragAndDropTransInAcc.css",
                 "/dashboard/build/tagsinput.css"
             ]
@@ -98,6 +99,7 @@
                 "/dashboard/income/transactions/modal/accountModal.js",
                 "/dashboard/income/transactions/modal/categoryModal.js",
                 "/dashboard/income/transactions/modal/transactionsModal.js",
+                "/dashboard/income/transactions/modal/recurringTransactionsModal.js",
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions/tagsinput.js",
                 "/dashboard/income/transactions.js",
@@ -105,6 +107,9 @@
                 "/dashboard/income/transactions/drag-and-drop/dragAndDropTransInCat.js",
                 "/dashboard/income/transactions/drag-and-drop/dragAndDropRecurTrans.js",
                 "/dashboard/income/transactions/sort-by/future-transactions.js",
+                "/dashboard/income/transactions/sort-by/account.js",
+                "/dashboard/income/transactions/sort-by/category.js",
+                "/dashboard/income/transactions/sort-by/creation-date.js",
                 "/dashboard/income/transactions/sort-by/tags.js",
                 "/dashboard/module/settings.js",
                 "/dashboard/overview/overview.js",

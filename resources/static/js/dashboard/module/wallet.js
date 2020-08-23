@@ -121,12 +121,12 @@
                 activateTooltip();
             },
             error: function (thrownError) {
-                if (isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+                if (isEmpty(thrownError) || isEmpty(thrownError.responseJSON)) {
                     showNotification(window.translationData.wallet.dynamic.add.error, window._constants.notification.error);
                 } else if (isNotEmpty(thrownError.message)) {
                     showNotification(thrownError.message, window._constants.notification.error);
                 } else {
-                    let responseError = JSON.parse(thrownError.responseText);
+                    let responseError = JSON.parse(thrownError.responseJSON);
                     if (isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")) {
                         // If the user is not authorized then redirect to application
                         window.location.href = '/';
@@ -336,7 +336,7 @@
     }
 
     // On click drop down btn of country search
-    $(document).on("click", ".dropdown-item", function (event) {
+    $(document).on("click", ".autocomplete-items .dropdown-item", function (event) {
         let chooseCrncyId = 'chosenCurrencyWInpautocomplete-list';
         let chooseCrncyMWId = 'chosenCurrencyWInpMWautocomplete-list';
         let id = this.parentElement.id;
@@ -421,12 +421,12 @@
                 activateTooltip();
             },
             error: function (thrownError) {
-                if (isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+                if (isEmpty(thrownError) || isEmpty(thrownError.responseJSON)) {
                     showNotification(window.translationData.wallet.dynamic.fetcherror, window._constants.notification.error);
                 } else if (isNotEmpty(thrownError.message)) {
                     showNotification(thrownError.message, window._constants.notification.error);
                 } else {
-                    let responseError = JSON.parse(thrownError.responseText);
+                    let responseError = JSON.parse(thrownError.responseJSON);
                     if (isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")) {
                         // If the user is not authorized then redirect to application
                         window.location.href = '/';
@@ -1078,12 +1078,12 @@
             contentType: "application/json;charset=UTF-8",
             data: values,
             error: function (thrownError) {
-                if (isEmpty(thrownError) || isEmpty(thrownError.responseText)) {
+                if (isEmpty(thrownError) || isEmpty(thrownError.responseJSON)) {
                     showNotification(window.translationData.wallet.dynamic.patcherror, window._constants.notification.error);
                 } else if (isNotEmpty(thrownError.message)) {
                     showNotification(thrownError.message, window._constants.notification.error);
                 } else {
-                    let responseError = JSON.parse(thrownError.responseText);
+                    let responseError = JSON.parse(thrownError.responseJSON);
                     if (isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")) {
                         // If the user is not authorized then redirect to application
                         window.location.href = '/';
