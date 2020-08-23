@@ -255,8 +255,11 @@
             }
             values['categoryType'] = chosenCategory.type;
             values['category'] = chosenCategory.name;
+            values['categoryName'] = chosenCategory.name;
         } else {
             values['category'] = categoryOptions;
+            values['categoryType'] = chosenCategory.type;
+            values['categoryName'] = chosenCategory.name;
         }
 
         if (window.categoryMap[categoryOptions].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
