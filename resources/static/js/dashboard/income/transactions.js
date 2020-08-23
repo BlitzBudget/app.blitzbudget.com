@@ -1221,7 +1221,11 @@ tr = {
 function buildEmptyTransactionsTab(className) {
 
     let rowEmpty = document.createElement('div');
-    rowEmpty.classList = 'd-table-row ' + className;
+    rowEmpty.classList = 'd-table-row';
+    // Add Class Name
+    if (isNotEmpty(className)) {
+        rowEmpty.classList.add(className);
+    }
 
     let cell1 = document.createElement('div');
     cell1.classList = 'd-table-cell';
