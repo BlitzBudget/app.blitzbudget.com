@@ -34,7 +34,7 @@
         // transaction Balance Update
         document.getElementById('recurringTransactionAmountEntry').value = formatToCurrency(currentRecurringTrans.amount);
         // Transaction Category Update
-        document.getElementById('recurringTransactionCategoryEntry').textContent = ' ';
+        document.getElementById('recurringTransactionCategoryEntry').textContent = currentRecurringTrans['category_name'];
         // Transaction Description Update
         document.getElementById('recurringTransactionDescriptionEntry').value = currentRecurringTrans.description;
         // Transaction Tags Update
