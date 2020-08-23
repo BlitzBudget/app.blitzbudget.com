@@ -514,26 +514,53 @@
         autocomplete(document.getElementById("chosenCountryInp"), window.countries, "chooseCountryDD");
 
         /*
-         *	Currency Dropdown Populate
+         * Get Wallets
          */
+        getWallets();
 
-        /*An array containing all the currency names in the world:*/
-        window.currencies = [];
-        window.cToS = {};
-        let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
-        for (let i = 0, l = curToSym.length; i < l; i++) {
-            window.cToS[curToSym[i].currency] = curToSym[i].symbol;
-            /* Update the default currency in Settings */
-            if (isEqual(currentUser.walletCurrencyName, curToSym[i].currency)) {
-                document.getElementById('chosenCurrency').textContent = curToSym[i].currency;
-                // To be used to display "with wallet" section
-                document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
-            } else {
-                window.currencies.push(curToSym[i].currency);
-            }
+        function getWallets() {
+            jQuery.ajax({
+                url: window._config.api.invokeUrl + WALLET_CONSTANTS.walletUrl,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", window.authHeader);
+                },
+                type: 'POST',
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                data: JSON.stringify(values),
+                success: function (wallets) {
+                    wallets = wallets.Wallet;
+                    for (let i = 0, l = wallets.length; i < l; i++) {
+                        let wallet = wallets[i];
+                        // If Wallet ID is equal to current user do not populate
+                        if (isEqual(wallet.walletId, window.currentUser.walletId)) {
+                            /*
+                             *	Currency Dropdown Populate
+                             */
+
+                            /*An array containing all the currency names in the world:*/
+                            window.currencies = [];
+                            window.cToS = {};
+                            let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
+                            for (let i = 0, l = curToSym.length; i < l; i++) {
+                                window.cToS[curToSym[i].currency] = curToSym[i].symbol;
+                                /* Update the default currency in Settings */
+                                if (isEqual(wallet.currency, curToSym[i].currency)) {
+                                    document.getElementById('chosenCurrency').textContent = curToSym[i].currency;
+                                    // To be used to display "with wallet" section
+                                    document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+                                } else {
+                                    window.currencies.push(curToSym[i].currency);
+                                }
+                            }
+                            /*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
+                            autocomplete(document.getElementById("chosenCurrencyInp"), window.currencies, "chooseCurrencyDD");
+
+                        }
+                    }
+                }
+            });
         }
-        /*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
-        autocomplete(document.getElementById("chosenCurrencyInp"), window.currencies, "chooseCurrencyDD");
 
         // On click drop down btn of country search
         $("#chosenCurrencyDropdown").on("shown.bs.dropdown", function (event) {
