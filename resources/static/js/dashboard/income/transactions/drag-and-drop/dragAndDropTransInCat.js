@@ -140,11 +140,17 @@
              * Unhide the table elements
              */
             let categoryInfoTable = categoryInfoTables[i];
-            // Rotate the arrow
-            let arrowIndicator = categoryInfoTable.firstElementChild.firstElementChild.firstElementChild;
-            arrowIndicator.classList.toggle('rotateZero');
-            arrowIndicator.classList.toggle('rotateNinty');
             let childElementWrappers = categoryInfoTable.childNodes;
+
+            // Recur Transactions contains d-none
+            if (childElementWrappers[1].classList.contains('d-none')) {
+                // Rotate the arrow
+                let arrowIndicator = categoryInfoTable.firstElementChild.firstElementChild.firstElementChild;
+                arrowIndicator.classList.toggle('rotateZero');
+                arrowIndicator.classList.toggle('rotateNinty');
+            }
+
+            // Unhide Child Elements WWrapper
             for (let i = 1, len = childElementWrappers.length; i < len; i++) {
                 let childElementWrapper = childElementWrappers[i];
                 let childClassList = childElementWrapper.classList;

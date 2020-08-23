@@ -140,11 +140,17 @@
              * Unhide the table elements
              */
             let recurInfoTable = recurTransInfoTables[i];
-            // Rotate the arrow
-            let arrowIndicator = recurInfoTable.firstElementChild.firstElementChild.firstElementChild;
-            arrowIndicator.classList.toggle('rotateZero');
-            arrowIndicator.classList.toggle('rotateNinty');
             let childElementWrappers = recurInfoTable.childNodes;
+
+            // Recur Transactions contains d-none
+            if (childElementWrappers[1].classList.contains('d-none')) {
+                // Rotate the arrow
+                let arrowIndicator = recurInfoTable.firstElementChild.firstElementChild.firstElementChild;
+                arrowIndicator.classList.toggle('rotateZero');
+                arrowIndicator.classList.toggle('rotateNinty');
+            }
+
+            // Child Elements Wrapper
             for (let i = 1, len = childElementWrappers.length; i < len; i++) {
                 let childElementWrapper = childElementWrappers[i];
                 let childClassList = childElementWrapper.classList;
