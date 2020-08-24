@@ -327,7 +327,7 @@
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function (result) {}
         ajaxData.onFailure = function (thrownError) {
-            manageErrors(thrownError, "There was an error while updating the transaction. Please try again later!", ajaxData);
+            manageErrors(thrownError, "There was an error while updating the recurring transaction. Please try again later!", ajaxData);
         }
 
         jQuery.ajax({
