@@ -122,7 +122,8 @@
 .recurringTransactionAmountDiv .material-icons,
 .recurringTransactionCategoryDiv .material-icons,
 .recurringTransactionDescriptionDiv .material-icons,
-.recurringTransactionTagsDiv .material-icons {
+.recurringTransactionTagsDiv .material-icons,
+.recurringTransactionAccountDiv .material-icons {
     color: #666e77;
     cursor: default;
 }
