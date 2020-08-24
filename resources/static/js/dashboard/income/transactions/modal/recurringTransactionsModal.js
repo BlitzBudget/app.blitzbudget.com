@@ -2,6 +2,18 @@
 (function scopeWrapper($) {
 
     $('body').on('click', '#futureTransactionsTable .recurTransEntry', function (e) {
+
+        // If the transaction is selected already then
+        if (this.classList.contains('transaction-selected')) {
+            // Close Transaction Modal
+            document.getElementById('recurringTransactionInformationMdl').classList.add('d-none');
+            // Open  Financial Position
+            document.getElementsByClassName('transactions-chart')[0].classList.remove('d-none');
+            // Make the transactions selected
+            this.classList.remove('transaction-selected');
+            return;
+        }
+
         // Remove all classlist that contains the selected transactions
         let selectedTransactions = document.querySelectorAll('.transaction-selected');
         /*
