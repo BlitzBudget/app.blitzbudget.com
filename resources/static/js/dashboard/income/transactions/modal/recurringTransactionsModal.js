@@ -54,7 +54,7 @@
             let bankAcc = window.allBankAccountInfoCache[i];
             if (isEqual(bankAcc.accountId, currentRecurringTrans.account)) {
                 // Account Entry
-                document.getElementById('recurringTransactionAccountEntry').value = bankAcc['bank_account_name'];
+                document.getElementById('recurringTransactionAccountEntry').textContent = bankAcc['bank_account_name'];
             }
         }
         // Transaction Tags Update
