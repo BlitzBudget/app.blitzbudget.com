@@ -67,6 +67,14 @@
          futureTransactionsFragment.appendChild(buildEmptyTransactionsTab('recurTransInfoTable'));
      } else {
 
+         let bankAccountCache = {};
+         // All Bank Account Cache
+         for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
+             let bankAcc = window.allBankAccountInfoCache[i];
+             // Bank Account Cache
+             bankAccountCache[bankAcc.accountId] = bankAcc;
+         }
+
          let resultKeySet = Object.keys(recurringTransactionsList);
          let createdRecurTransRecurrence = [];
          window.recurringTransactionCache = {};
@@ -82,7 +90,7 @@
                  createdRecurTransRecurrence.push(recurringTransaction.recurrence);
              }
 
-             futureTransactionsFragment.getElementById('recurTransSB-' + recurringTransaction.recurrence).appendChild(buildFutureTransactionRow(recurringTransaction));
+             futureTransactionsFragment.getElementById('recurTransSB-' + recurringTransaction.recurrence).appendChild(buildFutureTransactionRow(recurringTransaction, bankAccountCache));
          }
 
          /*
@@ -151,7 +159,7 @@
  }
 
  // Builds the rows for recent transactions
- function buildFutureTransactionRow(recurringTransaction) {
+ function buildFutureTransactionRow(recurringTransaction, bankAccountCache) {
      // Convert date from UTC to user specific dates
      let nextScheduledDate = new Date(recurringTransaction['next_scheduled']);
 
@@ -186,7 +194,7 @@
 
      let elementWithCategoryName = document.createElement('div');
      elementWithCategoryName.classList = 'small categoryNameRT w-100';
-     elementWithCategoryName.textContent = (recurringTransaction.recurrence) + ' • ' + ("0" + nextScheduledDate.getDate()).slice(-2) + ' ' + months[nextScheduledDate.getMonth()].slice(0, 3) + ' ' + nextScheduledDate.getFullYear() + ' ' + ("0" + nextScheduledDate.getHours()).slice(-2) + ':' + ("0" + nextScheduledDate.getMinutes()).slice(-2);
+     elementWithCategoryName.textContent = bankAccountCache[recurringTransaction.account]['bank_account_name'] + ' • ' + ("0" + nextScheduledDate.getDate()).slice(-2) + ' ' + months[nextScheduledDate.getMonth()].slice(0, 3) + ' ' + nextScheduledDate.getFullYear() + ' ' + ("0" + nextScheduledDate.getHours()).slice(-2) + ':' + ("0" + nextScheduledDate.getMinutes()).slice(-2);
      tableCellTransactionDescription.appendChild(elementWithCategoryName);
      tableRowTransaction.appendChild(tableCellTransactionDescription);
 

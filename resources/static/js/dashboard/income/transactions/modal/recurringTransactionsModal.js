@@ -49,14 +49,6 @@
         document.getElementById('recurringTransactionCategoryEntry').textContent = currentRecurringTrans['category_name'];
         // Transaction Description Update
         document.getElementById('recurringTransactionDescriptionEntry').value = currentRecurringTrans.description;
-        // All Bank Account Cache
-        for (let i = 0, length = window.allBankAccountInfoCache.length; i < length; i++) {
-            let bankAcc = window.allBankAccountInfoCache[i];
-            if (isEqual(bankAcc.accountId, currentRecurringTrans.account)) {
-                // Account Entry
-                document.getElementById('recurringTransactionAccountEntry').textContent = bankAcc['bank_account_name'];
-            }
-        }
         // Transaction Tags Update
         createAllTags(currentRecurringTrans.tags);
         // Close Account Modal
