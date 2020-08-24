@@ -186,7 +186,7 @@
 
         let values = {};
         values['walletId'] = window.currentUser.walletId;
-        values['categoryId'] = categoryId;
+        values['category'] = categoryId;
         values[type] = value;
 
         // Ajax Requests on Error
