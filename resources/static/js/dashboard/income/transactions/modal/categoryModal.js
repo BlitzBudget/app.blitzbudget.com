@@ -17,7 +17,7 @@
         // Set Account Title
         document.getElementById('categoryLabelInModal').textContent = document.getElementById('categoryTitle-' + categoryId).textContent;
         // Account Balance Update
-        document.getElementById('categoryAmountEntry').value = document.getElementById('categoryBalance-' + categoryId).textContent;
+        document.getElementById('categoryAmountEntry').textContent = document.getElementById('categoryBalance-' + categoryId).textContent;
         // Close Account Modal
         document.getElementById('accountInformationMdl').classList.add('d-none');
         // Close  Financial Position
@@ -132,88 +132,5 @@
 
         });
     });
-
-    /*
-     * Save Amount
-     */
-    $('body').on("keyup", "#categoryAmountEntry", function (e) {
-        var keyCode = e.key;
-
-        if (isEqual(keyCode, 'Enter')) {
-            let categoryId = document.getElementById('categoryInformationMdl').dataset.target;
-            e.preventDefault();
-            let amount = this.value;
-            if (isBlank(amount)) {
-                return false;
-            }
-            // Convert to Number from Currency
-            amount = Math.abs(er.convertToNumberFromCurrency(amount, currentCurrencyPreference));
-            if (amount == 0) {
-                return false;
-            }
-            // If expense category then convert to negative
-            if (window.categoryMap[categoryId].categoryTotal < 0) {
-                // Update as negative amount
-                amount *= -1;
-            }
-            // Edit Amount
-            updateCategory('categoryTotal', amount);
-
-            /*
-             * Category Amount
-             */
-            let categoryAmountEntry = document.getElementById('categoryAmountEntry');
-            let formattedAmount = formatToCurrency(amount);
-            categoryAmountEntry.value = formattedAmount;
-
-            // Update Category Balance
-            document.getElementById('categoryBalance-' + categoryId).textContent = formattedAmount;
-
-            // Focus out
-            this.blur();
-        }
-    });
-
-    /*
-     * Updte Category
-     */
-    function updateCategory(type, value) {
-
-        // Recurring transactions id
-        let categoryId = document.getElementById('categoryInformationMdl').dataset.target;
-        // Update Category Total to cache
-        window.categoryMap[categoryId][type] = value;
-
-        let values = {};
-        values['walletId'] = window.currentUser.walletId;
-        values['category'] = categoryId;
-        values[type] = value;
-
-        // Ajax Requests on Error
-        let ajaxData = {};
-        ajaxData.isAjaxReq = true;
-        ajaxData.type = "PATCH";
-        ajaxData.url = CUSTOM_DASHBOARD_CONSTANTS.fetchCategoriesUrl;
-        ajaxData.dataType = "json";
-        ajaxData.contentType = "application/json;charset=UTF-8";
-        ajaxData.data = JSON.stringify(values);
-        ajaxData.onSuccess = function (result) {}
-        ajaxData.onFailure = function (thrownError) {
-            manageErrors(thrownError, "There was an error while updating the category. Please try again later!", ajaxData);
-        }
-
-        jQuery.ajax({
-            url: ajaxData.url,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Authorization", authHeader);
-            },
-            type: ajaxData.type,
-            dataType: ajaxData.dataType,
-            contentType: ajaxData.contentType,
-            data: ajaxData.data,
-            success: ajaxData.onSuccess,
-            error: ajaxData.onFailure
-        });
-    }
 
 }(jQuery));
