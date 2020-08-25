@@ -510,7 +510,25 @@
                                                         <div class="dropdown-divider"></div>
                                                         <h6 class="dropdown-header" data-i18n="transactions.modal.add.income">Income</h6>
                                                         <div id="incomeSelection" class="w-100"></div>
-                                                        <button class="btn btn-success btn-round" id="addNewCategory" data-i18n="transactions.modal.add.category">Add Category</button>
+                                                    </div>
+                                                </div>
+                                                <div class="my-2 text-center col-12">
+                                                    <button class="btn btn-success btn-link btn-round" id="addNewCategory" data-i18n="transactions.modal.add.category">Add Category</button>
+                                                </div>
+                                            </div>
+                                            <div id="newCategorySelection" class="d-none">
+                                                <input id="newCategory" type="text" class="form-control">
+                                                <div id="typeSelection" class="btn-group btnGroup-1">
+                                                    <div class="w-md-15 w-8" disabled="">Expense</div>
+                                                    <div type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </div>
+                                                    <div class="dropdown-menu">
+                                                        <!-- Drop down dynamic load -->
+                                                        <div class="input-group">
+                                                            <div class="dropdown-item">Expense<input type="hidden" value="Expense"></div>
+                                                            <div class="dropdown-item">Income<input type="hidden" value="Income"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
