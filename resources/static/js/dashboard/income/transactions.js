@@ -392,7 +392,7 @@
             er_a.populateBankInfo(result.BankAccount);
 
             fetchJSONForCategories(result.Category);
-            tr.loadCategoriesForTransaction('categoryOptions', 'expenseSelection', 'incomeSelection');
+            tr.loadCategoriesForTransaction('expenseSelection', 'incomeSelection');
 
             // Dates Cache
             window.datesCreated = result.Date;
@@ -1144,14 +1144,7 @@ tr = {
     },
 
     // Load Categories for transaction
-    loadCategoriesForTransaction(dropdownId, expenseId, incomeId) {
-        // set default category
-        let defaultCategory = window.defaultCategories[1];
-        if (isEmpty(defaultCategory.id)) {
-            document.getElementById(dropdownId).setAttribute('data-chosen', defaultCategory.name);
-        } else {
-            document.getElementById(dropdownId).setAttribute('data-chosen', defaultCategory.id);
-        }
+    loadCategoriesForTransaction(expenseId, incomeId) {
 
         // Load Expense category and income category
         let expenseSelectionDiv = document.getElementById(expenseId);
