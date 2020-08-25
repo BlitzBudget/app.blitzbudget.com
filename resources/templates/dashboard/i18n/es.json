@@ -81,7 +81,6 @@
         "page": {
             "title": "Configuraciones",
             "general": "General",
-            "notifications": "Notificaciones",
             "devices": "Dispositivos",
             "region": {
                 "title": "Preferencias regionales",
