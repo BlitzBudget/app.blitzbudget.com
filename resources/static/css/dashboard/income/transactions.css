@@ -608,22 +608,27 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
 }
 
 #categoryOptions,
-#categoryOptions .btn-secondary {
+#categoryOptions .btn-secondary,
+#newCategorySelection,
+#newCategorySelection .btn-secondary {
     position: relative;
     flex: 1 1 auto;
     width: 1%;
 }
 
-#categoryOptions .dropdown-toggle::after {
+#categoryOptions .dropdown-toggle::after,
+#newCategorySelection .dropdown-toggle::after {
     color: #333;
 }
 
-#categoryOptions .dropdown-toggle {
+#categoryOptions .dropdown-toggle,
+#newCategorySelection .dropdown-toggle {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
 }
 
-#categoryOptions .dropdown-menu {
+#categoryOptions .dropdown-menu,
+#newCategorySelection .dropdown-menu {
     height: auto;
     max-height: 20rem;
     overflow-x: hidden;
@@ -641,7 +646,12 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
 #categoryOptions .dropdown-menu a:hover,
 #categoryOptions .dropdown-menu a:focus,
 #categoryOptions .dropdown-menu a:active,
-#categoryOptions .autocomplete-active {
+#categoryOptions .autocomplete-active,
+#newCategorySelection .dropdown-menu .dropdown-item:hover,
+#newCategorySelection .dropdown-menu .dropdown-item:focus,
+#newCategorySelection .dropdown-menu a:hover,
+#newCategorySelection .dropdown-menu a:focus,
+#newCategorySelection .dropdown-menu a:active {
     color: #fff;
     background-color: #4caf50;
     border-color: #4caf50;
@@ -649,7 +659,8 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
 }
 
 #categoryOptions .dropdown-header,
-#categoryOptions .autocomplete-items {
+#categoryOptions .autocomplete-items,
+#newCategorySelection .dropdown-header {
     width: 100%;
 }
 
