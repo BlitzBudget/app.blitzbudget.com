@@ -394,7 +394,7 @@
             fetchJSONForCategories(result.Category);
             //tr.loadCategoriesForTransaction('expenseSelection', 'incomeSelection');
             /*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
-            tr_a.autocomplete(document.getElementById("newCategory"), window.expenseDropdownItems, "expenseSelection");
+            tr_a.autocomplete(document.getElementById("newCategory"), window.defaultCategories, "expenseSelection");
 
             // Dates Cache
             window.datesCreated = result.Date;

@@ -84,11 +84,11 @@ tr_a = {
                     autoFilEl = true;
                 } else {
                     /* check if the starting characters match */
-                    startsWithChar = arr[i].substr(0, val.length).toUpperCase() == upperVal;
+                    startsWithChar = arr[i].name.substr(0, val.length).toUpperCase() == upperVal;
                     /* build a regex with the value entered */
                     regVal = new RegExp(upperVal, "g");
                     /*check if the item starts with the same letters as the text field value:*/
-                    if (startsWithChar || includesStr(arr[i].toUpperCase(), upperVal)) {
+                    if (startsWithChar || includesStr(arr[i].name.toUpperCase(), upperVal)) {
                         autoFilEl = true;
                     }
                 }
@@ -103,16 +103,16 @@ tr_a = {
                 b.classList.add("dropdown-item");
                 /*make the matching letters bold:*/
                 if (startsWithChar) {
-                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>" + arr[i].substr(val.length);
+                    b.innerHTML = "<strong>" + arr[i].name.substr(0, val.length) + "</strong>" + arr[i].name.substr(val.length);
                 } else if (!val) {
-                    b.innerHTML = arr[i];
+                    b.innerHTML = arr[i].name;
                 } else {
-                    let startPos = regVal.exec(arr[i].toUpperCase()).index;
+                    let startPos = regVal.exec(arr[i].name.toUpperCase()).index;
                     let startPos2 = startPos + val.length;
-                    b.innerHTML = arr[i].substr(0, startPos) + "<strong>" + arr[i].substr(startPos, val.length) + "</strong>" + arr[i].substr(startPos2);
+                    b.innerHTML = arr[i].name.substr(0, startPos) + "<strong>" + arr[i].name.substr(startPos, val.length) + "</strong>" + arr[i].name.substr(startPos2);
                 }
                 /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                b.innerHTML += "<input type='hidden' value='" + arr[i].name + "'>";
                 /*execute a function when someone clicks on the item value (DIV element):*/
                 b.addEventListener("click", function (e) {
                     /*insert the value for the autocomplete text field:*/
@@ -136,7 +136,7 @@ tr_a = {
             }
 
             /*append the DIV element as a child of the autocomplete container:*/
-            this.parentNode.appendChild(a);
+            document.getElementById(scrollWrapEl).appendChild(a);
         }
 
         /*
@@ -177,4 +177,4 @@ tr_a = {
             }
         }
     }
-}
+};
