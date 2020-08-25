@@ -161,7 +161,8 @@
                     "bimonthly": "双月",
                     "monthly": "每月"
                 },
-                "button": "添加交易"
+                "button": "添加交易",
+                "category": "添加类别"
             },
             "ofcategorytotal": "(%) 类别 共计",
             "others": "其他"

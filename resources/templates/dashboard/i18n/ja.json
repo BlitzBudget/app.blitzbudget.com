@@ -161,7 +161,8 @@
                     "bimonthly": "隔月 のこと",
                     "monthly": "マンスリー"
                 },
-                "button": "トランザクションの追加"
+                "button": "トランザクションの追加",
+                "category": "カテゴリーの追加"
             },
             "ofcategorytotal": "(%) 区分 合計",
             "others": "その他"

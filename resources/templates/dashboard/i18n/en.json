@@ -161,7 +161,8 @@
                     "bimonthly": "Bi-Monthly",
                     "monthly": "Monthly"
                 },
-                "button": "Add Transaction"
+                "button": "Add Transaction",
+                "category": "Add Category"
             },
             "ofcategorytotal": "(%) Of Category Total",
             "others": "Others"

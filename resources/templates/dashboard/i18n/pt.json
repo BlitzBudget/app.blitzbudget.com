@@ -161,7 +161,8 @@
                     "bimonthly": "Bimensal",
                     "monthly": "Mensal"
                 },
-                "button": "Adicionar transacção"
+                "button": "Adicionar transacção",
+                "category": "Adicionar Categoria"
             },
             "ofcategorytotal": "(%) Da categoria Total",
             "others": "Outros"
