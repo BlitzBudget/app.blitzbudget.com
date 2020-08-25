@@ -1901,6 +1901,22 @@ textarea:disabled {
     cursor: pointer;
 }
 
+.noResultsDD {
+    color: #999;
+    display: block;
+    width: 100%;
+    padding: .625rem 1.25rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    font-size: 0.8rem;
+    margin: 0 .3125rem;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;
