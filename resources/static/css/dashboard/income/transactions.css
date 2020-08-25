@@ -665,7 +665,8 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
 }
 
 #incomeSelection,
-#expenseSelection {
+#expenseSelection,
+#newCategorySelection .dropdown-item {
     cursor: pointer;
 }
 
