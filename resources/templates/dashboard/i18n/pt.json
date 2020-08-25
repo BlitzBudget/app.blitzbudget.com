@@ -639,7 +639,9 @@
         "deletecategory": "Eliminar Categoria",
         "remainingcategorytomaxbudget": "Saldo restante da categoria até ao máximo do orçamento",
         "deleteaccount": "Apagar conta",
-        "remainingaccountbalance": "Saldo remanescente da conta para alcançar o objectivo"
+        "remainingaccountbalance": "Saldo remanescente da conta para alcançar o objectivo",
+        "transactioncategory": "Categoria da transacção",
+        "amount": "Montante"
     },
     "goals": {
         "page": {

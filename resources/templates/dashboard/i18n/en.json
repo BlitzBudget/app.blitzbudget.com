@@ -639,7 +639,9 @@
         "deletecategory": "Delete Category",
         "remainingcategorytomaxbudget": "Remaining category balance to max the budget",
         "deleteaccount": "Delete Account",
-        "remainingaccountbalance": "Remaining account balance to achieve goal"
+        "remainingaccountbalance": "Remaining account balance to achieve goal",
+        "transactioncategory": "Transaction Category",
+        "amount": "Amount"
     },
     "goals": {
         "page": {

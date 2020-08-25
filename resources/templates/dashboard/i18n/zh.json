@@ -639,7 +639,9 @@
         "deletecategory": "刪除類別",
         "remainingcategorytomaxbudget": "最高预算的剩余类别余额",
         "deleteaccount": "删除账户",
-        "remainingaccountbalance": "实现目标所需的账户余额"
+        "remainingaccountbalance": "实现目标所需的账户余额",
+        "transactioncategory": "交易类别",
+        "amount": "数额"
     },
     "goals": {
         "page": {

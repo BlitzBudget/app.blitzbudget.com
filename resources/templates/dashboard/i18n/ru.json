@@ -639,7 +639,9 @@
         "deletecategory": "Категория удаления",
         "remainingcategorytomaxbudget": "Остаток средств по категориям до максимального уровня бюджета",
         "deleteaccount": "Удалить учетную запись",
-        "remainingaccountbalance": "Остаток средств на счете для достижения цели"
+        "remainingaccountbalance": "Остаток средств на счете для достижения цели",
+        "transactioncategory": "Категория сделки",
+        "amount": "Сумма"
     },
     "goals": {
         "page": {

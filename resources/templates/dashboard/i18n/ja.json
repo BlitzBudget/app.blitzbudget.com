@@ -639,7 +639,9 @@
         "deletecategory": "カテゴリの削除",
         "remainingcategorytomaxbudget": "予算を最大にするための残りのカテゴリの残高",
         "deleteaccount": "アカウントの削除",
-        "remainingaccountbalance": "目標達成のための口座残高"
+        "remainingaccountbalance": "目標達成のための口座残高",
+        "transactioncategory": "トランザクションの種類",
+        "amount": "金額"
     },
     "goals": {
         "page": {

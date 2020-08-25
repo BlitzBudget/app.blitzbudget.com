@@ -743,7 +743,7 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
 }
 
 .input-group-text .material-icons {
-    cursor: pointer;
+    cursor: default;
 }
 
 .col-md-add-transactions {
