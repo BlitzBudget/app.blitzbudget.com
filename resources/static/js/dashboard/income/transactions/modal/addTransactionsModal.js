@@ -11,7 +11,7 @@
     $('body').on('click', '#typeSelection .dropdown-item', function (e) {
         let dropdownValue = this.lastElementChild.value;
         let typeSelection = document.getElementById('typeSelection');
-        typeSelection.firstElementChild.textContent = window.categoryMap[dropdownValue].name;
+        typeSelection.firstElementChild.textContent = dropdownValue;
         typeSelection.setAttribute('data-chosen', dropdownValue);
     });
 
