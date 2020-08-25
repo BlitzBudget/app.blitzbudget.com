@@ -151,20 +151,6 @@
             }
         });
 
-        // show the login modal
-        $('#GSCCModal').on('show.bs.modal', function () {
-            // Load Expense category and income category
-            let expenseOptGroup = document.getElementById('expenseSelection');
-            let incomeOptgroup = document.getElementById('incomeSelection');
-            // If the Category items are not populate then populate them
-            if (!expenseOptGroup.firstElementChild) {
-                expenseDropdownItems = cloneElementAndAppend(expenseOptGroup, expenseDropdownItems);
-            }
-            if (!incomeOptgroup.firstElementChild) {
-                incomeDropdownItems = cloneElementAndAppend(incomeOptgroup, incomeDropdownItems);
-            }
-        });
-
         // Change the focus to amount after the modal is shown
         $('#GSCCModal').on('shown.bs.modal', function () {
             // Change focus
@@ -392,7 +378,7 @@
             er_a.populateBankInfo(result.BankAccount);
 
             fetchJSONForCategories(result.Category);
-            //tr.loadCategoriesForTransaction('expenseSelection', 'incomeSelection');
+
             /*initiate the autocomplete function on the "chosenCountryInp" element, and pass along the countries array as possible autocomplete values:*/
             tr_a.autocomplete(document.getElementById("newCategory"), window.defaultCategories, "expenseSelection");
 
@@ -1144,24 +1130,6 @@ tr = {
         }
 
     },
-
-    // Load Categories for transaction
-    loadCategoriesForTransaction(expenseId, incomeId) {
-
-        // Load Expense category and income category
-        let expenseSelectionDiv = document.getElementById(expenseId);
-        while (expenseSelectionDiv.firstChild) {
-            expenseSelectionDiv.removeChild(expenseSelectionDiv.lastChild);
-        }
-        let incomeSelectionDiv = document.getElementById(incomeId);
-        while (incomeSelectionDiv.firstChild) {
-            incomeSelectionDiv.removeChild(incomeSelectionDiv.lastChild);
-        }
-        expenseDropdownItems = cloneElementAndAppend(expenseSelectionDiv, expenseDropdownItems);
-        incomeDropdownItems = cloneElementAndAppend(incomeSelectionDiv, incomeDropdownItems);
-
-    },
-
 
     /*
      * Sort Transactions by Account
