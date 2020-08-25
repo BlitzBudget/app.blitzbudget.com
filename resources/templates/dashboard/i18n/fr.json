@@ -624,7 +624,8 @@
         "searcharticle": "Recherche d'articles...",
         "tags": "Tags",
         "nodescription": "No Description",
-        "noamount": "Pas de montant"
+        "noamount": "Pas de montant",
+        "newCategory": "Ajouter une nouvelle catégorie"
     },
     "tooltip": {
         "logout": "Déconnexion",

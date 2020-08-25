@@ -624,7 +624,8 @@
         "searcharticle": "搜索文章...",
         "tags": "标签",
         "nodescription": "没有说明",
-        "noamount": "无金额"
+        "noamount": "无金额",
+        "newCategory": "增加一个新类别"
     },
     "tooltip": {
         "logout": "注销",

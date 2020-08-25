@@ -624,7 +624,8 @@
         "searcharticle": "Поиск статей...",
         "tags": "Теги",
         "nodescription": "Нет Описание",
-        "noamount": "Нет Сумма"
+        "noamount": "Нет Сумма",
+        "newCategory": "Добавить новую категорию"
     },
     "tooltip": {
         "logout": "выйти из системы",

@@ -624,7 +624,8 @@
         "searcharticle": "Buscar artículos...",
         "tags": "Etiquetas",
         "nodescription": "No Descripción",
-        "noamount": "No Cantidad"
+        "noamount": "No Cantidad",
+        "newCategory": "Añadir una nueva categoría"
     },
     "tooltip": {
         "logout": "Cerrar sesión",

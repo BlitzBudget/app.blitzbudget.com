@@ -624,7 +624,8 @@
         "searcharticle": "記事の検索...",
         "tags": "タグ",
         "nodescription": "説明はありません。",
-        "noamount": "金額はありません。"
+        "noamount": "金額はありません。",
+        "newCategory": "新しいカテゴリを追加する"
     },
     "tooltip": {
         "logout": "ログアウト",

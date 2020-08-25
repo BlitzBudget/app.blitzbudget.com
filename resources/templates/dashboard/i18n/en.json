@@ -624,7 +624,8 @@
         "searcharticle": "Search for articles...",
         "tags": "Tags",
         "nodescription": "No Description",
-        "noamount": "No Amount"
+        "noamount": "No Amount",
+        "newCategory": "Add a new category"
     },
     "tooltip": {
         "logout": "Logout",

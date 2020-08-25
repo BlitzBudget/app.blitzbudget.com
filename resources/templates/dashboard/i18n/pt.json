@@ -624,7 +624,8 @@
         "searcharticle": "Procura de artigos...",
         "tags": "Etiquetas",
         "nodescription": "Sem Descrição",
-        "noamount": "Sem montante"
+        "noamount": "Sem montante",
+        "newCategory": "Adicionar uma nova categoria"
     },
     "tooltip": {
         "logout": "Sair",
