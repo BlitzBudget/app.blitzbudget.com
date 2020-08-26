@@ -9,6 +9,16 @@
         typeSelection.setAttribute('data-chosen', dropdownValue);
     });
 
+    // Input Focus In
+    $('body').on('focusin', '#newCategory', function (e) {
+        document.getElementById('newCategorySelection').getElementsByClassName('dropdown-toggle')[0].click();
+    });
+
+    // Input Focus Out
+    $('body').on('focusout', '#newCategory', function (e) {
+        document.getElementById('newCategorySelection').getElementsByClassName('dropdown-toggle')[0].click();
+    });
+
 }(jQuery));
 
 tr_a = {
