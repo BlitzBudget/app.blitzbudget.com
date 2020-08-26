@@ -100,7 +100,6 @@
                 "/dashboard/income/transactions/modal/categoryModal.js",
                 "/dashboard/income/transactions/modal/transactionsModal.js",
                 "/dashboard/income/transactions/modal/recurringTransactionsModal.js",
-                "/dashboard/income/transactions/modal/addTransactionsModal.js",
                 "/plugins/dragster.js",
                 "/dashboard/income/transactions/tagsinput.js",
                 "/dashboard/income/transactions.js",

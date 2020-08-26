@@ -492,35 +492,24 @@
                                     </div>
                                     <div class="form-group bmd-form-group">
                                         <div class="input-group">
-                                            <div class="input-group-prepend" data-toggle="tooltip" title="Transaction category" data-title-i18n="tooltip.transactioncategory">
+                                            <div class="input-group-prepend" data-toggle="tooltip" title="Transaction category" data-title-i18n="tooltip.transactionbalance">
                                                 <div class="input-group-text"><i class="material-icons noselect">category</i></div>
                                             </div>
-                                            <div id="newCategorySelection" class="btn-group btnGroup-1 my-auto">
-                                                <input id="newCategory" type="text" class="form-control mr-4" data-placeholder-i18n="placeholder.newCategory" placeholder="Add a new category">
+                                            <div id="categoryOptions" class="btn-group btnGroup-1">
+                                                <div class="w-md-15 w-8" disabled="">Bills & Fees</div>
                                                 <div type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </div>
                                                 <div class="dropdown-menu">
                                                     <!-- Drop down dynamic load -->
                                                     <div class="input-group">
+                                                        <span class="m-1 tripleNineColor"><i class="material-icons noselect">search</i></span>
+                                                        <input id="chosenCountryInp" class="form-control w-75 mr-2" type="text" data-placeholder-i18n="placeholder.search" placeholder="Search...">
                                                         <h6 class="dropdown-header" data-i18n="transactions.modal.add.expense">Expense</h6>
                                                         <div id="expenseSelection" class="w-100"></div>
                                                         <div class="dropdown-divider"></div>
                                                         <h6 class="dropdown-header" data-i18n="transactions.modal.add.income">Income</h6>
                                                         <div id="incomeSelection" class="w-100"></div>
-                                                    </div>
-                                                </div>
-                                                <div id="typeSelection" class="btn-group btnGroup-1" data-target="Expense">
-                                                    <div class="w-md-15 w-8" disabled="">Expense</div>
-                                                    <div type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </div>
-                                                    <div class="dropdown-menu">
-                                                        <!-- Drop down dynamic load -->
-                                                        <div class="input-group">
-                                                            <div class="dropdown-item w-100">Expense<input type="hidden" value="Expense"></div>
-                                                            <div class="dropdown-item w-100">Income<input type="hidden" value="Income"></div>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
