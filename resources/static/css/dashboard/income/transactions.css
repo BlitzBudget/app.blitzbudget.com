@@ -616,8 +616,12 @@ a.accTitleAnchor:not([href]):not([tabindex]):focus {
     width: 1%;
 }
 
-#categoryOptions .dropdown-toggle::after,
 #newCategorySelection .dropdown-toggle::after {
+    color: #fff;
+}
+
+#categoryOptions .dropdown-toggle::after,
+#newCategorySelection #typeSelection .dropdown-toggle::after {
     color: #333;
 }
 
