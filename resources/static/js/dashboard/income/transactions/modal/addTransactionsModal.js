@@ -10,13 +10,18 @@
     });
 
     // Input Focus In
-    $('body').on('focusin', '#newCategory', function (e) {
+    $('body').on('focusin focusout', '#newCategory', function (e) {
         document.getElementById('newCategorySelection').getElementsByClassName('dropdown-toggle')[0].click();
     });
 
-    // Input Focus Out
-    $('body').on('focusout', '#newCategory', function (e) {
-        document.getElementById('newCategorySelection').getElementsByClassName('dropdown-toggle')[0].click();
+    /*execute a function when someone clicks on the item value (DIV element):*/
+    $('body').on('click', '#newCategorySelection .dropdown-item', function (e) {
+        /*insert the value for the autocomplete text field:*/
+        let dropdownValue = this.lastElementChild.value;
+        document.getElementById('newCategory').value = dropdownValue;
+        /*close the list of autocompleted values,
+        (or any other open lists of autocompleted values:*/
+        closeAllLists();
     });
 
 }(jQuery));
@@ -123,14 +128,6 @@ tr_a = {
                 }
                 /*insert a input field that will hold the current array item's value:*/
                 b.innerHTML += "<input type='hidden' value='" + arr[i].name + "'>";
-                /*execute a function when someone clicks on the item value (DIV element):*/
-                b.addEventListener("click", function (e) {
-                    /*insert the value for the autocomplete text field:*/
-                    if (isNotEmpty(inp)) inp.value = this.getElementsByTagName("input")[0].value;
-                    /*close the list of autocompleted values,
-                    (or any other open lists of autocompleted values:*/
-                    closeAllLists();
-                });
                 a.appendChild(b);
                 /* Populated the data flag */
                 populatedAtleastOnce = true;
