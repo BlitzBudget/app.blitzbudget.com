@@ -319,7 +319,7 @@ window.currencyNameToSymbol = {
     },
         {
             currency: 'Jersey pound',
-            symbol: '‎JEP£'
+            symbol: 'JEP£'
     },
         {
             currency: 'Jordanian Dinar',
