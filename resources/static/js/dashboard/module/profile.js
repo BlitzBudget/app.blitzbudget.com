@@ -319,6 +319,12 @@
         let values = {};
         values.previousPassword = oldPassword;
         values.newPassword = newPassword;
+        /*
+         * GET Access Token before changing password
+         */
+        if (isEmpty(window.accessToken)) {
+            window.accessToken = localStorage.getItem("accessToken");
+        }
         values.accessToken = window.accessToken;
 
         // Ajax Requests on Error
