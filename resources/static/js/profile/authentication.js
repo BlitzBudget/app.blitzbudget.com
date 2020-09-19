@@ -160,7 +160,7 @@
 
         // Authentication Details
         let values = {};
-        values.username = email;
+        values.username = email.toLowerCase();
         values.password = password;
         values.firstname = nameObj.firstName;
         values.lastname = nameObj.familyName;
@@ -224,7 +224,7 @@
 
         // Authentication Details
         let values = {};
-        values.username = email;
+        values.username = email.toLowerCase();
         values.password = password;
         values.checkPassword = false;
 
