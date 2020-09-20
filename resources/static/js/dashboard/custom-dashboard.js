@@ -1016,7 +1016,11 @@ function fetchJSONForCategories(data) {
     // Every other categories added to categoryMap
     for (let [key, value] of Object.entries(dataNameMap)) {
         if (isEmpty(dataNameMap[value.categoryId]) && isEmpty(dataNameMap[value['category_name']])) {
-            window.categoryMap[value.categoryId] = value;
+            let val = {};
+            val.name = value['category_name'];
+            val.id = value.categoryId;
+            val.categoryTotal = value['category_total'];
+            window.categoryMap[value.categoryId] = val;
         }
     }
 }
