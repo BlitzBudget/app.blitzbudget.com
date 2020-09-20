@@ -1018,6 +1018,7 @@ function fetchJSONForCategories(data) {
         if (isEmpty(window.categoryMap[value.categoryId]) && isEmpty(window.categoryMap[value['category_name']])) {
             let val = {};
             val.name = value['category_name'];
+            val.type = value['category_type'];
             val.id = value.categoryId;
             val.categoryTotal = value['category_total'];
             window.categoryMap[value.categoryId] = val;
