@@ -231,7 +231,7 @@
         cardTitle.id = 'categoryName-' + userBudget.budgetId;
         cardTitle.classList = 'col-lg-6 text-left font-weight-bold';
         let categoryname = isEmpty(userBudget.categoryName) ? (isEmpty(window.categoryMap[userBudget.category]) ? userBudget.category : window.categoryMap[userBudget.category].name) : userBudget.categoryName
-        cardTitle.textContent = isNotEmpty(window.translatedCategoryName) ? window.translatedCategoryName[categoryname] : categoryname;
+        cardTitle.textContent = (isNotEmpty(window.translatedCategoryName) && isNotEmpty(window.translatedCategoryName[categoryname])) ? window.translatedCategoryName[categoryname] : categoryname;
         cardRowRemaining.appendChild(cardTitle);
 
 
