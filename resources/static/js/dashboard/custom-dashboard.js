@@ -1015,7 +1015,7 @@ function fetchJSONForCategories(data) {
 
     // Every other categories added to categoryMap
     for (let [key, value] of Object.entries(dataNameMap)) {
-        if (isEmpty(dataNameMap[value.categoryId]) && isEmpty(dataNameMap[value['category_name']])) {
+        if (isEmpty(window.categoryMap[value.categoryId]) && isEmpty(window.categoryMap[value['category_name']])) {
             let val = {};
             val.name = value['category_name'];
             val.id = value.categoryId;
