@@ -1092,9 +1092,9 @@
                 let categoryObj = categoryMap[key];
 
                 // If a category that is not contained in the budget cache is found then assign and leave for loop
-                if (isEmpty(categoryObj) ||
-                    isEmpty(categoryObj.id) ||
-                    isEmpty(allBudgetedCategories[categoryObj.id])) {
+                if ((isEmpty(categoryObj) ||
+                        isEmpty(categoryObj.id) ||
+                        isEmpty(allBudgetedCategories[categoryObj.id])) && isEqual(categoryObj.type, CUSTOM_DASHBOARD_CONSTANTS.expenseCategory)) {
                     categoryItem = categoryObj;
                     break;
                 }
