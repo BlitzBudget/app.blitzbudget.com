@@ -355,7 +355,13 @@
 
     // Update the budget visualization module
     function updateBudgetVisualization() {
-        let categoryKeys = Object.keys(window.categoryMap);
+        let categoryLength = 0;
+        for (let key in window.categoryMap) {
+            let values = window.categoryMap[key];
+            if (isEqual(values.type, CUSTOM_DASHBOARD_CONSTANTS.expenseCategory)) {
+                categoryLength++;
+            }
+        }
 
         let userBudgetCacheKeys = Object.keys(userBudgetCache);
 
@@ -370,7 +376,7 @@
             // If empty then update the chart with the 0
             toBeBudgetedDiv.textContent = 0;
 
-            let totalCategoriesAvailable = categoryKeys.length;
+            let totalCategoriesAvailable = categoryLength;
             let toBeBudgetedAvailable = totalCategoriesAvailable - userBudgetCacheKeys.length;
 
             // assign the to be budgeted
@@ -390,7 +396,7 @@
             detachChart = true;
 
             // assign the to be budgeted for budget visualization chart
-            toBeBudgetedDiv.textContent = categoryKeys.length;
+            toBeBudgetedDiv.textContent = categoryLength;
 
             // Create a document fragment to append
             let emptyBudgetDocumentFragment = document.createDocumentFragment();
