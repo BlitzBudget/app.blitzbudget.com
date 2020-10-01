@@ -252,6 +252,15 @@
                 // enable button after successful submission
                 addTransactionsButton.removeAttribute("disabled");
                 return;
+            } else {
+                // Category Map objects with key and value
+                for (const [key, value] of Object.entries(window.categoryMap)) {
+                    let categoryItem = window.categoryMap[key];
+                    // Category Item name is equal to data chosen name
+                    if (isEqual(categoryItem.name, categoryOptions)) {
+                        chosenCategory = categoryItem;
+                    }
+                }
             }
             values['categoryType'] = chosenCategory.type;
             values['category'] = chosenCategory.name;
