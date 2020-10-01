@@ -247,12 +247,9 @@
         let values = {};
         if (notIncludesStr(categoryOptions, 'Category#')) {
             let chosenCategory = window.categoryMap[categoryOptions];
+
+            // If Chosen Category is still empty then for loop
             if (isEmpty(chosenCategory)) {
-                fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.categoryerror, 2000);
-                // enable button after successful submission
-                addTransactionsButton.removeAttribute("disabled");
-                return;
-            } else {
                 // Category Map objects with key and value
                 for (const [key, value] of Object.entries(window.categoryMap)) {
                     let categoryItem = window.categoryMap[key];
@@ -262,6 +259,15 @@
                     }
                 }
             }
+
+            // If Chosen Category is still empty
+            if (isEmpty(chosenCategory)) {
+                fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.categoryerror, 2000);
+                // enable button after successful submission
+                addTransactionsButton.removeAttribute("disabled");
+                return;
+            }
+
             values['categoryType'] = chosenCategory.type;
             values['category'] = chosenCategory.name;
             values['categoryName'] = chosenCategory.name;
@@ -272,7 +278,7 @@
             values['categoryName'] = chosenCategory.name;
         }
 
-        if (window.categoryMap[categoryOptions].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+        if (values['categoryType'] == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
             // Update as negative amount
             amount *= -1;
         }
