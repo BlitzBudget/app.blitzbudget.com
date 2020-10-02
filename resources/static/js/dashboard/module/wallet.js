@@ -1035,19 +1035,6 @@
         return resetPassFrag;
     }
 
-    // Change Input to Text
-    $(document).on('mouseover', ".changeDpt", function () {
-        let firstChild = this.parentElement.firstChild;
-        firstChild.setAttribute('type', 'text');
-    });
-
-    // Change it back to password
-    $(document).on('mouseout', ".changeDpt", function () {
-        let firstChild = this.parentElement.firstChild;
-        firstChild.setAttribute('type', 'password');
-    });
-
-
     /**
      *
      * Patch Wallets

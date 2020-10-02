@@ -449,18 +449,6 @@
         document.getElementById('oldPasswordCP').focus();
     });
 
-    // Change Input to Text
-    $(document).on('mouseover', ".changeDpt", function () {
-        let firstChild = this.parentElement.firstElementChild;
-        firstChild.setAttribute('type', 'text');
-    });
-
-    // Change it back to password
-    $(document).on('mouseout', ".changeDpt", function () {
-        let firstChild = this.parentElement.firstElementChild;
-        firstChild.setAttribute('type', 'password');
-    });
-
     // Reset Account
     $('body').on('click', '#resetBBAccount', function (e) {
         Swal.fire({

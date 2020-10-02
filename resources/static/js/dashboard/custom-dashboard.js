@@ -674,6 +674,18 @@ window.onload = function () {
             }
         });
 
+        // Change Input to Text
+        $(document).on('mouseover', ".changeDpt", function () {
+            let firstChild = this.parentElement.firstElementChild;
+            firstChild.setAttribute('type', 'text');
+        });
+
+        // Change it back to password
+        $(document).on('mouseout', ".changeDpt", function () {
+            let firstChild = this.parentElement.firstElementChild;
+            firstChild.setAttribute('type', 'password');
+        });
+
     }(jQuery));
 }
 
