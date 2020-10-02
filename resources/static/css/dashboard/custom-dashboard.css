@@ -1928,6 +1928,10 @@ textarea:disabled {
     color: #a7a7a7;
 }
 
+.pl-2rem {
+    padding-left: 2rem;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;
