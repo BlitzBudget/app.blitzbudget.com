@@ -1917,6 +1917,17 @@ textarea:disabled {
     margin: 0 .3125rem;
 }
 
+.login-password-visibility {
+    float: right;
+    margin-right: 0.2rem;
+    margin-top: -1.75rem;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #a7a7a7;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;
