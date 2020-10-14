@@ -142,10 +142,10 @@
         },
         {
             "type": "js",
-            "name": "voice-code.js",
+            "name": "alexa.js",
             "files": [
                 "/core/jquery.min.js",
-                "/dashboard/alexa/voice-code.js"
+                "/alexa/voice-code.js"
             ]
         }
     ]
