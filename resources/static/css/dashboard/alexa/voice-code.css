@@ -136,3 +136,7 @@ a.forgot-password:hover {
 .errorlabel {
     color: #E92B2B;
 }
+
+.fielderror {
+    font-size: 0.9rem;
+}

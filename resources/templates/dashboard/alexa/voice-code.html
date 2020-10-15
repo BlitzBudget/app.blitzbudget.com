@@ -36,9 +36,13 @@
                     <div class="voice-code-head">
                         <b>Voice code</b>
                         <div class="voice-code-service-name">to access <span>Alexa</span></div>
-                        <div class="voice-code-input my-4">
+                        <div id="voice-code-box" class="voice-code-input my-4">
                             <input id="voice-code" class="textbox" placeholder="Four Digit Number" autocapitalize="off" autocomplete="on" autocorrect="off" tabindex="1" type="password" maxlength="4" pattern="\d{4}" required>
                             <div id="errorFourDigit" class="fielderror errorlabel d-none">Please enter a valid four digit number</div>
+                        </div>
+                        <div id="email-box" class="voice-code-input my-4">
+                            <input id="email" class="textbox" placeholder="Four Digit Number" autocapitalize="off" autocomplete="on" autocorrect="off" tabindex="1" type="email" required>
+                            <div id="error-email" class="fielderror errorlabel d-none">Please enter your email address</div>
                         </div>
                         <div class="text-center">
                             <button class="btn btn-info mx-auto mb-4 w-100" tabindex="2" id="nextButton">Next</button>
