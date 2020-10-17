@@ -40,15 +40,27 @@
                             <input id="voice-code" class="textbox" placeholder="Four Digit Number" autocapitalize="off" autocomplete="on" autocorrect="off" tabindex="1" type="password" maxlength="4" pattern="\d{4}" required>
                             <div id="errorFourDigit" class="fielderror errorlabel d-none">Please enter a valid four digit number</div>
                         </div>
-                        <div id="email-box" class="voice-code-input my-4">
-                            <input id="email" class="textbox" placeholder="Four Digit Number" autocapitalize="off" autocomplete="on" autocorrect="off" tabindex="1" type="email" required>
-                            <div id="error-email" class="fielderror errorlabel d-none">Please enter your email address</div>
+                        <div id="email-box" class="voice-code-input my-4 d-none">
+                            <input id="email" class="textbox" placeholder="Email Address" autocapitalize="off" autocomplete="on" autocorrect="off" tabindex="1" type="email" required>
+                            <div id="error-email" class="fielderror errorlabel d-none">Please enter a valid email address</div>
+                        </div>
+                        <div id="password-box" class="voice-code-input my-4 d-none">
+                            <div class="email-user">
+                                <div id="email-address-display" class="username"></div>
+                                <span id="change-email" class="not-you text-info">Change</span>
+                            </div>
+                            <input id="password" class="textbox" placeholder="Enter Password" autocapitalize="off" autocomplete="on" autocorrect="off" tabindex="1" type="email" required>
+                            <span class="material-icons show_hide_password">visibility_off</span>
+                            <div id="error-email" class="fielderror errorlabel d-none">Please enter your password</div>
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-info mx-auto mb-4 w-100" tabindex="2" id="nextButton">Next</button>
+                            <button class="btn btn-info mx-auto mb-4 w-100" tabindex="2" id="nextButton" disabled>Next</button>
+                            <button class="btn btn-info mx-auto mb-4 w-100 d-none" tabindex="2" id="continueButton">Continue</button>
                         </div>
                         <div class="forgot-password">
-                            <a class="forgot-password" href="https://auth.blitzbudget.com/oauth2/authorize?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35">Opt out of voice code</a>
+                            <a id="opt-out-voice-code" class="forgot-password" href="https://auth.blitzbudget.com/oauth2/authorize?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35">Opt out of voice code</a>
+                            <a href="javascript:void(0);" class="forgot-password d-none" id="change-voice-code">Change my voice code</a>
+                            <a href="https://auth.blitzbudget.com/forgotPassword?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35" class="forgot-password d-none" id="forgot-password">Forgot Password?</a>
                         </div>
                     </div>
                 </div>

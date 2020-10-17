@@ -1,24 +1,88 @@
 "use strict";
 (function scopeWrapper($) {
 
-    document.getElementById("voice-code").addEventListener('keyup', function () {
+    // Voice Code Element on focus
+    let voiceCodeEl = document.getElementById('voice-code');
+    voiceCodeEl.focus();
+
+    /*
+     * Voice Code
+     */
+    voiceCodeEl.addEventListener('keyup', function () {
         let val = this.value;
         if (isNaN(val)) {
             this.classList.add('errorborder');
             document.getElementById('errorFourDigit').classList.remove('d-none');
             document.getElementById('nextButton').setAttribute('disabled', 'disabled');
-        } else {
+        } else if (val.length == 4) {
+            // If the value's length is 4
             this.classList.remove('errorborder');
             document.getElementById('errorFourDigit').classList.add('d-none');
             document.getElementById('nextButton').removeAttribute('disabled');
         }
     });
 
+    /*
+     * Next Button
+     */
     document.getElementById('nextButton').addEventListener('click', function () {
-        let voiceCode = document.getElementById('voice-code-box');
-        voiceCode.classList.add('d-none');
-        let emailBox = document.getElementById('email-box');
-        emailBox.classList.remove('d-none');
+        document.getElementById('voice-code-box').classList.add('d-none');
+        // Email Focus Code
+        document.getElementById('email-box').classList.remove('d-none');
+        document.getElementById('email').focus();
+
+        // Next button and continur button
+        document.getElementById('nextButton').classList.add('d-none');
+        document.getElementById('continueButton').classList.remove('d-none');
+
+        // Forgot Password anchor tag displayed
+        document.getElementById('opt-out-voice-code').classList.add('d-none');
+        // Change Voice Code anchor tag displayed
+        document.getElementById('change-voice-code').classList.remove('d-none');
+        document.getElementById('forgot-password').classList.add('d-none');
     });
+
+    /*
+     * Change Voice Code
+     */
+    document.getElementById('change-voice-code').addEventListener('click', function () {
+
+        // Voice Code Focus
+        document.getElementById('voice-code-box').classList.remove('d-none');
+        document.getElementById('voice-code').focus();
+
+        document.getElementById('email-box').classList.add('d-none');
+
+        // Forgot Password anchor tag displayed
+        document.getElementById('opt-out-voice-code').classList.remove('d-none');
+        // Change Voice Code anchor tag displayed
+        document.getElementById('change-voice-code').classList.add('d-none');
+        document.getElementById('forgot-password').classList.add('d-none');
+
+        // Next button and continur button
+        document.getElementById('nextButton').classList.remove('d-none');
+        document.getElementById('continueButton').classList.add('d-none');
+    });
+
+    /*
+     * Continue Button
+     */
+    document.getElementById('continueButton').addEventListener('click', function () {
+        // Input Element display
+        let email = document.getElementById('email');
+        document.getElementById('email-address-display').textContent = email.value;
+
+        // Email and Password boxes
+        document.getElementById('email-box').classList.add('d-none');
+        document.getElementById('password-box').classList.remove('d-none');
+
+        // Opt Out voice code anchor tag displayed
+        document.getElementById('change-voice-code').classList.add('d-none');
+        document.getElementById('opt-out-voice-code').classList.add('d-none');
+        document.getElementById('forgot-password').classList.remove('d-none');
+
+    });
+
+    document.getElementById('change-email').addEventListener('click', function () {});
 
 }(jQuery));

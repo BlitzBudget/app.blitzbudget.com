@@ -140,3 +140,34 @@ a.forgot-password:hover {
 .fielderror {
     font-size: 0.9rem;
 }
+
+.email-user {
+    display: inline-block;
+    margin-bottom: 2rem;
+    line-height: 1.2rem;
+    font-size: 1rem;
+}
+
+#email-address-display {
+    max-width: 100%;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+    float: left;
+}
+
+.not-you {
+    cursor: pointer;
+}
+
+.show_hide_password {
+    font-size: 1.5rem;
+    color: #a7a7a7;
+    position: relative;
+    top: -35px;
+    right: 13px;
+    float: right;
+    cursor: pointer;
+    height: 20px;
+}
