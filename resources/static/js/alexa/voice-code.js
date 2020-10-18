@@ -29,7 +29,6 @@
         document.getElementById('voice-code-box').classList.add('d-none');
         // Email Focus Code
         document.getElementById('email-box').classList.remove('d-none');
-        document.getElementById('email').focus();
 
         // Next button and continur button
         document.getElementById('nextButton').classList.add('d-none');
@@ -40,6 +39,8 @@
         // Change Voice Code anchor tag displayed
         document.getElementById('change-voice-code').classList.remove('d-none');
         document.getElementById('forgot-password').classList.add('d-none');
+
+        document.getElementById('email').focus();
     });
 
     /*
@@ -49,7 +50,6 @@
 
         // Voice Code Focus
         document.getElementById('voice-code-box').classList.remove('d-none');
-        document.getElementById('voice-code').focus();
 
         document.getElementById('email-box').classList.add('d-none');
 
@@ -62,6 +62,8 @@
         // Next button and continur button
         document.getElementById('nextButton').classList.remove('d-none');
         document.getElementById('continueButton').classList.add('d-none');
+
+        document.getElementById('voice-code').focus();
     });
 
     /*
@@ -81,8 +83,40 @@
         document.getElementById('opt-out-voice-code').classList.add('d-none');
         document.getElementById('forgot-password').classList.remove('d-none');
 
+        document.getElementById('password').focus();
     });
 
-    document.getElementById('change-email').addEventListener('click', function () {});
+    /*
+     * Change Email
+     */
+    document.getElementById('change-email').addEventListener('click', function () {
+        // Email and Password boxes
+        document.getElementById('email-box').classList.remove('d-none');
+        document.getElementById('password-box').classList.add('d-none');
+
+        // Opt Out voice code anchor tag displayed
+        document.getElementById('change-voice-code').classList.remove('d-none');
+        document.getElementById('opt-out-voice-code').classList.add('d-none');
+        document.getElementById('forgot-password').classList.add('d-none');
+
+        document.getElementById('email').focus();
+    });
+
+    /*
+     * Show Hide Password
+     */
+    document.getElementById('show_hide_password').addEventListener('click', function () {
+        let passwordField = document.getElementById('password');
+        if (isEqual(passwordField.type, 'password')) {
+            passwordField.type = 'text';
+            this.textContent = 'visibility';
+        } else {
+            passwordField.type = 'password';
+            this.textContent = 'visibility_off';
+        }
+
+        // Password Field
+        passwordField.focus();
+    });
 
 }(jQuery));

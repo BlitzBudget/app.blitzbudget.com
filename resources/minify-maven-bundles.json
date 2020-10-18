@@ -145,6 +145,8 @@
             "name": "alexa.js",
             "files": [
                 "/core/jquery.min.js",
+                "/plugins/sweetalert2.all.min.js",
+                "/plugins/libraries.js",
                 "/alexa/voice-code.js"
             ]
         }
