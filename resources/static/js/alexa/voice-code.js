@@ -33,6 +33,7 @@
         // Next button and continur button
         document.getElementById('nextButton').classList.add('d-none');
         document.getElementById('continueButton').classList.remove('d-none');
+        document.getElementById('saveButton').classList.add('d-none');
 
         // Forgot Password anchor tag displayed
         document.getElementById('opt-out-voice-code').classList.add('d-none');
@@ -62,6 +63,7 @@
         // Next button and continur button
         document.getElementById('nextButton').classList.remove('d-none');
         document.getElementById('continueButton').classList.add('d-none');
+        document.getElementById('saveButton').classList.add('d-none');
 
         document.getElementById('voice-code').focus();
     });
@@ -83,6 +85,11 @@
         document.getElementById('opt-out-voice-code').classList.add('d-none');
         document.getElementById('forgot-password').classList.remove('d-none');
 
+        // Next button and continur button
+        document.getElementById('nextButton').classList.add('d-none');
+        document.getElementById('continueButton').classList.add('d-none');
+        document.getElementById('saveButton').classList.remove('d-none');
+
         document.getElementById('password').focus();
     });
 
@@ -98,6 +105,11 @@
         document.getElementById('change-voice-code').classList.remove('d-none');
         document.getElementById('opt-out-voice-code').classList.add('d-none');
         document.getElementById('forgot-password').classList.add('d-none');
+
+        // Next button and continur button
+        document.getElementById('nextButton').classList.add('d-none');
+        document.getElementById('continueButton').classList.remove('d-none');
+        document.getElementById('saveButton').classList.add('d-none');
 
         document.getElementById('email').focus();
     });
@@ -117,6 +129,13 @@
 
         // Password Field
         passwordField.focus();
+    });
+
+    /*
+     * Save Voice Code
+     */
+    document.getElementById('saveButton').addEventListener('click', function () {
+
     });
 
 }(jQuery));
