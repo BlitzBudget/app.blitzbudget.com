@@ -1,25 +1,51 @@
 "use strict";
 (function scopeWrapper($) {
 
+    let enterKey = "Enter";
+    let emailRegex = /(.+)@(.+){2,}\.(.+){2,}/;
     // Voice Code Element on focus
     let voiceCodeEl = document.getElementById('voice-code');
+    // Email Element on focus
+    let emailEl = document.getElementById('email');
     voiceCodeEl.focus();
 
     /*
      * Voice Code
      */
-    voiceCodeEl.addEventListener('keyup', function () {
+    voiceCodeEl.addEventListener('keyup', function (e) {
         let val = this.value;
+        let keyPressed = e.key;
         if (isNaN(val)) {
             this.classList.add('errorborder');
             document.getElementById('errorFourDigit').classList.remove('d-none');
             document.getElementById('nextButton').setAttribute('disabled', 'disabled');
         } else if (val.length == 4) {
+            let nextButton = document.getElementById('nextButton');
             // If the value's length is 4
             this.classList.remove('errorborder');
             document.getElementById('errorFourDigit').classList.add('d-none');
-            document.getElementById('nextButton').removeAttribute('disabled');
+            nextButton.removeAttribute('disabled');
+
+            if (isEqual(keyPressed, enterKey)) {
+                nextButton.click();
+            }
         }
+    });
+
+    /*
+     * Email Input
+     */
+    emailEl.addEventListener('keyup', function (e) {
+        let val = this.value;
+        let continueButton = document.getElementById('continueButton');
+
+        // Test Email Regex
+        if (emailRegex.test(val)) {
+            continueButton.removeAttribute('disabled');
+        } else {
+            continueButton.setAttribute('disabled', 'disabled');
+        }
+
     });
 
     /*
