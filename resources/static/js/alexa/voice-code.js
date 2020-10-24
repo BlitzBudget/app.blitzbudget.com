@@ -39,15 +39,24 @@
      */
     emailEl.addEventListener('keyup', function (e) {
         let val = this.value;
+        let keyPressed = e.key;
         let errorEmail = document.getElementById('error-email');
 
         // Test Email Regex
         if (emailRegex.test(val)) {
             continueButtonEl.removeAttribute('disabled');
-            errorEmail.classList.remove('d-none');
+            errorEmail.classList.add('d-none');
+
+            if (isEqual(keyPressed, enterKey)) {
+                continueButtonEl.click();
+            }
+
         } else {
             continueButtonEl.setAttribute('disabled', 'disabled');
-            errorEmail.classList.add('d-none');
+
+            if (isEqual(keyPressed, enterKey)) {
+                errorEmail.classList.remove('d-none');
+            }
         }
     });
 
@@ -56,6 +65,17 @@
      */
     document.getElementById('password').addEventListener('keyup', function (e) {
         let keyPressed = e.key;
+        let errorPassword = document.getElementById('error-password-length');
+        let saveButton = document.getElementById('saveButton');
+
+        if (this.value.length >= 8) {
+            errorPassword.classList.add('d-none');
+            saveButton.removeAttribute('disabled');
+        } else {
+            errorPassword.classList.remove('d-none');
+            saveButton.setAttribute('disabled', 'disabled');
+        }
+
         if (isEqual(keyPressed, enterKey)) {
             saveButtonEl.click();
         }
