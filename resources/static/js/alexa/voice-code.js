@@ -194,6 +194,38 @@
      */
     saveButtonEl.addEventListener('click', function () {
 
+        // Post a new budget to the user budget module and change to auto generated as false.
+        var values = {};
+        values['voiceCode'] = document.getElementById('voice-code').value;
+        values['username'] = document.getElementById('email').value;
+        values['password'] = document.getElementById('password').value;
+
+        // Ajax Requests on Error
+        let ajaxData = {};
+        ajaxData.isAjaxReq = true;
+        ajaxData.type = "POST";
+        ajaxData.url = "https://api.blitzbudget.com/alexa/voice-code";
+        ajaxData.dataType = "json";
+        ajaxData.contentType = "application/json;charset=UTF-8";
+        ajaxData.data = JSON.stringify(values);
+        ajaxData.onSuccess = function registerSuccess(result) {
+            // Redirect to blitzbudget login
+            window.location.href = "https://auth.blitzbudget.com/oauth2/authorize?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35";
+        }
+        ajaxData.onFailure = function (thrownError) {
+
+        }
+
+        $.ajax({
+            type: ajaxData.type,
+            url: ajaxData.url,
+            dataType: ajaxData.dataType,
+            contentType: ajaxData.contentType,
+            data: ajaxData.data,
+            success: ajaxData.onSuccess,
+            error: ajaxData.onFailure
+        });
+
     });
 
 }(jQuery));
