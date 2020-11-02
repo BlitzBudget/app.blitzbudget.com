@@ -147,6 +147,7 @@
                 "/core/jquery.min.js",
                 "/plugins/sweetalert2.all.min.js",
                 "/plugins/libraries.js",
+                "/dashboard/configuration/commonConfiguration.js",
                 "/alexa/voice-code.js"
             ]
         }

@@ -1,7 +1,9 @@
 "use strict";
 (function scopeWrapper($) {
 
-    let enterKey = "Enter";
+    const REDIRECT_TO_VOICE_CODE = "The voice code was empty. Please fill in the details!";
+    const GENERIC_ERROR = "There was an error trying to save a voice code";
+    const ENTER_KEY = "Enter";
     let emailRegex = /(.+)@(.+){2,}\.(.+){2,}/;
     // Voice Code Element on focus
     let voiceCodeEl = document.getElementById('voice-code');
@@ -10,7 +12,19 @@
     let saveButtonEl = document.getElementById('saveButton');
     let continueButtonEl = document.getElementById('continueButton');
     let nextButtonEl = document.getElementById('nextButton');
+    let voiceCodeBoxEl = document.getElementById('voice-code-box');
+    let emailBoxEl = document.getElementById('email-box');
+    let passwordBoxEl = document.getElementById('password-box');
+    let optOutOfVoiceCode = document.getElementById('opt-out-voice-code');
+    let changeVoiceCode = document.getElementById('change-voice-code');
+    let forgotPasswordAnchor = document.getElementById('forgot-password');
+    let materialSpinnerLoading = document.getElementById('material-spinner-loading');
     voiceCodeEl.focus();
+
+    /*
+     * Redirect To Voice Code
+     */
+    redirectToVoiceCodeText();
 
     /*
      * Voice Code
@@ -28,7 +42,7 @@
             document.getElementById('errorFourDigit').classList.add('d-none');
             nextButtonEl.removeAttribute('disabled');
 
-            if (isEqual(keyPressed, enterKey)) {
+            if (isEqual(keyPressed, ENTER_KEY)) {
                 nextButtonEl.click();
             }
         }
@@ -47,14 +61,14 @@
             continueButtonEl.removeAttribute('disabled');
             errorEmail.classList.add('d-none');
 
-            if (isEqual(keyPressed, enterKey)) {
+            if (isEqual(keyPressed, ENTER_KEY)) {
                 continueButtonEl.click();
             }
 
         } else {
             continueButtonEl.setAttribute('disabled', 'disabled');
 
-            if (isEqual(keyPressed, enterKey)) {
+            if (isEqual(keyPressed, ENTER_KEY)) {
                 errorEmail.classList.remove('d-none');
             }
         }
@@ -76,7 +90,7 @@
             saveButton.setAttribute('disabled', 'disabled');
         }
 
-        if (isEqual(keyPressed, enterKey)) {
+        if (isEqual(keyPressed, ENTER_KEY)) {
             saveButtonEl.click();
         }
     });
@@ -85,9 +99,9 @@
      * Next Button
      */
     nextButtonEl.addEventListener('click', function () {
-        document.getElementById('voice-code-box').classList.add('d-none');
+        voiceCodeBoxEl.classList.add('d-none');
         // Email Focus Code
-        document.getElementById('email-box').classList.remove('d-none');
+        emailBoxEl.classList.remove('d-none');
 
         // Next button and continur button
         this.classList.add('d-none');
@@ -95,9 +109,9 @@
         saveButtonEl.classList.add('d-none');
 
         // Forgot Password anchor tag displayed
-        document.getElementById('opt-out-voice-code').classList.add('d-none');
+        optOutOfVoiceCode.classList.add('d-none');
         // Change Voice Code anchor tag displayed
-        document.getElementById('change-voice-code').classList.remove('d-none');
+        changeVoiceCode.classList.remove('d-none');
         document.getElementById('forgot-password').classList.add('d-none');
 
         emailEl.focus();
@@ -106,17 +120,17 @@
     /*
      * Change Voice Code
      */
-    document.getElementById('change-voice-code').addEventListener('click', function () {
+    changeVoiceCode.addEventListener('click', function () {
 
         // Voice Code Focus
-        document.getElementById('voice-code-box').classList.remove('d-none');
+        voiceCodeBoxEl.classList.remove('d-none');
 
-        document.getElementById('email-box').classList.add('d-none');
+        emailBoxEl.classList.add('d-none');
 
         // Forgot Password anchor tag displayed
-        document.getElementById('opt-out-voice-code').classList.remove('d-none');
+        optOutOfVoiceCode.classList.remove('d-none');
         // Change Voice Code anchor tag displayed
-        document.getElementById('change-voice-code').classList.add('d-none');
+        changeVoiceCode.classList.add('d-none');
         document.getElementById('forgot-password').classList.add('d-none');
 
         // Next button and continur button
@@ -135,12 +149,12 @@
         document.getElementById('email-address-display').textContent = emailEl.value;
 
         // Email and Password boxes
-        document.getElementById('email-box').classList.add('d-none');
+        emailBoxEl.classList.add('d-none');
         document.getElementById('password-box').classList.remove('d-none');
 
         // Opt Out voice code anchor tag displayed
-        document.getElementById('change-voice-code').classList.add('d-none');
-        document.getElementById('opt-out-voice-code').classList.add('d-none');
+        changeVoiceCode.classList.add('d-none');
+        optOutOfVoiceCode.classList.add('d-none');
         document.getElementById('forgot-password').classList.remove('d-none');
 
         // Next button and continur button
@@ -156,12 +170,12 @@
      */
     document.getElementById('change-email').addEventListener('click', function () {
         // Email and Password boxes
-        document.getElementById('email-box').classList.remove('d-none');
+        emailBoxEl.classList.remove('d-none');
         document.getElementById('password-box').classList.add('d-none');
 
         // Opt Out voice code anchor tag displayed
-        document.getElementById('change-voice-code').classList.remove('d-none');
-        document.getElementById('opt-out-voice-code').classList.add('d-none');
+        changeVoiceCode.classList.remove('d-none');
+        optOutOfVoiceCode.classList.add('d-none');
         document.getElementById('forgot-password').classList.add('d-none');
 
         // Next button and continur button
@@ -194,6 +208,21 @@
      */
     saveButtonEl.addEventListener('click', function () {
 
+        /*
+         * Redirect To Voice Code
+         */
+        if (isEmpty(voiceCodeEl.value)) {
+            redirectToVoiceCodeText();
+            showNotification(REDIRECT_TO_VOICE_CODE, window._constants.notification.error);
+            return;
+        }
+
+        /*
+         * Material Spinner for loading
+         */
+        materialSpinnerLoading.classList.remove('d-none');
+        saveButtonEl.classList.add('d-none');
+
         // Post a new budget to the user budget module and change to auto generated as false.
         var values = {};
         values['voiceCode'] = document.getElementById('voice-code').value;
@@ -209,11 +238,33 @@
         ajaxData.contentType = "application/json;charset=UTF-8";
         ajaxData.data = JSON.stringify(values);
         ajaxData.onSuccess = function registerSuccess(result) {
-            // Redirect to blitzbudget login
-            window.location.href = "https://auth.blitzbudget.com/oauth2/authorize?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35";
+            let timerInterval;
+            Swal.fire({
+                icon: 'success',
+                title: 'Voice code saved successfully!',
+                text: 'Now, You will be redirected to login again to finish the alexa linking process.',
+                confirmButtonText: 'Redirect to login',
+                confirmButtonColor: '#00bcd4',
+            }).then((result) => {
+                // Material Spinner Loading
+                materialSpinnerLoading.classList.add('d-none');
+                saveButtonEl.classList.remove('d-none');
+
+                // Redirect to blitzbudget login
+                window.location.href = "https://auth.blitzbudget.com/oauth2/authorize?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35";
+            })
         }
         ajaxData.onFailure = function (thrownError) {
+            let responseJson = thrownError.responseJSON;
+            if (isNotEmpty(responseJson)) {
+                let message = isNotEmpty(thrownError.errorMessage) ? thrownError.errorMessage : thrownError.message;
+                showNotification(message, window._constants.notification.error);
+            } else {
+                showNotification(GENERIC_ERROR, window._constants.notification.error);
+            }
 
+            materialSpinnerLoading.classList.add('d-none');
+            saveButtonEl.classList.remove('d-none');
         }
 
         $.ajax({
@@ -227,5 +278,29 @@
         });
 
     });
+
+    /*
+     * Redirect To Voice Code Text
+     */
+    function redirectToVoiceCodeText() {
+        /*
+         * Upon clicking back button the input values are lost so, reset the page
+         */
+        if (isEmpty(voiceCodeEl.value)) {
+            voiceCodeBoxEl.classList.remove('d-none');
+            emailBoxEl.classList.add('d-none');
+            passwordBoxEl.classList.add('d-none');
+            // Change Button Element
+            nextButtonEl.classList.remove('d-none');
+            continueButtonEl.classList.add('d-none');
+            saveButtonEl.classList.add('d-none');
+            materialSpinnerLoading.classList.add('d-none');
+            // Footer link
+            optOutOfVoiceCode.classList.remove('d-none');
+            changeVoiceCode.classList.add('d-none');
+            forgotPasswordAnchor.classList.add('d-none');
+            voiceCodeEl.focus();
+        }
+    }
 
 }(jQuery));
