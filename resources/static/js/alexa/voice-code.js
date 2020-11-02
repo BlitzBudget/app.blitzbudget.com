@@ -257,7 +257,7 @@
         ajaxData.onFailure = function (thrownError) {
             let responseJson = thrownError.responseJSON;
             if (isNotEmpty(responseJson)) {
-                let message = isNotEmpty(thrownError.errorMessage) ? thrownError.errorMessage : thrownError.message;
+                let message = isNotEmpty(responseJson.errorMessage) ? responseJson.errorMessage : responseJson.message;
                 showNotification(message, window._constants.notification.error);
             } else {
                 showNotification(GENERIC_ERROR, window._constants.notification.error);
