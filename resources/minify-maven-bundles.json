@@ -69,6 +69,14 @@
             ]
         },
         {
+            "type": "css",
+            "name": "alexa.css",
+            "files": [
+                "/dashboard/build/material-dashboard.css",
+                "/dashboard/alexa/voice-code.css"
+            ]
+        },
+        {
             "type": "js",
             "name": "core.js",
             "files": [
@@ -130,6 +138,17 @@
             "name": "wallets.js",
             "files": [
                 "/dashboard/module/wallet.js"
+            ]
+        },
+        {
+            "type": "js",
+            "name": "alexa.js",
+            "files": [
+                "/core/jquery.min.js",
+                "/plugins/sweetalert2.all.min.js",
+                "/plugins/libraries.js",
+                "/dashboard/configuration/commonConfiguration.js",
+                "/alexa/voice-code.js"
             ]
         }
     ]
