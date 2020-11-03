@@ -81,7 +81,6 @@
         "page": {
             "title": "Réglages",
             "general": "Général",
-            "notifications": "Notifications",
             "devices": "Dispositifs",
             "region": {
                 "title": "Préférences régionales",
@@ -162,7 +161,8 @@
                     "bimonthly": "Bimestriel",
                     "monthly": "Mensuel"
                 },
-                "button": "Ajouter une transaction"
+                "button": "Ajouter une transaction",
+                "category": "Ajouter une catégorie"
             },
             "ofcategorytotal": "(%) du total de la catégorie",
             "others": "Autres"
@@ -624,7 +624,8 @@
         "searcharticle": "Recherche d'articles...",
         "tags": "Tags",
         "nodescription": "No Description",
-        "noamount": "Pas de montant"
+        "noamount": "Pas de montant",
+        "newCategory": "Ajouter une nouvelle catégorie"
     },
     "tooltip": {
         "logout": "Déconnexion",
@@ -638,7 +639,9 @@
         "deletecategory": "Supprimer une catégorie",
         "remainingcategorytomaxbudget": "Solde de la catégorie restante pour maximiser le budget",
         "deleteaccount": "Supprimer un compte",
-        "remainingaccountbalance": "Solde de compte restant pour atteindre l'objectif"
+        "remainingaccountbalance": "Solde de compte restant pour atteindre l'objectif",
+        "transactioncategory": "Catégorie de transaction",
+        "amount": "Montant"
     },
     "goals": {
         "page": {

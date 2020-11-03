@@ -160,7 +160,7 @@
 
         // Authentication Details
         let values = {};
-        values.username = email;
+        values.username = email.toLowerCase();
         values.password = password;
         values.firstname = nameObj.firstName;
         values.lastname = nameObj.familyName;
@@ -224,7 +224,7 @@
 
         // Authentication Details
         let values = {};
-        values.username = email;
+        values.username = email.toLowerCase();
         values.password = password;
         values.checkPassword = false;
 
@@ -711,7 +711,7 @@
             contentType: "application/json;charset=UTF-8",
             data: JSON.stringify(values),
             success: function (result) {
-                fireConfirmForgotPasswordSwal(emailInputSignin, newPassword);
+                fireConfirmForgotPasswordSwal(emailInputSignin, newPassword, resendloader, forgotPass);
             },
             error: function (err) {
                 document.getElementById('errorLoginPopup').textContent = lastElement(splitElement(err.responseJSON.errorMessage, ':'));
@@ -721,7 +721,7 @@
         });
     }
 
-    function fireConfirmForgotPasswordSwal(email, password) {
+    function fireConfirmForgotPasswordSwal(email, password, resendloader, forgotPass) {
         let confirmationCode;
         let loginModal = $('#loginModal');
 

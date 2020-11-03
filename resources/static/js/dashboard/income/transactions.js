@@ -247,12 +247,27 @@
         let values = {};
         if (notIncludesStr(categoryOptions, 'Category#')) {
             let chosenCategory = window.categoryMap[categoryOptions];
+
+            // If Chosen Category is still empty then for loop
+            if (isEmpty(chosenCategory)) {
+                // Category Map objects with key and value
+                for (const [key, value] of Object.entries(window.categoryMap)) {
+                    let categoryItem = window.categoryMap[key];
+                    // Category Item name is equal to data chosen name
+                    if (isEqual(categoryItem.name, categoryOptions)) {
+                        chosenCategory = categoryItem;
+                    }
+                }
+            }
+
+            // If Chosen Category is still empty
             if (isEmpty(chosenCategory)) {
                 fadeoutMessage('#errorMessage', errorAddingTransactionDiv + window.translationData.transactions.dynamic.add.categoryerror, 2000);
                 // enable button after successful submission
                 addTransactionsButton.removeAttribute("disabled");
                 return;
             }
+
             values['categoryType'] = chosenCategory.type;
             values['category'] = chosenCategory.name;
             values['categoryName'] = chosenCategory.name;
@@ -263,7 +278,7 @@
             values['categoryName'] = chosenCategory.name;
         }
 
-        if (window.categoryMap[categoryOptions].type == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
+        if (values['categoryType'] == CUSTOM_DASHBOARD_CONSTANTS.expenseCategory) {
             // Update as negative amount
             amount *= -1;
         }
@@ -858,7 +873,7 @@
         let categoryTitle = document.createElement('a');
         categoryTitle.id = 'categoryTitle-' + category;
         categoryTitle.classList = 'pl-4 accTitleAnchor';
-        categoryTitle.textContent = isNotEmpty(window.translatedCategoryName) ? window.translatedCategoryName[categoryData.name] : categoryData.name;
+        categoryTitle.textContent = (isNotEmpty(window.translatedCategoryName) && isNotEmpty(window.translatedCategoryName[categoryData.name])) ? window.translatedCategoryName[categoryData.name] : categoryData.name;
         titleWrapper.appendChild(categoryTitle);
         categoryTit.appendChild(titleWrapper);
 

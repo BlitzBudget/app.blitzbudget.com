@@ -81,7 +81,6 @@
         "page": {
             "title": "設定",
             "general": "将軍",
-            "notifications": "通知",
             "devices": "デバイス",
             "region": {
                 "title": "地域の好み",
@@ -162,7 +161,8 @@
                     "bimonthly": "隔月 のこと",
                     "monthly": "マンスリー"
                 },
-                "button": "トランザクションの追加"
+                "button": "トランザクションの追加",
+                "category": "カテゴリーの追加"
             },
             "ofcategorytotal": "(%) 区分 合計",
             "others": "その他"
@@ -624,7 +624,8 @@
         "searcharticle": "記事の検索...",
         "tags": "タグ",
         "nodescription": "説明はありません。",
-        "noamount": "金額はありません。"
+        "noamount": "金額はありません。",
+        "newCategory": "新しいカテゴリを追加する"
     },
     "tooltip": {
         "logout": "ログアウト",
@@ -638,7 +639,9 @@
         "deletecategory": "カテゴリの削除",
         "remainingcategorytomaxbudget": "予算を最大にするための残りのカテゴリの残高",
         "deleteaccount": "アカウントの削除",
-        "remainingaccountbalance": "目標達成のための口座残高"
+        "remainingaccountbalance": "目標達成のための口座残高",
+        "transactioncategory": "トランザクションの種類",
+        "amount": "金額"
     },
     "goals": {
         "page": {

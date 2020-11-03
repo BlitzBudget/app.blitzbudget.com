@@ -81,7 +81,6 @@
         "page": {
             "title": "Definições",
             "general": "Geral",
-            "notifications": "Notificações",
             "devices": "Dispositivos",
             "region": {
                 "title": "Preferências regionais",
@@ -162,7 +161,8 @@
                     "bimonthly": "Bimensal",
                     "monthly": "Mensal"
                 },
-                "button": "Adicionar transacção"
+                "button": "Adicionar transacção",
+                "category": "Adicionar Categoria"
             },
             "ofcategorytotal": "(%) Da categoria Total",
             "others": "Outros"
@@ -624,7 +624,8 @@
         "searcharticle": "Procura de artigos...",
         "tags": "Etiquetas",
         "nodescription": "Sem Descrição",
-        "noamount": "Sem montante"
+        "noamount": "Sem montante",
+        "newCategory": "Adicionar uma nova categoria"
     },
     "tooltip": {
         "logout": "Sair",
@@ -638,7 +639,9 @@
         "deletecategory": "Eliminar Categoria",
         "remainingcategorytomaxbudget": "Saldo restante da categoria até ao máximo do orçamento",
         "deleteaccount": "Apagar conta",
-        "remainingaccountbalance": "Saldo remanescente da conta para alcançar o objectivo"
+        "remainingaccountbalance": "Saldo remanescente da conta para alcançar o objectivo",
+        "transactioncategory": "Categoria da transacção",
+        "amount": "Montante"
     },
     "goals": {
         "page": {

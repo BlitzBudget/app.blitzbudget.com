@@ -23,7 +23,9 @@
         // Close  Financial Position
         document.getElementsByClassName('transactions-chart')[0].classList.add('d-none');
         // Open Category Modal
-        document.getElementById('categoryInformationMdl').classList.remove('d-none');
+        let categoryInformationMdl = document.getElementById('categoryInformationMdl');
+        categoryInformationMdl.classList.remove('d-none');
+        categoryInformationMdl.setAttribute('data-target', categoryId);
         // Close  Transaction Information Modal
         document.getElementById('transactionInformationMdl').classList.add('d-none');
         // Hide Recurring transactions modal

@@ -1897,6 +1897,41 @@ textarea:disabled {
     z-index: 3;
 }
 
+.dropdown-toggle {
+    cursor: pointer;
+}
+
+.noResultsDD {
+    color: #999;
+    display: block;
+    width: 100%;
+    padding: .625rem 1.25rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    font-size: 0.8rem;
+    margin: 0 .3125rem;
+}
+
+.login-password-visibility {
+    float: right;
+    margin-right: 0.2rem;
+    margin-top: -1.75rem;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #a7a7a7;
+}
+
+.pl-2rem {
+    padding-left: 2rem;
+}
+
 @media (max-width: 991px) {
     .overviewNavigationControl {
         min-width: 20rem;

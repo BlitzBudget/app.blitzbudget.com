@@ -306,10 +306,11 @@ function getAllUrlParams(url) {
 
 // Manage errors
 function manageErrors(thrownError, message, ajaxData) {
-    showNotification(message, window._constants.notification.error);
     let responseError = thrownError.responseJSON;
     if (isNotEmpty(responseError) && isNotEmpty(responseError.error) && responseError.error.includes("Unauthorized")) {
         er.sessionExpiredSwal(ajaxData);
+    } else {
+        showNotification(message, window._constants.notification.error);
     }
 }
 

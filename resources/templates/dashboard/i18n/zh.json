@@ -81,7 +81,6 @@
         "page": {
             "title": "设置",
             "general": "一般",
-            "notifications": "通知",
             "devices": "设备",
             "region": {
                 "title": "区域优惠",
@@ -162,7 +161,8 @@
                     "bimonthly": "双月",
                     "monthly": "每月"
                 },
-                "button": "添加交易"
+                "button": "添加交易",
+                "category": "添加类别"
             },
             "ofcategorytotal": "(%) 类别 共计",
             "others": "其他"
@@ -624,7 +624,8 @@
         "searcharticle": "搜索文章...",
         "tags": "标签",
         "nodescription": "没有说明",
-        "noamount": "无金额"
+        "noamount": "无金额",
+        "newCategory": "增加一个新类别"
     },
     "tooltip": {
         "logout": "注销",
@@ -638,7 +639,9 @@
         "deletecategory": "刪除類別",
         "remainingcategorytomaxbudget": "最高预算的剩余类别余额",
         "deleteaccount": "删除账户",
-        "remainingaccountbalance": "实现目标所需的账户余额"
+        "remainingaccountbalance": "实现目标所需的账户余额",
+        "transactioncategory": "交易类别",
+        "amount": "数额"
     },
     "goals": {
         "page": {

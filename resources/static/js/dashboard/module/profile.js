@@ -319,6 +319,12 @@
         let values = {};
         values.previousPassword = oldPassword;
         values.newPassword = newPassword;
+        /*
+         * GET Access Token before changing password
+         */
+        if (isEmpty(window.accessToken)) {
+            window.accessToken = localStorage.getItem("accessToken");
+        }
         values.accessToken = window.accessToken;
 
         // Ajax Requests on Error
@@ -441,18 +447,6 @@
 
         // Change focus to Old password
         document.getElementById('oldPasswordCP').focus();
-    });
-
-    // Change Input to Text
-    $(document).on('mouseover', ".changeDpt", function () {
-        let firstChild = this.parentElement.firstChild;
-        firstChild.setAttribute('type', 'text');
-    });
-
-    // Change it back to password
-    $(document).on('mouseout', ".changeDpt", function () {
-        let firstChild = this.parentElement.firstChild;
-        firstChild.setAttribute('type', 'password');
     });
 
     // Reset Account

@@ -674,6 +674,18 @@ window.onload = function () {
             }
         });
 
+        // Change Input to Text
+        $(document).on('mouseover', ".changeDpt", function () {
+            let firstChild = this.parentElement.firstElementChild;
+            firstChild.setAttribute('type', 'text');
+        });
+
+        // Change it back to password
+        $(document).on('mouseout', ".changeDpt", function () {
+            let firstChild = this.parentElement.firstElementChild;
+            firstChild.setAttribute('type', 'password');
+        });
+
     }(jQuery));
 }
 
@@ -1010,6 +1022,18 @@ function fetchJSONForCategories(data) {
             window.expenseDropdownItems.appendChild(option);
         } else if (value.type == CUSTOM_DASHBOARD_CONSTANTS.incomeCategory) {
             window.incomeDropdownItems.appendChild(option);
+        }
+    }
+
+    // Every other categories added to categoryMap
+    for (let [key, value] of Object.entries(dataNameMap)) {
+        if (isEmpty(window.categoryMap[value.categoryId]) && isEmpty(window.categoryMap[value['category_name']])) {
+            let val = {};
+            val.name = value['category_name'];
+            val.type = value['category_type'];
+            val.id = value.categoryId;
+            val.categoryTotal = value['category_total'];
+            window.categoryMap[value.categoryId] = val;
         }
     }
 }

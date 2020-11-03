@@ -81,7 +81,6 @@
         "page": {
             "title": "Settings",
             "general": "General",
-            "notifications": "Notifications",
             "devices": "Devices",
             "region": {
                 "title": "Regional preferences",
@@ -162,7 +161,8 @@
                     "bimonthly": "Bi-Monthly",
                     "monthly": "Monthly"
                 },
-                "button": "Add Transaction"
+                "button": "Add Transaction",
+                "category": "Add Category"
             },
             "ofcategorytotal": "(%) Of Category Total",
             "others": "Others"
@@ -624,7 +624,8 @@
         "searcharticle": "Search for articles...",
         "tags": "Tags",
         "nodescription": "No Description",
-        "noamount": "No Amount"
+        "noamount": "No Amount",
+        "newCategory": "Add a new category"
     },
     "tooltip": {
         "logout": "Logout",
@@ -638,7 +639,9 @@
         "deletecategory": "Delete Category",
         "remainingcategorytomaxbudget": "Remaining category balance to max the budget",
         "deleteaccount": "Delete Account",
-        "remainingaccountbalance": "Remaining account balance to achieve goal"
+        "remainingaccountbalance": "Remaining account balance to achieve goal",
+        "transactioncategory": "Transaction Category",
+        "amount": "Amount"
     },
     "goals": {
         "page": {
