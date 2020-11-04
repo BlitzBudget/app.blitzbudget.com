@@ -264,3 +264,35 @@ a.forgot-password:hover {
         border-top: 5px #3F51B5 solid;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .alexa-login-page {
+        background-color: #fff;
+    }
+
+    .voice-code-container {
+        width: 100%;
+        box-shadow: none;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        margin-top: 40px;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .voice-code-entry {
+        width: 100%;
+        padding: 0px 30px;
+        height: auto;
+        border-right: none;
+    }
+
+    .voice-code-head {
+        margin-bottom: 30px;
+    }
+
+    .security-information {
+        display: none;
+    }
+}
