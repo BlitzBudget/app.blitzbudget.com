@@ -19,7 +19,31 @@
     let changeVoiceCode = document.getElementById('change-voice-code');
     let forgotPasswordAnchor = document.getElementById('forgot-password');
     let materialSpinnerLoading = document.getElementById('material-spinner-loading');
+    let deleteVoiceCodeIfPresent = false;
+
+    /*
+     * OAUTH AUTHORIZE URLS
+     */
+    const OAUTH_AUTHORIZE_URL = "https://auth.blitzbudget.com/oauth2/authorize";
+    const QUERY_PARAMETER = window.location.search;
+    const FORGOT_PASSWORD_URL = "https://auth.blitzbudget.com/forgotPassword";
+    // FREEZE THE OBJECTS
+    Object.freeze(OAUTH_AUTHORIZE_URL);
+    Object.seal(OAUTH_AUTHORIZE_URL);
+    Object.preventExtensions(OAUTH_AUTHORIZE_URL);
+    Object.freeze(QUERY_PARAMETER);
+    Object.seal(QUERY_PARAMETER);
+    Object.preventExtensions(QUERY_PARAMETER);
+    Object.freeze(FORGOT_PASSWORD_URL);
+    Object.seal(FORGOT_PASSWORD_URL);
+    Object.preventExtensions(FORGOT_PASSWORD_URL);
+
     voiceCodeEl.focus();
+
+    /*
+     * populate HREF
+     */
+    populateHref();
 
     /*
      * Redirect To Voice Code
@@ -228,6 +252,7 @@
         values['voiceCode'] = document.getElementById('voice-code').value;
         values['username'] = document.getElementById('email').value;
         values['password'] = document.getElementById('password').value;
+        values['deleteVoiceCode'] = deleteVoiceCodeIfPresent;
 
         // Ajax Requests on Error
         let ajaxData = {};
@@ -251,7 +276,7 @@
                 saveButtonEl.classList.remove('d-none');
 
                 // Redirect to blitzbudget login
-                window.location.href = "https://auth.blitzbudget.com/oauth2/authorize?client_id=18he7k81dv7k6fccf7giiuo84r&scope=openid+profile+aws.cognito.signin.user.admin&response_type=code&redirect_uri=https://pitangui.amazon.com/api/skill/link/M2B1LF7JV90J35";
+                window.location.href = OAUTH_AUTHORIZE_URL + QUERY_PARAMETER;
             })
         }
         ajaxData.onFailure = function (thrownError) {
@@ -303,4 +328,21 @@
         }
     }
 
+    /*
+     * Populate HREF
+     */
+    function populateHref() {
+        document.getElementById('forgot-password').href = FORGOT_PASSWORD_URL + QUERY_PARAMETER;
+    }
+
+    /*
+     *
+     * Opt Out of Voice Code
+     *
+     */
+    document.getElementById('opt-out-voice-code').addEventListener('click', function () {
+        deleteVoiceCodeIfPresent = true;
+        // Save Button Click
+        saveButtonEl.click();
+    });
 }(jQuery));
