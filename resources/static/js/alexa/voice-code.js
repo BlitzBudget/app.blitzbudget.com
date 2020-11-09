@@ -65,10 +65,9 @@
             this.classList.remove('errorborder');
             document.getElementById('errorFourDigit').classList.add('d-none');
             nextButtonEl.removeAttribute('disabled');
-
-            if (isEqual(keyPressed, ENTER_KEY)) {
-                nextButtonEl.click();
-            }
+            nextButtonEl.click();
+        } else if (val.length < 4) {
+            nextButtonEl.setAttribute('disabled', 'disabled');
         }
     });
 
