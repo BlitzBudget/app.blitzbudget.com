@@ -346,7 +346,10 @@
         nextButtonEl.removeAttribute('disabled');
         // Next Button Click
         nextButtonEl.click();
-        // Set Disabled from next button
-        nextButtonEl.setAttribute('disabled', 'disabled');
+        // If the Voice Code is not filled upto the fourth element
+        if (voiceCodeEl.value.length < 4) {
+            // Set Disabled from next button
+            nextButtonEl.setAttribute('disabled', 'disabled');
+        }
     });
 }(jQuery));
