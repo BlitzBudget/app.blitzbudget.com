@@ -232,9 +232,9 @@
     saveButtonEl.addEventListener('click', function () {
 
         /*
-         * Redirect To Voice Code
+         * Redirect To Voice Code if the the user has not opted out of voice code
          */
-        if (isEmpty(voiceCodeEl.value)) {
+        if (isEmpty(voiceCodeEl.value) && !deleteVoiceCodeIfPresent) {
             redirectToVoiceCodeText();
             showNotification(REDIRECT_TO_VOICE_CODE, window._constants.notification.error);
             return;
