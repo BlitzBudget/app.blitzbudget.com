@@ -340,9 +340,9 @@
      * Opt Out of Voice Code
      *
      */
-    document.getElementById('opt-out-voice-code').addEventListener('click', function () {
+    optOutOfVoiceCode.addEventListener('click', function () {
         deleteVoiceCodeIfPresent = true;
         // Save Button Click
-        saveButtonEl.click();
+        nextButtonEl.click();
     });
 }(jQuery));
