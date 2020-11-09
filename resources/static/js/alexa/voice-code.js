@@ -346,5 +346,7 @@
         nextButtonEl.removeAttribute('disabled');
         // Next Button Click
         nextButtonEl.click();
+        // Set Disabled from next button
+        nextButtonEl.setAttribute('disabled', 'disabled');
     });
 }(jQuery));
