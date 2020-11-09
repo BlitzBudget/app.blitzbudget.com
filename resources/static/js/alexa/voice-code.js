@@ -19,6 +19,7 @@
     let changeVoiceCode = document.getElementById('change-voice-code');
     let forgotPasswordAnchor = document.getElementById('forgot-password');
     let materialSpinnerLoading = document.getElementById('material-spinner-loading');
+    let deleteVoiceCodeIfPresent = false;
 
     /*
      * OAUTH AUTHORIZE URLS
@@ -251,6 +252,7 @@
         values['voiceCode'] = document.getElementById('voice-code').value;
         values['username'] = document.getElementById('email').value;
         values['password'] = document.getElementById('password').value;
+        values['deleteVoiceCode'] = deleteVoiceCodeIfPresent;
 
         // Ajax Requests on Error
         let ajaxData = {};
@@ -330,8 +332,17 @@
      * Populate HREF
      */
     function populateHref() {
-        document.getElementById('opt-out-voice-code').href = OAUTH_AUTHORIZE_URL + QUERY_PARAMETER;
         document.getElementById('forgot-password').href = FORGOT_PASSWORD_URL + QUERY_PARAMETER;
     }
 
+    /*
+     *
+     * Opt Out of Voice Code
+     *
+     */
+    document.getElementById('opt-out-voice-code').addEventListener('click', function () {
+        deleteVoiceCodeIfPresent = true;
+        // Save Button Click
+        saveButtonEl.click();
+    });
 }(jQuery));
