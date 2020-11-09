@@ -150,6 +150,13 @@
                 "/dashboard/configuration/commonConfiguration.js",
                 "/alexa/voice-code.js"
             ]
+        },
+        {
+            "type": "js",
+            "name": "redirect-to-alexa.js",
+            "files": [
+                "/alexa/redirect-to-alexa.js"
+            ]
         }
     ]
 }
