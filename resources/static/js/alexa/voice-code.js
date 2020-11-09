@@ -342,7 +342,9 @@
      */
     optOutOfVoiceCode.addEventListener('click', function () {
         deleteVoiceCodeIfPresent = true;
-        // Save Button Click
+        // Remove Disabled from next button
+        nextButtonEl.removeAttribute('disabled');
+        // Next Button Click
         nextButtonEl.click();
     });
 }(jQuery));
