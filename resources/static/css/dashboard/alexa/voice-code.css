@@ -292,7 +292,12 @@ a.forgot-password:hover {
         margin-bottom: 30px;
     }
 
-    .security-information {
+    .security_text {
+        color: #999;
+    }
+
+    .secure-image,
+    .security-information-heading {
         display: none;
     }
 }
