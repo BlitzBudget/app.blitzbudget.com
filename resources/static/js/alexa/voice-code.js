@@ -65,10 +65,9 @@
             this.classList.remove('errorborder');
             document.getElementById('errorFourDigit').classList.add('d-none');
             nextButtonEl.removeAttribute('disabled');
-
-            if (isEqual(keyPressed, ENTER_KEY)) {
-                nextButtonEl.click();
-            }
+            nextButtonEl.click();
+        } else if (val.length < 4) {
+            nextButtonEl.setAttribute('disabled', 'disabled');
         }
     });
 
@@ -233,9 +232,9 @@
     saveButtonEl.addEventListener('click', function () {
 
         /*
-         * Redirect To Voice Code
+         * Redirect To Voice Code if the the user has not opted out of voice code
          */
-        if (isEmpty(voiceCodeEl.value)) {
+        if (isEmpty(voiceCodeEl.value) && !deleteVoiceCodeIfPresent) {
             redirectToVoiceCodeText();
             showNotification(REDIRECT_TO_VOICE_CODE, window._constants.notification.error);
             return;
@@ -340,9 +339,16 @@
      * Opt Out of Voice Code
      *
      */
-    document.getElementById('opt-out-voice-code').addEventListener('click', function () {
+    optOutOfVoiceCode.addEventListener('click', function () {
         deleteVoiceCodeIfPresent = true;
-        // Save Button Click
-        saveButtonEl.click();
+        // Remove Disabled from next button
+        nextButtonEl.removeAttribute('disabled');
+        // Next Button Click
+        nextButtonEl.click();
+        // If the Voice Code is not filled upto the fourth element
+        if (voiceCodeEl.value.length < 4) {
+            // Set Disabled from next button
+            nextButtonEl.setAttribute('disabled', 'disabled');
+        }
     });
 }(jQuery));
