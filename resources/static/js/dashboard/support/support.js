@@ -1,21 +1,25 @@
 "use strict";
-(function scopeWrapper($) {	
+(function scopeWrapper($) {
     // Forward slash regex
     const reForwardSlash = /\//g;
     // SUPPORT CONSTANTS
     const SUPPORT_CONSTANTS = {};
     // SECURITY: Defining Immutable properties as constants
     Object.defineProperties(SUPPORT_CONSTANTS, {
-        'ratingLS': { value: 'articleRating', writable: false, configurable: false }
+        'ratingLS': {
+            value: 'articleRating',
+            writable: false,
+            configurable: false
+        }
     });
 
     /**
-    *
-    * Support module On Click
-    *
-    **/
+     *
+     * Support module On Click
+     *
+     **/
     // Show help center
-    $('.main-panel').on('click', '.helpCenter' , function(e) {
+    $('.main-panel').on('click', '.helpCenter', function (e) {
         // Support Modal
         $('#supportModal').modal('show');
         // Call the actual page which was requested to be loaded
@@ -23,7 +27,7 @@
             type: "GET",
             url: window._config.help.html,
             dataType: 'html',
-            success: function(data){
+            success: function (data) {
                 // Load the new HTML
                 $('#supportContent').html(data);
                 // Load the auto complete module
@@ -33,7 +37,7 @@
                 // Translate current Page
                 translatePage(getLanguage());
             },
-            error: function(){
+            error: function () {
                 Swal.fire({
                     title: window.translationData.support.helpcenter.redirect,
                     text: window.translationData.support.helpcenter.tryagain,
@@ -46,21 +50,22 @@
     });
 
     /**
-    * Autocomplete Module
-    **/
+     * Autocomplete Module
+     **/
     function autocomplete(inp, arr, scrollWrapEl) {
-          /*Removes a function when someone writes in the text field:*/
-          inp.removeEventListener("input", inputTriggerAutoFill);
-          /*Removes a function presses a key on the keyboard:*/
-          inp.removeEventListener("keydown", keydownAutoCompleteTrigger);
-          /*the autocomplete function takes two arguments,
-          the text field element and an array of possible autocompleted values:*/
-          let currentFocus;
-          /*execute a function when someone writes in the text field:*/
-          inp.addEventListener("input", inputTriggerAutoFill);
-          /*execute a function presses a key on the keyboard:*/
-          inp.addEventListener("keydown", keydownAutoCompleteTrigger);
-          function addActive(x) {
+        /*Removes a function when someone writes in the text field:*/
+        inp.removeEventListener("input", inputTriggerAutoFill);
+        /*Removes a function presses a key on the keyboard:*/
+        inp.removeEventListener("keydown", keydownAutoCompleteTrigger);
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        let currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", inputTriggerAutoFill);
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", keydownAutoCompleteTrigger);
+
+        function addActive(x) {
             /*a function to classify an item as "active":*/
             if (!x) return false;
             /*start by removing the "active" class on all items:*/
@@ -71,71 +76,75 @@
             x[currentFocus].classList.add("autocomplete-active");
             // Change focus of the element
             x[currentFocus].focus();
-          }
-          function removeActive(x) {
+        }
+
+        function removeActive(x) {
             /*a function to remove the "active" class from all autocomplete items:*/
             for (let i = 0, len = x.length; i < len; i++) {
-              x[i].classList.remove("autocomplete-active");
+                x[i].classList.remove("autocomplete-active");
             }
-          }
-          function closeAllLists(elmnt) {
+        }
+
+        function closeAllLists(elmnt) {
             /*close all autocomplete lists in the document,
             except the one passed as an argument:*/
             let x = document.getElementsByClassName("autocomplete-items");
             for (let i = 0, len = x.length; i < len; i++) {
-              if (elmnt != x[i] && elmnt != inp) {
-                searchArticleDD.removeChild(x[i]);
-              }
+                if (elmnt != x[i] && elmnt != inp) {
+                    searchArticleDD.removeChild(x[i]);
+                }
             }
-          }
-          /*
-          * Auto Complete Input Trigger function 
-          */
-          function inputTriggerAutoFill(e) {
-              let a, b, i, val = this.value,  len = arr.length, upperVal, startsWithChar, regVal;
-              /*close any already open lists of autocompleted values*/
-              closeAllLists();
-              if (!val) {
+        }
+        /*
+         * Auto Complete Input Trigger function
+         */
+        function inputTriggerAutoFill(e) {
+            let a, b, i, val = this.value,
+                len = arr.length,
+                upperVal, startsWithChar, regVal;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) {
                 len = arr.length < 5 ? arr.length : 5;
-              } else {
+            } else {
                 upperVal = val.toUpperCase()
-              }
-              currentFocus = -1;
-              /*create a DIV element that will contain the items (values):*/
-              a = document.createElement("DIV");
-              a.setAttribute("id", this.id + "autocomplete-list");
-              a.setAttribute("class", "autocomplete-items");
-              /*append the DIV element as a child of the autocomplete container:*/
-              searchArticleDD.appendChild(a);
-              /*for each item in the array...*/
-              for (let i = 0; i < len; i++) {
+            }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            searchArticleDD.appendChild(a);
+            /*for each item in the array...*/
+            for (let i = 0; i < len; i++) {
                 let autoFilEl = false;
-                if(!val) {
+                if (!val) {
                     autoFilEl = true;
                 } else {
                     /* check if the starting characters match */
                     startsWithChar = arr[i].title.substr(0, val.length).toUpperCase() == upperVal;
                     /* build a regex with the value entered */
-                    regVal = new RegExp(upperVal,"g");
+                    regVal = new RegExp(upperVal, "g");
                     /*check if the item starts with the same letters as the text field value:*/
                     if (startsWithChar || includesStr(arr[i].title.toUpperCase(), upperVal)) {
                         autoFilEl = true;
-                    }   
+                    }
                 }
 
                 // Confinue with the iteration
-                if(!autoFilEl) {
+                if (!autoFilEl) {
                     continue;
                 }
-                
+
                 /*create a DIV element for each matching element:*/
                 b = document.createElement("a");
                 b.classList.add("dropdown-item");
                 b.classList.add('help-center-result');
                 /*make the matching letters bold:*/
-                if(startsWithChar) {
+                if (startsWithChar) {
                     b.innerHTML = "<strong>" + arr[i].title.substr(0, val.length) + "</strong>" + arr[i].title.substr(val.length);
-                } else if(!val) {
+                } else if (!val) {
                     b.innerHTML = arr[i].title;
                 } else {
                     let startPos = regVal.exec(arr[i].title.toUpperCase()).index;
@@ -144,53 +153,53 @@
                 }
                 /*insert a input field that will hold the current array item's value:*/
                 b.href = window._config.help.invokeUrl + '/' + getLanguage() + arr[i].url;
-                
-                a.appendChild(b);
-              }
 
-              // If empty then show no results
-              if(isNotEmpty(a) && isEmpty(a.firstChild)) {
+                a.appendChild(b);
+            }
+
+            // If empty then show no results
+            if (isNotEmpty(a) && isEmpty(a.firstChild)) {
                 b = document.createElement("span");
                 b.classList.add("tripleNineColor");
                 b.textContent = window.translationData.support.helpcenter.noresults;
                 a.appendChild(b);
-              }
-          }
+            }
+        }
 
-          /*
-          * Autocomplete Key down event
-          */
-          function keydownAutoCompleteTrigger(e) {
-              let wrapClassId = this.id + "autocomplete-list";
-              let x = document.getElementById(wrapClassId);
-              if (x) x = x.getElementsByTagName("a");
-              if (e.keyCode == 40) {
+        /*
+         * Autocomplete Key down event
+         */
+        function keydownAutoCompleteTrigger(e) {
+            let wrapClassId = this.id + "autocomplete-list";
+            let x = document.getElementById(wrapClassId);
+            if (x) x = x.getElementsByTagName("a");
+            if (e.keyCode == 40) {
                 /*If the arrow DOWN key is pressed,
                 increase the currentFocus variable:*/
                 currentFocus++;
                 /*and and make the current item more visible:*/
                 addActive(x);
-              } else if (e.keyCode == 38) { //up
+            } else if (e.keyCode == 38) { //up
                 /*If the arrow UP key is pressed,
                 decrease the currentFocus variable:*/
                 currentFocus--;
                 /*and and make the current item more visible:*/
                 addActive(x);
-              } else if (e.keyCode == 13) {
+            } else if (e.keyCode == 13) {
                 /*If the ENTER key is pressed, prevent the form from being submitted,*/
                 e.preventDefault();
                 if (currentFocus > -1) {
-                  /*and simulate a click on the "active" item:*/
-                  if (x) x[currentFocus].click();
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
                 }
-              }
-              /* set equal to the position of the selected element minus the height of scrolling div */
-              let scrollToEl = $("#" + scrollWrapEl);
-              /* set to top */
-              scrollToEl.scrollTop(0);
-              let ddItemac = $('#' + wrapClassId + ' .autocomplete-active');
-              /* Chceck if elements are present, then scrolls to them */
-              if(ddItemac && scrollToEl && ddItemac.offset() && scrollToEl.offset()) {
+            }
+            /* set equal to the position of the selected element minus the height of scrolling div */
+            let scrollToEl = $("#" + scrollWrapEl);
+            /* set to top */
+            scrollToEl.scrollTop(0);
+            let ddItemac = $('#' + wrapClassId + ' .autocomplete-active');
+            /* Chceck if elements are present, then scrolls to them */
+            if (ddItemac && scrollToEl && ddItemac.offset() && scrollToEl.offset()) {
                 scrollToEl.scrollTop(ddItemac.offset().top - scrollToEl.offset().top + scrollToEl.scrollTop());
             }
         }
@@ -200,21 +209,33 @@
         // FAQ populate the questions for search
         let faq = [];
         let categoryInformation = window.categoryInfo[getLanguage()];
-        for(let i = 0, len = categoryInformation.length; i < len; i++) {
+        for (let i = 0, len = categoryInformation.length; i < len; i++) {
             let categoryInfoItem = categoryInformation[i];
             let subCategoryArr = categoryInfoItem.subCategory;
 
             // Is subcategory information is empty then continue
-            if(isEmpty(subCategoryArr)) {
+            if (isEmpty(subCategoryArr)) {
                 continue;
             }
 
-            for(let j = 0, length = subCategoryArr.length; j < length; j++) {
+            for (let j = 0, length = subCategoryArr.length; j < length; j++) {
                 // FAQ
                 let subCategoryItem = subCategoryArr[j];
+
+                // Do not populate the item if it redirects to a static page
+                let anchorHref = subCategoryItem.url;
+                if (anchorHref.indexOf("http://app.blitzbudget.com") == 0 ||
+                    anchorHref.indexOf("https://app.blitzbudget.com") == 0 ||
+                    anchorHref.indexOf("http://www.blitzbudget.com") == 0 ||
+                    anchorHref.indexOf("https://www.blitzbudget.com") == 0 ||
+                    anchorHref.indexOf("http://blitzbudget.com") == 0 ||
+                    anchorHref.indexOf("https://blitzbudget.com") == 0) {
+                    continue;
+                }
+
                 let faqItem = {
-                    "title" : subCategoryItem.title,
-                    "url" : categoryInfoItem.dataUrl.slice(0,-1) + subCategoryItem.url
+                    "title": subCategoryItem.title,
+                    "url": categoryInfoItem.dataUrl.slice(0, -1) + anchorHref
                 }
                 faq.push(faqItem);
             }
@@ -234,10 +255,10 @@
     }
 
     // On click a tag then
-    $( "#supportModal" ).on( "click", "a" ,function() {
+    $("#supportModal").on("click", "a", function () {
         let anchorHref = this.href;
         // Add trailing slash at the end if not present
-        if(anchorHref.charAt(anchorHref.length - 1) !== "/") {
+        if (anchorHref.charAt(anchorHref.length - 1) !== "/") {
             anchorHref = anchorHref + '/';
         }
 
@@ -249,7 +270,7 @@
         document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
 
         // If home page is selected then change classList
-        if(((anchorHref || '').match(reForwardSlash) || []).length == 3) {
+        if (((anchorHref || '').match(reForwardSlash) || []).length == 3) {
             loadHomePage();
             return false;
         }
@@ -258,15 +279,15 @@
         document.getElementsByClassName('Hero')[0].classList.add('d-none');
         document.getElementsByClassName('CategoryResult')[0].classList.remove('d-none');
         let articleTitle = document.getElementById('article-title');
-        while(articleTitle.firstChild) {
+        while (articleTitle.firstChild) {
             articleTitle.removeChild(articleTitle.firstChild);
         }
         let articleDescription = document.getElementById('article-description');
-        while(articleDescription.firstChild) {
+        while (articleDescription.firstChild) {
             articleDescription.removeChild(articleDescription.firstChild);
         }
         let articleBody = document.getElementById('article-body');
-        while(articleBody.firstChild) {
+        while (articleBody.firstChild) {
             articleBody.removeChild(articleBody.firstChild);
         }
         articleBody.appendChild(buildMaterialSpinner());
@@ -275,11 +296,11 @@
         jQuery.ajax({
             url: anchorHref + 'info.json',
             type: 'GET',
-            success: function(result) {
+            success: function (result) {
                 loadPage(result);
                 return false;
             },
-            error: function(userTransactionsList) {
+            error: function (userTransactionsList) {
                 Toast.fire({
                     icon: 'error',
                     title: window.translationData.support.helpcenter.unableurl
@@ -294,7 +315,7 @@
         // Set the data attribute to url
         $('.rate-action').attr('data-url', result.url);
         // Check if subcategory
-        if(result.subcategoryPresent) {
+        if (result.subcategoryPresent) {
             // Populate article information
             populateSubCategoryInfo(result);
         } else {
@@ -309,23 +330,23 @@
         let categoryInfo = window.categoryInfo[getLanguage()];
 
         // Category Information iteration
-        for(let i=0, len=categoryInfo.length; i<len ; i++) {
+        for (let i = 0, len = categoryInfo.length; i < len; i++) {
             let category = categoryInfo[i];
-            if(isEqual(category.categoryName, title)) {
+            if (isEqual(category.categoryName, title)) {
                 // Update body
                 document.getElementById('article-title').textContent = category.categoryName;
                 document.getElementById('article-description').textContent = category.description;
                 let bcEl = document.getElementById('breadcrumb');
-                while(bcEl.firstChild) {
+                while (bcEl.firstChild) {
                     bcEl.removeChild(bcEl.firstChild);
                 }
                 bcEl.appendChild(populateBreadcrumb(result));
                 // Remove article body
                 let articleBody = document.getElementById('article-body');
-                while(articleBody.firstChild) {
+                while (articleBody.firstChild) {
                     articleBody.removeChild(articleBody.firstChild);
                 }
-                
+
                 articleBody.appendChild(populateSubCategory(category));
 
                 return;
@@ -338,15 +359,27 @@
         let subCategoryDiv = document.createDocumentFragment();
         let subCategoryNav = category.subCategory;
 
-        if(isEmpty(subCategoryNav)) {
+        if (isEmpty(subCategoryNav)) {
             return subCategoryDiv;
         }
 
         let ul = document.createElement('ul');
-        ul.classList.add('sub-category-list');      
+        ul.classList.add('sub-category-list');
 
-        for(let i=0, len = subCategoryNav.length; i < len; i++) {
+        for (let i = 0, len = subCategoryNav.length; i < len; i++) {
             let subCategoryNavItem = subCategoryNav[i];
+
+            // Do not populate the item if it redirects to a static page
+            let anchorHref = subCategoryNavItem.url;
+            if (anchorHref.indexOf("http://app.blitzbudget.com") == 0 ||
+                anchorHref.indexOf("https://app.blitzbudget.com") == 0 ||
+                anchorHref.indexOf("http://www.blitzbudget.com") == 0 ||
+                anchorHref.indexOf("https://www.blitzbudget.com") == 0 ||
+                anchorHref.indexOf("http://blitzbudget.com") == 0 ||
+                anchorHref.indexOf("https://blitzbudget.com") == 0) {
+                continue;
+            }
+
             let li = document.createElement('li');
             li.classList.add('sub-category-li');
 
@@ -354,7 +387,7 @@
             articleIcon.classList = 'material-icons align-middle';
             articleIcon.textContent = 'assignment';
             li.appendChild(articleIcon);
-    
+
             let anchorArticle = document.createElement('a');
             anchorArticle.classList.add('sub-category-link');
             anchorArticle.classList.add('help-center-result');
@@ -371,7 +404,7 @@
     // Populate Article Information
     function populateArticleInfo(result) {
         // Check if it exists in the database
-        if(!checkRatingInLS(result.url)) {
+        if (!checkRatingInLS(result.url)) {
             // Remove the article ratings display none property
             document.getElementsByClassName('article-ratings')[0].classList.remove('d-none');
         }
@@ -379,16 +412,16 @@
         document.getElementById('article-title').textContent = result.title;
         document.getElementById('article-description').textContent = '';
         let bcEl = document.getElementById('breadcrumb');
-        while(bcEl.firstChild) {
+        while (bcEl.firstChild) {
             bcEl.removeChild(bcEl.firstChild);
         }
         bcEl.appendChild(populateBreadcrumb(result));
         // Remove article body
         let articleBody = document.getElementById('article-body');
-        while(articleBody.firstChild) {
+        while (articleBody.firstChild) {
             articleBody.removeChild(articleBody.firstChild);
         }
-        
+
         articleBody.appendChild(populateArticle(result.content));
 
     }
@@ -397,26 +430,26 @@
     function populateArticle(content) {
         let articleDiv = document.createDocumentFragment();
 
-        if(isEmpty(content)) {
+        if (isEmpty(content)) {
             return articleDiv;
         }
 
-        for(let i=0, len = content.length; i < len; i++) {
+        for (let i = 0, len = content.length; i < len; i++) {
             let contentItem = content[i];
             let tag = document.createElement(contentItem.tag);
-            
+
             // Populate innerHTML
-            if(isNotEmpty(contentItem.html)) {          
+            if (isNotEmpty(contentItem.html)) {
                 tag.innerHTML = contentItem.html;
             }
 
             // Add class list
-            if(isNotEmpty(contentItem.classInfo)) {
+            if (isNotEmpty(contentItem.classInfo)) {
                 tag.classList = contentItem.classInfo;
             }
 
             // Add src
-            if(isNotEmpty(contentItem.srcUrl)) {
+            if (isNotEmpty(contentItem.srcUrl)) {
                 tag.src = window._config.help.invokeUrl + contentItem.srcUrl;
             }
 
@@ -425,12 +458,12 @@
         return articleDiv;
     }
 
-        // Populate the breadcrumb
+    // Populate the breadcrumb
     function populateBreadcrumb(result) {
         let breadcrumbDiv = document.createDocumentFragment();
         let breadcrumbSC = result.breadcrumb;
 
-        if(isEmpty(breadcrumbSC)) {
+        if (isEmpty(breadcrumbSC)) {
             return breadcrumbDiv;
         }
 
@@ -440,9 +473,9 @@
         anchorZero.href = window._config.help.invokeUrl + breadcrumbAnchor.crumbUrl;
         anchorZero.classList.add('crumbAnchor');
         anchorZero.textContent = breadcrumbAnchor.crumbTitle;
-        breadcrumbDiv.appendChild(anchorZero);  
+        breadcrumbDiv.appendChild(anchorZero);
 
-        for(let i=1, len = breadcrumbSC.length; i < len; i++) {
+        for (let i = 1, len = breadcrumbSC.length; i < len; i++) {
             let span = document.createElement('span');
             span.classList.add('nextCrumb');
             span.textContent = '>';
@@ -479,7 +512,7 @@
         document.getElementsByClassName('CategoryResult')[0].classList.add('d-none');
         document.getElementsByClassName('article-ratings')[0].classList.add('d-none');
         // Set the data attribute to home
-        $('.rate-action').attr('data-ratingurl','/');
+        $('.rate-action').attr('data-ratingurl', '/');
     }
 
     // Build Material Spinner
@@ -497,9 +530,9 @@
     // On click ratings
     $(".rate-action").click(function () {
         let rating = this.getAttribute("data-rating");
-        let message = ''; 
+        let message = '';
         let subject = '';
-        if(isEqual(rating, 'positive')) {
+        if (isEqual(rating, 'positive')) {
             message = 'The article in this URL ' + this.getAttribute("data-url") + ' was helpful';
             subject = 'Article Rating: I like your article';
             showSuccessMessage();
@@ -518,15 +551,15 @@
         articleFailure.lastElementChild.setAttribute('data-url', url);
         articleFailure.classList.remove('d-none');
         document.getElementsByClassName('article-ratings-question')[0].classList.add('d-none');
-        document.getElementsByClassName('article-ratings-actions')[0].classList.add('d-none');   
+        document.getElementsByClassName('article-ratings-actions')[0].classList.add('d-none');
     }
 
     // Show Success Message
     function showSuccessMessage() {
         let articleSuccess = document.getElementById('article-ratings-success');
-        while(articleSuccess.firstChild) {
+        while (articleSuccess.firstChild) {
             articleSuccess.removeChild(articleSuccess.firstChild);
-        } 
+        }
         articleSuccess.classList.remove('d-none');
         articleSuccess.appendChild(successSvgMessage());
         document.getElementsByClassName('article-ratings-question')[0].classList.add('d-none');
@@ -536,14 +569,14 @@
     // Update Local storage with rating
     function updateToLocalStorage(url, rating) {
         let ratingLS = JSON.parse(localStorage.getItem(SUPPORT_CONSTANTS.ratingLS));
-        if(isEmpty(ratingLS)) {
+        if (isEmpty(ratingLS)) {
             // Create the first rating
             ratingLS = [];
         }
 
         let articleRating = {
-            'url' :  url,
-            'rating' : rating
+            'url': url,
+            'rating': rating
         }
         ratingLS.push(articleRating);
         // Set ratings to the local storage
@@ -553,14 +586,14 @@
     // Check if ratings is present
     function checkRatingInLS(url) {
         let ratingLS = JSON.parse(localStorage.getItem(SUPPORT_CONSTANTS.ratingLS));
-        if(isEmpty(ratingLS)) {
+        if (isEmpty(ratingLS)) {
             return false;
         }
 
         // if rating is present then return true
-        for(let i = 0, len = ratingLS.length; i < len; i++) {
+        for (let i = 0, len = ratingLS.length; i < len; i++) {
             let articleRating = ratingLS[i];
-            if(isEqual(articleRating.url, url)) {
+            if (isEqual(articleRating.url, url)) {
                 return true;
             }
         }
@@ -570,16 +603,16 @@
     function sendEmailToSupport(message, subject) {
 
         let values = JSON.stringify({
-            "email" : window.currentUser.email,
-            "message" : message,
-            "subject" : subject
+            "email": window.currentUser.email,
+            "message": message,
+            "subject": subject
         });
 
         jQuery.ajax({
-            url:  window._config.api.invokeUrl + window._config.api.sendEmailUrl,         
+            url: window._config.api.invokeUrl + window._config.api.sendEmailUrl,
             type: 'POST',
-            contentType:"application/json;charset=UTF-8",
-            data : values
+            contentType: "application/json;charset=UTF-8",
+            data: values
         });
     }
 
@@ -587,51 +620,51 @@
     function successSvgMessage() {
         let alignmentDiv = document.createElement('div');
         alignmentDiv.className = 'row justify-content-center mx-2';
-        
+
         // Parent Div Svg container
         let divSvgContainer = document.createElement('div');
         divSvgContainer.className = 'svg-container';
-        
+
         // SVG element
         let svgElement = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-        svgElement.setAttribute('class','ft-green-tick');
-        svgElement.setAttribute('height','20');
-        svgElement.setAttribute('width','20');
-        svgElement.setAttribute('viewBox','0 0 48 48');
-        svgElement.setAttribute('aria-hidden',true);
-        
+        svgElement.setAttribute('class', 'ft-green-tick');
+        svgElement.setAttribute('height', '20');
+        svgElement.setAttribute('width', '20');
+        svgElement.setAttribute('viewBox', '0 0 48 48');
+        svgElement.setAttribute('aria-hidden', true);
+
         let circleElement = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circleElement.setAttribute('class','circle');
-        circleElement.setAttribute('fill','#5bb543');
-        circleElement.setAttribute('cx','24');
-        circleElement.setAttribute('cy','24');
-        circleElement.setAttribute('r','22');
-        
+        circleElement.setAttribute('class', 'circle');
+        circleElement.setAttribute('fill', '#5bb543');
+        circleElement.setAttribute('cx', '24');
+        circleElement.setAttribute('cy', '24');
+        circleElement.setAttribute('r', '22');
+
         let pathElement = document.createElementNS("http://www.w3.org/2000/svg", 'path');
-        pathElement.setAttribute('class','tick');
-        pathElement.setAttribute('fill','none');
-        pathElement.setAttribute('stroke','#FFF');
-        pathElement.setAttribute('stroke-width','6');
-        pathElement.setAttribute('stroke-linecap','round');
-        pathElement.setAttribute('stroke-linejoin','round');
-        pathElement.setAttribute('stroke-miterlimit','10');
-        pathElement.setAttribute('d','M14 27l5.917 4.917L34 17');
-        
+        pathElement.setAttribute('class', 'tick');
+        pathElement.setAttribute('fill', 'none');
+        pathElement.setAttribute('stroke', '#FFF');
+        pathElement.setAttribute('stroke-width', '6');
+        pathElement.setAttribute('stroke-linecap', 'round');
+        pathElement.setAttribute('stroke-linejoin', 'round');
+        pathElement.setAttribute('stroke-miterlimit', '10');
+        pathElement.setAttribute('d', 'M14 27l5.917 4.917L34 17');
+
         svgElement.appendChild(circleElement);
         svgElement.appendChild(pathElement);
         divSvgContainer.appendChild(svgElement);
-        
+
         let messageParagraphElement = document.createElement('p');
         messageParagraphElement.className = 'article-success margin-bottom-zero margin-left-five';
         messageParagraphElement.innerHTML = window.translationData.support.helpcenter.thanks;
-        
+
         var br = document.createElement('br');
-        
+
         alignmentDiv.appendChild(divSvgContainer);
         alignmentDiv.appendChild(messageParagraphElement);
         alignmentDiv.appendChild(br);
-        
-        
+
+
         return alignmentDiv;
     }
 
