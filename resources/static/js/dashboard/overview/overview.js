@@ -162,7 +162,7 @@
             }
 
         // Load all user transaction from API
-        jQuery.ajax({
+        $.ajax({
             url: ajaxData.url,
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Authorization", authHeader);

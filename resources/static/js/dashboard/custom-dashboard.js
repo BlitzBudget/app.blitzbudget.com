@@ -139,12 +139,12 @@ window.onload = function () {
         }
 
         // If the current user data is still not loaded from Cognito (Refresh)
-        if (isNotEmpty(currentUser)) {
+        if (isNotEmpty(window.currentUser) || isNotEmpty(window.currentUser.email) || isNotEmpty(window.currentUser.financialPortfolioId)) {
             // Startup Application
             startupApplication();
         } else {
             // Show login
-            er.showLoginPopup();
+            userDataEmptyShowLoginPopup();
         }
 
         /* Read Cookies */
@@ -662,16 +662,7 @@ window.onload = function () {
 
         // Before calling AJAX verify the following (ALL requests including CORS)
         $(document).ajaxSend(function () {
-            if (isEmpty(window.currentUser) ||
-                isEmpty(window.currentUser.email) ||
-                isEmpty(window.currentUser.financialPortfolioId) ||
-                localStorage.getItem('loggedOutUser') != null) {
-                // Set current user as empty if the user has logged out
-                if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
-                // Show login popup
-                er.showLoginPopup();
-                return false;
-            }
+            userDataEmptyShowLoginPopup();
         });
 
         // Change Input to Text
@@ -685,6 +676,19 @@ window.onload = function () {
             let firstChild = this.parentElement.firstElementChild;
             firstChild.setAttribute('type', 'password');
         });
+
+        var userDataEmptyShowLoginPopup = () => {
+            if (isEmpty(window.currentUser) ||
+                isEmpty(window.currentUser.email) ||
+                isEmpty(window.currentUser.financialPortfolioId) ||
+                localStorage.getItem('loggedOutUser') != null) {
+                // Set current user as empty if the user has logged out
+                if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
+                // Show login popup
+                er.showLoginPopup();
+                return false;
+            }
+        }
 
     }(jQuery));
 }
