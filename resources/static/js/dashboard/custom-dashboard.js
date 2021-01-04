@@ -139,12 +139,9 @@ window.onload = function () {
         }
 
         // If the current user data is still not loaded from Cognito (Refresh)
-        if (isNotEmpty(window.currentUser) || isNotEmpty(window.currentUser.email) || isNotEmpty(window.currentUser.financialPortfolioId)) {
+        if (!er.userDataEmptyShowLoginPopup()) {
             // Startup Application
             startupApplication();
-        } else {
-            // Show login
-            userDataEmptyShowLoginPopup();
         }
 
         /* Read Cookies */
@@ -662,7 +659,9 @@ window.onload = function () {
 
         // Before calling AJAX verify the following (ALL requests including CORS)
         $(document).ajaxSend(function () {
-            userDataEmptyShowLoginPopup();
+            if(er.userDataEmptyShowLoginPopup()) {
+                return false;
+            }
         });
 
         // Change Input to Text
@@ -677,23 +676,24 @@ window.onload = function () {
             firstChild.setAttribute('type', 'password');
         });
 
-        var userDataEmptyShowLoginPopup = () => {
-            if (isEmpty(window.currentUser) ||
-                isEmpty(window.currentUser.email) ||
-                isEmpty(window.currentUser.financialPortfolioId) ||
-                localStorage.getItem('loggedOutUser') != null) {
-                // Set current user as empty if the user has logged out
-                if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
-                // Show login popup
-                er.showLoginPopup();
-                return false;
-            }
-        }
-
     }(jQuery));
 }
 
 er = {
+
+    userDataEmptyShowLoginPopup() {
+        if (isEmpty(window.currentUser) ||
+            isEmpty(window.currentUser.email) ||
+            isEmpty(window.currentUser.financialPortfolioId) ||
+            localStorage.getItem('loggedOutUser') != null) {
+            // Set current user as empty if the user has logged out
+            if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
+            // Show login popup
+            er.showLoginPopup();
+            return true;
+        }
+        return false;
+    },
 
     // Throw a session expired error and reload the page.
     sessionExpiredSwal(ajaxData) {

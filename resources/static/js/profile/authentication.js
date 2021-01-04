@@ -998,14 +998,7 @@ uh = {
         /*
         * If the current user is empty then show the login popup
         */
-        if (isEmpty(window.currentUser) ||
-                isEmpty(window.currentUser.email) ||
-                isEmpty(window.currentUser.financialPortfolioId) ||
-                localStorage.getItem('loggedOutUser') != null) {
-            // Set current user as empty if the user has logged out
-            if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
-            // Show login popup
-            er.showLoginPopup();
+        if (er.userDataEmptyShowLoginPopup()) {
             return false;
         }
 
