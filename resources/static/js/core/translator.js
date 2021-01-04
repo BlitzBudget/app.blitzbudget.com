@@ -79,7 +79,10 @@ function setTranslatedMonths() {
     window.months.push(window.translationData.month.december);
 
     // Overview month name
-    document.getElementById('overviewMonthHeading').textContent = window.months[window.chosenDate.getMonth()];
+    let overviewMonthHeading = document.getElementById('overviewMonthHeading');
+    if (overviewMonthHeading) {
+        overviewMonthHeading.textContent = window.months[window.chosenDate.getMonth()];
+    }
 }
 
 // Assign category key value pairs for categories
