@@ -12,13 +12,6 @@
         },
     });
 
-    // Description Text
-    let descriptionTextEdited = '';
-    // Amount Text
-    let amountEditedTransaction = '';
-    // User Updated Budegt
-    let userUpdateBudgetCached = '';
-
     const replaceTransactionsId = "productsJson";
     const recentTransactionsId = 'recentTransactions';
     // Used to refresh the transactions only if new ones are added

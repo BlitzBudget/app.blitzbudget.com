@@ -995,6 +995,13 @@ uh = {
             return;
         }
 
+        /*
+        * If the current user is empty then show the login popup
+        */
+        if (er.userDataEmptyShowLoginPopup()) {
+            return false;
+        }
+
         // Authenticate Before cahnging password
         $.ajax({
             type: 'POST',

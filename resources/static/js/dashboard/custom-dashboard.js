@@ -139,12 +139,9 @@ window.onload = function () {
         }
 
         // If the current user data is still not loaded from Cognito (Refresh)
-        if (isNotEmpty(currentUser)) {
+        if (!er.userDataEmptyShowLoginPopup()) {
             // Startup Application
             startupApplication();
-        } else {
-            // Show login
-            er.showLoginPopup();
         }
 
         /* Read Cookies */
@@ -662,14 +659,7 @@ window.onload = function () {
 
         // Before calling AJAX verify the following (ALL requests including CORS)
         $(document).ajaxSend(function () {
-            if (isEmpty(window.currentUser) ||
-                isEmpty(window.currentUser.email) ||
-                isEmpty(window.currentUser.financialPortfolioId) ||
-                localStorage.getItem('loggedOutUser') != null) {
-                // Set current user as empty if the user has logged out
-                if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
-                // Show login popup
-                er.showLoginPopup();
+            if(er.userDataEmptyShowLoginPopup()) {
                 return false;
             }
         });
@@ -690,6 +680,20 @@ window.onload = function () {
 }
 
 er = {
+
+    userDataEmptyShowLoginPopup() {
+        if (isEmpty(window.currentUser) ||
+            isEmpty(window.currentUser.email) ||
+            isEmpty(window.currentUser.financialPortfolioId) ||
+            localStorage.getItem('loggedOutUser') != null) {
+            // Set current user as empty if the user has logged out
+            if (localStorage.getItem('loggedOutUser') != null) window.currentUser = {};
+            // Show login popup
+            er.showLoginPopup();
+            return true;
+        }
+        return false;
+    },
 
     // Throw a session expired error and reload the page.
     sessionExpiredSwal(ajaxData) {

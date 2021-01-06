@@ -1077,7 +1077,9 @@
                     }
                 }
 
-                values['currency'] = window.oldWalletCurrency;
+                if (isNotEmpty(values.currency)) {
+                    values['currency'] = window.oldWalletCurrency;
+                }
                 values['wallet_name'] = window.oldWalletName;
                 updateRelevantTextInCard(values);
             }
@@ -1086,7 +1088,9 @@
 
     // Update Relevant
     function updateRelevantTextInCard(values) {
-        window.oldWalletCurrency = '';
+        if (isNotEmpty(values.currency)) {
+            window.oldWalletCurrency = '';
+        }
         window.oldWalletName = '';
         // Find Item with data target attribute
         let chosenDiv = $('#whichWallet').find('[data-target="' + values.walletId + '"]');
@@ -1102,11 +1106,13 @@
 
         for (let i = 0, l = window.globalWallet.length; i < l; i++) {
             let wallet = window.globalWallet[i];
-            // If Wallet ID is equal to current user do not populate
+            // If Wallet ID is equal to current user
             if (isEqual(values.walletId, wallet.walletId)) {
                 window.oldWalletCurrency = wallet.currency;
                 window.oldWalletName = isEmpty(wallet['wallet_name']) ? window.currentUser.name + ' ' + window.currentUser.family_name : wallet['wallet_name'];
-                wallet.currency = values.currency;
+                if (isNotEmpty(values.currency)) {
+                    wallet.currency = values.currency;
+                }
                 wallet['wallet_name'] = values.name;
                 continue;
             }
