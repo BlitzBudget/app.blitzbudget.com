@@ -1044,7 +1044,7 @@
     function patchWallets() {
         // Set Param Val combination
         let values = {};
-        values['name'] = document.getElementById('manageWalletName').value;
+        values['walletName'] = document.getElementById('manageWalletName').value;
         if (isNotEmpty(chosenCurrencyWMW)) {
             values['currency'] = chosenCurrencyWMW;
         }
