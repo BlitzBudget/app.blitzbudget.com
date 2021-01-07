@@ -1094,9 +1094,9 @@
         window.oldWalletName = '';
         // Find Item with data target attribute
         let chosenDiv = $('#whichWallet').find('[data-target="' + values.walletId + '"]');
-        if (isNotEmpty(values.name)) {
+        if (isNotEmpty(values.walletName)) {
             // Change name
-            chosenDiv.find(".suggested-heading").text(values.name);
+            chosenDiv.find(".suggested-heading").text(values.walletName);
         }
 
         if (isNotEmpty(values.currency)) {
@@ -1113,7 +1113,7 @@
                 if (isNotEmpty(values.currency)) {
                     wallet.currency = values.currency;
                 }
-                wallet['wallet_name'] = values.name;
+                wallet['wallet_name'] = values.walletName;
                 continue;
             }
         }
