@@ -22,7 +22,7 @@ function addAGoal(values) {
         result['goal_type'] = result['body-json'].goalType;
         result['final_amount'] = result['body-json'].targetAmount;
         result['preferable_target_date'] = result['body-json'].targetDate;
-        result.goalId = result['body-json'].id;
+        result.goalId = result['body-json'].goalId;
         // Remove goals
         let emptyGoals = document.getElementById('empty-goal');
         if (isNotEmpty(emptyGoals)) {
