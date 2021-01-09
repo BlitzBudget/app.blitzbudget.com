@@ -459,7 +459,7 @@
     /*
      * Export File Format
      */
-    $('body').on("click", "#chosenExportFileFormatDD .autocomplete-items .dropdown-item", function (event) {
+    $('body').on("click", "#chosenExportFileFormatDD .dropdown-item", function (event) {
         let valObj = {
             parentElId: "exportFileFormat",
             valueChosen: this.lastElementChild.value
@@ -642,7 +642,7 @@
     /*
      * Choose current language
      */
-    $('body').on("click", "#chooseLanguageDD .autocomplete-items .dropdown-item", function (event) {
+    $('body').on("click", "#chooseLanguageDD .dropdown-item", function (event) {
         updateUserAttr('locale', this.dataset.target + window.currentUser.locale.substring(2, 5), this, null);
     });
 
