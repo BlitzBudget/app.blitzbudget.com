@@ -1082,7 +1082,7 @@
         let values = {
             "name": firstName,
             "family_name": lastName,
-            "userName": currentUser.email
+            "username": currentUser.email
         };
 
         // Ajax Requests on Error

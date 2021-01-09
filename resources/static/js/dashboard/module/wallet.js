@@ -20,11 +20,6 @@
             value: '/wallet',
             writable: false,
             configurable: false
-        },
-        'userAttributeUrl': {
-            value: '/profile/user-attribute',
-            writable: false,
-            configurable: false
         }
     });
 
