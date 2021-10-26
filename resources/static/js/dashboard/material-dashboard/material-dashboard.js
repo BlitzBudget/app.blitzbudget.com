@@ -15,241 +15,228 @@
 
  */
 
-(function() {
-  isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
+(function () {
+  isWindows = navigator.platform.indexOf('Win') > -1
 
   if (isWindows) {
     // if we are on windows OS we activate the perfectScrollbar function
-    $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+    $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar()
 
-    $('html').addClass('perfect-scrollbar-on');
+    $('html').addClass('perfect-scrollbar-on')
   } else {
-    $('html').addClass('perfect-scrollbar-off');
+    $('html').addClass('perfect-scrollbar-off')
   }
-})();
+})()
 
+let transparent = true
 
-var transparent = true;
+let mobile_menu_visible = 0
+let mobile_menu_initialized = false
 
-var mobile_menu_visible = 0,
-  mobile_menu_initialized = false;
+let seq = 0
+const delays = 80
+const durations = 500
+let seq2 = 0
+const delays2 = 80
+const durations2 = 500
 
-var seq = 0,
-  delays = 80,
-  durations = 500;
-var seq2 = 0,
-  delays2 = 80,
-  durations2 = 500;
+$(document).ready(function () {
+  $('body').bootstrapMaterialDesign()
 
-$(document).ready(function() {
+  $sidebar = $('.sidebar')
 
-  $('body').bootstrapMaterialDesign();
+  md.initSidebarsCheck()
 
-  $sidebar = $('.sidebar');
-
-  md.initSidebarsCheck();
-
-  window_width = $(window).width();
+  window_width = $(window).width()
 
   // check if there is an image set for the sidebar's background
-  md.checkSidebarImage();
+  md.checkSidebarImage()
 
   //  Activate the tooltips
-  $('[data-toggle="tooltip"], [rel="tooltip"]').tooltip();
+  $('[data-toggle="tooltip"], [rel="tooltip"]').tooltip()
 
-  $('.form-control').on("focus", function() {
-    $(this).parent('.input-group').addClass("input-group-focus");
-  }).on("blur", function() {
-    $(this).parent(".input-group").removeClass("input-group-focus");
-  });
+  $('.form-control').on('focus', function () {
+    $(this).parent('.input-group').addClass('input-group-focus')
+  }).on('blur', function () {
+    $(this).parent('.input-group').removeClass('input-group-focus')
+  })
 
   // remove class has-error for checkbox validation
-  $('input[type="checkbox"][required="true"], input[type="radio"][required="true"]').on('click', function() {
+  $('input[type="checkbox"][required="true"], input[type="radio"][required="true"]').on('click', function () {
     if ($(this).hasClass('error')) {
-      $(this).closest('div').removeClass('has-error');
+      $(this).closest('div').removeClass('has-error')
     }
-  });
+  })
+})
 
-});
-
-$(document).on('click', '.navbar-toggler', function() {
-  $toggle = $(this);
+$(document).on('click', '.navbar-toggler', function () {
+  $toggle = $(this)
 
   if (mobile_menu_visible == 1) {
-    $('html').removeClass('nav-open');
+    $('html').removeClass('nav-open')
 
-    $('.close-layer').remove();
-    setTimeout(function() {
-      $toggle.removeClass('toggled');
-    }, 400);
+    $('.close-layer').remove()
+    setTimeout(function () {
+      $toggle.removeClass('toggled')
+    }, 400)
 
-    mobile_menu_visible = 0;
+    mobile_menu_visible = 0
   } else {
-    setTimeout(function() {
-      $toggle.addClass('toggled');
-    }, 430);
+    setTimeout(function () {
+      $toggle.addClass('toggled')
+    }, 430)
 
-    var $layer = $('<div class="close-layer"></div>');
+    const $layer = $('<div class="close-layer"></div>')
 
     if ($('body').find('.main-panel').length != 0) {
-      $layer.appendTo(".main-panel");
-
+      $layer.appendTo('.main-panel')
     } else if (($('body').hasClass('off-canvas-sidebar'))) {
-      $layer.appendTo(".wrapper-full-page");
+      $layer.appendTo('.wrapper-full-page')
     }
 
-    setTimeout(function() {
-      $layer.addClass('visible');
-    }, 100);
+    setTimeout(function () {
+      $layer.addClass('visible')
+    }, 100)
 
-    $layer.click(function() {
-      $('html').removeClass('nav-open');
-      mobile_menu_visible = 0;
+    $layer.click(function () {
+      $('html').removeClass('nav-open')
+      mobile_menu_visible = 0
 
-      $layer.removeClass('visible');
+      $layer.removeClass('visible')
 
-      setTimeout(function() {
-        $layer.remove();
-        $toggle.removeClass('toggled');
+      setTimeout(function () {
+        $layer.remove()
+        $toggle.removeClass('toggled')
+      }, 400)
+    })
 
-      }, 400);
-    });
-
-    $('html').addClass('nav-open');
-    mobile_menu_visible = 1;
-
+    $('html').addClass('nav-open')
+    mobile_menu_visible = 1
   }
-
-});
+})
 
 // activate collapse right menu when the windows is resized
-$(window).resize(function() {
-  md.initSidebarsCheck();
+$(window).resize(function () {
+  md.initSidebarsCheck()
 
   // reset the seq for charts drawing animations
-  seq = seq2 = 0;
-
-});
+  seq = seq2 = 0
+})
 
 md = {
   misc: {
     navbar_menu_visible: 0,
     active_collapse: true,
-    disabled_collapse_init: 0,
+    disabled_collapse_init: 0
   },
 
-  checkSidebarImage: function() {
-    $sidebar = $('.sidebar');
-    image_src = $sidebar.data('image');
+  checkSidebarImage: function () {
+    $sidebar = $('.sidebar')
+    image_src = $sidebar.data('image')
 
     if (image_src !== undefined) {
-      sidebar_container = '<div class="sidebar-background" style="background-image: url(' + image_src + ') "/>';
-      $sidebar.append(sidebar_container);
+      sidebar_container = '<div class="sidebar-background" style="background-image: url(' + image_src + ') "/>'
+      $sidebar.append(sidebar_container)
     }
   },
 
-  initSidebarsCheck: function() {
+  initSidebarsCheck: function () {
     if ($(window).width() <= 991) {
       if ($sidebar.length != 0) {
-        md.initRightMenu();
+        md.initRightMenu()
       }
     }
   },
 
-  checkFullPageBackgroundImage: function() {
-    $page = $('.full-page');
-    image_src = $page.data('image');
+  checkFullPageBackgroundImage: function () {
+    $page = $('.full-page')
+    image_src = $page.data('image')
 
     if (image_src !== undefined) {
       image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>'
-      $page.append(image_container);
+      $page.append(image_container)
     }
   },
 
-  initMinimizeSidebar: function() {
-
-    $('#minimizeSidebar').click(function() {
-
+  initMinimizeSidebar: function () {
+    $('#minimizeSidebar').click(function () {
       if (md.misc.sidebar_mini_active == true) {
-        $('body').removeClass('sidebar-mini');
-        md.misc.sidebar_mini_active = false;
+        $('body').removeClass('sidebar-mini')
+        md.misc.sidebar_mini_active = false
       } else {
-        $('body').addClass('sidebar-mini');
-        md.misc.sidebar_mini_active = true;
+        $('body').addClass('sidebar-mini')
+        md.misc.sidebar_mini_active = true
       }
 
       // we simulate the window Resize so the charts will get updated in realtime.
-      var simulateWindowResize = setInterval(function() {
-        window.dispatchEvent(new Event('resize'));
-      }, 180);
+      const simulateWindowResize = setInterval(function () {
+        window.dispatchEvent(new Event('resize'))
+      }, 180)
 
       // we stop the simulation of Window Resize after the animations are completed
-      setTimeout(function() {
-        clearInterval(simulateWindowResize);
-      }, 1000);
-    });
+      setTimeout(function () {
+        clearInterval(simulateWindowResize)
+      }, 1000)
+    })
   },
 
-  checkScrollForTransparentNavbar: debounce(function() {
+  checkScrollForTransparentNavbar: debounce(function () {
     if ($(document).scrollTop() > 260) {
       if (transparent) {
-        transparent = false;
-        $('.navbar-color-on-scroll').removeClass('navbar-transparent');
+        transparent = false
+        $('.navbar-color-on-scroll').removeClass('navbar-transparent')
       }
     } else {
       if (!transparent) {
-        transparent = true;
-        $('.navbar-color-on-scroll').addClass('navbar-transparent');
+        transparent = true
+        $('.navbar-color-on-scroll').addClass('navbar-transparent')
       }
     }
   }, 17),
 
-
-  initRightMenu: debounce(function() {
-    $sidebar_wrapper = $('.sidebar-wrapper');
+  initRightMenu: debounce(function () {
+    $sidebar_wrapper = $('.sidebar-wrapper')
 
     if (!mobile_menu_initialized) {
-      $navbar = $('nav').find('.navbar-collapse').children('.navbar-nav');
+      $navbar = $('nav').find('.navbar-collapse').children('.navbar-nav')
 
-      mobile_menu_content = '';
+      mobile_menu_content = ''
 
-      nav_content = $navbar.html();
+      nav_content = $navbar.html()
 
-      nav_content = '<ul class="nav navbar-nav nav-mobile-menu">' + nav_content + '</ul>';
+      nav_content = '<ul class="nav navbar-nav nav-mobile-menu">' + nav_content + '</ul>'
 
-      navbar_form = $('nav').find('.navbar-form').get(0).outerHTML;
+      navbar_form = $('nav').find('.navbar-form').get(0).outerHTML
 
-      $sidebar_nav = $sidebar_wrapper.find(' > .nav');
+      $sidebar_nav = $sidebar_wrapper.find(' > .nav')
 
       // insert the navbar form before the sidebar list
-      $nav_content = $(nav_content);
-      $navbar_form = $(navbar_form);
-      $nav_content.insertBefore($sidebar_nav);
-      $navbar_form.insertBefore($nav_content);
+      $nav_content = $(nav_content)
+      $navbar_form = $(navbar_form)
+      $nav_content.insertBefore($sidebar_nav)
+      $navbar_form.insertBefore($nav_content)
 
-      $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
-        event.stopPropagation();
-
-      });
+      $('.sidebar-wrapper .dropdown .dropdown-menu > li > a').click(function (event) {
+        event.stopPropagation()
+      })
 
       // simulate resize so all the charts/maps will be redrawn
-      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event('resize'))
 
-      mobile_menu_initialized = true;
+      mobile_menu_initialized = true
     } else {
       if ($(window).width() > 991) {
         // reset all the additions that we made for the sidebar wrapper only if the screen is bigger than 991px
-        $sidebar_wrapper.find('.navbar-form').remove();
-        $sidebar_wrapper.find('.nav-mobile-menu').remove();
+        $sidebar_wrapper.find('.navbar-form').remove()
+        $sidebar_wrapper.find('.nav-mobile-menu').remove()
 
-        mobile_menu_initialized = false;
+        mobile_menu_initialized = false
       }
     }
   }, 200),
 
-  startAnimationForLineChart: function(chart) {
-
-    chart.on('draw', function(data) {
+  startAnimationForLineChart: function (chart) {
+    chart.on('draw', function (data) {
       if (data.type === 'line' || data.type === 'area') {
         data.element.animate({
           d: {
@@ -259,9 +246,9 @@ md = {
             to: data.path.clone().stringify(),
             easing: Chartist.Svg.Easing.easeOutQuint
           }
-        });
+        })
       } else if (data.type === 'point') {
-        seq++;
+        seq++
         data.element.animate({
           opacity: {
             begin: seq * delays,
@@ -270,17 +257,16 @@ md = {
             to: 1,
             easing: 'ease'
           }
-        });
+        })
       }
-    });
+    })
 
-    seq = 0;
+    seq = 0
   },
-  startAnimationForBarChart: function(chart) {
-
-    chart.on('draw', function(data) {
+  startAnimationForBarChart: function (chart) {
+    chart.on('draw', function (data) {
       if (data.type === 'bar') {
-        seq2++;
+        seq2++
         data.element.animate({
           opacity: {
             begin: seq2 * delays2,
@@ -289,50 +275,50 @@ md = {
             to: 1,
             easing: 'ease'
           }
-        });
+        })
       }
-    });
+    })
 
-    seq2 = 0;
+    seq2 = 0
   },
-  
-  initVectorMap: function() {
-    var mapData = {
-      "AU": 760,
-      "BR": 550,
-      "CA": 120,
-      "DE": 1300,
-      "FR": 540,
-      "GB": 690,
-      "GE": 200,
-      "IN": 200,
-      "RO": 600,
-      "RU": 300,
-      "US": 2920,
-    };
+
+  initVectorMap: function () {
+    const mapData = {
+      AU: 760,
+      BR: 550,
+      CA: 120,
+      DE: 1300,
+      FR: 540,
+      GB: 690,
+      GE: 200,
+      IN: 200,
+      RO: 600,
+      RU: 300,
+      US: 2920
+    }
 
     $('#worldMap').vectorMap({
       map: 'world_mill_en',
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       zoomOnScroll: false,
       regionStyle: {
         initial: {
           fill: '#e4e4e4',
-          "fill-opacity": 0.9,
+          'fill-opacity': 0.9,
           stroke: 'none',
-          "stroke-width": 0,
-          "stroke-opacity": 0
+          'stroke-width': 0,
+          'stroke-opacity': 0
         }
       },
 
       series: {
         regions: [{
           values: mapData,
-          scale: ["#AAAAAA", "#444444"],
+          scale: ['#AAAAAA', '#444444'],
           normalizeFunction: 'polynomial'
         }]
-      },
-    });
+      }
+    })
   }
 }
 
@@ -341,16 +327,16 @@ md = {
 // N milliseconds. If `immediate` is passed, trigger the function on the
 // leading edge, instead of the trailing.
 
-function debounce(func, wait, immediate) {
-  var timeout;
-  return function() {
-    var context = this,
-      args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    }, wait);
-    if (immediate && !timeout) func.apply(context, args);
-  };
+function debounce (func, wait, immediate) {
+  let timeout
+  return function () {
+    const context = this
+    const args = arguments
+    clearTimeout(timeout)
+    timeout = setTimeout(function () {
+      timeout = null
+      if (!immediate) func.apply(context, args)
+    }, wait)
+    if (immediate && !timeout) func.apply(context, args)
+  }
 };
