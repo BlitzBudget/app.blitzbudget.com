@@ -463,6 +463,10 @@
 
     // Fetches the budget for all the category rows if present and updates the category row
     function updateBudgetForIncome(data) {
+        if(isEmpty(data)) {
+            return;
+        }
+
         for (let count = 0, length = data.length; count < length; count++) {
             let value = data[count];
             // Update user budget to global map (Exportation)

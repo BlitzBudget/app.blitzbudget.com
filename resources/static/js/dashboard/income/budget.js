@@ -421,8 +421,8 @@
                 budgetCategoryChart.detach();
             } else {
                 let chartNode = document.getElementById('chartBudgetVisualization');
-                while (chartNode.firstChild) {
-                    chartNode.removeChild(chartNode.lastElementChild);
+                while (isNotEmpty(chartNode) && chartNode.firstChild) {
+                    chartNode.removeChild(chartNode.firstChild);
                 }
             }
         } else if (isNotEmpty(budgetCategoryChart)) {
@@ -1283,7 +1283,7 @@
         // Budget Visualization
         let chartVisualization = document.getElementById('chartBudgetVisualization');
         // Replace HTML with Empty
-        while (chartVisualization.firstChild) {
+        while (isNotEmpty(chartVisualization) && chartVisualization.firstChild) {
             chartVisualization.removeChild(chartVisualization.firstChild);
         }
         let materialSpinnerElement = document.createElement('div');

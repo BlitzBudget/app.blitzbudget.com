@@ -966,6 +966,10 @@ er = {
 
 // Populate current Date in the currentDateAsId global variable
 function populateCurrentDate(date) {
+    if(isEmpty(date)) {
+        return;
+    }
+
     window.currentDateAsID = window.chosenDate.toISOString();
     for (var i = date.length - 1; i >= 0; i--) {
         let presentDate = date[i].dateId;

@@ -549,25 +549,24 @@
                         /*
                          *	Currency Dropdown Populate
                          */
-
                         /*An array containing all the currency names in the world:*/
                         window.currencies = [];
                         window.cToS = {};
                         let curToSym = window.currencyNameToSymbol.currencyNameToSymbol;
                         for (let j = 0, k = curToSym.length; j < k; j++) {
-                            window.cToS[curToSym[i].currency] = curToSym[i].symbol;
+                            window.cToS[curToSym[j].currency] = curToSym[j].symbol;
                             /* Update the default currency in Settings */
-                            if (isEqual(wallet.currency, curToSym[i].currency)) {
-                                document.getElementById('chosenCurrency').textContent = curToSym[i].currency;
+                            if (isEqual(wallet.currency, curToSym[j].currency)) {
+                                document.getElementById('chosenCurrency').textContent = curToSym[j].currency;
                                 // To be used to display "with wallet" section
-                                document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[i].currency));
+                                document.getElementById('currentCurrencies').appendChild(dropdownItemsWithWallet(curToSym[j].currency));
                             } else {
-                                window.currencies.push(curToSym[i].currency);
+                                window.currencies.push(curToSym[j].currency);
                             }
                         }
                         /*initiate the autocomplete function on the "chosenCurrencyInp" element, and pass along the countries array as possible autocomplete values:*/
                         autocomplete(document.getElementById("chosenCurrencyInp"), window.currencies, "chooseCurrencyDD");
-
+                        break;
                     }
                 }
             };

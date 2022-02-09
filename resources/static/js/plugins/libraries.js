@@ -26,7 +26,7 @@ const Toast = Swal.mixin({
 })
 
 function formatToCurrency(amount) {
-    return formatNumber(amount, window.currentUser.locale) + currentCurrencyPreference;
+    return isEmpty(amount) ? amount : (formatNumber(amount, window.currentUser.locale) + currentCurrencyPreference);
 }
 
 function lastElement(arr) {
