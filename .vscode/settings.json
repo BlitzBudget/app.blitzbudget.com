@@ -1,0 +1,13 @@
+{
+    "java.completion.enabled": false,
+    "java.debug.settings.enableRunDebugCodeLens": false,
+    "java.test.editor.enableShortcuts": false,
+    "editor.formatOnSave": true,
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "nuxt.isNuxtApp": true,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/NagarjunNagesh/Documents/GitHub/Personal/blog.blitzbudget.com/.github/workflows/deploy.yml"
+    }
+}
