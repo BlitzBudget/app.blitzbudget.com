@@ -1,18 +1,23 @@
-# bb-bootstrap
-Blitz Budget Bootstrap front end
+# app.blitzbudget.com
 
-This module is a static front end framework fir the bb-core microservices.
+> BlitzBudget Wealth Dashboard
 
-Instructions to install and run the server
+## Build Setup
 
-1) npm install http-server -g
-2) http-server . -p 8080
+``` bash
+# install dependencies
+$ npm install # Or yarn install
 
+# serve with hot reload at localhost:3000
+$ npm run dev
 
-# Python HTTP Server (V2)
+# build for production and launch server
+$ npm run build
+$ npm start
 
-Running a HTTP Server
+# generate static project
+$ npm run generate
+```
 
-1) python -m SimpleHTTPServer 8080 
-
+For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
