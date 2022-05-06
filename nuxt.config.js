@@ -1,4 +1,5 @@
 module.exports = {
+  target: 'static',
   /*
   ** Headers of the page
   */
@@ -11,8 +12,8 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800'},
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css'}
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800' },
+      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css' }
     ],
     bodyAttrs: {
       class: 'sidebar-mini' // delete the class to have the sidebar expanded by default. Add `white-content` class here to enable "white" mode.
@@ -79,10 +80,10 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend (config, { isDev, isClient }) {
-       /*
-    ** Run ESLint on save
-    */
+    extend(config, { isDev, isClient }) {
+      /*
+   ** Run ESLint on save
+   */
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',
