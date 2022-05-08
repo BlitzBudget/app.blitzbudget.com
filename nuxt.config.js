@@ -1,15 +1,12 @@
 module.exports = {
-  target: 'static',
   /**
    * Environment Variables
    */
   env: {
     api: {
-      invokeUrl: 'https://api.blitzbudget.com', // e.g. https://rc7nyt4tql.execute-api.us-west-2.amazonaws.com/prod,
       sendEmailUrl: '/send-email',
       profile: {
         refreshToken: '/profile/refresh-token',
-        signin: '/profile/sign-in',
         signup: '/profile/sign-up',
         confirmSignup: '/profile/confirm-sign-up',
         resendConfirmationCode: '/profile/resend-confirmation-code',
@@ -59,7 +56,8 @@ module.exports = {
     }
   },
   router: {
-    linkExactActiveClass: 'active'
+    linkExactActiveClass: 'active',
+    middleware: ['auth']
   },
   /*
   ** Customize the progress bar color
@@ -90,8 +88,42 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/pwa',
-    'nuxt-i18n'
+    'nuxt-i18n',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
+  axios: {
+    baseURL: 'https://api.blitzbudget.com',
+    credentials: false
+  },
+  auth: {
+    plugins: ['~/plugins/authentication/auth.js'],
+    // Options
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      home: '/'
+    },
+    localStorage: {
+      prefix: 'auth.'
+    },
+    strategies: {
+      local: {
+        user: {
+          property: 'user',
+          autoFetch: false
+        },
+        endpoints: {
+          login: { url: '/profile/sign-in', method: 'post', propertyName: 'AuthenticationResult.IdToken' },
+          logout: false,
+          user: false
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    }
+  },
   i18n: {
     locales: [
       {
