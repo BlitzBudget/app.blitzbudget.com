@@ -22,6 +22,8 @@ import Notifications from '@/components/NotificationPlugin';
 import VeeValidate from 'vee-validate';
 // A plugin file where you could register global components used across the app
 import './globalComponents';
+// A plugin file where you could register global components used across the app
+import './libraries/index';
 // A plugin file where you could register global directives
 import './globalDirectives';
 // Sidebar on the right. Used as a local plugin in DashboardLayout.vue
