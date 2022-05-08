@@ -1,5 +1,41 @@
 module.exports = {
-  target: 'static',
+  /**
+   * Environment Variables
+   */
+  env: {
+    api: {
+      sendEmailUrl: '/send-email',
+      profile: {
+        refreshToken: '/profile/refresh-token',
+        signup: '/profile/sign-up',
+        confirmSignup: '/profile/confirm-sign-up',
+        resendConfirmationCode: '/profile/resend-confirmation-code',
+        forgotPassword: '/profile/forgot-password',
+        confirmForgotPassword: '/profile/confirm-forgot-password',
+        deleteUser: '/profile/delete-user',
+        changePassword: '/profile/change-password',
+      },
+      deleteItem: '/delete-item',
+      delete: '/delete',
+      deleteBatch: '/delete-batch',
+      goals: '/goals',
+      deleteCategories: '/categories/delete'
+    },
+    home: {
+      invokeUrl: 'https://www.blitzbudget.com'
+    },
+    help: {
+      invokeUrl: 'https://help.blitzbudget.com',
+      html: '/support/modal',
+      js: '/js/dashboard/support/support.min.js'
+    },
+    app: {
+      invokeUrl: 'https://app.blitzbudget.com/'
+    },
+    wallet: {
+      invokeUrl: 'wallets'
+    }
+  },
   /*
   ** Headers of the page
   */
@@ -20,16 +56,13 @@ module.exports = {
     }
   },
   router: {
-    linkExactActiveClass: 'active'
+    linkExactActiveClass: 'active',
+    middleware: ['auth']
   },
   /*
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
-  /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#fff' },
   /*
    ** Global CSS
    */
@@ -55,8 +88,42 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/pwa',
-    'nuxt-i18n'
+    'nuxt-i18n',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth-next'
   ],
+  axios: {
+    baseURL: 'https://api.blitzbudget.com',
+    credentials: false
+  },
+  auth: {
+    plugins: ['~/plugins/authentication/auth.js'],
+    // Options
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      home: '/'
+    },
+    localStorage: {
+      prefix: 'auth.'
+    },
+    strategies: {
+      local: {
+        user: {
+          property: 'user',
+          autoFetch: false
+        },
+        endpoints: {
+          login: { url: '/profile/sign-in', method: 'post', propertyName: 'AuthenticationResult.IdToken' },
+          logout: false,
+          user: false
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    }
+  },
   i18n: {
     locales: [
       {
