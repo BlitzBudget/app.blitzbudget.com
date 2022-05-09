@@ -3,36 +3,20 @@
     <div class="container-fluid">
       <ul class="nav">
         <li class="nav-item">
-          <a
-            href="https://example.com"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
+          <a href="https://example.com" target="_blank" rel="noopener" class="nav-link">
             Link
           </a>
         </li>
         <li class="nav-item">
-          <a
-            href="https://example.com"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
+          <a href="https://example.com" target="_blank" rel="noopener" class="nav-link">
             Another Link
           </a>
         </li>
       </ul>
       <div class="copyright">
         &copy; {{ year }}, made with <i class="tim-icons icon-heart-2"></i> by
-        <a href="https://binarcode.com" rel="noopener" target="_blank">BinarCode</a> and
-        <a
-          href="https://www.creative-tim.com/?ref=pdf-vuejs"
-          target="_blank"
-          rel="noopener"
-        >Creative Tim</a
-        >
-        for a better web.
+        <a href="https://www.blitzbudget.com" target="_blank" rel="noopener">Blitz Budget</a>
+        for a better financial life.
       </div>
     </div>
   </footer>
@@ -46,4 +30,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>

@@ -4,8 +4,8 @@
  * Nuxt Black Dashboard PRO - v1.0.0
  =========================================================
 
- * Product Page: https://www.creative-tim.com/product/nuxt-black-dashboard-pro
- * Copyright 2019 Creative Tim (https://www.creative-tim.com)
+ * Product Page: https://www.blitzbudget.com/product/nuxt-black-dashboard-pro
+ * Copyright 2019 Creative Tim (https://www.blitzbudget.com)
 
  * Coded by Creative Tim
 
@@ -30,6 +30,8 @@ import './globalDirectives';
 import SideBar from '@/components/SidebarPlugin';
 // RTL (right to left plugin to support rtl layout). If you don't need support for rtl, remove this plugin
 import RTLPlugin from './RTLPlugin';
+// Authentication library
+import './authentication/index'
 
 // element ui language configuration
 import lang from 'element-ui/lib/locale/lang/en';

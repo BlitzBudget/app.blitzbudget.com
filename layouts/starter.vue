@@ -5,7 +5,7 @@
     <side-bar
       :background-color="sidebarBackground"
       short-title="CT"
-      title="Creative Tim"
+      title="Blitz Budget"
     >
       <template slot-scope="props" slot="links">
         <sidebar-item

@@ -1,12 +1,7 @@
 <template>
   <div>
-    <base-nav
-      v-model="showMenu"
-      type="white"
-      :transparent="true"
-      menu-classes="justify-content-end"
-      class="auth-navbar fixed-top"
-    >
+    <base-nav v-model="showMenu" type="white" :transparent="true" menu-classes="justify-content-end"
+      class="auth-navbar fixed-top">
       <div slot="brand" class="navbar-wrapper">
         <a class="navbar-brand" href="#" v-if="title">{{ title }}</a>
       </div>
@@ -44,10 +39,7 @@
     <div class="wrapper wrapper-full-page">
       <div class="full-page" :class="pageClass">
         <div class="content">
-          <zoom-center-transition
-            :duration="pageTransitionDuration"
-            mode="out-in"
-          >
+          <zoom-center-transition :duration="pageTransitionDuration" mode="out-in">
             <nuxt></nuxt>
           </zoom-center-transition>
         </div>
@@ -56,32 +48,17 @@
             <nav>
               <ul class="nav">
                 <li class="nav-item">
-                  <a
-                    href="https://www.creative-tim.com"
-                    target="_blank"
-                    rel="noopener"
-                    class="nav-link"
-                  >
-                    Creative Tim
+                  <a href="https://www.blitzbudget.com" target="_blank" rel="noopener" class="nav-link">
+                    Blitz Budget
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    href="http://presentation.creative-tim.com"
-                    target="_blank"
-                    rel="noopener"
-                    class="nav-link"
-                  >
-                    About Us
+                  <a href="http://help.blitzbudget.com" target="_blank" rel="noopener" class="nav-link">
+                    Support
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a
-                    href="http://blog.creative-tim.com"
-                    target="_blank"
-                    rel="noopener"
-                    class="nav-link"
-                  >
+                  <a href="http://blog.blitzbudget.com" target="_blank" rel="noopener" class="nav-link">
                     Blog
                   </a>
                 </li>
@@ -90,14 +67,8 @@
             <div class="copyright">
               &copy; {{ year }}, made with
               <i class="tim-icons icon-heart-2"></i> by
-              <a href="https://binarcode.com" target="_blank">BinarCode</a> and
-              <a
-                href="https://www.creative-tim.com/?ref=pdf-vuejs"
-                target="_blank"
-                rel="noopener"
-                >Creative Tim</a
-              >
-              for a better web.
+              <a href="https://www.blitzbudget.com" target="_blank" rel="noopener">Blitz Budget</a>
+              for a better financial life.
             </div>
           </div>
         </footer>
@@ -164,11 +135,13 @@ export default {
 }
 
 $scaleSize: 0.8;
+
 @keyframes zoomIn8 {
   from {
     opacity: 0;
     transform: scale3d($scaleSize, $scaleSize, $scaleSize);
   }
+
   100% {
     opacity: 1;
   }
@@ -182,6 +155,7 @@ $scaleSize: 0.8;
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
     transform: scale3d($scaleSize, $scaleSize, $scaleSize);

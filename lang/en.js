@@ -37,5 +37,8 @@ module.exports = {
     "widgets": "Widgets",
     "charts": "Charts",
     "calendar": "Calendar"
+  },
+  "login": {
+    "error": "There was an error while logging in, Please try again!"
   }
 }
