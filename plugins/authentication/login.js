@@ -19,7 +19,7 @@ let authentication = {
             event.$auth.setUserToken(idToken, refreshToken)
         } catch (err) {
             console.log(err);
-            event.$notify({ type: 'danger', message: $nuxt.$t('login.error') });
+            event.$notify({ type: 'danger', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('login.error') });
         }
     },
     storeAuthToken(result) {

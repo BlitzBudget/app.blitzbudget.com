@@ -9,14 +9,9 @@
         <li class="adjustments-line">
           <a class="switch-trigger background-color">
             <div class="badge-colors text-center">
-              <span
-                v-for="item in sidebarColors"
-                :key="item.color"
-                class="badge filter"
-                :class="[`badge-${item.color}`, { active: item.active }]"
-                :data-color="item.color"
-                @click="changeSidebarBackground(item);"
-              ></span>
+              <span v-for="item in sidebarColors" :key="item.color" class="badge filter"
+                :class="[`badge-${item.color}`, { active: item.active }]" :data-color="item.color"
+                @click="changeSibarBackGroundAndStore(item);"></span>
             </div>
             <div class="clearfix"></div>
           </a>
@@ -26,10 +21,7 @@
         <li class="adjustments-line">
           <div class="togglebutton switch-sidebar-mini">
             <span class="label-switch">OFF</span>
-            <base-switch
-              v-model="sidebarMini"
-              @input="minimizeSidebar"
-            ></base-switch>
+            <base-switch v-model="sidebarMini" @input="minimizeSidebar"></base-switch>
             <span class="label-switch label-right">ON</span>
           </div>
 
@@ -41,29 +33,11 @@
         </li>
 
         <li class="button-container mt-4">
-          <a
-            href="https://demos.creative-tim.com/nuxt-black-dashboard-pro/documentation"
-            target="_blank"
-            rel="noopener"
-            class="btn btn-default btn-block btn-round"
-          >
-            Documentation
+          <a href="#" target="_blank" rel="noopener" class="btn btn-default btn-block btn-round">
+            Support
           </a>
-          <a
-            href="https://creative-tim.com/product/nuxt-black-dashboard-pro"
-            target="_blank"
-            rel="noopener"
-            class="btn btn-primary btn-block btn-round"
-          >
-            Buy for $79
-          </a>
-          <a
-            href="https://demos.creative-tim.com/vue-black-dashboard"
-            target="_blank"
-            rel="noopener"
-            class="btn btn-info btn-block btn-round"
-          >
-            Free Version
+          <a href="#" target="_blank" rel="noopener" class="btn btn-primary btn-block btn-round">
+            Ask us Directly
           </a>
         </li>
       </ul>
@@ -71,70 +45,129 @@
   </div>
 </template>
 <script>
-  import { BaseSwitch } from '@/components';
+import { BaseSwitch } from '@/components';
+import constants from '@/components/SidebarPlugin/dashboard/constants';
 
-  export default {
-    name: 'sidebar-share',
-    components: {
-      BaseSwitch
+export default {
+  name: 'sidebar-share',
+  components: {
+    BaseSwitch
+  },
+  props: {
+    backgroundColor: String
+  },
+  data() {
+    return {
+      sidebarMini: true,
+      darkMode: true,
+      isOpen: false,
+      sidebarColors: [
+        { color: 'primary', active: false, value: 'primary' },
+        { color: 'vue', active: true, value: 'vue' },
+        { color: 'info', active: false, value: 'blue' },
+        { color: 'success', active: false, value: 'green' },
+        { color: 'warning', active: false, value: 'orange' },
+        { color: 'danger', active: false, value: 'red' }
+      ],
+      darkModeText: 'dark',
+      darkModeClass: 'white-content',
+      darkModeStorageItemName: 'dark_mode',
+      sidebarBackgroundItemName: 'changeSidebarBackground',
+    };
+  },
+  methods: {
+    toggleDropDown() {
+      this.isOpen = !this.isOpen;
     },
-    props: {
-      backgroundColor: String
+    closeDropDown() {
+      this.isOpen = false;
     },
-    data() {
-      return {
-        sidebarMini: true,
-        darkMode: true,
-        isOpen: false,
-        sidebarColors: [
-          { color: 'primary', active: false, value: 'primary' },
-          { color: 'vue', active: true, value: 'vue' },
-          { color: 'info', active: false, value: 'blue' },
-          { color: 'success', active: false, value: 'green' },
-          { color: 'warning', active: false, value: 'orange' },
-          { color: 'danger', active: false, value: 'red' }
-        ]
-      };
+    openDropDown() {
+      this.isOpen = true;
     },
-    methods: {
-      toggleDropDown() {
-        this.isOpen = !this.isOpen;
-      },
-      closeDropDown() {
-        this.isOpen = false;
-      },
-      toggleList(list, itemToActivate) {
-        list.forEach(listItem => {
-          listItem.active = false;
-        });
-        itemToActivate.active = true;
-      },
-      changeSidebarBackground(item) {
-        this.$emit('update:backgroundColor', item.value);
-        this.toggleList(this.sidebarColors, item);
-      },
-      toggleMode(type) {
-        let docClasses = document.body.classList;
-        if (type) {
-          docClasses.remove('white-content');
-        } else {
-          docClasses.add('white-content');
-        }
-      },
-      minimizeSidebar() {
-        this.$sidebar.toggleMinimize();
+    toggleList(list, itemToActivate) {
+      list.forEach(listItem => {
+        listItem.active = false;
+      });
+      itemToActivate.active = true;
+    },
+    changeSidebarBackground(item) {
+      this.$emit('update:backgroundColor', item.value);
+      this.toggleList(this.sidebarColors, item);
+    },
+    changeSibarBackGroundAndStore(item) {
+      this.changeSidebarBackground(item);
+      this.storeSidebarColor(item);
+    },
+    toggleMode(type) {
+      let docClasses = document.body.classList;
+      if (type) {
+        docClasses.remove(this.darkModeClass);
+      } else {
+        docClasses.add(this.darkModeClass);
       }
+      // Store Dark mode to local storage
+      this.storeDarkMode(type);
+    },
+    minimizeSidebar() {
+      this.$sidebar.toggleMinimize();
+    },
+    addTheme() {
+      let minimizeSidebar = localStorage.getItem(constants.MINIMIZE_SIDEBAR);
+      let darkMode = localStorage.getItem(this.darkModeStorageItemName);
+      let changeSidebarBackgroundItem = localStorage.getItem(this.sidebarBackgroundItemName);
+
+      if (!minimizeSidebar) {
+        this.$sidebar.expandSidebar();
+      } else {
+        this.$sidebar.minimizeSidebar();
+      }
+
+      if (changeSidebarBackgroundItem) {
+        changeSidebarBackgroundItem = JSON.parse(changeSidebarBackgroundItem);
+        this.changeSidebarBackground(changeSidebarBackgroundItem);
+      }
+
+      let docClasses = document.body.classList;
+      if (darkMode === this.darkModeText) {
+        docClasses.remove(this.darkModeClass);
+      } else {
+        docClasses.add(this.darkModeClass);
+      }
+
+    },
+    storeDarkMode(darkModeEnabled) {
+      let value = '';
+      if (darkModeEnabled) {
+        value = this.darkModeText;
+      }
+
+      localStorage.setItem(this.darkModeStorageItemName, value);
+    },
+    storeSidebarColor(item) {
+      item = JSON.stringify(item);
+      localStorage.setItem(this.sidebarBackgroundItemName, item);
     }
-  };
+  },
+  mounted() {
+    // On refresh apply settings from localstorage
+    this.addTheme();
+    // Register Component to trigger on settings click
+    this.$root.$on('openSettingsSidebar', () => {
+      // your code goes here
+      this.openDropDown();
+    });
+  }
+};
 </script>
 <style scoped lang="scss">
-  @import '~@/assets/sass/dashboard/custom/variables';
+@import '~@/assets/sass/dashboard/custom/variables';
 
-  .settings-icon {
-    cursor: pointer;
-  }
+.settings-icon {
+  cursor: pointer;
+}
 
-  .badge-vue {
-    background-color: $vue;
-  }
+.badge-vue {
+  background-color: $vue;
+}
 </style>

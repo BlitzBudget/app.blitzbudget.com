@@ -212,7 +212,7 @@
   </div>
 </template>
 <script>
-import TaskList from '../components/Dashboard/TaskList';
+import TaskList from '@/components/Dashboard/TaskList';
 import {
   BaseSwitch,
   TimeLine,

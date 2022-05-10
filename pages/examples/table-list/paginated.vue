@@ -114,7 +114,7 @@
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from '@/components';
-import users from '../../util/mock-users';
+import users from '@/util/mock-users';
 import Fuse from 'fuse.js';
 import swal from 'sweetalert2';
 

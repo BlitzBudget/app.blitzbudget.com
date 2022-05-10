@@ -55,10 +55,12 @@
           <p class="d-lg-none">Log out</p>
         </template>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Profile</a>
+          <nuxt-link to="/user/profile" class="nav-item dropdown-item">
+            Profile
+          </nuxt-link>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Settings</a>
+          <a href="#" class="nav-item dropdown-item" @click="openSettingsModel">Settings</a>
         </li>
         <div class="dropdown-divider"></div>
         <li class="nav-link">
@@ -117,6 +119,10 @@ export default {
     async logoutUser() {
       console.log("logging out user");
       await this.$userLogout.logout(this);
+    },
+    openSettingsModel() {
+      // Trigger Settings model to Open
+      this.$root.$emit('openSettingsSidebar');
     }
   }
 };

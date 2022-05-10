@@ -7,11 +7,6 @@
       </div>
 
       <ul class="navbar-nav">
-        <nuxt-link class="nav-item" tag="li" to="/">
-          <a class="nav-link text-primary">
-            <i class="tim-icons icon-minimal-left"></i> Back to Dashboard
-          </a>
-        </nuxt-link>
         <nuxt-link class="nav-item" tag="li" to="/register">
           <a class="nav-link">
             <i class="tim-icons icon-laptop"></i> Register
@@ -21,16 +16,6 @@
         <nuxt-link class="nav-item" tag="li" to="/login">
           <a class="nav-link">
             <i class="tim-icons icon-single-02"></i> Login
-          </a>
-        </nuxt-link>
-
-        <nuxt-link class="nav-item" tag="li" to="/pricing">
-          <a class="nav-link"> <i class="tim-icons icon-coins"></i> Pricing </a>
-        </nuxt-link>
-
-        <nuxt-link class="nav-item" tag="li" to="/lock">
-          <a class="nav-link">
-            <i class="tim-icons icon-lock-circle"></i> Lock
           </a>
         </nuxt-link>
       </ul>

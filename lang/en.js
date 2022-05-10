@@ -1,8 +1,12 @@
 module.exports = {
   "sidebar": {
-    "title": "Creative Tim",
-    "shortTitle": "CT",
+    "title": "Blitz Budget",
+    "shortTitle": "BB",
     "dashboard": "Dashboard",
+    "transaction": "Transactions",
+    "goal": "Goals",
+    "budget": "Budget",
+    "userProfile": "User Profile", // TODO Remove everything below for sidebar
     "pages": "Pages",
     "pricing": "Pricing",
     "rtl": "RTL Support",
@@ -10,7 +14,6 @@ module.exports = {
     "login": "Login",
     "register": "Register",
     "lock": "Lock Screen",
-    "userProfile": "User Profile",
     "components": "Components",
     "multiLevelCollapse": "Multilevel Collapse",
     "example": "Example Page",
@@ -40,5 +43,12 @@ module.exports = {
   },
   "login": {
     "error": "There was an error while logging in, Please try again!"
+  },
+  "user": {
+    "delete": {
+      "title": "Delete account",
+      "description": "Be careful. This will delete your user account and all the information you entered.",
+      "button": "Delete my BlitzBudget account"
+    }
   }
 }

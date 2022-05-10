@@ -2,26 +2,18 @@
   <div class="sidebar" :data="backgroundColor">
     <div class="sidebar-wrapper" ref="sidebarScrollArea">
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+        <nuxt-link to="/" class="simple-text logo-mini">
           <img :src="logo" alt="app-logo" />
-        </a>
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        </nuxt-link>
+        <nuxt-link to="/" class="simple-text logo-normal">
           {{ title }}
-        </a>
+        </nuxt-link>
       </div>
       <slot></slot>
       <ul class="nav">
         <slot name="links">
-          <sidebar-item
-            v-for="(link, index) in sidebarLinks"
-            :key="link.name + index"
-            :link="link"
-          >
-            <sidebar-item
-              v-for="(subLink, index) in link.children"
-              :key="subLink.name + index"
-              :link="subLink"
-            >
+          <sidebar-item v-for="(link, index) in sidebarLinks" :key="link.name + index" :link="link">
+            <sidebar-item v-for="(subLink, index) in link.children" :key="subLink.name + index" :link="subLink">
             </sidebar-item>
           </sidebar-item>
         </slot>
@@ -35,17 +27,17 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Creative Tim',
+      default: 'BlitzBudget',
       description: 'Sidebar title'
     },
     shortTitle: {
       type: String,
-      default: 'CT',
+      default: 'BB',
       description: 'Sidebar short title'
     },
     logo: {
       type: String,
-      default: 'http://demos.creative-tim.com/nuxt-black-dashboard-pro/img/icon-nuxt.svg',
+      default: '/img/business-name/business-logo.svg',
       description: 'Sidebar app logo'
     },
     backgroundColor: {
@@ -100,6 +92,7 @@ export default {
 </script>
 <style>
 @media (min-width: 992px) {
+
   .navbar-search-form-mobile,
   .nav-mobile-menu {
     display: none;

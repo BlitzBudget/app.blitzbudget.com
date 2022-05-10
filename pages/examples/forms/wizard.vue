@@ -45,9 +45,9 @@
   </div>
 </template>
 <script>
-import FirstStep from '../../components/Wizard/FirstStep.vue';
-import SecondStep from '../../components/Wizard/SecondStep.vue';
-import ThirdStep from '../../components/Wizard/ThirdStep.vue';
+import FirstStep from '@/components/Wizard/FirstStep.vue';
+import SecondStep from '@/components/Wizard/SecondStep.vue';
+import ThirdStep from '@/components/Wizard/ThirdStep.vue';
 import swal from 'sweetalert2';
 import { SimpleWizard, WizardTab } from '@/components';
 
