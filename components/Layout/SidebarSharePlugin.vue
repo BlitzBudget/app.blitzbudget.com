@@ -33,12 +33,12 @@
         </li>
 
         <li class="button-container mt-4">
-          <a href="#" target="_blank" rel="noopener" class="btn btn-default btn-block btn-round">
+          <nuxt-link to="/support" class="btn btn-default btn-block btn-round">
             Support
-          </a>
-          <a href="#" target="_blank" rel="noopener" class="btn btn-primary btn-block btn-round">
+          </nuxt-link>
+          <nuxt-link to="/support/ask-us-directly" class="btn btn-primary btn-block btn-round">
             Ask us Directly
-          </a>
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -112,29 +112,40 @@ export default {
     minimizeSidebar() {
       this.$sidebar.toggleMinimize();
     },
-    addTheme() {
+    applySidebarMiniSettings() {
       let minimizeSidebar = localStorage.getItem(constants.MINIMIZE_SIDEBAR);
-      let darkMode = localStorage.getItem(this.darkModeStorageItemName);
-      let changeSidebarBackgroundItem = localStorage.getItem(this.sidebarBackgroundItemName);
-
       if (!minimizeSidebar) {
         this.$sidebar.expandSidebar();
+        // Change default selection in modal
+        this.sidebarMini = false;
       } else {
         this.$sidebar.minimizeSidebar();
       }
-
-      if (changeSidebarBackgroundItem) {
-        changeSidebarBackgroundItem = JSON.parse(changeSidebarBackgroundItem);
-        this.changeSidebarBackground(changeSidebarBackgroundItem);
-      }
+    },
+    applyDarkModeSettings() {
+      let darkMode = localStorage.getItem(this.darkModeStorageItemName);
 
       let docClasses = document.body.classList;
       if (darkMode === this.darkModeText) {
         docClasses.remove(this.darkModeClass);
       } else {
         docClasses.add(this.darkModeClass);
+        // Change default settings in modal
+        this.darkMode = false;
       }
+    },
+    applySidebarBackground() {
+      let changeSidebarBackgroundItem = localStorage.getItem(this.sidebarBackgroundItemName);
 
+      if (changeSidebarBackgroundItem) {
+        changeSidebarBackgroundItem = JSON.parse(changeSidebarBackgroundItem);
+        this.changeSidebarBackground(changeSidebarBackgroundItem);
+      }
+    },
+    applyTheme() {
+      this.applySidebarMiniSettings();
+      this.applyDarkModeSettings();
+      this.applySidebarBackground();
     },
     storeDarkMode(darkModeEnabled) {
       let value = '';
@@ -151,12 +162,7 @@ export default {
   },
   mounted() {
     // On refresh apply settings from localstorage
-    this.addTheme();
-    // Register Component to trigger on settings click
-    this.$root.$on('openSettingsSidebar', () => {
-      // your code goes here
-      this.openDropDown();
-    });
+    this.applyTheme();
   }
 };
 </script>

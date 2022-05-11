@@ -60,7 +60,7 @@
           </nuxt-link>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item" @click="openSettingsModel">Settings</a>
+          <a href="#" class="nav-item dropdown-item">Settings</a>
         </li>
         <div class="dropdown-divider"></div>
         <li class="nav-link">
@@ -119,10 +119,6 @@ export default {
     async logoutUser() {
       console.log("logging out user");
       await this.$userLogout.logout(this);
-    },
-    openSettingsModel() {
-      // Trigger Settings model to Open
-      this.$root.$emit('openSettingsSidebar');
     }
   }
 };

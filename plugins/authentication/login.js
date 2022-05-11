@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 let authentication = {
     currentUserItemInStorage: "currentUserItem",
+    currentUser: {},
     loginUser: async (event) => {
         try {
             let response = await event.$auth.loginWith('local', {
@@ -19,7 +20,7 @@ let authentication = {
             event.$auth.setUserToken(idToken, refreshToken)
         } catch (err) {
             console.log(err);
-            event.$notify({ type: 'danger', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('login.error') });
+            event.$notify({ type: 'danger', timeout: 10000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('login.error') });
         }
     },
     storeAuthToken(result) {
@@ -61,10 +62,19 @@ let authentication = {
         }
 
         // Current User to global variable
-        window.currentUser = currentUserLocal;
+        this.currentUser = currentUserLocal;
         // We save the item in the localStorage.
-        localStorage.setItem(event.$currentUserItemInStorage, JSON.stringify(currentUser));
-        event.$auth.setUser(currentUser);
+        localStorage.setItem(this.currentUserItemInStorage, JSON.stringify(currentUserLocal));
+        event.$auth.setUser(currentUserLocal);
+    },
+    fetchCurrentUser() {
+        let currentUser = localStorage.getItem(this.currentUserItemInStorage);
+
+        if (currentUser) {
+            currentUser = JSON.parse(currentUser);
+        }
+
+        return currentUser;
     }
 }
 

@@ -8,9 +8,9 @@
             <i class="tim-icons icon-wifi"></i>
           </div>
           <div class="description">
-            <h3 class="info-title mb-md-0">Budget</h3>
+            <h3 class="info-title mb-md-0">{{ $t('user.register.info.first.title') }}</h3>
             <p class="description">
-              Finding it hard to save? Try to budget with the help of our budget manager!
+              {{ $t('user.register.info.first.description') }}
             </p>
           </div>
         </div>
@@ -19,9 +19,9 @@
             <i class="tim-icons icon-triangle-right-17"></i>
           </div>
           <div class="description">
-            <h3 class="info-title mb-md-0">Goals</h3>
+            <h3 class="info-title mb-md-0">{{ $t('user.register.info.second.title') }}</h3>
             <p class="description">
-              Dream of achieving a worthwhile goal? Create a goal and start tracking your savings towards it.
+              {{ $t('user.register.info.second.description') }}
             </p>
           </div>
         </div>
@@ -30,9 +30,9 @@
             <i class="tim-icons icon-trophy"></i>
           </div>
           <div class="description">
-            <h3 class="info-title mb-md-0">Categorize</h3>
+            <h3 class="info-title mb-md-0">{{ $t('user.register.info.third.title') }}</h3>
             <p class="description">
-              Planning for a trip? Find it hard to keep track of an expense? Create a category!
+              {{ $t('user.register.info.third.description') }}
             </p>
           </div>
         </div>
@@ -43,28 +43,28 @@
           <card class="card-register card-white">
             <template slot="header">
               <img class="card-img" src="img/card-primary.png" alt="Card image" />
-              <h4 class="card-title">Register</h4>
+              <h4 class="card-title">{{ $t('user.register.title') }}</h4>
             </template>
 
             <base-input v-validate="'required'" :error="getError('Full Name')" v-model="model.fullName" name="Full Name"
-              placeholder="Full Name" addon-left-icon="tim-icons icon-single-02">
+              :placeholder="$t('user.register.placeholder.fullname')" addon-left-icon="tim-icons icon-single-02">
             </base-input>
 
             <base-input v-validate="'required|email'" :error="getError('email')" v-model="model.email" name="email"
-              placeholder="Email" autocomplete="username" addon-left-icon="tim-icons icon-email-85">
+              :placeholder="$t('user.register.placeholder.email')" autocomplete="username" addon-left-icon="tim-icons icon-email-85">
             </base-input>
 
             <base-input v-validate="'required|min:8'" :error="getError('password')" v-model="model.password"
-              name="password" type="password" placeholder="Password" autocomplete="current-password"
+              name="password" type="password" :placeholder="$t('user.register.placeholder.password')" autocomplete="current-password"
               addon-left-icon="tim-icons icon-lock-circle">
             </base-input>
 
             <base-checkbox class="text-left">
-              I agree to the <a href="#something">terms and conditions</a>.
+              {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{ $t('user.register.terms.secondpart') }}</a>.
             </base-checkbox>
 
             <base-button native-type="submit" slot="footer" type="primary" round block size="lg">
-              Get Started
+              {{ $t('user.register.button') }}
             </base-button>
           </card>
         </form>
