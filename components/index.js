@@ -37,6 +37,7 @@ import LoadingPanel from './LoadingPanel.vue';
 import BasePagination from './BasePagination.vue';
 
 import SidebarPlugin from './SidebarPlugin';
+import Wallet from './Wallet';
 
 import AnimatedNumber from './AnimatedNumber';
 
@@ -75,5 +76,6 @@ export {
   BaseButton,
   Collapse,
   CollapseItem,
-  LoadingPanel
+  LoadingPanel,
+  Wallet
 };

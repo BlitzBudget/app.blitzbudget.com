@@ -1,5 +1,6 @@
 <template>
     <div class="container login-page">
+        <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
                 <email-form @on-submit="sendEmail" :class="[
@@ -29,7 +30,7 @@
 import EmailForm from '@/components/ValidationForms/Support/EmailForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'ask-us-directly',
     components: {
         EmailForm,
     },

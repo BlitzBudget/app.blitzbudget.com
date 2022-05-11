@@ -13,7 +13,7 @@
                     v-validate="modelValidations.message" :error="getError('message')" name="message" type="message">
                 </base-textarea>
 
-                <div class="small form-category">{{ $t('support.ask-us-directly.required-fields') }}</div>
+                <div class="category form-category">{{ $t('support.ask-us-directly.required-fields') }}</div>
             </div>
 
             <template slot="footer">

@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 let authentication = {
     currentUserItemInStorage: "currentUserItem",
+    accessTokenItem: 'accessToken',
     currentUser: {},
     loginUser: async (event) => {
         try {
@@ -39,7 +40,7 @@ let authentication = {
         // Set JWT Token For authentication
         let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
         accessToken = accessToken.substring(1, accessToken.length - 1);
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem(this.accessTokenItem, accessToken);
         event.$axios.setHeader('Authorization', 'Bearer ' + accessToken);
         event.$auth.ctx.app.$axios.setHeader('Authorization', 'Bearer ' + accessToken);
     },
@@ -68,13 +69,20 @@ let authentication = {
         event.$auth.setUser(currentUserLocal);
     },
     fetchCurrentUser() {
-        let currentUser = localStorage.getItem(this.currentUserItemInStorage);
-
-        if (currentUser) {
-            currentUser = JSON.parse(currentUser);
+        if (this.currentUser) {
+            return this.currentUser;
         }
 
+        // If not present then fetch from local storage
+        let currentUser = localStorage.getItem(this.currentUserItemInStorage);
+        if (currentUser) {
+            currentUser = JSON.parse(currentUser);
+            this.currentUser = currentUser;
+        }
         return currentUser;
+    },
+    fetchAccessToken() {
+        return localStorage.getItem(this.accessTokenItem);
     }
 }
 

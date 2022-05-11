@@ -309,10 +309,21 @@ export default {
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
+    },
+    fetchOverview() {
+      this.$axios.$post(process.env.api.overview, {
+        userId: currentUser.financialPortfolioId,
+      }).then((response) => {
+        this.data = response;
+      }).catch(({ error }) => {
+        this.$notify({ type: 'danger', message: error });
+      });
     }
   },
   mounted() {
     this.initBigChart(0);
+    // Fetch Data from API
+    // this.fetchOverview();
   }
 }
 </script>

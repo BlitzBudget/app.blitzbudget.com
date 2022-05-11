@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+    <notifications></notifications>
     <div class="col-md-6">
       <register-form @on-submit="onRegisterSubmit"></register-form>
     </div>

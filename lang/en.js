@@ -48,7 +48,7 @@ module.exports = {
     "ask-us-directly": {
       "title": "Ask us Directly",
       "subject": "Subject",
-      "message": "Write us a message.",
+      "message": "Write us a message",
       "articles": "Check our articles",
       "required-fields": "* Required fields",
       "send-email": "Send Email",
@@ -59,6 +59,19 @@ module.exports = {
     }
   },
   "user": {
+    "change-password": {
+      "title": "Change your Password",
+      "forgot-password": "Forgot Password",
+      "button": "Change Password",
+      "required-fields": "* Required fields",
+      "old-password": "Current Password *",
+      "new-password": "New Password *",
+      "reenter-password": "Reenter New Password *",
+      "success": {
+        "description": "You've successfully changed the password.",
+        "button": "Close"
+      }
+    },
     "delete": {
       "title": "Delete account",
       "description": "Be careful. This will delete your user account and all the information you entered.",

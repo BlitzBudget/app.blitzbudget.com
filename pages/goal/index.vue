@@ -1,5 +1,6 @@
 <template>
   <div>
+    <notifications></notifications>
     <div class="row">
       <div class="col-md-6">
         <card>

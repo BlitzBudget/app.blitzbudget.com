@@ -20,7 +20,13 @@ module.exports = {
       delete: '/delete',
       deleteBatch: '/delete-batch',
       goals: '/goals',
-      deleteCategories: '/categories/delete'
+      deleteCategories: '/categories/delete',
+      transactions: '/transactions',
+      categories: '/categories',
+      overview: '/overview',
+      bankAccounts: '/bank-accounts',
+      budgets: '/budgets',
+      recurringTransactions: '/recurring-transaction'
     },
     home: {
       invokeUrl: 'https://www.blitzbudget.com'

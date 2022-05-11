@@ -1,5 +1,6 @@
 <template>
   <div>
+    <notifications></notifications>
     <h4 class="title pl-3">XS Grid <small>Always Horizontal</small></h4>
     <div class="row">
       <div class="col-4">
@@ -269,4 +270,5 @@ export default {
   name: 'grid-system'
 };
 </script>
-<style></style>
+<style>
+</style>

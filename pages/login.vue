@@ -34,7 +34,8 @@
             </div>
 
             <div class="pull-right">
-              <h6><a href="https://help.blitzbudget.com/" class="link footer-link">{{ $t('user.login.need-help') }}</a></h6>
+              <h6><a href="https://help.blitzbudget.com/" class="link footer-link">{{ $t('user.login.need-help') }}</a>
+              </h6>
             </div>
           </div>
         </card>

@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+        <notifications></notifications>
         <div class="col-md-12">
             {{ data }}
         </div>
@@ -9,7 +10,7 @@
 import EmailForm from '@/components/ValidationForms/Support/EmailForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'support',
     components: {
         EmailForm,
     },

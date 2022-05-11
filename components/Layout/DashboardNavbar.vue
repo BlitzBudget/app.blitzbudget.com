@@ -60,7 +60,9 @@
           </nuxt-link>
         </li>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Settings</a>
+          <nuxt-link to="/category" class="nav-item dropdown-item">
+            Categories
+          </nuxt-link>
         </li>
         <div class="dropdown-divider"></div>
         <li class="nav-link">
