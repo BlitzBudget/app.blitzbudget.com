@@ -3,46 +3,25 @@
     <div class="container-fluid">
       <ul class="nav">
         <li class="nav-item">
-          <a
-            href="http://creative-tim.com"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
-            Creative Tim
+          <a href="https://learn.blitzbudget.com" target="_blank" rel="noopener" class="nav-link">
+            Learn
           </a>
         </li>
         <li class="nav-item">
-          <a
-            href="https://www.creative-tim.com/presentation"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
-            About Us
+          <a href="https://help.blitzbudget.com" target="_blank" rel="noopener" class="nav-link">
+            Support
           </a>
         </li>
         <li class="nav-item">
-          <a
-            href="http://blog.creative-tim.com"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
+          <a href="http://blog.blitzbudget.com" target="_blank" rel="noopener" class="nav-link">
             Blog
           </a>
         </li>
       </ul>
       <div class="copyright">
         &copy; {{ year }}, made with <i class="tim-icons icon-heart-2"></i> by
-        <a href="https://binarcode.com" rel="noopener" target="_blank">BinarCode</a> and
-        <a
-          href="https://www.creative-tim.com/?ref=pdf-vuejs"
-          target="_blank"
-          rel="noopener"
-          >Creative Tim</a
-        >
-        for a better web.
+        <a href="https://www.blitzbudget.com" rel="noopener" target="_blank">BlitzBudget</a>
+        for a better financial life.
       </div>
     </div>
   </footer>
@@ -56,4 +35,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>

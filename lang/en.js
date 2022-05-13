@@ -1,8 +1,12 @@
 module.exports = {
   "sidebar": {
-    "title": "Creative Tim",
-    "shortTitle": "CT",
+    "title": "Blitz Budget",
+    "shortTitle": "BB",
     "dashboard": "Dashboard",
+    "transaction": "Transactions",
+    "goal": "Goals",
+    "budget": "Budget",
+    "userProfile": "User Profile", // TODO Remove everything below for sidebar
     "pages": "Pages",
     "pricing": "Pricing",
     "rtl": "RTL Support",
@@ -10,7 +14,6 @@ module.exports = {
     "login": "Login",
     "register": "Register",
     "lock": "Lock Screen",
-    "userProfile": "User Profile",
     "components": "Components",
     "multiLevelCollapse": "Multilevel Collapse",
     "example": "Example Page",
@@ -37,5 +40,103 @@ module.exports = {
     "widgets": "Widgets",
     "charts": "Charts",
     "calendar": "Calendar"
+  },
+  "login": {
+    "error": "There was an error while logging in, Please try again!"
+  },
+  "support": {
+    "ask-us-directly": {
+      "title": "Ask us Directly",
+      "subject": "Subject",
+      "message": "Write us a message",
+      "articles": "Check our articles",
+      "required-fields": "* Required fields",
+      "send-email": "Send Email",
+      "success": {
+        "description": "Thank you for the email! We'll reach back to you within 24 hours.",
+        "button": "Close",
+      }
+    }
+  },
+  "user": {
+    "change-password": {
+      "title": "Change your Password",
+      "forgot-password": "Forgot Password",
+      "button": "Change Password",
+      "required-fields": "* Required fields",
+      "old-password": "Current Password *",
+      "new-password": "New Password *",
+      "reenter-password": "Reenter New Password *",
+      "success": {
+        "description": "You've successfully changed the password.",
+        "button": "Close"
+      }
+    },
+    "delete": {
+      "title": "Delete account",
+      "description": "Be careful. This will delete your user account and all the information you entered.",
+      "button": "Delete my BlitzBudget account"
+    },
+    "forgot-password": {
+      "title": "Forgot your password?",
+      "description": "We'll help you recover your account.",
+      "success": {
+        "button": "Login",
+        "text": "Successfully changed the password."
+      },
+      "step-one": {
+        "title": "Email",
+        "info": "Let's start with your email address",
+        "email": "Email"
+      },
+      "step-two": {
+        "title": "Password",
+        "info": "The password should contain atleast one uppercase character, one number and one special character.",
+        "new-password": "New Password",
+        "reenter-password": "Reenter Password",
+      },
+      "step-three": {
+        "title": "Validate Email",
+        "label": "Verification Code",
+        "text": "We've sent you an email with the validation code"
+      }
+    },
+    "login": {
+      "title": "Log in",
+      "get-started": "Get Started",
+      "forgot-password": "Forgot Password",
+      "need-help": "Need Help?",
+      "placholder": {
+        "email": "Email",
+        "password": "Password"
+      }
+    },
+    "register": {
+      "title": "Register",
+      "button": "Get Started",
+      "terms": {
+        "firstpart": "I agree to the ",
+        "secondpart": "terms and conditions"
+      },
+      "placeholder": {
+        "fullname": "Full Name",
+        "email": "Email",
+        "password": "Password"
+      },
+      "info": {
+        "first": {
+          "title": "Budget",
+          "description": "Finding it hard to save? Try to budget with the help of our budget manager!"
+        },
+        "second": {
+          "title": "Goals",
+          "description": "Dream of achieving a worthwhile goal? Create a goal and start tracking your savings towards it."
+        },
+        "third": {
+          "title": "Categorize",
+          "description": "Planning for a trip? Find it hard to keep track of an expense? Create a category!"
+        }
+      }
+    },
   }
 }

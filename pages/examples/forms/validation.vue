@@ -19,10 +19,10 @@
   </div>
 </template>
 <script>
-import RegisterForm from '../../components/ValidationForms/RegisterForm.vue';
-import LoginForm from '../../components/ValidationForms/LoginForm.vue';
-import TypeValidationForm from '../../components/ValidationForms/TypeValidationForm.vue';
-import RangeValidationForm from '../../components/ValidationForms/RangeValidationForm';
+import RegisterForm from '@/components/ValidationForms/RegisterForm.vue';
+import LoginForm from '@/components/ValidationForms/LoginForm.vue';
+import TypeValidationForm from '@/components/ValidationForms/TypeValidationForm.vue';
+import RangeValidationForm from '@/components/ValidationForms/RangeValidationForm';
 
 export default {
   name: 'validation-forms',

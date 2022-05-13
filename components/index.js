@@ -3,6 +3,7 @@ import BaseAlert from './BaseAlert.vue';
 import IconCheckbox from './Inputs/IconCheckbox.vue';
 import BaseRadio from './Inputs/BaseRadio.vue';
 import BaseInput from './Inputs/BaseInput.vue';
+import BaseTextarea from './Inputs/BaseTextarea.vue';
 import TagsInput from './Inputs/TagsInput.vue';
 import BaseSwitch from './BaseSwitch.vue';
 import Badge from './Badge';
@@ -29,13 +30,14 @@ import Collapse from './Collapse/Collapse.vue';
 import CollapseItem from './Collapse/CollapseItem.vue';
 import Modal from './Modal.vue';
 import Slider from './Slider.vue';
-import SimpleWizard from './Wizard/Wizard.vue';
-import WizardTab from './Wizard/WizardTab.vue';
+import SimpleWizard from './Wizard/ForgotPassword/Wizard.vue';
+import WizardTab from './Wizard/ForgotPassword/WizardTab.vue';
 import LoadingPanel from './LoadingPanel.vue';
 
 import BasePagination from './BasePagination.vue';
 
 import SidebarPlugin from './SidebarPlugin';
+import Wallet from './Wallet';
 
 import AnimatedNumber from './AnimatedNumber';
 
@@ -49,6 +51,7 @@ export {
   BasePagination,
   BaseRadio,
   BaseInput,
+  BaseTextarea,
   TagsInput,
   Card,
   StatsCard,
@@ -73,5 +76,6 @@ export {
   BaseButton,
   Collapse,
   CollapseItem,
-  LoadingPanel
+  LoadingPanel,
+  Wallet
 };

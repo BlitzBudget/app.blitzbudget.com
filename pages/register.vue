@@ -1,5 +1,6 @@
 <template>
   <div class="container register-page">
+    <notifications></notifications>
     <div class="row">
       <div class="col-md-5 ml-auto">
         <div class="info-area info-horizontal mt-5">
@@ -7,34 +8,31 @@
             <i class="tim-icons icon-wifi"></i>
           </div>
           <div class="description">
-            <h3 class="info-title">Marketing</h3>
+            <h3 class="info-title mb-md-0">{{ $t('user.register.info.first.title') }}</h3>
             <p class="description">
-              We've created the marketing campaign of the website. It was a very
-              interesting collaboration.
+              {{ $t('user.register.info.first.description') }}
             </p>
           </div>
         </div>
-        <div class="info-area info-horizontal">
+        <div class="info-area info-horizontal mt-md-4">
           <div class="icon icon-primary">
             <i class="tim-icons icon-triangle-right-17"></i>
           </div>
           <div class="description">
-            <h3 class="info-title">Fully Coded in HTML5</h3>
+            <h3 class="info-title mb-md-0">{{ $t('user.register.info.second.title') }}</h3>
             <p class="description">
-              We've developed the website with HTML5 and CSS3. The client has
-              access to the code using GitHub.
+              {{ $t('user.register.info.second.description') }}
             </p>
           </div>
         </div>
-        <div class="info-area info-horizontal">
+        <div class="info-area info-horizontal mt-md-4">
           <div class="icon icon-info">
             <i class="tim-icons icon-trophy"></i>
           </div>
           <div class="description">
-            <h3 class="info-title">Built Audience</h3>
+            <h3 class="info-title mb-md-0">{{ $t('user.register.info.third.title') }}</h3>
             <p class="description">
-              There is also a Fully Customizable CMS Admin Dashboard for this
-              product.
+              {{ $t('user.register.info.third.description') }}
             </p>
           </div>
         </div>
@@ -44,49 +42,29 @@
         <form @submit.prevent="register">
           <card class="card-register card-white">
             <template slot="header">
-              <img class="card-img" src="img/card-primary.png" alt="Card image"/>
-              <h4 class="card-title">Register</h4>
+              <img class="card-img" src="img/card-primary.png" alt="Card image" />
+              <h4 class="card-title">{{ $t('user.register.title') }}</h4>
             </template>
 
-            <base-input
-              v-validate="'required'"
-              :error="getError('Full Name')"
-              v-model="model.fullName"
-              name="Full Name"
-              placeholder="Full Name"
-              addon-left-icon="tim-icons icon-single-02"
-            >
+            <base-input v-validate="'required'" :error="getError('Full Name')" v-model="model.fullName" name="Full Name"
+              :placeholder="$t('user.register.placeholder.fullname')" addon-left-icon="tim-icons icon-single-02">
             </base-input>
 
-            <base-input
-              v-validate="'required|email'"
-              :error="getError('email')"
-              v-model="model.email"
-              name="email"
-              placeholder="Email"
-              autocomplete="username"
-              addon-left-icon="tim-icons icon-email-85"
-            >
+            <base-input v-validate="'required|email'" :error="getError('email')" v-model="model.email" name="email"
+              :placeholder="$t('user.register.placeholder.email')" autocomplete="username" addon-left-icon="tim-icons icon-email-85">
             </base-input>
 
-            <base-input
-              v-validate="'required|min:5'"
-              :error="getError('password')"
-              v-model="model.password"
-              name="password"
-              type="password"
-              placeholder="Password"
-              autocomplete="current-password"
-              addon-left-icon="tim-icons icon-lock-circle"
-            >
+            <base-input v-validate="'required|min:8'" :error="getError('password')" v-model="model.password"
+              name="password" type="password" :placeholder="$t('user.register.placeholder.password')" autocomplete="current-password"
+              addon-left-icon="tim-icons icon-lock-circle">
             </base-input>
 
             <base-checkbox class="text-left">
-              I agree to the <a href="#something">terms and conditions</a>.
+              {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{ $t('user.register.terms.secondpart') }}</a>.
             </base-checkbox>
 
             <base-button native-type="submit" slot="footer" type="primary" round block size="lg">
-              Get Started
+              {{ $t('user.register.button') }}
             </base-button>
           </card>
         </form>
@@ -100,6 +78,7 @@ import { BaseCheckbox } from '@/components';
 export default {
   name: 'register-page',
   layout: 'auth',
+  auth: 'guest',
   components: {
     BaseCheckbox
   },
@@ -120,9 +99,23 @@ export default {
       let isValidForm = await this.$validator.validateAll();
       if (isValidForm) {
         // TIP use this.model to send it to api and perform register call
+        this.$axios.$post(process.env.api.profile.signup, {
+          username: this.model.email,
+          password: this.model.password,
+          checkPassword: false,
+          firstname: this.model.fullName,
+          lastname: ''
+        }).catch(({ response }) => {
+          let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+          this.$notify({ type: 'danger', message: errorMessage });
+        });
+
+        // TODO handle errors
+        // TODO handle success  
       }
     }
   }
 };
 </script>
-<style></style>
+<style>
+</style>

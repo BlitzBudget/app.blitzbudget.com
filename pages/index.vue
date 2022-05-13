@@ -10,25 +10,13 @@
               <h2 class="card-title">Performance</h2>
             </div>
             <div class="col-sm-6 d-flex d-sm-block">
-              <div
-                class="btn-group btn-group-toggle"
-                :class="isRTL ? 'float-left' : 'float-right'"
-                data-toggle="buttons"
-              >
-                <label
-                  v-for="(option, index) in bigLineChartCategories"
-                  :key="option.name"
-                  class="btn btn-sm btn-primary btn-simple"
-                  :class="{ active: bigLineChart.activeIndex === index }"
-                  :id="index"
-                >
-                  <input
-                    type="radio"
-                    @click="initBigChart(index)"
-                    name="options"
-                    autocomplete="off"
-                    :checked="bigLineChart.activeIndex === index"
-                  />
+              <div class="btn-group btn-group-toggle" :class="isRTL ? 'float-left' : 'float-right'"
+                data-toggle="buttons">
+                <label v-for="(option, index) in bigLineChartCategories" :key="option.name"
+                  class="btn btn-sm btn-primary btn-simple" :class="{ active: bigLineChart.activeIndex === index }"
+                  :id="index">
+                  <input type="radio" @click="initBigChart(index)" name="options" autocomplete="off"
+                    :checked="bigLineChart.activeIndex === index" />
                   <span class="d-none d-sm-block">{{ option.name }}</span>
                   <span class="d-block d-sm-none">
                     <i :class="option.icon"></i>
@@ -39,26 +27,16 @@
           </div>
         </template>
         <div class="chart-area">
-          <line-chart
-            style="height: 100%"
-            ref="bigChart"
-            :chart-data="bigLineChart.chartData"
-            :gradient-colors="bigLineChart.gradientColors"
-            :gradient-stops="bigLineChart.gradientStops"
-            :extra-options="bigLineChart.extraOptions"
-          >
+          <line-chart style="height: 100%" ref="bigChart" :chart-data="bigLineChart.chartData"
+            :gradient-colors="bigLineChart.gradientColors" :gradient-stops="bigLineChart.gradientStops"
+            :extra-options="bigLineChart.extraOptions">
           </line-chart>
         </div>
       </card>
     </div>
     <!-- Stats Cards -->
     <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.title">
-      <stats-card
-        :title="card.title"
-        :sub-title="card.subTitle"
-        :type="card.type"
-        :icon="card.icon"
-      >
+      <stats-card :title="card.title" :sub-title="card.subTitle" :type="card.type" :icon="card.icon">
         <div slot="footer" v-html="card.footer"></div>
       </stats-card>
     </div>
@@ -73,13 +51,9 @@
           </h3>
         </template>
         <div class="chart-area">
-          <line-chart
-            style="height: 100%"
-            :chart-data="purpleLineChart.chartData"
-            :gradient-colors="purpleLineChart.gradientColors"
-            :gradient-stops="purpleLineChart.gradientStops"
-            :extra-options="purpleLineChart.extraOptions"
-          >
+          <line-chart style="height: 100%" :chart-data="purpleLineChart.chartData"
+            :gradient-colors="purpleLineChart.gradientColors" :gradient-stops="purpleLineChart.gradientStops"
+            :extra-options="purpleLineChart.extraOptions">
           </line-chart>
         </div>
       </card>
@@ -93,12 +67,8 @@
           </h3>
         </template>
         <div class="chart-area">
-          <bar-chart
-            style="height: 100%"
-            :chart-data="blueBarChart.chartData"
-            :gradient-stops="blueBarChart.gradientStops"
-            :extra-options="blueBarChart.extraOptions"
-          >
+          <bar-chart style="height: 100%" :chart-data="blueBarChart.chartData"
+            :gradient-stops="blueBarChart.gradientStops" :extra-options="blueBarChart.extraOptions">
           </bar-chart>
         </div>
       </card>
@@ -112,12 +82,8 @@
           </h3>
         </template>
         <div class="chart-area">
-          <line-chart
-            style="height: 100%"
-            :chart-data="greenLineChart.chartData"
-            :gradient-stops="greenLineChart.gradientStops"
-            :extra-options="greenLineChart.extraOptions"
-          >
+          <line-chart style="height: 100%" :chart-data="greenLineChart.chartData"
+            :gradient-stops="greenLineChart.gradientStops" :extra-options="greenLineChart.extraOptions">
           </line-chart>
         </div>
       </card>
@@ -127,12 +93,8 @@
         <template slot="header">
           <h6 class="title d-inline">Tasks (5)</h6>
           <p class="card-category d-inline">Today</p>
-          <base-dropdown
-            menu-on-right=""
-            tag="div"
-            title-classes="btn btn-link btn-icon"
-            :class="{ 'float-left': isRTL }"
-          >
+          <base-dropdown menu-on-right="" tag="div" title-classes="btn btn-link btn-icon"
+            :class="{ 'float-left': isRTL }">
             <i slot="title" class="tim-icons icon-settings-gear-63"></i>
             <a class="dropdown-item" href="#pablo"> Action </a>
             <a class="dropdown-item" href="#pablo"> Another action </a>
@@ -147,10 +109,14 @@
     <div class="col-lg-7">
       <card class="card" :header-classes="{ 'text-right': isRTL }">
         <h5 slot="header" class="card-title">Management table</h5>
-        <div class="table-responsive"><user-table></user-table></div>
+        <div class="table-responsive">
+          <user-table></user-table>
+        </div>
       </card>
     </div>
-    <div class="col-lg-12"><country-map-card></country-map-card></div>
+    <div class="col-lg-12">
+      <country-map-card></country-map-card>
+    </div>
   </div>
 </template>
 <script>
@@ -194,7 +160,7 @@ export default {
     CountryMapCard,
     UserTable
   },
-  data () {
+  data() {
     return {
       statsCards: [
         {
@@ -318,13 +284,13 @@ export default {
     };
   },
   computed: {
-    enableRTL () {
+    enableRTL() {
       return this.$route.query.enableRTL;
     },
-    isRTL () {
+    isRTL() {
       return this.$rtl.isRTL;
     },
-    bigLineChartCategories () {
+    bigLineChartCategories() {
       return [{ name: 'Accounts', icon: 'tim-icons icon-single-02' }, {
         name: 'Purchases',
         icon: 'tim-icons icon-gift-2'
@@ -332,7 +298,7 @@ export default {
     }
   },
   methods: {
-    initBigChart (index) {
+    initBigChart(index) {
       let chartData = {
         datasets: [{
           ...bigChartDatasetOptions,
@@ -343,11 +309,23 @@ export default {
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
+    },
+    fetchOverview() {
+      this.$axios.$post(process.env.api.overview, {
+        userId: currentUser.financialPortfolioId,
+      }).then((response) => {
+        this.data = response;
+      }).catch(({ error }) => {
+        this.$notify({ type: 'danger', message: error });
+      });
     }
   },
-  mounted () {
+  mounted() {
     this.initBigChart(0);
+    // Fetch Data from API
+    // this.fetchOverview();
   }
 }
 </script>
-<style></style>
+<style>
+</style>

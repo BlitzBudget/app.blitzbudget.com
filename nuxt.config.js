@@ -1,4 +1,5 @@
 module.exports = {
+  target: 'static',
   /**
    * Environment Variables
    */
@@ -19,7 +20,13 @@ module.exports = {
       delete: '/delete',
       deleteBatch: '/delete-batch',
       goals: '/goals',
-      deleteCategories: '/categories/delete'
+      deleteCategories: '/categories/delete',
+      transactions: '/transactions',
+      categories: '/categories',
+      overview: '/overview',
+      bankAccounts: '/bank-accounts',
+      budgets: '/budgets',
+      recurringTransactions: '/recurring-transaction'
     },
     home: {
       invokeUrl: 'https://www.blitzbudget.com'
@@ -47,7 +54,7 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'BlitzBudget Wealth Dashboard' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800' },
       { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css' }
     ],
@@ -101,7 +108,7 @@ module.exports = {
     // Options
     redirect: {
       login: '/login',
-      logout: '/',
+      logout: '/login',
       callback: '/login',
       home: '/'
     },

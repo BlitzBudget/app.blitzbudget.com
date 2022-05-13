@@ -141,7 +141,7 @@
 <script>
 import { Table, TableColumn } from 'element-ui';
 import { BaseCheckbox, BaseProgress, RouteBreadCrumb } from '@/components';
-import ShoppingTable from '../../components/ExtendedTables/ShoppingTable';
+import ShoppingTable from '@/components/ExtendedTables/ShoppingTable';
 
 export default {
   name: 'extended',

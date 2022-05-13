@@ -13,39 +13,18 @@
 
           <div class="wizard-navigation">
             <div class="progress-with-circle">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                aria-valuenow="1"
-                aria-valuemin="1"
-                aria-valuemax="3"
-                :style="{ width: `${progress}%` }"
-              ></div>
+              <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3"
+                :style="{ width: `${progress}%` }"></div>
             </div>
             <ul class="nav nav-pills">
-              <li
-                v-for="(tab, index) in tabs"
-                :key="tab.title"
-                role="tab"
-                :tabindex="tab.checked ? 0 : ''"
-                :id="`step-${tab.tabId}`"
-                :aria-controls="tab.tabId"
-                :aria-disabled="!tab.active"
-                :aria-selected="tab.active"
-                :ref="`tab-${index}`"
-                class="nav-item wizard-tab-link"
-                :style="linkWidth"
-              >
-                <a
-                  class="nav-link"
-                  @click="navigateToTab(index)"
-                  :class="[
-                    { 'disabled-wizard-link': !tab.checked },
-                    { active: tab.active },
-                    { checked: tab.checked }
-                  ]"
-                  data-toggle="tab"
-                >
+              <li v-for="(tab, index) in tabs" :key="tab.title" role="tab" :tabindex="tab.checked ? 0 : ''"
+                :id="`step-${tab.tabId}`" :aria-controls="tab.tabId" :aria-disabled="!tab.active"
+                :aria-selected="tab.active" :ref="`tab-${index}`" class="nav-item wizard-tab-link" :style="linkWidth">
+                <a class="nav-link" @click="navigateToTab(index)" :class="[
+                  { 'disabled-wizard-link': !tab.checked },
+                  { active: tab.active },
+                  { checked: tab.checked }
+                ]" data-toggle="tab">
                   <tab-item-content :tab="tab"></tab-item-content>
                 </a>
               </li>
@@ -62,28 +41,17 @@
         <div class="card-footer">
           <slot name="footer" :next-tab="nextTab" :prev-tab="prevTab">
             <div class="pull-right">
-              <base-button
-                v-if="activeTabIndex < tabCount - 1"
-                type="primary"
-                wide
-                @click.native="nextTab"
-                class="btn-next"
-              >
+              <base-button v-if="activeTabIndex < tabCount - 1" type="primary" wide @click.native="nextTab"
+                class="btn-next">
                 {{ nextButtonText }}
               </base-button>
               <base-button v-else wide @click.native="nextTab">{{
-                finishButtonText
+                  finishButtonText
               }}</base-button>
             </div>
 
             <div class="pull-left">
-              <base-button
-                v-if="activeTabIndex > 0"
-                wide
-                type="primary"
-                @click.native="prevTab"
-                class="btn-previous"
-              >
+              <base-button v-if="activeTabIndex > 0" wide type="primary" @click.native="prevTab" class="btn-previous">
                 {{ prevButtonText }}
               </base-button>
             </div>
@@ -132,9 +100,9 @@ export default {
     TabItemContent: {
       functional: true,
       props: ['tab'],
-      render(h, {props}) {
+      render(h, { props }) {
         let content = props.tab.$slots.label;
-        if(content && content.length){
+        if (content && content.length) {
           return content;
         }
         return h('span', [props.tab.$slots.label, props.tab.label])
@@ -296,6 +264,7 @@ export default {
 /* Tab content animation */
 .tab-content {
   display: flex; // to avoid horizontal scroll when animating
+
   .tab-pane {
     display: block;
     animation: fadeIn 0.5s;
@@ -307,6 +276,7 @@ export default {
       Extra niceties. Display error tabs and disable navigation unvisited tabs
      */
 .wizard-navigation .nav-link {
+
   &.active,
   &.checked {
     cursor: pointer;
