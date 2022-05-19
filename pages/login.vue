@@ -5,7 +5,7 @@
       <form @submit.prevent="login">
         <card class="card-login card-white">
           <template slot="header">
-            <img src="img//card-primary.png" alt="" />
+            <img src="img/card-primary.png" alt="" />
             <h1 class="card-title">{{ $t('user.login.title') }}</h1>
           </template>
 
