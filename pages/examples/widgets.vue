@@ -149,7 +149,7 @@
           footer-classes="text-center mb-3 mt-3"
         >
           <h1 class="card-title">pro</h1>
-          <img class="card-img" src="img//card-primary.png" alt="Image" />
+          <img class="card-img" src="img/card-primary.png" alt="Image" />
           <ul class="list-group">
             <li class="list-group-item">300 messages</li>
             <li class="list-group-item">150 emails</li>
@@ -173,7 +173,7 @@
           footer-classes="text-center mb-3 mt-3"
         >
           <h1 class="card-title">pro</h1>
-          <img class="card-img" src="img//card-primary.png" alt="Image" />
+          <img class="card-img" src="img/card-primary.png" alt="Image" />
           <ul class="list-group">
             <li class="list-group-item">300 messages</li>
             <li class="list-group-item">150 emails</li>

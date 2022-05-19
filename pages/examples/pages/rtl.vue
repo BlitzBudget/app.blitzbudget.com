@@ -2,21 +2,13 @@
   <div>
     <div class="row">
       <div class="col-lg-6 col-sm-6 text-center">
-        <card
-          type="tasks"
-          class="text-left"
-          :header-classes="{ 'text-right': $rtl.isRTL }"
-        >
+        <card type="tasks" class="text-left" :header-classes="{ 'text-right': $rtl.isRTL }">
           <template slot="header">
             <h6 class="title d-inline">Tasks (5)</h6>
             <p class="card-category d-inline">Today</p>
 
-            <base-dropdown
-              menu-on-right=""
-              tag="div"
-              title-classes="btn btn-link btn-icon"
-              :class="{ 'float-left': $rtl.isRTL }"
-            >
+            <base-dropdown menu-on-right="" tag="div" title-classes="btn btn-link btn-icon"
+              :class="{ 'float-left': $rtl.isRTL }">
               <i slot="title" class="tim-icons icon-settings-gear-63"></i>
               <a class="dropdown-item" href="#pablo">Action</a>
               <a class="dropdown-item" href="#pablo">Another action</a>
@@ -40,21 +32,13 @@
             <div class="row">
               <div class="col-lg-6 col-md-8 ml-auto mr-auto">
                 <div class="card-stats justify-content-center">
-                  <base-switch
-                    v-model="allContributions"
-                    on-text="ON"
-                    off-text="ON"
-                  ></base-switch>
+                  <base-switch v-model="allContributions" on-text="ON" off-text="ON"></base-switch>
                   <span>جميع المساهمات العامة </span>
                 </div>
               </div>
               <div class="col-lg-6 col-md-8 ml-auto mr-auto">
                 <div class="card-stats justify-content-center">
-                  <base-switch
-                    v-model="pastWeekContributions"
-                    on-text="ON"
-                    off-text="ON"
-                  ></base-switch>
+                  <base-switch v-model="pastWeekContributions" on-text="ON" off-text="ON"></base-switch>
                   <span>مساهمات الأسبوع الماضي </span>
                 </div>
               </div>
@@ -66,11 +50,7 @@
       <div class="col-lg-6 col-sm-6">
         <card type="timeline" class="card-plain">
           <time-line type="simple">
-            <time-line-item
-              inverted
-              badge-type="danger"
-              badge-icon="tim-icons icon-bag-16"
-            >
+            <time-line-item inverted badge-type="danger" badge-icon="tim-icons icon-bag-16">
               <span slot="header" class="badge badge-danger">بعض العنوان </span>
               <p slot="content">
                 ل Wifey قدم أفضل وجبة يوم الأب على الإطلاق. ممتن جدا سعيد جدا
@@ -83,11 +63,7 @@
               </h6>
             </time-line-item>
 
-            <time-line-item
-              inverted
-              badge-type="success"
-              badge-icon="tim-icons icon-gift-2"
-            >
+            <time-line-item inverted badge-type="success" badge-icon="tim-icons icon-gift-2">
               <span slot="header" class="badge badge-success">واحدة أخرى </span>
               <p slot="content">
                 أشكر الله على دعم زوجتي وأصدقائي الحقيقيين. أود أيضًا الإشارة
@@ -97,11 +73,7 @@
               </p>
             </time-line-item>
 
-            <time-line-item
-              inverted
-              badge-type="info"
-              badge-icon="tim-icons icon-planet"
-            >
+            <time-line-item inverted badge-type="info" badge-icon="tim-icons icon-planet">
               <span slot="header" class="badges badge-info">عنوان آخر</span>
 
               <template slot="content">
@@ -118,10 +90,7 @@
                 <hr />
               </template>
 
-              <base-dropdown
-                slot="footer"
-                title-classes="btn btn-round btn-info"
-              >
+              <base-dropdown slot="footer" title-classes="btn btn-round btn-info">
                 <i slot="title" class="tim-icons icon-bullet-list-67"></i>
 
                 <a class="dropdown-item" href="#">عمل</a>
@@ -136,13 +105,9 @@
 
     <div class="row">
       <div class="col-lg-3 col-md-6">
-        <card
-          type="pricing"
-          class="card-primary card-white"
-          footer-classes="text-center mb-3 mt-3"
-        >
+        <card type="pricing" class="card-primary card-white" footer-classes="text-center mb-3 mt-3">
           <h1 class="card-title">pro</h1>
-          <img class="card-img" src="img//card-primary.png" alt="Image" />
+          <img class="card-img" src="img/card-primary.png" alt="Image" />
           <ul class="list-group">
             <li class="list-group-item">300 رسائل</li>
             <li class="list-group-item">150 رسائل البريد الإلكتروني</li>
@@ -160,13 +125,9 @@
       </div>
 
       <div class="col-lg-3 col-md-6">
-        <card
-          type="pricing"
-          class="card-primary"
-          footer-classes="text-center mb-3 mt-3"
-        >
+        <card type="pricing" class="card-primary" footer-classes="text-center mb-3 mt-3">
           <h1 class="card-title">pro</h1>
-          <img class="card-img" src="img//card-primary.png" alt="Image" />
+          <img class="card-img" src="img/card-primary.png" alt="Image" />
           <ul class="list-group">
             <li class="list-group-item">300 رسائل</li>
             <li class="list-group-item">150 رسائل البريد الإلكتروني</li>
@@ -238,4 +199,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>
