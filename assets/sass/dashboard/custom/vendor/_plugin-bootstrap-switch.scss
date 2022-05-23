@@ -18,7 +18,7 @@
 
 
 
- //* IMPORTANT! Creative Tim Notice: this file has major changes to fit the Black Dashboard 's design. If you want to use the plugin as it was before our changes, please get the old files from http://www.bootstrap-switch.org
+//* IMPORTANT! Creative Tim Notice: this file has major changes to fit the Black Dashboard 's design. If you want to use the plugin as it was before our changes, please get the old files from http://www.bootstrap-switch.org
 
 
 
@@ -67,7 +67,7 @@
   vertical-align: middle;
   -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  background: url("https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/J9H9WF0/night-sky-full-of-stars-fantasy-animation-made-of-magical-sparkly-light-particles-flickering-on-a-purple-blue-gradient-background_bajacpz7x_thumbnail-full01.png");
+  background: url(""); // Switch URL
   background-position: center center;
   background-size: cover;
 }
@@ -81,6 +81,7 @@
   transform: translate3d(0, 0, 0);
   width: 100px !important;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on,
 .bootstrap-switch .bootstrap-switch-handle-off,
 .bootstrap-switch .bootstrap-switch-label {
@@ -96,9 +97,10 @@
   text-indent: -5px;
   line-height: 15px;
   -webkit-transition: 0.25s ease-out;
-          transition: 0.25s ease-out;
+  transition: 0.25s ease-out;
 
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on,
 .bootstrap-switch .bootstrap-switch-handle-off {
   text-align: center;
@@ -107,35 +109,42 @@
   line-height: 11px;
   width: 50% !important;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-brown,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-brown {
   color: #fff;
   background: $brand-primary;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-blue,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-blue {
   color: #fff;
   background: $brand-info;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-green,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-green {
   color: #fff;
   background: $brand-success;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-orange,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-orange {
   background: $brand-warning;
   color: #fff;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-red,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-red {
   color: #fff;
   background: $brand-danger;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
 .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default {
   color: #fff;
 }
+
 .bootstrap-switch .bootstrap-switch-label {
   text-align: center;
   z-index: 100;
@@ -153,25 +162,30 @@
   box-shadow: 0 1px 11px rgba(0, 0, 0, 0.25);
 }
 
-.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-label{
-    background-color: rgba(156, 156 ,156 , .9);
-    left: 52%;
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-label {
+  background-color: rgba(156, 156, 156, .9);
+  left: 52%;
 }
-.bootstrap-switch.bootstrap-switch-on:hover .bootstrap-switch-label{
-    width: 27px !important;
-    margin-left: -20px;
+
+.bootstrap-switch.bootstrap-switch-on:hover .bootstrap-switch-label {
+  width: 27px !important;
+  margin-left: -20px;
 }
-.bootstrap-switch.bootstrap-switch-off:hover .bootstrap-switch-label{
-    width: 27px !important;
-    margin-left: -11px;
+
+.bootstrap-switch.bootstrap-switch-off:hover .bootstrap-switch-label {
+  width: 27px !important;
+  margin-left: -11px;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-on {
   border-bottom-left-radius: 3px;
   border-top-left-radius: 3px;
 }
+
 .bootstrap-switch .bootstrap-switch-handle-off {
   text-indent: 6px;
 }
+
 .bootstrap-switch input[type='radio'],
 .bootstrap-switch input[type='checkbox'] {
   position: absolute !important;
@@ -181,10 +195,12 @@
   filter: alpha(opacity=0);
   z-index: -1;
 }
+
 .bootstrap-switch input[type='radio'].form-control,
 .bootstrap-switch input[type='checkbox'].form-control {
   height: auto;
 }
+
 .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-handle-off,
 .bootstrap-switch.bootstrap-switch-mini .bootstrap-switch-label {
@@ -192,6 +208,7 @@
   font-size: 12px;
   line-height: 1.5;
 }
+
 .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-handle-off,
 .bootstrap-switch.bootstrap-switch-small .bootstrap-switch-label {
@@ -199,6 +216,7 @@
   font-size: 12px;
   line-height: 1.5;
 }
+
 .bootstrap-switch.bootstrap-switch-large .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-large .bootstrap-switch-handle-off,
 .bootstrap-switch.bootstrap-switch-large .bootstrap-switch-label {
@@ -206,11 +224,13 @@
   font-size: 18px;
   line-height: 1.33;
 }
+
 .bootstrap-switch.bootstrap-switch-disabled,
 .bootstrap-switch.bootstrap-switch-readonly,
 .bootstrap-switch.bootstrap-switch-indeterminate {
   cursor: default !important;
 }
+
 .bootstrap-switch.bootstrap-switch-disabled .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-readonly .bootstrap-switch-handle-on,
 .bootstrap-switch.bootstrap-switch-indeterminate .bootstrap-switch-handle-on,
@@ -224,28 +244,33 @@
   filter: alpha(opacity=50);
   cursor: default !important;
 }
+
 .bootstrap-switch.bootstrap-switch-animate .bootstrap-switch-container {
   -webkit-transition: margin-left 0.5s;
   transition: margin-left 0.5s;
 }
+
 .bootstrap-switch.bootstrap-switch-inverse .bootstrap-switch-handle-on {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
 }
+
 .bootstrap-switch.bootstrap-switch-inverse .bootstrap-switch-handle-off {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
   border-bottom-left-radius: 3px;
   border-top-left-radius: 3px;
 }
+
 .bootstrap-switch.bootstrap-switch-focused {
   // border-color: #66afe9;
   // outline: 0;
   // -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
   // box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
+
 // .bootstrap-switch.bootstrap-switch-on .bootstrap-switch-label,
 // .bootstrap-switch.bootstrap-switch-inverse.bootstrap-switch-off .bootstrap-switch-label {
 //   border-bottom-right-radius: 3px;
@@ -257,60 +282,60 @@
 //   border-top-left-radius: 3px;
 // }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-container{
-    margin-left: -2px !important;
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-container {
+  margin-left: -2px !important;
 }
 
-.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-container{
-    margin-left: -39px !important;
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-container {
+  margin-left: -39px !important;
 }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-label{
-    &:before{
-        background-color: #FFFFFF;
-    }
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-label {
+  &:before {
+    background-color: #FFFFFF;
+  }
 }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-red ~ .bootstrap-switch-default{
-    background-color: $brand-danger;
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-red~.bootstrap-switch-default {
+  background-color: $brand-danger;
 }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-orange ~ .bootstrap-switch-default{
-    background-color: $brand-warning;
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-orange~.bootstrap-switch-default {
+  background-color: $brand-warning;
 }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-green ~ .bootstrap-switch-default{
-    background-color: $brand-success;
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-green~.bootstrap-switch-default {
+  background-color: $brand-success;
 }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-brown ~ .bootstrap-switch-default{
-    background-color: $brand-primary;
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-brown~.bootstrap-switch-default {
+  background-color: $brand-primary;
 }
 
-.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-blue ~ .bootstrap-switch-default{
-    background-color: $brand-info;
+.bootstrap-switch.bootstrap-switch-on .bootstrap-switch-blue~.bootstrap-switch-default {
+  background-color: $brand-info;
 }
 
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-red,
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-brown,
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-blue,
 .bootstrap-switch.bootstrap-switch-off .bootstrap-switch-orange,
-.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-green{
-    background-color: $light-gray;
+.bootstrap-switch.bootstrap-switch-off .bootstrap-switch-green {
+  background-color: $light-gray;
 }
 
 .bootstrap-switch-on .bootstrap-switch-handle-off,
-.bootstrap-switch-off .bootstrap-switch-handle-on{
-    opacity: 0;
-    visibility: hidden;
+.bootstrap-switch-off .bootstrap-switch-handle-on {
+  opacity: 0;
+  visibility: hidden;
 }
 
-.bootstrap-switch-off:before{
+.bootstrap-switch-off:before {
   position: absolute;
   content: "";
   height: 100%;
   width: 100%;
   top: 0;
   right: 0;
-  background: rgba(16,16,16,0.7);
+  background: rgba(16, 16, 16, 0.7);
 }
