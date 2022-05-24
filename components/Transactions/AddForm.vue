@@ -2,25 +2,26 @@
     <form>
         <card footer-classes="text-left">
             <div slot="header">
-                <h4 class="card-title">{{ $t('support.ask-us-directly.title') }}</h4>
+                <h4 class="card-title">{{ $t('transaction.add.title') }}</h4>
             </div>
             <div>
-                <base-input :label="$t('support.ask-us-directly.subject')" required v-model="model.subject"
-                    v-validate="modelValidations.subject" :error="getError('subject')" name="subject">
+                <base-input :label="$t('transaction.add.amount')" required v-model="model.amount"
+                    v-validate="modelValidations.amount" :error="getError('amount')" name="amount">
                 </base-input>
 
-                <base-textarea :label="$t('support.ask-us-directly.message')" required v-model="model.message"
-                    v-validate="modelValidations.message" :error="getError('message')" name="message" type="message">
-                </base-textarea>
+                <base-input :label="$t('transaction.add.description')" required v-model="model.description"
+                    v-validate="modelValidations.description" :error="getError('description')" name="description"
+                    type="description">
+                </base-input>
 
-                <div class="category form-category">{{ $t('support.ask-us-directly.required-fields') }}</div>
+                <div class="small form-category">{{ $t('transaction.add.required-fields') }}</div>
             </div>
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('support.ask-us-directly.send-email')
+                        $t('transaction.add.submit')
                 }}</base-button>
-                <nuxt-link to="/support" class="pull-right">{{ $t('support.ask-us-directly.articles') }}</nuxt-link>
+                <nuxt-link to="/category/add" class="pull-right">{{ $t('transaction.add.category') }}</nuxt-link>
             </template>
         </card>
     </form>
@@ -30,15 +31,15 @@ export default {
     data() {
         return {
             model: {
-                subject: '',
-                message: '',
+                amount: '',
+                description: '',
             },
             modelValidations: {
-                subject: {
+                amount: {
                     required: true,
                     min: 15
                 },
-                message: {
+                description: {
                     required: true,
                     min: 40
                 }
@@ -50,7 +51,7 @@ export default {
             return this.errors.first(fieldName);
         },
         validate() {
-            let email = this.$authentication.fetchCurrentUser().email;
+            let email = this.$authentication.fetchCurrentUser(this).walletId;
             this.$validator.validateAll().then(isValid => {
                 this.$emit('on-submit', this.model, isValid, email);
             });

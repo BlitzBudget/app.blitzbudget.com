@@ -1,6 +1,9 @@
 <template>
   <div class="row">
     <notifications></notifications>
+    <div class="col-md-12">
+      <nuxt-link to="/transaction/add" class="btn btn-primary">Add Transaction</nuxt-link>
+    </div>
     <div class="col-md-6">
       <register-form @on-submit="onRegisterSubmit"></register-form>
     </div>
@@ -8,14 +11,10 @@
       <login-form @on-submit="onLoginSubmit"></login-form>
     </div>
     <div class="col-md-12">
-      <type-validation-form
-        @on-submit="onTypeValidationSubmit"
-      ></type-validation-form>
+      <type-validation-form @on-submit="onTypeValidationSubmit"></type-validation-form>
     </div>
     <div class="col-md-12">
-      <range-validation-form
-        @on-submit="onRangeValidationSubmit"
-      ></range-validation-form>
+      <range-validation-form @on-submit="onRangeValidationSubmit"></range-validation-form>
     </div>
   </div>
 </template>
@@ -57,4 +56,5 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+</style>

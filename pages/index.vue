@@ -320,10 +320,10 @@ export default {
       });
     }
   },
-  mounted() {
+  async mounted() {
     this.initBigChart(0);
     // Fetch Data from API
-    // this.fetchOverview();
+    
   }
 }
 </script>

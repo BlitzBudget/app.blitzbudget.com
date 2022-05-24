@@ -26,7 +26,8 @@ module.exports = {
       overview: '/overview',
       bankAccounts: '/bank-accounts',
       budgets: '/budgets',
-      recurringTransactions: '/recurring-transaction'
+      recurringTransactions: '/recurring-transaction',
+      wallets: '/wallet'
     },
     home: {
       invokeUrl: 'https://www.blitzbudget.com'
@@ -38,9 +39,6 @@ module.exports = {
     },
     app: {
       invokeUrl: 'https://app.blitzbudget.com/'
-    },
-    wallet: {
-      invokeUrl: 'wallets'
     }
   },
   /*
@@ -101,7 +99,7 @@ module.exports = {
   ],
   axios: {
     baseURL: 'https://api.blitzbudget.com',
-    credentials: false
+    https: true,
   },
   auth: {
     plugins: ['~/plugins/authentication/auth.js'],
@@ -120,6 +118,9 @@ module.exports = {
         user: {
           property: 'user',
           autoFetch: false
+        },
+        token: {
+          property: 'token'
         },
         endpoints: {
           login: { url: '/profile/sign-in', method: 'post', propertyName: 'AuthenticationResult.IdToken' },

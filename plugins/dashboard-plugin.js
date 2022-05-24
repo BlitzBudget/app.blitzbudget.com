@@ -22,7 +22,7 @@ import Notifications from '@/components/NotificationPlugin';
 import VeeValidate from 'vee-validate';
 // A plugin file where you could register global components used across the app
 import './globalComponents';
-// A plugin file where you could register global components used across the app
+// A Library with commonly used classes
 import './libraries/index';
 // A plugin file where you could register global directives
 import './globalDirectives';
@@ -30,6 +30,8 @@ import './globalDirectives';
 import SideBar from '@/components/SidebarPlugin';
 // RTL (right to left plugin to support rtl layout). If you don't need support for rtl, remove this plugin
 import RTLPlugin from './RTLPlugin';
+// Wallet helper
+import './wallet/index'
 // Authentication library
 import './authentication/index'
 

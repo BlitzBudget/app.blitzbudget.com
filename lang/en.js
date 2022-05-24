@@ -138,5 +138,21 @@ module.exports = {
         }
       }
     },
+  },
+  "transaction": {
+    "add": {
+      "title": "Add Transactions",
+      "amount": "Amount",
+      "description": "Description",
+      "submit": "Add",
+      "required-fields": "* Required fields",
+      "category": "Link category"
+    }
+  },
+  "wallet": {
+    "none": {
+      "title": "No Wallets Found",
+      "description": "We will be redirecting you to add wallets in <b></b> seconds."
+    }
   }
 }

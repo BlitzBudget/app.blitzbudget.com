@@ -50,7 +50,7 @@ export default {
             return this.errors.first(fieldName);
         },
         validate() {
-            let email = this.$authentication.fetchCurrentUser().email;
+            let email = this.$authentication.fetchCurrentUser(this).email;
             this.$validator.validateAll().then(isValid => {
                 this.$emit('on-submit', this.model, isValid, email);
             });
