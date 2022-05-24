@@ -13,12 +13,12 @@
                 { 'show d-block': hasSucceeded },
                 { 'd-none': !hasSucceeded }]">
                     <p class="card-description">
-                        {{ $t('support.ask-us-directly.success.description') }}
+                        {{ $t('transaction.add.success.description') }}
                     </p>
 
                     <template slot="footer">
-                        <nuxt-link to="/" class="btn btn-primary">
-                            {{ $t('support.ask-us-directly.success.button') }}
+                        <nuxt-link to="/transaction" class="btn btn-primary">
+                            {{ $t('transaction.add.success.button') }}
                         </nuxt-link>
                     </template>
                 </card>

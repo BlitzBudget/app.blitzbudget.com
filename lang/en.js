@@ -153,6 +153,23 @@ module.exports = {
     "none": {
       "title": "No Wallets Found",
       "description": "We will be redirecting you to add wallets in <b></b> seconds."
+    },
+    "add": {
+      "title": "Add Wallet",
+      "name": "Name",
+      "currency": "Currency",
+      "submit": "Add",
+      "required-fields": "* Required fields",
+      "success": "Successfully added the wallet!"
+    }
+  },
+  "category": {
+    "add": {
+      "title": "Add Category",
+      "name": "Name",
+      "type": "Type",
+      "submit": "Add",
+      "required-fields": "* Required fields"
     }
   }
 }

@@ -35,11 +35,14 @@ let WalletStore = {
     storeWalletInLocalStorage(result, event) {
         let wallets = result.Wallet;
 
-        if (event.$isEmpty(wallets)) {
+        if (event.$isNotEmpty(wallets)) {
+            event.$wallet.storeCurrentWallet(wallets[0]);
             return;
         }
 
-        event.$wallet.storeCurrentWallet(wallets[0]);
+        if (event.$isNotEmpty(result)) {
+            event.$wallet.storeCurrentWallet(result[0]);
+        }
     },
     async fetchWalletItemFromAPI(userId, event) {
         return event.$axios.$post(process.env.api.wallets, {

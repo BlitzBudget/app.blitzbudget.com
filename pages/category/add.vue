@@ -3,7 +3,25 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <wallet-add-form @on-submit="addWallet"></wallet-add-form>
+                <wallet-add-form @on-submit="addWallet" :class="[
+                { 'show d-block': !hasSucceeded },
+                { 'd-none': hasSucceeded }]"></wallet-add-form>
+            </div>
+            <div class="col-md-12 ml-auto-mr-auto">
+                <!-- Success Message Tab -->
+                <card type="testimonial" header-classes="card-header-avatar" :class="[
+                { 'show d-block': hasSucceeded },
+                { 'd-none': !hasSucceeded }]">
+                    <p class="card-description">
+                        {{ $t('support.ask-us-directly.success.description') }}
+                    </p>
+
+                    <template slot="footer">
+                        <nuxt-link to="/" class="btn btn-primary">
+                            {{ $t('support.ask-us-directly.success.button') }}
+                        </nuxt-link>
+                    </template>
+                </card>
             </div>
         </div>
     </div>
@@ -18,7 +36,8 @@ export default {
     },
     data() {
         return {
-            walletModel: {}
+            walletModel: {},
+            hasSucceeded: false
         };
     },
     methods: {
@@ -33,7 +52,7 @@ export default {
                 wallet_currency: model.currency,
                 wallet_name: model.name
             }).then(() => {
-                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('wallet.add.success') });
+                this.hasSucceeded = true;
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', message: errorMessage });
