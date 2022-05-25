@@ -7,15 +7,20 @@
       </div>
 
       <ul class="navbar-nav">
-        <nuxt-link class="nav-item" tag="li" to="/register">
+        <li class="nav-item">
+          <a href="#" class="nav-link text-primary" @click="$router.go(-1)">
+            <i class="tim-icons icon-minimal-left"></i> Back to Dashboard
+          </a>
+        </li>
+        <nuxt-link class="nav-item" tag="li" to="/category">
           <a class="nav-link">
-            <i class="tim-icons icon-laptop"></i> Register
+            <i class="tim-icons icon-laptop"></i> Category
           </a>
         </nuxt-link>
 
-        <nuxt-link class="nav-item" tag="li" to="/login">
+        <nuxt-link class="nav-item" tag="li" to="/wallet">
           <a class="nav-link">
-            <i class="tim-icons icon-single-02"></i> Login
+            <i class="tim-icons icon-single-02"></i> Wallets
           </a>
         </nuxt-link>
       </ul>
@@ -38,7 +43,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <nuxt-link to="/support" target="_blank" rel="noopener" class="nav-link">
+                  <nuxt-link to="/support" rel="noopener" class="nav-link">
                     Support
                   </nuxt-link>
                 </li>

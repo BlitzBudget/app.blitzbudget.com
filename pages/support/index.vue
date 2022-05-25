@@ -11,6 +11,7 @@ import EmailForm from '@/components/ValidationForms/Support/EmailForm.vue';
 
 export default {
     name: 'support',
+    layout: 'plain',
     components: {
         EmailForm,
     },

@@ -3,36 +3,40 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <wallet-add-form @on-submit="addWallet"></wallet-add-form>
+                <transaction-form @on-submit="addTransaction"></transaction-form>
             </div>
         </div>
     </div>
 </template>
 <script>
-import WalletAddForm from '@/components/Wallets/AddForm.vue';
+import TransactionForm from '@/components/Transactions/AddForm.vue';
 
 export default {
     name: 'validation-forms',
     layout: 'plain',
     components: {
-        WalletAddForm,
+        TransactionForm,
     },
     data() {
         return {
-            walletModel: {}
+            transactionModel: {}
         };
     },
     methods: {
-        async addWallet(model, isValid, userId) {
+        async addTransaction(model) {
             if (!isValid) {
                 return;
             }
 
-            this.walletModel = model;
-            await this.$axios.$put(process.env.api.wallets, {
-                pk: userId,
-                wallet_currency: model.currency,
-                wallet_name: model.name
+            this.transactionModel = model;
+            await this.$axios.$put(process.env.api.transactions, {
+                pk: model.walletId,
+                sk: model.targetId,
+                description: model.targetType,
+                targetDate: model.targetDate,
+                targetAmount: model.targetAmount,
+                monthlyContribution: model.monthlyContribution,
+                transactionType: model.transactionType
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('wallet.add.success') });
             }).catch(({ response }) => {

@@ -64,6 +64,11 @@
             Categories
           </nuxt-link>
         </li>
+        <li class="nav-link">
+          <nuxt-link to="/wallet" class="nav-item dropdown-item">
+            Wallets
+          </nuxt-link>
+        </li>
         <div class="dropdown-divider"></div>
         <li class="nav-link">
           <a href="#" class="nav-item dropdown-item" @click="logoutUser">Log out</a>

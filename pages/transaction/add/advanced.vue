@@ -31,6 +31,7 @@ import TransactionForm from '@/components/Transactions/AddForm.vue';
 
 export default {
     name: 'validation-forms',
+    layout: 'plain',
     components: {
         TransactionForm,
     },

@@ -146,7 +146,7 @@ module.exports = {
       "description": "Description",
       "submit": "Add",
       "required-fields": "* Required fields",
-      "category": "Link category"
+      "advanced": "Advanced Add Transactions"
     }
   },
   "wallet": {
@@ -164,12 +164,40 @@ module.exports = {
     }
   },
   "category": {
+    "link": {
+      "add": {
+        "title": "Add Category Link",
+        "name": "Name",
+        "type": "Type",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "success": "Successfully linked the category and transaction!"
+      }
+    },
     "add": {
       "title": "Add Category",
       "name": "Name",
       "type": "Type",
       "submit": "Add",
-      "required-fields": "* Required fields"
+      "required-fields": "* Required fields",
+      "success": "Successfully added the category!"
+    },
+    "get": {
+      "expense": {
+        "title": "Expense",
+      },
+      "income": {
+        "title": "Income",
+      },
+      "table": {
+        "header": {
+          "name": "Name",
+          "type": "Type",
+          "action": "Action"
+        },
+        "link": "Link Transaction",
+        "delete": "Delete"
+      }
     }
   }
 }

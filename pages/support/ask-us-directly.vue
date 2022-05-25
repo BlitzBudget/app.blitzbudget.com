@@ -31,6 +31,7 @@ import EmailForm from '@/components/ValidationForms/Support/EmailForm.vue';
 
 export default {
     name: 'ask-us-directly',
+    layout: 'plain',
     components: {
         EmailForm,
     },

@@ -21,7 +21,8 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('transaction.add.submit')
                 }}</base-button>
-                <nuxt-link to="/category/add" class="pull-right">{{ $t('transaction.add.category') }}</nuxt-link>
+                <nuxt-link to="/transaction/add/advanced" class="pull-right">{{ $t('transaction.add.advanced') }}
+                </nuxt-link>
             </template>
         </card>
     </form>

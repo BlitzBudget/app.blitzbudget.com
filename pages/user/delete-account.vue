@@ -32,6 +32,7 @@ import ChangePasswordForm from '@/components/UserProfile/ChangePasswordForm.vue'
 
 export default {
     name: 'delete-account-page',
+    layout: 'plain',
     components: {
         ChangePasswordForm,
     },

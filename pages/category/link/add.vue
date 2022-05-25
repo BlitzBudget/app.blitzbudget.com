@@ -3,9 +3,7 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <category-add-form @on-submit="addCategory" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]"></category-add-form>
+                <category-add-form @on-submit="addCategory"></category-add-form>
             </div>
         </div>
     </div>
@@ -36,7 +34,7 @@ export default {
                 category_type: model.type,
                 category_name: model.name
             }).then(() => {
-                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('category.add.success') });
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('category.link.add.success') });
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
