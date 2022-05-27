@@ -13,12 +13,12 @@
                 { 'show d-block': hasSucceeded },
                 { 'd-none': !hasSucceeded }]">
                     <p class="card-description">
-                        {{ $t('support.ask-us-directly.success.description') }}
+                        {{ $t('transaction.add.success.description') }}
                     </p>
 
                     <template slot="footer">
-                        <nuxt-link to="/" class="btn btn-primary">
-                            {{ $t('support.ask-us-directly.success.button') }}
+                        <nuxt-link to="/transaction" class="btn btn-primary">
+                            {{ $t('transaction.add.success.button') }}
                         </nuxt-link>
                     </template>
                 </card>
@@ -31,6 +31,7 @@ import TransactionForm from '@/components/Transactions/AddForm.vue';
 
 export default {
     name: 'validation-forms',
+    layout: 'plain',
     components: {
         TransactionForm,
     },
@@ -48,9 +49,9 @@ export default {
 
             this.transactionModel = model;
             await this.$axios.$put(process.env.api.transactions, {
-                walletId: model.walletId,
-                targetId: model.targetId,
-                targetType: model.targetType,
+                pk: model.walletId,
+                sk: model.targetId,
+                description: model.targetType,
                 targetDate: model.targetDate,
                 targetAmount: model.targetAmount,
                 monthlyContribution: model.monthlyContribution,

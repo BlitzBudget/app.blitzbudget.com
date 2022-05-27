@@ -311,8 +311,11 @@ export default {
       this.bigLineChart.activeIndex = index;
     },
     fetchOverview() {
+      // Fetch the current user ID
+      let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+      // Fetch OVerview
       this.$axios.$post(process.env.api.overview, {
-        userId: currentUser.financialPortfolioId,
+        user_id: userId,
       }).then((response) => {
         this.data = response;
       }).catch(({ error }) => {
@@ -320,10 +323,10 @@ export default {
       });
     }
   },
-  mounted() {
+  async mounted() {
     this.initBigChart(0);
     // Fetch Data from API
-    // this.fetchOverview();
+    await this.fetchOverview();
   }
 }
 </script>

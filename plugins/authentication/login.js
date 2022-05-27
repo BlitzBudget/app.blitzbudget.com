@@ -19,6 +19,7 @@ let authentication = {
             event.$authentication.storeAccessToken(resp, event);
             event.$authentication.retrieveUserAttributes(resp, event);
             event.$auth.setUserToken(idToken, refreshToken)
+            event.$wallet.storeWalletInLocalStorage(resp, event);
         } catch (err) {
             console.log(err);
             event.$notify({ type: 'danger', timeout: 10000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('login.error') });
@@ -39,10 +40,12 @@ let authentication = {
     storeAccessToken(result, event) {
         // Set JWT Token For authentication
         let accessToken = JSON.stringify(result.AuthenticationResult.AccessToken);
+        let bearerToken = 'Bearer ' + accessToken;
         accessToken = accessToken.substring(1, accessToken.length - 1);
         localStorage.setItem(this.accessTokenItem, accessToken);
-        event.$axios.setHeader('Authorization', 'Bearer ' + accessToken);
-        event.$auth.ctx.app.$axios.setHeader('Authorization', 'Bearer ' + accessToken);
+        event.$axios.setHeader('Authorization', bearerToken);
+        event.$axios.setToken(bearerToken)
+        event.$auth.ctx.app.$axios.setHeader('Authorization', bearerToken);
     },
     retrieveUserAttributes(result, event) {
         let userAttributes = result.UserAttributes;
@@ -68,18 +71,22 @@ let authentication = {
         localStorage.setItem(this.currentUserItemInStorage, JSON.stringify(currentUserLocal));
         event.$auth.setUser(currentUserLocal);
     },
-    fetchCurrentUser() {
-        if (this.currentUser) {
+    fetchCurrentUser(event) {
+        if (event.$isNotEmpty(this.currentUser)) {
             return this.currentUser;
         }
 
         // If not present then fetch from local storage
         let currentUser = localStorage.getItem(this.currentUserItemInStorage);
-        if (currentUser) {
+        if (event.$isNotEmpty(currentUser)) {
             currentUser = JSON.parse(currentUser);
             this.currentUser = currentUser;
+            return currentUser;
         }
-        return currentUser;
+
+        // If Current user info is empty 
+        // Logout User
+        event.$userLogout.logout(event);
     },
     fetchAccessToken() {
         return localStorage.getItem(this.accessTokenItem);

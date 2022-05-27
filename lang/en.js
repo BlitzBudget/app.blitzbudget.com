@@ -138,5 +138,66 @@ module.exports = {
         }
       }
     },
+  },
+  "transaction": {
+    "add": {
+      "title": "Add Transactions",
+      "amount": "Amount",
+      "description": "Description",
+      "submit": "Add",
+      "required-fields": "* Required fields",
+      "advanced": "Advanced Add Transactions"
+    }
+  },
+  "wallet": {
+    "none": {
+      "title": "No Wallets Found",
+      "description": "We will be redirecting you to add wallets in <b></b> seconds."
+    },
+    "add": {
+      "title": "Add Wallet",
+      "name": "Name",
+      "currency": "Currency",
+      "submit": "Add",
+      "required-fields": "* Required fields",
+      "success": "Successfully added the wallet!"
+    }
+  },
+  "category": {
+    "link": {
+      "add": {
+        "title": "Add Category Link",
+        "name": "Name",
+        "type": "Type",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "success": "Successfully linked the category and transaction!"
+      }
+    },
+    "add": {
+      "title": "Add Category",
+      "name": "Name",
+      "type": "Type",
+      "submit": "Add",
+      "required-fields": "* Required fields",
+      "success": "Successfully added the category!"
+    },
+    "get": {
+      "expense": {
+        "title": "Expense",
+      },
+      "income": {
+        "title": "Income",
+      },
+      "table": {
+        "header": {
+          "name": "Name",
+          "type": "Type",
+          "action": "Action"
+        },
+        "link": "Link Transaction",
+        "delete": "Delete"
+      }
+    }
   }
 }
