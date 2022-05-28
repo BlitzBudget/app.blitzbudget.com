@@ -25,8 +25,8 @@
                             <td class="text-right">
                                 <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300"
                                     placement="top">
-                                    <nuxt-link to="/category/link/add" :type="index > 2 ? 'success' : 'neutral'" icon
-                                        size="sm" class="btn-link">
+                                    <nuxt-link :to="{ path: '/category/link/add', query: { category_id: row.sk } }"
+                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
                                         <i class="tim-icons icon-link-72"></i>
                                     </nuxt-link>
                                 </el-tooltip>

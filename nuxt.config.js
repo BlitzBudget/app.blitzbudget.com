@@ -27,7 +27,8 @@ module.exports = {
       bankAccounts: '/bank-accounts',
       budgets: '/budgets',
       recurringTransactions: '/recurring-transaction',
-      wallets: '/wallet'
+      wallets: '/wallet',
+      categoryRules: '/rules/category',
     },
     home: {
       invokeUrl: 'https://www.blitzbudget.com'
