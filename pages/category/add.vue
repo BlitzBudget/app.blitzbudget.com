@@ -3,9 +3,7 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <category-add-form @on-submit="addCategory" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]"></category-add-form>
+                <category-add-form @on-submit="addCategory"></category-add-form>
             </div>
         </div>
     </div>

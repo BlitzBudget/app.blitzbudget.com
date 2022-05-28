@@ -167,11 +167,24 @@ module.exports = {
     "link": {
       "add": {
         "title": "Add Category Link",
-        "name": "Name",
-        "type": "Type",
+        "transactionDescription": "Transaction Description",
+        "categoryId": "Select Category",
         "submit": "Add",
         "required-fields": "* Required fields",
-        "success": "Successfully linked the category and transaction!"
+        "success": "Successfully linked the category and transaction!",
+        "viewCategoryRule": "View Category And Transaction Link"
+      },
+      "get": {
+        "title": "Category and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "category": "Category",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete"
+        }
       }
     },
     "add": {
