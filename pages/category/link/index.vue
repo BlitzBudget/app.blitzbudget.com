@@ -46,15 +46,11 @@
                         </el-tooltip>
                     </td>
                 </template>
-
-                <template slot-scope="{ row, index }" :class="[
-                { 'show d-block': noData },
-                { 'd-none': !noData }]">
-                    <td></td>
-                    <td>No Data</td>
-                    <td></td>
-                </template>
             </base-table>
+            <div :class="[
+            { 'show d-block text-center': noData },
+            { 'd-none': !noData }]">
+                No Data</div>
             <!-- small modal -->
             <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
                 headerClasses="justify-content-center" type="mini">
@@ -119,8 +115,9 @@ export default {
             await this.$axios.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: this.categoryRuleId
-            }).then((response) => {
+            }).then(async () => {
                 this.closeModal();
+                await this.fetchCategoryLink();
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
@@ -131,15 +128,18 @@ export default {
             if (this.$isEmpty(response)) {
                 this.noData = true;
             }
-        }
+        },
+        async fetchCategoryLink() {
+            // Fetch the current user ID
+            let wallet = await this.$wallet.setCurrentWallet(this);
+            // Fetch Category ID from parameter
+            let selectedCategoryId = this.$route.query.category_id;
+            // Fetch Data from API
+            await this.getCategoryRules(wallet.WalletId, selectedCategoryId);
+        },
     },
     async mounted() {
-        // Fetch the current user ID
-        let wallet = await this.$wallet.setCurrentWallet(this);
-        // Fetch Category ID from parameter
-        let selectedCategoryId = this.$route.query.category_id;
-        // Fetch Data from API
-        await this.getCategoryRules(wallet.WalletId, selectedCategoryId);
+        await this.fetchCategoryLink();
     }
 };
 </script>
