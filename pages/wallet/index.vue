@@ -37,7 +37,7 @@
 import WalletForm from '@/components/Wallets/AddForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'wallet',
     layout: 'plain',
     components: {
         WalletForm,

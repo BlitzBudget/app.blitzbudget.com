@@ -5,10 +5,12 @@
                 <h4 class="card-title">{{ $t('category.link.add.title') }}</h4>
             </div>
             <div>
-                <base-input :label="$t('category.link.add.transactionDescription')" required
-                    v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
-                    :error="getError('transactionDescription')" name="transactionDescription">
-                </base-input>
+                <el-tooltip :content="$t('category.link.add.tooltip')" effect="light" :open-delay="300" placement="top">
+                    <base-input :label="$t('category.link.add.transactionDescription')" required
+                        v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
+                        :error="getError('transactionDescription')" name="transactionDescription">
+                    </base-input>
+                </el-tooltip>
 
                 <base-input :label="$t('category.link.add.categoryId')" required :error="getError('categoryId')"
                     name="categoryId">

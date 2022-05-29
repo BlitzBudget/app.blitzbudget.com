@@ -103,7 +103,7 @@ module.exports = {
     https: true,
   },
   auth: {
-    plugins: ['~/plugins/authentication/auth.js'],
+    plugins: [],
     // Options
     redirect: {
       login: '/login',

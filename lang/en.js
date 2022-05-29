@@ -171,6 +171,7 @@ module.exports = {
         "categoryId": "Select Category",
         "submit": "Add",
         "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
         "success": "Successfully linked the category and transaction!",
         "viewCategoryRule": "View Category And Transaction Link"
       },
@@ -183,8 +184,12 @@ module.exports = {
             "action": "Action"
           },
           "link": "Link Transaction",
-          "delete": "Delete"
+          "delete": "Delete",
+          "category": "View Category"
         }
+      },
+      "delete": {
+        "success": "Successfully deleted the category rule"
       }
     },
     "add": {

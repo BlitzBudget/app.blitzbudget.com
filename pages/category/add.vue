@@ -12,7 +12,7 @@
 import CategoryAddForm from '@/components/Categories/AddForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'add-category',
     layout: 'plain',
     components: {
         CategoryAddForm,

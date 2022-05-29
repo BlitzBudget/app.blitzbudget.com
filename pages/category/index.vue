@@ -19,7 +19,9 @@
                             <th class="text-right">{{ $t('category.get.table.header.action') }}</th>
                         </template>
 
-                        <template slot-scope="{ row, index }">
+                        <template slot-scope="{ row, index }" :class="[
+                        { 'show d-block': expenseDataPresent },
+                        { 'd-none': !expenseDataPresent }]">
                             <td>{{ row.category_name }}</td>
                             <td>{{ row.category_type }}</td>
                             <td class="text-right">
@@ -38,6 +40,14 @@
                                     </base-button>
                                 </el-tooltip>
                             </td>
+                        </template>
+
+                        <template :class="[
+                        { 'show d-block': !expenseDataPresent },
+                        { 'd-none': expenseDataPresent }]">
+                            <td></td>
+                            <td>No Data</td>
+                            <td></td>
                         </template>
                     </base-table>
                 </div>
@@ -62,7 +72,9 @@
                             <th class="text-right">{{ $t('category.get.table.header.action') }}</th>
                         </template>
 
-                        <template slot-scope="{ row, index }">
+                        <template slot-scope="{ row, index }" :class="[
+                        { 'show d-block': incomeDataPresent },
+                        { 'd-none': !incomeDataPresent }]">
                             <td>{{ row.category_name }}</td>
                             <td>{{ row.category_type }}</td>
                             <td class="text-right">
@@ -82,6 +94,14 @@
                                 </el-tooltip>
                             </td>
                         </template>
+
+                        <template :class="[
+                        { 'show d-block': !incomeDataPresent },
+                        { 'd-none': incomeDataPresent }]">
+                            <td></td>
+                            <td>No Data</td>
+                            <td></td>
+                        </template>
                     </base-table>
                 </div>
             </card>
@@ -92,6 +112,7 @@
 import { BaseTable, BaseProgress } from '@/components';
 
 export default {
+    name: 'category',
     components: {
         BaseTable,
         BaseProgress
@@ -99,7 +120,9 @@ export default {
     data() {
         return {
             incomeCategories: [],
-            expenseCategories: []
+            expenseCategories: [],
+            incomeDataPresent: true,
+            expenseDataPresent: true
         };
     },
     methods: {
@@ -117,12 +140,20 @@ export default {
             if (this.$isNotEmpty(response)) {
                 for (let i = 0, len = response.length; i < len; i++) {
                     let category = response[i];
-                    if (category.type == "Income") {
+                    if (category.category_type == "Income") {
                         this.incomeCategories.push(category);
                     } else {
                         this.expenseCategories.push(category);
                     }
                 }
+            }
+
+            if (this.$isEmpty(this.incomeCategories)) {
+                this.incomeDataPresent = false;
+            }
+
+            if (this.$isEmpty(this.expenseCategories)) {
+                this.expenseDataPresent = false;
             }
         }
     },

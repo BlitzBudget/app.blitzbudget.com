@@ -44,6 +44,7 @@
 import { BaseTable, BaseProgress } from '@/components';
 
 export default {
+    name: 'category-link',
     components: {
         BaseTable,
         BaseProgress
@@ -65,6 +66,9 @@ export default {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
+        },
+        async deleteItem() {
+            
         }
     },
     async mounted() {

@@ -15,8 +15,8 @@ let WalletStore = {
         }
 
         let walletItem = localStorage.getItem(this.walletItemKey);
-        walletItem = JSON.parse(walletItem);
         if (event.$isNotEmpty(walletItem)) {
+            walletItem = JSON.parse(walletItem);
             this.wallet = new WalletClass(walletItem["wallet_name"], walletItem["wallet_currency"], walletItem["sk"], walletItem["pk"]);
             return this.wallet;
         }
@@ -40,7 +40,7 @@ let WalletStore = {
             return;
         }
 
-        if (event.$isNotEmpty(result)) {
+        if (event.$isNotEmpty(result) && event.$isNotEmpty(result[0])) {
             event.$wallet.storeCurrentWallet(result[0]);
         }
     },
