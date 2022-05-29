@@ -50,7 +50,8 @@
             <div :class="[
             { 'show d-block text-center': noData },
             { 'd-none': !noData }]">
-                No Data</div>
+                No Data
+            </div>
             <!-- small modal -->
             <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
                 headerClasses="justify-content-center" type="mini">
