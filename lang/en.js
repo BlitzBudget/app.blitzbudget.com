@@ -189,7 +189,8 @@ module.exports = {
         }
       },
       "delete": {
-        "success": "Successfully deleted the category rule"
+        "success": "Successfully deleted the category rule",
+        "description": "Are your sure that you want to delete the category transaction link?"
       }
     },
     "add": {
