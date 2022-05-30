@@ -19,7 +19,9 @@
                             <th class="text-right">{{ $t('category.get.table.header.action') }}</th>
                         </template>
 
-                        <template slot-scope="{ row, index }">
+                        <template slot-scope="{ row, index }" :class="[
+                        { 'show d-block text-center': !noExpenseData },
+                        { 'd-none': noExpenseData }]">
                             <td>{{ row.category_name }}</td>
                             <td>{{ row.category_type }}</td>
                             <td class="text-right">
@@ -28,6 +30,13 @@
                                     <nuxt-link :to="{ path: '/category/link/add', query: { category_id: row.sk } }"
                                         :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
                                         <i class="tim-icons icon-link-72"></i>
+                                    </nuxt-link>
+                                </el-tooltip>
+                                <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
+                                    :open-delay="300" placement="top">
+                                    <nuxt-link :to="{ path: '/transaction', query: { category_id: row.sk } }"
+                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                        <i class="tim-icons icon-coins"></i>
                                     </nuxt-link>
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.delete')" effect="light" :open-delay="300"
@@ -40,6 +49,11 @@
                             </td>
                         </template>
                     </base-table>
+                    <div :class="[
+                    { 'show d-block text-center': noExpenseData },
+                    { 'd-none': !noExpenseData }]">
+                        No Data
+                    </div>
                 </div>
             </card>
         </div>
@@ -62,7 +76,9 @@
                             <th class="text-right">{{ $t('category.get.table.header.action') }}</th>
                         </template>
 
-                        <template slot-scope="{ row, index }">
+                        <template slot-scope="{ row, index }" :class="[
+                        { 'show d-block text-center': !noIncomeData },
+                        { 'd-none': noIncomeData }]">
                             <td>{{ row.category_name }}</td>
                             <td>{{ row.category_type }}</td>
                             <td class="text-right">
@@ -71,6 +87,13 @@
                                     <nuxt-link to="/category/link/add" :type="index > 2 ? 'success' : 'neutral'" icon
                                         size="sm" class="btn-link">
                                         <i class="tim-icons icon-link-72"></i>
+                                    </nuxt-link>
+                                </el-tooltip>
+                                <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
+                                    :open-delay="300" placement="top">
+                                    <nuxt-link :to="{ path: '/transaction', query: { category_id: row.sk } }"
+                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                        <i class="tim-icons icon-coins"></i>
                                     </nuxt-link>
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.delete')" effect="light" :open-delay="300"
@@ -83,6 +106,11 @@
                             </td>
                         </template>
                     </base-table>
+                    <div :class="[
+                    { 'show d-block text-center': noIncomeData },
+                    { 'd-none': !noIncomeData }]">
+                        No Data
+                    </div>
                 </div>
             </card>
         </div>
@@ -92,6 +120,7 @@
 import { BaseTable, BaseProgress } from '@/components';
 
 export default {
+    name: 'category',
     components: {
         BaseTable,
         BaseProgress
@@ -99,7 +128,9 @@ export default {
     data() {
         return {
             incomeCategories: [],
-            expenseCategories: []
+            expenseCategories: [],
+            noIncomeData: false,
+            noExpenseData: false
         };
     },
     methods: {
@@ -117,12 +148,20 @@ export default {
             if (this.$isNotEmpty(response)) {
                 for (let i = 0, len = response.length; i < len; i++) {
                     let category = response[i];
-                    if (category.type == "Income") {
+                    if (category.category_type == "Income") {
                         this.incomeCategories.push(category);
                     } else {
                         this.expenseCategories.push(category);
                     }
                 }
+            }
+
+            if (this.$isEmpty(this.incomeCategories)) {
+                this.noIncomeData = true;
+            }
+
+            if (this.$isEmpty(this.expenseCategories)) {
+                this.noExpenseData = true;
             }
         }
     },

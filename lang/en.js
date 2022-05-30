@@ -161,6 +161,16 @@ module.exports = {
       "submit": "Add",
       "required-fields": "* Required fields",
       "success": "Successfully added the wallet!"
+    },
+    "get": {
+      "description": "Choose your wallet to start organizing your finances.",
+      "title": "Your Wallets",
+      "enter": "Choose Wallet",
+      "add": {
+        "description": "Add",
+        "button": "Add Wallet"
+      },
+      "delete": "Delete Wallet"
     }
   },
   "category": {
@@ -171,6 +181,7 @@ module.exports = {
         "categoryId": "Select Category",
         "submit": "Add",
         "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
         "success": "Successfully linked the category and transaction!",
         "viewCategoryRule": "View Category And Transaction Link"
       },
@@ -183,8 +194,13 @@ module.exports = {
             "action": "Action"
           },
           "link": "Link Transaction",
-          "delete": "Delete"
+          "delete": "Delete",
+          "category": "View Category"
         }
+      },
+      "delete": {
+        "success": "Successfully deleted the category rule",
+        "description": "Are your sure that you want to delete the category transaction link?"
       }
     },
     "add": {
@@ -209,7 +225,8 @@ module.exports = {
           "action": "Action"
         },
         "link": "Link Transaction",
-        "delete": "Delete"
+        "delete": "Delete",
+        "transaction": "View Linked Transactions"
       }
     }
   }
