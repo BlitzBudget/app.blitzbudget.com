@@ -11,7 +11,8 @@
 
                 <base-input :label="$t('wallet.add.currency')" required :error="getError('currency')" name="currency">
                     <el-select v-model="model.currency" class="select-primary" name="currency"
-                        v-validate="modelValidations.currency" autocomplete="on" filterable="true" clearable="true">
+                        v-validate="modelValidations.currency" autocomplete="on" :filterable="filterable"
+                        :clearable="clearable">
                         <el-option v-for="currency in currencyNameToSymbol" class="select-primary"
                             :label="currency.currency" :value="currency.symbol" :key="currency.currency"></el-option>
                     </el-select>
@@ -24,6 +25,9 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('wallet.add.submit')
                 }}</base-button>
+                <nuxt-link class="float-right" to="/wallet/">{{
+                        $t('wallet.add.view')
+                }}</nuxt-link>
             </template>
         </card>
     </form>
@@ -38,6 +42,8 @@ export default {
     },
     data() {
         return {
+            filterable: true,
+            clearable: true,
             model: {
                 name: '',
                 currency: '',

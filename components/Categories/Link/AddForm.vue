@@ -15,8 +15,8 @@
                 <base-input :label="$t('category.link.add.categoryId')" required :error="getError('categoryId')"
                     name="categoryId">
                     <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
-                        v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" clearable="true"
-                        autocomplete="on" filterable="true">
+                        v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" :clearable="clearable"
+                        autocomplete="on" :filterable="filterable">
                         <el-option v-for="category in categories" class="select-primary"
                             :label="getCategoryValue(category)" :value="category.sk" :key="category.sk"
                             :selected="isSelected(category)">
@@ -50,6 +50,8 @@ export default {
     data() {
         return {
             selectedCategoryId: '',
+            filterable: true,
+            clearable: true,
             model: {
                 transactionDescription: null,
                 categoryId: null,
