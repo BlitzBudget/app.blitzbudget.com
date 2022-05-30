@@ -146,8 +146,8 @@ export default {
             let wallet = await this.$wallet.setCurrentWallet(this);
 
             await this.$axios.$post(process.env.api.deleteItem, {
-                pk: wallet.WalletId,
-                sk: this.categoryRuleId
+                walletId: wallet.WalletId,
+                itemId: this.categoryRuleId
             }).then(async () => {
                 this.closeModal();
                 await this.fetchCategoryLink();

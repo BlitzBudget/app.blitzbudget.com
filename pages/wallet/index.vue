@@ -62,7 +62,7 @@
             <div slot="header" class="modal-profile">
                 <i class="tim-icons icon-single-02"></i>
             </div>
-            <p>{{ $t('category.link.delete.description') }}</p>
+            <p>{{ $t('wallet.delete.description') }}</p>
             <template slot="footer">
                 <base-button type="neutral" link @click.native="modals.delete = false">Back
                 </base-button>
@@ -125,9 +125,9 @@ export default {
             // Fetch the current user ID
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
 
-            await this.$axios.$post(process.env.api.wallet.delete, {
-                pk: userId,
-                sk: this.deleteWalletId
+            await this.$axios.$post(process.env.api.deleteItem, {
+                walletId: userId,
+                itemId: this.deleteWalletId
             }).then(async () => {
                 this.closeModal();
                 await this.getWallets(userId);

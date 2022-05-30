@@ -171,6 +171,9 @@ module.exports = {
         "button": "Add Wallet"
       },
       "delete": "Delete Wallet"
+    },
+    "delete": {
+      "description": "This action will delete all the transactions, budgets, goals and investments. Are you sure?"
     }
   },
   "category": {
