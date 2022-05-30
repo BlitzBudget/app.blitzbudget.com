@@ -31,9 +31,6 @@ module.exports = {
       budgets: '/budgets',
       recurringTransactions: '/recurring-transaction',
       wallets: '/wallet',
-      wallet: {
-        delete: "/wallet/delete"
-      },
       rules: {
         category: '/rules/category'
       }
