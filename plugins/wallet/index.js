@@ -48,6 +48,12 @@ let WalletStore = {
         this.$wallet = newWallet;
         localStorage.setItem(this.walletItemKey, JSON.stringify(newWallet));
     },
+    resetWallet(walletId) {
+        if (this.$wallet.sk == walletId) {
+            this.$wallet = null;
+            localStorage.removeItem(this.walletItemKey);
+        }
+    },
     async fetchWalletItemFromAPI(userId, event) {
         return event.$axios.$post(process.env.api.wallets, {
             user_id: userId,

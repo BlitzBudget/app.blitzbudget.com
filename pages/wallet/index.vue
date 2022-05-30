@@ -109,7 +109,7 @@ export default {
                 if (walletModel.sk == walletId) {
                     // Choose the current wallet and store
                     this.$wallet.chooseAWallet(walletModel);
-                    this.$router.push(process.env.route.transaction);
+                    this.$router.push({ path: process.env.route.transaction });
                 }
             }
         },
@@ -122,21 +122,26 @@ export default {
             this.deleteWalletId = null;
         },
         async deleteItem() {
+            let event = this;
             // Fetch the current user ID
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
 
             await this.$axios.$post(process.env.api.deleteItem, {
-                walletId: userId,
-                itemId: this.deleteWalletId
+                pk: userId,
+                sk: this.deleteWalletId
             }).then(async () => {
+                // Reset Wallet Account
+                event.$wallet.resetWallet(this.deleteWalletId);
+                // Close the modal
                 this.closeModal();
+                // After deleteing fetch the wallets again
                 await this.getWallets(userId);
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+            }).catch((response) => {
+                let errorMessage = this.$lastElement(this.$splitElement(response.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
                 this.closeModal();
             });
-        },
+        }
     },
     async mounted() {
         // Fetch the current user ID

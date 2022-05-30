@@ -160,7 +160,8 @@ module.exports = {
       "currency": "Currency",
       "submit": "Add",
       "required-fields": "* Required fields",
-      "success": "Successfully added the wallet!"
+      "success": "Successfully added the wallet!",
+      "view": "View Wallets"
     },
     "get": {
       "description": "Choose your wallet to start organizing your finances.",
