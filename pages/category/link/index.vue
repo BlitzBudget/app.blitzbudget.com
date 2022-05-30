@@ -21,7 +21,7 @@
                 { 'show d-block': !noData },
                 { 'd-none': noData }]">
                     <td>{{ row.transaction_name }}</td>
-                    <td>{{ row.category_id }}</td>
+                    <td :class="row.category_id"></td>
                     <td class="text-right">
                         <el-tooltip :content="$t('category.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
@@ -98,16 +98,48 @@ export default {
             this.categoryRuleId = null;
         },
         async getCategoryRules(walletId, categoryId) {
-            await this.$axios.$post(process.env.api.categoryRules, {
+            await this.$axios.$post(process.env.api.rules.category, {
                 wallet_id: walletId,
                 category_id: categoryId
-            }).then((response) => {
+            }).then(async (response) => {
                 this.categoryLink = response;
+                // if No Data populate no data
                 this.noDataInResponse(response);
+                // Fetch Categories
+                await this.getCategories(response);
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
+        },
+        async getCategories(categoryRuleResponse) {
+            if (this.$isEmpty(categoryRuleResponse)) {
+                return;
+            }
+
+            // Fetch all category ids
+            let categoryIds = this.getCategoryIds(categoryRuleResponse);
+            // Fetch the current user ID
+            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+            await this.$axios.$post(process.env.api.category.batch, {
+                user_id: userId,
+                category_ids: categoryIds
+            }).then((response) => {
+                this.assignCategoriesToTable(response);
+            }).catch(({ response }) => {
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            });
+        },
+        getCategoryIds(categoryRuleResponse) {
+            let categoryIds = [];
+
+            for (let i = 0, length = categoryRuleResponse.length; i < length; i++) {
+                let categoryRule = categoryRuleResponse[i];
+                categoryIds.push(categoryRule.category_id);
+            }
+
+            return categoryIds;
         },
         async deleteItem() {
             // Fetch the current user ID
@@ -124,6 +156,23 @@ export default {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
                 this.closeModal();
             });
+        },
+        assignCategoriesToTable(response) {
+            if (this.$isEmpty(response)) {
+                return;
+            }
+
+            for (let i = 0, length = response.length; i < length; i++) {
+                let category = response[i];
+                let elements = document.getElementsByClassName(category.sk);
+
+                if (this.$isEmpty(elements)) {
+                    continue;
+                }
+
+                let element = elements[i];
+                element.textContent = category.category_type + " : " + category.category_name
+            }
         },
         noDataInResponse(response) {
             if (this.$isEmpty(response)) {

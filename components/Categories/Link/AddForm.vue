@@ -15,7 +15,8 @@
                 <base-input :label="$t('category.link.add.categoryId')" required :error="getError('categoryId')"
                     name="categoryId">
                     <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
-                        v-validate="modelValidations.categoryId">
+                        v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" clearable="true"
+                        autocomplete="on" filterable="true">
                         <el-option v-for="category in categories" class="select-primary"
                             :label="getCategoryValue(category)" :value="category.sk" :key="category.sk"
                             :selected="isSelected(category)">
@@ -61,7 +62,8 @@ export default {
                     required: true
                 }
             },
-            categories: []
+            categories: [],
+            loadingDataForSelect: true
         };
     },
     methods: {
@@ -87,6 +89,8 @@ export default {
                 user_id: userId,
             }).then((response) => {
                 this.categories = response;
+                // Change loading to false
+                this.loadingDataForSelect = false
             }).catch((response) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });

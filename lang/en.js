@@ -161,6 +161,16 @@ module.exports = {
       "submit": "Add",
       "required-fields": "* Required fields",
       "success": "Successfully added the wallet!"
+    },
+    "get": {
+      "description": "Choose your wallet to start organizing your finances.",
+      "title": "Your Wallets",
+      "enter": "Choose Wallet",
+      "add": {
+        "description": "Add",
+        "button": "Add Wallet"
+      },
+      "delete": "Delete Wallet"
     }
   },
   "category": {
@@ -215,7 +225,8 @@ module.exports = {
           "action": "Action"
         },
         "link": "Link Transaction",
-        "delete": "Delete"
+        "delete": "Delete",
+        "transaction": "View Linked Transactions"
       }
     }
   }

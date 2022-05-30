@@ -44,6 +44,10 @@ let WalletStore = {
             event.$wallet.storeCurrentWallet(result[0]);
         }
     },
+    chooseAWallet(newWallet) {
+        this.$wallet = newWallet;
+        localStorage.setItem(this.walletItemKey, JSON.stringify(newWallet));
+    },
     async fetchWalletItemFromAPI(userId, event) {
         return event.$axios.$post(process.env.api.wallets, {
             user_id: userId,

@@ -11,7 +11,7 @@
 
                 <base-input :label="$t('wallet.add.currency')" required :error="getError('currency')" name="currency">
                     <el-select v-model="model.currency" class="select-primary" name="currency"
-                        v-validate="modelValidations.currency">
+                        v-validate="modelValidations.currency" autocomplete="on" filterable="true" clearable="true">
                         <el-option v-for="currency in currencyNameToSymbol" class="select-primary"
                             :label="currency.currency" :value="currency.symbol" :key="currency.currency"></el-option>
                     </el-select>

@@ -23,12 +23,20 @@ module.exports = {
       deleteCategories: '/categories/delete',
       transactions: '/transactions',
       categories: '/categories',
+      category: {
+        batch: '/categories/batch'
+      },
       overview: '/overview',
       bankAccounts: '/bank-accounts',
       budgets: '/budgets',
       recurringTransactions: '/recurring-transaction',
       wallets: '/wallet',
-      categoryRules: '/rules/category',
+      wallet: {
+        delete: "/wallet/delete"
+      },
+      rules: {
+        category: '/rules/category'
+      }
     },
     home: {
       invokeUrl: 'https://www.blitzbudget.com'
@@ -40,6 +48,9 @@ module.exports = {
     },
     app: {
       invokeUrl: 'https://app.blitzbudget.com/'
+    },
+    route: {
+      transaction: "transaction"
     }
   },
   /*
