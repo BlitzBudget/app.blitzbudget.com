@@ -50,7 +50,8 @@ module.exports = {
       invokeUrl: 'https://app.blitzbudget.com/'
     },
     route: {
-      transaction: "transactions"
+      transaction: "transactions",
+      confirmRegistration: "confirm-registration"
     },
     navigation: {
       wallets: '/wallets'

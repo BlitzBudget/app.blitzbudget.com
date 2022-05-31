@@ -6,7 +6,7 @@
             </div>
             <div>
                 <base-input :label="$t('wallet.add.name')" required v-model="model.name"
-                    v-validate="modelValidations.name" :error="getError('name')" name="name">
+                    v-validate="modelValidations.name" :error="getError('name')" name="name" autofocus>
                 </base-input>
 
                 <base-input :label="$t('wallet.add.currency')" required :error="getError('currency')" name="currency">

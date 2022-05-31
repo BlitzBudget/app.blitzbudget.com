@@ -47,20 +47,24 @@
             </template>
 
             <base-input v-validate="'required'" :error="getError('Full Name')" v-model="model.fullName" name="Full Name"
-              :placeholder="$t('user.register.placeholder.fullname')" addon-left-icon="tim-icons icon-single-02">
+              :placeholder="$t('user.register.placeholder.fullname')" addon-left-icon="tim-icons icon-single-02"
+              autofocus>
             </base-input>
 
             <base-input v-validate="'required|email'" :error="getError('email')" v-model="model.email" name="email"
-              :placeholder="$t('user.register.placeholder.email')" autocomplete="username" addon-left-icon="tim-icons icon-email-85">
+              :placeholder="$t('user.register.placeholder.email')" autocomplete="username"
+              addon-left-icon="tim-icons icon-email-85">
             </base-input>
 
             <base-input v-validate="'required|min:8'" :error="getError('password')" v-model="model.password"
-              name="password" type="password" :placeholder="$t('user.register.placeholder.password')" autocomplete="current-password"
-              addon-left-icon="tim-icons icon-lock-circle">
+              name="password" type="password" :placeholder="$t('user.register.placeholder.password')"
+              autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle">
             </base-input>
 
             <base-checkbox class="text-left">
-              {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{ $t('user.register.terms.secondpart') }}</a>.
+              {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{
+              $t('user.register.terms.secondpart')
+              }}</a>.
             </base-checkbox>
 
             <base-button native-type="submit" slot="footer" type="primary" round block size="lg">
@@ -105,13 +109,12 @@ export default {
           checkPassword: false,
           firstname: this.model.fullName,
           lastname: ''
+        }).then(() => {
+          this.$router.push({ path: process.env.route.confirmRegistration });
         }).catch(({ response }) => {
           let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
           this.$notify({ type: 'danger', message: errorMessage });
         });
-
-        // TODO handle errors
-        // TODO handle success  
       }
     }
   }

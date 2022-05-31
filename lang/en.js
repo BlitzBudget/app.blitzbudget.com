@@ -160,6 +160,14 @@ module.exports = {
       "update": {
         "success": "Successfully updated the user profile!"
       }
+    },
+    "confirm-registration": {
+      "title": "Confirm your email",
+      "verify": "Verify Email",
+      "login": "Login",
+      "placholder": {
+        "verificationCode": "123456"
+      }
     }
   },
   "transaction": {
