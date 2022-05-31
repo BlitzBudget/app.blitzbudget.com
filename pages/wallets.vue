@@ -98,9 +98,8 @@ export default {
                 user_id: userId,
             }).then((response) => {
                 this.setWalletResponse(event, response);
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
         chooseWallet(walletId) {

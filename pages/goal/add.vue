@@ -57,9 +57,8 @@ export default {
                 goalType: model.goalType
             }).then(() => {
                 this.hasSucceeded = true;
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', message: response });
             });
         }
     }

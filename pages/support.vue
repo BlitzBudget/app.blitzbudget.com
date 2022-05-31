@@ -23,7 +23,7 @@ export default {
     mounted() {
         this.$axios.$get(process.env.help.invokeUrl).then((response) => {
             this.data = response;
-        }).catch(({ error }) => {
+        }).catch((error) => {
             this.$notify({ type: 'danger', message: error });
         });
     }

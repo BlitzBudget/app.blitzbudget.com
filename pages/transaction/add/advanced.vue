@@ -17,7 +17,7 @@
                     </p>
 
                     <template slot="footer">
-                        <nuxt-link to="/transaction" class="btn btn-primary">
+                        <nuxt-link to="/transactions" class="btn btn-primary">
                             {{ $t('transaction.add.success.button') }}
                         </nuxt-link>
                     </template>
@@ -58,9 +58,8 @@ export default {
                 transactionType: model.transactionType
             }).then(() => {
                 this.hasSucceeded = true;
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', message: response });
             });
         }
     }

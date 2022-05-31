@@ -35,7 +35,7 @@
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
                                     :open-delay="300" placement="top">
-                                    <nuxt-link :to="{ path: '/transaction', query: { category_id: row.sk } }"
+                                    <nuxt-link :to="{ path: '/transactions', query: { category_id: row.sk } }"
                                         :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                         class="btn-link btn-neutral">
                                         <i class="tim-icons icon-coins"></i>
@@ -93,7 +93,7 @@
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
                                     :open-delay="300" placement="top">
-                                    <nuxt-link :to="{ path: '/transaction', query: { category_id: row.sk } }"
+                                    <nuxt-link :to="{ path: '/transactions', query: { category_id: row.sk } }"
                                         :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                         class="btn-link btn-neutral">
                                         <i class="tim-icons icon-coins"></i>
@@ -142,9 +142,8 @@ export default {
                 user_id: userId,
             }).then((response) => {
                 this.assignCategoriesToTable(response);
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
         assignCategoriesToTable(response) {
