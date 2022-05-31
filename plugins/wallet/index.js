@@ -45,12 +45,12 @@ let WalletStore = {
         }
     },
     chooseAWallet(newWallet) {
-        this.$wallet = newWallet;
+        this.wallet = newWallet;
         localStorage.setItem(this.walletItemKey, JSON.stringify(newWallet));
     },
-    resetWallet(walletId) {
-        if (this.$wallet.sk == walletId) {
-            this.$wallet = null;
+    resetWallet(event, walletId) {
+        if (event.$isEmpty(this.wallet) || this.wallet.sk == walletId) {
+            this.wallet = null;
             localStorage.removeItem(this.walletItemKey);
         }
     },

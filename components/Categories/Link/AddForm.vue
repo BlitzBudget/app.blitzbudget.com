@@ -32,7 +32,7 @@
                         $t('category.link.add.submit')
                 }}</base-button>
                 <nuxt-link class="float-right"
-                    :to="{ path: '/category/link/', query: { category_id: this.selectedCategoryId } }">{{
+                    :to="{ path: '/category/category-link', query: { category_id: this.selectedCategoryId } }">{{
                             $t('category.link.add.viewCategoryRule')
                     }}</nuxt-link>
             </template>

@@ -60,12 +60,12 @@
           </nuxt-link>
         </li>
         <li class="nav-link">
-          <nuxt-link to="/category" class="nav-item dropdown-item">
+          <nuxt-link to="/categories" class="nav-item dropdown-item">
             Categories
           </nuxt-link>
         </li>
         <li class="nav-link">
-          <nuxt-link to="/wallet" class="nav-item dropdown-item">
+          <nuxt-link to="/wallets" class="nav-item dropdown-item">
             Wallets
           </nuxt-link>
         </li>

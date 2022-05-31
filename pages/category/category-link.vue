@@ -26,14 +26,14 @@
                         <el-tooltip :content="$t('category.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
                             <nuxt-link :to="{ path: '/category/link/add', query: { category_id: row.category_id } }"
-                                :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link btn-neutral">
                                 <i class="tim-icons icon-link-72"></i>
                             </nuxt-link>
                         </el-tooltip>
                         <el-tooltip :content="$t('category.link.get.table.category')" effect="light" :open-delay="300"
                             placement="top">
-                            <nuxt-link to='/category/' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
-                                class="btn-link">
+                            <nuxt-link to='/categories' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
+                                class="btn-link btn-neutral">
                                 <i class="tim-icons icon-components"></i>
                             </nuxt-link>
                         </el-tooltip>

@@ -25,7 +25,7 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('wallet.add.submit')
                 }}</base-button>
-                <nuxt-link class="float-right" to="/wallet/">{{
+                <nuxt-link class="float-right" to="/wallets">{{
                         $t('wallet.add.view')
                 }}</nuxt-link>
             </template>
