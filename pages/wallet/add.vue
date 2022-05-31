@@ -35,9 +35,8 @@ export default {
                 wallet_name: model.name
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('wallet.add.success') });
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', message: response });
             });
         }
     }

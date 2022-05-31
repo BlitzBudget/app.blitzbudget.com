@@ -12,7 +12,7 @@
           <div>
             <base-input v-validate="'required|email'" name="email" :error="getError('email')" v-model="model.email"
               :placeholder="$t('user.login.placholder.email')" autocomplete="username"
-              addon-left-icon="tim-icons icon-email-85">
+              addon-left-icon="tim-icons icon-email-85" autofocus>
             </base-input>
 
             <base-input v-validate="'required|min:8'" name="password" :error="getError('password')"

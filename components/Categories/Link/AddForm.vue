@@ -8,7 +8,7 @@
                 <el-tooltip :content="$t('category.link.add.tooltip')" effect="light" :open-delay="300" placement="top">
                     <base-input :label="$t('category.link.add.transactionDescription')" required
                         v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
-                        :error="getError('transactionDescription')" name="transactionDescription">
+                        :error="getError('transactionDescription')" name="transactionDescription" autofocus>
                     </base-input>
                 </el-tooltip>
 
@@ -29,11 +29,11 @@
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('category.link.add.submit')
+                $t('category.link.add.submit')
                 }}</base-button>
                 <nuxt-link class="float-right"
-                    :to="{ path: '/category/link/', query: { category_id: this.selectedCategoryId } }">{{
-                            $t('category.link.add.viewCategoryRule')
+                    :to="{ path: '/category/category-link', query: { category_id: this.selectedCategoryId } }">{{
+                    $t('category.link.add.viewCategoryRule')
                     }}</nuxt-link>
             </template>
         </card>

@@ -93,13 +93,13 @@ export default {
     },
     methods: {
         async getWallets(userId) {
+            let event = this;
             await this.$axios.$post(process.env.api.wallets, {
                 user_id: userId,
             }).then((response) => {
-                this.walletModels = response
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+                this.setWalletResponse(event, response);
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
         chooseWallet(walletId) {
@@ -112,6 +112,11 @@ export default {
                     this.$router.push({ path: process.env.route.transaction });
                 }
             }
+        },
+        setWalletResponse(event, response) {
+            this.walletModels = response;
+            // Reset Wallet Account
+            event.$wallet.resetWallet(event);
         },
         openModal(walletId) {
             this.modals.delete = true;
@@ -131,7 +136,7 @@ export default {
                 sk: this.deleteWalletId
             }).then(async () => {
                 // Reset Wallet Account
-                event.$wallet.resetWallet(this.deleteWalletId);
+                event.$wallet.resetWallet(event, this.deleteWalletId);
                 // Close the modal
                 this.closeModal();
                 // After deleteing fetch the wallets again

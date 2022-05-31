@@ -26,14 +26,14 @@
                         <el-tooltip :content="$t('category.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
                             <nuxt-link :to="{ path: '/category/link/add', query: { category_id: row.category_id } }"
-                                :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link btn-neutral">
                                 <i class="tim-icons icon-link-72"></i>
                             </nuxt-link>
                         </el-tooltip>
                         <el-tooltip :content="$t('category.link.get.table.category')" effect="light" :open-delay="300"
                             placement="top">
-                            <nuxt-link to='/category/' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
-                                class="btn-link">
+                            <nuxt-link to='/categories' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
+                                class="btn-link btn-neutral">
                                 <i class="tim-icons icon-components"></i>
                             </nuxt-link>
                         </el-tooltip>
@@ -107,9 +107,8 @@ export default {
                 this.noDataInResponse(response);
                 // Fetch Categories
                 await this.getCategories(response);
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
         async getCategories(categoryRuleResponse) {
@@ -126,9 +125,8 @@ export default {
                 category_ids: categoryIds
             }).then((response) => {
                 this.assignCategoriesToTable(response);
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
         getCategoryIds(categoryRuleResponse) {
@@ -151,9 +149,8 @@ export default {
             }).then(async () => {
                 this.closeModal();
                 await this.fetchCategoryLink();
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
                 this.closeModal();
             });
         },

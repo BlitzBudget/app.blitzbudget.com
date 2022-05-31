@@ -20,9 +20,12 @@ let authentication = {
             event.$authentication.retrieveUserAttributes(resp, event);
             event.$auth.setUserToken(idToken, refreshToken)
             event.$wallet.storeWalletInLocalStorage(resp, event);
-        } catch (err) {
-            console.log(err);
-            event.$notify({ type: 'danger', timeout: 10000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('login.error') });
+        } catch ({ response }) {
+            let errorMessage = $nuxt.$t('login.error')
+            if (event.$isNotEmpty(response)) {
+                errorMessage = event.$lastElement(event.$splitElement(response.data.errorMessage, ':'));
+            }
+            event.$notify({ type: 'danger', timeout: 10000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
         }
     },
     storeAuthToken(result) {
@@ -90,6 +93,12 @@ let authentication = {
     },
     fetchAccessToken() {
         return localStorage.getItem(this.accessTokenItem);
+    },
+    setUsername(name) {
+        // Current User to global variable
+        this.currentUser.name = name;
+        // We save the item in the localStorage.
+        localStorage.setItem(this.currentUserItemInStorage, JSON.stringify(this.currentUser));
     }
 }
 

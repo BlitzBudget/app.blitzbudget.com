@@ -6,7 +6,7 @@
             </div>
             <div>
                 <base-input :label="$t('support.ask-us-directly.subject')" required v-model="model.subject"
-                    v-validate="modelValidations.subject" :error="getError('subject')" name="subject">
+                    v-validate="modelValidations.subject" :error="getError('subject')" name="subject" autofocus>
                 </base-input>
 
                 <base-textarea :label="$t('support.ask-us-directly.message')" required v-model="model.message"

@@ -3,61 +3,77 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
-                <change-password-form @on-submit="changePassword" :class="[
+                <reset-account-form @on-submit="verifyPassword" :class="[
                 { 'show d-block': !hasSucceeded },
                 { 'd-none': hasSucceeded }]">
-                </change-password-form>
-            </div>
-        </div>
-        <div class="col-md-12 ml-auto-mr-auto">
-            <!-- Success Message Tab -->
-            <card type="testimonial" header-classes="card-header-avatar" :class="[
-            { 'show d-block': hasSucceeded },
-            { 'd-none': !hasSucceeded }]">
-                <p class="card-description">
-                    {{ $t('user.change-password.success.description') }}
-                </p>
+                </reset-account-form>
+                <!-- Success Message Tab -->
+                <card type="testimonial" header-classes="card-header-avatar" :class="[
+                { 'show d-block': hasSucceeded },
+                { 'd-none': !hasSucceeded }]">
+                    <p class="card-description">
+                        {{ $t('user.reset-account.success.description') }}
+                    </p>
 
-                <template slot="footer">
-                    <nuxt-link to="/user/profile" class="btn btn-primary">
-                        {{ $t('user.change-password.success.button') }}
-                    </nuxt-link>
-                </template>
-            </card>
+                    <template slot="footer">
+                        <nuxt-link to="/" class="btn btn-primary">
+                            {{ $t('user.reset-account.success.button') }}
+                        </nuxt-link>
+                    </template>
+                </card>
+            </div>
         </div>
     </div>
 </template>
 <script>
-import ChangePasswordForm from '@/components/UserProfile/ChangePasswordForm.vue';
+import ResetAccountForm from '@/components/UserProfile/ResetAccountForm.vue';
 
 export default {
     name: 'reset-account-page',
     layout: 'plain',
     components: {
-        ChangePasswordForm,
+        ResetAccountForm,
     },
     data() {
         return {
-            emailModel: {},
-            hasSucceeded: false
+            resetModel: {},
+            hasSucceeded: false,
+            model: {
+                password: null
+            }
         };
     },
     methods: {
-        async changePassword(isValid, model, accessToken) {
+        async resetAccount() {
+            let event = this;
+            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+            await this.$axios.$post(process.env.api.profile.resetAccount, {
+                walletId: userId,
+                deleteAccount: false,
+            }).then(() => {
+                // Reset Wallet Account
+                event.$wallet.resetWallet(event);
+                this.hasSucceeded = true;
+            }).catch(({ response }) => {
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            });
+        },
+        async verifyPassword(isValid, model) {
             if (!isValid) {
                 return;
             }
 
-            this.emailModel = model;
-            await this.$axios.$post(process.env.api.profile.changePassword, {
-                previousPassword: model.oldPassword,
-                newPassword: model.password,
-                accessToken: accessToken
-            }).then(() => {
-                this.hasSucceeded = true;
+            let email = this.$authentication.fetchCurrentUser(this).email;
+            await this.$axios.$post(process.env.api.profile.login, {
+                username: email,
+                password: model.password,
+                checkPassword: true
+            }).then(async () => {
+                await this.resetAccount();
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', message: errorMessage });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
     }

@@ -28,14 +28,16 @@
                                 <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300"
                                     placement="top">
                                     <nuxt-link :to="{ path: '/category/link/add', query: { category_id: row.sk } }"
-                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
+                                        class="btn-link btn-neutral">
                                         <i class="tim-icons icon-link-72"></i>
                                     </nuxt-link>
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
                                     :open-delay="300" placement="top">
-                                    <nuxt-link :to="{ path: '/transaction', query: { category_id: row.sk } }"
-                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                    <nuxt-link :to="{ path: '/transactions', query: { category_id: row.sk } }"
+                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
+                                        class="btn-link btn-neutral">
                                         <i class="tim-icons icon-coins"></i>
                                     </nuxt-link>
                                 </el-tooltip>
@@ -85,21 +87,22 @@
                                 <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300"
                                     placement="top">
                                     <nuxt-link to="/category/link/add" :type="index > 2 ? 'success' : 'neutral'" icon
-                                        size="sm" class="btn-link">
+                                        size="sm" class="btn-link btn-neutral">
                                         <i class="tim-icons icon-link-72"></i>
                                     </nuxt-link>
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
                                     :open-delay="300" placement="top">
-                                    <nuxt-link :to="{ path: '/transaction', query: { category_id: row.sk } }"
-                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link">
+                                    <nuxt-link :to="{ path: '/transactions', query: { category_id: row.sk } }"
+                                        :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
+                                        class="btn-link btn-neutral">
                                         <i class="tim-icons icon-coins"></i>
                                     </nuxt-link>
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.delete')" effect="light" :open-delay="300"
                                     placement="top">
                                     <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
-                                        class="btn-link">
+                                        class="btn-link btn-neutral">
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </el-tooltip>
@@ -139,9 +142,8 @@ export default {
                 user_id: userId,
             }).then((response) => {
                 this.assignCategoriesToTable(response);
-            }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
         assignCategoriesToTable(response) {

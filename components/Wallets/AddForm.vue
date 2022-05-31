@@ -6,7 +6,7 @@
             </div>
             <div>
                 <base-input :label="$t('wallet.add.name')" required v-model="model.name"
-                    v-validate="modelValidations.name" :error="getError('name')" name="name">
+                    v-validate="modelValidations.name" :error="getError('name')" name="name" autofocus>
                 </base-input>
 
                 <base-input :label="$t('wallet.add.currency')" required :error="getError('currency')" name="currency">
@@ -25,7 +25,7 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('wallet.add.submit')
                 }}</base-button>
-                <nuxt-link class="float-right" to="/wallet/">{{
+                <nuxt-link class="float-right" to="/wallets">{{
                         $t('wallet.add.view')
                 }}</nuxt-link>
             </template>

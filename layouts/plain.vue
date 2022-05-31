@@ -12,13 +12,13 @@
             <i class="tim-icons icon-minimal-left"></i> Back to Dashboard
           </a>
         </li>
-        <nuxt-link class="nav-item" tag="li" to="/category">
+        <nuxt-link class="nav-item" tag="li" to="/categories">
           <a class="nav-link">
             <i class="tim-icons icon-laptop"></i> Category
           </a>
         </nuxt-link>
 
-        <nuxt-link class="nav-item" tag="li" to="/wallet">
+        <nuxt-link class="nav-item" tag="li" to="/wallets">
           <a class="nav-link">
             <i class="tim-icons icon-single-02"></i> Wallets
           </a>
