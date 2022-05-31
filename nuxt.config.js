@@ -15,6 +15,9 @@ module.exports = {
         confirmForgotPassword: '/profile/confirm-forgot-password',
         deleteUser: '/profile/delete-user',
         changePassword: '/profile/change-password',
+        resetAccount: '/profile/reset-account',
+        login: '/profile/sign-in',
+        userAttribute: '/profile/user-attribute'
       },
       deleteItem: '/delete-item',
       delete: '/delete',

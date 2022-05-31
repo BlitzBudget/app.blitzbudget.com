@@ -72,6 +72,24 @@ module.exports = {
         "button": "Close"
       }
     },
+    "reset-account": {
+      "title": "Reset Account",
+      "description": "This action will delete all your data but preserve the account. Are you sure?",
+      "password": "Password",
+      "required-fields": "* Required fields",
+      "button": "Reset Account",
+      "success": {
+        "description": "Successfully reset the account!",
+        "button": "Close"
+      }
+    },
+    "delete-account": {
+      "title": "Delete Account",
+      "description": "This action will delete all your data along with your account. Are you sure?",
+      "password": "Password",
+      "required-fields": "* Required fields",
+      "button": "Delete Account"
+    },
     "delete": {
       "title": "Delete account",
       "description": "Be careful. This will delete your user account and all the information you entered.",
@@ -138,6 +156,11 @@ module.exports = {
         }
       }
     },
+    "profile": {
+      "update": {
+        "success": "Successfully updated the user profile!"
+      }
+    }
   },
   "transaction": {
     "add": {

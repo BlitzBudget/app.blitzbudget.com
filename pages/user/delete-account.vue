@@ -3,61 +3,81 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
-                <change-password-form @on-submit="changePassword" :class="[
+                <delete-account-form @on-submit="verifyPassword" :class="[
                 { 'show d-block': !hasSucceeded },
                 { 'd-none': hasSucceeded }]">
-                </change-password-form>
-            </div>
-        </div>
-        <div class="col-md-12 ml-auto-mr-auto">
-            <!-- Success Message Tab -->
-            <card type="testimonial" header-classes="card-header-avatar" :class="[
-            { 'show d-block': hasSucceeded },
-            { 'd-none': !hasSucceeded }]">
-                <p class="card-description">
-                    {{ $t('user.change-password.success.description') }}
-                </p>
+                </delete-account-form>
+                <!-- Success Message Tab -->
+                <card type="testimonial" header-classes="card-header-avatar" :class="[
+                { 'show d-block': hasSucceeded },
+                { 'd-none': !hasSucceeded }]">
+                    <p class="card-description">
+                        {{ $t('user.delete-account.success.description') }}
+                    </p>
 
-                <template slot="footer">
-                    <nuxt-link to="/user/profile" class="btn btn-primary">
-                        {{ $t('user.change-password.success.button') }}
-                    </nuxt-link>
-                </template>
-            </card>
+                    <template slot="footer">
+                        <nuxt-link to="/" class="btn btn-primary">
+                            {{ $t('user.delete-account.success.button') }}
+                        </nuxt-link>
+                    </template>
+                </card>
+            </div>
         </div>
     </div>
 </template>
 <script>
-import ChangePasswordForm from '@/components/UserProfile/ChangePasswordForm.vue';
+import DeleteAccountForm from '@/components/UserProfile/DeleteAccountForm.vue';
 
 export default {
     name: 'delete-account-page',
     layout: 'plain',
     components: {
-        ChangePasswordForm,
+        DeleteAccountForm,
     },
     data() {
         return {
-            emailModel: {},
-            hasSucceeded: false
+            deleteModel: {},
+            hasSucceeded: false,
+            model: {
+                password: null
+            }
         };
     },
     methods: {
-        async changePassword(isValid, model, accessToken) {
+        async deleteAccount() {
+            let event = this;
+            let user = this.$authentication.fetchCurrentUser(this);
+            let accessToken = this.$authentication.fetchAccessToken();
+            await this.$axios.$post(process.env.api.profile.resetAccount, {
+                walletId: user.financialPortfolioId,
+                userName: user.email,
+                accessToken: accessToken,
+                deleteAccount: true,
+            }).then(() => {
+                // Delete Wallet Account
+                event.$wallet.resetWallet(event);
+                // Log the user out
+                this.$userLogout.logout(this);
+            }).catch(({ response }) => {
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            });
+        },
+        async verifyPassword(isValid, model) {
             if (!isValid) {
                 return;
             }
 
-            this.emailModel = model;
-            await this.$axios.$post(process.env.api.profile.changePassword, {
-                previousPassword: model.oldPassword,
-                newPassword: model.password,
-                accessToken: accessToken
-            }).then(() => {
-                this.hasSucceeded = true;
+            let email = this.$authentication.fetchCurrentUser(this).email;
+            await this.$axios.$post(process.env.api.profile.login, {
+                username: email,
+                password: model.password,
+                checkPassword: true
+            }).then(async () => {
+                await this.deleteAccount();
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', message: errorMessage });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
     }
