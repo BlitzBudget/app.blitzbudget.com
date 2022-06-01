@@ -6,7 +6,8 @@
             </div>
             <div>
                 <base-input :label="$t('transaction.add.amount')" required v-model="model.amount"
-                    v-validate="modelValidations.amount" :error="getError('amount')" name="amount" autofocus>
+                    v-validate="modelValidations.amount" :error="getError('amount')" name="amount" type="text"
+                    autofocus>
                 </base-input>
 
                 <base-input :label="$t('transaction.add.description')" required v-model="model.description"
@@ -38,11 +39,11 @@ export default {
             modelValidations: {
                 amount: {
                     required: true,
-                    min: 15
+                    min_value: 1,
                 },
                 description: {
                     required: true,
-                    min: 40
+                    min: 4
                 }
             }
         };
@@ -51,10 +52,10 @@ export default {
         getError(fieldName) {
             return this.errors.first(fieldName);
         },
-        validate() {
-            let email = this.$authentication.fetchCurrentUser(this).walletId;
+        async validate() {
+            let wallet = await this.$wallet.setCurrentWallet(this);
             this.$validator.validateAll().then(isValid => {
-                this.$emit('on-submit', this.model, isValid, email);
+                this.$emit('on-submit', this.model, isValid, wallet.WalletId);
             });
         }
     }

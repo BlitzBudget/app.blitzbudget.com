@@ -23,20 +23,16 @@ export default {
         };
     },
     methods: {
-        async addTransaction(model) {
+        async addTransaction(model, isValid, walletId) {
             if (!isValid) {
                 return;
             }
 
             this.transactionModel = model;
             await this.$axios.$put(process.env.api.transactions, {
-                pk: model.walletId,
-                sk: model.targetId,
-                description: model.targetType,
-                targetDate: model.targetDate,
-                targetAmount: model.targetAmount,
-                monthlyContribution: model.monthlyContribution,
-                transactionType: model.transactionType
+                pk: walletId,
+                amount: model.amount,
+                description: model.description,
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('wallet.add.success') });
             }).catch((response) => {
