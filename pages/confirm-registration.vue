@@ -3,7 +3,7 @@
         <notifications></notifications>
         <div class="col-lg-4 col-md-6 ml-auto mr-auto">
             <form @submit.prevent="confirmRegistration">
-                <card class="card-confirm-registration card-white">
+                <card class="card-login card-white">
                     <template slot="header">
                         <img src="img/card-primary.png" alt="" />
                         <h1 class="card-title">{{ $t('user.confirm-registration.title') }}</h1>
@@ -21,9 +21,9 @@
                         </base-input>
 
                         <base-input v-validate="'required|min:6|max:6'" name="VerificationCode"
-                            :error="getError('VerificationCode')" v-model="model.verificationCode"
+                            :error="getError('VerificationCode')" v-model="model.confirmationCode"
                             :placeholder="$t('user.confirm-registration.placholder.verificationCode')"
-                            autocomplete="username" addon-left-icon="tim-icons icon-email-85" autofocus>
+                            autocomplete="VerificationCode" addon-left-icon="tim-icons icon-email-85" autofocus>
                         </base-input>
                     </div>
 
@@ -65,21 +65,25 @@ export default {
         async confirmRegistration() {
             let isValidForm = await this.$validator.validateAll();
             if (isValidForm) {
-                let email = this.$authentication.fetchCurrentUser(this).email;
                 // TIP use this.model to send it to api and perform register call
                 this.$axios.$post(process.env.api.profile.confirmSignup, {
-                    username: email,
+                    username: this.model.email,
                     password: this.model.password,
-                    confirmationCode: this.model.verificationCode,
+                    confirmationCode: this.model.confirmationCode,
                     doNotCreateWallet: false,
-                }).then(() => {
-                    this.$router.push({ path: process.env.route.confirmRegistration });
-                }).catch(({ response }) => {
-                    let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                    this.$notify({ type: 'danger', message: errorMessage });
+                }).then((response) => {
+                    console.log(response);
+                    this.$authentication.storeAllTokens(response, this);
+                    localStorage.removeItem(this.$authentication.emailItem);
+                }).catch((response) => {
+                    this.$notify({ type: 'danger', message: response });
                 });
             }
         }
+    },
+    mounted() {
+        this.model.confirmationCode = this.$route.query.verify;
+        this.model.email = localStorage.getItem(this.$authentication.emailItem);
     }
 };
 </script>

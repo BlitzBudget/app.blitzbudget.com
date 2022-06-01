@@ -162,7 +162,7 @@ module.exports = {
       }
     },
     "confirm-registration": {
-      "title": "Confirm your email",
+      "title": "Confirm email",
       "verify": "Verify Email",
       "login": "Login",
       "placholder": {

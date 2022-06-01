@@ -63,7 +63,7 @@
 
             <base-checkbox class="text-left">
               {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{
-              $t('user.register.terms.secondpart')
+                  $t('user.register.terms.secondpart')
               }}</a>.
             </base-checkbox>
 
@@ -110,6 +110,7 @@ export default {
           firstname: this.model.fullName,
           lastname: ''
         }).then(() => {
+          localStorage.setItem(this.$authentication.emailItem, this.model.email);
           this.$router.push({ path: process.env.route.confirmRegistration });
         }).catch(({ response }) => {
           let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));

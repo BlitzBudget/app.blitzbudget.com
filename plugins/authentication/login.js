@@ -3,6 +3,7 @@ import Vue from 'vue';
 let authentication = {
     currentUserItemInStorage: "currentUserItem",
     accessTokenItem: 'accessToken',
+    emailItem: 'email',
     currentUser: {},
     loginUser: async (event) => {
         try {
@@ -12,14 +13,8 @@ let authentication = {
                     password: event.model.password
                 }
             });
-            console.log(response);
             let resp = response.data;
-            let idToken = event.$authentication.storeAuthToken(resp);
-            let refreshToken = event.$authentication.storeRefreshToken(resp);
-            event.$authentication.storeAccessToken(resp, event);
-            event.$authentication.retrieveUserAttributes(resp, event);
-            event.$auth.setUserToken(idToken, refreshToken)
-            event.$wallet.storeWalletInLocalStorage(resp, event);
+            event.$authentication.storeAllTokens(resp, event);
         } catch ({ response }) {
             let errorMessage = $nuxt.$t('login.error')
             if (event.$isNotEmpty(response)) {
@@ -27,6 +22,14 @@ let authentication = {
             }
             event.$notify({ type: 'danger', timeout: 10000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
         }
+    },
+    storeAllTokens(resp, event) {
+        let idToken = event.$authentication.storeAuthToken(resp);
+        let refreshToken = event.$authentication.storeRefreshToken(resp);
+        event.$authentication.storeAccessToken(resp, event);
+        event.$authentication.retrieveUserAttributes(resp, event);
+        event.$auth.setUserToken(idToken, refreshToken)
+        event.$wallet.storeWalletInLocalStorage(resp, event);
     },
     storeAuthToken(result) {
         // Set JWT Token For authentication
