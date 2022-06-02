@@ -114,7 +114,7 @@ export default {
           this.$router.push({ path: process.env.route.confirmRegistration });
         }).catch(({ response }) => {
           let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-          this.$notify({ type: 'danger', message: errorMessage });
+          this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
         });
       }
     }

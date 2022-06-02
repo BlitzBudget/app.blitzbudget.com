@@ -164,7 +164,8 @@ module.exports = {
     "confirm-registration": {
       "title": "Confirm email",
       "verify": "Verify Email",
-      "login": "Login",
+      "resendVerificationCode": "Resend Verification Code",
+      "resend": "Successfully resent the verification code!",
       "placholder": {
         "verificationCode": "123456"
       }

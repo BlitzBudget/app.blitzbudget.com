@@ -33,7 +33,7 @@ export default {
     data() {
         return {
             model: {
-                amount: '',
+                amount: null,
                 description: '',
             },
             modelValidations: {

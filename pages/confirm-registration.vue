@@ -32,10 +32,12 @@
                             {{ $t('user.confirm-registration.verify') }}
                         </base-button>
                         <div class="pull-right">
-                            <h6>
-                                <nuxt-link class="link footer-link" to="/login">
-                                    {{ $t('user.confirm-registration.login') }}
-                                </nuxt-link>
+                            <h6 :class="[
+                                { 'd-none': hiddenResend }
+                            ]">
+                                <base-button class="btn btn-link btn-primary" @click.native="resendVerificationCode">
+                                    {{ $t('user.confirm-registration.resendVerificationCode') }}
+                                </base-button>
                             </h6>
                         </div>
                     </div>
@@ -51,6 +53,7 @@ export default {
     auth: 'guest',
     data() {
         return {
+            hiddenResend: false,
             model: {
                 email: '',
                 password: '',
@@ -75,10 +78,36 @@ export default {
                     console.log(response);
                     this.$authentication.storeAllTokens(response, this);
                     localStorage.removeItem(this.$authentication.emailItem);
-                }).catch((response) => {
-                    this.$notify({ type: 'danger', message: response });
+                }).catch(({ response }) => {
+                    let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                    this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
                 });
             }
+        },
+        async resendVerificationCode() {
+            // Validate email
+            let isValidForm = await this.$validator.validate('email');
+
+            if (!isValidForm) {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: "Email field is required to resend verification code" });
+                return;
+            }
+            // TIP use this.model to send it to api and perform register call
+            this.$axios.$post(process.env.api.profile.resendConfirmationCode, {
+                username: this.model.email,
+            }).then((response) => {
+                console.log(response);
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('user.confirm-registration.resend') });
+            }).catch(({ response }) => {
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            });
+        },
+        hide() {
+            this.hiddenResend = true
+            setTimeout(() => {
+                this.hiddenResend = false
+            }, 60000);
         }
     },
     mounted() {
