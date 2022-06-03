@@ -61,7 +61,8 @@
               autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle">
             </base-input>
 
-            <base-checkbox class="text-left">
+            <base-checkbox class="text-left" v-validate="'required'" :error="getError('checkbox')" name="checkbox"
+              v-model="model.checkbox">
               {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{
                   $t('user.register.terms.secondpart')
               }}</a>.
@@ -91,7 +92,8 @@ export default {
       model: {
         email: '',
         fullName: '',
-        password: ''
+        password: '',
+        checkbox: null
       }
     };
   },

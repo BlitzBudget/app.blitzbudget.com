@@ -32,9 +32,7 @@
                             {{ $t('user.confirm-registration.verify') }}
                         </base-button>
                         <div class="pull-right">
-                            <h6 :class="[
-                                { 'd-none': hiddenResend }
-                            ]">
+                            <h6>
                                 <base-button class="btn btn-link btn-primary" @click.native="resendVerificationCode">
                                     {{ $t('user.confirm-registration.resendVerificationCode') }}
                                 </base-button>
@@ -97,13 +95,14 @@ export default {
                 username: this.model.email,
             }).then((response) => {
                 console.log(response);
+                hideResendButton();
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('user.confirm-registration.resend') });
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         },
-        hide() {
+        hideResendButton() {
             this.hiddenResend = true
             setTimeout(() => {
                 this.hiddenResend = false
@@ -120,5 +119,11 @@ export default {
 .navbar-nav .nav-item p {
     line-height: inherit;
     margin-left: 5px;
+}
+
+.confirm-registration-page .btn.btn-link.btn-primary:hover,
+.confirm-registration-page .btn.btn-link.btn-primary:focus,
+.confirm-registration-page .btn.btn-link.btn-primary:active {
+    color: #e14eca !important;
 }
 </style>
