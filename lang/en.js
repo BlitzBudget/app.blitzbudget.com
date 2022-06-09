@@ -190,7 +190,19 @@ module.exports = {
       "per-page": "Per page",
       "title": "Transactions",
       "actions": "Actions",
-      'add-button': "Add Transaction"
+      'add-button': "Add Transaction",
+      "category": "Category",
+      "tags": "Tags",
+      "description": "Description"
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "title": "Deleted!",
+        "description": "You deleted "
+      }
     }
   },
   "wallet": {

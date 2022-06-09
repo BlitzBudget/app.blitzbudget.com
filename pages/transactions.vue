@@ -36,6 +36,11 @@
                                     {{ calculateAmount(props.row.amount) }}
                                 </div>
                             </el-table-column>
+                            <el-table-column :min-width="100" :label="$t('transaction.get.category')">
+                                <div slot-scope="props">
+                                    <p :class="props.row.category_id"></p>
+                                </div>
+                            </el-table-column>
                             <el-table-column v-for="column in tableColumns" :key="column.label"
                                 :min-width="column.minWidth" :prop="column.prop" :label="column.label">
                             </el-table-column>
@@ -73,7 +78,7 @@
 import { Table, TableColumn, Select, Option } from 'element-ui';
 import { BasePagination } from '@/components';
 import Fuse from 'fuse.js';
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 export default {
     name: 'paginated',
@@ -118,7 +123,7 @@ export default {
     data() {
         return {
             pagination: {
-                perPage: 5,
+                perPage: 50,
                 currentPage: 1,
                 perPageOptions: [5, 10, 25, 50],
                 total: 0
@@ -128,17 +133,12 @@ export default {
             tableColumns: [
                 {
                     prop: 'description',
-                    label: 'Description',
+                    label: this.$nuxt.$t('transaction.get.description'),
                     minWidth: 200
                 },
                 {
                     prop: 'tags',
-                    label: 'Tags',
-                    minWidth: 120
-                },
-                {
-                    prop: 'category_id',
-                    label: 'Category',
+                    label: this.$nuxt.$t('transaction.get.tags'),
                     minWidth: 120
                 }
             ],
@@ -147,7 +147,8 @@ export default {
             fuseSearch: null,
             startsWithDate: null,
             endsWithDate: null,
-            currency: null
+            currency: null,
+            categories: [],
         };
     },
     methods: {
@@ -158,6 +159,8 @@ export default {
                 ends_with_date: this.endsWithDate
             }).then((response) => {
                 this.tableData = response;
+                // Fetch Category information and populate it
+                this.fetchCategoryLink();
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
@@ -166,25 +169,25 @@ export default {
             return this.$n(amount) + this.currency;
         },
         handleEdit(index, row) {
-            swal({
+            Swal.fire({
                 title: `You want to edit ${row.description}`,
                 buttonsStyling: false,
                 confirmButtonClass: 'btn btn-info btn-fill'
             });
         },
         handleDelete(index, row) {
-            swal({
-                title: 'Are you sure?',
-                text: `You won't be able to revert this!`,
+            Swal.fire({
+                title: this.$nuxt.$t('transaction.delete.confirm'),
+                text: this.$nuxt.$t('transaction.delete.confirmationText'),
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonClass: 'btn btn-success btn-fill',
                 cancelButtonClass: 'btn btn-danger btn-fill',
-                confirmButtonText: 'Yes, delete it!',
+                confirmButtonText: this.$nuxt.$t('transaction.delete.button'),
                 buttonsStyling: false
             }).then(async result => {
                 if (result.value) {
-                    await deleteItem(row);
+                    await this.deleteItem(row);
                 }
             });
         },
@@ -197,9 +200,12 @@ export default {
                 sk: row.sk
             }).then(async () => {
                 this.deleteRow(row);
-                swal({
-                    title: 'Deleted!',
-                    text: `You deleted ${row.description}`,
+                let deleteSuccess = this.$nuxt.$t('transaction.delete.success.title');
+                let deleteDescription = this.$nuxt.$t('transaction.delete.success.description');
+
+                Swal.fire({
+                    title: deleteSuccess,
+                    text: deleteDescription + `${row.description}`,
                     type: 'success',
                     confirmButtonClass: 'btn btn-success btn-fill',
                     buttonsStyling: false
@@ -225,6 +231,42 @@ export default {
 
             let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
             this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+        },
+        async getCategories(userId) {
+            await this.$axios.$post(process.env.api.categories, {
+                user_id: userId,
+            }).then((response) => {
+                // Assign Categories name to the categories
+                this.assignCategoriesToTable(response);
+            }).catch((response) => {
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+            });
+        },
+        assignCategoriesToTable(response) {
+            if (this.$isEmpty(response)) {
+                return;
+            }
+
+            for (let i = 0, length = response.length; i < length; i++) {
+                let category = response[i];
+                let elements = document.getElementsByClassName(category.sk);
+
+                if (this.$isEmpty(elements)) {
+                    continue;
+                }
+
+                for (let j = 0, len = elements.length; j < len; j++) {
+                    let element = elements[j];
+                    element.textContent = category.category_type + " : " + category.category_name
+                }
+            }
+        },
+        async fetchCategoryLink() {
+            // Fetch the current user ID
+            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+            // Fetch Data from API
+            await this.getCategories(userId);
         }
     },
     async mounted() {
