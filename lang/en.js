@@ -178,7 +178,19 @@ module.exports = {
       "description": "Description",
       "submit": "Add",
       "required-fields": "* Required fields",
-      "advanced": "Advanced Add Transactions"
+      "advanced": "Advanced Add Transactions",
+      "creationDate": "Creation Date",
+      "tags": "Tags",
+      "category": "Category"
+    },
+    "get": {
+      "creation_date": "Creation Date",
+      "amount": "Amount",
+      "search-records": "Search records",
+      "per-page": "Per page",
+      "title": "Transactions",
+      "actions": "Actions",
+      'add-button': "Add Transaction"
     }
   },
   "wallet": {

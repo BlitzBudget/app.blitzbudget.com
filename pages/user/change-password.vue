@@ -57,7 +57,7 @@ export default {
                 this.hasSucceeded = true;
             }).catch(({ response }) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', message: errorMessage });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
     }

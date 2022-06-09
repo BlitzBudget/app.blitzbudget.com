@@ -1,6 +1,5 @@
 <template>
   <div class="form-group" :class="{
-    'input-group-focus': focused,
     'has-danger': error,
     'has-success': !error && touched,
   }">

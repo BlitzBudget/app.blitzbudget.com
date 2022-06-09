@@ -58,7 +58,7 @@ export default {
             }).then(() => {
                 this.hasSucceeded = true;
             }).catch((response) => {
-                this.$notify({ type: 'danger', message: response });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         }
     }

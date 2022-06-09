@@ -9,10 +9,10 @@
     </div>
 </template>
 <script>
-import TransactionForm from '@/components/Transactions/AddForm.vue';
+import TransactionForm from '@/components/Transactions/AddTransactionForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'add-transaction-form',
     layout: 'plain',
     components: {
         TransactionForm,
@@ -31,12 +31,15 @@ export default {
             this.transactionModel = model;
             await this.$axios.$put(process.env.api.transactions, {
                 pk: walletId,
-                amount: model.amount,
+                amount: parseInt(model.amount),
                 description: model.description,
+                category_id: model.categoryId,
+                creation_date: model.creationDate,
+                tags: model.tags
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('wallet.add.success') });
             }).catch((response) => {
-                this.$notify({ type: 'danger', message: response });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         }
     }

@@ -1,28 +1,20 @@
 <template>
-  <div>
-    <el-tag
-      v-for="(tag, index) in dynamicTags"
-      :key="tag + index"
-      size="small"
-      :type="tagType"
-      :closable="true"
-      :close-transition="false"
-      @close="handleClose(tag)"
-    >
-      {{ tag }}
-    </el-tag>
+  <div class="form-group" :class="{
+    'has-label': label,
+  }">
+    <slot name="label">
+      <label v-if="label"> {{ label }} {{ required ? '*' : '' }} </label>
+    </slot>
 
-    <input
-      type="text"
-      placeholder="Add new tag"
-      class="form-control input-new-tag"
-      v-model="inputValue"
-      ref="saveTagInput"
-      size="mini"
-      @input="onInput"
-      @keyup.enter="handleInputConfirm"
-      @blur="handleInputConfirm"
-    />
+    <div class="mb-0">
+      <el-tag v-for="(tag, index) in dynamicTags" :key="tag + index" size="small" :type="tagType" :closable="true"
+        :close-transition="false" @close="handleClose(tag)">
+        {{ tag }}
+      </el-tag>
+
+      <input type="text" placeholder="Add new tag" class="form-control input-new-tag" v-model="inputValue"
+        ref="saveTagInput" size="mini" @input="onInput" @keyup.enter="handleInputConfirm" @blur="handleInputConfirm" />
+    </div>
   </div>
 </template>
 
@@ -35,6 +27,11 @@ export default {
     [Tag.name]: Tag
   },
   props: {
+    required: Boolean,
+    label: {
+      type: String,
+      description: 'Input label'
+    },
     value: {
       type: Array,
       default: () => [],
