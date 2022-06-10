@@ -200,7 +200,6 @@ module.exports = {
       "confirmationText": "You won't be able to revert this!",
       "button": "Yes, delete it!",
       "success": {
-        "title": "Deleted!",
         "description": "You deleted "
       }
     }
@@ -288,6 +287,11 @@ module.exports = {
         "delete": "Delete",
         "transaction": "View Linked Transactions"
       }
+    }
+  },
+  "overview": {
+    "yearly": {
+      "title": "Transactions"
     }
   }
 }

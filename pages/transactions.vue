@@ -26,23 +26,42 @@
                             </base-input>
                         </div>
                         <el-table :data="queriedData">
-                            <el-table-column :min-width="100" :label="$t('transaction.get.creation_date')">
+                            <el-table-column :min-width="100" :label="$t('transaction.get.creation_date')" sortable
+                                prop="creationDate">
                                 <div slot-scope="props">
-                                    {{ $d(new Date(props.row.creation_date)) }}
+                                    {{ new Date(props.row.creation_date).toLocaleDateString(
+                                            $i18n.locale, {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric'
+                                        })
+                                    }}
                                 </div>
                             </el-table-column>
-                            <el-table-column :min-width="100" :label="$t('transaction.get.amount')">
+                            <el-table-column :min-width="100" :label="$t('transaction.get.amount')" sortable
+                                prop="amount">
                                 <div slot-scope="props">
                                     {{ calculateAmount(props.row.amount) }}
                                 </div>
                             </el-table-column>
-                            <el-table-column :min-width="100" :label="$t('transaction.get.category')">
+                            <el-table-column :min-width="100" :label="$t('transaction.get.category')" sortable
+                                prop="category">
                                 <div slot-scope="props">
                                     <p :class="props.row.category_id"></p>
                                 </div>
                             </el-table-column>
                             <el-table-column v-for="column in tableColumns" :key="column.label"
                                 :min-width="column.minWidth" :prop="column.prop" :label="column.label">
+                            </el-table-column>
+                            <el-table-column :min-width="100" :label="$t('transaction.get.tags')">
+                                <div slot-scope="props">
+                                    <span v-for="(tags, index) in props.row.tags" :key="tags">
+                                        <span>{{ tags }}</span><span v-if="(index + 1 < props.row.tags.length)">,
+                                        </span>
+                                    </span>
+                                </div>
                             </el-table-column>
                             <el-table-column :min-width="135" align="right" :label="$t('transaction.get.actions')">
                                 <div slot-scope="props">
@@ -135,11 +154,6 @@ export default {
                     prop: 'description',
                     label: this.$nuxt.$t('transaction.get.description'),
                     minWidth: 200
-                },
-                {
-                    prop: 'tags',
-                    label: this.$nuxt.$t('transaction.get.tags'),
-                    minWidth: 120
                 }
             ],
             tableData: [],
@@ -200,16 +214,9 @@ export default {
                 sk: row.sk
             }).then(async () => {
                 this.deleteRow(row);
-                let deleteSuccess = this.$nuxt.$t('transaction.delete.success.title');
                 let deleteDescription = this.$nuxt.$t('transaction.delete.success.description');
 
-                Swal.fire({
-                    title: deleteSuccess,
-                    text: deleteDescription + `${row.description}`,
-                    type: 'success',
-                    confirmButtonClass: 'btn btn-success btn-fill',
-                    buttonsStyling: false
-                });
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: deleteDescription + `${row.description}` });
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
                 this.closeModal();
