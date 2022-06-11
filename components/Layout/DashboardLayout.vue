@@ -28,7 +28,7 @@
           :link="{
             name: $t('sidebar.dashboard'),
             icon: 'tim-icons icon-chart-pie-36',
-            path: '/budget'
+            path: '/budgets'
           }"
         >
         </sidebar-item>

@@ -3,62 +3,40 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <goal-form @on-submit="addGoal" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]"></goal-form>
-            </div>
-            <div class="col-md-12 ml-auto-mr-auto">
-                <!-- Success Message Tab -->
-                <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': hasSucceeded },
-                { 'd-none': !hasSucceeded }]">
-                    <p class="card-description">
-                        {{ $t('support.ask-us-directly.success.description') }}
-                    </p>
-
-                    <template slot="footer">
-                        <nuxt-link to="/" class="btn btn-primary">
-                            {{ $t('support.ask-us-directly.success.button') }}
-                        </nuxt-link>
-                    </template>
-                </card>
+                <budget-form @on-submit="addBudget"></budget-form>
             </div>
         </div>
     </div>
 </template>
 <script>
-import GoalForm from '@/components/Goals/AddForm.vue';
+import BudgetForm from '@/components/Budget/AddBudgetForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'add-budget-form',
+    layout: 'plain',
     components: {
-        GoalForm,
+        BudgetForm,
     },
     data() {
         return {
-            goalModel: {},
-            hasSucceeded: false
+            budgetModel: {}
         };
     },
     methods: {
-        async addGoal(model) {
+        async addBudget(model, isValid, walletId) {
             if (!isValid) {
                 return;
             }
 
-            this.goalModel = model;
-            await this.$axios.$put(process.env.api.goals, {
-                walletId: model.walletId,
-                targetId: model.targetId,
-                targetType: model.targetType,
-                targetDate: model.targetDate,
-                targetAmount: model.targetAmount,
-                monthlyContribution: model.monthlyContribution,
-                goalType: model.goalType
+            this.budgetModel = model;
+            await this.$axios.$put(process.env.api.budgets, {
+                pk: walletId,
+                planned: parseInt(model.planned),
+                category: model.categoryId,
             }).then(() => {
-                this.hasSucceeded = true;
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('budget.add.success') });
             }).catch((response) => {
-                this.$notify({ type: 'danger', message: response });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         }
     }

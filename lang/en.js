@@ -293,5 +293,28 @@ module.exports = {
     "yearly": {
       "title": "Transactions"
     }
+  },
+  "budget": {
+    "add": {
+      "title": "Add Budget",
+      "planned": "Amount",
+      "category": "Category",
+      "submit": "Add Budget",
+      "required-fields": "* Required fields",
+      "success": "Successfully added the budget!"
+    },
+    "get": {
+      "add-button": "Add Budget",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted the budget!",
+      }
+    }
   }
 }
