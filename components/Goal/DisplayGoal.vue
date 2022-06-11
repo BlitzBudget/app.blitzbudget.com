@@ -78,7 +78,7 @@ export default {
             loading: true,
             pieChart1: {
                 chartData: {
-                    labels: [1, 2],
+                    labels: ['planned', 'current'],
                     datasets: [
                         {
                             label: 'Emails',
@@ -100,8 +100,6 @@ export default {
                 wallet_id: walletId,
             }).then((response) => {
                 this.tableData = response;
-                // Fetch Category information and populate it
-                this.fetchCategoryLink();
                 // if No Data populate no data
                 this.noDataInResponse(response);
                 // Loading False
@@ -109,42 +107,6 @@ export default {
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
-        },
-        async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
-                user_id: userId,
-            }).then((response) => {
-                // Assign Categories name to the categories
-                this.assignCategoriesToTable(response);
-            }).catch((response) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
-            });
-        },
-        assignCategoriesToTable(response) {
-            if (this.$isEmpty(response)) {
-                return;
-            }
-
-            for (let i = 0, length = response.length; i < length; i++) {
-                let category = response[i];
-                let elements = document.getElementsByClassName(category.sk);
-
-                if (this.$isEmpty(elements)) {
-                    continue;
-                }
-
-                for (let j = 0, len = elements.length; j < len; j++) {
-                    let element = elements[j];
-                    element.textContent = category.category_type + " : " + category.category_name
-                }
-            }
-        },
-        async fetchCategoryLink() {
-            // Fetch the current user ID
-            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-            // Fetch Data from API
-            await this.getCategories(userId);
         },
         handleEdit(index, row) {
             Swal.fire({
