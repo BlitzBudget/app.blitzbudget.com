@@ -45,7 +45,7 @@ let WalletStore = {
         }
     },
     chooseAWallet(newWallet) {
-        this.wallet = newWallet;
+        this.wallet = new WalletClass(newWallet["wallet_name"], newWallet["wallet_currency"], newWallet["sk"], newWallet["pk"]);
         localStorage.setItem(this.walletItemKey, JSON.stringify(newWallet));
     },
     resetWallet(event, walletId) {

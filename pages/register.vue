@@ -61,9 +61,10 @@
               autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle">
             </base-input>
 
-            <base-checkbox class="text-left">
+            <base-checkbox class="text-left" v-validate="'required'" :error="getError('checkbox')" name="checkbox"
+              v-model="model.checkbox">
               {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{
-              $t('user.register.terms.secondpart')
+                  $t('user.register.terms.secondpart')
               }}</a>.
             </base-checkbox>
 
@@ -91,7 +92,8 @@ export default {
       model: {
         email: '',
         fullName: '',
-        password: ''
+        password: '',
+        checkbox: null
       }
     };
   },
@@ -110,10 +112,11 @@ export default {
           firstname: this.model.fullName,
           lastname: ''
         }).then(() => {
+          localStorage.setItem(this.$authentication.emailItem, this.model.email);
           this.$router.push({ path: process.env.route.confirmRegistration });
         }).catch(({ response }) => {
           let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-          this.$notify({ type: 'danger', message: errorMessage });
+          this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
         });
       }
     }

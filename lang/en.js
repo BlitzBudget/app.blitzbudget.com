@@ -162,9 +162,10 @@ module.exports = {
       }
     },
     "confirm-registration": {
-      "title": "Confirm your email",
+      "title": "Confirm email",
       "verify": "Verify Email",
-      "login": "Login",
+      "resendVerificationCode": "Resend Verification Code",
+      "resend": "Successfully resent the verification code!",
       "placholder": {
         "verificationCode": "123456"
       }
@@ -177,7 +178,30 @@ module.exports = {
       "description": "Description",
       "submit": "Add",
       "required-fields": "* Required fields",
-      "advanced": "Advanced Add Transactions"
+      "advanced": "Advanced Add Transactions",
+      "creationDate": "Creation Date",
+      "tags": "Tags",
+      "category": "Category"
+    },
+    "get": {
+      "creation_date": "Creation Date",
+      "amount": "Amount",
+      "search-records": "Search records",
+      "per-page": "Per page",
+      "title": "Transactions",
+      "actions": "Actions",
+      'add-button': "Add Transaction",
+      "category": "Category",
+      "tags": "Tags",
+      "description": "Description"
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "You deleted "
+      }
     }
   },
   "wallet": {
@@ -262,6 +286,34 @@ module.exports = {
         "link": "Link Transaction",
         "delete": "Delete",
         "transaction": "View Linked Transactions"
+      }
+    }
+  },
+  "overview": {
+    "yearly": {
+      "title": "Transactions"
+    }
+  },
+  "budget": {
+    "add": {
+      "title": "Add Budget",
+      "planned": "Amount",
+      "category": "Category",
+      "submit": "Add Budget",
+      "required-fields": "* Required fields",
+      "success": "Successfully added the budget!"
+    },
+    "get": {
+      "add-button": "Add Budget",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted the budget!",
       }
     }
   }

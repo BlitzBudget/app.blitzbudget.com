@@ -6,8 +6,8 @@
         <template slot="header">
           <div class="row">
             <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-              <h5 class="card-category">Total shipments</h5>
-              <h2 class="card-title">Performance</h2>
+              <h5 class="card-category">{{ new Date().getFullYear() }}</h5>
+              <h2 class="card-title">{{ $t('overview.yearly.title') }}</h2>
             </div>
             <div class="col-sm-6 d-flex d-sm-block">
               <div class="btn-group btn-group-toggle" :class="isRTL ? 'float-left' : 'float-right'"
@@ -165,28 +165,28 @@ export default {
       statsCards: [
         {
           title: '150GB',
-          subTitle: 'Number',
+          subTitle: 'Total Asset',
           type: 'warning',
           icon: 'tim-icons icon-chat-33',
           footer: '<i class="tim-icons icon-refresh-01"></i> Update Now'
         },
         {
           title: '+45K',
-          subTitle: 'Followers',
+          subTitle: 'Total Debt',
           type: 'primary',
           icon: 'tim-icons icon-shape-star',
           footer: '<i class="tim-icons icon-sound-wave"></i></i> Last Research'
         },
         {
           title: '150,000',
-          subTitle: 'Users',
+          subTitle: 'Average Expense',
           type: 'info',
           icon: 'tim-icons icon-single-02',
           footer: '<i class="tim-icons icon-trophy"></i> Customer feedback'
         },
         {
           title: '23',
-          subTitle: 'Errors',
+          subTitle: 'Average Income',
           type: 'danger',
           icon: 'tim-icons icon-molecule-40',
           footer: '<i class="tim-icons icon-watch-time"></i> In the last hours'
@@ -280,7 +280,11 @@ export default {
         },
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0]
-      }
+      },
+      startsWithDate: null,
+      endsWithDate: null,
+      currency: null,
+      tableData: [],
     };
   },
   computed: {
@@ -291,10 +295,10 @@ export default {
       return this.$rtl.isRTL;
     },
     bigLineChartCategories() {
-      return [{ name: 'Accounts', icon: 'tim-icons icon-single-02' }, {
-        name: 'Purchases',
+      return [{ name: 'Net', icon: 'tim-icons icon-single-02' }, {
+        name: 'Expenses',
         icon: 'tim-icons icon-gift-2'
-      }, { name: 'Sessions', icon: 'tim-icons icon-tap-02' }];
+      }, { name: 'Income', icon: 'tim-icons icon-tap-02' }];
     }
   },
   methods: {
@@ -310,18 +314,36 @@ export default {
       this.bigLineChart.chartData = chartData;
       this.bigLineChart.activeIndex = index;
     },
-    fetchOverview() {
-      // Fetch the current user ID
-      let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-      // Fetch OVerview
-      this.$axios.$post(process.env.api.overview, {
-        user_id: userId,
+    async fetchOverview() {
+      // Set Date for Fetching Transactios
+      this.setDatesToFetchTransaction();
+      // Get Transactions
+      let wallet = await this.$wallet.setCurrentWallet(this);
+      await this.getTransactions(wallet.WalletId);
+
+      // Wallet Currency
+      this.currency = wallet.WalletCurrency;
+    },
+    setDatesToFetchTransaction() {
+      let date = new Date();
+
+      let startsWithDate = new Date(date.getFullYear(), 0, 1);
+      this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
+
+      let endsWithDate = new Date(date.getFullYear(), 12, 0);
+      this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+    },
+    async getTransactions(walletId) {
+      await this.$axios.$post(process.env.api.transactions, {
+        wallet_id: walletId,
+        starts_with_date: this.startsWithDate,
+        ends_with_date: this.endsWithDate
       }).then((response) => {
-        this.data = response;
-      }).catch(({ error }) => {
-        this.$notify({ type: 'danger', message: error });
+        this.tableData = response;
+      }).catch((response) => {
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
       });
-    }
+    },
   },
   async mounted() {
     this.initBigChart(0);

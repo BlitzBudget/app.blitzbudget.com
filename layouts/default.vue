@@ -20,7 +20,7 @@
         <sidebar-item :link="{
           name: $t('sidebar.budget'),
           icon: 'tim-icons icon-paper',
-          path: '/budget'
+          path: '/budgets'
         }">
         </sidebar-item>
         <sidebar-item :link="{

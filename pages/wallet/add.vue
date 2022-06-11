@@ -36,7 +36,7 @@ export default {
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('wallet.add.success') });
             }).catch((response) => {
-                this.$notify({ type: 'danger', message: response });
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         }
     }

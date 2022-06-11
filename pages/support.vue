@@ -24,7 +24,7 @@ export default {
         this.$axios.$get(process.env.help.invokeUrl).then((response) => {
             this.data = response;
         }).catch((error) => {
-            this.$notify({ type: 'danger', message: error });
+            this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: error });
         });
     }
 };
