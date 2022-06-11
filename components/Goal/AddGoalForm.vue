@@ -7,15 +7,15 @@
             <div>
                 <base-input :label="$t('goal.add.targetAmount')" required v-model="model.targetAmount"
                     v-validate="modelValidations.targetAmount" :error="getError('targetAmount')" name="targetAmount"
-                    type="number" autofocus>
+                    type="number" autofocus :placeholder="currency">
                 </base-input>
 
                 <base-input :label="$t('goal.add.goalName')" required v-model="model.goalName"
-                    v-validate="modelValidations.goalName" :error="getError('goalName')" name="goalName"
-                    type="goalName">
+                    v-validate="modelValidations.goalName" :error="getError('goalName')" name="goalName" type="text">
                 </base-input>
 
-                <base-input :label="$t('goal.add.targetDate')">
+                <base-input :label="$t('goal.add.targetDate')" required v-validate="modelValidations.targetDate"
+                    :error="getError('targetDate')" name="targetDate" v-model="model.targetDate" type="datetime">
                     <el-date-picker type="datetime" :placeholder="$t('goal.add.placeholder.targetDate')"
                         v-model="model.targetDate">
                     </el-date-picker>
@@ -49,39 +49,27 @@ export default {
             clearable: true,
             model: {
                 targetAmount: null,
-                categoryId: null,
+                goalName: null,
+                targetDate: null
             },
             modelValidations: {
                 targetAmount: {
                     required: true,
                     min_value: 1,
                 },
-                categoryId: {
+                goalName: {
+                    required: true
+                },
+                targetDate: {
                     required: true
                 }
             },
-            categories: [],
-            loadingDataForSelect: true
+            currency: null
         };
     },
     methods: {
         getError(fieldName) {
             return this.errors.first(fieldName);
-        },
-        getCategoryValue(category) {
-            return category.category_type + " : " + category.category_name
-        },
-        async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
-                user_id: userId,
-            }).then((response) => {
-                this.categories = response;
-                // Change loading to false
-                this.loadingDataForSelect = false
-            }).catch((response) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
-                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
-            });
         },
         async validate() {
             let wallet = await this.$wallet.setCurrentWallet(this);
@@ -91,10 +79,9 @@ export default {
         },
     },
     async mounted() {
-        // Fetch the current user ID
-        let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-        // Fetch Data from API
-        await this.getCategories(userId);
+        // Wallet Currency
+        let wallet = await this.$wallet.setCurrentWallet(this);
+        this.currency = wallet.WalletCurrency;
     }
 };
 </script>

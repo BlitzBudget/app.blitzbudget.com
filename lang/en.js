@@ -325,7 +325,8 @@ module.exports = {
       "add-button": "Add Goal",
       "no-data": "No Data",
       "loading": "Loading...",
-      "title": "Goal"
+      "title": "Goal",
+      "targetDate": "To be achieved by "
     },
     "add": {
       "title": "Add Goal",
@@ -337,6 +338,14 @@ module.exports = {
       "success": "Successfully added the goal!",
       "placeholder": {
         "targetDate": "Target Date",
+      }
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted ",
       }
     }
   }

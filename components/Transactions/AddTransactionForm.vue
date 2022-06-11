@@ -7,7 +7,7 @@
             <div>
                 <base-input :label="$t('transaction.add.amount')" required v-model="model.amount"
                     v-validate="modelValidations.amount" :error="getError('amount')" name="amount" type="number"
-                    autofocus>
+                    autofocus :placeholder="currency">
                 </base-input>
 
                 <base-input :label="$t('transaction.add.description')" required v-model="model.description"
@@ -82,7 +82,8 @@ export default {
                 }
             },
             categories: [],
-            loadingDataForSelect: true
+            loadingDataForSelect: true,
+            currency: null
         };
     },
     methods: {
@@ -116,6 +117,9 @@ export default {
         let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
         // Fetch Data from API
         await this.getCategories(userId);
+        // Wallet Currency
+        let wallet = await this.$wallet.setCurrentWallet(this);
+        this.currency = wallet.WalletCurrency;
     }
 };
 </script>

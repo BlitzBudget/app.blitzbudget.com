@@ -7,12 +7,10 @@
                         {{ $t('goal.get.add-button') }}
                     </nuxt-link>
                 </div>
-                <card class="card" :header-classes="{ 'text-right': isRTL }">
-                    <h5 slot="header" class="card-title">{{ $t('goal.get.title') }}</h5>
-                    <div class="table-responsive">
-                        <display-goal></display-goal>
-                    </div>
-                </card>
+                <h5 slot="header" class="card-title">{{ $t('goal.get.title') }}</h5>
+                <div class="table-responsive">
+                    <display-goal></display-goal>
+                </div>
             </div>
         </div>
     </div>
