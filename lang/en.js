@@ -306,7 +306,10 @@ module.exports = {
     "get": {
       "add-button": "Add Budget",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "title": "Budget"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -314,6 +317,26 @@ module.exports = {
       "button": "Yes, delete it!",
       "success": {
         "description": "Successfully deleted the budget!",
+      }
+    }
+  },
+  "goal": {
+    "get": {
+      "add-button": "Add Goal",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "title": "Goal"
+    },
+    "add": {
+      "title": "Add Goal",
+      "targetAmount": "Goal Amount To Reach",
+      "targetDate": "Target Date to Reach the Goal",
+      "goalName": "Goal Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Goal",
+      "success": "Successfully added the goal!",
+      "placeholder": {
+        "targetDate": "Target Date",
       }
     }
   }

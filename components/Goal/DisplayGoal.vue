@@ -1,39 +1,29 @@
-<template>
+    <template>
     <div class="table-responsive">
-        <base-table :data="tableData" thead-classes="text-primary">
-            <template slot="columns" slot-scope="{ columns }">
-                <th>Category</th>
-                <th>Used</th>
-                <th class="text-right">Planned</th>
-                <th class="text-right">Actions</th>
-            </template>
+        <card class="card-chart card-chart-pie">
+            <h5 slot="header" class="card-category">Simple Pie Chart</h5>
 
-            <template slot-scope="{ row, index }">
-                <td :class="row.category"></td>
-                <td class="text-center">
-                    <base-progress :value="50" />
-                </td>
-                <td class="text-right">{{ row.planned }} {{ currency }}</td>
-                <td class="text-right">
-                    <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleEdit(index, row)">
-                            <i class="tim-icons icon-pencil"></i>
-                        </base-button>
-                    </el-tooltip>
-                    <el-tooltip :content="$t('budget.get.delete')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleDelete(index, row)">
-                            <i class="tim-icons icon-simple-remove"></i>
-                        </base-button>
-                    </el-tooltip>
-                </td>
-            </template>
-        </base-table>
+            <div class="row">
+                <div class="col-6">
+                    <div class="chart-area">
+                        <pie-chart :chart-data="pieChart1.chartData" :extra-options="pieChart1.extraOptions"
+                            :height="120">
+                        </pie-chart>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <h4 class="card-title">
+                        <i class="tim-icons  icon-trophy text-success "></i> 10.000$
+                    </h4>
+                    <p class="category">A total of $54000</p>
+                </div>
+            </div>
+        </card>
         <div :class="[
         { 'show d-block text-center': noData },
         { 'd-none': !noData }]">
-            {{ $t('budget.get.no-data') }}
+            {{ $t('goal.get.no-data') }}
         </div>
         <div :class="[
         { 'show d-block text-center': loading },
@@ -45,29 +35,45 @@
 <script>
 import { BaseTable, BaseProgress } from '@/components';
 import Swal from 'sweetalert2';
+import PieChart from '@/components/Charts/PieChart';
+import * as chartConfigs from '@/components/Charts/config';
 
 export default {
+    name: 'display-goals',
     components: {
         BaseTable,
-        BaseProgress
+        BaseProgress,
+        PieChart
     },
     data() {
         return {
             tableData: [],
             currency: null,
             categories: [],
-            startsWithDate: null,
-            endsWithDate: null,
             noData: false,
-            loading: true
+            loading: true,
+            pieChart1: {
+                chartData: {
+                    labels: [1, 2],
+                    datasets: [
+                        {
+                            label: 'Emails',
+                            pointRadius: 0,
+                            pointHoverRadius: 0,
+                            backgroundColor: ['#00c09d', '#e2e2e2'],
+                            borderWidth: 0,
+                            data: [60, 40]
+                        }
+                    ]
+                },
+                extraOptions: chartConfigs.pieChartOptions
+            }
         };
     },
     methods: {
-        async getBudgets(walletId) {
-            await this.$axios.$post(process.env.api.budgets, {
+        async getGoals(walletId) {
+            await this.$axios.$post(process.env.api.goals, {
                 wallet_id: walletId,
-                starts_with_date: this.startsWithDate,
-                ends_with_date: this.endsWithDate
             }).then((response) => {
                 this.tableData = response;
                 // Fetch Category information and populate it
@@ -116,15 +122,6 @@ export default {
             // Fetch Data from API
             await this.getCategories(userId);
         },
-        setDatesToFetchBudget() {
-            let date = new Date();
-
-            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
-
-            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
-        },
         handleEdit(index, row) {
             Swal.fire({
                 title: `You want to edit ${row.description}`,
@@ -134,13 +131,13 @@ export default {
         },
         handleDelete(index, row) {
             Swal.fire({
-                title: this.$nuxt.$t('budget.delete.confirm'),
-                text: this.$nuxt.$t('budget.delete.confirmationText'),
+                title: this.$nuxt.$t('goal.delete.confirm'),
+                text: this.$nuxt.$t('goal.delete.confirmationText'),
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonClass: 'btn btn-success btn-fill',
                 cancelButtonClass: 'btn btn-danger btn-fill',
-                confirmButtonText: this.$nuxt.$t('budget.delete.button'),
+                confirmButtonText: this.$nuxt.$t('goal.delete.button'),
                 buttonsStyling: false
             }).then(async result => {
                 if (result.value) {
@@ -157,7 +154,7 @@ export default {
                 sk: row.sk
             }).then(async () => {
                 this.deleteRow(row);
-                let deleteDescription = this.$nuxt.$t('budget.delete.success.description');
+                let deleteDescription = this.$nuxt.$t('goal.delete.success.description');
 
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: deleteDescription });
             }).catch((response) => {
@@ -180,11 +177,9 @@ export default {
         },
     },
     async mounted() {
-        // Set Date for Fetching Budgets
-        this.setDatesToFetchBudget();
-        // Get Budgets
+        // Get Goals
         let wallet = await this.$wallet.setCurrentWallet(this);
-        await this.getBudgets(wallet.WalletId);
+        await this.getGoals(wallet.WalletId);
         // Wallet Currency
         this.currency = wallet.WalletCurrency;
     }

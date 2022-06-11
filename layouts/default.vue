@@ -26,7 +26,7 @@
         <sidebar-item :link="{
           name: $t('sidebar.goal'),
           icon: 'tim-icons icon-trophy',
-          path: '/goal'
+          path: '/goals'
         }">
         </sidebar-item>
       </template>

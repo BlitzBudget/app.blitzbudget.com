@@ -3,60 +3,40 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <goal-form @on-submit="addGoal" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]"></goal-form>
-            </div>
-            <div class="col-md-12 ml-auto-mr-auto">
-                <!-- Success Message Tab -->
-                <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': hasSucceeded },
-                { 'd-none': !hasSucceeded }]">
-                    <p class="card-description">
-                        {{ $t('support.ask-us-directly.success.description') }}
-                    </p>
-
-                    <template slot="footer">
-                        <nuxt-link to="/" class="btn btn-primary">
-                            {{ $t('support.ask-us-directly.success.button') }}
-                        </nuxt-link>
-                    </template>
-                </card>
+                <goal-form @on-submit="addGoal"></goal-form>
             </div>
         </div>
     </div>
 </template>
 <script>
-import GoalForm from '@/components/Goals/AddForm.vue';
+import GoalForm from '@/components/Goal/AddGoalForm.vue';
 
 export default {
-    name: 'validation-forms',
+    name: 'add-goals',
     components: {
         GoalForm,
     },
     data() {
         return {
-            goalModel: {},
-            hasSucceeded: false
+            goalModel: {}
         };
     },
     methods: {
-        async addGoal(model) {
+        async addGoal(model, isValid, walletId) {
             if (!isValid) {
                 return;
             }
 
             this.goalModel = model;
             await this.$axios.$put(process.env.api.goals, {
-                walletId: model.walletId,
-                targetId: model.targetId,
-                targetType: model.targetType,
-                targetDate: model.targetDate,
-                targetAmount: model.targetAmount,
-                monthlyContribution: model.monthlyContribution,
-                goalType: model.goalType
+                pk: walletId,
+                target_amount: parseInt(model.targetAmount),
+                target_date: model.targetDate,
+                goal_name: model.goalName,
+                goal_achieved: false,
+                current_amount: 0,
             }).then(() => {
-                this.hasSucceeded = true;
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('goal.add.success') });
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
