@@ -358,7 +358,29 @@ module.exports = {
   "investment": {
     "get": {
       "add-button": "Add Investment",
-      "title": "Investments"
+      "title": "Investments",
+      "invested-amount": "The invested amount is ",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "invested": "Invested Amount",
+      "current": "Current Value"
+    },
+    "add": {
+      "title": "Add Investment",
+      "investedAmount": "Invested Capital",
+      "currentValue": "Current Investment Value",
+      "investmentName": "Investment Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Investment",
+      "success": "Successfully added the investment!",
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted ",
+      }
     }
   }
 }
