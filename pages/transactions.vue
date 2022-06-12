@@ -57,9 +57,8 @@
                             </el-table-column>
                             <el-table-column :min-width="100" :label="$t('transaction.get.tags')">
                                 <div slot-scope="props">
-                                    <span v-for="(tags, index) in props.row.tags" :key="tags">
-                                        <span>{{ tags }}</span><span v-if="(index + 1 < props.row.tags.length)">,
-                                        </span>
+                                    <span v-for="tags in props.row.tags" :key="tags">
+                                        <el-tag size="small" type="info">{{ tags }}</el-tag>
                                     </span>
                                 </div>
                             </el-table-column>
@@ -94,7 +93,7 @@
     </div>
 </template>
 <script>
-import { Table, TableColumn, Select, Option } from 'element-ui';
+import { Table, TableColumn, Select, Option, Tag } from 'element-ui';
 import { BasePagination } from '@/components';
 import Fuse from 'fuse.js';
 import Swal from 'sweetalert2';
@@ -106,6 +105,7 @@ export default {
         [Select.name]: Select,
         [Option.name]: Option,
         [Table.name]: Table,
+        [Tag.name]: Tag,
         [TableColumn.name]: TableColumn
     },
     computed: {

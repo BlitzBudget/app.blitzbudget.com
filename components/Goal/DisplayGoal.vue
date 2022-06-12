@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="chart-area">
-                            <pie-chart :chart-data="pieChart1.chartData" :extra-options="pieChart1.extraOptions"
+                            <pie-chart :chart-data="calculatePieChart(goal)" :extra-options="extraOptions"
                                 :height="120">
                             </pie-chart>
                         </div>
@@ -76,22 +76,7 @@ export default {
             categories: [],
             noData: false,
             loading: true,
-            pieChart1: {
-                chartData: {
-                    labels: ['planned', 'current'],
-                    datasets: [
-                        {
-                            label: 'Emails',
-                            pointRadius: 0,
-                            pointHoverRadius: 0,
-                            backgroundColor: ['#00c09d', '#e2e2e2'],
-                            borderWidth: 0,
-                            data: [60, 40]
-                        }
-                    ]
-                },
-                extraOptions: chartConfigs.pieChartOptions
-            }
+            extraOptions: chartConfigs.pieChartOptions
         };
     },
     methods: {
@@ -161,6 +146,22 @@ export default {
                 this.noData = true;
             }
         },
+        calculatePieChart(goal) {
+            let pending_amount = goal.target_amount - goal.current_amount;
+            return {
+                labels: [this.$nuxt.$t('goal.get.saved'), this.$nuxt.$t('goal.get.pending')],
+                datasets: [
+                    {
+                        label: 'Emails',
+                        pointRadius: 0,
+                        pointHoverRadius: 0,
+                        backgroundColor: ['#00c09d', '#e2e2e2'],
+                        borderWidth: 0,
+                        data: [goal.current_amount, pending_amount]
+                    }
+                ]
+            }
+        }
     },
     async mounted() {
         // Get Goals

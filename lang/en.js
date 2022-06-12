@@ -326,7 +326,9 @@ module.exports = {
       "no-data": "No Data",
       "loading": "Loading...",
       "title": "Goal",
-      "targetDate": "To be achieved by "
+      "targetDate": "To be achieved by ",
+      "saved": "Saved",
+      "pending": "Pending"
     },
     "add": {
       "title": "Add Goal",
