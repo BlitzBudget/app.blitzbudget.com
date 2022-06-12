@@ -64,12 +64,12 @@
                             </el-table-column>
                             <el-table-column :min-width="135" align="right" :label="$t('transaction.get.actions')">
                                 <div slot-scope="props">
-                                    <base-button @click.native="handleEdit(props.$index, props.row)"
-                                        class="edit btn-link" type="warning" size="sm" icon>
+                                    <base-button @click.native="handleEdit(props.row)" class="edit btn-link"
+                                        type="warning" size="sm" icon>
                                         <i class="tim-icons icon-pencil"></i>
                                     </base-button>
-                                    <base-button @click.native="handleDelete(props.$index, props.row)"
-                                        class="remove btn-link" type="danger" size="sm" icon>
+                                    <base-button @click.native="handleDelete(props.row)" class="remove btn-link"
+                                        type="danger" size="sm" icon>
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </div>
@@ -182,14 +182,14 @@ export default {
         calculateAmount(amount) {
             return this.$n(amount) + this.currency;
         },
-        handleEdit(index, row) {
+        handleEdit(row) {
             Swal.fire({
                 title: `You want to edit ${row.description}`,
                 buttonsStyling: false,
                 confirmButtonClass: 'btn btn-info btn-fill'
             });
         },
-        handleDelete(index, row) {
+        handleDelete(row) {
             Swal.fire({
                 title: this.$nuxt.$t('transaction.delete.confirm'),
                 text: this.$nuxt.$t('transaction.delete.confirmationText'),
