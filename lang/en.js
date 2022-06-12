@@ -292,6 +292,10 @@ module.exports = {
   "overview": {
     "yearly": {
       "title": "Transactions"
+    },
+    "statscard": {
+      "investments": "Investments",
+      "debts": "Debts"
     }
   },
   "budget": {
@@ -349,6 +353,12 @@ module.exports = {
       "success": {
         "description": "Successfully deleted ",
       }
+    }
+  },
+  "investment": {
+    "get": {
+      "add-button": "Add Investment",
+      "title": "Investments"
     }
   }
 }

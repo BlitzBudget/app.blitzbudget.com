@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-import GoalForm from '@/components/Goal/AddGoalForm.vue';
+import GoalForm from '@/components/Goals/AddGoalForm.vue';
 
 export default {
     name: 'add-goals',

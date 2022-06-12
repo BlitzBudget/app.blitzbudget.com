@@ -3,25 +3,25 @@
         <div class="row">
             <div class="col-12">
                 <div class="mb-3">
-                    <nuxt-link to="/goal/add" class="btn btn-primary">
-                        {{ $t('goal.get.add-button') }}
+                    <nuxt-link to="/investment/add" class="btn btn-primary">
+                        {{ $t('investment.get.add-button') }}
                     </nuxt-link>
                 </div>
-                <h5 slot="header" class="card-title">{{ $t('goal.get.title') }}</h5>
+                <h5 slot="header" class="card-title">{{ $t('investment.get.title') }}</h5>
                 <div class="table-responsive">
-                    <display-goal></display-goal>
+                    <display-investment></display-investment>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-import DisplayGoal from '@/components/Goals/DisplayGoal';
+import DisplayInvestment from '@/components/Investments/DisplayInvestment';
 
 export default {
-    name: 'goal',
+    name: 'investment',
     components: {
-        DisplayGoal
+        DisplayInvestment
     },
     computed: {
         isRTL() {

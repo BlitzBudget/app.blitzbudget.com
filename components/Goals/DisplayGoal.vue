@@ -152,7 +152,7 @@ export default {
                 labels: [this.$nuxt.$t('goal.get.saved'), this.$nuxt.$t('goal.get.pending')],
                 datasets: [
                     {
-                        label: 'Emails',
+                        label: 'Goals',
                         pointRadius: 0,
                         pointHoverRadius: 0,
                         backgroundColor: ['#00c09d', '#e2e2e2'],

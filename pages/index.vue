@@ -37,7 +37,10 @@
     <!-- Stats Cards -->
     <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.title">
       <stats-card :title="card.title" :sub-title="card.subTitle" :type="card.type" :icon="card.icon">
-        <div slot="footer" v-html="card.footer"></div>
+        <div slot="footer">
+          <nuxt-link :to="card.footer.url" class="btn-link" :class="card.footer.class">{{ card.footer.title }}
+          </nuxt-link>
+        </div>
       </stats-card>
     </div>
 
@@ -168,28 +171,44 @@ export default {
           subTitle: 'Total Asset',
           type: 'warning',
           icon: 'tim-icons icon-chat-33',
-          footer: '<i class="tim-icons icon-refresh-01"></i> Update Now'
+          footer: {
+            url: "/investments",
+            title: this.$nuxt.$t('overview.statscard.investments'),
+            class: 'btn-warning'
+          }
         },
         {
           title: '+45K',
           subTitle: 'Total Debt',
           type: 'primary',
           icon: 'tim-icons icon-shape-star',
-          footer: '<i class="tim-icons icon-sound-wave"></i></i> Last Research'
+          footer: {
+            url: "/debts",
+            title: this.$nuxt.$t('overview.statscard.debts'),
+            class: 'btn-primary'
+          }
         },
         {
           title: '150,000',
           subTitle: 'Average Expense',
           type: 'info',
           icon: 'tim-icons icon-single-02',
-          footer: '<i class="tim-icons icon-trophy"></i> Customer feedback'
+          footer: {
+            url: "/debts",
+            title: this.$nuxt.$t('overview.statscard.debts'),
+            class: 'btn-info'
+          }
         },
         {
           title: '23',
           subTitle: 'Average Income',
           type: 'danger',
           icon: 'tim-icons icon-molecule-40',
-          footer: '<i class="tim-icons icon-watch-time"></i> In the last hours'
+          footer: {
+            url: "/debts",
+            title: this.$nuxt.$t('overview.statscard.debts'),
+            class: 'btn-danger'
+          }
         }
       ],
       bigLineChart: {
