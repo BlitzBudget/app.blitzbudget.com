@@ -2,38 +2,40 @@
     <form>
         <card footer-classes="text-left">
             <div slot="header">
-                <h4 class="card-title">{{ $t('category.link.add.title') }}</h4>
+                <h4 class="card-title">{{ $t('investment.link.add.title') }}</h4>
             </div>
             <div>
-                <el-tooltip :content="$t('category.link.add.tooltip')" effect="light" :open-delay="300" placement="top">
-                    <base-input :label="$t('category.link.add.transactionDescription')" required
+                <el-tooltip :content="$t('investment.link.add.tooltip')" effect="light" :open-delay="300"
+                    placement="top">
+                    <base-input :label="$t('investment.link.add.transactionDescription')" required
                         v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
                         :error="getError('transactionDescription')" name="transactionDescription" autofocus>
                     </base-input>
                 </el-tooltip>
 
-                <base-input :label="$t('category.link.add.categoryId')" required :error="getError('categoryId')"
-                    name="categoryId">
-                    <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
-                        v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" :clearable="clearable"
-                        autocomplete="on" :filterable="filterable">
-                        <el-option v-for="category in categories" class="select-primary"
-                            :label="getCategoryValue(category)" :value="category.sk" :key="category.sk"
-                            :selected="isSelected(category)">
+                <base-input :label="$t('investment.link.add.investmentId')" required :error="getError('investmentId')"
+                    name="investmentId">
+                    <el-select v-model="model.investmentId" class="select-primary" name="investmentId"
+                        v-validate="modelValidations.investmentId" :loading="loadingDataForSelect"
+                        :clearable="clearable" autocomplete="on" :filterable="filterable">
+                        <el-option v-for="investment in investments" class="select-primary"
+                            :label="getInvestmentValue(investment)" :value="investment.sk" :key="investment.sk"
+                            :selected="isSelected(investment)">
                         </el-option>
                     </el-select>
                 </base-input>
 
-                <div class="small form-category">{{ $t('category.link.add.required-fields') }}</div>
+                <div class="small form-investment">{{ $t('investment.link.add.required-fields') }}</div>
             </div>
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('category.link.add.submit')
+                        $t('investment.link.add.submit')
                 }}</base-button>
                 <nuxt-link class="float-right"
-                    :to="{ path: '/category/category-link', query: { category_id: this.selectedCategoryId } }">{{
-                            $t('category.link.add.viewCategoryRule')
+                    :to="{ path: '/investment/investment-link', query: { investment_id: this.selectedInvestmentId } }">
+                    {{
+                            $t('investment.link.add.viewInvestmentRule')
                     }}</nuxt-link>
             </template>
         </card>
@@ -49,31 +51,31 @@ export default {
     },
     data() {
         return {
-            selectedCategoryId: '',
+            selectedInvestmentId: '',
             filterable: true,
             clearable: true,
             model: {
                 transactionDescription: null,
-                categoryId: null,
+                investmentId: null,
             },
             modelValidations: {
                 transactionDescription: {
                     required: true
                 },
-                categoryId: {
+                investmentId: {
                     required: true
                 }
             },
-            categories: [],
+            investments: [],
             loadingDataForSelect: true
         };
     },
     methods: {
-        getCategoryValue(category) {
-            return category.category_type + " : " + category.category_name
+        getInvestmentValue(investment) {
+            return investment.investment_name
         },
-        isSelected(category) {
-            return (category.sk === this.selectedCategoryId);
+        isSelected(investment) {
+            return (investment.sk === this.selectedInvestmentId);
         },
         getError(fieldName) {
             return this.errors.first(fieldName);
@@ -86,11 +88,11 @@ export default {
                 this.$emit('on-submit', this.model, isValid, wallet.WalletId);
             });
         },
-        async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
-                user_id: userId,
+        async getInvestments(walletId) {
+            await this.$axios.$post(process.env.api.investments, {
+                wallet_id: walletId,
             }).then((response) => {
-                this.categories = response;
+                this.investments = response;
                 // Change loading to false
                 this.loadingDataForSelect = false
             }).catch((response) => {
@@ -100,15 +102,15 @@ export default {
         }
     },
     async mounted() {
-        // Set the selcted category ID
-        this.selectedCategoryId = this.$route.query.category_id;
-        this.model.categoryId = this.selectedCategoryId;
+        // Set the selcted investment ID
+        this.selectedInvestmentId = this.$route.query.investment_id;
+        this.model.investmentId = this.selectedInvestmentId;
         // Set Transaction Description to input
         this.model.transactionDescription = this.$route.query.transaction_description;
-        // Fetch the current user ID
-        let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+        // Fetch the wallet ID
+        let wallet = await this.$wallet.setCurrentWallet(this);
         // Fetch Data from API
-        await this.getCategories(userId);
+        await this.getInvestments(wallet.WalletId);
     }
 };
 </script>

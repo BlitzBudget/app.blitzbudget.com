@@ -171,8 +171,10 @@ export default {
                     continue;
                 }
 
-                let element = elements[i];
-                element.textContent = category.category_type + " : " + category.category_name
+                for (let j = 0, len = elements.length; j < len; j++) {
+                    let element = elements[j];
+                    element.textContent = category.category_type + " : " + category.category_name
+                }
             }
         },
         noDataInResponse(response) {

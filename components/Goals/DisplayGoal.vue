@@ -15,7 +15,9 @@
 
                     <div class="col-6">
                         <h4 class="card-title">
-                            <i class="tim-icons  icon-trophy text-success "></i> {{ $n(goal.target_amount) }} {{ currency }}
+                            <i class="tim-icons  icon-trophy text-success "></i> {{ $n(goal.target_amount) }} {{
+                                    currency
+                            }}
                         </h4>
                         <p class="category">{{ $t('goal.get.targetDate') }} {{ new
                                 Date(goal.target_date).toLocaleDateString(
@@ -29,13 +31,19 @@
                 </div>
 
                 <div class="text-right">
-                    <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
+                    <el-tooltip :content="$t('goal.get.link')" effect="light" :open-delay="300" placement="top">
+                        <nuxt-link :to="{ path: '/goal/goal-link', query: { goal_id: goal.sk } }" class="edit btn-link"
+                            type="info" size="sm" icon>
+                            <i class="tim-icons icon-link-72"></i>
+                        </nuxt-link>
+                    </el-tooltip>
+                    <el-tooltip :content="$t('goal.get.edit')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
                             @click.native="handleEdit(index, goal)">
                             <i class="tim-icons icon-pencil"></i>
                         </base-button>
                     </el-tooltip>
-                    <el-tooltip :content="$t('budget.get.delete')" effect="light" :open-delay="300" placement="top">
+                    <el-tooltip :content="$t('goal.get.delete')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
                             @click.native="handleDelete(index, goal)">
                             <i class="tim-icons icon-simple-remove"></i>
@@ -52,7 +60,7 @@
         <div :class="[
         { 'show d-block text-center col-12': loading },
         { 'd-none': !loading }]">
-            {{ $t('budget.get.loading') }}
+            {{ $t('goal.get.loading') }}
         </div>
     </div>
 </template>

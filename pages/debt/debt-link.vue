@@ -2,45 +2,45 @@
     <card class="card">
         <div class="row">
             <div class="col-sm-6">
-                <h3 slot="header" class="card-title">{{ $t('investment.link.get.title') }}</h3>
+                <h3 slot="header" class="card-title">{{ $t('debt.link.get.title') }}</h3>
             </div>
             <div class="col-sm-6">
-                <nuxt-link to="/investment/link/add" class="btn btn-link btn-primary float-right">{{
-                        $t('investment.link.get.add')
+                <nuxt-link to="/debt/link/add" class="btn btn-link btn-primary float-right">{{
+                        $t('debt.link.get.add')
                 }}
                 </nuxt-link>
             </div>
         </div>
         <div class="table-responsive">
-            <base-table :data="investmentLink" thead-classes="text-primary">
+            <base-table :data="debtLink" thead-classes="text-primary">
                 <template slot="columns" slot-scope="{ columns }">
-                    <th>{{ $t('investment.link.get.table.header.description') }}</th>
-                    <th>{{ $t('investment.link.get.table.header.investment') }}</th>
-                    <th class="text-right">{{ $t('investment.link.get.table.header.action') }}</th>
+                    <th>{{ $t('debt.link.get.table.header.description') }}</th>
+                    <th>{{ $t('debt.link.get.table.header.debt') }}</th>
+                    <th class="text-right">{{ $t('debt.link.get.table.header.action') }}</th>
                 </template>
 
                 <template slot-scope="{ row, index }" :class="[
                 { 'show d-block': !noData },
                 { 'd-none': noData }]">
                     <td>{{ row.transaction_name }}</td>
-                    <td :class="row.investment_id"></td>
+                    <td :class="row.debt_id"></td>
                     <td class="text-right">
-                        <el-tooltip :content="$t('investment.link.get.table.link')" effect="light" :open-delay="300"
+                        <el-tooltip :content="$t('debt.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
                             <nuxt-link
-                                :to="{ path: '/investment/link/add', query: { investment_id: row.investment_id } }"
+                                :to="{ path: '/debt/link/add', query: { debt_id: row.debt_id } }"
                                 :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link btn-neutral">
                                 <i class="tim-icons icon-link-72"></i>
                             </nuxt-link>
                         </el-tooltip>
-                        <el-tooltip :content="$t('investment.link.get.table.investment')" effect="light"
+                        <el-tooltip :content="$t('debt.link.get.table.debt')" effect="light"
                             :open-delay="300" placement="top">
-                            <nuxt-link to='/investments' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
+                            <nuxt-link to='/debts' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
                                 <i class="tim-icons icon-components"></i>
                             </nuxt-link>
                         </el-tooltip>
-                        <el-tooltip :content="$t('investment.link.get.table.delete')" effect="light" :open-delay="300"
+                        <el-tooltip :content="$t('debt.link.get.table.delete')" effect="light" :open-delay="300"
                             placement="top">
                             <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon
                                 size="sm" class="btn-link">
@@ -53,7 +53,7 @@
             <div :class="[
             { 'show d-block text-center': noData },
             { 'd-none': !noData }]">
-                {{ $t('investment.link.get.no-data') }}
+                {{ $t('debt.link.get.no-data') }}
             </div>
             <!-- small modal -->
             <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
@@ -61,13 +61,13 @@
                 <div slot="header" class="modal-profile">
                     <i class="tim-icons icon-single-02"></i>
                 </div>
-                <p>{{ $t('investment.link.delete.description') }}</p>
+                <p>{{ $t('debt.link.delete.description') }}</p>
                 <template slot="footer">
                     <base-button type="neutral" link @click.native="modals.mini = false">{{
-                            $t('investment.link.get.back')
+                            $t('debt.link.get.back')
                     }}
                     </base-button>
-                    <base-button @click="deleteItem()" type="neutral" link>{{ $t('investment.link.get.delete') }}
+                    <base-button @click="deleteItem()" type="neutral" link>{{ $t('debt.link.get.delete') }}
                     </base-button>
                 </template>
             </modal>
@@ -78,7 +78,7 @@
 import { BaseTable, BaseProgress, Modal } from '@/components';
 
 export default {
-    name: 'investment-link',
+    name: 'debt-link',
     components: {
         BaseTable,
         BaseProgress,
@@ -86,22 +86,22 @@ export default {
     },
     data() {
         return {
-            investmentLink: [],
+            debtLink: [],
             modals: {
                 mini: false
             },
-            investmentRuleId: null,
+            debtRuleId: null,
             noData: false
         };
     },
     methods: {
-        openModal(investmentRuleId) {
+        openModal(debtRuleId) {
             this.modals.mini = true;
-            this.investmentRuleId = investmentRuleId;
+            this.debtRuleId = debtRuleId;
         },
         closeModal() {
             this.modals.mini = false;
-            this.investmentRuleId = null;
+            this.debtRuleId = null;
         },
         async deleteItem() {
             // Fetch the current user ID
@@ -109,10 +109,10 @@ export default {
 
             await this.$axios.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
-                sk: this.investmentRuleId
+                sk: this.debtRuleId
             }).then(async () => {
                 this.closeModal();
-                await this.fetchInvestmentLink();
+                await this.fetchDebtLink();
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
                 this.closeModal();
@@ -123,64 +123,76 @@ export default {
                 this.noData = true;
             }
         },
-        async fetchInvestmentLink() {
+        async fetchDebtLink() {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
-            // Fetch Investment ID from parameter
-            let selectedInvestmentId = this.$route.query.investment_id;
+            // Fetch Debt ID from parameter
+            let selectedDebtId = this.$route.query.debt_id;
             // Fetch Data from API
-            await this.getInvestmentRules(wallet.WalletId, selectedInvestmentId);
+            await this.getDebtRules(wallet.WalletId, selectedDebtId);
         },
-        async getInvestmentRules(walletId, investmentId) {
-            await this.$axios.$post(process.env.api.rules.investment, {
+        async getDebtRules(walletId, debtId) {
+            await this.$axios.$post(process.env.api.rules.debt, {
                 wallet_id: walletId,
-                investment_id: investmentId
+                debt_id: debtId
             }).then(async (response) => {
-                this.investmentLink = response;
+                this.debtLink = response;
                 // if No Data populate no data
                 this.noDataInResponse(response);
-                // Fetch Investments
-                await this.getInvestments(response);
+                // Fetch Debts
+                await this.getDebts(response);
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
-        async getInvestments(investmentRuleResponse) {
-            if (this.$isEmpty(investmentRuleResponse)) {
+        async getDebts(debtRuleResponse) {
+            if (this.$isEmpty(debtRuleResponse)) {
                 return;
             }
+
+            // Fetch all debt ids
+            let debtIds = this.getDebtIds(debtRuleResponse);
             // Fetch the current user ID
-            let wallet = await this.$wallet.setCurrentWallet(this);
-            await this.$axios.$post(process.env.api.investments, {
-                wallet_id: wallet.WalletId,
+            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+            await this.$axios.$post(process.env.api.debt.batch, {
+                user_id: userId,
+                debt_ids: debtIds
             }).then((response) => {
-                this.assignInvestmentsToTable(response);
+                this.assignDebtsToTable(response);
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
-        assignInvestmentsToTable(response) {
+        getDebtIds(debtRuleResponse) {
+            let debtIds = [];
+
+            for (let i = 0, length = debtRuleResponse.length; i < length; i++) {
+                let debtRule = debtRuleResponse[i];
+                debtIds.push(debtRule.debt_id);
+            }
+
+            return debtIds;
+        },
+        assignDebtsToTable(response) {
             if (this.$isEmpty(response)) {
                 return;
             }
 
             for (let i = 0, length = response.length; i < length; i++) {
-                let investment = response[i];
-                let elements = document.getElementsByClassName(investment.sk);
+                let debt = response[i];
+                let elements = document.getElementsByClassName(debt.sk);
 
                 if (this.$isEmpty(elements)) {
                     continue;
                 }
 
-                for (let j = 0, len = elements.length; j < len; j++) {
-                    let element = elements[j];
-                    element.textContent = investment.investment_name
-                }
+                let element = elements[i];
+                element.textContent = debt.debt_name
             }
         },
     },
     async mounted() {
-        await this.fetchInvestmentLink();
+        await this.fetchDebtLink();
     }
 };
 </script>

@@ -26,7 +26,7 @@
                         <p class="plan"></p>
                     </div>
                     <nuxt-link slot="footer" round type="primary" class="btn-just-icon btn-primary btn btn-round"
-                        :to="{ path: link.url, query: { investment_id: $route.query.investment_id, transaction_description: $route.query.transaction_description, transaction_amount: $route.query.transaction_amount } }">
+                        :to="{ path: link.url, query: { transaction_description: $route.query.transaction_description, transaction_amount: $route.query.transaction_amount } }">
                         {{ link.button }}
                     </nuxt-link>
                 </card>

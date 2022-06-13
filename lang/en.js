@@ -328,7 +328,8 @@ module.exports = {
       "delete": "Delete",
       "no-data": "No Data",
       "loading": "Loading...",
-      "title": "Budget"
+      "title": "Budget",
+      "link": "Link Budget"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -340,6 +341,39 @@ module.exports = {
     }
   },
   "goal": {
+    "link": {
+      "add": {
+        "title": "Add Goal Link",
+        "transactionDescription": "Transaction Description",
+        "goalId": "Select Goal",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
+        "success": "Successfully linked the Goal and transaction!",
+        "viewGoalRule": "View Goal And Transaction Link"
+      },
+      "get": {
+        "title": "Goal and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "goal": "Goal",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete",
+          "goal": "View Goal"
+        },
+        "no-data": "No Data",
+        "add": "Add Goal Links",
+        "back": "Back",
+        "delete": "Delete"
+      },
+      "delete": {
+        "success": "Successfully deleted the goal rule",
+        "description": "Are your sure that you want to delete the goal transaction link?"
+      }
+    },
     "get": {
       "add-button": "Add Goal",
       "no-data": "No Data",
@@ -432,6 +466,39 @@ module.exports = {
     }
   },
   "debt": {
+    "link": {
+      "add": {
+        "title": "Add Debt Link",
+        "transactionDescription": "Transaction Description",
+        "debtId": "Select Debt",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
+        "success": "Successfully linked the Debt and transaction!",
+        "viewDebtRule": "View Debt And Transaction Link"
+      },
+      "get": {
+        "title": "Debt and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "debt": "Debt",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete",
+          "debt": "View Debt"
+        },
+        "no-data": "No Data",
+        "add": "Add Debt Links",
+        "back": "Back",
+        "delete": "Delete"
+      },
+      "delete": {
+        "success": "Successfully deleted the debt rule",
+        "description": "Are your sure that you want to delete the debt transaction link?"
+      }
+    },
     "get": {
       "debted-amount": "The debted amount is ",
       "no-data": "No Data",
