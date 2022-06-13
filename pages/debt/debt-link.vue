@@ -149,28 +149,15 @@ export default {
                 return;
             }
 
-            // Fetch all debt ids
-            let debtIds = this.getDebtIds(debtRuleResponse);
             // Fetch the current user ID
-            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-            await this.$axios.$post(process.env.api.debt.batch, {
-                user_id: userId,
-                debt_ids: debtIds
+            let wallet = await this.$wallet.setCurrentWallet(this);
+            await this.$axios.$post(process.env.api.debts, {
+                wallet_id: wallet.WalletId,
             }).then((response) => {
                 this.assignDebtsToTable(response);
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
-        },
-        getDebtIds(debtRuleResponse) {
-            let debtIds = [];
-
-            for (let i = 0, length = debtRuleResponse.length; i < length; i++) {
-                let debtRule = debtRuleResponse[i];
-                debtIds.push(debtRule.debt_id);
-            }
-
-            return debtIds;
         },
         assignDebtsToTable(response) {
             if (this.$isEmpty(response)) {

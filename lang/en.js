@@ -381,7 +381,10 @@ module.exports = {
       "title": "Goal",
       "targetDate": "To be achieved by ",
       "saved": "Saved",
-      "pending": "Pending"
+      "pending": "Pending",
+      "link": "Link Transaction",
+      "delete": "Delete",
+      "edit": "Edit"
     },
     "add": {
       "title": "Add Goal",
@@ -445,7 +448,10 @@ module.exports = {
       "no-data": "No Data",
       "loading": "Loading...",
       "invested": "Invested Amount",
-      "current": "Current Value"
+      "current": "Current Value",
+      "link": "Link Transaction",
+      "delete": "Delete",
+      "edit": "Edit"
     },
     "add": {
       "title": "Add Investment",
@@ -506,7 +512,10 @@ module.exports = {
       "title": "Debts",
       "add-button": "Add Debt",
       "repaid": "Repaid",
-      "pending": "Pending Repayment"
+      "pending": "Pending Repayment",
+      "link": "Link Transaction",
+      "delete": "Delete",
+      "edit": "Edit"
     },
     "add": {
       "title": "Add Debt",
