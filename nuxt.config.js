@@ -35,6 +35,7 @@ module.exports = {
       recurringTransactions: '/recurring-transaction',
       wallets: '/wallet',
       investments: '/investment',
+      debts: '/debt',
       rules: {
         category: '/rules/category'
       }

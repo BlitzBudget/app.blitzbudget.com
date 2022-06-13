@@ -170,7 +170,7 @@ export default {
           title: '150GB',
           subTitle: 'Total Asset',
           type: 'warning',
-          icon: 'tim-icons icon-chat-33',
+          icon: 'tim-icons icon-chart-bar-32',
           footer: {
             url: "/investments",
             title: this.$nuxt.$t('overview.statscard.investments'),
@@ -181,7 +181,7 @@ export default {
           title: '+45K',
           subTitle: 'Total Debt',
           type: 'primary',
-          icon: 'tim-icons icon-shape-star',
+          icon: 'tim-icons icon-credit-card',
           footer: {
             url: "/debts",
             title: this.$nuxt.$t('overview.statscard.debts'),

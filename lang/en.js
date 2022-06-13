@@ -382,5 +382,33 @@ module.exports = {
         "description": "Successfully deleted ",
       }
     }
+  },
+  "debt": {
+    "get": {
+      "debted-amount": "The debted amount is ",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "title": "Debts",
+      "add-button": "Add Debt",
+      "repaid": "Repaid",
+      "pending": "Pending Repayment"
+    },
+    "add": {
+      "title": "Add Debt",
+      "debtAmount": "Debted Amount",
+      "currentValue": "Current Debt Value",
+      "debtName": "Debt Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Debt",
+      "success": "Successfully added the debt!",
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted ",
+      }
+    }
   }
 }
