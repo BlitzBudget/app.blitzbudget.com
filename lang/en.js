@@ -292,6 +292,10 @@ module.exports = {
   "overview": {
     "yearly": {
       "title": "Transactions"
+    },
+    "statscard": {
+      "investments": "Investments",
+      "debts": "Debts"
     }
   },
   "budget": {
@@ -306,7 +310,10 @@ module.exports = {
     "get": {
       "add-button": "Add Budget",
       "edit": "Edit",
-      "delete": "Delete"
+      "delete": "Delete",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "title": "Budget"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -314,6 +321,93 @@ module.exports = {
       "button": "Yes, delete it!",
       "success": {
         "description": "Successfully deleted the budget!",
+      }
+    }
+  },
+  "goal": {
+    "get": {
+      "add-button": "Add Goal",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "title": "Goal",
+      "targetDate": "To be achieved by ",
+      "saved": "Saved",
+      "pending": "Pending"
+    },
+    "add": {
+      "title": "Add Goal",
+      "targetAmount": "Goal Amount To Reach",
+      "targetDate": "Target Date to Reach the Goal",
+      "goalName": "Goal Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Goal",
+      "success": "Successfully added the goal!",
+      "placeholder": {
+        "targetDate": "Target Date",
+      }
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted ",
+      }
+    }
+  },
+  "investment": {
+    "get": {
+      "add-button": "Add Investment",
+      "title": "Investments",
+      "invested-amount": "The invested amount is ",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "invested": "Invested Amount",
+      "current": "Current Value"
+    },
+    "add": {
+      "title": "Add Investment",
+      "investedAmount": "Invested Capital",
+      "currentValue": "Current Investment Value",
+      "investmentName": "Investment Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Investment",
+      "success": "Successfully added the investment!",
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted ",
+      }
+    }
+  },
+  "debt": {
+    "get": {
+      "debted-amount": "The debted amount is ",
+      "no-data": "No Data",
+      "loading": "Loading...",
+      "title": "Debts",
+      "add-button": "Add Debt",
+      "repaid": "Repaid",
+      "pending": "Pending Repayment"
+    },
+    "add": {
+      "title": "Add Debt",
+      "debtAmount": "Debted Amount",
+      "currentValue": "Current Debt Value",
+      "debtName": "Debt Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Debt",
+      "success": "Successfully added the debt!",
+    },
+    "delete": {
+      "confirm": "Are you sure?",
+      "confirmationText": "You won't be able to revert this!",
+      "button": "Yes, delete it!",
+      "success": {
+        "description": "Successfully deleted ",
       }
     }
   }

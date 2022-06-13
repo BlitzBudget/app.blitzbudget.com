@@ -57,20 +57,19 @@
                             </el-table-column>
                             <el-table-column :min-width="100" :label="$t('transaction.get.tags')">
                                 <div slot-scope="props">
-                                    <span v-for="(tags, index) in props.row.tags" :key="tags">
-                                        <span>{{ tags }}</span><span v-if="(index + 1 < props.row.tags.length)">,
-                                        </span>
+                                    <span v-for="tags in props.row.tags" :key="tags">
+                                        <el-tag size="small" type="info">{{ tags }}</el-tag>
                                     </span>
                                 </div>
                             </el-table-column>
                             <el-table-column :min-width="135" align="right" :label="$t('transaction.get.actions')">
                                 <div slot-scope="props">
-                                    <base-button @click.native="handleEdit(props.$index, props.row)"
-                                        class="edit btn-link" type="warning" size="sm" icon>
+                                    <base-button @click.native="handleEdit(props.row)" class="edit btn-link"
+                                        type="warning" size="sm" icon>
                                         <i class="tim-icons icon-pencil"></i>
                                     </base-button>
-                                    <base-button @click.native="handleDelete(props.$index, props.row)"
-                                        class="remove btn-link" type="danger" size="sm" icon>
+                                    <base-button @click.native="handleDelete(props.row)" class="remove btn-link"
+                                        type="danger" size="sm" icon>
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </div>
@@ -94,7 +93,7 @@
     </div>
 </template>
 <script>
-import { Table, TableColumn, Select, Option } from 'element-ui';
+import { Table, TableColumn, Select, Option, Tag } from 'element-ui';
 import { BasePagination } from '@/components';
 import Fuse from 'fuse.js';
 import Swal from 'sweetalert2';
@@ -106,6 +105,7 @@ export default {
         [Select.name]: Select,
         [Option.name]: Option,
         [Table.name]: Table,
+        [Tag.name]: Tag,
         [TableColumn.name]: TableColumn
     },
     computed: {
@@ -182,14 +182,14 @@ export default {
         calculateAmount(amount) {
             return this.$n(amount) + this.currency;
         },
-        handleEdit(index, row) {
+        handleEdit(row) {
             Swal.fire({
                 title: `You want to edit ${row.description}`,
                 buttonsStyling: false,
                 confirmButtonClass: 'btn btn-info btn-fill'
             });
         },
-        handleDelete(index, row) {
+        handleDelete(row) {
             Swal.fire({
                 title: this.$nuxt.$t('transaction.delete.confirm'),
                 text: this.$nuxt.$t('transaction.delete.confirmationText'),

@@ -7,7 +7,7 @@
             <div>
                 <base-input :label="$t('budget.add.planned')" required v-model="model.planned"
                     v-validate="modelValidations.planned" :error="getError('planned')" name="planned" type="number"
-                    autofocus>
+                    autofocus :placeholder="currency">
                 </base-input>
 
                 <base-input :label="$t('budget.add.category')" required :error="getError('categoryId')"
@@ -61,7 +61,8 @@ export default {
                 }
             },
             categories: [],
-            loadingDataForSelect: true
+            loadingDataForSelect: true,
+            currency: null
         };
     },
     methods: {
@@ -95,6 +96,9 @@ export default {
         let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
         // Fetch Data from API
         await this.getCategories(userId);
+        // Wallet Currency
+        let wallet = await this.$wallet.setCurrentWallet(this);
+        this.currency = wallet.WalletCurrency;
     }
 };
 </script>

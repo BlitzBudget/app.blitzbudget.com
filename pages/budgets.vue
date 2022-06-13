@@ -8,7 +8,7 @@
                     </nuxt-link>
                 </div>
                 <card class="card" :header-classes="{ 'text-right': isRTL }">
-                    <h5 slot="header" class="card-title">Budget</h5>
+                    <h5 slot="header" class="card-title">{{ $t('budget.get.title') }}</h5>
                     <div class="table-responsive">
                         <display-budget></display-budget>
                     </div>
