@@ -13,6 +13,7 @@ import InvestmentForm from '@/components/Investments/AddInvestmentForm.vue';
 
 export default {
     name: 'add-investments',
+    layout: 'plain',
     components: {
         InvestmentForm,
     },

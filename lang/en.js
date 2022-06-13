@@ -193,7 +193,8 @@ module.exports = {
       'add-button': "Add Transaction",
       "category": "Category",
       "tags": "Tags",
-      "description": "Description"
+      "description": "Description",
+      "link": "Smart Link"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -201,6 +202,16 @@ module.exports = {
       "button": "Yes, delete it!",
       "success": {
         "description": "You deleted "
+      }
+    },
+    "link": {
+      "get": {
+        "title": "Smart Link",
+        "description": "Link investments, goals, debts or categories.",
+        "investmentButton": "Link Investment",
+        "debtButton": "Link Debt",
+        "goalButton": "Link Goal",
+        "categoryButton": "Link Category"
       }
     }
   },
@@ -254,8 +265,12 @@ module.exports = {
           },
           "link": "Link Transaction",
           "delete": "Delete",
-          "category": "View Category"
-        }
+          "category": "View Category",
+        },
+        "no-data": "No Data",
+        "add": "Add Category Links",
+        "back": "Back",
+        "delete": "Delete"
       },
       "delete": {
         "success": "Successfully deleted the category rule",
@@ -356,6 +371,39 @@ module.exports = {
     }
   },
   "investment": {
+    "link": {
+      "add": {
+        "title": "Add Investment Link",
+        "transactionDescription": "Transaction Description",
+        "investmentId": "Select Investment",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
+        "success": "Successfully linked the Investment and transaction!",
+        "viewInvestmentRule": "View Investment And Transaction Link"
+      },
+      "get": {
+        "title": "Investment and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "investment": "Investment",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete",
+          "investment": "View Investment"
+        },
+        "no-data": "No Data",
+        "add": "Add Investment Links",
+        "back": "Back",
+        "delete": "Delete"
+      },
+      "delete": {
+        "success": "Successfully deleted the investment rule",
+        "description": "Are your sure that you want to delete the investment transaction link?"
+      }
+    },
     "get": {
       "add-button": "Add Investment",
       "title": "Investments",

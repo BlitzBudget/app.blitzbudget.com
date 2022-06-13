@@ -13,6 +13,7 @@ import GoalForm from '@/components/Goals/AddGoalForm.vue';
 
 export default {
     name: 'add-goals',
+    layout: 'plain',
     components: {
         GoalForm,
     },

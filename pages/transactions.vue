@@ -64,6 +64,14 @@
                             </el-table-column>
                             <el-table-column :min-width="135" align="right" :label="$t('transaction.get.actions')">
                                 <div slot-scope="props">
+                                    <el-tooltip :content="$t('transaction.get.link')" effect="light" :open-delay="300"
+                                        placement="top">
+                                        <nuxt-link
+                                            :to="{ path: '/transaction/transaction-link', query: { transaction_description: props.row.description, transaction_amount: props.row.amount } }"
+                                            class="edit btn-link" type="info" size="sm" icon>
+                                            <i class="tim-icons icon-link-72"></i>
+                                        </nuxt-link>
+                                    </el-tooltip>
                                     <base-button @click.native="handleEdit(props.row)" class="edit btn-link"
                                         type="warning" size="sm" icon>
                                         <i class="tim-icons icon-pencil"></i>

@@ -15,11 +15,11 @@
 
                     <div class="col-6">
                         <h4 class="card-title">
-                            <i class="tim-icons icon-credit-card text-success "></i> {{ debt.current_value }} {{
+                            <i class="tim-icons icon-credit-card text-success "></i> {{ $n(debt.current_value) }} {{
                                     currency
                             }}
                         </h4>
-                        <p class="category">{{ $t('debt.get.debted-amount') }} {{ debt.debted_amount }}
+                        <p class="category">{{ $t('debt.get.debted-amount') }} {{ $n(debt.debted_amount) }}
                             {{ currency }}
                         </p>
                     </div>

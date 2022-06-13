@@ -37,7 +37,8 @@ module.exports = {
       investments: '/investment',
       debts: '/debt',
       rules: {
-        category: '/rules/category'
+        category: '/rules/category',
+        investment: '/rules/investment'
       }
     },
     home: {

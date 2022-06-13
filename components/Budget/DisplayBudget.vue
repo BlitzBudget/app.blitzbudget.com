@@ -13,7 +13,7 @@
                 <td class="text-center">
                     <base-progress :value="row.percentage" />
                 </td>
-                <td class="text-right">{{ row.planned }} {{ currency }}</td>
+                <td class="text-right">{{ $n(row.planned) }} {{ currency }}</td>
                 <td class="text-right">
                     <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"

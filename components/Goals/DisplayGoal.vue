@@ -15,7 +15,7 @@
 
                     <div class="col-6">
                         <h4 class="card-title">
-                            <i class="tim-icons  icon-trophy text-success "></i> {{ goal.target_amount }} {{ currency }}
+                            <i class="tim-icons  icon-trophy text-success "></i> {{ $n(goal.target_amount) }} {{ currency }}
                         </h4>
                         <p class="category">{{ $t('goal.get.targetDate') }} {{ new
                                 Date(goal.target_date).toLocaleDateString(

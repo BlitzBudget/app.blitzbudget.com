@@ -26,6 +26,13 @@
                 </div>
 
                 <div class="text-right">
+                    <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300"
+                        placement="top">
+                        <nuxt-link to="/investment/investment-link" :type="index > 2 ? 'success' : 'neutral'" icon
+                            size="sm" class="btn-link btn-neutral">
+                            <i class="tim-icons icon-link-72"></i>
+                        </nuxt-link>
+                    </el-tooltip>
                     <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
                             @click.native="handleEdit(investment)">
