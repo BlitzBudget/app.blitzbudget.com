@@ -27,14 +27,13 @@
                     <td class="text-right">
                         <el-tooltip :content="$t('goal.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
-                            <nuxt-link
-                                :to="{ path: '/goal/link/add', query: { goal_id: row.goal_id } }"
+                            <nuxt-link :to="{ path: '/goal/link/add', query: { goal_id: row.goal_id } }"
                                 :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link btn-neutral">
                                 <i class="tim-icons icon-link-72"></i>
                             </nuxt-link>
                         </el-tooltip>
-                        <el-tooltip :content="$t('goal.link.get.table.goal')" effect="light"
-                            :open-delay="300" placement="top">
+                        <el-tooltip :content="$t('goal.link.get.table.goal')" effect="light" :open-delay="300"
+                            placement="top">
                             <nuxt-link to='/goals' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
                                 <i class="tim-icons icon-components"></i>
@@ -150,28 +149,15 @@ export default {
                 return;
             }
 
-            // Fetch all goal ids
-            let goalIds = this.getGoalIds(goalRuleResponse);
             // Fetch the current user ID
-            let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-            await this.$axios.$post(process.env.api.goal.batch, {
-                user_id: userId,
-                goal_ids: goalIds
+            let wallet = await this.$wallet.setCurrentWallet(this);
+            await this.$axios.$post(process.env.api.goals, {
+                wallet_id: wallet.WalletId,
             }).then((response) => {
                 this.assignGoalsToTable(response);
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
-        },
-        getGoalIds(goalRuleResponse) {
-            let goalIds = [];
-
-            for (let i = 0, length = goalRuleResponse.length; i < length; i++) {
-                let goalRule = goalRuleResponse[i];
-                goalIds.push(goalRule.goal_id);
-            }
-
-            return goalIds;
         },
         assignGoalsToTable(response) {
             if (this.$isEmpty(response)) {
@@ -186,8 +172,10 @@ export default {
                     continue;
                 }
 
-                let element = elements[i];
-                element.textContent = goal.goal_name
+                for (let j = 0, len = elements.length; j < len; j++) {
+                    let element = elements[j];
+                    element.textContent = goal.goal_name
+                }
             }
         },
     },

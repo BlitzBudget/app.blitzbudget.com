@@ -27,14 +27,13 @@
                     <td class="text-right">
                         <el-tooltip :content="$t('debt.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
-                            <nuxt-link
-                                :to="{ path: '/debt/link/add', query: { debt_id: row.debt_id } }"
+                            <nuxt-link :to="{ path: '/debt/link/add', query: { debt_id: row.debt_id } }"
                                 :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link btn-neutral">
                                 <i class="tim-icons icon-link-72"></i>
                             </nuxt-link>
                         </el-tooltip>
-                        <el-tooltip :content="$t('debt.link.get.table.debt')" effect="light"
-                            :open-delay="300" placement="top">
+                        <el-tooltip :content="$t('debt.link.get.table.debt')" effect="light" :open-delay="300"
+                            placement="top">
                             <nuxt-link to='/debts' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
                                 <i class="tim-icons icon-components"></i>
@@ -186,8 +185,10 @@ export default {
                     continue;
                 }
 
-                let element = elements[i];
-                element.textContent = debt.debt_name
+                for (let j = 0, len = elements.length; j < len; j++) {
+                    let element = elements[j];
+                    element.textContent = debt.debt_name;
+                }
             }
         },
     },

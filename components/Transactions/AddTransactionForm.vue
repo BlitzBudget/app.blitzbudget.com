@@ -74,7 +74,7 @@ export default {
                 },
                 description: {
                     required: true,
-                    min: 4
+                    min: 2
                 }
             },
             categories: [],

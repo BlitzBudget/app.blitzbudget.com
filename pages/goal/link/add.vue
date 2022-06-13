@@ -3,38 +3,38 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <category-link-add-form @on-submit="addCategoryLink"></category-link-add-form>
+                <goal-link-add-form @on-submit="addGoalLink"></goal-link-add-form>
             </div>
         </div>
     </div>
 </template>
 <script>
-import CategoryLinkAddForm from '@/components/Categories/Link/AddForm.vue';
+import GoalLinkAddForm from '@/components/Goals/Link/AddForm.vue';
 
 export default {
-    name: 'category-links-add-form',
+    name: 'goal-links-add-form',
     layout: 'plain',
     components: {
-        CategoryLinkAddForm,
+        GoalLinkAddForm,
     },
     data() {
         return {
-            categoryModel: {}
+            goalModel: {}
         };
     },
     methods: {
-        async addCategoryLink(model, isValid, walletId) {
+        async addGoalLink(model, isValid, walletId) {
             if (!isValid) {
                 return;
             }
 
-            this.categoryModel = model;
-            await this.$axios.$put(process.env.api.rules.category, {
+            this.goalModel = model;
+            await this.$axios.$put(process.env.api.rules.goal, {
                 pk: walletId,
                 transaction_name: model.transactionDescription,
-                category_id: model.categoryId
+                goal_id: model.goalId
             }).then(() => {
-                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('category.link.add.success') });
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('goal.link.add.success') });
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
