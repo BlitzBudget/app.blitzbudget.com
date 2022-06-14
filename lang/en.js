@@ -300,8 +300,9 @@ module.exports = {
         },
         "link": "Link Transaction",
         "delete": "Delete",
-        "transaction": "View Linked Transactions"
-      }
+        "transaction": "View Linked Transactions",
+      },
+      "add": "Add Category"
     }
   },
   "overview": {
@@ -330,6 +331,9 @@ module.exports = {
       "loading": "Loading...",
       "title": "Budget",
       "link": "Link Budget"
+    },
+    "eidt": {
+      "success": "Successfully edited the budget!"
     },
     "delete": {
       "confirm": "Are you sure?",
