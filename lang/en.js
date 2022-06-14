@@ -193,7 +193,8 @@ module.exports = {
       'add-button': "Add Transaction",
       "category": "Category",
       "tags": "Tags",
-      "description": "Description"
+      "description": "Description",
+      "link": "Smart Link"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -201,6 +202,16 @@ module.exports = {
       "button": "Yes, delete it!",
       "success": {
         "description": "You deleted "
+      }
+    },
+    "link": {
+      "get": {
+        "title": "Smart Link",
+        "description": "Link investments, goals, debts or categories.",
+        "investmentButton": "Link Investment",
+        "debtButton": "Link Debt",
+        "goalButton": "Link Goal",
+        "categoryButton": "Link Category"
       }
     }
   },
@@ -254,8 +265,12 @@ module.exports = {
           },
           "link": "Link Transaction",
           "delete": "Delete",
-          "category": "View Category"
-        }
+          "category": "View Category",
+        },
+        "no-data": "No Data",
+        "add": "Add Category Links",
+        "back": "Back",
+        "delete": "Delete"
       },
       "delete": {
         "success": "Successfully deleted the category rule",
@@ -313,7 +328,8 @@ module.exports = {
       "delete": "Delete",
       "no-data": "No Data",
       "loading": "Loading...",
-      "title": "Budget"
+      "title": "Budget",
+      "link": "Link Budget"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -325,6 +341,39 @@ module.exports = {
     }
   },
   "goal": {
+    "link": {
+      "add": {
+        "title": "Add Goal Link",
+        "transactionDescription": "Transaction Description",
+        "goalId": "Select Goal",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
+        "success": "Successfully linked the Goal and transaction!",
+        "viewGoalRule": "View Goal And Transaction Link"
+      },
+      "get": {
+        "title": "Goal and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "goal": "Goal",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete",
+          "goal": "View Goal"
+        },
+        "no-data": "No Data",
+        "add": "Add Goal Links",
+        "back": "Back",
+        "delete": "Delete"
+      },
+      "delete": {
+        "success": "Successfully deleted the goal rule",
+        "description": "Are your sure that you want to delete the goal transaction link?"
+      }
+    },
     "get": {
       "add-button": "Add Goal",
       "no-data": "No Data",
@@ -332,7 +381,10 @@ module.exports = {
       "title": "Goal",
       "targetDate": "To be achieved by ",
       "saved": "Saved",
-      "pending": "Pending"
+      "pending": "Pending",
+      "link": "Link Transaction",
+      "delete": "Delete",
+      "edit": "Edit"
     },
     "add": {
       "title": "Add Goal",
@@ -356,6 +408,39 @@ module.exports = {
     }
   },
   "investment": {
+    "link": {
+      "add": {
+        "title": "Add Investment Link",
+        "transactionDescription": "Transaction Description",
+        "investmentId": "Select Investment",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
+        "success": "Successfully linked the Investment and transaction!",
+        "viewInvestmentRule": "View Investment And Transaction Link"
+      },
+      "get": {
+        "title": "Investment and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "investment": "Investment",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete",
+          "investment": "View Investment"
+        },
+        "no-data": "No Data",
+        "add": "Add Investment Links",
+        "back": "Back",
+        "delete": "Delete"
+      },
+      "delete": {
+        "success": "Successfully deleted the investment rule",
+        "description": "Are your sure that you want to delete the investment transaction link?"
+      }
+    },
     "get": {
       "add-button": "Add Investment",
       "title": "Investments",
@@ -363,7 +448,10 @@ module.exports = {
       "no-data": "No Data",
       "loading": "Loading...",
       "invested": "Invested Amount",
-      "current": "Current Value"
+      "current": "Current Value",
+      "link": "Link Transaction",
+      "delete": "Delete",
+      "edit": "Edit"
     },
     "add": {
       "title": "Add Investment",
@@ -384,6 +472,39 @@ module.exports = {
     }
   },
   "debt": {
+    "link": {
+      "add": {
+        "title": "Add Debt Link",
+        "transactionDescription": "Transaction Description",
+        "debtId": "Select Debt",
+        "submit": "Add",
+        "required-fields": "* Required fields",
+        "tooltip": "All the transaction which contains the description are linked (Case Sensitive)",
+        "success": "Successfully linked the Debt and transaction!",
+        "viewDebtRule": "View Debt And Transaction Link"
+      },
+      "get": {
+        "title": "Debt and Transaction Links",
+        "table": {
+          "header": {
+            "description": "Transaction Description",
+            "debt": "Debt",
+            "action": "Action"
+          },
+          "link": "Link Transaction",
+          "delete": "Delete",
+          "debt": "View Debt"
+        },
+        "no-data": "No Data",
+        "add": "Add Debt Links",
+        "back": "Back",
+        "delete": "Delete"
+      },
+      "delete": {
+        "success": "Successfully deleted the debt rule",
+        "description": "Are your sure that you want to delete the debt transaction link?"
+      }
+    },
     "get": {
       "debted-amount": "The debted amount is ",
       "no-data": "No Data",
@@ -391,7 +512,10 @@ module.exports = {
       "title": "Debts",
       "add-button": "Add Debt",
       "repaid": "Repaid",
-      "pending": "Pending Repayment"
+      "pending": "Pending Repayment",
+      "link": "Link Transaction",
+      "delete": "Delete",
+      "edit": "Edit"
     },
     "add": {
       "title": "Add Debt",

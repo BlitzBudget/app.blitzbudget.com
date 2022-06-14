@@ -38,7 +38,7 @@
             <div class="col-lg-3 col-md-6 px-1">
                 <card type="pricing" class="card-primary" footer-classes="text-center mb-3 mt-3">
                     <h1 class="card-title">+</h1>
-                    <img class="card-img" src="img/card-primary.png" alt="Image" />
+                    <img class="card-img" src="/img/card-primary.png" alt="Image" />
                     <ul class="list-group">
                         <li class="list-group-item"></li>
                         <li class="list-group-item"></li>

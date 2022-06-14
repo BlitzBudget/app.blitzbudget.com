@@ -15,24 +15,30 @@
 
                     <div class="col-6">
                         <h4 class="card-title">
-                            <i class="tim-icons icon-credit-card text-success "></i> {{ debt.current_value }} {{
+                            <i class="tim-icons icon-credit-card text-success "></i> {{ $n(debt.current_value) }} {{
                                     currency
                             }}
                         </h4>
-                        <p class="category">{{ $t('debt.get.debted-amount') }} {{ debt.debted_amount }}
+                        <p class="category">{{ $t('debt.get.debted-amount') }} {{ $n(debt.debted_amount) }}
                             {{ currency }}
                         </p>
                     </div>
                 </div>
 
                 <div class="text-right">
-                    <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
+                    <el-tooltip :content="$t('debt.get.link')" effect="light" :open-delay="300" placement="top">
+                        <nuxt-link :to="{ path: '/debt/debt-link', query: { debt_id: debt.sk } }" class="edit btn-link"
+                            type="info" size="sm" icon>
+                            <i class="tim-icons icon-link-72"></i>
+                        </nuxt-link>
+                    </el-tooltip>
+                    <el-tooltip :content="$t('debt.get.edit')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
                             @click.native="handleEdit(index, debt)">
                             <i class="tim-icons icon-pencil"></i>
                         </base-button>
                     </el-tooltip>
-                    <el-tooltip :content="$t('budget.get.delete')" effect="light" :open-delay="300" placement="top">
+                    <el-tooltip :content="$t('debt.get.delete')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
                             @click.native="handleDelete(index, debt)">
                             <i class="tim-icons icon-simple-remove"></i>
@@ -49,7 +55,7 @@
         <div :class="[
         { 'show d-block text-center col-12': loading },
         { 'd-none': !loading }]">
-            {{ $t('budget.get.loading') }}
+            {{ $t('debt.get.loading') }}
         </div>
     </div>
 </template>

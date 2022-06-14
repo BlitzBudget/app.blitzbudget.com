@@ -13,6 +13,7 @@ import DebtForm from '@/components/Debts/AddDebtForm.vue';
 
 export default {
     name: 'add-debts',
+    layout: 'plain',
     components: {
         DebtForm,
     },

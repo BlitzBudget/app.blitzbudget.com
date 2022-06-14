@@ -5,7 +5,9 @@
                 <h3 slot="header" class="card-title">{{ $t('category.link.get.title') }}</h3>
             </div>
             <div class="col-sm-6">
-                <nuxt-link to="/category/link/add" class="btn btn-link btn-primary float-right">Add Category Link
+                <nuxt-link to="/category/link/add" class="btn btn-link btn-primary float-right">{{
+                        $t('category.link.get.add')
+                }}
                 </nuxt-link>
             </div>
         </div>
@@ -50,7 +52,7 @@
             <div :class="[
             { 'show d-block text-center': noData },
             { 'd-none': !noData }]">
-                No Data
+                {{ $t('category.link.get.no-data') }}
             </div>
             <!-- small modal -->
             <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
@@ -60,9 +62,11 @@
                 </div>
                 <p>{{ $t('category.link.delete.description') }}</p>
                 <template slot="footer">
-                    <base-button type="neutral" link @click.native="modals.mini = false">Back
+                    <base-button type="neutral" link @click.native="modals.mini = false">{{ $t('category.link.get.back')
+                    }}
                     </base-button>
-                    <base-button @click="deleteItem()" type="neutral" link>Delete</base-button>
+                    <base-button @click="deleteItem()" type="neutral" link>{{ $t('category.link.get.delete') }}
+                    </base-button>
                 </template>
             </modal>
         </div>
@@ -167,8 +171,10 @@ export default {
                     continue;
                 }
 
-                let element = elements[i];
-                element.textContent = category.category_type + " : " + category.category_name
+                for (let j = 0, len = elements.length; j < len; j++) {
+                    let element = elements[j];
+                    element.textContent = category.category_type + " : " + category.category_name
+                }
             }
         },
         noDataInResponse(response) {

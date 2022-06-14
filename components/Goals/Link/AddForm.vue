@@ -2,38 +2,40 @@
     <form>
         <card footer-classes="text-left">
             <div slot="header">
-                <h4 class="card-title">{{ $t('category.link.add.title') }}</h4>
+                <h4 class="card-title">{{ $t('goal.link.add.title') }}</h4>
             </div>
             <div>
-                <el-tooltip :content="$t('category.link.add.tooltip')" effect="light" :open-delay="300" placement="top">
-                    <base-input :label="$t('category.link.add.transactionDescription')" required
+                <el-tooltip :content="$t('goal.link.add.tooltip')" effect="light" :open-delay="300"
+                    placement="top">
+                    <base-input :label="$t('goal.link.add.transactionDescription')" required
                         v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
                         :error="getError('transactionDescription')" name="transactionDescription" autofocus>
                     </base-input>
                 </el-tooltip>
 
-                <base-input :label="$t('category.link.add.categoryId')" required :error="getError('categoryId')"
-                    name="categoryId">
-                    <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
-                        v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" :clearable="clearable"
-                        autocomplete="on" :filterable="filterable">
-                        <el-option v-for="category in categories" class="select-primary"
-                            :label="getCategoryValue(category)" :value="category.sk" :key="category.sk"
-                            :selected="isSelected(category)">
+                <base-input :label="$t('goal.link.add.goalId')" required :error="getError('goalId')"
+                    name="goalId">
+                    <el-select v-model="model.goalId" class="select-primary" name="goalId"
+                        v-validate="modelValidations.goalId" :loading="loadingDataForSelect"
+                        :clearable="clearable" autocomplete="on" :filterable="filterable">
+                        <el-option v-for="goal in goals" class="select-primary"
+                            :label="getGoalValue(goal)" :value="goal.sk" :key="goal.sk"
+                            :selected="isSelected(goal)">
                         </el-option>
                     </el-select>
                 </base-input>
 
-                <div class="small form-category">{{ $t('category.link.add.required-fields') }}</div>
+                <div class="small form-goal">{{ $t('goal.link.add.required-fields') }}</div>
             </div>
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('category.link.add.submit')
+                        $t('goal.link.add.submit')
                 }}</base-button>
                 <nuxt-link class="float-right"
-                    :to="{ path: '/category/category-link', query: { category_id: this.selectedCategoryId } }">{{
-                            $t('category.link.add.viewCategoryRule')
+                    :to="{ path: '/goal/goal-link', query: { goal_id: this.selectedGoalId } }">
+                    {{
+                            $t('goal.link.add.viewGoalRule')
                     }}</nuxt-link>
             </template>
         </card>
@@ -49,31 +51,31 @@ export default {
     },
     data() {
         return {
-            selectedCategoryId: '',
+            selectedGoalId: '',
             filterable: true,
             clearable: true,
             model: {
                 transactionDescription: null,
-                categoryId: null,
+                goalId: null,
             },
             modelValidations: {
                 transactionDescription: {
                     required: true
                 },
-                categoryId: {
+                goalId: {
                     required: true
                 }
             },
-            categories: [],
+            goals: [],
             loadingDataForSelect: true
         };
     },
     methods: {
-        getCategoryValue(category) {
-            return category.category_type + " : " + category.category_name
+        getGoalValue(goal) {
+            return goal.goal_name
         },
-        isSelected(category) {
-            return (category.sk === this.selectedCategoryId);
+        isSelected(goal) {
+            return (goal.sk === this.selectedGoalId);
         },
         getError(fieldName) {
             return this.errors.first(fieldName);
@@ -86,11 +88,11 @@ export default {
                 this.$emit('on-submit', this.model, isValid, wallet.WalletId);
             });
         },
-        async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
-                user_id: userId,
+        async getGoals(walletId) {
+            await this.$axios.$post(process.env.api.goals, {
+                wallet_id: walletId,
             }).then((response) => {
-                this.categories = response;
+                this.goals = response;
                 // Change loading to false
                 this.loadingDataForSelect = false
             }).catch((response) => {
@@ -100,15 +102,15 @@ export default {
         }
     },
     async mounted() {
-        // Set the selcted category ID
-        this.selectedCategoryId = this.$route.query.category_id;
-        this.model.categoryId = this.selectedCategoryId;
+        // Set the selcted goal ID
+        this.selectedGoalId = this.$route.query.goal_id;
+        this.model.goalId = this.selectedGoalId;
         // Set Transaction Description to input
         this.model.transactionDescription = this.$route.query.transaction_description;
-        // Fetch the current user ID
-        let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+        // Fetch the wallet ID
+        let wallet = await this.$wallet.setCurrentWallet(this);
         // Fetch Data from API
-        await this.getCategories(userId);
+        await this.getGoals(wallet.WalletId);
     }
 };
 </script>
