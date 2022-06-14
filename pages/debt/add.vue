@@ -33,7 +33,6 @@ export default {
                 pk: walletId,
                 debted_amount: parseInt(model.debtAmount),
                 debt_name: model.debtName,
-                debt_achieved: false,
                 current_value: parseInt(model.currentValue),
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('debt.add.success') });
