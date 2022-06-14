@@ -37,7 +37,7 @@
                             :open-delay="300" placement="top">
                             <nuxt-link to='/investments' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
-                                <i class="tim-icons icon-components"></i>
+                                <i class="tim-icons icon-chart-bar-32"></i>
                             </nuxt-link>
                         </el-tooltip>
                         <el-tooltip :content="$t('investment.link.get.table.delete')" effect="light" :open-delay="300"
