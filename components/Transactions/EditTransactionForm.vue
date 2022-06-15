@@ -60,6 +60,7 @@ export default {
                 tags: [],
                 creationDate: null,
                 categoryId: null,
+                sk: null
             },
             modelValidations: {
                 amount: {

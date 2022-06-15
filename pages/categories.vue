@@ -107,7 +107,7 @@
                                     placement="top">
                                     <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
                                         class="btn-link btn-neutral"
-                                        @click.native="handleDelete(index, row, incomeType)">
+                                        @click.native="handleDelete(row, incomeType)">
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </el-tooltip>
@@ -174,7 +174,7 @@ export default {
                 this.noExpenseData = true;
             }
         },
-        handleDelete(index, row, type) {
+        handleDelete(row, type) {
             Swal.fire({
                 title: this.$nuxt.$t('debt.delete.confirm'),
                 text: this.$nuxt.$t('debt.delete.confirmationText'),

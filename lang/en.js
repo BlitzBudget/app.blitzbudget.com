@@ -421,6 +421,20 @@ module.exports = {
       },
       "to": "View Goals"
     },
+    "edit": {
+      "title": "Edit Goal",
+      "targetAmount": "Goal Amount To Reach",
+      "targetDate": "Target Date to Reach the Goal",
+      "goalName": "Goal Name",
+      "currentAmount": "Current Amount",
+      "required-fields": "* Required fields",
+      "submit": "Edit Goal",
+      "success": "Successfully added the goal!",
+      "placeholder": {
+        "targetDate": "Target Date",
+      },
+      "to": "View Goals"
+    },
     "delete": {
       "confirm": "Are you sure?",
       "confirmationText": "You won't be able to revert this!",
@@ -484,6 +498,16 @@ module.exports = {
       "required-fields": "* Required fields",
       "submit": "Add Investment",
       "success": "Successfully added the investment!",
+      "to": "View Investments"
+    },
+    "edit": {
+      "title": "Edit Investment",
+      "investedAmount": "Invested Capital",
+      "currentValue": "Current Investment Value",
+      "investmentName": "Investment Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Investment",
+      "success": "Successfully edited the investment!",
       "to": "View Investments"
     },
     "delete": {
