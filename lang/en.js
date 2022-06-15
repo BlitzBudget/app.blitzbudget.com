@@ -336,6 +336,15 @@ module.exports = {
       "success": "Successfully added the budget!",
       "to": "View Budgets"
     },
+    "edit": {
+      "title": "Edit Budget",
+      "planned": "Amount",
+      "category": "Category",
+      "submit": "Edit Budget",
+      "required-fields": "* Required fields",
+      "success": "Successfully edit the budget!",
+      "to": "View Budgets"
+    },
     "get": {
       "add-button": "Add Budget",
       "edit": "Edit",
@@ -344,14 +353,6 @@ module.exports = {
       "loading": "Loading...",
       "title": "Budget",
       "link": "Link Budget"
-    },
-    "edit": {
-      "title": "Edit Budget",
-      "planned": "Amount",
-      "category": "Category",
-      "submit": "Edit Budget",
-      "required-fields": "* Required fields",
-      "success": "Successfully edited the budget!"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -573,6 +574,16 @@ module.exports = {
       "required-fields": "* Required fields",
       "submit": "Add Debt",
       "success": "Successfully added the debt!",
+      "to": "View Debts"
+    },
+    "edit": {
+      "title": "Edit Debt",
+      "debtAmount": "Debted Amount",
+      "currentValue": "Current Debt Value",
+      "debtName": "Debt Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Debt",
+      "success": "Successfully edit the debt!",
       "to": "View Debts"
     },
     "delete": {
