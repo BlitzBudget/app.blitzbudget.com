@@ -38,10 +38,10 @@
                         </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('goal.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleEdit(index, goal)">
+                        <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                            :to="{ name: 'goal-edit___' + $i18n.locale, params: { goal_id: goal.sk, target_amount: goal.target_amount, goal_name: goal.goal_name, target_date: goal.target_date, current_amount: goal.current_amount } }">
                             <i class="tim-icons icon-pencil"></i>
-                        </base-button>
+                        </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('goal.get.delete')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
@@ -99,13 +99,6 @@ export default {
                 this.loading = false
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
-            });
-        },
-        handleEdit(index, row) {
-            Swal.fire({
-                title: `You want to edit ${row.goal_name}`,
-                buttonsStyling: false,
-                confirmButtonClass: 'btn btn-info btn-fill'
             });
         },
         handleDelete(index, row) {

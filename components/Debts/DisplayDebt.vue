@@ -33,10 +33,10 @@
                         </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('debt.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleEdit(index, debt)">
+                        <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                            :to="{ name: 'debt-edit___' + $i18n.locale, params: { debt_id: debt.sk, debted_amount: debt.debted_amount, current_value: debt.current_value, debt_name: debt.debt_name } }">
                             <i class="tim-icons icon-pencil"></i>
-                        </base-button>
+                        </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('debt.get.delete')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"

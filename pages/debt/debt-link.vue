@@ -36,7 +36,7 @@
                             placement="top">
                             <nuxt-link to='/debts' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
-                                <i class="tim-icons icon-components"></i>
+                                <i class="tim-icons icon-credit-card"></i>
                             </nuxt-link>
                         </el-tooltip>
                         <el-tooltip :content="$t('debt.link.get.table.delete')" effect="light" :open-delay="300"

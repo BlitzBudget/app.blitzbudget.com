@@ -72,10 +72,11 @@
                                             <i class="tim-icons icon-link-72"></i>
                                         </nuxt-link>
                                     </el-tooltip>
-                                    <base-button @click.native="handleEdit(props.row)" class="edit btn-link"
-                                        type="warning" size="sm" icon>
+                                    <nuxt-link
+                                        :to="{ name: 'transaction-edit___' + $i18n.locale, params: { transaction_id: props.row.sk, amount: props.row.amount, description: props.row.description, category_id: props.row.category_id, tags: props.row.tags } }"
+                                        class="edit btn-link" type="warning" size="sm" icon>
                                         <i class="tim-icons icon-pencil"></i>
-                                    </base-button>
+                                    </nuxt-link>
                                     <base-button @click.native="handleDelete(props.row)" class="remove btn-link"
                                         type="danger" size="sm" icon>
                                         <i class="tim-icons icon-simple-remove"></i>
@@ -189,13 +190,6 @@ export default {
         },
         calculateAmount(amount) {
             return this.$n(amount) + this.currency;
-        },
-        handleEdit(row) {
-            Swal.fire({
-                title: `You want to edit ${row.description}`,
-                buttonsStyling: false,
-                confirmButtonClass: 'btn btn-info btn-fill'
-            });
         },
         handleDelete(row) {
             Swal.fire({

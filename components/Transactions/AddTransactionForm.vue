@@ -1,49 +1,46 @@
 <template>
-    <form class="extended-forms">
-        <card footer-classes="text-left">
-            <div slot="header">
-                <h4 class="card-title">{{ $t('transaction.add.title') }}</h4>
-            </div>
-            <div>
-                <base-input :label="$t('transaction.add.amount')" required v-model="model.amount"
-                    v-validate="modelValidations.amount" :error="getError('amount')" name="amount" type="number"
-                    autofocus :placeholder="currency">
-                </base-input>
+    <card footer-classes="text-left">
+        <div slot="header">
+            <h4 class="card-title">{{ $t('transaction.add.title') }}</h4>
+        </div>
+        <div>
+            <base-input :label="$t('transaction.add.amount')" required v-model="model.amount"
+                v-validate="modelValidations.amount" :error="getError('amount')" name="amount" type="number" autofocus
+                :placeholder="currency">
+            </base-input>
 
-                <base-input :label="$t('transaction.add.description')" required v-model="model.description"
-                    v-validate="modelValidations.description" :error="getError('description')" name="description"
-                    type="description">
-                </base-input>
+            <base-input :label="$t('transaction.add.description')" required v-model="model.description"
+                v-validate="modelValidations.description" :error="getError('description')" name="description"
+                type="description">
+            </base-input>
 
-                <base-input :label="$t('transaction.add.category')" :error="getError('categoryId')" name="categoryId">
-                    <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
-                        :loading="loadingDataForSelect" :clearable="clearable" autocomplete="on"
-                        :filterable="filterable">
-                        <el-option v-for="category in categories" class="select-primary"
-                            :label="getCategoryValue(category)" :value="category.sk" :key="category.sk">
-                        </el-option>
-                    </el-select>
-                </base-input>
+            <base-input :label="$t('transaction.add.category')" :error="getError('categoryId')" name="categoryId">
+                <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
+                    :loading="loadingDataForSelect" :clearable="clearable" autocomplete="on" :filterable="filterable">
+                    <el-option v-for="category in categories" class="select-primary" :label="getCategoryValue(category)"
+                        :value="category.sk" :key="category.sk">
+                    </el-option>
+                </el-select>
+            </base-input>
 
-                <base-input :label="$t('transaction.add.creationDate')">
-                    <el-date-picker type="datetime" placeholder="Creation Date" v-model="model.creationDate">
-                    </el-date-picker>
-                </base-input>
+            <base-input :label="$t('transaction.add.creationDate')">
+                <el-date-picker type="datetime" placeholder="Creation Date" v-model="model.creationDate">
+                </el-date-picker>
+            </base-input>
 
-                <tags-input v-model="model.tags" :label="$t('transaction.add.tags')"></tags-input>
+            <tags-input v-model="model.tags" :label="$t('transaction.add.tags')"></tags-input>
 
-                <div class="small form-category">{{ $t('transaction.add.required-fields') }}</div>
-            </div>
+            <div class="small form-category">{{ $t('transaction.add.required-fields') }}</div>
+        </div>
 
-            <template slot="footer">
-                <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('transaction.add.submit')
-                }}</base-button>
-                <nuxt-link to="/transaction/add/advanced" class="pull-right">{{ $t('transaction.add.advanced') }}
-                </nuxt-link>
-            </template>
-        </card>
-    </form>
+        <template slot="footer">
+            <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
+                    $t('transaction.add.submit')
+            }}</base-button>
+            <nuxt-link to="/transactions" class="pull-right">{{ $t('transaction.get.to') }}
+            </nuxt-link>
+        </template>
+    </card>
 </template>
 <script>
 import { TagsInput } from '@/components/index';

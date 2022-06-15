@@ -2,15 +2,15 @@
     <form class="extended-forms">
         <card footer-classes="text-left">
             <div slot="header">
-                <h4 class="card-title">{{ $t('budget.add.title') }}</h4>
+                <h4 class="card-title">{{ $t('budget.edit.title') }}</h4>
             </div>
             <div>
-                <base-input :label="$t('budget.add.planned')" required v-model="model.planned"
+                <base-input :label="$t('budget.edit.planned')" required v-model="model.planned"
                     v-validate="modelValidations.planned" :error="getError('planned')" name="planned" type="number"
                     autofocus :placeholder="currency">
                 </base-input>
 
-                <base-input :label="$t('budget.add.category')" required :error="getError('categoryId')"
+                <base-input :label="$t('budget.edit.category')" required :error="getError('categoryId')"
                     name="categoryId">
                     <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
                         v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" :clearable="clearable"
@@ -21,12 +21,12 @@
                     </el-select>
                 </base-input>
 
-                <div class="small form-category">{{ $t('budget.add.required-fields') }}</div>
+                <div class="small form-category">{{ $t('budget.edit.required-fields') }}</div>
             </div>
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('budget.add.submit')
+                        $t('budget.edit.submit')
                 }}</base-button>
                 <nuxt-link class="float-right" to="/budgets">{{
                         $t('budget.add.to')
@@ -53,6 +53,7 @@ export default {
             model: {
                 planned: null,
                 categoryId: null,
+                sk: null
             },
             modelValidations: {
                 planned: {
@@ -102,6 +103,14 @@ export default {
         // Wallet Currency
         let wallet = await this.$wallet.setCurrentWallet(this);
         this.currency = wallet.WalletCurrency;
+
+        // Parameters
+        // Fetch Category ID from parameter
+        this.model.categoryId = this.$route.params.category_id;
+        // Fetch Planned from parameter
+        this.model.planned = this.$route.params.planned;
+        // Fetch SK
+        this.model.sk = this.$route.params.budget_id;
     }
 };
 </script>

@@ -24,6 +24,9 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('category.add.submit')
                 }}</base-button>
+                <nuxt-link class="float-right" to="/categories">{{
+                        $t('category.add.to-category')
+                }}</nuxt-link>
             </template>
         </card>
     </form>

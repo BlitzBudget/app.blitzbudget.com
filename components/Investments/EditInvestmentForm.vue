@@ -2,32 +2,33 @@
     <form class="extended-forms">
         <card footer-classes="text-left">
             <div slot="header">
-                <h4 class="card-title">{{ $t('debt.add.title') }}</h4>
+                <h4 class="card-title">{{ $t('investment.edit.title') }}</h4>
             </div>
             <div>
-                <base-input :label="$t('debt.add.debtAmount')" required v-model="model.debtAmount"
-                    v-validate="modelValidations.debtAmount" :error="getError('debtAmount')" name="debtAmount"
-                    type="number" autofocus :placeholder="currency">
+                <base-input :label="$t('investment.edit.investedAmount')" required v-model="model.investedAmount"
+                    v-validate="modelValidations.investedAmount" :error="getError('investedAmount')"
+                    name="investedAmount" type="number" autofocus :placeholder="currency">
                 </base-input>
 
-                <base-input :label="$t('debt.add.debtName')" required v-model="model.debtName"
-                    v-validate="modelValidations.debtName" :error="getError('debtName')" name="debtName" type="text">
+                <base-input :label="$t('investment.edit.investmentName')" required v-model="model.investmentName"
+                    v-validate="modelValidations.investmentName" :error="getError('investmentName')"
+                    name="investmentName" type="text">
                 </base-input>
 
-                <base-input :label="$t('debt.add.currentValue')" required v-model="model.currentValue"
+                <base-input :label="$t('investment.edit.currentValue')" required v-model="model.currentValue"
                     v-validate="modelValidations.currentValue" :error="getError('currentValue')" name="currentValue"
                     type="number" autofocus :placeholder="currency">
                 </base-input>
 
-                <div class="small form-category">{{ $t('debt.add.required-fields') }}</div>
+                <div class="small form-category">{{ $t('investment.edit.required-fields') }}</div>
             </div>
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('debt.add.submit')
+                        $t('investment.edit.submit')
                 }}</base-button>
-                <nuxt-link class="float-right" to="/debts">{{
-                        $t('debt.add.to')
+                <nuxt-link class="float-right" to="/investments">{{
+                        $t('investment.edit.to')
                 }}</nuxt-link>
             </template>
         </card>
@@ -49,16 +50,17 @@ export default {
             filterable: true,
             clearable: true,
             model: {
-                debtAmount: null,
-                debtName: null,
-                currentValue: null
+                investedAmount: null,
+                investmentName: null,
+                currentValue: null,
+                sk: null
             },
             modelValidations: {
-                debtAmount: {
+                investedAmount: {
                     required: true,
                     min_value: 1,
                 },
-                debtName: {
+                investmentName: {
                     required: true
                 },
                 currentValue: {
@@ -83,6 +85,16 @@ export default {
         // Wallet Currency
         let wallet = await this.$wallet.setCurrentWallet(this);
         this.currency = wallet.WalletCurrency;
+
+        // Parameters
+        // Fetch Invested Amount
+        this.model.investedAmount = this.$route.params.invested_amount;
+        // Fetch Investment Name
+        this.model.investmentName = this.$route.params.investment_name;
+        // Fetch Current Value
+        this.model.currentValue = this.$route.params.current_value;
+        // Fetch SK
+        this.model.sk = this.$route.params.investment_id;
     }
 };
 </script>

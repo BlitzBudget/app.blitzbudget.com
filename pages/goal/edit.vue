@@ -3,40 +3,41 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <debt-form @on-submit="editDebt"></debt-form>
+                <goal-form @on-submit="editGoal"></goal-form>
             </div>
         </div>
     </div>
 </template>
 <script>
-import DebtForm from '@/components/Debts/EditDebtForm.vue';
+import GoalForm from '@/components/Goals/EditGoalForm.vue';
 
 export default {
-    name: 'edit-debts',
+    name: 'edit-goals',
     layout: 'plain',
     components: {
-        DebtForm,
+        GoalForm,
     },
     data() {
         return {
-            debtModel: {}
+            goalModel: {}
         };
     },
     methods: {
-        async editDebt(model, isValid, walletId) {
+        async editGoal(model, isValid, walletId) {
             if (!isValid) {
                 return;
             }
 
-            this.debtModel = model;
-            await this.$axios.$patch(process.env.api.debts, {
+            this.goalModel = model;
+            await this.$axios.$patch(process.env.api.goals, {
                 pk: walletId,
                 sk: model.sk,
-                debted_amount: parseInt(model.debtAmount),
-                debt_name: model.debtName,
-                current_value: parseInt(model.currentValue),
+                target_amount: parseInt(model.targetAmount),
+                target_date: model.targetDate,
+                goal_name: model.goalName,
+                current_amount: parseInt(model.currentAmount),
             }).then(() => {
-                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('debt.edit.success') });
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('goal.edit.success') });
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });

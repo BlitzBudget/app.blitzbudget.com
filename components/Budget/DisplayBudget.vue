@@ -1,55 +1,58 @@
 <template>
-    <div class="table-responsive">
-        <base-table :data="budgets" thead-classes="text-primary">
-            <template slot="columns" slot-scope="{ columns }">
-                <th>Category</th>
-                <th>Used</th>
-                <th class="text-right">Planned</th>
-                <th class="text-right">Actions</th>
-            </template>
+    <div>
+        <div class="table-responsive">
+            <base-table :data="budgets" thead-classes="text-primary">
+                <template slot="columns" slot-scope="{ columns }">
+                    <th>Category</th>
+                    <th>Used</th>
+                    <th class="text-right">Planned</th>
+                    <th class="text-right">Actions</th>
+                </template>
 
-            <template slot-scope="{ row, index }">
-                <td>{{ row.categoryName }}</td>
-                <td class="text-center">
-                    <base-progress :value="row.percentage" />
-                </td>
-                <td class="text-right">{{ $n(row.planned) }} {{ currency }}</td>
-                <td class="text-right">
-                    <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleEdit(row)">
-                            <i class="tim-icons icon-pencil"></i>
-                        </base-button>
-                    </el-tooltip>
-                    <el-tooltip :content="$t('budget.get.delete')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleDelete(row)">
-                            <i class="tim-icons icon-simple-remove"></i>
-                        </base-button>
-                    </el-tooltip>
-                </td>
-            </template>
-        </base-table>
-        <div :class="[
-        { 'show d-block text-center': noData },
-        { 'd-none': !noData }]">
-            {{ $t('budget.get.no-data') }}
-        </div>
-        <div :class="[
-        { 'show d-block text-center': loading },
-        { 'd-none': !loading }]">
-            {{ $t('budget.get.loading') }}
+                <template slot-scope="{ row, index }">
+                    <td>{{ row.categoryName }}</td>
+                    <td class="text-center">
+                        <base-progress :value="row.percentage" />
+                    </td>
+                    <td class="text-right">{{ $n(row.planned) }} {{ currency }}</td>
+                    <td class="text-right">
+                        <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
+                            <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                                :to="{ name: 'budget-edit___' + $i18n.locale, params: { budget_id: row.sk, planned: row.planned, category_id: row.category } }">
+                                <i class="tim-icons icon-pencil"></i>
+                            </nuxt-link>
+                        </el-tooltip>
+                        <el-tooltip :content="$t('budget.get.delete')" effect="light" :open-delay="300" placement="top">
+                            <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
+                                @click.native="handleDelete(row)">
+                                <i class="tim-icons icon-simple-remove"></i>
+                            </base-button>
+                        </el-tooltip>
+                    </td>
+                </template>
+            </base-table>
+            <div :class="[
+            { 'show d-block text-center': noData },
+            { 'd-none': !noData }]">
+                {{ $t('budget.get.no-data') }}
+            </div>
+            <div :class="[
+            { 'show d-block text-center': loading },
+            { 'd-none': !loading }]">
+                {{ $t('budget.get.loading') }}
+            </div>
         </div>
     </div>
 </template>
 <script>
-import { BaseTable, BaseProgress } from '@/components';
+import { BaseTable, BaseProgress, Modal } from '@/components';
 import Swal from 'sweetalert2';
 
 export default {
     components: {
         BaseTable,
-        BaseProgress
+        BaseProgress,
+        Modal,
     },
     data() {
         return {
@@ -61,7 +64,7 @@ export default {
             noData: false,
             loading: true,
             transactions: [],
-            budgets: []
+            budgets: [],
         };
     },
     methods: {
@@ -132,13 +135,6 @@ export default {
 
             let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
             this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
-        },
-        handleEdit(row) {
-            Swal.fire({
-                title: `You want to edit ${row.description}`,
-                buttonsStyling: false,
-                confirmButtonClass: 'btn btn-info btn-fill'
-            });
         },
         handleDelete(row) {
             Swal.fire({

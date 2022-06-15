@@ -56,7 +56,7 @@ module.exports = {
     },
     route: {
       transaction: "transactions",
-      confirmRegistration: "confirm-registration"
+      confirmRegistration: "confirm-registration",
     },
     navigation: {
       wallets: '/wallets'

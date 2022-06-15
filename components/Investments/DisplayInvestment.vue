@@ -34,10 +34,10 @@
                         </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <base-button :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleEdit(investment)">
+                        <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                            :to="{ name: 'investment-edit___' + $i18n.locale, params: { investment_id: investment.sk, invested_amount: investment.invested_amount, current_value: investment.current_value, investment_name: investment.investment_name } }">
                             <i class="tim-icons icon-pencil"></i>
-                        </base-button>
+                        </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('budget.get.delete')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
@@ -98,13 +98,6 @@ export default {
                 this.loading = false
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
-            });
-        },
-        handleEdit(row) {
-            Swal.fire({
-                title: `You want to edit ${row.investment_name}`,
-                buttonsStyling: false,
-                confirmButtonClass: 'btn btn-info btn-fill'
             });
         },
         handleDelete(row) {

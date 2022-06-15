@@ -183,6 +183,16 @@ module.exports = {
       "tags": "Tags",
       "category": "Category"
     },
+    "edit": {
+      "title": "Edit Transactions",
+      "amount": "Amount",
+      "description": "Description",
+      "submit": "Edit Transaction",
+      "required-fields": "* Required fields",
+      "creationDate": "Creation Date",
+      "tags": "Tags",
+      "category": "Category"
+    },
     "get": {
       "creation_date": "Creation Date",
       "amount": "Amount",
@@ -194,7 +204,8 @@ module.exports = {
       "category": "Category",
       "tags": "Tags",
       "description": "Description",
-      "link": "Smart Link"
+      "link": "Smart Link",
+      "to": "View Transactions"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -283,7 +294,8 @@ module.exports = {
       "type": "Type",
       "submit": "Add",
       "required-fields": "* Required fields",
-      "success": "Successfully added the category!"
+      "success": "Successfully added the category!",
+      "to-category": "View Categories"
     },
     "get": {
       "expense": {
@@ -300,8 +312,9 @@ module.exports = {
         },
         "link": "Link Transaction",
         "delete": "Delete",
-        "transaction": "View Linked Transactions"
-      }
+        "transaction": "View Linked Transactions",
+      },
+      "add": "Add Category"
     }
   },
   "overview": {
@@ -320,7 +333,17 @@ module.exports = {
       "category": "Category",
       "submit": "Add Budget",
       "required-fields": "* Required fields",
-      "success": "Successfully added the budget!"
+      "success": "Successfully added the budget!",
+      "to": "View Budgets"
+    },
+    "edit": {
+      "title": "Edit Budget",
+      "planned": "Amount",
+      "category": "Category",
+      "submit": "Edit Budget",
+      "required-fields": "* Required fields",
+      "success": "Successfully edit the budget!",
+      "to": "View Budgets"
     },
     "get": {
       "add-button": "Add Budget",
@@ -396,7 +419,22 @@ module.exports = {
       "success": "Successfully added the goal!",
       "placeholder": {
         "targetDate": "Target Date",
-      }
+      },
+      "to": "View Goals"
+    },
+    "edit": {
+      "title": "Edit Goal",
+      "targetAmount": "Goal Amount To Reach",
+      "targetDate": "Target Date to Reach the Goal",
+      "goalName": "Goal Name",
+      "currentAmount": "Current Amount",
+      "required-fields": "* Required fields",
+      "submit": "Edit Goal",
+      "success": "Successfully added the goal!",
+      "placeholder": {
+        "targetDate": "Target Date",
+      },
+      "to": "View Goals"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -461,6 +499,17 @@ module.exports = {
       "required-fields": "* Required fields",
       "submit": "Add Investment",
       "success": "Successfully added the investment!",
+      "to": "View Investments"
+    },
+    "edit": {
+      "title": "Edit Investment",
+      "investedAmount": "Invested Capital",
+      "currentValue": "Current Investment Value",
+      "investmentName": "Investment Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Investment",
+      "success": "Successfully edited the investment!",
+      "to": "View Investments"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -525,6 +574,17 @@ module.exports = {
       "required-fields": "* Required fields",
       "submit": "Add Debt",
       "success": "Successfully added the debt!",
+      "to": "View Debts"
+    },
+    "edit": {
+      "title": "Edit Debt",
+      "debtAmount": "Debted Amount",
+      "currentValue": "Current Debt Value",
+      "debtName": "Debt Name",
+      "required-fields": "* Required fields",
+      "submit": "Add Debt",
+      "success": "Successfully edit the debt!",
+      "to": "View Debts"
     },
     "delete": {
       "confirm": "Are you sure?",
