@@ -8,7 +8,7 @@
                     </div>
                     <div class="col-sm-6">
                         <nuxt-link to="/category/add" class="btn btn-link btn-primary float-right">{{
-                                $t('category.get.add')
+                        $t('category.get.add')
                         }}
                         </nuxt-link>
                     </div>
@@ -46,7 +46,7 @@
                                 <el-tooltip :content="$t('category.get.table.delete')" effect="light" :open-delay="300"
                                     placement="top">
                                     <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
-                                        class="btn-link" @click.native="handleDelete(index, row, expenseType)">
+                                        class="btn-link" @click.native="handleDelete(row, expenseType)">
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </el-tooltip>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-sm-6">
                         <nuxt-link to="/category/add" class="btn btn-link btn-primary float-right">{{
-                                $t('category.get.add')
+                        $t('category.get.add')
                         }}
                         </nuxt-link>
                     </div>
@@ -106,8 +106,7 @@
                                 <el-tooltip :content="$t('category.get.table.delete')" effect="light" :open-delay="300"
                                     placement="top">
                                     <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
-                                        class="btn-link btn-neutral"
-                                        @click.native="handleDelete(row, incomeType)">
+                                        class="btn-link btn-neutral" @click.native="handleDelete(row, incomeType)">
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </el-tooltip>
