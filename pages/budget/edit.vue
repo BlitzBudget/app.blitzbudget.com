@@ -3,7 +3,7 @@
         <notifications></notifications>
         <div class="row">
             <div class="col-md-12">
-                <budget-form @on-submit="addBudget"></budget-form>
+                <budget-form @on-submit="editBudget"></budget-form>
             </div>
         </div>
     </div>
@@ -12,29 +12,28 @@
 import BudgetForm from '@/components/Budget/EditBudgetForm.vue';
 
 export default {
-    name: 'add-budget-form',
+    name: 'edit-budget-form',
     layout: 'plain',
     components: {
         BudgetForm,
     },
     data() {
         return {
-            budgetModel: {}
         };
     },
     methods: {
-        async addBudget(model, isValid, walletId) {
+        async editBudget(model, isValid, walletId) {
             if (!isValid) {
                 return;
             }
 
-            this.budgetModel = model;
-            await this.$axios.$put(process.env.api.budgets, {
+            await this.$axios.$patch(process.env.api.budgets, {
                 pk: walletId,
+                sk: model.sk,
                 planned: parseInt(model.planned),
                 category: model.categoryId,
             }).then(() => {
-                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('budget.add.success') });
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('budget.edit.success') });
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });

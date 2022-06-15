@@ -183,6 +183,16 @@ module.exports = {
       "tags": "Tags",
       "category": "Category"
     },
+    "edit": {
+      "title": "Edit Transactions",
+      "amount": "Amount",
+      "description": "Description",
+      "submit": "Edit Transaction",
+      "required-fields": "* Required fields",
+      "creationDate": "Creation Date",
+      "tags": "Tags",
+      "category": "Category"
+    },
     "get": {
       "creation_date": "Creation Date",
       "amount": "Amount",
@@ -194,7 +204,8 @@ module.exports = {
       "category": "Category",
       "tags": "Tags",
       "description": "Description",
-      "link": "Smart Link"
+      "link": "Smart Link",
+      "to": "View Transactions"
     },
     "delete": {
       "confirm": "Are you sure?",

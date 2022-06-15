@@ -18,7 +18,7 @@
                     <td class="text-right">
                         <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
                             <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
-                                to="/budget/edit">
+                                :to="{ name: 'budget-edit___' + $i18n.locale, params: { budget_id: row.sk, planned: row.planned, category_id: row.category } }">
                                 <i class="tim-icons icon-pencil"></i>
                             </nuxt-link>
                         </el-tooltip>
