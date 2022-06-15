@@ -6,18 +6,17 @@
             </div>
             <div>
                 <base-input :label="$t('debt.add.debtAmount')" required v-model="model.debtAmount"
-                    v-validate="modelValidations.debtAmount" :error="getError('debtAmount')"
-                    name="debtAmount" type="number" autofocus :placeholder="currency">
+                    v-validate="modelValidations.debtAmount" :error="getError('debtAmount')" name="debtAmount"
+                    type="number" autofocus :placeholder="currency">
                 </base-input>
 
                 <base-input :label="$t('debt.add.debtName')" required v-model="model.debtName"
-                    v-validate="modelValidations.debtName" :error="getError('debtName')"
-                    name="debtName" type="text">
+                    v-validate="modelValidations.debtName" :error="getError('debtName')" name="debtName" type="text">
                 </base-input>
 
                 <base-input :label="$t('debt.add.currentValue')" required v-model="model.currentValue"
-                    v-validate="modelValidations.currentValue" :error="getError('currentValue')"
-                    name="currentValue" type="number" autofocus :placeholder="currency">
+                    v-validate="modelValidations.currentValue" :error="getError('currentValue')" name="currentValue"
+                    type="number" autofocus :placeholder="currency">
                 </base-input>
 
                 <div class="small form-category">{{ $t('debt.add.required-fields') }}</div>
@@ -27,6 +26,9 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('debt.add.submit')
                 }}</base-button>
+                <nuxt-link class="float-right" to="/debts">{{
+                        $t('debt.add.to')
+                }}</nuxt-link>
             </template>
         </card>
     </form>

@@ -28,9 +28,6 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('budget.add.submit')
                 }}</base-button>
-                <nuxt-link class="float-right" to="/budgets">{{
-                        $t('budget.add.to')
-                }}</nuxt-link>
             </template>
         </card>
     </form>

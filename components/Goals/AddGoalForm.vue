@@ -28,6 +28,9 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('goal.add.submit')
                 }}</base-button>
+                <nuxt-link class="float-right" to="/goals">{{
+                        $t('goal.add.to')
+                }}</nuxt-link>
             </template>
         </card>
     </form>

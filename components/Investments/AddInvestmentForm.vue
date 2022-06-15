@@ -16,8 +16,8 @@
                 </base-input>
 
                 <base-input :label="$t('investment.add.currentValue')" required v-model="model.currentValue"
-                    v-validate="modelValidations.currentValue" :error="getError('currentValue')"
-                    name="currentValue" type="number" autofocus :placeholder="currency">
+                    v-validate="modelValidations.currentValue" :error="getError('currentValue')" name="currentValue"
+                    type="number" autofocus :placeholder="currency">
                 </base-input>
 
                 <div class="small form-category">{{ $t('investment.add.required-fields') }}</div>
@@ -27,6 +27,9 @@
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
                         $t('investment.add.submit')
                 }}</base-button>
+                <nuxt-link class="float-right" to="/investments">{{
+                        $t('investment.add.to')
+                }}</nuxt-link>
             </template>
         </card>
     </form>
