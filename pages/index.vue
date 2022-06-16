@@ -43,54 +43,6 @@
         </div>
       </stats-card>
     </div>
-
-    <!-- Small charts -->
-    <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-      <card type="chart">
-        <template slot="header">
-          <h5 class="card-category">Total Shipments</h5>
-          <h3 class="card-title">
-            <i class="tim-icons icon-bell-55 text-primary "></i> 763,215
-          </h3>
-        </template>
-        <div class="chart-area">
-          <line-chart style="height: 100%" :chart-data="purpleLineChart.chartData"
-            :gradient-colors="purpleLineChart.gradientColors" :gradient-stops="purpleLineChart.gradientStops"
-            :extra-options="purpleLineChart.extraOptions">
-          </line-chart>
-        </div>
-      </card>
-    </div>
-    <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-      <card type="chart">
-        <template slot="header">
-          <h5 class="card-category">Daily Sales</h5>
-          <h3 class="card-title">
-            <i class="tim-icons icon-delivery-fast text-info "></i> 3,500€
-          </h3>
-        </template>
-        <div class="chart-area">
-          <bar-chart style="height: 100%" :chart-data="blueBarChart.chartData"
-            :gradient-stops="blueBarChart.gradientStops" :extra-options="blueBarChart.extraOptions">
-          </bar-chart>
-        </div>
-      </card>
-    </div>
-    <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-      <card type="chart">
-        <template slot="header">
-          <h5 class="card-category">Completed tasks</h5>
-          <h3 class="card-title">
-            <i class="tim-icons icon-send text-success "></i> 12,100K
-          </h3>
-        </template>
-        <div class="chart-area">
-          <line-chart style="height: 100%" :chart-data="greenLineChart.chartData"
-            :gradient-stops="greenLineChart.gradientStops" :extra-options="greenLineChart.extraOptions">
-          </line-chart>
-        </div>
-      </card>
-    </div>
     <div class="col-lg-5">
       <card type="tasks" :header-classes="{ 'text-right': isRTL }">
         <template slot="header">
@@ -109,17 +61,6 @@
         </div>
       </card>
     </div>
-    <div class="col-lg-7">
-      <card class="card" :header-classes="{ 'text-right': isRTL }">
-        <h5 slot="header" class="card-title">Management table</h5>
-        <div class="table-responsive">
-          <user-table></user-table>
-        </div>
-      </card>
-    </div>
-    <div class="col-lg-12">
-      <country-map-card></country-map-card>
-    </div>
   </div>
 </template>
 <script>
@@ -127,17 +68,17 @@ import LineChart from '@/components/Charts/LineChart';
 import BarChart from '@/components/Charts/BarChart';
 import * as chartConfigs from '@/components/Charts/config';
 import TaskList from '@/components/Dashboard/TaskList';
-import UserTable from '@/components/Dashboard/UserTable';
-import CountryMapCard from '@/components/Dashboard/CountryMapCard';
 import StatsCard from '@/components/Cards/StatsCard';
 import config from '@/config';
 
 let bigChartData = [
-  [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-  [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-  [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
-]
-let bigChartLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+];
+
+let threeLetterMonths = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+let bigChartLabels = [
+];
+
 let bigChartDatasetOptions = {
   fill: true,
   borderColor: config.colors.primary,
@@ -160,8 +101,6 @@ export default {
     BarChart,
     StatsCard,
     TaskList,
-    CountryMapCard,
-    UserTable
   },
   data() {
     return {
@@ -190,83 +129,8 @@ export default {
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
         categories: []
-      },
-      purpleLineChart: {
-        extraOptions: chartConfigs.purpleChartOptions,
-        chartData: {
-          labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-          datasets: [
-            {
-              label: 'Data',
-              fill: true,
-              borderColor: config.colors.primary,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: config.colors.primary,
-              pointBorderColor: 'rgba(255,255,255,0)',
-              pointHoverBackgroundColor: config.colors.primary,
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data: [80, 100, 70, 80, 120, 80]
-            }
-          ]
-        },
-        gradientColors: config.colors.primaryGradient,
-        gradientStops: [1, 0.2, 0]
-      },
-      greenLineChart: {
-        extraOptions: chartConfigs.greenChartOptions,
-        chartData: {
-          labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
-          datasets: [
-            {
-              label: 'My First dataset',
-              fill: true,
-              borderColor: config.colors.danger,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: config.colors.danger,
-              pointBorderColor: 'rgba(255,255,255,0)',
-              pointHoverBackgroundColor: config.colors.danger,
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data: [90, 27, 60, 12, 80]
-            }
-          ]
-        },
-        gradientColors: [
-          'rgba(66,134,121,0.15)',
-          'rgba(66,134,121,0.0)',
-          'rgba(66,134,121,0)'
-        ],
-        gradientStops: [1, 0.4, 0]
-      },
-      blueBarChart: {
-        extraOptions: chartConfigs.barChartOptions,
-        chartData: {
-          labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
-          datasets: [
-            {
-              label: 'Countries',
-              fill: true,
-              borderColor: config.colors.info,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              data: [53, 20, 10, 80, 100, 45]
-            }
-          ]
-        },
-        gradientColors: config.colors.primaryGradient,
-        gradientStops: [1, 0.4, 0]
-      },
-    };
+      }
+    }
   },
   computed: {
     enableRTL() {
@@ -289,7 +153,7 @@ export default {
           ...bigChartDatasetOptions,
           data: bigChartData[index]
         }],
-        labels: bigChartLabels
+        labels: bigChartLabels[index]
       };
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
@@ -330,9 +194,38 @@ export default {
         this.transactionData = response;
         // Segregate Transaction
         await this.segregateTransactionByCategory(response);
+        // Upload Line Charts
+        this.calculateNetBigChart(response);
       }).catch((response) => {
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
       });
+    },
+    calculateNetBigChart(response) {
+      let netChart = new Map();
+      for (let i = 0, length = response.length; i < length; i++) {
+        let transaction = response[i];
+        let date = new Date(transaction.creation_date);
+        let yearMonth = threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
+        let net = netChart.get(yearMonth);
+        let total = transaction.amount;
+
+        if (this.$isNotEmpty(net)) {
+          total = net + transaction.amount;
+        }
+
+        netChart.set(yearMonth, total);
+      }
+
+      let data = [];
+      let labels = []
+      for (const [key, value] of netChart) {
+        data.push(value);
+        labels.push(key);
+      }
+
+      // Update the first entry (Net)
+      bigChartData[0] = data;
+      bigChartLabels[0] = labels;
     },
     async segregateTransactionByCategory(response) {
       let transactionCategories = new Map();
@@ -362,29 +255,28 @@ export default {
       });
     },
     calculateAverages(response, transactionCategories) {
-      if (this.$isEmpty(response)) {
-        return;
-      }
-
       let expenseTotal = 0;
       let incomeTotal = 0;
-      for (let i = 0, length = response.length; i < length; i++) {
-        let category = response[i];
-        let totalTransactionAmount = transactionCategories.get(category.sk);
 
-        if (this.$isNumeric(totalTransactionAmount)) {
-          let type = category.category_type;
-          if (type == this.expenseType) {
-            expenseTotal += totalTransactionAmount;
-          } else {
-            incomeTotal += totalTransactionAmount;
+      if (this.$isNotEmpty(response)) {
+        for (let i = 0, length = response.length; i < length; i++) {
+          let category = response[i];
+          let totalTransactionAmount = transactionCategories.get(category.sk);
+
+          if (this.$isNumeric(totalTransactionAmount)) {
+            let type = category.category_type;
+            if (type == this.expenseType) {
+              expenseTotal += totalTransactionAmount;
+            } else {
+              incomeTotal += totalTransactionAmount;
+            }
           }
         }
+        // Calculate Averages
+        this.averageExpense = expenseTotal / 12;
+        this.averageIncome = incomeTotal / 12;
       }
 
-      // Calculate Averages
-      this.averageExpense = expenseTotal / 12;
-      this.averageIncome = incomeTotal / 12;
       this.statsCards.push({
         title: this.$n(this.averageExpense) + this.currency,
         subTitle: this.$nuxt.$t('overview.statscard.expense.title'),
