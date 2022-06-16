@@ -322,8 +322,22 @@ module.exports = {
       "title": "Transactions"
     },
     "statscard": {
-      "investments": "Investments",
-      "debts": "Debts"
+      "investments": {
+        "title": "Total Investments",
+        "add": "Add Investments"
+      },
+      "debts": {
+        "title": "Total Debts",
+        "add": "Add Debt"
+      },
+      "expense": {
+        "title": "Average Categorized Expense",
+        "add": "Add Expense"
+      },
+      "income": {
+        "title": "Average Categorized Income",
+        "add": "Add Income"
+      }
     }
   },
   "budget": {

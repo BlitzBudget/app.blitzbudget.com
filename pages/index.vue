@@ -131,6 +131,7 @@ import UserTable from '@/components/Dashboard/UserTable';
 import CountryMapCard from '@/components/Dashboard/CountryMapCard';
 import StatsCard from '@/components/Cards/StatsCard';
 import config from '@/config';
+import { throws } from 'assert';
 
 let bigChartData = [
   [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
@@ -165,52 +166,18 @@ export default {
   },
   data() {
     return {
-      statsCards: [
-        {
-          title: '150GB',
-          subTitle: 'Total Asset',
-          type: 'warning',
-          icon: 'tim-icons icon-chart-bar-32',
-          footer: {
-            url: "/investments",
-            title: this.$nuxt.$t('overview.statscard.investments'),
-            class: 'btn-warning'
-          }
-        },
-        {
-          title: '+45K',
-          subTitle: 'Total Debt',
-          type: 'primary',
-          icon: 'tim-icons icon-credit-card',
-          footer: {
-            url: "/debts",
-            title: this.$nuxt.$t('overview.statscard.debts'),
-            class: 'btn-primary'
-          }
-        },
-        {
-          title: '150,000',
-          subTitle: 'Average Expense',
-          type: 'info',
-          icon: 'tim-icons icon-single-02',
-          footer: {
-            url: "/debts",
-            title: this.$nuxt.$t('overview.statscard.debts'),
-            class: 'btn-info'
-          }
-        },
-        {
-          title: '23',
-          subTitle: 'Average Income',
-          type: 'danger',
-          icon: 'tim-icons icon-molecule-40',
-          footer: {
-            url: "/debts",
-            title: this.$nuxt.$t('overview.statscard.debts'),
-            class: 'btn-danger'
-          }
-        }
-      ],
+      totalInvestment: 0,
+      totalDebts: 0,
+      averageExpense: 0,
+      averageIncome: 0,
+      expenseType: 'Expense',
+      startsWithDate: null,
+      endsWithDate: null,
+      currency: null,
+      transactionData: [],
+      investmentData: [],
+      debtData: [],
+      statsCards: [],
       bigLineChart: {
         activeIndex: 0,
         chartData: {
@@ -300,10 +267,6 @@ export default {
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0]
       },
-      startsWithDate: null,
-      endsWithDate: null,
-      currency: null,
-      tableData: [],
     };
   },
   computed: {
@@ -336,12 +299,19 @@ export default {
     async fetchOverview() {
       // Set Date for Fetching Transactios
       this.setDatesToFetchTransaction();
-      // Get Transactions
-      let wallet = await this.$wallet.setCurrentWallet(this);
-      await this.getTransactions(wallet.WalletId);
 
+      let wallet = await this.$wallet.setCurrentWallet(this);
       // Wallet Currency
       this.currency = wallet.WalletCurrency;
+
+      // Get Transactions
+      await this.getTransactions(wallet.WalletId);
+
+      // Fetch Investments
+      await this.getInvestments(wallet.WalletId);
+
+      // Fetch Debt
+      await this.getDebts(wallet.WalletId);
     },
     setDatesToFetchTransaction() {
       let date = new Date();
@@ -357,12 +327,157 @@ export default {
         wallet_id: walletId,
         starts_with_date: this.startsWithDate,
         ends_with_date: this.endsWithDate
-      }).then((response) => {
-        this.tableData = response;
+      }).then(async (response) => {
+        this.transactionData = response;
+        // Segregate Transaction
+        await this.segregateTransactionByCategory(response);
       }).catch((response) => {
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
       });
     },
+    async segregateTransactionByCategory(response) {
+      let transactionCategories = new Map();
+      for (let i = 0, length = response.length; i < length; i++) {
+        let transaction = response[i];
+        let amount = transactionCategories.get(transaction.category_id);
+
+        if (this.$isEmpty(amount)) {
+          transactionCategories.set(transaction.category_id, transaction.amount);
+        } else {
+          let total = amount + transaction.amount;
+          transactionCategories.set(transaction.category_id, total);
+        }
+      }
+
+      await this.fetchCategoryLink(transactionCategories);
+    },
+    async getCategories(userId, transactionCategories) {
+      await this.$axios.$post(process.env.api.categories, {
+        user_id: userId,
+      }).then((response) => {
+        // Assign Categories name to the categories
+        this.calculateAverages(response, transactionCategories);
+      }).catch((response) => {
+        let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+      });
+    },
+    calculateAverages(response, transactionCategories) {
+      if (this.$isEmpty(response)) {
+        return;
+      }
+
+      let expenseTotal = 0;
+      let incomeTotal = 0;
+      for (let i = 0, length = response.length; i < length; i++) {
+        let category = response[i];
+        let totalTransactionAmount = transactionCategories.get(category.sk);
+
+        if (this.$isNumeric(totalTransactionAmount)) {
+          let type = category.category_type;
+          if (type == this.expenseType) {
+            expenseTotal += totalTransactionAmount;
+          } else {
+            incomeTotal += totalTransactionAmount;
+          }
+        }
+      }
+
+      // Calculate Averages
+      this.averageExpense = expenseTotal / 12;
+      this.averageIncome = incomeTotal / 12;
+      this.statsCards.push({
+        title: this.$n(this.averageExpense) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.expense.title'),
+        type: 'danger',
+        icon: 'tim-icons icon-coins',
+        footer: {
+          url: "/transactions",
+          title: this.$nuxt.$t('overview.statscard.expense.add'),
+          class: 'btn-danger'
+        }
+      });
+      this.statsCards.push({
+        title: this.$n(this.averageIncome) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.income.title'),
+        type: 'info',
+        icon: 'tim-icons icon-coins',
+        footer: {
+          url: "/transactions",
+          title: this.$nuxt.$t('overview.statscard.income.add'),
+          class: 'btn-info'
+        }
+      });
+    },
+    async fetchCategoryLink(transactionCategories) {
+      // Fetch the current user ID
+      let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+      // Fetch Data from API
+      await this.getCategories(userId, transactionCategories);
+    },
+    async getInvestments(walletId) {
+      await this.$axios.$post(process.env.api.investments, {
+        wallet_id: walletId,
+      }).then((response) => {
+        this.investmentData = response;
+        this.calculateInvestments(response);
+      }).catch((response) => {
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
+      });
+    },
+    calculateInvestments(response) {
+      let totalInvestmentAmount = 0;
+      for (let i = 0, length = response.length; i < length; i++) {
+        let investment = response[i];
+        totalInvestmentAmount += investment.current_value;
+      }
+
+      // Total Investments
+      this.totalInvestment = totalInvestmentAmount;
+      this.statsCards.push({
+        title: this.$n(this.totalInvestment) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.investments.title'),
+        type: 'warning',
+        icon: 'tim-icons icon-chart-bar-32',
+        footer: {
+          url: "/investments",
+          title: this.$nuxt.$t('overview.statscard.investments.add'),
+          class: 'btn-warning'
+        }
+      })
+    },
+    async getDebts(walletId) {
+      await this.$axios.$post(process.env.api.debts, {
+        wallet_id: walletId,
+      }).then((response) => {
+        this.debtData = response;
+        // Total Debt
+        this.calculateDebt(response);
+      }).catch((response) => {
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
+      });
+    },
+    calculateDebt(response) {
+      let totalDebtAmount = 0;
+      for (let i = 0, length = response.length; i < length; i++) {
+        let debt = response[i];
+        totalDebtAmount += debt.debted_amount - debt.current_value;
+      }
+
+      // Total Debt
+      this.totalDebts = totalDebtAmount;
+      this.statsCards.push({
+        title: this.$n(this.totalDebts) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.debts.title'),
+        type: 'primary',
+        icon: 'tim-icons icon-credit-card',
+        footer: {
+          url: "/debts",
+          title: this.$nuxt.$t('overview.statscard.debts.add'),
+          class: 'btn-primary'
+        }
+      })
+    }
   },
   async mounted() {
     this.initBigChart(0);
