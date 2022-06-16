@@ -36,6 +36,7 @@ module.exports = {
       wallets: '/wallet',
       investments: '/investment',
       debts: '/debt',
+      notifications: '/notifications',
       rules: {
         category: '/rules/category',
         investment: '/rules/investment',

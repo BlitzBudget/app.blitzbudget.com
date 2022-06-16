@@ -31,20 +31,8 @@
           <i class="tim-icons icon-sound-wave"></i>
           <p class="d-lg-none">New Notifications</p>
         </template>
-        <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Mike John responded to your email</a>
-        </li>
-        <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">You have 5 more tasks</a>
-        </li>
-        <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Your friend Michael is in town</a>
-        </li>
-        <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Another notification</a>
-        </li>
-        <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Another one</a>
+        <li class="nav-link" v-for="notification in notifications" :key="notification.sk">
+          <a href="#" class="nav-item dropdown-item">{{ notification.message }}</a>
         </li>
       </base-dropdown>
       <base-dropdown tag="li" :menu-on-right="!$rtl.isRTL" title-tag="a" class="nav-item" title-classes="nav-link"
@@ -104,7 +92,8 @@ export default {
       activeNotifications: false,
       showMenu: false,
       searchModalVisible: false,
-      searchQuery: ''
+      searchQuery: '',
+      notifications: []
     };
   },
   methods: {
@@ -126,7 +115,21 @@ export default {
     async logoutUser() {
       console.log("logging out user");
       await this.$userLogout.logout(this);
+    },
+    async getNotifications(walletId) {
+      await this.$axios.$post(process.env.api.notifications, {
+        wallet_id: walletId,
+      }).then((response) => {
+        this.notifications = response;
+      }).catch((response) => {
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
+      });
     }
+  },
+  async mounted() {
+    let wallet = await this.$wallet.setCurrentWallet(this);
+    // Fetch Notifications from API
+    await this.getNotifications(wallet.WalletId);
   }
 };
 </script>
