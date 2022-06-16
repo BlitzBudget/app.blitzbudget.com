@@ -35,7 +35,7 @@
       </card>
     </div>
     <!-- Stats Cards -->
-    <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.title">
+    <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.subTitle">
       <stats-card :title="card.title" :sub-title="card.subTitle" :type="card.type" :icon="card.icon">
         <div slot="footer">
           <nuxt-link :to="card.footer.url" class="btn-link" :class="card.footer.class">{{ card.footer.title }}
@@ -131,7 +131,6 @@ import UserTable from '@/components/Dashboard/UserTable';
 import CountryMapCard from '@/components/Dashboard/CountryMapCard';
 import StatsCard from '@/components/Cards/StatsCard';
 import config from '@/config';
-import { throws } from 'assert';
 
 let bigChartData = [
   [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],

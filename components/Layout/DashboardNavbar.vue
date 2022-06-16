@@ -32,7 +32,7 @@
           <p class="d-lg-none">New Notifications</p>
         </template>
         <li class="nav-link" v-for="notification in notifications" :key="notification.sk">
-          <a href="#" class="nav-item dropdown-item">{{ notification.message }}</a>
+          <div class="nav-item dropdown-item">{{ notification.notification }}</div>
         </li>
       </base-dropdown>
       <base-dropdown tag="li" :menu-on-right="!$rtl.isRTL" title-tag="a" class="nav-item" title-classes="nav-link"
