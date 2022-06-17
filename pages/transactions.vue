@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col-12">
                 <card>
-                    <h4 slot="header" class="card-title">Filter</h4>
+                    <h4 slot="header" class="card-title">{{ $t('transaction.get.filter') }}</h4>
                     <base-input>
-                        <el-date-picker type="month" placeholder="Date Time Picker" v-model="searchWithDates">
+                        <el-date-picker type="month" :placeholder="startsWithDate" v-model="searchWithDates">
                         </el-date-picker>
                     </base-input>
                     <base-button @click.native="searchTransaction" class="btn btn-primary pull-right">
@@ -192,14 +192,19 @@ export default {
                 return;
             }
 
-            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
-
-            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+            this.setStartsWithDate(date);
+            this.setEndsWithDate(date);
 
             // Filter Transactions
             await this.filterTransactions();
+        },
+        setEndsWithDate(date) {
+            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            this.endsWithDate = endsWithDate.toISOString().substring(0, 10);
+        },
+        setStartsWithDate(date) {
+            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
         },
         async filterTransactions() {
             let wallet = await this.$wallet.setCurrentWallet(this);
@@ -275,11 +280,8 @@ export default {
         setDatesToFetchTransaction() {
             let date = new Date();
 
-            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
-
-            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+            this.setStartsWithDate(date);
+            this.setEndsWithDate(date);
         },
         async getCategories(userId) {
             await this.$axios.$post(process.env.api.categories, {

@@ -208,7 +208,8 @@ module.exports = {
       "link": "Smart Link",
       "to": "View Transactions",
       "search": "Search",
-      "validDate": "Please provide a valid Date to search!"
+      "validDate": "Please provide a valid Date to search!",
+      "filter": "Fetch Transactions for Dates"
     },
     "delete": {
       "confirm": "Are you sure?",
