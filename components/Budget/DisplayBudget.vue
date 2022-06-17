@@ -3,10 +3,10 @@
         <div class="table-responsive">
             <base-table :data="budgets" thead-classes="text-primary">
                 <template slot="columns" slot-scope="{ columns }">
-                    <th>Category</th>
-                    <th>Used</th>
-                    <th class="text-right">Planned</th>
-                    <th class="text-right">Actions</th>
+                    <th>{{ $t('budget.get.header.category') }}</th>
+                    <th>{{ $t('budget.get.header.used') }}</th>
+                    <th class="text-right">{{ $t('budget.get.header.planned') }}</th>
+                    <th class="text-right">{{ $t('budget.get.header.actions') }}</th>
                 </template>
 
                 <template slot-scope="{ row, index }">
@@ -16,6 +16,13 @@
                     </td>
                     <td class="text-right">{{ $n(row.planned) }} {{ currency }}</td>
                     <td class="text-right">
+                        <el-tooltip :content="$t('budget.get.viewTransactions')" effect="light" :open-delay="300"
+                            placement="top">
+                            <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
+                                @click.native="showTransactions(row.category)">
+                                <i class="tim-icons icon-coins"></i>
+                            </base-button>
+                        </el-tooltip>
                         <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
                             <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
                                 :to="{ name: 'budget-edit___' + $i18n.locale, params: { budget_id: row.sk, planned: row.planned, category_id: row.category } }">
@@ -42,10 +49,46 @@
                 {{ $t('budget.get.loading') }}
             </div>
         </div>
+        <!-- small modal -->
+        <modal :show.sync="modals.transaction" :show-close="false" headerClasses="justify-content-center"
+            class="modal-black">
+            <base-table :data="showTransactionsInModal" thead-classes="text-primary">
+                <template slot="columns" slot-scope="{ columns }">
+                    <th>{{ $t('transaction.get.creation_date') }}</th>
+                    <th>{{ $t('transaction.get.description') }}</th>
+                    <th>{{ $t('transaction.get.amount') }}</th>
+                    <th class="text-center">{{ $t('transaction.get.tags') }}</th>
+                </template>
+
+                <template slot-scope="{ row, index }">
+                    <td>{{ new Date(row.creation_date).toLocaleDateString(
+                            $i18n.locale, {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric'
+                        })
+                    }}</td>
+                    <td>{{ row.description }}</td>
+                    <td class="text-right">{{ $n(row.amount) }} {{ currency }}</td>
+                    <td>
+                        <span v-for="tags in row.tags" :key="tags">
+                            <el-tag size="small" type="info">{{ tags }}</el-tag>
+                        </span>
+                    </td>
+                </template>
+            </base-table>
+            <template slot="footer">
+                <base-button type="neutral" link @click.native="modals.transaction = false">Close
+                </base-button>
+            </template>
+        </modal>
     </div>
 </template>
 <script>
 import { BaseTable, BaseProgress, Modal } from '@/components';
+import { Table, TableColumn, Select, Option, Tag } from 'element-ui';
 import Swal from 'sweetalert2';
 
 export default {
@@ -53,6 +96,11 @@ export default {
         BaseTable,
         BaseProgress,
         Modal,
+        [Select.name]: Select,
+        [Option.name]: Option,
+        [Table.name]: Table,
+        [Tag.name]: Tag,
+        [TableColumn.name]: TableColumn
     },
     data() {
         return {
@@ -65,9 +113,20 @@ export default {
             loading: true,
             transactions: [],
             budgets: [],
+            showTransactionsInModal: null,
+            categoryTransactions: new Map(),
+            modals: {
+                transaction: false
+            }
         };
     },
     methods: {
+        showTransactions(categoryId) {
+            this.modals.transaction = true;
+
+            let transactions = this.categoryTransactions.get(categoryId);
+            this.showTransactionsInModal = transactions;
+        },
         async getBudgets(walletId) {
             await this.$axios.$post(process.env.api.budgets, {
                 wallet_id: walletId,
@@ -211,17 +270,27 @@ export default {
 
                 if (this.$isEmpty(total)) {
                     total = transaction.amount;
+                    let transactions = [];
+                    transactions.push(transaction);
+
                     categoryExpenditure.set(transaction.category_id, total);
+
+                    // Push transactions to category map
+                    this.categoryTransactions.set(transaction.category_id, transactions);
                     continue;
                 }
 
                 total += transaction.amount;
                 categoryExpenditure.set(transaction.category_id, total);
+
+                // Push transactions to category map
+                let categoryTransactions = this.categoryTransactions.get(transaction.category_id);
+                categoryTransactions.push(transaction);
+                this.categoryTransactions.set(transaction.category_id, categoryTransactions);
             }
 
             // Assign Category expenditure to Budget
             this.assignBudgetUsed(categoryExpenditure);
-
         },
         assignBudgetUsed(categoryExpenditure) {
             if (this.$isEmpty(this.tableData)) {

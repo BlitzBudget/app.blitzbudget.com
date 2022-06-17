@@ -191,7 +191,8 @@ module.exports = {
       "required-fields": "* Required fields",
       "creationDate": "Creation Date",
       "tags": "Tags",
-      "category": "Category"
+      "category": "Category",
+      "success": "Successfully edited the transaction!"
     },
     "get": {
       "creation_date": "Creation Date",
@@ -366,7 +367,14 @@ module.exports = {
       "no-data": "No Data",
       "loading": "Loading...",
       "title": "Budget",
-      "link": "Link Budget"
+      "link": "Link Budget",
+      "header": {
+        "category": "Category",
+        "used": "Used",
+        "planned": "Planned",
+        "actions": "Actions"
+      },
+      "viewTransactions": "View Transactions"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -444,7 +452,7 @@ module.exports = {
       "currentAmount": "Current Amount",
       "required-fields": "* Required fields",
       "submit": "Edit Goal",
-      "success": "Successfully added the goal!",
+      "success": "Successfully edited the goal!",
       "placeholder": {
         "targetDate": "Target Date",
       },
