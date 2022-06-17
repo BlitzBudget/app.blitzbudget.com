@@ -35,61 +35,13 @@
       </card>
     </div>
     <!-- Stats Cards -->
-    <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.title">
+    <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.subTitle">
       <stats-card :title="card.title" :sub-title="card.subTitle" :type="card.type" :icon="card.icon">
         <div slot="footer">
           <nuxt-link :to="card.footer.url" class="btn-link" :class="card.footer.class">{{ card.footer.title }}
           </nuxt-link>
         </div>
       </stats-card>
-    </div>
-
-    <!-- Small charts -->
-    <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-      <card type="chart">
-        <template slot="header">
-          <h5 class="card-category">Total Shipments</h5>
-          <h3 class="card-title">
-            <i class="tim-icons icon-bell-55 text-primary "></i> 763,215
-          </h3>
-        </template>
-        <div class="chart-area">
-          <line-chart style="height: 100%" :chart-data="purpleLineChart.chartData"
-            :gradient-colors="purpleLineChart.gradientColors" :gradient-stops="purpleLineChart.gradientStops"
-            :extra-options="purpleLineChart.extraOptions">
-          </line-chart>
-        </div>
-      </card>
-    </div>
-    <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-      <card type="chart">
-        <template slot="header">
-          <h5 class="card-category">Daily Sales</h5>
-          <h3 class="card-title">
-            <i class="tim-icons icon-delivery-fast text-info "></i> 3,500€
-          </h3>
-        </template>
-        <div class="chart-area">
-          <bar-chart style="height: 100%" :chart-data="blueBarChart.chartData"
-            :gradient-stops="blueBarChart.gradientStops" :extra-options="blueBarChart.extraOptions">
-          </bar-chart>
-        </div>
-      </card>
-    </div>
-    <div class="col-lg-4" :class="{ 'text-right': isRTL }">
-      <card type="chart">
-        <template slot="header">
-          <h5 class="card-category">Completed tasks</h5>
-          <h3 class="card-title">
-            <i class="tim-icons icon-send text-success "></i> 12,100K
-          </h3>
-        </template>
-        <div class="chart-area">
-          <line-chart style="height: 100%" :chart-data="greenLineChart.chartData"
-            :gradient-stops="greenLineChart.gradientStops" :extra-options="greenLineChart.extraOptions">
-          </line-chart>
-        </div>
-      </card>
     </div>
     <div class="col-lg-5">
       <card type="tasks" :header-classes="{ 'text-right': isRTL }">
@@ -109,17 +61,6 @@
         </div>
       </card>
     </div>
-    <div class="col-lg-7">
-      <card class="card" :header-classes="{ 'text-right': isRTL }">
-        <h5 slot="header" class="card-title">Management table</h5>
-        <div class="table-responsive">
-          <user-table></user-table>
-        </div>
-      </card>
-    </div>
-    <div class="col-lg-12">
-      <country-map-card></country-map-card>
-    </div>
   </div>
 </template>
 <script>
@@ -127,17 +68,17 @@ import LineChart from '@/components/Charts/LineChart';
 import BarChart from '@/components/Charts/BarChart';
 import * as chartConfigs from '@/components/Charts/config';
 import TaskList from '@/components/Dashboard/TaskList';
-import UserTable from '@/components/Dashboard/UserTable';
-import CountryMapCard from '@/components/Dashboard/CountryMapCard';
 import StatsCard from '@/components/Cards/StatsCard';
 import config from '@/config';
 
 let bigChartData = [
-  [100, 70, 90, 70, 85, 60, 75, 60, 90, 80, 110, 100],
-  [80, 120, 105, 110, 95, 105, 90, 100, 80, 95, 70, 120],
-  [60, 80, 65, 130, 80, 105, 90, 130, 70, 115, 60, 130]
-]
-let bigChartLabels = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+];
+
+let threeLetterMonths = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+let bigChartLabels = [
+];
+
 let bigChartDatasetOptions = {
   fill: true,
   borderColor: config.colors.primary,
@@ -160,57 +101,21 @@ export default {
     BarChart,
     StatsCard,
     TaskList,
-    CountryMapCard,
-    UserTable
   },
   data() {
     return {
-      statsCards: [
-        {
-          title: '150GB',
-          subTitle: 'Total Asset',
-          type: 'warning',
-          icon: 'tim-icons icon-chart-bar-32',
-          footer: {
-            url: "/investments",
-            title: this.$nuxt.$t('overview.statscard.investments'),
-            class: 'btn-warning'
-          }
-        },
-        {
-          title: '+45K',
-          subTitle: 'Total Debt',
-          type: 'primary',
-          icon: 'tim-icons icon-credit-card',
-          footer: {
-            url: "/debts",
-            title: this.$nuxt.$t('overview.statscard.debts'),
-            class: 'btn-primary'
-          }
-        },
-        {
-          title: '150,000',
-          subTitle: 'Average Expense',
-          type: 'info',
-          icon: 'tim-icons icon-single-02',
-          footer: {
-            url: "/debts",
-            title: this.$nuxt.$t('overview.statscard.debts'),
-            class: 'btn-info'
-          }
-        },
-        {
-          title: '23',
-          subTitle: 'Average Income',
-          type: 'danger',
-          icon: 'tim-icons icon-molecule-40',
-          footer: {
-            url: "/debts",
-            title: this.$nuxt.$t('overview.statscard.debts'),
-            class: 'btn-danger'
-          }
-        }
-      ],
+      totalInvestment: 0,
+      totalDebts: 0,
+      averageExpense: 0,
+      averageIncome: 0,
+      expenseType: 'Expense',
+      startsWithDate: null,
+      endsWithDate: null,
+      currency: null,
+      transactionData: [],
+      investmentData: [],
+      debtData: [],
+      statsCards: [],
       bigLineChart: {
         activeIndex: 0,
         chartData: {
@@ -224,87 +129,8 @@ export default {
         gradientColors: config.colors.primaryGradient,
         gradientStops: [1, 0.4, 0],
         categories: []
-      },
-      purpleLineChart: {
-        extraOptions: chartConfigs.purpleChartOptions,
-        chartData: {
-          labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-          datasets: [
-            {
-              label: 'Data',
-              fill: true,
-              borderColor: config.colors.primary,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: config.colors.primary,
-              pointBorderColor: 'rgba(255,255,255,0)',
-              pointHoverBackgroundColor: config.colors.primary,
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data: [80, 100, 70, 80, 120, 80]
-            }
-          ]
-        },
-        gradientColors: config.colors.primaryGradient,
-        gradientStops: [1, 0.2, 0]
-      },
-      greenLineChart: {
-        extraOptions: chartConfigs.greenChartOptions,
-        chartData: {
-          labels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV'],
-          datasets: [
-            {
-              label: 'My First dataset',
-              fill: true,
-              borderColor: config.colors.danger,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              pointBackgroundColor: config.colors.danger,
-              pointBorderColor: 'rgba(255,255,255,0)',
-              pointHoverBackgroundColor: config.colors.danger,
-              pointBorderWidth: 20,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 15,
-              pointRadius: 4,
-              data: [90, 27, 60, 12, 80]
-            }
-          ]
-        },
-        gradientColors: [
-          'rgba(66,134,121,0.15)',
-          'rgba(66,134,121,0.0)',
-          'rgba(66,134,121,0)'
-        ],
-        gradientStops: [1, 0.4, 0]
-      },
-      blueBarChart: {
-        extraOptions: chartConfigs.barChartOptions,
-        chartData: {
-          labels: ['USA', 'GER', 'AUS', 'UK', 'RO', 'BR'],
-          datasets: [
-            {
-              label: 'Countries',
-              fill: true,
-              borderColor: config.colors.info,
-              borderWidth: 2,
-              borderDash: [],
-              borderDashOffset: 0.0,
-              data: [53, 20, 10, 80, 100, 45]
-            }
-          ]
-        },
-        gradientColors: config.colors.primaryGradient,
-        gradientStops: [1, 0.4, 0]
-      },
-      startsWithDate: null,
-      endsWithDate: null,
-      currency: null,
-      tableData: [],
-    };
+      }
+    }
   },
   computed: {
     enableRTL() {
@@ -327,7 +153,7 @@ export default {
           ...bigChartDatasetOptions,
           data: bigChartData[index]
         }],
-        labels: bigChartLabels
+        labels: bigChartLabels[index]
       };
       this.$refs.bigChart.updateGradients(chartData);
       this.bigLineChart.chartData = chartData;
@@ -336,12 +162,19 @@ export default {
     async fetchOverview() {
       // Set Date for Fetching Transactios
       this.setDatesToFetchTransaction();
-      // Get Transactions
-      let wallet = await this.$wallet.setCurrentWallet(this);
-      await this.getTransactions(wallet.WalletId);
 
+      let wallet = await this.$wallet.setCurrentWallet(this);
       // Wallet Currency
       this.currency = wallet.WalletCurrency;
+
+      // Get Transactions
+      await this.getTransactions(wallet.WalletId);
+
+      // Fetch Investments
+      await this.getInvestments(wallet.WalletId);
+
+      // Fetch Debt
+      await this.getDebts(wallet.WalletId);
     },
     setDatesToFetchTransaction() {
       let date = new Date();
@@ -357,12 +190,185 @@ export default {
         wallet_id: walletId,
         starts_with_date: this.startsWithDate,
         ends_with_date: this.endsWithDate
-      }).then((response) => {
-        this.tableData = response;
+      }).then(async (response) => {
+        this.transactionData = response;
+        // Segregate Transaction
+        await this.segregateTransactionByCategory(response);
+        // Upload Line Charts
+        this.calculateNetBigChart(response);
       }).catch((response) => {
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
       });
     },
+    calculateNetBigChart(response) {
+      let netChart = new Map();
+      for (let i = 0, length = response.length; i < length; i++) {
+        let transaction = response[i];
+        let date = new Date(transaction.creation_date);
+        let yearMonth = threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
+        let net = netChart.get(yearMonth);
+        let total = transaction.amount;
+
+        if (this.$isNotEmpty(net)) {
+          total = net + transaction.amount;
+        }
+
+        netChart.set(yearMonth, total);
+      }
+
+      let data = [];
+      let labels = []
+      for (const [key, value] of netChart) {
+        data.push(value);
+        labels.push(key);
+      }
+
+      // Update the first entry (Net)
+      bigChartData[0] = data;
+      bigChartLabels[0] = labels;
+    },
+    async segregateTransactionByCategory(response) {
+      let transactionCategories = new Map();
+      for (let i = 0, length = response.length; i < length; i++) {
+        let transaction = response[i];
+        let amount = transactionCategories.get(transaction.category_id);
+
+        if (this.$isEmpty(amount)) {
+          transactionCategories.set(transaction.category_id, transaction.amount);
+        } else {
+          let total = amount + transaction.amount;
+          transactionCategories.set(transaction.category_id, total);
+        }
+      }
+
+      await this.fetchCategoryLink(transactionCategories);
+    },
+    async getCategories(userId, transactionCategories) {
+      await this.$axios.$post(process.env.api.categories, {
+        user_id: userId,
+      }).then((response) => {
+        // Assign Categories name to the categories
+        this.calculateAverages(response, transactionCategories);
+      }).catch((response) => {
+        let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
+      });
+    },
+    calculateAverages(response, transactionCategories) {
+      let expenseTotal = 0;
+      let incomeTotal = 0;
+
+      if (this.$isNotEmpty(response)) {
+        for (let i = 0, length = response.length; i < length; i++) {
+          let category = response[i];
+          let totalTransactionAmount = transactionCategories.get(category.sk);
+
+          if (this.$isNumeric(totalTransactionAmount)) {
+            let type = category.category_type;
+            if (type == this.expenseType) {
+              expenseTotal += totalTransactionAmount;
+            } else {
+              incomeTotal += totalTransactionAmount;
+            }
+          }
+        }
+        // Calculate Averages
+        this.averageExpense = expenseTotal / 12;
+        this.averageIncome = incomeTotal / 12;
+      }
+
+      this.statsCards.push({
+        title: this.$n(this.averageExpense) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.expense.title'),
+        type: 'danger',
+        icon: 'tim-icons icon-coins',
+        footer: {
+          url: "/transactions",
+          title: this.$nuxt.$t('overview.statscard.expense.add'),
+          class: 'btn-danger'
+        }
+      });
+      this.statsCards.push({
+        title: this.$n(this.averageIncome) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.income.title'),
+        type: 'info',
+        icon: 'tim-icons icon-coins',
+        footer: {
+          url: "/transactions",
+          title: this.$nuxt.$t('overview.statscard.income.add'),
+          class: 'btn-info'
+        }
+      });
+    },
+    async fetchCategoryLink(transactionCategories) {
+      // Fetch the current user ID
+      let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
+      // Fetch Data from API
+      await this.getCategories(userId, transactionCategories);
+    },
+    async getInvestments(walletId) {
+      await this.$axios.$post(process.env.api.investments, {
+        wallet_id: walletId,
+      }).then((response) => {
+        this.investmentData = response;
+        this.calculateInvestments(response);
+      }).catch((response) => {
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
+      });
+    },
+    calculateInvestments(response) {
+      let totalInvestmentAmount = 0;
+      for (let i = 0, length = response.length; i < length; i++) {
+        let investment = response[i];
+        totalInvestmentAmount += investment.current_value;
+      }
+
+      // Total Investments
+      this.totalInvestment = totalInvestmentAmount;
+      this.statsCards.push({
+        title: this.$n(this.totalInvestment) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.investments.title'),
+        type: 'warning',
+        icon: 'tim-icons icon-chart-bar-32',
+        footer: {
+          url: "/investments",
+          title: this.$nuxt.$t('overview.statscard.investments.add'),
+          class: 'btn-warning'
+        }
+      })
+    },
+    async getDebts(walletId) {
+      await this.$axios.$post(process.env.api.debts, {
+        wallet_id: walletId,
+      }).then((response) => {
+        this.debtData = response;
+        // Total Debt
+        this.calculateDebt(response);
+      }).catch((response) => {
+        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
+      });
+    },
+    calculateDebt(response) {
+      let totalDebtAmount = 0;
+      for (let i = 0, length = response.length; i < length; i++) {
+        let debt = response[i];
+        totalDebtAmount += debt.debted_amount - debt.current_value;
+      }
+
+      // Total Debt
+      this.totalDebts = totalDebtAmount;
+      this.statsCards.push({
+        title: this.$n(this.totalDebts) + this.currency,
+        subTitle: this.$nuxt.$t('overview.statscard.debts.title'),
+        type: 'primary',
+        icon: 'tim-icons icon-credit-card',
+        footer: {
+          url: "/debts",
+          title: this.$nuxt.$t('overview.statscard.debts.add'),
+          class: 'btn-primary'
+        }
+      })
+    }
   },
   async mounted() {
     this.initBigChart(0);

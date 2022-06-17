@@ -191,7 +191,8 @@ module.exports = {
       "required-fields": "* Required fields",
       "creationDate": "Creation Date",
       "tags": "Tags",
-      "category": "Category"
+      "category": "Category",
+      "success": "Successfully edited the transaction!"
     },
     "get": {
       "creation_date": "Creation Date",
@@ -205,7 +206,9 @@ module.exports = {
       "tags": "Tags",
       "description": "Description",
       "link": "Smart Link",
-      "to": "View Transactions"
+      "to": "View Transactions",
+      "search": "Search",
+      "validDate": "Please provide a valid Date to search!"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -322,8 +325,22 @@ module.exports = {
       "title": "Transactions"
     },
     "statscard": {
-      "investments": "Investments",
-      "debts": "Debts"
+      "investments": {
+        "title": "Total Investments",
+        "add": "Add Investments"
+      },
+      "debts": {
+        "title": "Total Debts",
+        "add": "Add Debt"
+      },
+      "expense": {
+        "title": "Average Categorized Expense",
+        "add": "Add Expense"
+      },
+      "income": {
+        "title": "Average Categorized Income",
+        "add": "Add Income"
+      }
     }
   },
   "budget": {
@@ -352,7 +369,14 @@ module.exports = {
       "no-data": "No Data",
       "loading": "Loading...",
       "title": "Budget",
-      "link": "Link Budget"
+      "link": "Link Budget",
+      "header": {
+        "category": "Category",
+        "used": "Used",
+        "planned": "Planned",
+        "actions": "Actions"
+      },
+      "viewTransactions": "View Transactions"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -430,7 +454,7 @@ module.exports = {
       "currentAmount": "Current Amount",
       "required-fields": "* Required fields",
       "submit": "Edit Goal",
-      "success": "Successfully added the goal!",
+      "success": "Successfully edited the goal!",
       "placeholder": {
         "targetDate": "Target Date",
       },

@@ -40,7 +40,7 @@
                     </el-tooltip>
                     <el-tooltip :content="$t('debt.get.delete')" effect="light" :open-delay="300" placement="top">
                         <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
-                            @click.native="handleDelete(index, debt)">
+                            @click.native="handleDelete(debt)">
                             <i class="tim-icons icon-simple-remove"></i>
                         </base-button>
                     </el-tooltip>
@@ -96,14 +96,7 @@ export default {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
         },
-        handleEdit(index, row) {
-            Swal.fire({
-                title: `You want to edit ${row.debt_name}`,
-                buttonsStyling: false,
-                confirmButtonClass: 'btn btn-info btn-fill'
-            });
-        },
-        handleDelete(index, row) {
+        handleDelete(row) {
             Swal.fire({
                 title: this.$nuxt.$t('debt.delete.confirm'),
                 text: this.$nuxt.$t('debt.delete.confirmationText'),

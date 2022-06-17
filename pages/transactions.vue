@@ -2,22 +2,29 @@
     <div class="content">
         <div class="row">
             <div class="col-12">
-                <div class="mb-3">
-                    <nuxt-link to="/transaction/add" class="btn btn-primary">
-                        {{ $t('transaction.get.add-button') }}
-                    </nuxt-link>
-                </div>
+                <card>
+                    <h4 slot="header" class="card-title">Filter</h4>
+                    <base-input>
+                        <el-date-picker type="month" placeholder="Date Time Picker" v-model="searchWithDates">
+                        </el-date-picker>
+                    </base-input>
+                    <base-button @click.native="searchTransaction" class="btn btn-primary pull-right">
+                        {{ $t('transaction.get.search') }}
+                    </base-button>
+                </card>
                 <card card-body-classes="table-full-width">
-                    <h4 slot="header" class="card-title">{{ $t('transaction.get.title') }}</h4>
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 slot="header" class="card-title">{{ $t('transaction.get.title') }}</h4>
+                        </div>
+                        <div class="col-6">
+                            <nuxt-link to="/transaction/add" class="btn btn-primary pull-right">
+                                {{ $t('transaction.get.add-button') }}
+                            </nuxt-link>
+                        </div>
+                    </div>
                     <div>
                         <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-                            <el-select class="select-primary mb-3 pagination-select" v-model="pagination.perPage"
-                                :placeholder="$t('transaction.get.per-page')">
-                                <el-option class="select-primary" v-for="item in pagination.perPageOptions" :key="item"
-                                    :label="item" :value="item">
-                                </el-option>
-                            </el-select>
-
                             <base-input>
                                 <el-input type="search" class="mb-3 search-input" clearable prefix-icon="el-icon-search"
                                     :placeholder="$t('transaction.get.search-records')" v-model="searchQuery"
@@ -26,7 +33,7 @@
                             </base-input>
                         </div>
                         <el-table :data="queriedData">
-                            <el-table-column :min-width="100" :label="$t('transaction.get.creation_date')" sortable
+                            <el-table-column :min-width="135" :label="$t('transaction.get.creation_date')" sortable
                                 prop="creationDate">
                                 <div slot-scope="props">
                                     {{ new Date(props.row.creation_date).toLocaleDateString(
@@ -49,7 +56,7 @@
                             <el-table-column :min-width="100" :label="$t('transaction.get.category')" sortable
                                 prop="category">
                                 <div slot-scope="props">
-                                    <p :class="props.row.category_id"></p>
+                                    <p>{{ props.row.categoryName }}</p>
                                 </div>
                             </el-table-column>
                             <el-table-column v-for="column in tableColumns" :key="column.label"
@@ -62,7 +69,7 @@
                                     </span>
                                 </div>
                             </el-table-column>
-                            <el-table-column :min-width="135" align="right" :label="$t('transaction.get.actions')">
+                            <el-table-column :min-width="100" align="right" :label="$t('transaction.get.actions')">
                                 <div slot-scope="props">
                                     <el-tooltip :content="$t('transaction.get.link')" effect="light" :open-delay="300"
                                         placement="top">
@@ -102,7 +109,7 @@
     </div>
 </template>
 <script>
-import { Table, TableColumn, Select, Option, Tag } from 'element-ui';
+import { DatePicker, Table, TableColumn, Select, Option, Tag } from 'element-ui';
 import { BasePagination } from '@/components';
 import Fuse from 'fuse.js';
 import Swal from 'sweetalert2';
@@ -111,6 +118,7 @@ export default {
     name: 'paginated',
     components: {
         BasePagination,
+        [DatePicker.name]: DatePicker,
         [Select.name]: Select,
         [Option.name]: Option,
         [Table.name]: Table,
@@ -172,16 +180,48 @@ export default {
             endsWithDate: null,
             currency: null,
             categories: [],
+            transactions: null,
+            searchWithDates: '',
         };
     },
     methods: {
+        async searchTransaction() {
+            let date = new Date(this.searchWithDates);
+            if (isNaN(date)) {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: this.$nuxt.$t('transaction.get.validDate') });
+                return;
+            }
+
+            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
+            this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
+
+            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+
+            // Filter Transactions
+            await this.filterTransactions();
+        },
+        async filterTransactions() {
+            let wallet = await this.$wallet.setCurrentWallet(this);
+            await this.$axios.$post(process.env.api.transactions, {
+                wallet_id: wallet.WalletId,
+                starts_with_date: this.startsWithDate,
+                ends_with_date: this.endsWithDate
+            }).then((response) => {
+                this.transactions = response;
+                // Calculate Categories
+                this.calculateCategories(response);
+            }).catch((response) => {
+                this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
+            });
+        },
         async getTransactions(walletId) {
             await this.$axios.$post(process.env.api.transactions, {
                 wallet_id: walletId,
                 starts_with_date: this.startsWithDate,
                 ends_with_date: this.endsWithDate
             }).then((response) => {
-                this.tableData = response;
+                this.transactions = response;
                 // Fetch Category information and populate it
                 this.fetchCategoryLink();
             }).catch((response) => {
@@ -245,29 +285,39 @@ export default {
             await this.$axios.$post(process.env.api.categories, {
                 user_id: userId,
             }).then((response) => {
-                // Assign Categories name to the categories
-                this.assignCategoriesToTable(response);
+                this.calculateCategories(response);
             }).catch((response) => {
                 let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         },
-        assignCategoriesToTable(response) {
+        calculateCategories(response) {
+            // Assign Categories
+            this.categories = response;
+            // Assign Categories name to the trnasaction
+            this.assignCategoriesToTransactions(response);
+            // Assign Transactions
+            this.tableData = this.transactions;
+            // Initialize Search
+            this.initializeFuseSearch();
+        },
+        assignCategoriesToTransactions(response) {
             if (this.$isEmpty(response)) {
                 return;
             }
 
             for (let i = 0, length = response.length; i < length; i++) {
                 let category = response[i];
-                let elements = document.getElementsByClassName(category.sk);
 
-                if (this.$isEmpty(elements)) {
+                if (this.$isEmpty(this.transactions)) {
                     continue;
                 }
 
-                for (let j = 0, len = elements.length; j < len; j++) {
-                    let element = elements[j];
-                    element.textContent = category.category_type + " : " + category.category_name
+                for (let j = 0, len = this.transactions.length; j < len; j++) {
+                    let transaction = this.transactions[j];
+                    if (transaction.category_id === category.sk) {
+                        transaction.categoryName = category.category_type + " : " + category.category_name
+                    }
                 }
             }
         },
@@ -276,14 +326,25 @@ export default {
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
             // Fetch Data from API
             await this.getCategories(userId);
+        },
+        initializeFuseSearch() {
+            // Fuse search initialization.
+            this.fuseSearch = new Fuse(this.tableData, {
+                keys: [
+                    {
+                        name: 'description',
+                        weight: 3,
+                    },
+                    {
+                        name: 'tags',
+                        weight: 1,
+                    }
+                ],
+                threshold: 0.3
+            });
         }
     },
     async mounted() {
-        // Fuse search initialization.
-        this.fuseSearch = new Fuse(this.tableData, {
-            keys: ['name', 'email'],
-            threshold: 0.3
-        });
         // Set Date for Fetching Transactios
         this.setDatesToFetchTransaction();
         // Get Transactions
@@ -313,5 +374,18 @@ export default {
 .pagination-select,
 .search-input {
     width: 200px;
+}
+
+.el-table th.el-table__cell {
+    background-color: transparent;
+}
+
+.white-content .el-table th.el-table__cell {
+    background-color: #fff;
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+    border-bottom: none;
 }
 </style>

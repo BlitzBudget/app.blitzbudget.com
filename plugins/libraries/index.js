@@ -111,6 +111,9 @@ function stringIncludes(s, sub) {
     return s.indexOf(sub) !== -1;
 };
 
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 
 // Minimize the decimals to a set variable
 function round(value, decimals) {
@@ -170,3 +173,4 @@ Vue.prototype.$round = round;
 Vue.prototype.$formatNumber = formatNumber;
 Vue.prototype.$getWeekDays = getWeekDays;
 Vue.prototype.$ordinalSuffixOf = ordinalSuffixOf;
+Vue.prototype.$isNumeric = isNumeric;
