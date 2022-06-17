@@ -206,7 +206,9 @@ module.exports = {
       "tags": "Tags",
       "description": "Description",
       "link": "Smart Link",
-      "to": "View Transactions"
+      "to": "View Transactions",
+      "search": "Search",
+      "validDate": "Please provide a valid Date to search!"
     },
     "delete": {
       "confirm": "Are you sure?",
