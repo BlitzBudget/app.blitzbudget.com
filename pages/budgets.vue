@@ -2,13 +2,17 @@
     <div class="content">
         <div class="row">
             <div class="col-12">
-                <div class="mb-3">
-                    <nuxt-link to="/budget/add" class="btn btn-primary">
-                        {{ $t('budget.get.add-button') }}
-                    </nuxt-link>
-                </div>
                 <card class="card" :header-classes="{ 'text-right': isRTL }">
-                    <h5 slot="header" class="card-title">{{ $t('budget.get.title') }}</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <h5 slot="header" class="card-title">{{ $t('budget.get.title') }}</h5>
+                        </div>
+                        <div class="col-6">
+                            <nuxt-link to="/budget/add" class="btn btn-primary pull-right">
+                                {{ $t('budget.get.add-button') }}
+                            </nuxt-link>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <display-budget></display-budget>
                     </div>

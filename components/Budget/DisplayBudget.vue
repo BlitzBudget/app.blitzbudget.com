@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="display-budget">
         <div class="table-responsive">
             <base-table :data="budgets" thead-classes="text-primary">
                 <template slot="columns" slot-scope="{ columns }">
@@ -24,7 +24,8 @@
                             </base-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                            <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                            <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm"
+                                class="btn-link"
                                 :to="{ name: 'budget-edit___' + $i18n.locale, params: { budget_id: row.sk, planned: row.planned, category_id: row.category } }">
                                 <i class="tim-icons icon-pencil"></i>
                             </nuxt-link>
@@ -50,8 +51,7 @@
             </div>
         </div>
         <!-- small modal -->
-        <modal :show.sync="modals.transaction" :show-close="false" headerClasses="justify-content-center"
-            class="modal-black">
+        <modal :show.sync="modals.transaction" class="modal-black">
             <base-table :data="showTransactionsInModal" thead-classes="text-primary">
                 <template slot="columns" slot-scope="{ columns }">
                     <th>{{ $t('transaction.get.creation_date') }}</th>
@@ -325,4 +325,7 @@ export default {
 };
 </script>
 <style>
+.white-content .modal.modal-black .modal-content {
+    background: #fff;
+}
 </style>

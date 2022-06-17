@@ -2,22 +2,19 @@
     <div class="content">
         <div class="row">
             <div class="col-12">
-                <div class="mb-3">
-                    <nuxt-link to="/transaction/add" class="btn btn-primary">
-                        {{ $t('transaction.get.add-button') }}
-                    </nuxt-link>
-                </div>
                 <card card-body-classes="table-full-width">
-                    <h4 slot="header" class="card-title">{{ $t('transaction.get.title') }}</h4>
+                    <div class="row">
+                        <div class="col-6">
+                            <h4 slot="header" class="card-title">{{ $t('transaction.get.title') }}</h4>
+                        </div>
+                        <div class="col-6">
+                            <nuxt-link to="/transaction/add" class="btn btn-primary pull-right">
+                                {{ $t('transaction.get.add-button') }}
+                            </nuxt-link>
+                        </div>
+                    </div>
                     <div>
                         <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-                            <el-select class="select-primary mb-3 pagination-select" v-model="pagination.perPage"
-                                :placeholder="$t('transaction.get.per-page')">
-                                <el-option class="select-primary" v-for="item in pagination.perPageOptions" :key="item"
-                                    :label="item" :value="item">
-                                </el-option>
-                            </el-select>
-
                             <base-input>
                                 <el-input type="search" class="mb-3 search-input" clearable prefix-icon="el-icon-search"
                                     :placeholder="$t('transaction.get.search-records')" v-model="searchQuery"
@@ -313,5 +310,18 @@ export default {
 .pagination-select,
 .search-input {
     width: 200px;
+}
+
+.el-table th.el-table__cell {
+    background-color: transparent;
+}
+
+.white-content .el-table th.el-table__cell {
+    background-color: #fff;
+}
+
+.el-table td.el-table__cell,
+.el-table th.el-table__cell.is-leaf {
+    border-bottom: none;
 }
 </style>
