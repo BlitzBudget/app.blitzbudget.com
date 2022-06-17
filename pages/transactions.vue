@@ -215,7 +215,7 @@ export default {
             }).then((response) => {
                 this.transactions = response;
                 // Calculate Categories
-                this.calculateCategories(response);
+                this.calculateCategories(this.categories);
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
             });
