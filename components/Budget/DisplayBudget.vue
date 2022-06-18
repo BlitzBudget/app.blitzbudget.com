@@ -4,6 +4,7 @@
             <base-table :data="budgets" thead-classes="text-primary">
                 <template slot="columns" slot-scope="{ columns }">
                     <th>{{ $t('budget.get.header.category') }}</th>
+                    <th>{{ $t('budget.get.header.progess') }}</th>
                     <th>{{ $t('budget.get.header.used') }}</th>
                     <th class="text-right">{{ $t('budget.get.header.planned') }}</th>
                     <th class="text-right">{{ $t('budget.get.header.actions') }}</th>
@@ -14,6 +15,7 @@
                     <td class="text-center">
                         <base-progress :value="row.percentage" />
                     </td>
+                    <td class="text-right">{{ $n(row.used) }} {{ currency }}</td>
                     <td class="text-right">{{ $n(row.planned) }} {{ currency }}</td>
                     <td class="text-right">
                         <el-tooltip :content="$t('budget.get.viewTransactions')" effect="light" :open-delay="300"
