@@ -40,12 +40,52 @@ import LineChart from '@/components/Charts/LineChart';
 
 export default {
     name: 'transactions-yearly-chart',
+    props: ['transactions', 'categories'],
     components: {
         LineChart
     },
     computed: {
         bigLineChartCategories() {
             return this.bigChartTags;
+        },
+        bigLineChart() {
+            // Initialize Big Chart Maps
+            let categorizeMap = this.categorizeCategories(this.categories);
+            this.calculateNetBigChart(this.transactions);
+            this.calculateExpensesByDate(categorizeMap, this.transactions);
+            return {
+                activeIndex: 0,
+                chartData: {
+                    datasets: [{
+                        ...this.bigChartDatasetOptions,
+                        data: this.bigChartData[0]
+                    }],
+                    labels: this.bigChartLabels[0]
+                },
+                extraOptions: this.extraOptions,
+                gradientColors: config.colors.primaryGradient,
+                gradientStops: [1, 0.4, 0],
+            }
+        },
+        extraOptions() {
+            chartConfigs.purpleChartOptions.scales = {
+                yAxes: [{
+                    ticks: {
+                        callback: (value) => {
+                            return `${this.$n(value)} ${this.currency}`;
+                        },
+                    },
+                }],
+            };
+            chartConfigs.purpleChartOptions.tooltips.callbacks = {
+                label: ((tooltipItems) => {
+                    return this.$n(tooltipItems.yLabel) + this.currency;
+                })
+            }
+            return chartConfigs.purpleChartOptions;
+        },
+        isRTL() {
+            return this.$rtl.isRTL;
         }
     },
     data() {
@@ -55,19 +95,6 @@ export default {
             bigChartData: [],
             threeLetterMonths: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
             bigChartLabels: [],
-            bigLineChart: {
-                activeIndex: 0,
-                chartData: {
-                    datasets: [{
-                        ...this.bigChartDatasetOptions,
-                        data: this.bigChartData[0]
-                    }],
-                    labels: this.bigChartLabels
-                },
-                extraOptions: chartConfigs.purpleChartOptions,
-                gradientColors: config.colors.primaryGradient,
-                gradientStops: [1, 0.4, 0],
-            },
             bigChartDatasetOptions: {
                 fill: true,
                 borderColor: config.colors.primary,
@@ -83,6 +110,7 @@ export default {
                 pointRadius: 4,
             },
             bigChartTags: [],
+            currency: null
         }
     },
     methods: {
@@ -99,12 +127,15 @@ export default {
             this.bigLineChart.activeIndex = index;
         },
         calculateExpensesByDate(categoriesMap, transactions) {
+            if (this.$isEmpty(transactions)) {
+                return;
+            }
 
             let expenseChart = new Map();
             for (let i = 0, length = transactions.length; i < length; i++) {
                 let transaction = transactions[i];
                 let date = new Date(transaction.creation_date);
-                let yearMonth = threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
+                let yearMonth = this.threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
                 let expense = expenseChart.get(yearMonth);
                 let total = transaction.amount;
 
@@ -126,8 +157,8 @@ export default {
             }
 
             // Update the first entry (Net)
-            bigChartData.push(data);
-            bigChartLabels.push(labels);
+            this.bigChartData.push(data);
+            this.bigChartLabels.push(labels);
             this.bigChartTags.push({
                 name: 'Expenses',
                 icon: 'tim-icons icon-gift-2'
@@ -135,11 +166,15 @@ export default {
             // , { name: 'Income', icon: 'tim-icons icon-tap-02' }
         },
         calculateNetBigChart(response) {
+            if (this.$isEmpty(response)) {
+                return;
+            }
+
             let netChart = new Map();
             for (let i = 0, length = response.length; i < length; i++) {
                 let transaction = response[i];
                 let date = new Date(transaction.creation_date);
-                let yearMonth = threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
+                let yearMonth = this.threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
                 let net = netChart.get(yearMonth);
                 let total = transaction.amount;
 
@@ -158,11 +193,15 @@ export default {
             }
 
             // Update the first entry (Net)
-            bigChartData.push(data);
-            bigChartLabels.push(labels);
+            this.bigChartData.push(data);
+            this.bigChartLabels.push(labels);
             this.bigChartTags.push({ name: 'Net', icon: 'tim-icons icon-single-02' });
         },
         categorizeCategories(response) {
+            if (this.$isEmpty(response)) {
+                return;
+            }
+
             let categoriesMap = new Map();
             for (let i = 0, length = response.length; i < length; i++) {
                 let category = response[i];
@@ -177,7 +216,11 @@ export default {
             return categoriesMap;
         },
     },
-    mounted() {
+    async mounted() {
+        let wallet = await this.$wallet.setCurrentWallet(this);
+        // Wallet Currency
+        this.currency = wallet.WalletCurrency;
+
         this.initBigChart(0);
     }
 }

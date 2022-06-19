@@ -84,8 +84,12 @@ export default {
             categories: [],
             noData: false,
             loading: true,
-            extraOptions: chartConfigs.pieChartOptions
         };
+    },
+    computed: {
+        extraOptions() {
+            return chartConfigs.pieChartOptions;
+        },
     },
     methods: {
         async getGoals(walletId) {

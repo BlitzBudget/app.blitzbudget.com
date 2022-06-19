@@ -372,6 +372,9 @@ module.exports = {
       "loading": "Loading...",
       "title": "Budget",
       "link": "Link Budget",
+      "modal": {
+        "viewTransactions": "View Transactions"
+      },
       "header": {
         "category": "Category",
         "progress": "Used (%)",

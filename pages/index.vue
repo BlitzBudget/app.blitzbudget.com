@@ -2,7 +2,7 @@
   <div class="row">
     <!-- Big Chart -->
     <div class="col-12">
-      <!--<transactions-yearly-chart></transactions-yearly-chart>-->
+      <transactions-yearly-chart :transactions="transactions" :categories="categories"></transactions-yearly-chart>
     </div>
     <!-- Stats Cards -->
     <div class="col-12">

@@ -4,8 +4,8 @@
             <base-table :data="budgets" thead-classes="text-primary">
                 <template slot="columns" slot-scope="{ columns }">
                     <th>{{ $t('budget.get.header.category') }}</th>
-                    <th>{{ $t('budget.get.header.progess') }}</th>
-                    <th>{{ $t('budget.get.header.used') }}</th>
+                    <th>{{ $t('budget.get.header.progress') }}</th>
+                    <th class="text-right">{{ $t('budget.get.header.used') }}</th>
                     <th class="text-right">{{ $t('budget.get.header.planned') }}</th>
                     <th class="text-right">{{ $t('budget.get.header.actions') }}</th>
                 </template>
@@ -84,6 +84,9 @@
             <template slot="footer">
                 <base-button type="neutral" link @click.native="modals.transaction = false">Close
                 </base-button>
+                <nuxt-link to="/transactions" class="btn btn-link btn-primary">{{
+                        $t('budget.get.modal.viewTransactions')
+                }}</nuxt-link>
             </template>
         </modal>
     </div>
