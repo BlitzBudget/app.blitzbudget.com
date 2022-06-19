@@ -181,7 +181,8 @@ module.exports = {
       "advanced": "Advanced Add Transactions",
       "creationDate": "Creation Date",
       "tags": "Tags",
-      "category": "Category"
+      "category": "Category",
+      "success": "Successfully added the transaction!"
     },
     "edit": {
       "title": "Edit Transactions",
@@ -208,7 +209,8 @@ module.exports = {
       "link": "Smart Link",
       "to": "View Transactions",
       "search": "Search",
-      "validDate": "Please provide a valid Date to search!"
+      "validDate": "Please provide a valid Date to search!",
+      "filter": "Fetch Transactions for Dates"
     },
     "delete": {
       "confirm": "Are you sure?",
@@ -370,8 +372,12 @@ module.exports = {
       "loading": "Loading...",
       "title": "Budget",
       "link": "Link Budget",
+      "modal": {
+        "viewTransactions": "View Transactions"
+      },
       "header": {
         "category": "Category",
+        "progress": "Used (%)",
         "used": "Used",
         "planned": "Planned",
         "actions": "Actions"

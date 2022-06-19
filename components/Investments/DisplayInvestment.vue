@@ -81,10 +81,19 @@ export default {
             categories: [],
             noData: false,
             loading: true,
-            extraOptions: chartConfigs.barChartOptionsGradient,
             gradientColors: config.colors.purpleGradient,
             gradientStops: [1, 0]
         };
+    },
+    computed: {
+        extraOptions() {
+            chartConfigs.barChartOptionsGradient.tooltips.callbacks = {
+                label: function (tooltipItems, _data) {
+                    return tooltipItems.label + ' : ' + tooltipItems.yLabel;
+                }
+            }
+            return chartConfigs.barChartOptionsGradient;
+        }
     },
     methods: {
         async getInvestments(walletId) {
@@ -166,9 +175,9 @@ export default {
     async mounted() {
         // Get Investments
         let wallet = await this.$wallet.setCurrentWallet(this);
-        await this.getInvestments(wallet.WalletId);
         // Wallet Currency
         this.currency = wallet.WalletCurrency;
+        await this.getInvestments(wallet.WalletId);
     }
 };
 </script>

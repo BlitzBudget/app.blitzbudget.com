@@ -159,7 +159,6 @@ export let pieChartOptions = {
     intersect: 0,
     position: 'nearest'
   },
-
   scales: {
     yAxes: [
       {

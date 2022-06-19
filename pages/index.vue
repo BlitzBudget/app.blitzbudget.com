@@ -2,46 +2,11 @@
   <div class="row">
     <!-- Big Chart -->
     <div class="col-12">
-      <card type="chart">
-        <template slot="header">
-          <div class="row">
-            <div class="col-sm-6" :class="isRTL ? 'text-right' : 'text-left'">
-              <h5 class="card-category">{{ new Date().getFullYear() }}</h5>
-              <h2 class="card-title">{{ $t('overview.yearly.title') }}</h2>
-            </div>
-            <div class="col-sm-6 d-flex d-sm-block">
-              <div class="btn-group btn-group-toggle" :class="isRTL ? 'float-left' : 'float-right'"
-                data-toggle="buttons">
-                <label v-for="(option, index) in bigLineChartCategories" :key="option.name"
-                  class="btn btn-sm btn-primary btn-simple" :class="{ active: bigLineChart.activeIndex === index }"
-                  :id="index">
-                  <input type="radio" @click="initBigChart(index)" name="options" autocomplete="off"
-                    :checked="bigLineChart.activeIndex === index" />
-                  <span class="d-none d-sm-block">{{ option.name }}</span>
-                  <span class="d-block d-sm-none">
-                    <i :class="option.icon"></i>
-                  </span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </template>
-        <div class="chart-area">
-          <line-chart style="height: 100%" ref="bigChart" :chart-data="bigLineChart.chartData"
-            :gradient-colors="bigLineChart.gradientColors" :gradient-stops="bigLineChart.gradientStops"
-            :extra-options="bigLineChart.extraOptions">
-          </line-chart>
-        </div>
-      </card>
+      <transactions-yearly-chart :transactions="transactions" :categories="categories"></transactions-yearly-chart>
     </div>
     <!-- Stats Cards -->
-    <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.subTitle">
-      <stats-card :title="card.title" :sub-title="card.subTitle" :type="card.type" :icon="card.icon">
-        <div slot="footer">
-          <nuxt-link :to="card.footer.url" class="btn-link" :class="card.footer.class">{{ card.footer.title }}
-          </nuxt-link>
-        </div>
-      </stats-card>
+    <div class="col-12">
+      <statistic-cards :transactions="transactions" :categories="categories"></statistic-cards>
     </div>
     <div class="col-lg-5">
       <card type="tasks" :header-classes="{ 'text-right': isRTL }">
@@ -66,33 +31,11 @@
 <script>
 import LineChart from '@/components/Charts/LineChart';
 import BarChart from '@/components/Charts/BarChart';
-import * as chartConfigs from '@/components/Charts/config';
 import TaskList from '@/components/Dashboard/TaskList';
 import StatsCard from '@/components/Cards/StatsCard';
-import config from '@/config';
+import StatisticCards from '@/components/Dashboard/StatisticCards';
+import TransactionsYearlyChart from '~/components/Dashboard/TransactionsYearlyChart.vue';
 
-let bigChartData = [
-];
-
-let threeLetterMonths = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-
-let bigChartLabels = [
-];
-
-let bigChartDatasetOptions = {
-  fill: true,
-  borderColor: config.colors.primary,
-  borderWidth: 2,
-  borderDash: [],
-  borderDashOffset: 0.0,
-  pointBackgroundColor: config.colors.primary,
-  pointBorderColor: 'rgba(255,255,255,0)',
-  pointHoverBackgroundColor: config.colors.primary,
-  pointBorderWidth: 20,
-  pointHoverRadius: 4,
-  pointHoverBorderWidth: 15,
-  pointRadius: 4,
-}
 
 export default {
   name: 'dashboard',
@@ -101,35 +44,16 @@ export default {
     BarChart,
     StatsCard,
     TaskList,
+    StatisticCards,
+    TransactionsYearlyChart
   },
   data() {
     return {
-      totalInvestment: 0,
-      totalDebts: 0,
-      averageExpense: 0,
-      averageIncome: 0,
-      expenseType: 'Expense',
       startsWithDate: null,
       endsWithDate: null,
       currency: null,
-      transactionData: [],
-      investmentData: [],
-      debtData: [],
-      statsCards: [],
-      bigLineChart: {
-        activeIndex: 0,
-        chartData: {
-          datasets: [{
-            ...bigChartDatasetOptions,
-            data: bigChartData[0]
-          }],
-          labels: bigChartLabels
-        },
-        extraOptions: chartConfigs.purpleChartOptions,
-        gradientColors: config.colors.primaryGradient,
-        gradientStops: [1, 0.4, 0],
-        categories: []
-      }
+      transactions: [],
+      categories: [],
     }
   },
   computed: {
@@ -138,27 +62,9 @@ export default {
     },
     isRTL() {
       return this.$rtl.isRTL;
-    },
-    bigLineChartCategories() {
-      return [{ name: 'Net', icon: 'tim-icons icon-single-02' }, {
-        name: 'Expenses',
-        icon: 'tim-icons icon-gift-2'
-      }, { name: 'Income', icon: 'tim-icons icon-tap-02' }];
     }
   },
   methods: {
-    initBigChart(index) {
-      let chartData = {
-        datasets: [{
-          ...bigChartDatasetOptions,
-          data: bigChartData[index]
-        }],
-        labels: bigChartLabels[index]
-      };
-      this.$refs.bigChart.updateGradients(chartData);
-      this.bigLineChart.chartData = chartData;
-      this.bigLineChart.activeIndex = index;
-    },
     async fetchOverview() {
       // Set Date for Fetching Transactios
       this.setDatesToFetchTransaction();
@@ -170,20 +76,20 @@ export default {
       // Get Transactions
       await this.getTransactions(wallet.WalletId);
 
-      // Fetch Investments
-      await this.getInvestments(wallet.WalletId);
-
-      // Fetch Debt
-      await this.getDebts(wallet.WalletId);
     },
     setDatesToFetchTransaction() {
       let date = new Date();
 
-      let startsWithDate = new Date(date.getFullYear(), 0, 1);
-      this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
-
-      let endsWithDate = new Date(date.getFullYear(), 12, 0);
-      this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+      this.setEndsWithDate(date);
+      this.setStartsWithDate(date);
+    },
+    setEndsWithDate(date) {
+      let endsWithDate = new Date(date.getFullYear(), 12, 1);
+      this.endsWithDate = endsWithDate.toISOString().substring(0, 10);
+    },
+    setStartsWithDate(date) {
+      let startsWithDate = new Date(date.getFullYear(), 0, 0);
+      this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
     },
     async getTransactions(walletId) {
       await this.$axios.$post(process.env.api.transactions, {
@@ -191,187 +97,31 @@ export default {
         starts_with_date: this.startsWithDate,
         ends_with_date: this.endsWithDate
       }).then(async (response) => {
-        this.transactionData = response;
-        // Segregate Transaction
-        await this.segregateTransactionByCategory(response);
-        // Upload Line Charts
-        this.calculateNetBigChart(response);
+        // Fetch Category Link
+        await this.fetchCategoryLink(response);
       }).catch((response) => {
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
       });
     },
-    calculateNetBigChart(response) {
-      let netChart = new Map();
-      for (let i = 0, length = response.length; i < length; i++) {
-        let transaction = response[i];
-        let date = new Date(transaction.creation_date);
-        let yearMonth = threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
-        let net = netChart.get(yearMonth);
-        let total = transaction.amount;
-
-        if (this.$isNotEmpty(net)) {
-          total = net + transaction.amount;
-        }
-
-        netChart.set(yearMonth, total);
-      }
-
-      let data = [];
-      let labels = []
-      for (const [key, value] of netChart) {
-        data.push(value);
-        labels.push(key);
-      }
-
-      // Update the first entry (Net)
-      bigChartData[0] = data;
-      bigChartLabels[0] = labels;
-    },
-    async segregateTransactionByCategory(response) {
-      let transactionCategories = new Map();
-      for (let i = 0, length = response.length; i < length; i++) {
-        let transaction = response[i];
-        let amount = transactionCategories.get(transaction.category_id);
-
-        if (this.$isEmpty(amount)) {
-          transactionCategories.set(transaction.category_id, transaction.amount);
-        } else {
-          let total = amount + transaction.amount;
-          transactionCategories.set(transaction.category_id, total);
-        }
-      }
-
-      await this.fetchCategoryLink(transactionCategories);
-    },
-    async getCategories(userId, transactionCategories) {
+    async getCategories(userId, transactions) {
       await this.$axios.$post(process.env.api.categories, {
         user_id: userId,
       }).then((response) => {
-        // Assign Categories name to the categories
-        this.calculateAverages(response, transactionCategories);
+        this.categories = response;
+        this.transactions = transactions;
       }).catch((response) => {
         let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
       });
     },
-    calculateAverages(response, transactionCategories) {
-      let expenseTotal = 0;
-      let incomeTotal = 0;
-
-      if (this.$isNotEmpty(response)) {
-        for (let i = 0, length = response.length; i < length; i++) {
-          let category = response[i];
-          let totalTransactionAmount = transactionCategories.get(category.sk);
-
-          if (this.$isNumeric(totalTransactionAmount)) {
-            let type = category.category_type;
-            if (type == this.expenseType) {
-              expenseTotal += totalTransactionAmount;
-            } else {
-              incomeTotal += totalTransactionAmount;
-            }
-          }
-        }
-        // Calculate Averages
-        this.averageExpense = expenseTotal / 12;
-        this.averageIncome = incomeTotal / 12;
-      }
-
-      this.statsCards.push({
-        title: this.$n(this.averageExpense) + this.currency,
-        subTitle: this.$nuxt.$t('overview.statscard.expense.title'),
-        type: 'danger',
-        icon: 'tim-icons icon-coins',
-        footer: {
-          url: "/transactions",
-          title: this.$nuxt.$t('overview.statscard.expense.add'),
-          class: 'btn-danger'
-        }
-      });
-      this.statsCards.push({
-        title: this.$n(this.averageIncome) + this.currency,
-        subTitle: this.$nuxt.$t('overview.statscard.income.title'),
-        type: 'info',
-        icon: 'tim-icons icon-coins',
-        footer: {
-          url: "/transactions",
-          title: this.$nuxt.$t('overview.statscard.income.add'),
-          class: 'btn-info'
-        }
-      });
-    },
-    async fetchCategoryLink(transactionCategories) {
+    async fetchCategoryLink(transactions) {
       // Fetch the current user ID
       let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
       // Fetch Data from API
-      await this.getCategories(userId, transactionCategories);
-    },
-    async getInvestments(walletId) {
-      await this.$axios.$post(process.env.api.investments, {
-        wallet_id: walletId,
-      }).then((response) => {
-        this.investmentData = response;
-        this.calculateInvestments(response);
-      }).catch((response) => {
-        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
-      });
-    },
-    calculateInvestments(response) {
-      let totalInvestmentAmount = 0;
-      for (let i = 0, length = response.length; i < length; i++) {
-        let investment = response[i];
-        totalInvestmentAmount += investment.current_value;
-      }
-
-      // Total Investments
-      this.totalInvestment = totalInvestmentAmount;
-      this.statsCards.push({
-        title: this.$n(this.totalInvestment) + this.currency,
-        subTitle: this.$nuxt.$t('overview.statscard.investments.title'),
-        type: 'warning',
-        icon: 'tim-icons icon-chart-bar-32',
-        footer: {
-          url: "/investments",
-          title: this.$nuxt.$t('overview.statscard.investments.add'),
-          class: 'btn-warning'
-        }
-      })
-    },
-    async getDebts(walletId) {
-      await this.$axios.$post(process.env.api.debts, {
-        wallet_id: walletId,
-      }).then((response) => {
-        this.debtData = response;
-        // Total Debt
-        this.calculateDebt(response);
-      }).catch((response) => {
-        this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
-      });
-    },
-    calculateDebt(response) {
-      let totalDebtAmount = 0;
-      for (let i = 0, length = response.length; i < length; i++) {
-        let debt = response[i];
-        totalDebtAmount += debt.debted_amount - debt.current_value;
-      }
-
-      // Total Debt
-      this.totalDebts = totalDebtAmount;
-      this.statsCards.push({
-        title: this.$n(this.totalDebts) + this.currency,
-        subTitle: this.$nuxt.$t('overview.statscard.debts.title'),
-        type: 'primary',
-        icon: 'tim-icons icon-credit-card',
-        footer: {
-          url: "/debts",
-          title: this.$nuxt.$t('overview.statscard.debts.add'),
-          class: 'btn-primary'
-        }
-      })
+      await this.getCategories(userId, transactions);
     }
   },
   async mounted() {
-    this.initBigChart(0);
     // Fetch Data from API
     await this.fetchOverview();
   }
