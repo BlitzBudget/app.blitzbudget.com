@@ -49,18 +49,20 @@ export default {
             return this.bigChartTags;
         },
         bigLineChart() {
+            // Reset Big Line Chart
+            this.resetBigChart();
             // Initialize Big Chart Maps
             let categorizeMap = this.categorizeCategories(this.categories);
             this.calculateNetBigChart(this.transactions);
             this.calculateExpensesByDate(categorizeMap, this.transactions);
             return {
-                activeIndex: 0,
+                activeIndex: this.bigChartIndex,
                 chartData: {
                     datasets: [{
                         ...this.bigChartDatasetOptions,
-                        data: this.bigChartData[0]
+                        data: this.bigChartData[this.bigChartIndex]
                     }],
-                    labels: this.bigChartLabels[0]
+                    labels: this.bigChartLabels[this.bigChartIndex]
                 },
                 extraOptions: this.extraOptions,
                 gradientColors: config.colors.primaryGradient,
@@ -93,6 +95,7 @@ export default {
             expenseType: 'Expense',
             incomeType: 'Income',
             bigChartData: [],
+            bigChartIndex: 0,
             threeLetterMonths: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
             bigChartLabels: [],
             bigChartDatasetOptions: {
@@ -114,6 +117,11 @@ export default {
         }
     },
     methods: {
+        resetBigChart() {
+            this.bigChartData = [];
+            this.bigChartLabels = [];
+            this.bigChartTags = [];
+        },
         initBigChart(index) {
             let chartData = {
                 datasets: [{
@@ -123,8 +131,7 @@ export default {
                 labels: this.bigChartLabels[index]
             };
             this.$refs.bigChart.updateGradients(chartData);
-            this.bigLineChart.chartData = chartData;
-            this.bigLineChart.activeIndex = index;
+            this.bigChartIndex = index;
         },
         calculateExpensesByDate(categoriesMap, transactions) {
             if (this.$isEmpty(transactions)) {
@@ -132,28 +139,61 @@ export default {
             }
 
             let expenseChart = new Map();
+            let incomeChart = new Map();
             for (let i = 0, length = transactions.length; i < length; i++) {
                 let transaction = transactions[i];
                 let date = new Date(transaction.creation_date);
                 let yearMonth = this.threeLetterMonths[date.getMonth()] + ' ' + date.getFullYear();
-                let expense = expenseChart.get(yearMonth);
                 let total = transaction.amount;
-
-                if (this.$isNotEmpty(expense)) {
-                    total = expense + transaction.amount;
-                }
-
                 let type = categoriesMap.get(transaction.category_id);
+
                 if (type == this.expenseType) {
+                    let expense = expenseChart.get(yearMonth);
+                    if (this.$isNotEmpty(expense)) {
+                        total = expense + transaction.amount;
+                    }
+
                     expenseChart.set(yearMonth, total);
+                } else if (type == this.incomeType) {
+                    let income = expenseChart.get(yearMonth);
+                    if (this.$isNotEmpty(income)) {
+                        total = income + transaction.amount;
+                    }
+
+                    incomeChart.set(yearMonth, total);
                 }
             }
 
+            this.setExpenseChart(expenseChart);
+            this.setIncomeChart(incomeChart);
+        },
+        setIncomeChart(incomeChart) {
+            let data = [];
+            let labels = []
+            for (const [key, value] of incomeChart) {
+                data.push(value);
+                labels.push(key);
+            }
+
+            if (this.$isEmpty(data)) {
+                return;
+            }
+
+            // Update the first entry (Net)
+            this.bigChartData.push(data);
+            this.bigChartLabels.push(labels);
+            this.bigChartTags.push({ name: 'Income', icon: 'tim-icons icon-tap-02' });
+        },
+        setExpenseChart(expenseChart) {
             let data = [];
             let labels = []
             for (const [key, value] of expenseChart) {
                 data.push(value);
                 labels.push(key);
+            }
+
+            if (this.$isEmpty(data)) {
+                return;
             }
 
             // Update the first entry (Net)
@@ -163,7 +203,6 @@ export default {
                 name: 'Expenses',
                 icon: 'tim-icons icon-gift-2'
             });
-            // , { name: 'Income', icon: 'tim-icons icon-tap-02' }
         },
         calculateNetBigChart(response) {
             if (this.$isEmpty(response)) {
