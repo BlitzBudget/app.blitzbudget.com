@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6 col-12">
+            <div class="col-12">
                 <card>
                     <h4 slot="header" class="card-title">{{ $t('transaction.get.filter') }}</h4>
                     <base-input>
@@ -12,17 +12,6 @@
                         {{ $t('transaction.get.search') }}
                     </base-button>
                 </card>
-            </div>
-            <div class="col-md-6 col-12">
-                <label v-for="(option, index) in transactionTabs" :key="option.name"
-                    class="btn btn-sm btn-primary btn-simple" :class="{ active: activeIndex === index }" :id="index">
-                    <input type="radio" @click="selectTabs(index)" name="options" autocomplete="off"
-                        :checked="activeIndex === index" />
-                    <span class="d-none d-sm-block">{{ option.name }}</span>
-                    <span class="d-block d-sm-none">
-                        <i :class="option.icon"></i>
-                    </span>
-                </label>
             </div>
         </div>
         <card card-body-classes="table-full-width">
@@ -86,13 +75,15 @@
                                 placement="top">
                                 <nuxt-link
                                     :to="{ path: '/transaction/transaction-link', query: { transaction_description: props.row.description, transaction_amount: props.row.amount } }"
-                                    class="edit btn-link" type="info" size="sm" icon>
+                                    class="edit btn-link" :class="index > 2 ? 'btn-warning' : 'btn-neutral'" type="info"
+                                    size="sm" icon>
                                     <i class="tim-icons icon-link-72"></i>
                                 </nuxt-link>
                             </el-tooltip>
                             <nuxt-link
                                 :to="{ name: 'transaction-edit___' + $i18n.locale, params: { transaction_id: props.row.sk, amount: props.row.amount, description: props.row.description, category_id: props.row.category_id, tags: props.row.tags } }"
-                                class="edit btn-link" type="warning" size="sm" icon>
+                                class="edit btn-link" :class="index > 2 ? 'btn-warning' : 'btn-neutral'" type="warning"
+                                size="sm" icon>
                                 <i class="tim-icons icon-pencil"></i>
                             </nuxt-link>
                             <base-button @click.native="handleDelete(props.row)" class="remove btn-link" type="danger"
