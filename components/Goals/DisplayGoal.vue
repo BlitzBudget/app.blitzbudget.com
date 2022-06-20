@@ -32,13 +32,14 @@
 
                 <div class="text-right">
                     <el-tooltip :content="$t('goal.get.link')" effect="light" :open-delay="300" placement="top">
-                        <nuxt-link :to="{ path: '/goal/goal-link', query: { goal_id: goal.sk } }" class="edit btn-link"
-                            type="info" size="sm" icon>
+                        <nuxt-link :to="{ path: '/goal/goal-link', query: { goal_id: goal.sk } }"
+                            :class="index > 2 ? 'btn-warning' : 'btn-neutral'" class="edit btn-link" type="info"
+                            size="sm" icon>
                             <i class="tim-icons icon-link-72"></i>
                         </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('goal.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                        <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm" class="btn-link"
                             :to="{ name: 'goal-edit___' + $i18n.locale, params: { goal_id: goal.sk, target_amount: goal.target_amount, goal_name: goal.goal_name, target_date: goal.target_date, current_amount: goal.current_amount } }">
                             <i class="tim-icons icon-pencil"></i>
                         </nuxt-link>
