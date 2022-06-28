@@ -28,13 +28,13 @@
                 <div class="text-right">
                     <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300"
                         placement="top">
-                        <nuxt-link to="/investment/investment-link" :type="index > 2 ? 'success' : 'neutral'" icon
-                            size="sm" class="btn-link btn-neutral">
+                        <nuxt-link to="/investment/investment-link" :class="index > 2 ? 'btn-success' : 'btn-neutral'"
+                            icon size="sm" class="btn-link">
                             <i class="tim-icons icon-link-72"></i>
                         </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                        <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm" class="btn-link"
                             :to="{ name: 'investment-edit___' + $i18n.locale, params: { investment_id: investment.sk, invested_amount: investment.invested_amount, current_value: investment.current_value, investment_name: investment.investment_name } }">
                             <i class="tim-icons icon-pencil"></i>
                         </nuxt-link>

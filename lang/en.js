@@ -537,7 +537,7 @@ module.exports = {
       "currentValue": "Current Investment Value",
       "investmentName": "Investment Name",
       "required-fields": "* Required fields",
-      "submit": "Add Investment",
+      "submit": "Edit Investment",
       "success": "Successfully edited the investment!",
       "to": "View Investments"
     },

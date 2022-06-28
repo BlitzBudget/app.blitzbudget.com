@@ -27,13 +27,14 @@
 
                 <div class="text-right">
                     <el-tooltip :content="$t('debt.get.link')" effect="light" :open-delay="300" placement="top">
-                        <nuxt-link :to="{ path: '/debt/debt-link', query: { debt_id: debt.sk } }" class="edit btn-link"
+                        <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'"
+                            :to="{ path: '/debt/debt-link', query: { debt_id: debt.sk } }" class="edit btn-link"
                             type="info" size="sm" icon>
                             <i class="tim-icons icon-link-72"></i>
                         </nuxt-link>
                     </el-tooltip>
                     <el-tooltip :content="$t('debt.get.edit')" effect="light" :open-delay="300" placement="top">
-                        <nuxt-link :type="index > 2 ? 'warning' : 'neutral'" icon size="sm" class="btn-link"
+                        <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm" class="btn-link"
                             :to="{ name: 'debt-edit___' + $i18n.locale, params: { debt_id: debt.sk, debted_amount: debt.debted_amount, current_value: debt.current_value, debt_name: debt.debt_name } }">
                             <i class="tim-icons icon-pencil"></i>
                         </nuxt-link>
