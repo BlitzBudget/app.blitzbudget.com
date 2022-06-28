@@ -36,7 +36,7 @@
           <nuxt-link to="/support" class="btn btn-default btn-block btn-round">
             Support
           </nuxt-link>
-          <nuxt-link to="/support/ask-us-directly" class="btn btn-primary btn-block btn-round">
+          <nuxt-link to="/ask-us-directly" class="btn btn-primary btn-block btn-round">
             Ask us Directly
           </nuxt-link>
         </li>

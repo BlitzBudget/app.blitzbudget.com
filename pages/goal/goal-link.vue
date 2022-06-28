@@ -36,7 +36,7 @@
                             placement="top">
                             <nuxt-link to='/goals' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
-                                <i class="tim-icons icon-components"></i>
+                                <i class="tim-icons icon-trophy"></i>
                             </nuxt-link>
                         </el-tooltip>
                         <el-tooltip :content="$t('goal.link.get.table.delete')" effect="light" :open-delay="300"
@@ -57,9 +57,6 @@
             <!-- small modal -->
             <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
                 headerClasses="justify-content-center" type="mini">
-                <div slot="header" class="modal-profile">
-                    <i class="tim-icons icon-single-02"></i>
-                </div>
                 <p>{{ $t('goal.link.delete.description') }}</p>
                 <template slot="footer">
                     <base-button type="neutral" link @click.native="modals.mini = false">{{
