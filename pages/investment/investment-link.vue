@@ -58,9 +58,6 @@
             <!-- small modal -->
             <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
                 headerClasses="justify-content-center" type="mini">
-                <div slot="header" class="modal-profile">
-                    <i class="tim-icons icon-single-02"></i>
-                </div>
                 <p>{{ $t('investment.link.delete.description') }}</p>
                 <template slot="footer">
                     <base-button type="neutral" link @click.native="modals.mini = false">{{
