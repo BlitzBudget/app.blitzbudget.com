@@ -612,7 +612,7 @@ module.exports = {
       "currentValue": "Current Debt Value",
       "debtName": "Debt Name",
       "required-fields": "* Required fields",
-      "submit": "Add Debt",
+      "submit": "Edit Debt",
       "success": "Successfully edit the debt!",
       "to": "View Debts"
     },

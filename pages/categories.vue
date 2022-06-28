@@ -8,7 +8,7 @@
                     </div>
                     <div class="col-sm-6">
                         <nuxt-link to="/category/add" class="btn btn-link btn-primary float-right">{{
-                        $t('category.get.add')
+                                $t('category.get.add')
                         }}
                         </nuxt-link>
                     </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-sm-6">
                         <nuxt-link to="/category/add" class="btn btn-link btn-primary float-right">{{
-                        $t('category.get.add')
+                                $t('category.get.add')
                         }}
                         </nuxt-link>
                     </div>
@@ -200,7 +200,7 @@ export default {
                 this.deleteRow(row, type);
                 let deleteDescription = this.$nuxt.$t('debt.delete.success.description');
 
-                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: deleteDescription + `${row.debt_name}` });
+                this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: deleteDescription + `${row.category_name}` });
             }).catch((response) => {
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: response });
                 this.closeModal();
