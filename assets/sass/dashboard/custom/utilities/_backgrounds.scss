@@ -1,13 +1,13 @@
 @each $color, $value in $colors {
-	@include bg-variant(".bg-#{$color}", $value);
+	@include bg-variant(".bg-#{$color}", $value, true);
 }
 
 @each $color, $value in $theme-colors {
-	@include bg-gradient-variant(".bg-gradient-#{$color}", $value);
+	@include bg-gradient-variant(".bg-gradient-#{$color}", $value, true);
 }
 
 @each $color, $value in $colors { 
-	@include bg-gradient-variant(".bg-gradient-#{$color}", $value);
+	@include bg-gradient-variant(".bg-gradient-#{$color}", $value, true);
 }
 
 
@@ -18,11 +18,11 @@ section {
 }
 
 @each $color, $value in $section-colors {
-    @include bg-variant(".section-#{$color}", $value);
+    @include bg-variant(".section-#{$color}", $value, true);
 }
 
 @each $color, $value in $theme-colors {
-    @include bg-gradient-variant(".bg-gradient-#{$color}", $value);
+    @include bg-gradient-variant(".bg-gradient-#{$color}", $value, true);
 }
 
 
