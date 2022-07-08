@@ -64,8 +64,9 @@
                     </el-table-column>
                     <el-table-column :min-width="100" :label="$t('transaction.get.tags')">
                         <div slot-scope="props">
-                            <span v-for="tags in props.row.tags" :key="tags">
-                                <el-tag size="small" type="info">{{ tags }}</el-tag>
+                            <span v-for="tag in props.row.tags" :key="tag">
+                                <el-tag size="small" type="info">{{ tag }}
+                                </el-tag>
                             </span>
                         </div>
                     </el-table-column>
@@ -75,15 +76,13 @@
                                 placement="top">
                                 <nuxt-link
                                     :to="{ path: '/transaction/transaction-link', query: { transaction_description: props.row.description, transaction_amount: props.row.amount } }"
-                                    class="edit btn-link" :class="index > 2 ? 'btn-warning' : 'btn-neutral'" type="info"
-                                    size="sm" icon>
+                                    class="edit btn-link btn-neutral" type="info" size="sm" icon>
                                     <i class="tim-icons icon-link-72"></i>
                                 </nuxt-link>
                             </el-tooltip>
                             <nuxt-link
                                 :to="{ name: 'transaction-edit___' + $i18n.locale, params: { transaction_id: props.row.sk, amount: props.row.amount, description: props.row.description, category_id: props.row.category_id, tags: props.row.tags } }"
-                                class="edit btn-link" :class="index > 2 ? 'btn-warning' : 'btn-neutral'" type="warning"
-                                size="sm" icon>
+                                class="edit btn-link btn-neutral" type="warning" size="sm" icon>
                                 <i class="tim-icons icon-pencil"></i>
                             </nuxt-link>
                             <base-button @click.native="handleDelete(props.row)" class="remove btn-link" type="danger"
@@ -379,7 +378,14 @@ export default {
         searchQuery(value) {
             let result = this.tableData;
             if (value !== '') {
-                result = this.fuseSearch.search(this.searchQuery);
+                let results = this.fuseSearch.search(this.searchQuery);
+                result = [];
+
+                // Result from search has an results.item which contains the object to display
+                for (let i = 0, length = results.length; i < length; i++) {
+                    let item = results[i].item;
+                    result.push(item);
+                }
             }
             this.searchedData = result;
         }
