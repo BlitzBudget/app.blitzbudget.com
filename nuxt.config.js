@@ -115,7 +115,7 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/pwa',
-    'nuxt-i18n',
+    '@nuxtjs/i18n',
     '@nuxtjs/axios',
     '@nuxtjs/auth-next'
   ],
