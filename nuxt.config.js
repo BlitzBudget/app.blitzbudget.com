@@ -169,6 +169,12 @@ module.exports = {
     langDir: 'lang/',
     defaultLocale: 'en',
   },
+  /**
+   * Create a 404 HTML when generating static resources.
+   */
+  generate: {
+    fallback: '404.html'
+  },
   /*
   ** Build configuration
   */
