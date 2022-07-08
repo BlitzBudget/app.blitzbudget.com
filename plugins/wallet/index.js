@@ -33,8 +33,13 @@ let WalletStore = {
         this.redirectToAddWallet(event);
     },
     storeWalletInLocalStorage(result, event) {
-        let wallets = result.Wallet;
+        // If Wallet is already present in local storage (Don't do anything)
+        let walletItem = localStorage.getItem(this.walletItemKey);
+        if (event.$isNotEmpty(walletItem)) {
+            return;
+        }
 
+        let wallets = result.Wallet;
         if (event.$isNotEmpty(wallets)) {
             event.$wallet.storeCurrentWallet(wallets[0]);
             return;
