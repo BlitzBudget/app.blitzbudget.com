@@ -32,8 +32,8 @@ export default {
             await this.$axios.$patch(process.env.api.investments, {
                 pk: walletId,
                 sk: model.sk,
-                invested_amount: parseInt(model.investedAmount),
-                current_value: parseInt(model.currentValue),
+                invested_amount: parseFloat(model.investedAmount),
+                current_value: parseFloat(model.currentValue),
                 investment_name: model.investmentName,
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('investment.edit.success') });

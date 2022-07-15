@@ -31,8 +31,8 @@ export default {
             this.investmentModel = model;
             await this.$axios.$put(process.env.api.investments, {
                 pk: walletId,
-                invested_amount: parseInt(model.investedAmount),
-                current_value: parseInt(model.currentValue),
+                invested_amount: parseFloat(model.investedAmount),
+                current_value: parseFloat(model.currentValue),
                 investment_name: model.investmentName,
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('investment.add.success') });
