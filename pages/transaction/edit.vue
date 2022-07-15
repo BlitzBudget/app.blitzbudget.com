@@ -32,7 +32,7 @@ export default {
             await this.$axios.$patch(process.env.api.transactions, {
                 pk: walletId,
                 sk: model.sk,
-                amount: parseInt(model.amount),
+                amount: parseFloat(model.amount),
                 description: model.description,
                 category_id: model.categoryId,
                 tags: model.tags

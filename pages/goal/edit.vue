@@ -32,10 +32,10 @@ export default {
             await this.$axios.$patch(process.env.api.goals, {
                 pk: walletId,
                 sk: model.sk,
-                target_amount: parseInt(model.targetAmount),
+                target_amount: parseFloat(model.targetAmount),
                 target_date: model.targetDate,
                 goal_name: model.goalName,
-                current_amount: parseInt(model.currentAmount),
+                current_amount: parseFloat(model.currentAmount),
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('goal.edit.success') });
             }).catch((response) => {

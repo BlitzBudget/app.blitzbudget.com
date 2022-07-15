@@ -30,7 +30,7 @@ export default {
             await this.$axios.$patch(process.env.api.budgets, {
                 pk: walletId,
                 sk: model.sk,
-                planned: parseInt(model.planned),
+                planned: parseFloat(model.planned),
                 category: model.categoryId,
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('budget.edit.success') });

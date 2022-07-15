@@ -31,7 +31,7 @@ export default {
             this.budgetModel = model;
             await this.$axios.$put(process.env.api.budgets, {
                 pk: walletId,
-                planned: parseInt(model.planned),
+                planned: parseFloat(model.planned),
                 category: model.categoryId,
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('budget.add.success') });

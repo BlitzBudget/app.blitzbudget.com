@@ -31,9 +31,9 @@ export default {
             this.debtModel = model;
             await this.$axios.$put(process.env.api.debts, {
                 pk: walletId,
-                debted_amount: parseInt(model.debtAmount),
+                debted_amount: parseFloat(model.debtAmount),
                 debt_name: model.debtName,
-                current_value: parseInt(model.currentValue),
+                current_value: parseFloat(model.currentValue),
             }).then(() => {
                 this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('debt.add.success') });
             }).catch((response) => {

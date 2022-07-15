@@ -31,7 +31,7 @@ export default {
             this.transactionModel = model;
             await this.$axios.$put(process.env.api.transactions, {
                 pk: walletId,
-                amount: parseInt(model.amount),
+                amount: parseFloat(model.amount),
                 description: model.description,
                 category_id: model.categoryId,
                 creation_date: model.creationDate,
