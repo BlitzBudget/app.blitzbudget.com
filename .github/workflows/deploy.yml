@@ -15,6 +15,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     runs-on: ${{ matrix.os }}
+    environment: s3
     
     strategy:
       matrix:
