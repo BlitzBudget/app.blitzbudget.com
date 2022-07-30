@@ -213,11 +213,11 @@ export default {
         },
         setEndsWithDate(date) {
             let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.endsWithDate = endsWithDate.toISOString().substring(0, 10);
+            this.endsWithDate = endsWithDate.toLocaleDateString().substring(0, 10);
         },
         setStartsWithDate(date) {
             let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
+            this.startsWithDate = startsWithDate.toLocaleDateString().substring(0, 10);
         },
         async filterTransactions() {
             let wallet = await this.$wallet.setCurrentWallet(this);

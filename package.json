@@ -26,7 +26,7 @@
     "chart.js": "^2.9.4",
     "d3": "^6.6.2",
     "datamaps": "^0.5.9",
-    "element-ui": "^2.11.1",
+    "element-ui": "^2.15.7",
     "es6-promise": "^4.2.8",
     "fuse.js": "^6.4.6",
     "google-maps": "^3.2.1",
