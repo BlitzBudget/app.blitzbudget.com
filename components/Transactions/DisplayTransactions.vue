@@ -212,11 +212,11 @@ export default {
             await this.filterTransactions();
         },
         setEndsWithDate(date) {
-            let endsWithDate = new Date(date.getFullYear(), 12, 1);
+            let endsWithDate = new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0));
             this.endsWithDate = endsWithDate.toISOString().substring(0, 10);
         },
         setStartsWithDate(date) {
-            let startsWithDate = new Date(date.getFullYear(), 0, 0);
+            let startsWithDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
             this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
         },
         async filterTransactions() {
