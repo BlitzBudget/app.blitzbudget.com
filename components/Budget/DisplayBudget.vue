@@ -194,11 +194,11 @@ export default {
         setDatesToFetchBudget() {
             let date = new Date();
 
-            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.startsWithDate = new Intl.DateTimeFormat('en-GB').format(startsWithDate);
+            let startsWithDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), 1));
+            this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
 
-            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.endsWithDate = new Intl.DateTimeFormat('en-GB').format(endsWithDate);
+            let endsWithDate = new Date(Date.UTC(date.getFullYear(), date.getMonth() + 1, 0));
+            this.endsWithDate = endsWithDate.toISOString().substring(0, 10);
         },
         handleDelete(row) {
             Swal.fire({
