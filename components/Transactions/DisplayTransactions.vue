@@ -39,13 +39,13 @@
                         prop="creationDate">
                         <div slot-scope="props">
                             {{ new Date(props.row.creation_date).toLocaleDateString(
-                                    $i18n.locale, {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: 'numeric'
-                                })
+                            $i18n.locale, {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric'
+                            })
                             }}
                         </div>
                     </el-table-column>
@@ -212,12 +212,12 @@ export default {
             await this.filterTransactions();
         },
         setEndsWithDate(date) {
-            let endsWithDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-            this.endsWithDate = endsWithDate.toLocaleDateString().substring(0, 10);
+            let endsWithDate = new Date(date.getFullYear(), 12, 1);
+            this.endsWithDate = endsWithDate.toISOString().substring(0, 10);
         },
         setStartsWithDate(date) {
-            let startsWithDate = new Date(date.getFullYear(), date.getMonth(), 1);
-            this.startsWithDate = startsWithDate.toLocaleDateString().substring(0, 10);
+            let startsWithDate = new Date(date.getFullYear(), 0, 0);
+            this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
         },
         async filterTransactions() {
             let wallet = await this.$wallet.setCurrentWallet(this);
