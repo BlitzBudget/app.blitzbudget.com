@@ -64,13 +64,13 @@
 
                 <template slot-scope="{ row, index }">
                     <td>{{ new Date(row.creation_date).toLocaleDateString(
-                            $i18n.locale, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric'
-                        })
+                    $i18n.locale, {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric'
+                    })
                     }}</td>
                     <td>{{ row.description }}</td>
                     <td class="text-right">{{ $n(row.amount) }} {{ currency }}</td>
@@ -85,7 +85,7 @@
                 <base-button type="neutral" link @click.native="modals.transaction = false">Close
                 </base-button>
                 <nuxt-link to="/transactions" class="btn btn-link btn-primary">{{
-                        $t('budget.get.modal.viewTransactions')
+                $t('budget.get.modal.viewTransactions')
                 }}</nuxt-link>
             </template>
         </modal>
@@ -135,8 +135,6 @@ export default {
         async getBudgets(walletId) {
             await this.$axios.$post(process.env.api.budgets, {
                 wallet_id: walletId,
-                starts_with_date: this.startsWithDate,
-                ends_with_date: this.endsWithDate
             }).then((response) => {
                 this.tableData = response;
                 // Fetch Category information and populate it
