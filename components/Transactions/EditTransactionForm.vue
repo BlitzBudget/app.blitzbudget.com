@@ -14,11 +14,9 @@
                 type="description">
             </base-input>
 
-            <base-input :label="$t('transaction.edit.category')" required :error="getError('categoryId')"
-                name="categoryId">
+            <base-input :label="$t('transaction.edit.category')" :error="getError('categoryId')" name="categoryId">
                 <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
-                    v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" :clearable="clearable"
-                    autocomplete="on" :filterable="filterable">
+                    :loading="loadingDataForSelect" :clearable="clearable" autocomplete="on" :filterable="filterable">
                     <el-option v-for="category in categories" class="select-primary" :label="getCategoryValue(category)"
                         :value="category.sk" :key="category.sk">
                     </el-option>
@@ -69,11 +67,8 @@ export default {
                 },
                 description: {
                     required: true,
-                    min: 4
+                    min: 2
                 },
-                categoryId: {
-                    required: true
-                }
             },
             categories: [],
             loadingDataForSelect: true,
@@ -131,4 +126,5 @@ export default {
 };
 </script>
 <style>
+
 </style>
