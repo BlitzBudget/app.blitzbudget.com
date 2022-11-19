@@ -31,7 +31,7 @@
     "fuse.js": "^6.4.6",
     "google-maps": "^3.2.1",
     "nouislider": "^14.6.4",
-    "nuxt": "^2.15.4",
+    "nuxt": "^3.0.0",
     "perfect-scrollbar": "^1.5.0",
     "register-service-worker": "^1.7.2",
     "sweetalert2": "^10.15.7",
