@@ -86,7 +86,7 @@ export default {
         async onFirstStepValidated(validated, model) {
             let ajaxSuccess = false;
             await this.$axios.$post(process.env.api.profile.forgotPassword, {
-                username: model.email,
+                email: model.email,
             }).then(() => {
                 this.wizardModel = { ...this.wizardModel, ...model };
                 ajaxSuccess = true;
@@ -99,8 +99,8 @@ export default {
         wizardComplete(validated, model) {
             // Call confirm forgot password scenario
             this.$axios.$post(process.env.api.profile.confirmForgotPassword, {
-                username: model.email,
-                password: model.password,
+                email: model.email,
+                newPassword: model.password,
                 confirmationCode: model.validationCode
             }).then(() => {
                 // Change to success model

@@ -103,14 +103,14 @@ export default {
     },
     async register() {
       let isValidForm = await this.$validator.validateAll();
+      let { firstName, lastName } = this.extractNames(this.model.fullName)
       if (isValidForm) {
         // TIP use this.model to send it to api and perform register call
         this.$axios.$post(process.env.api.profile.signup, {
-          username: this.model.email,
+          email: this.model.email,
           password: this.model.password,
-          checkPassword: false,
-          firstname: this.model.fullName,
-          lastname: ''
+          name: firstName,
+          lastName: lastName
         }).then(() => {
           localStorage.setItem(this.$authentication.emailItem, this.model.email);
           this.$router.push({ path: process.env.route.confirmRegistration });
@@ -119,9 +119,16 @@ export default {
           this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
         });
       }
-    }
+    },
+    extractNames(fullName) {
+      let nameArray = fullName.split(" ");
+      let firstName = nameArray.shift();
+      let lastName = nameArray.join(" ");
+      return { firstName, lastName };
+    },
   }
 };
 </script>
 <style>
+
 </style>
