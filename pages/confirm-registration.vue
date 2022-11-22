@@ -77,7 +77,7 @@ export default {
                     this.$authentication.storeAllTokens(response, this);
                     localStorage.removeItem(this.$authentication.emailItem);
                 }).catch(({ response }) => {
-                    let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                    let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                     this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
                 });
             }

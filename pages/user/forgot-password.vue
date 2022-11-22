@@ -91,7 +91,7 @@ export default {
                 this.wizardModel = { ...this.wizardModel, ...model };
                 ajaxSuccess = true;
             }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', timeout: 30000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
             return ajaxSuccess;
@@ -106,7 +106,7 @@ export default {
                 // Change to success model
                 this.isOpen = false;
             }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
