@@ -68,10 +68,9 @@ export default {
             if (isValidForm) {
                 // TIP use this.model to send it to api and perform register call
                 this.$axios.$post(process.env.api.profile.confirmSignup, {
-                    username: this.model.email,
-                    password: this.model.password,
-                    confirmationCode: this.model.confirmationCode,
-                    doNotCreateWallet: false,
+                    email: this.model.email,
+                    new_password: this.model.password,
+                    confirmation_code: this.model.confirmationCode,
                 }).then((response) => {
                     console.log(response);
                     this.$authentication.storeAllTokens(response, this);
