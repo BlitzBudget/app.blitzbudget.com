@@ -92,7 +92,7 @@ export default {
             }
             // TIP use this.model to send it to api and perform register call
             this.$axios.$post(process.env.api.profile.resendConfirmationCode, {
-                username: this.model.email,
+                email: this.model.email,
             }).then((response) => {
                 console.log(response);
                 hideResendButton();
