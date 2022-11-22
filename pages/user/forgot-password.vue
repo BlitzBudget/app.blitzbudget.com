@@ -99,9 +99,9 @@ export default {
         wizardComplete(validated, model) {
             // Call confirm forgot password scenario
             this.$axios.$post(process.env.api.profile.confirmForgotPassword, {
-                email: model.email,
-                newPassword: model.password,
-                confirmationCode: model.validationCode
+                email: this.wizardModel.email,
+                new_password: this.wizardModel.password,
+                confirmation_code: model.validationCode
             }).then(() => {
                 // Change to success model
                 this.isOpen = false;
