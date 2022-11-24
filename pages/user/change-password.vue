@@ -50,9 +50,9 @@ export default {
 
             this.emailModel = model;
             await this.$axios.$post(process.env.api.profile.changePassword, {
-                previousPassword: model.oldPassword,
-                newPassword: model.password,
-                accessToken: accessToken
+                previous_password: model.oldPassword,
+                proposed_password: model.password,
+                access_token: accessToken
             }).then(() => {
                 this.hasSucceeded = true;
             }).catch(({ response }) => {
@@ -64,4 +64,5 @@ export default {
 };
 </script>
 <style>
+
 </style>
