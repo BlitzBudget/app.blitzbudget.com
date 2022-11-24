@@ -68,16 +68,15 @@ export default {
             if (isValidForm) {
                 // TIP use this.model to send it to api and perform register call
                 this.$axios.$post(process.env.api.profile.confirmSignup, {
-                    username: this.model.email,
-                    password: this.model.password,
-                    confirmationCode: this.model.confirmationCode,
-                    doNotCreateWallet: false,
+                    email: this.model.email,
+                    new_password: this.model.password,
+                    confirmation_code: this.model.confirmationCode,
                 }).then((response) => {
                     console.log(response);
                     this.$authentication.storeAllTokens(response, this);
                     localStorage.removeItem(this.$authentication.emailItem);
                 }).catch(({ response }) => {
-                    let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                    let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                     this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
                 });
             }
@@ -92,7 +91,7 @@ export default {
             }
             // TIP use this.model to send it to api and perform register call
             this.$axios.$post(process.env.api.profile.resendConfirmationCode, {
-                username: this.model.email,
+                email: this.model.email,
             }).then((response) => {
                 console.log(response);
                 hideResendButton();
