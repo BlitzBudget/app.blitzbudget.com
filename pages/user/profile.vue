@@ -30,7 +30,7 @@ export default {
         return;
       }
 
-      let { firstName, lastName } = this.extractNames(this.model.fullName)
+      let { firstName, lastName } = this.extractNames(user.name)
       let accessToken = this.$authentication.fetchAccessToken();
       await this.$axios.$post(process.env.api.profile.userAttribute, {
         access_token: accessToken,
