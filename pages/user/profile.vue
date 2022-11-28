@@ -36,7 +36,7 @@ export default {
         access_token: accessToken,
         user_attributes: {
           first_name: firstName,
-          lastName: lastName
+          last_name: lastName
         }
       }).then(() => {
         this.$authentication.setUsername(user.name);
