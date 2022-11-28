@@ -42,7 +42,7 @@ export default {
         this.$authentication.setUsername(user.name);
         this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('user.profile.update.success') });
       }).catch(({ response }) => {
-        let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+        let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
       });
     },
