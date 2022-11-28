@@ -30,9 +30,14 @@ export default {
         return;
       }
 
+      let { firstName, lastName } = this.extractNames(this.model.fullName)
+      let accessToken = this.$authentication.fetchAccessToken();
       await this.$axios.$post(process.env.api.profile.userAttribute, {
-        name: user.name,
-        username: user.email
+        access_token: accessToken,
+        user_attributes: {
+          first_name: firstName,
+          lastName: lastName
+        }
       }).then(() => {
         this.$authentication.setUsername(user.name);
         this.$notify({ type: 'success', icon: 'tim-icons icon-check-2', verticalAlign: 'bottom', horizontalAlign: 'center', message: $nuxt.$t('user.profile.update.success') });
@@ -40,9 +45,16 @@ export default {
         let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
       });
-    }
+    },
+    extractNames(fullName) {
+      let nameArray = fullName.split(" ");
+      let firstName = nameArray.shift();
+      let lastName = nameArray.join(" ");
+      return { firstName, lastName };
+    },
   }
 };
 </script>
 <style>
+
 </style>
