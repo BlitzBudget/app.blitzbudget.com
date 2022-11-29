@@ -9,7 +9,7 @@ let authentication = {
         try {
             let response = await event.$auth.loginWith('local', {
                 data: {
-                    username: event.model.email,
+                    email: event.model.email,
                     password: event.model.password
                 }
             });
