@@ -18,7 +18,7 @@ let authentication = {
         } catch ({ response }) {
             let errorMessage = $nuxt.$t('login.error')
             if (event.$isNotEmpty(response)) {
-                errorMessage = event.$lastElement(event.$splitElement(response.data.errorMessage, ':'));
+                errorMessage = event.$lastElement(event.$splitElement(response.data.message, ':'));
             }
             event.$notify({ type: 'danger', timeout: 10000, icon: 'tim-icons icon-alert-circle-exc', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
         }
