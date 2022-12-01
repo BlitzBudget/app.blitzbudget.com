@@ -210,7 +210,9 @@ module.exports = {
       "to": "View Transactions",
       "search": "Search",
       "validDate": "Please provide a valid Date to search!",
-      "filter": "Fetch Transactions for Dates"
+      "filter": "Fetch Transactions for Dates",
+      "edit": "Edit",
+      "delete": "Delete"
     },
     "delete": {
       "confirm": "Are you sure?",

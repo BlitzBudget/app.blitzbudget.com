@@ -39,13 +39,13 @@
                         prop="creationDate">
                         <div slot-scope="props">
                             {{ new Date(props.row.creation_date).toLocaleDateString(
-                            $i18n.locale, {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric'
-                            })
+                                    $i18n.locale, {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric'
+                                })
                             }}
                         </div>
                     </el-table-column>
@@ -56,7 +56,9 @@
                     </el-table-column>
                     <el-table-column :min-width="100" :label="$t('transaction.get.category')" sortable prop="category">
                         <div slot-scope="props">
-                            <p>{{ props.row.categoryName }}</p>
+                            <nuxt-link :to="{ path: '/budgets#' + props.row.category_id }">
+                                <p>{{ props.row.categoryName }}</p>
+                            </nuxt-link>
                         </div>
                     </el-table-column>
                     <el-table-column v-for="column in tableColumns" :key="column.label" :min-width="column.minWidth"
@@ -80,15 +82,21 @@
                                     <i class="tim-icons icon-link-72"></i>
                                 </nuxt-link>
                             </el-tooltip>
-                            <nuxt-link
-                                :to="{ name: 'transaction-edit___' + $i18n.locale, params: { transaction_id: props.row.sk, amount: props.row.amount, description: props.row.description, category_id: props.row.category_id, tags: props.row.tags } }"
-                                class="edit btn-link btn-neutral" type="warning" size="sm" icon>
-                                <i class="tim-icons icon-pencil"></i>
-                            </nuxt-link>
-                            <base-button @click.native="handleDelete(props.row)" class="remove btn-link" type="danger"
-                                size="sm" icon>
-                                <i class="tim-icons icon-simple-remove"></i>
-                            </base-button>
+                            <el-tooltip :content="$t('transaction.get.edit')" effect="light" :open-delay="300"
+                                placement="top">
+                                <nuxt-link
+                                    :to="{ name: 'transaction-edit___' + $i18n.locale, params: { transaction_id: props.row.sk, amount: props.row.amount, description: props.row.description, category_id: props.row.category_id, tags: props.row.tags } }"
+                                    class="edit btn-link btn-neutral" type="warning" size="sm" icon>
+                                    <i class="tim-icons icon-pencil"></i>
+                                </nuxt-link>
+                            </el-tooltip>
+                            <el-tooltip :content="$t('transaction.get.delete')" effect="light" :open-delay="300"
+                                placement="top">
+                                <base-button @click.native="handleDelete(props.row)" class="remove btn-link"
+                                    type="danger" size="sm" icon>
+                                    <i class="tim-icons icon-simple-remove"></i>
+                                </base-button>
+                            </el-tooltip>
                         </div>
                     </el-table-column>
                 </el-table>
