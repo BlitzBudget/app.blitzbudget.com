@@ -58,7 +58,7 @@
 
             <base-input v-validate="'required|min:8'" :error="getError('password')" v-model="model.password"
               name="password" type="password" :placeholder="$t('user.register.placeholder.password')"
-              autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle">
+              autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle" show-or-hide-password="true">
             </base-input>
 
             <base-checkbox class="text-left" v-validate="'required'" :error="getError('checkbox')" name="checkbox"

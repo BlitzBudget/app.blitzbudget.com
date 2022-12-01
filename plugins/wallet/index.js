@@ -10,10 +10,6 @@ let WalletStore = {
         localStorage.setItem(this.walletItemKey, currentWallet)
     },
     async setCurrentWallet(event) {
-        if (event.$isNotEmpty(this.wallet)) {
-            return this.wallet;
-        }
-
         let walletItem = localStorage.getItem(this.walletItemKey);
         if (event.$isNotEmpty(walletItem)) {
             walletItem = JSON.parse(walletItem);

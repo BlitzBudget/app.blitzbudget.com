@@ -17,7 +17,8 @@
 
                         <base-input v-validate="'required|min:8'" :error="getError('password')" v-model="model.password"
                             name="password" type="password" :placeholder="$t('user.register.placeholder.password')"
-                            autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle">
+                            autocomplete="current-password" addon-left-icon="tim-icons icon-lock-circle"
+                            show-or-hide-password="true">
                         </base-input>
 
                         <base-input v-validate="'required|min:6|max:6'" name="VerificationCode"

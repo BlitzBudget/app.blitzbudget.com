@@ -1,35 +1,37 @@
 <template>
-  <div
-    class="form-group"
-    :class="{
-      'input-group-focus': focused,
-      'has-danger': error,
-      'has-success': !error && touched,
-      'has-label': label,
-      'has-icon': hasIcon,
-    }"
-  >
+  <div class="form-group" :class="{
+    'input-group-focus': focused,
+    'has-danger': error,
+    'has-success': !error && touched,
+    'has-label': label,
+    'has-icon': hasIcon,
+  }">
     <slot name="label">
       <label v-if="label"> {{ label }} {{ required ? '*' : '' }} </label>
     </slot>
-    <div class="mb-0" :class="{'input-group': hasIcon}">
+    <div class="mb-0" :class="{ 'input-group': hasIcon }">
       <slot name="addonLeft">
         <span v-if="addonLeftIcon" class="input-group-prepend">
           <div class="input-group-text"><i :class="addonLeftIcon"></i></div>
         </span>
       </slot>
       <slot>
-        <input
-          :value="value"
-          v-bind="$attrs"
-          v-on="listeners"
-          class="form-control"
-          aria-describedby="addon-right addon-left"
-        />
+        <input v-if="showOrHidePassword" :value="value" v-bind="$attrs" v-on="listeners" class="form-control"
+          aria-describedby="addon-right addon-left" :type="passwordType" />
+        <input v-else :value="value" v-bind="$attrs" v-on="listeners" class="form-control"
+          aria-describedby="addon-right addon-left" />
       </slot>
       <slot name="addonRight">
         <span v-if="addonRightIcon" class="input-group-append">
           <div class="input-group-text"><i :class="addonRightIcon"></i></div>
+        </span>
+      </slot>
+      <slot name="addPasswordOnRight">
+        <span v-if="showOrHidePassword" class="input-group-append">
+          <div class="input-group-text">
+            <i class="fa toggle-button" @click="toggleShow"
+              :class="{ 'fa-eye-slash': !showPassword, 'fa-eye': showPassword }"></i>
+          </div>
         </span>
       </slot>
     </div>
@@ -66,6 +68,10 @@ export default {
     addonLeftIcon: {
       type: String,
       description: 'Input icon on the left'
+    },
+    showOrHidePassword: {
+      type: String,
+      description: 'Show or Hide Password Flag'
     }
   },
   model: {
@@ -75,7 +81,9 @@ export default {
   data() {
     return {
       focused: false,
-      touched: false
+      touched: false,
+      showPassword: false,
+      passwordType: "password",
     };
   },
   computed: {
@@ -119,8 +127,16 @@ export default {
     onBlur(evt) {
       this.focused = false;
       this.$emit('blur', evt)
+    },
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+      this.passwordType = (this.showPassword) ? "text" : "password"
     }
   }
 };
 </script>
-<style></style>
+<style>
+.toggle-button {
+  cursor: pointer
+}
+</style>
