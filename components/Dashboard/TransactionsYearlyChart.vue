@@ -237,10 +237,6 @@ export default {
             this.bigChartTags.push({ name: 'Net', icon: 'tim-icons icon-single-02' });
         },
         categorizeCategories(response) {
-            if (this.$isEmpty(response)) {
-                return;
-            }
-
             let categoriesMap = new Map();
             for (let i = 0, length = response.length; i < length; i++) {
                 let category = response[i];
@@ -265,4 +261,5 @@ export default {
 }
 </script>
 <style>
+
 </style>

@@ -17,7 +17,8 @@
 
             <base-input v-validate="'required|min:8'" name="password" :error="getError('password')"
               v-model="model.password" type="password" autocomplete="current-password"
-              :placeholder="$t('user.login.placholder.password')" addon-left-icon="tim-icons icon-lock-circle">
+              :placeholder="$t('user.login.placholder.password')" addon-left-icon="tim-icons icon-lock-circle"
+              show-or-hide-password="true">
             </base-input>
           </div>
 

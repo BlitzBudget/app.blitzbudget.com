@@ -70,13 +70,12 @@ export default {
 
             let email = this.$authentication.fetchCurrentUser(this).email;
             await this.$axios.$post(process.env.api.profile.login, {
-                username: email,
+                email: email,
                 password: model.password,
-                checkPassword: true
             }).then(async () => {
                 await this.deleteAccount();
             }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
@@ -84,4 +83,5 @@ export default {
 };
 </script>
 <style>
+
 </style>
