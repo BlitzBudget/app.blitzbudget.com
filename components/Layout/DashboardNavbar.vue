@@ -24,6 +24,7 @@
       <modal :show.sync="searchModalVisible" class="modal-search" id="searchModal" :centered="false" :show-close="true">
         <input slot="header" v-model="searchQuery" type="text" class="form-control" id="inlineFormInputGroup"
           placeholder="SEARCH" />
+        <filter-nav-url :searchQuery="searchQuery"></filter-nav-url>
       </modal>
       <base-dropdown tag="li" :menu-on-right="!$rtl.isRTL" title-tag="a" title-classes="nav-link" class="nav-item">
         <template slot="title">
@@ -69,13 +70,15 @@
 import { CollapseTransition } from 'vue2-transitions';
 import { BaseNav, Modal } from '@/components';
 import SidebarToggleButton from './SidebarToggleButton';
+import FilterNavUrl from './DashboardNavComponents/FilterNavURL';
 
 export default {
   components: {
     SidebarToggleButton,
     CollapseTransition,
     BaseNav,
-    Modal
+    Modal,
+    FilterNavUrl
   },
   computed: {
     routeName() {
