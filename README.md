@@ -29,3 +29,8 @@ $ npm run generate
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
 
+# Nuxt 3 Upgrade
+
+https://github.com/nuxt/image/discussions/548
+
+The nuxt -auth next plugin still does not support the NUxt 3 update and has the progress in the above mentioned issue. Until this is resolved the nuxt cannot be upgraded to version 3
