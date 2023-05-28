@@ -92,7 +92,7 @@ export default {
       this.startsWithDate = startsWithDate.toISOString().substring(0, 10);
     },
     async getTransactions(walletId) {
-      await this.$axios.$post(process.env.api.transactions, {
+      await this.$post(process.env.api.transactions, {
         wallet_id: walletId,
         starts_with_date: this.startsWithDate,
         ends_with_date: this.endsWithDate
@@ -104,7 +104,7 @@ export default {
       });
     },
     async getCategories(userId, transactions) {
-      await this.$axios.$post(process.env.api.categories, {
+      await this.$post(process.env.api.categories, {
         user_id: userId,
       }).then((response) => {
         this.categories = response;
@@ -127,5 +127,4 @@ export default {
   }
 }
 </script>
-<style>
-</style>
+<style></style>

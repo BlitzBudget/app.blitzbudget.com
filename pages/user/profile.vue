@@ -32,7 +32,7 @@ export default {
 
       let { firstName, lastName } = this.extractNames(user.name)
       let accessToken = this.$authentication.fetchAccessToken();
-      await this.$axios.$post(process.env.api.profile.userAttribute, {
+      await this.$post(process.env.api.profile.userAttribute, {
         access_token: accessToken,
         user_attributes: {
           first_name: firstName,
@@ -55,6 +55,4 @@ export default {
   }
 };
 </script>
-<style>
-
-</style>
+<style></style>

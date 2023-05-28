@@ -8,8 +8,8 @@
                     </div>
                     <div class="col-sm-6">
                         <nuxt-link to="/category/add" class="btn btn-link btn-primary float-right">{{
-                                $t('category.get.add')
-                        }}
+                                                    $t('category.get.add')
+                                                    }}
                         </nuxt-link>
                     </div>
                 </div>
@@ -22,8 +22,8 @@
                         </template>
 
                         <template slot-scope="{ row, index }" :class="[
-                        { 'show d-block text-center': !noExpenseData },
-                        { 'd-none': noExpenseData }]">
+                                                { 'show d-block text-center': !noExpenseData },
+                                                { 'd-none': noExpenseData }]">
                             <td>{{ row.category_name }}</td>
                             <td>{{ row.category_type }}</td>
                             <td class="text-right">
@@ -35,8 +35,8 @@
                                         <i class="tim-icons icon-link-72"></i>
                                     </nuxt-link>
                                 </el-tooltip>
-                                <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
-                                    :open-delay="300" placement="top">
+                                <el-tooltip :content="$t('category.get.table.transaction')" effect="light" :open-delay="300"
+                                    placement="top">
                                     <nuxt-link :to="{ path: '/transactions', query: { category_id: row.sk } }"
                                         :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                         class="btn-link btn-neutral">
@@ -45,8 +45,8 @@
                                 </el-tooltip>
                                 <el-tooltip :content="$t('category.get.table.delete')" effect="light" :open-delay="300"
                                     placement="top">
-                                    <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
-                                        class="btn-link" @click.native="handleDelete(row, expenseType)">
+                                    <base-button :type="index > 2 ? 'danger' : 'neutral'" icon size="sm" class="btn-link"
+                                        @click.native="handleDelete(row, expenseType)">
                                         <i class="tim-icons icon-simple-remove"></i>
                                     </base-button>
                                 </el-tooltip>
@@ -54,8 +54,8 @@
                         </template>
                     </base-table>
                     <div :class="[
-                    { 'show d-block text-center': noExpenseData },
-                    { 'd-none': !noExpenseData }]">
+                                        { 'show d-block text-center': noExpenseData },
+                                        { 'd-none': !noExpenseData }]">
                         {{ $t('category.link.get.no-data') }}
                     </div>
                 </div>
@@ -69,8 +69,8 @@
                     </div>
                     <div class="col-sm-6">
                         <nuxt-link to="/category/add" class="btn btn-link btn-primary float-right">{{
-                                $t('category.get.add')
-                        }}
+                                                    $t('category.get.add')
+                                                    }}
                         </nuxt-link>
                     </div>
                 </div>
@@ -83,8 +83,8 @@
                         </template>
 
                         <template slot-scope="{ row, index }" :class="[
-                        { 'show d-block text-center': !noIncomeData },
-                        { 'd-none': noIncomeData }]">
+                                                { 'show d-block text-center': !noIncomeData },
+                                                { 'd-none': noIncomeData }]">
                             <td>{{ row.category_name }}</td>
                             <td>{{ row.category_type }}</td>
                             <td class="text-right">
@@ -95,8 +95,8 @@
                                         <i class="tim-icons icon-link-72"></i>
                                     </nuxt-link>
                                 </el-tooltip>
-                                <el-tooltip :content="$t('category.get.table.transaction')" effect="light"
-                                    :open-delay="300" placement="top">
+                                <el-tooltip :content="$t('category.get.table.transaction')" effect="light" :open-delay="300"
+                                    placement="top">
                                     <nuxt-link :to="{ path: '/transactions', query: { category_id: row.sk } }"
                                         :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                         class="btn-link btn-neutral">
@@ -114,8 +114,8 @@
                         </template>
                     </base-table>
                     <div :class="[
-                    { 'show d-block text-center': noIncomeData },
-                    { 'd-none': !noIncomeData }]">
+                                        { 'show d-block text-center': noIncomeData },
+                                        { 'd-none': !noIncomeData }]">
                         {{ $t('category.link.get.no-data') }}
                     </div>
                 </div>
@@ -145,7 +145,7 @@ export default {
     },
     methods: {
         async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
+            await this.$post(process.env.api.categories, {
                 user_id: userId,
             }).then((response) => {
                 this.assignCategoriesToTable(response);
@@ -193,7 +193,7 @@ export default {
             // Fetch the current user ID
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: userId,
                 sk: row.sk
             }).then(async () => {
@@ -225,5 +225,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

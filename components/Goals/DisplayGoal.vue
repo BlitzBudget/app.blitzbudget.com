@@ -7,8 +7,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="chart-area">
-                            <pie-chart :chart-data="calculatePieChart(goal)" :extra-options="extraOptions"
-                                :height="120">
+                            <pie-chart :chart-data="calculatePieChart(goal)" :extra-options="extraOptions" :height="120">
                             </pie-chart>
                         </div>
                     </div>
@@ -16,25 +15,25 @@
                     <div class="col-6">
                         <h4 class="card-title">
                             <i class="tim-icons  icon-trophy text-success "></i> {{ $n(goal.target_amount) }} {{
-                                    currency
-                            }}
+                                                        currency
+                                                        }}
                         </h4>
                         <p class="category">{{ $t('goal.get.targetDate') }} {{ new
-                                Date(goal.target_date).toLocaleDateString(
-                                    $i18n.locale, {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric'
-                                })
-                        }}</p>
+                                                    Date(goal.target_date).toLocaleDateString(
+                                                    $i18n.locale, {
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric'
+                                                    })
+                                                    }}</p>
                     </div>
                 </div>
 
                 <div class="text-right">
                     <el-tooltip :content="$t('goal.get.link')" effect="light" :open-delay="300" placement="top">
                         <nuxt-link :to="{ path: '/goal/goal-link', query: { goal_id: goal.sk } }"
-                            :class="index > 2 ? 'btn-warning' : 'btn-neutral'" class="edit btn-link" type="info"
-                            size="sm" icon>
+                            :class="index > 2 ? 'btn-warning' : 'btn-neutral'" class="edit btn-link" type="info" size="sm"
+                            icon>
                             <i class="tim-icons icon-link-72"></i>
                         </nuxt-link>
                     </el-tooltip>
@@ -54,13 +53,13 @@
             </card>
         </div>
         <div :class="[
-        { 'show d-block text-center col-12': noData },
-        { 'd-none': !noData }]">
+                { 'show d-block text-center col-12': noData },
+                { 'd-none': !noData }]">
             {{ $t('goal.get.no-data') }}
         </div>
         <div :class="[
-        { 'show d-block text-center col-12': loading },
-        { 'd-none': !loading }]">
+                { 'show d-block text-center col-12': loading },
+                { 'd-none': !loading }]">
             {{ $t('goal.get.loading') }}
         </div>
     </div>
@@ -94,7 +93,7 @@ export default {
     },
     methods: {
         async getGoals(walletId) {
-            await this.$axios.$post(process.env.api.goals, {
+            await this.$post(process.env.api.goals, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.tableData = response;
@@ -126,7 +125,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: row.sk
             }).then(async () => {
@@ -178,5 +177,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

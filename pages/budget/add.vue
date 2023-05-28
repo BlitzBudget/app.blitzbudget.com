@@ -29,7 +29,7 @@ export default {
             }
 
             this.budgetModel = model;
-            await this.$axios.$put(process.env.api.budgets, {
+            await this.$put(process.env.api.budgets, {
                 pk: walletId,
                 planned: parseFloat(model.planned),
                 category: model.categoryId,
@@ -42,5 +42,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

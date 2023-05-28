@@ -1,3 +1,5 @@
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 module.exports = {
   target: 'static',
   /**
@@ -114,14 +116,31 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/pwa',
+    '@kevinmarrec/nuxt-pwa',
     '@nuxtjs/i18n',
-    '@nuxtjs/axios',
     '@nuxtjs/auth-next'
   ],
-  axios: {
-    baseURL: 'https://api.blitzbudget.com',
-    https: true,
+  // PWA module configuration
+  pwa: {
+    meta: {
+      /* meta options */
+      name: 'BlitzBudget', // Name of your PWA
+      author: 'Nagarjun Nagesh', // Author of the PWA
+      description: 'Wealth Builder and Tracker Application', // Description of the PWA
+      theme_color: '#ffffff', // Theme color of the PWA
+    },
+    manifest: {
+      /* manifest options */
+      name: 'BlitzBudget', // Name of your PWA
+      short_name: 'App', // Short name of your PWA
+      lang: 'en', // Language of the PWA
+      display: 'standalone', // Display mode of the PWA
+    },
+  },
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.BASE_URL || 'https://api.blitzbudget.com',
+    },
   },
   auth: {
     plugins: [],
@@ -188,12 +207,13 @@ module.exports = {
    ** Run ESLint on save
    */
       if (isDev && isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/
-        })
+        config.plugins.push(
+          new ESLintPlugin({
+            extensions: ['js', 'vue'],
+            exclude: ['node_modules'],
+            // Other ESLint options
+          })
+        );
       }
     },
     babel: {

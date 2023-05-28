@@ -29,7 +29,7 @@ export default {
             }
 
             this.investmentModel = model;
-            await this.$axios.$put(process.env.api.investments, {
+            await this.$put(process.env.api.investments, {
                 pk: walletId,
                 invested_amount: parseFloat(model.investedAmount),
                 current_value: parseFloat(model.currentValue),
@@ -43,5 +43,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

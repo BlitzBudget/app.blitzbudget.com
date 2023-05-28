@@ -16,8 +16,8 @@
                     <div class="col-6">
                         <h4 class="card-title">
                             <i class="tim-icons  icon-chart-bar-32 text-primary"></i> {{ investment.current_value }} {{
-                                    currency
-                            }}
+                                                        currency
+                                                        }}
                         </h4>
                         <p class="category">{{ $t('investment.get.invested-amount') }} {{ investment.invested_amount }}
                             {{ currency }}
@@ -26,10 +26,9 @@
                 </div>
 
                 <div class="text-right">
-                    <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300"
-                        placement="top">
-                        <nuxt-link to="/investment/investment-link" :class="index > 2 ? 'btn-success' : 'btn-neutral'"
-                            icon size="sm" class="btn-link">
+                    <el-tooltip :content="$t('category.get.table.link')" effect="light" :open-delay="300" placement="top">
+                        <nuxt-link to="/investment/investment-link" :class="index > 2 ? 'btn-success' : 'btn-neutral'" icon
+                            size="sm" class="btn-link">
                             <i class="tim-icons icon-link-72"></i>
                         </nuxt-link>
                     </el-tooltip>
@@ -49,13 +48,13 @@
             </card>
         </div>
         <div :class="[
-        { 'show d-block text-center col-12': noData },
-        { 'd-none': !noData }]">
+                { 'show d-block text-center col-12': noData },
+                { 'd-none': !noData }]">
             {{ $t('investment.get.no-data') }}
         </div>
         <div :class="[
-        { 'show d-block text-center col-12': loading },
-        { 'd-none': !loading }]">
+                { 'show d-block text-center col-12': loading },
+                { 'd-none': !loading }]">
             {{ $t('investment.get.loading') }}
         </div>
     </div>
@@ -97,7 +96,7 @@ export default {
     },
     methods: {
         async getInvestments(walletId) {
-            await this.$axios.$post(process.env.api.investments, {
+            await this.$post(process.env.api.investments, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.tableData = response;
@@ -129,7 +128,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: row.sk
             }).then(async () => {
@@ -181,5 +180,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

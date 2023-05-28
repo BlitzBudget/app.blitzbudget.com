@@ -30,8 +30,8 @@
 
         <template slot="footer">
             <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                    $t('transaction.edit.submit')
-            }}</base-button>
+                            $t('transaction.edit.submit')
+                            }}</base-button>
             <nuxt-link to="/transactions" class="pull-right">{{ $t('transaction.get.to') }}
             </nuxt-link>
         </template>
@@ -83,7 +83,7 @@ export default {
             return category.category_type + " : " + category.category_name
         },
         async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
+            await this.$post(process.env.api.categories, {
                 user_id: userId,
             }).then((response) => {
                 this.categories = response;
@@ -125,6 +125,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

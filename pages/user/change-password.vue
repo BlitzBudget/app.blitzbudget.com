@@ -4,16 +4,16 @@
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
                 <change-password-form @on-submit="changePassword" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]">
+                                { 'show d-block': !hasSucceeded },
+                                { 'd-none': hasSucceeded }]">
                 </change-password-form>
             </div>
         </div>
         <div class="col-md-12 ml-auto-mr-auto">
             <!-- Success Message Tab -->
             <card type="testimonial" header-classes="card-header-avatar" :class="[
-            { 'show d-block': hasSucceeded },
-            { 'd-none': !hasSucceeded }]">
+                        { 'show d-block': hasSucceeded },
+                        { 'd-none': !hasSucceeded }]">
                 <p class="card-description">
                     {{ $t('user.change-password.success.description') }}
                 </p>
@@ -49,7 +49,7 @@ export default {
             }
 
             this.emailModel = model;
-            await this.$axios.$post(process.env.api.profile.changePassword, {
+            await this.$post(process.env.api.profile.changePassword, {
                 previous_password: model.oldPassword,
                 proposed_password: model.password,
                 access_token: accessToken
@@ -63,6 +63,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

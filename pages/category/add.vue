@@ -29,7 +29,7 @@ export default {
             }
 
             this.categoryModel = model;
-            await this.$axios.$put(process.env.api.categories, {
+            await this.$put(process.env.api.categories, {
                 pk: userId,
                 category_type: model.type,
                 category_name: model.name
@@ -42,5 +42,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

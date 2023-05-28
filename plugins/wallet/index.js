@@ -56,7 +56,7 @@ let WalletStore = {
         }
     },
     async fetchWalletItemFromAPI(userId, event) {
-        return event.$axios.$post(process.env.api.wallets, {
+        return event.$post(process.env.api.wallets, {
             user_id: userId,
         }).then((response) => {
             return response;

@@ -6,8 +6,8 @@
             </div>
             <div class="col-sm-6">
                 <nuxt-link to="/investment/link/add" class="btn btn-link btn-primary float-right">{{
-                        $t('investment.link.get.add')
-                }}
+                                    $t('investment.link.get.add')
+                                    }}
                 </nuxt-link>
             </div>
         </div>
@@ -20,21 +20,20 @@
                 </template>
 
                 <template slot-scope="{ row, index }" :class="[
-                { 'show d-block': !noData },
-                { 'd-none': noData }]">
+                                { 'show d-block': !noData },
+                                { 'd-none': noData }]">
                     <td>{{ row.transaction_name }}</td>
                     <td :class="row.investment_id"></td>
                     <td class="text-right">
                         <el-tooltip :content="$t('investment.link.get.table.link')" effect="light" :open-delay="300"
                             placement="top">
-                            <nuxt-link
-                                :to="{ path: '/investment/link/add', query: { investment_id: row.investment_id } }"
+                            <nuxt-link :to="{ path: '/investment/link/add', query: { investment_id: row.investment_id } }"
                                 :type="index > 2 ? 'success' : 'neutral'" icon size="sm" class="btn-link btn-neutral">
                                 <i class="tim-icons icon-link-72"></i>
                             </nuxt-link>
                         </el-tooltip>
-                        <el-tooltip :content="$t('investment.link.get.table.investment')" effect="light"
-                            :open-delay="300" placement="top">
+                        <el-tooltip :content="$t('investment.link.get.table.investment')" effect="light" :open-delay="300"
+                            placement="top">
                             <nuxt-link to='/investments' :type="index > 2 ? 'success' : 'neutral'" icon size="sm"
                                 class="btn-link btn-neutral">
                                 <i class="tim-icons icon-chart-bar-32"></i>
@@ -42,8 +41,8 @@
                         </el-tooltip>
                         <el-tooltip :content="$t('investment.link.get.table.delete')" effect="light" :open-delay="300"
                             placement="top">
-                            <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon
-                                size="sm" class="btn-link">
+                            <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
+                                class="btn-link">
                                 <i class="tim-icons icon-simple-remove"></i>
                             </base-button>
                         </el-tooltip>
@@ -51,18 +50,18 @@
                 </template>
             </base-table>
             <div :class="[
-            { 'show d-block text-center': noData },
-            { 'd-none': !noData }]">
+                        { 'show d-block text-center': noData },
+                        { 'd-none': !noData }]">
                 {{ $t('investment.link.get.no-data') }}
             </div>
             <!-- small modal -->
-            <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
-                headerClasses="justify-content-center" type="mini">
+            <modal :show.sync="modals.mini" class="modal-primary" :show-close="true" headerClasses="justify-content-center"
+                type="mini">
                 <p>{{ $t('investment.link.delete.description') }}</p>
                 <template slot="footer">
                     <base-button type="neutral" link @click.native="modals.mini = false">{{
-                            $t('investment.link.get.back')
-                    }}
+                                            $t('investment.link.get.back')
+                                            }}
                     </base-button>
                     <base-button @click="deleteItem()" type="neutral" link>{{ $t('investment.link.get.delete') }}
                     </base-button>
@@ -104,7 +103,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: this.investmentRuleId
             }).then(async () => {
@@ -129,7 +128,7 @@ export default {
             await this.getInvestmentRules(wallet.WalletId, selectedInvestmentId);
         },
         async getInvestmentRules(walletId, investmentId) {
-            await this.$axios.$post(process.env.api.rules.investment, {
+            await this.$post(process.env.api.rules.investment, {
                 wallet_id: walletId,
                 investment_id: investmentId
             }).then(async (response) => {
@@ -148,7 +147,7 @@ export default {
             }
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
-            await this.$axios.$post(process.env.api.investments, {
+            await this.$post(process.env.api.investments, {
                 wallet_id: wallet.WalletId,
             }).then((response) => {
                 this.assignInvestmentsToTable(response);
@@ -181,5 +180,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

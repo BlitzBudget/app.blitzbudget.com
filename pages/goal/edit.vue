@@ -29,7 +29,7 @@ export default {
             }
 
             this.goalModel = model;
-            await this.$axios.$patch(process.env.api.goals, {
+            await this.$patch(process.env.api.goals, {
                 pk: walletId,
                 sk: model.sk,
                 target_amount: parseFloat(model.targetAmount),
@@ -45,5 +45,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

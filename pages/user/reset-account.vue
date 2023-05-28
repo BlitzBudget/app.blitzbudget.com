@@ -4,13 +4,13 @@
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
                 <reset-account-form @on-submit="verifyPassword" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]">
+                                { 'show d-block': !hasSucceeded },
+                                { 'd-none': hasSucceeded }]">
                 </reset-account-form>
                 <!-- Success Message Tab -->
                 <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': hasSucceeded },
-                { 'd-none': !hasSucceeded }]">
+                                { 'show d-block': hasSucceeded },
+                                { 'd-none': !hasSucceeded }]">
                     <p class="card-description">
                         {{ $t('user.reset-account.success.description') }}
                     </p>
@@ -47,7 +47,7 @@ export default {
         async resetAccount() {
             let event = this;
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-            await this.$axios.$post(process.env.api.profile.resetAccount, {
+            await this.$post(process.env.api.profile.resetAccount, {
                 walletId: userId,
                 deleteAccount: false,
             }).then(() => {
@@ -65,7 +65,7 @@ export default {
             }
 
             let email = this.$authentication.fetchCurrentUser(this).email;
-            await this.$axios.$post(process.env.api.profile.login, {
+            await this.$post(process.env.api.profile.login, {
                 email: email,
                 password: model.password,
             }).then(async () => {
@@ -78,6 +78,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

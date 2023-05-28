@@ -68,7 +68,7 @@ export default {
             let isValidForm = await this.$validator.validateAll();
             if (isValidForm) {
                 // TIP use this.model to send it to api and perform register call
-                this.$axios.$post(process.env.api.profile.confirmSignup, {
+                this.$post(process.env.api.profile.confirmSignup, {
                     email: this.model.email,
                     new_password: this.model.password,
                     confirmation_code: this.model.confirmationCode,
@@ -91,7 +91,7 @@ export default {
                 return;
             }
             // TIP use this.model to send it to api and perform register call
-            this.$axios.$post(process.env.api.profile.resendConfirmationCode, {
+            this.$post(process.env.api.profile.resendConfirmationCode, {
                 email: this.model.email,
             }).then((response) => {
                 console.log(response);

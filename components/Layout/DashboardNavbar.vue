@@ -120,7 +120,7 @@ export default {
       await this.$userLogout.logout(this);
     },
     async getNotifications(walletId) {
-      await this.$axios.$post(process.env.api.notifications, {
+      await this.$post(process.env.api.notifications, {
         wallet_id: walletId,
       }).then((response) => {
         this.notifications = response;

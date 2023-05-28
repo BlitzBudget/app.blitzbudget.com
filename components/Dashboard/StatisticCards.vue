@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         async getInvestments(walletId) {
-            await this.$axios.$post(process.env.api.investments, {
+            await this.$post(process.env.api.investments, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.investmentData = response;
@@ -94,7 +94,7 @@ export default {
             })
         },
         async getDebts(walletId) {
-            await this.$axios.$post(process.env.api.debts, {
+            await this.$post(process.env.api.debts, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.debtData = response;
@@ -178,5 +178,4 @@ export default {
     }
 }
 </script>
-<style>
-</style>
+<style></style>

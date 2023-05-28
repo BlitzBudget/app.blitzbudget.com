@@ -29,7 +29,7 @@ export default {
             }
 
             this.transactionModel = model;
-            await this.$axios.$patch(process.env.api.transactions, {
+            await this.$patch(process.env.api.transactions, {
                 pk: walletId,
                 sk: model.sk,
                 amount: parseFloat(model.amount),
@@ -45,5 +45,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

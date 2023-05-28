@@ -21,7 +21,7 @@ export default {
         };
     },
     mounted() {
-        this.$axios.$get(process.env.help.invokeUrl).then((response) => {
+        this.$get(process.env.help.invokeUrl).then((response) => {
             this.data = response;
         }).catch((error) => {
             this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: error });
@@ -29,5 +29,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

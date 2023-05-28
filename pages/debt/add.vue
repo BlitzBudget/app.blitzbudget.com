@@ -29,7 +29,7 @@ export default {
             }
 
             this.debtModel = model;
-            await this.$axios.$put(process.env.api.debts, {
+            await this.$put(process.env.api.debts, {
                 pk: walletId,
                 debted_amount: parseFloat(model.debtAmount),
                 debt_name: model.debtName,
@@ -43,5 +43,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

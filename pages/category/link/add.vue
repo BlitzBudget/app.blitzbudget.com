@@ -29,7 +29,7 @@ export default {
             }
 
             this.categoryModel = model;
-            await this.$axios.$put(process.env.api.rules.category, {
+            await this.$put(process.env.api.rules.category, {
                 pk: walletId,
                 transaction_name: model.transactionDescription,
                 category_id: model.categoryId

@@ -16,8 +16,8 @@
                     <el-select v-model="model.debtId" class="select-primary" name="debtId"
                         v-validate="modelValidations.debtId" :loading="loadingDataForSelect" :clearable="clearable"
                         autocomplete="on" :filterable="filterable">
-                        <el-option v-for="debt in debts" class="select-primary" :label="getDebtValue(debt)"
-                            :value="debt.sk" :key="debt.sk" :selected="isSelected(debt)">
+                        <el-option v-for="debt in debts" class="select-primary" :label="getDebtValue(debt)" :value="debt.sk"
+                            :key="debt.sk" :selected="isSelected(debt)">
                         </el-option>
                     </el-select>
                 </base-input>
@@ -27,12 +27,11 @@
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('debt.link.add.submit')
-                }}</base-button>
-                <nuxt-link class="float-right"
-                    :to="{ path: '/debt/debt-link', query: { debt_id: this.selectedDebtId } }">{{
-                            $t('debt.link.add.viewDebtRule')
-                    }}</nuxt-link>
+                                    $t('debt.link.add.submit')
+                                    }}</base-button>
+                <nuxt-link class="float-right" :to="{ path: '/debt/debt-link', query: { debt_id: this.selectedDebtId } }">{{
+                                    $t('debt.link.add.viewDebtRule')
+                                    }}</nuxt-link>
             </template>
         </card>
     </form>
@@ -85,7 +84,7 @@ export default {
             });
         },
         async getDebts(walletId) {
-            await this.$axios.$post(process.env.api.debts, {
+            await this.$post(process.env.api.debts, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.debts = response;
@@ -110,5 +109,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

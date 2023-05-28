@@ -5,22 +5,19 @@
                 <h4 class="card-title">{{ $t('goal.link.add.title') }}</h4>
             </div>
             <div>
-                <el-tooltip :content="$t('goal.link.add.tooltip')" effect="light" :open-delay="300"
-                    placement="top">
+                <el-tooltip :content="$t('goal.link.add.tooltip')" effect="light" :open-delay="300" placement="top">
                     <base-input :label="$t('goal.link.add.transactionDescription')" required
                         v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
                         :error="getError('transactionDescription')" name="transactionDescription" autofocus>
                     </base-input>
                 </el-tooltip>
 
-                <base-input :label="$t('goal.link.add.goalId')" required :error="getError('goalId')"
-                    name="goalId">
+                <base-input :label="$t('goal.link.add.goalId')" required :error="getError('goalId')" name="goalId">
                     <el-select v-model="model.goalId" class="select-primary" name="goalId"
-                        v-validate="modelValidations.goalId" :loading="loadingDataForSelect"
-                        :clearable="clearable" autocomplete="on" :filterable="filterable">
-                        <el-option v-for="goal in goals" class="select-primary"
-                            :label="getGoalValue(goal)" :value="goal.sk" :key="goal.sk"
-                            :selected="isSelected(goal)">
+                        v-validate="modelValidations.goalId" :loading="loadingDataForSelect" :clearable="clearable"
+                        autocomplete="on" :filterable="filterable">
+                        <el-option v-for="goal in goals" class="select-primary" :label="getGoalValue(goal)" :value="goal.sk"
+                            :key="goal.sk" :selected="isSelected(goal)">
                         </el-option>
                     </el-select>
                 </base-input>
@@ -30,13 +27,12 @@
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('goal.link.add.submit')
-                }}</base-button>
-                <nuxt-link class="float-right"
-                    :to="{ path: '/goal/goal-link', query: { goal_id: this.selectedGoalId } }">
+                                    $t('goal.link.add.submit')
+                                    }}</base-button>
+                <nuxt-link class="float-right" :to="{ path: '/goal/goal-link', query: { goal_id: this.selectedGoalId } }">
                     {{
-                            $t('goal.link.add.viewGoalRule')
-                    }}</nuxt-link>
+                                        $t('goal.link.add.viewGoalRule')
+                                        }}</nuxt-link>
             </template>
         </card>
     </form>
@@ -89,7 +85,7 @@ export default {
             });
         },
         async getGoals(walletId) {
-            await this.$axios.$post(process.env.api.goals, {
+            await this.$post(process.env.api.goals, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.goals = response;
@@ -114,5 +110,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

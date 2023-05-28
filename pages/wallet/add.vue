@@ -29,7 +29,7 @@ export default {
             }
 
             this.walletModel = model;
-            await this.$axios.$put(process.env.api.wallets, {
+            await this.$put(process.env.api.wallets, {
                 pk: userId,
                 wallet_currency: model.currency,
                 wallet_name: model.name
@@ -42,5 +42,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

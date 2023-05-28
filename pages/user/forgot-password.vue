@@ -37,8 +37,8 @@
                 </simple-wizard>
                 <!-- Success Message Tab -->
                 <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': !isOpen },
-                { 'd-none': isOpen }]">
+                                { 'show d-block': !isOpen },
+                                { 'd-none': isOpen }]">
                     <p class="card-description">
                         {{ $t('user.forgot-password.success.text') }}
                     </p>
@@ -85,7 +85,7 @@ export default {
         },
         async onFirstStepValidated(validated, model) {
             let ajaxSuccess = false;
-            await this.$axios.$post(process.env.api.profile.forgotPassword, {
+            await this.$post(process.env.api.profile.forgotPassword, {
                 email: model.email,
             }).then(() => {
                 this.wizardModel = { ...this.wizardModel, ...model };
@@ -98,7 +98,7 @@ export default {
         },
         wizardComplete(validated, model) {
             // Call confirm forgot password scenario
-            this.$axios.$post(process.env.api.profile.confirmForgotPassword, {
+            this.$post(process.env.api.profile.confirmForgotPassword, {
                 email: this.wizardModel.email,
                 new_password: this.wizardModel.password,
                 confirmation_code: model.validationCode

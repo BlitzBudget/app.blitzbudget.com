@@ -39,14 +39,14 @@
                         prop="creationDate">
                         <div slot-scope="props">
                             {{ new Date(props.row.creation_date).toLocaleDateString(
-                                    $i18n.locale, {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: 'numeric'
-                                })
-                            }}
+                                                        $i18n.locale, {
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                        hour: 'numeric',
+                                                        minute: 'numeric'
+                                                        })
+                                                        }}
                         </div>
                     </el-table-column>
                     <el-table-column :min-width="100" :label="$t('transaction.get.amount')" sortable prop="amount">
@@ -92,8 +92,8 @@
                             </el-tooltip>
                             <el-tooltip :content="$t('transaction.get.delete')" effect="light" :open-delay="300"
                                 placement="top">
-                                <base-button @click.native="handleDelete(props.row)" class="remove btn-link"
-                                    type="danger" size="sm" icon>
+                                <base-button @click.native="handleDelete(props.row)" class="remove btn-link" type="danger"
+                                    size="sm" icon>
                                     <i class="tim-icons icon-simple-remove"></i>
                                 </base-button>
                             </el-tooltip>
@@ -229,7 +229,7 @@ export default {
         },
         async filterTransactions() {
             let wallet = await this.$wallet.setCurrentWallet(this);
-            await this.$axios.$post(process.env.api.transactions, {
+            await this.$post(process.env.api.transactions, {
                 wallet_id: wallet.WalletId,
                 starts_with_date: this.startsWithDate,
                 ends_with_date: this.endsWithDate
@@ -242,7 +242,7 @@ export default {
             });
         },
         async getTransactions(walletId) {
-            await this.$axios.$post(process.env.api.transactions, {
+            await this.$post(process.env.api.transactions, {
                 wallet_id: walletId,
                 starts_with_date: this.startsWithDate,
                 ends_with_date: this.endsWithDate
@@ -277,7 +277,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: row.sk
             }).then(async () => {
@@ -305,7 +305,7 @@ export default {
             this.setEndsWithDate(date);
         },
         async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
+            await this.$post(process.env.api.categories, {
                 user_id: userId,
             }).then((response) => {
                 this.calculateCategories(response);

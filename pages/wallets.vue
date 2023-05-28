@@ -11,8 +11,7 @@
         </div>
         <div class="row">
             <div class="col-lg-3 col-md-6 px-1" v-for="wallet in walletModels" :key="wallet.sk">
-                <card type="pricing" class="card-primary" footer-classes="text-center mb-3 mt-3"
-                    :data-target="wallet.sk">
+                <card type="pricing" class="card-primary" footer-classes="text-center mb-3 mt-3" :data-target="wallet.sk">
                     <h1 class="card-title">{{ wallet.wallet_currency }}</h1>
                     <img class="card-img" src="img/card-primary.png" alt="Image" />
                     <ul class="list-group">
@@ -25,13 +24,12 @@
                         <h5 class="text-on-back">{{ wallet.wallet_currency }}</h5>
                         <p class="plan"></p>
                     </div>
-                    <base-button slot="footer" round type="primary" class="btn-just-icon"
-                        @click="chooseWallet(wallet.sk)">
+                    <base-button slot="footer" round type="primary" class="btn-just-icon" @click="chooseWallet(wallet.sk)">
                         {{ $t('wallet.get.enter') }}
                     </base-button>
                     <base-button slot="footer" class="btn btn-link text-center" @click="openModal(wallet.sk)">{{
-                            $t('wallet.get.delete')
-                    }}
+                                            $t('wallet.get.delete')
+                                            }}
                     </base-button>
                 </card>
             </div>
@@ -57,8 +55,8 @@
             </div>
         </div>
         <!-- small modal -->
-        <modal :show.sync="modals.delete" class="modal-primary" :show-close="true"
-            headerClasses="justify-content-center" type="mini">
+        <modal :show.sync="modals.delete" class="modal-primary" :show-close="true" headerClasses="justify-content-center"
+            type="mini">
             <div slot="header" class="modal-profile">
                 <i class="tim-icons icon-single-02"></i>
             </div>
@@ -94,7 +92,7 @@ export default {
     methods: {
         async getWallets(userId) {
             let event = this;
-            await this.$axios.$post(process.env.api.wallets, {
+            await this.$post(process.env.api.wallets, {
                 user_id: userId,
             }).then((response) => {
                 this.setWalletResponse(event, response);
@@ -131,7 +129,7 @@ export default {
             // Fetch the current user ID
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: userId,
                 sk: this.deleteWalletId
             }).then(async () => {
@@ -156,5 +154,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

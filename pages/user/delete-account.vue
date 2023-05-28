@@ -4,13 +4,13 @@
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
                 <delete-account-form @on-submit="verifyPassword" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]">
+                                { 'show d-block': !hasSucceeded },
+                                { 'd-none': hasSucceeded }]">
                 </delete-account-form>
                 <!-- Success Message Tab -->
                 <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': hasSucceeded },
-                { 'd-none': !hasSucceeded }]">
+                                { 'show d-block': hasSucceeded },
+                                { 'd-none': !hasSucceeded }]">
                     <p class="card-description">
                         {{ $t('user.delete-account.success.description') }}
                     </p>
@@ -48,7 +48,7 @@ export default {
             let event = this;
             let user = this.$authentication.fetchCurrentUser(this);
             let accessToken = this.$authentication.fetchAccessToken();
-            await this.$axios.$post(process.env.api.profile.resetAccount, {
+            await this.$post(process.env.api.profile.resetAccount, {
                 walletId: user.financialPortfolioId,
                 userName: user.email,
                 accessToken: accessToken,
@@ -69,7 +69,7 @@ export default {
             }
 
             let email = this.$authentication.fetchCurrentUser(this).email;
-            await this.$axios.$post(process.env.api.profile.login, {
+            await this.$post(process.env.api.profile.login, {
                 email: email,
                 password: model.password,
             }).then(async () => {
@@ -82,6 +82,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

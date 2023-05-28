@@ -29,7 +29,7 @@ export default {
             }
 
             this.debtModel = model;
-            await this.$axios.$put(process.env.api.rules.debt, {
+            await this.$put(process.env.api.rules.debt, {
                 pk: walletId,
                 transaction_name: model.transactionDescription,
                 debt_id: model.debtId

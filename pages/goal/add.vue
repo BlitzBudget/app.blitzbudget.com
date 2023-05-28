@@ -29,7 +29,7 @@ export default {
             }
 
             this.goalModel = model;
-            await this.$axios.$put(process.env.api.goals, {
+            await this.$put(process.env.api.goals, {
                 pk: walletId,
                 target_amount: parseFloat(model.targetAmount),
                 target_date: model.targetDate,
@@ -45,5 +45,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

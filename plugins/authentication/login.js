@@ -49,9 +49,9 @@ let authentication = {
         let bearerToken = 'Bearer ' + accessToken;
         accessToken = accessToken.substring(1, accessToken.length - 1);
         localStorage.setItem(this.accessTokenItem, accessToken);
-        event.$axios.setHeader('Authorization', bearerToken);
-        event.$axios.setToken(bearerToken)
-        event.$auth.ctx.app.$axios.setHeader('Authorization', bearerToken);
+        event.setHeader('Authorization', bearerToken);
+        event.setToken(bearerToken)
+        event.$auth.ctx.app.setHeader('Authorization', bearerToken);
     },
     retrieveUserAttributes(result, event) {
         let userAttributes = result.UserAttributes;

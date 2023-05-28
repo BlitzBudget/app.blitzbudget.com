@@ -64,8 +64,8 @@
             <base-checkbox class="text-left" v-validate="'required'" :error="getError('checkbox')" name="checkbox"
               v-model="model.checkbox">
               {{ $t('user.register.terms.firstpart') }}<a href="www.blitzbudget.com/terms" target="_blank">{{
-                  $t('user.register.terms.secondpart')
-              }}</a>.
+                              $t('user.register.terms.secondpart')
+                              }}</a>.
             </base-checkbox>
 
             <base-button native-type="submit" slot="footer" type="primary" round block size="lg">
@@ -106,7 +106,7 @@ export default {
       let { firstName, lastName } = this.extractNames(this.model.fullName)
       if (isValidForm) {
         // TIP use this.model to send it to api and perform register call
-        this.$axios.$post(process.env.api.profile.signup, {
+        this.$post(process.env.api.profile.signup, {
           email: this.model.email,
           password: this.model.password,
           name: firstName,
@@ -129,6 +129,4 @@ export default {
   }
 };
 </script>
-<style>
-
-</style>
+<style></style>

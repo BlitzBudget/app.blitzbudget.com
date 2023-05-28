@@ -29,7 +29,7 @@ export default {
             }
 
             this.goalModel = model;
-            await this.$axios.$put(process.env.api.rules.goal, {
+            await this.$put(process.env.api.rules.goal, {
                 pk: walletId,
                 transaction_name: model.transactionDescription,
                 goal_id: model.goalId

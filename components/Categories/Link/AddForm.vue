@@ -17,9 +17,8 @@
                     <el-select v-model="model.categoryId" class="select-primary" name="categoryId"
                         v-validate="modelValidations.categoryId" :loading="loadingDataForSelect" :clearable="clearable"
                         autocomplete="on" :filterable="filterable">
-                        <el-option v-for="category in categories" class="select-primary"
-                            :label="getCategoryValue(category)" :value="category.sk" :key="category.sk"
-                            :selected="isSelected(category)">
+                        <el-option v-for="category in categories" class="select-primary" :label="getCategoryValue(category)"
+                            :value="category.sk" :key="category.sk" :selected="isSelected(category)">
                         </el-option>
                     </el-select>
                 </base-input>
@@ -29,12 +28,12 @@
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('category.link.add.submit')
-                }}</base-button>
+                                    $t('category.link.add.submit')
+                                    }}</base-button>
                 <nuxt-link class="float-right"
                     :to="{ path: '/category/category-link', query: { category_id: this.selectedCategoryId } }">{{
-                            $t('category.link.add.viewCategoryRule')
-                    }}</nuxt-link>
+                                        $t('category.link.add.viewCategoryRule')
+                                        }}</nuxt-link>
             </template>
         </card>
     </form>
@@ -87,7 +86,7 @@ export default {
             });
         },
         async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
+            await this.$post(process.env.api.categories, {
                 user_id: userId,
             }).then((response) => {
                 this.categories = response;
@@ -112,5 +111,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

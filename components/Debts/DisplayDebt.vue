@@ -7,8 +7,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="chart-area">
-                            <pie-chart :chart-data="calculatePieChart(debt)" :extra-options="extraOptions"
-                                :height="120">
+                            <pie-chart :chart-data="calculatePieChart(debt)" :extra-options="extraOptions" :height="120">
                             </pie-chart>
                         </div>
                     </div>
@@ -16,8 +15,8 @@
                     <div class="col-6">
                         <h4 class="card-title">
                             <i class="tim-icons icon-credit-card text-success "></i> {{ $n(debt.current_value) }} {{
-                                    currency
-                            }}
+                                                        currency
+                                                        }}
                         </h4>
                         <p class="category">{{ $t('debt.get.debted-amount') }} {{ $n(debt.debted_amount) }}
                             {{ currency }}
@@ -28,8 +27,8 @@
                 <div class="text-right">
                     <el-tooltip :content="$t('debt.get.link')" effect="light" :open-delay="300" placement="top">
                         <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'"
-                            :to="{ path: '/debt/debt-link', query: { debt_id: debt.sk } }" class="edit btn-link"
-                            type="info" size="sm" icon>
+                            :to="{ path: '/debt/debt-link', query: { debt_id: debt.sk } }" class="edit btn-link" type="info"
+                            size="sm" icon>
                             <i class="tim-icons icon-link-72"></i>
                         </nuxt-link>
                     </el-tooltip>
@@ -49,13 +48,13 @@
             </card>
         </div>
         <div :class="[
-        { 'show d-block text-center col-12': noData },
-        { 'd-none': !noData }]">
+                { 'show d-block text-center col-12': noData },
+                { 'd-none': !noData }]">
             {{ $t('debt.get.no-data') }}
         </div>
         <div :class="[
-        { 'show d-block text-center col-12': loading },
-        { 'd-none': !loading }]">
+                { 'show d-block text-center col-12': loading },
+                { 'd-none': !loading }]">
             {{ $t('debt.get.loading') }}
         </div>
     </div>
@@ -85,7 +84,7 @@ export default {
     },
     methods: {
         async getDebts(walletId) {
-            await this.$axios.$post(process.env.api.debts, {
+            await this.$post(process.env.api.debts, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.tableData = response;
@@ -117,7 +116,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: row.sk
             }).then(async () => {
@@ -169,5 +168,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

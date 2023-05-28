@@ -27,7 +27,7 @@ export default {
                 return;
             }
 
-            await this.$axios.$patch(process.env.api.budgets, {
+            await this.$patch(process.env.api.budgets, {
                 pk: walletId,
                 sk: model.sk,
                 planned: parseFloat(model.planned),
@@ -41,5 +41,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

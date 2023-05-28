@@ -6,8 +6,8 @@
             </div>
             <div class="col-sm-6">
                 <nuxt-link to="/category/link/add" class="btn btn-link btn-primary float-right">{{
-                        $t('category.link.get.add')
-                }}
+                                    $t('category.link.get.add')
+                                    }}
                 </nuxt-link>
             </div>
         </div>
@@ -20,8 +20,8 @@
                 </template>
 
                 <template slot-scope="{ row, index }" :class="[
-                { 'show d-block': !noData },
-                { 'd-none': noData }]">
+                                { 'show d-block': !noData },
+                                { 'd-none': noData }]">
                     <td>{{ row.transaction_name }}</td>
                     <td :class="row.category_id"></td>
                     <td class="text-right">
@@ -41,8 +41,8 @@
                         </el-tooltip>
                         <el-tooltip :content="$t('category.link.get.table.delete')" effect="light" :open-delay="300"
                             placement="top">
-                            <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon
-                                size="sm" class="btn-link">
+                            <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
+                                class="btn-link">
                                 <i class="tim-icons icon-simple-remove"></i>
                             </base-button>
                         </el-tooltip>
@@ -50,17 +50,17 @@
                 </template>
             </base-table>
             <div :class="[
-            { 'show d-block text-center': noData },
-            { 'd-none': !noData }]">
+                        { 'show d-block text-center': noData },
+                        { 'd-none': !noData }]">
                 {{ $t('category.link.get.no-data') }}
             </div>
             <!-- small modal -->
-            <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
-                headerClasses="justify-content-center" type="mini">
+            <modal :show.sync="modals.mini" class="modal-primary" :show-close="true" headerClasses="justify-content-center"
+                type="mini">
                 <p>{{ $t('category.link.delete.description') }}</p>
                 <template slot="footer">
                     <base-button type="neutral" link @click.native="modals.mini = false">{{ $t('category.link.get.back')
-                    }}
+                                            }}
                     </base-button>
                     <base-button @click="deleteItem()" type="neutral" link>{{ $t('category.link.get.delete') }}
                     </base-button>
@@ -99,7 +99,7 @@ export default {
             this.categoryRuleId = null;
         },
         async getCategoryRules(walletId, categoryId) {
-            await this.$axios.$post(process.env.api.rules.category, {
+            await this.$post(process.env.api.rules.category, {
                 wallet_id: walletId,
                 category_id: categoryId
             }).then(async (response) => {
@@ -121,7 +121,7 @@ export default {
             let categoryIds = this.getCategoryIds(categoryRuleResponse);
             // Fetch the current user ID
             let userId = this.$authentication.fetchCurrentUser(this).financialPortfolioId;
-            await this.$axios.$post(process.env.api.category.batch, {
+            await this.$post(process.env.api.category.batch, {
                 user_id: userId,
                 category_ids: categoryIds
             }).then((response) => {
@@ -144,7 +144,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: this.categoryRuleId
             }).then(async () => {
@@ -193,5 +193,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

@@ -26,8 +26,7 @@
                             </base-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                            <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm"
-                                class="btn-link"
+                            <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm" class="btn-link"
                                 :to="{ name: 'budget-edit___' + $i18n.locale, params: { budget_id: row.sk, planned: row.planned, category_id: row.category } }">
                                 <i class="tim-icons icon-pencil"></i>
                             </nuxt-link>
@@ -42,13 +41,13 @@
                 </template>
             </base-table>
             <div :class="[
-            { 'show d-block text-center': noData },
-            { 'd-none': !noData }]">
+                        { 'show d-block text-center': noData },
+                        { 'd-none': !noData }]">
                 {{ $t('budget.get.no-data') }}
             </div>
             <div :class="[
-            { 'show d-block text-center': loading },
-            { 'd-none': !loading }]">
+                        { 'show d-block text-center': loading },
+                        { 'd-none': !loading }]">
                 {{ $t('budget.get.loading') }}
             </div>
         </div>
@@ -64,14 +63,14 @@
 
                 <template slot-scope="{ row, index }">
                     <td>{{ new Date(row.creation_date).toLocaleDateString(
-                    $i18n.locale, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric'
-                    })
-                    }}</td>
+                                            $i18n.locale, {
+                                            year: 'numeric',
+                                            month: 'long',
+                                            day: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric'
+                                            })
+                                            }}</td>
                     <td>{{ row.description }}</td>
                     <td class="text-right">{{ $n(row.amount) }} {{ currency }}</td>
                     <td>
@@ -85,8 +84,8 @@
                 <base-button type="neutral" link @click.native="modals.transaction = false">Close
                 </base-button>
                 <nuxt-link to="/transactions" class="btn btn-link btn-primary">{{
-                $t('budget.get.modal.viewTransactions')
-                }}</nuxt-link>
+                                    $t('budget.get.modal.viewTransactions')
+                                    }}</nuxt-link>
             </template>
         </modal>
     </div>
@@ -133,7 +132,7 @@ export default {
             this.showTransactionsInModal = transactions;
         },
         async getBudgets(walletId) {
-            await this.$axios.$post(process.env.api.budgets, {
+            await this.$post(process.env.api.budgets, {
                 wallet_id: walletId,
             }).then((response) => {
                 this.tableData = response;
@@ -148,7 +147,7 @@ export default {
             });
         },
         async getCategories(userId) {
-            await this.$axios.$post(process.env.api.categories, {
+            await this.$post(process.env.api.categories, {
                 user_id: userId,
             }).then(async (response) => {
                 // Assign Categories name to the categories
@@ -218,7 +217,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: row.sk
             }).then(async () => {
@@ -248,7 +247,7 @@ export default {
             // Fetch Wallet ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.transactions, {
+            await this.$post(process.env.api.transactions, {
                 wallet_id: wallet.WalletId,
                 starts_with_date: this.startsWithDate,
                 ends_with_date: this.endsWithDate

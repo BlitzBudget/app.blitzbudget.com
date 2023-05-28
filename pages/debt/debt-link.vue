@@ -6,8 +6,8 @@
             </div>
             <div class="col-sm-6">
                 <nuxt-link to="/debt/link/add" class="btn btn-link btn-primary float-right">{{
-                        $t('debt.link.get.add')
-                }}
+                                    $t('debt.link.get.add')
+                                    }}
                 </nuxt-link>
             </div>
         </div>
@@ -20,8 +20,8 @@
                 </template>
 
                 <template slot-scope="{ row, index }" :class="[
-                { 'show d-block': !noData },
-                { 'd-none': noData }]">
+                                { 'show d-block': !noData },
+                                { 'd-none': noData }]">
                     <td>{{ row.transaction_name }}</td>
                     <td :class="row.debt_id"></td>
                     <td class="text-right">
@@ -41,8 +41,8 @@
                         </el-tooltip>
                         <el-tooltip :content="$t('debt.link.get.table.delete')" effect="light" :open-delay="300"
                             placement="top">
-                            <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon
-                                size="sm" class="btn-link">
+                            <base-button @click="openModal(row.sk)" :type="index > 2 ? 'danger' : 'neutral'" icon size="sm"
+                                class="btn-link">
                                 <i class="tim-icons icon-simple-remove"></i>
                             </base-button>
                         </el-tooltip>
@@ -50,18 +50,18 @@
                 </template>
             </base-table>
             <div :class="[
-            { 'show d-block text-center': noData },
-            { 'd-none': !noData }]">
+                        { 'show d-block text-center': noData },
+                        { 'd-none': !noData }]">
                 {{ $t('debt.link.get.no-data') }}
             </div>
             <!-- small modal -->
-            <modal :show.sync="modals.mini" class="modal-primary" :show-close="true"
-                headerClasses="justify-content-center" type="mini">
+            <modal :show.sync="modals.mini" class="modal-primary" :show-close="true" headerClasses="justify-content-center"
+                type="mini">
                 <p>{{ $t('debt.link.delete.description') }}</p>
                 <template slot="footer">
                     <base-button type="neutral" link @click.native="modals.mini = false">{{
-                            $t('debt.link.get.back')
-                    }}
+                                            $t('debt.link.get.back')
+                                            }}
                     </base-button>
                     <base-button @click="deleteItem()" type="neutral" link>{{ $t('debt.link.get.delete') }}
                     </base-button>
@@ -103,7 +103,7 @@ export default {
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
 
-            await this.$axios.$post(process.env.api.deleteItem, {
+            await this.$post(process.env.api.deleteItem, {
                 pk: wallet.WalletId,
                 sk: this.debtRuleId
             }).then(async () => {
@@ -128,7 +128,7 @@ export default {
             await this.getDebtRules(wallet.WalletId, selectedDebtId);
         },
         async getDebtRules(walletId, debtId) {
-            await this.$axios.$post(process.env.api.rules.debt, {
+            await this.$post(process.env.api.rules.debt, {
                 wallet_id: walletId,
                 debt_id: debtId
             }).then(async (response) => {
@@ -148,7 +148,7 @@ export default {
 
             // Fetch the current user ID
             let wallet = await this.$wallet.setCurrentWallet(this);
-            await this.$axios.$post(process.env.api.debts, {
+            await this.$post(process.env.api.debts, {
                 wallet_id: wallet.WalletId,
             }).then((response) => {
                 this.assignDebtsToTable(response);
@@ -181,5 +181,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>
