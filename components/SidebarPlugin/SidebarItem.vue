@@ -1,17 +1,7 @@
 <template>
-  <component
-    :is="baseComponent"
-    :to="link.path ? link.path : '/'"
-    :class="{ active: isActive }"
-    tag="li"
-  >
-    <a
-      v-if="isMenu"
-      class="sidebar-menu-item"
-      :aria-expanded="!collapsed"
-      data-toggle="collapse"
-      @click.prevent="collapseMenu"
-    >
+  <component :is="baseComponent" :to="link.path ? link.path : '/'" :class="{ active: isActive }" tag="li">
+    <a v-if="isMenu" class="sidebar-menu-item" :aria-expanded="!collapsed" data-toggle="collapse"
+      @click.prevent="collapseMenu">
       <template v-if="addLink">
         <span class="sidebar-mini-icon">{{ linkPrefix }}</span>
         <span class="sidebar-normal">
@@ -25,29 +15,16 @@
     </a>
 
     <collapse-transition>
-      <div
-        v-if="$slots.default || this.isMenu"
-        v-show="!collapsed"
-        class="collapse show"
-      >
+      <div v-if="$slots.default || this.isMenu" v-show="!collapsed" class="collapse show">
         <ul class="nav">
           <slot></slot>
         </ul>
       </div>
     </collapse-transition>
 
-    <slot
-      name="title"
-      v-if="children.length === 0 && !$slots.default && link.path"
-    >
-      <component
-        :to="link.path"
-        @click="linkClick"
-        :is="elementType(link, false)"
-        :class="{ active: link.active }"
-        :target="link.target"
-        :href="link.path"
-      >
+    <slot name="title" v-if="children.length === 0 && !$slots.default && link.path">
+      <component :to="link.path" @click="linkClick" :is="elementType(link, false)" :class="{ active: link.active }"
+        :target="link.target" :href="link.path">
         <template v-if="addLink">
           <span class="sidebar-mini-icon">{{ linkPrefix }}</span>
           <span class="sidebar-normal">{{ link.name }}</span>
@@ -116,6 +93,8 @@ export default {
         let words = this.link.name.split(' ');
         return words.map(word => word.substring(0, 1)).join('');
       }
+
+      return this.link.name;
     },
     isMenu() {
       if (!this.$slots.default) {

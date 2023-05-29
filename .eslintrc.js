@@ -17,5 +17,8 @@ module.exports = {
     'vue'
   ],
   // add your custom rules here
-  rules: {}
+  rules: {
+    'vue/no-unused-components': 'off',
+    'vue/no-unused-vars': 'off'
+  }
 }

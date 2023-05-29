@@ -10,11 +10,8 @@
     <tbody :class="tbodyClasses">
       <tr v-for="(item, index) in data" :key="index">
         <slot :row="item" :index="index">
-          <td
-            v-for="(column, index) in columns"
-            :key="index"
-            v-if="hasValue(item, column)"
-          >
+          <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
+          <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">
             {{ itemValue(item, column) }}
           </td>
         </slot>

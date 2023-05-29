@@ -45,10 +45,10 @@
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "babel-plugin-component": "^1.1.1",
-    "eslint": "^8.28.0",
+    "eslint": "^6.8.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^4.0.0",
+    "eslint-plugin-vue": "^7.0.0",
     "node-sass": "^5.0.0",
     "sass-loader": "^10.1.1"
   }

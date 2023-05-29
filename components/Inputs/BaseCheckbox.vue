@@ -16,7 +16,6 @@
       <label class="error">{{ error }}</label>
     </slot>
   </div>
-
 </template>
 <script>
 export default {
@@ -57,6 +56,8 @@ export default {
       if (this.inline) {
         return `form-check-inline`;
       }
+
+      return '';
     }
   },
   mounted() {

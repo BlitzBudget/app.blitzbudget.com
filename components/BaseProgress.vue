@@ -1,31 +1,15 @@
 <template>
-  <div
-    class="progress-container"
-    :class="{
-      [`progress-${type}`]: type,
-      [`progress-${size}`]: size
-    }"
-  >
+  <div class="progress-container" :class="{
+    [`progress-${type}`]: type,
+    [`progress-${size}`]: size
+  }">
     <span class="progress-badge" v-if="label">{{ label }}</span>
     <div class="progress">
-      <span class="progress-value" v-if="showValue && valuePosition === 'left'"
-        >{{ value }}%</span
-      >
-      <div
-        class="progress-bar"
-        :class="computedClasses"
-        role="progressbar"
-        :aria-valuenow="value"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        :style="`width: ${value}%;`"
-      >
+      <span class="progress-value" v-if="showValue && valuePosition === 'left'">{{ Math.round(value) }}%</span>
+      <div class="progress-bar" :class="computedClasses" role="progressbar" :aria-valuenow="value" aria-valuemin="0"
+        aria-valuemax="100" :style="`width: ${value}%;`">
         <slot>
-          <span
-            v-if="showValue && valuePosition === 'right'"
-            class="progress-value"
-            >{{ value }}%</span
-          >
+          <span v-if="showValue && valuePosition === 'right'" class="progress-value">{{ Math.round(value) }}%</span>
         </slot>
       </div>
     </div>
