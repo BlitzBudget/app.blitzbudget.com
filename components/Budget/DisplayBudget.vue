@@ -26,8 +26,7 @@
                             </base-button>
                         </el-tooltip>
                         <el-tooltip :content="$t('budget.get.edit')" effect="light" :open-delay="300" placement="top">
-                            <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm"
-                                class="btn-link"
+                            <nuxt-link :class="index > 2 ? 'btn-warning' : 'btn-neutral'" icon size="sm" class="btn-link"
                                 :to="{ name: 'budget-edit___' + $i18n.locale, params: { budget_id: row.sk, planned: row.planned, category_id: row.category } }">
                                 <i class="tim-icons icon-pencil"></i>
                             </nuxt-link>
@@ -42,13 +41,13 @@
                 </template>
             </base-table>
             <div :class="[
-            { 'show d-block text-center': noData },
-            { 'd-none': !noData }]">
+                { 'show d-block text-center': noData },
+                { 'd-none': !noData }]">
                 {{ $t('budget.get.no-data') }}
             </div>
             <div :class="[
-            { 'show d-block text-center': loading },
-            { 'd-none': !loading }]">
+                { 'show d-block text-center': loading },
+                { 'd-none': !loading }]">
                 {{ $t('budget.get.loading') }}
             </div>
         </div>
@@ -64,12 +63,12 @@
 
                 <template slot-scope="{ row, index }">
                     <td>{{ new Date(row.creation_date).toLocaleDateString(
-                    $i18n.locale, {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric'
+                        $i18n.locale, {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric'
                     })
                     }}</td>
                     <td>{{ row.description }}</td>
@@ -85,7 +84,7 @@
                 <base-button type="neutral" link @click.native="modals.transaction = false">Close
                 </base-button>
                 <nuxt-link to="/transactions" class="btn btn-link btn-primary">{{
-                $t('budget.get.modal.viewTransactions')
+                    $t('budget.get.modal.viewTransactions')
                 }}</nuxt-link>
             </template>
         </modal>
@@ -308,7 +307,7 @@ export default {
                 // Budget Used is 0
                 budget.used = this.$isEmpty(total) ? 0 : total;
 
-                // Percentage Calculation
+                // Percentage Calculation (convert 104.2323232 --> 104)
                 budget.percentage = (budget.used / budget.planned) * 100;
             }
 
