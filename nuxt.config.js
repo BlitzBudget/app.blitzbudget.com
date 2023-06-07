@@ -161,6 +161,10 @@ module.exports = {
         file: 'en.js'
       },
       {
+        code: 'es',
+        file: 'es.js'
+      },
+      {
         code: 'ar',
         file: 'ar.js'
       }
