@@ -4,13 +4,13 @@
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
                 <delete-account-form @on-submit="verifyPassword" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]">
+                    { 'show d-block': !hasSucceeded },
+                    { 'd-none': hasSucceeded }]">
                 </delete-account-form>
                 <!-- Success Message Tab -->
                 <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': hasSucceeded },
-                { 'd-none': !hasSucceeded }]">
+                    { 'show d-block': hasSucceeded },
+                    { 'd-none': !hasSucceeded }]">
                     <p class="card-description">
                         {{ $t('user.delete-account.success.description') }}
                     </p>
@@ -59,7 +59,7 @@ export default {
                 // Log the user out
                 this.$userLogout.logout(this);
             }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         },
@@ -82,6 +82,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

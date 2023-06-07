@@ -4,16 +4,16 @@
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
                 <change-password-form @on-submit="changePassword" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]">
+                    { 'show d-block': !hasSucceeded },
+                    { 'd-none': hasSucceeded }]">
                 </change-password-form>
             </div>
         </div>
         <div class="col-md-12 ml-auto-mr-auto">
             <!-- Success Message Tab -->
             <card type="testimonial" header-classes="card-header-avatar" :class="[
-            { 'show d-block': hasSucceeded },
-            { 'd-none': !hasSucceeded }]">
+                { 'show d-block': hasSucceeded },
+                { 'd-none': !hasSucceeded }]">
                 <p class="card-description">
                     {{ $t('user.change-password.success.description') }}
                 </p>
@@ -56,13 +56,11 @@ export default {
             }).then(() => {
                 this.hasSucceeded = true;
             }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

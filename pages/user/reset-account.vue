@@ -4,13 +4,13 @@
         <div class="row">
             <div class="col-md-8 ml-auto mr-auto">
                 <reset-account-form @on-submit="verifyPassword" :class="[
-                { 'show d-block': !hasSucceeded },
-                { 'd-none': hasSucceeded }]">
+                    { 'show d-block': !hasSucceeded },
+                    { 'd-none': hasSucceeded }]">
                 </reset-account-form>
                 <!-- Success Message Tab -->
                 <card type="testimonial" header-classes="card-header-avatar" :class="[
-                { 'show d-block': hasSucceeded },
-                { 'd-none': !hasSucceeded }]">
+                    { 'show d-block': hasSucceeded },
+                    { 'd-none': !hasSucceeded }]">
                     <p class="card-description">
                         {{ $t('user.reset-account.success.description') }}
                     </p>
@@ -55,7 +55,7 @@ export default {
                 event.$wallet.resetWallet(event);
                 this.hasSucceeded = true;
             }).catch(({ response }) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         },
@@ -78,6 +78,4 @@ export default {
     }
 };
 </script>
-<style>
-
-</style>
+<style></style>

@@ -35,7 +35,7 @@
 
         <template slot="footer">
             <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                    $t('transaction.add.submit')
+                $t('transaction.add.submit')
             }}</base-button>
             <nuxt-link to="/transactions" class="pull-right">{{ $t('transaction.get.to') }}
             </nuxt-link>
@@ -94,7 +94,7 @@ export default {
                 // Change loading to false
                 this.loadingDataForSelect = false
             }).catch((response) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         },
@@ -116,5 +116,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

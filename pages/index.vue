@@ -110,7 +110,7 @@ export default {
         this.categories = response;
         this.transactions = transactions;
       }).catch((response) => {
-        let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+        let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
         this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
       });
     },
@@ -127,5 +127,4 @@ export default {
   }
 }
 </script>
-<style>
-</style>
+<style></style>
