@@ -59,6 +59,13 @@ module.exports = {
     }
   },
   "user": {
+    "global-signout": {
+      "button": "Signout Globally",
+      "title": "Signout of all devices",
+      "description": "You can signout of all devices.",
+      "header": "Safety",
+      "success": "Successfully Signed out of all devices"
+    },
     "change-password": {
       "title": "Change your Password",
       "forgot-password": "Forgot Password",

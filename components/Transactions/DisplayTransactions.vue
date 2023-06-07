@@ -39,13 +39,13 @@
                         prop="creationDate">
                         <div slot-scope="props">
                             {{ new Date(props.row.creation_date).toLocaleDateString(
-                                    $i18n.locale, {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: 'numeric'
-                                })
+                                $i18n.locale, {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric'
+                            })
                             }}
                         </div>
                     </el-table-column>
@@ -92,8 +92,8 @@
                             </el-tooltip>
                             <el-tooltip :content="$t('transaction.get.delete')" effect="light" :open-delay="300"
                                 placement="top">
-                                <base-button @click.native="handleDelete(props.row)" class="remove btn-link"
-                                    type="danger" size="sm" icon>
+                                <base-button @click.native="handleDelete(props.row)" class="remove btn-link" type="danger"
+                                    size="sm" icon>
                                     <i class="tim-icons icon-simple-remove"></i>
                                 </base-button>
                             </el-tooltip>
@@ -310,7 +310,7 @@ export default {
             }).then((response) => {
                 this.calculateCategories(response);
             }).catch((response) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         },

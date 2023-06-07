@@ -5,8 +5,7 @@
                 <h4 class="card-title">{{ $t('investment.link.add.title') }}</h4>
             </div>
             <div>
-                <el-tooltip :content="$t('investment.link.add.tooltip')" effect="light" :open-delay="300"
-                    placement="top">
+                <el-tooltip :content="$t('investment.link.add.tooltip')" effect="light" :open-delay="300" placement="top">
                     <base-input :label="$t('investment.link.add.transactionDescription')" required
                         v-model="model.transactionDescription" v-validate="modelValidations.transactionDescription"
                         :error="getError('transactionDescription')" name="transactionDescription" autofocus>
@@ -16,8 +15,8 @@
                 <base-input :label="$t('investment.link.add.investmentId')" required :error="getError('investmentId')"
                     name="investmentId">
                     <el-select v-model="model.investmentId" class="select-primary" name="investmentId"
-                        v-validate="modelValidations.investmentId" :loading="loadingDataForSelect"
-                        :clearable="clearable" autocomplete="on" :filterable="filterable">
+                        v-validate="modelValidations.investmentId" :loading="loadingDataForSelect" :clearable="clearable"
+                        autocomplete="on" :filterable="filterable">
                         <el-option v-for="investment in investments" class="select-primary"
                             :label="getInvestmentValue(investment)" :value="investment.sk" :key="investment.sk"
                             :selected="isSelected(investment)">
@@ -30,12 +29,12 @@
 
             <template slot="footer">
                 <base-button native-type="submit" @click.native.prevent="validate" type="primary">{{
-                        $t('investment.link.add.submit')
+                    $t('investment.link.add.submit')
                 }}</base-button>
                 <nuxt-link class="float-right"
                     :to="{ path: '/investment/investment-link', query: { investment_id: this.selectedInvestmentId } }">
                     {{
-                            $t('investment.link.add.viewInvestmentRule')
+                        $t('investment.link.add.viewInvestmentRule')
                     }}</nuxt-link>
             </template>
         </card>
@@ -96,7 +95,7 @@ export default {
                 // Change loading to false
                 this.loadingDataForSelect = false
             }).catch((response) => {
-                let errorMessage = this.$lastElement(this.$splitElement(response.data.errorMessage, ':'));
+                let errorMessage = this.$lastElement(this.$splitElement(response.data.message, ':'));
                 this.$notify({ type: 'danger', icon: 'tim-icons icon-simple-remove', verticalAlign: 'bottom', horizontalAlign: 'center', message: errorMessage });
             });
         }
@@ -114,5 +113,4 @@ export default {
     }
 };
 </script>
-<style>
-</style>
+<style></style>

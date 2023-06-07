@@ -17,7 +17,8 @@ module.exports = {
         changePassword: '/profile/change-password',
         resetAccount: '/profile/reset-account',
         login: '/profile/sign-in',
-        userAttribute: '/profile/user-attribute'
+        userAttribute: '/profile/user-attribute',
+        globalSignout: '/profile/global-signout'
       },
       deleteItem: '/delete-item',
       delete: '/delete',
@@ -159,6 +160,10 @@ module.exports = {
       {
         code: 'en',
         file: 'en.js'
+      },
+      {
+        code: 'es',
+        file: 'es.js'
       },
       {
         code: 'ar',
