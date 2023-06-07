@@ -32,10 +32,11 @@ jobs:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: yarn
+        run: npm install
 
       - name: Generate
-        run: yarn generate
+        run: npm run generate
+
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete --exclude '.git/*' --exclude '.github/*' --exclude '*.md'  --exclude '.vscode/*'
