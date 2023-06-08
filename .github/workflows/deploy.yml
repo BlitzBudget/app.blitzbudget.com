@@ -30,14 +30,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: NPM Version
-        run: npm --version
-
       - name: Install dependencies
-        run: npm install
+        run: yarn
 
       - name: Generate
-        run: npm run generate
+        run: yarn generate
 
       - uses: jakejarvis/s3-sync-action@master
         with:
