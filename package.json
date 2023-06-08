@@ -43,8 +43,6 @@
     "vue2-transitions": "^0.3.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "babel-plugin-component": "^1.1.1",
     "eslint": "^6.8.0",
     "eslint-friendly-formatter": "^4.0.1",
     "eslint-loader": "^2.1.1",
