@@ -33,9 +33,6 @@ jobs:
 
       - name: Install Production
         run:  npm install --only=production
-      
-      - name: Build the Project
-        run:  npm run build
 
       - name: Generate Static Files
         run: npm run generate
