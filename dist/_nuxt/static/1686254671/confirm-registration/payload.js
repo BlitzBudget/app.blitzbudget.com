@@ -1,1 +1,0 @@
-__NUXT_JSONP__("/confirm-registration", {data:[{}],fetch:{},mutations:[]});
