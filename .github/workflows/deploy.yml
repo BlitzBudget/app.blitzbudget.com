@@ -31,11 +31,15 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Install dependencies
-        run: yarn
+      - name: Install Production
+        run:  npm install --only=production
+      
+      - name: Build the Project
+        run:  npm run build
 
-      - name: Generate
-        run: yarn generate
+      - name: Generate Static Files
+        run: npm run generate
+
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete --exclude '.git/*' --exclude '.github/*' --exclude '*.md'  --exclude '.vscode/*'
